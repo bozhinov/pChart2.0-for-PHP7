@@ -90,9 +90,12 @@ class pImage extends pDraw
 			imagealphablending($this->Picture, TRUE);
 			imagesavealpha($this->Picture, true);
 		} else {
-			$C_White = $this->AllocateColor($this->Picture, 255, 255, 255);
-			imagefilledrectangle($this->Picture, 0, 0, $XSize, $YSize, $C_White);
+			imagefilledrectangle($this->Picture, 0, 0, $XSize, $YSize, $this->AllocateColor($this->Picture, 255, 255, 255));
 		}
+	}
+	
+	function __destruct(){
+		imagedestroy($this->Picture);
 	}
 
 	/* Enable / Disable and set shadow properties */
@@ -554,6 +557,8 @@ class pImage extends pDraw
 		}
 
 		imagecopy($this->Picture, $Picture, 0, 0, 0, 0, $this->XSize, $this->YSize);
+		
+		imagedestroy($Picture);
 	}
 }
 
