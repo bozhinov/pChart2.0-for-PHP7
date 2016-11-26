@@ -39,51 +39,39 @@ class pPie
 		$this->pDataObject = $pDataObject;
 	}
 
-	function get_values_for(array $list, array $Format){
-	
-		$defaults = [
-			"Precision" => 0,
-			"SecondPass" => TRUE,
-			"Border" => FALSE,
-			"BorderR" => 255,
-			"BorderG" => 255,
-			"BorderB" => 255,
-			"Shadow" => FALSE,
-			"DrawLabels" => FALSE,
-			"LabelStacked" => FALSE,
-			"LabelColor" => PIE_LABEL_COLOR_MANUAL,
-			"LabelR" => 0,
-			"LabelG" => 0,
-			"LabelB" => 0,
-			"LabelAlpha" => 100,
-			"WriteValues" => NULL, # !!!
-			"ValuePosition" => PIE_VALUE_OUTSIDE, # !!!
-			"ValueSuffix" => "",
-			"ValueR" => 255,
-			"ValueG" => 255,
-			"ValueB" => 255,
-			"ValueAlpha" => 100,
-			"RecordImageMap" => FALSE		
-			];
-		$ret = [];
-		
-		foreach($list as $l){
-			$ret[$l] = $R = isset($Format[$l]) ? $Format[$l] : $defaults[$l];
-		}
-		
-		return $ret;
-	}
-	
 	/* Draw a pie chart */
 	function draw2DPie($X, $Y, array $Format = [])
 	{
+		$Precision = 0;
+		$SecondPass = TRUE;
+		$Border = FALSE;
+		$BorderR = 255;
+		$BorderG = 255;
+		$BorderB = 255;
+		$Shadow = FALSE;
+		$DrawLabels = FALSE;
+		$LabelStacked = FALSE;
+		$LabelColor = PIE_LABEL_COLOR_MANUAL;
+		$LabelR = 0;
+		$LabelG = 0;
+		$LabelB = 0;
+		$LabelAlpha = 100;
+		$WriteValues = NULL;
+		$ValuePosition = PIE_VALUE_OUTSIDE;
+		$ValueSuffix = "";
+		$ValueR = 255;
+		$ValueG = 255;
+		$ValueB = 255;
+		$ValueAlpha = 100;
+		$RecordImageMap = FALSE;		
+		$Radius = 60;
+		$DataGapAngle = 0;
+		$DataGapRadius = 0;
+		$ValuePadding = 15;
 		
-		extract($this->get_values_for(["Precision","SecondPass","Border","BorderR","BorderG","BorderB","Shadow","DrawLabels","LabelStacked","LabelColor","LabelR","LabelG","LabelB","LabelAlpha","WriteValues","ValuePosition","ValueSuffix","ValueR","ValueG","ValueB","ValueAlpha","RecordImageMap"], $Format));
+		/* Override defaults */
+		extract($Format);
 		
-		$Radius = isset($Format["Radius"]) ? $Format["Radius"] : 60;
-		$DataGapAngle = isset($Format["DataGapAngle"]) ? $Format["DataGapAngle"] : 0;
-		$DataGapRadius = isset($Format["DataGapRadius"]) ? $Format["DataGapRadius"] : 0;
-		$ValuePadding = isset($Format["ValuePadding"]) ? $Format["ValuePadding"] : 15;
 		
 		/* Data Processing */
 		$Data = $this->pDataObject->getData();
@@ -335,22 +323,38 @@ class pPie
 	/* Draw a 3D pie chart */
 	function draw3DPie($X, $Y, array $Format = [])
 	{
-		/* Rendering layout */
-		extract($this->get_values_for(["Precision","SecondPass","Border","Shadow","DrawLabels","LabelStacked","LabelColor","LabelR","LabelG","LabelB","LabelAlpha","WriteValues","ValueSuffix","ValueR","ValueG","ValueB","ValueAlpha","RecordImageMap"], $Format));
-	
-		$Radius = isset($Format["Radius"]) ? $Format["Radius"] : 80;
-		$SkewFactor = isset($Format["SkewFactor"]) ? $Format["SkewFactor"] : .5;
-		$SliceHeight = isset($Format["SliceHeight"]) ? $Format["SliceHeight"] : 20;
-		$DataGapAngle = isset($Format["DataGapAngle"]) ? $Format["DataGapAngle"] : 0;
-		$DataGapRadius = isset($Format["DataGapRadius"]) ? $Format["DataGapRadius"] : 0;
-		$ValuePosition = isset($Format["ValuePosition"]) ? $Format["ValuePosition"] : PIE_VALUE_INSIDE;
-		$ValuePadding = isset($Format["ValuePadding"]) ? $Format["ValuePadding"] : 15;
+		$Precision = 0;
+		$SecondPass = TRUE;
+		$Border = FALSE;
+		$Shadow = FALSE;
+		$DrawLabels = FALSE;
+		$LabelStacked = FALSE;
+		$LabelColor = PIE_LABEL_COLOR_MANUAL;
+		$LabelR = 0;
+		$LabelG = 0;
+		$LabelB = 0;
+		$LabelAlpha = 100;
+		$WriteValues = NULL;
+		$ValueSuffix = "";
+		$ValueR = 255;
+		$ValueG = 255;
+		$ValueB = 255;
+		$ValueAlpha = 100;
+		$RecordImageMap = FALSE;			
+		$Radius = 80;
+		$SkewFactor = .5;
+		$SliceHeight = 20;
+		$DataGapAngle = 0;
+		$DataGapRadius = 0;
+		$ValuePosition = PIE_VALUE_INSIDE;
+		$ValuePadding = 15;
 
+		/* Override defaults */
+		extract($Format);
+		
 		/* Error correction for overlaying rounded corners */
-		if ($SkewFactor < .5) {
-			$SkewFactor = .5;
-		}
-
+		($SkewFactor < .5) AND $SkewFactor = .5;
+		
 		/* Data Processing */
 		$Data = $this->pDataObject->getData();
 		$Palette = $this->pDataObject->getPalette();
@@ -750,23 +754,27 @@ class pPie
 	
 	function drawPieLegend($X, $Y, array $Format = [])
 	{
-		$FontName = isset($Format["FontName"]) ? $Format["FontName"] : $this->pChartObject->FontName;
-		$FontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : $this->pChartObject->FontSize;
-		$FontR = isset($Format["FontR"]) ? $Format["FontR"] : $this->pChartObject->FontColorR;
-		$FontG = isset($Format["FontG"]) ? $Format["FontG"] : $this->pChartObject->FontColorG;
-		$FontB = isset($Format["FontB"]) ? $Format["FontB"] : $this->pChartObject->FontColorB;
-		$BoxSize = isset($Format["BoxSize"]) ? $Format["BoxSize"] : 5;
-		$Margin = isset($Format["Margin"]) ? $Format["Margin"] : 5;
-		$R = isset($Format["R"]) ? $Format["R"] : 200;
-		$G = isset($Format["G"]) ? $Format["G"] : 200;
-		$B = isset($Format["B"]) ? $Format["B"] : 200;
-		$Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-		$BorderR = isset($Format["BorderR"]) ? $Format["BorderR"] : 255;
-		$BorderG = isset($Format["BorderG"]) ? $Format["BorderG"] : 255;
-		$BorderB = isset($Format["BorderB"]) ? $Format["BorderB"] : 255;
-		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
-		$Style = isset($Format["Style"]) ? $Format["Style"] : LEGEND_ROUND;
-		$Mode = isset($Format["Mode"]) ? $Format["Mode"] : LEGEND_VERTICAL;
+		$FontName = $this->pChartObject->FontName;
+		$FontSize = $this->pChartObject->FontSize;
+		$FontR = $this->pChartObject->FontColorR;
+		$FontG = $this->pChartObject->FontColorG;
+		$FontB = $this->pChartObject->FontColorB;
+		$BoxSize = 5;
+		$Margin = 5;
+		$R = 200;
+		$G = 200;
+		$B = 200;
+		$Alpha = 100;
+		$BorderR = 255;
+		$BorderG = 255;
+		$BorderB = 255;
+		$Surrounding = NULL;
+		$Style = LEGEND_ROUND;
+		$Mode = LEGEND_VERTICAL;
+		
+		/* Override defaults */
+		extract($Format);
+		
 		if ($Surrounding != NULL) {
 			$BorderR = $R + $Surrounding;
 			$BorderG = $G + $Surrounding;
@@ -856,10 +864,12 @@ class pPie
 	/* Set the color of the specified slice */
 	function setSliceColor($SliceID, array $Format = [])
 	{
-		$this->pDataObject->Palette[$SliceID]["R"] = isset($Format["R"]) ? $Format["R"] : 0;
-		$this->pDataObject->Palette[$SliceID]["G"] = isset($Format["G"]) ? $Format["G"] : 0;
-		$this->pDataObject->Palette[$SliceID]["B"] = isset($Format["B"]) ? $Format["B"] : 0;
-		$this->pDataObject->Palette[$SliceID]["Alpha"] = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+		$this->pDataObject->Palette[$SliceID] = [
+			"R" => isset($Format["R"]) ? $Format["R"] : 0,
+			"G" => isset($Format["G"]) ? $Format["G"] : 0,
+			"B" => isset($Format["B"]) ? $Format["B"] : 0,
+			"Alpha" => isset($Format["Alpha"]) ? $Format["Alpha"] : 100
+		];
 	}
 
 	/* Internally used compute the label positions */
@@ -964,14 +974,35 @@ class pPie
 
 	/* Draw a ring chart */
 	function draw2DRing($X, $Y, array $Format = [])
-	{
+	{	
+		$Precision = 0;
+		$Border = FALSE;
+		$BorderR = 255;
+		$BorderG = 255;
+		$BorderB = 255;
+		$Shadow = FALSE;
+		$DrawLabels = FALSE;
+		$LabelStacked = FALSE;
+		$LabelColor = PIE_LABEL_COLOR_MANUAL;
+		$LabelR = 0;
+		$LabelG = 0;
+		$LabelB = 0;
+		$LabelAlpha = 100;
+		$WriteValues = NULL;
+		$ValuePosition = PIE_VALUE_OUTSIDE;
+		$ValueSuffix = "";
+		$ValueR = 255;
+		$ValueG = 255;
+		$ValueB = 255;
+		$ValueAlpha = 100;
+		$RecordImageMap = FALSE;
+		$OuterRadius = 60;
+		$InnerRadius = 30;
+		$BorderAlpha = 100;
+		$ValuePadding = 5;
 		
-		extract($this->get_values_for(["Precision","Border","BorderR","BorderG","BorderB","Shadow","DrawLabels","LabelStacked","LabelColor","LabelR","LabelG","LabelB","LabelAlpha","WriteValues","ValuePosition","ValueSuffix","ValueR","ValueG","ValueB","ValueAlpha","RecordImageMap"], $Format));
-		
-		$OuterRadius = isset($Format["Radius"]) ? $Format["Radius"] : 60;
-		$InnerRadius = isset($Format["Radius"]) ? $Format["Radius"] : 30;
-		$BorderAlpha = isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : 100;
-		$ValuePadding = isset($Format["ValuePadding"]) ? $Format["ValuePadding"] : 5;
+		/* Override defaults */
+		extract($Format);
 
 		/* Data Processing */
 		$Data = $this->pDataObject->getData();
@@ -1189,23 +1220,40 @@ class pPie
 
 	function draw3DRing($X, $Y, array $Format = [])
 	{
-		extract($this->get_values_for(["Precision","Border","Shadow","DrawLabels","LabelStacked","LabelColor","LabelR","LabelG","LabelB","LabelAlpha","ValuePosition","ValueSuffix","ValueR","ValueG","ValueB","ValueAlpha","RecordImageMap"], $Format));
-		
-		$OuterRadius = isset($Format["OuterRadius"]) ? $Format["OuterRadius"] : 100;
-		$InnerRadius = isset($Format["InnerRadius"]) ? $Format["InnerRadius"] : 30;
-		$SkewFactor = isset($Format["SkewFactor"]) ? $Format["SkewFactor"] : .6;
+		$Precision = 0;
+		$Border = FALSE;
+		$Shadow = FALSE;
+		$DrawLabels = FALSE;
+		$LabelStacked = FALSE;
+		$LabelColor = PIE_LABEL_COLOR_MANUAL;
+		$LabelR = 0;
+		$LabelG = 0;
+		$LabelB = 0;
+		$LabelAlpha = 100;
+		$WriteValues = NULL;
+		$ValuePosition = PIE_VALUE_OUTSIDE;
+		$ValueSuffix = "";
+		$ValueR = 255;
+		$ValueG = 255;
+		$ValueB = 255;
+		$ValueAlpha = 100;
+		$RecordImageMap = FALSE;				
+		$OuterRadius = 100;
+		$InnerRadius = 30;
+		$SkewFactor = .6;
 		$SliceHeight = isset($Format["SliceHeight"]) ? $Format["SliceHeight"] : 10;
-		$DataGapAngle = isset($Format["DataGapAngle"]) ? $Format["DataGapAngle"] : 10;
-		$DataGapRadius = isset($Format["DataGapRadius"]) ? $Format["DataGapRadius"] : 10;
-		$Cf = isset($Format["Cf"]) ? $Format["Cf"] : 20;
-		$WriteValues = isset($Format["WriteValues"]) ? $Format["WriteValues"] : PIE_VALUE_NATURAL;
-		$ValuePadding = isset($Format["ValuePadding"]) ? $Format["ValuePadding"] : $SliceHeight + 15;
-
+		$DataGapAngle = 10;
+		$DataGapRadius = 10;
+		$Cf = 20;
+		$WriteValues = PIE_VALUE_NATURAL;
+		$ValuePadding = $SliceHeight + 15;
+		
+		/* Override defaults */
+		extract($Format);
+	
 		/* Error correction for overlaying rounded corners */
-		if ($SkewFactor < .5) {
-			$SkewFactor = .5;
-		}
-
+		($SkewFactor < .5) AND $SkewFactor = .5;
+		
 		/* Data Processing */
 		$Data = $this->pDataObject->getData();
 		$Palette = $this->pDataObject->getPalette();
