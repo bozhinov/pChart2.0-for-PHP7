@@ -37,6 +37,7 @@ class pIndicator
 
 		/* No section, let's die */
 		if (isset($Format["IndicatorSections"])){
+			$IndicatorSections = $Format["IndicatorSections"];
 		} else {
 			return (0);
 		}
