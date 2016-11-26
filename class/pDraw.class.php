@@ -5268,7 +5268,7 @@ class pDraw
 		$DisplayG = 0;
 		$DisplayB = 0;
 		$AroundZero = TRUE;
-		$Interleave = 5;
+		$Interleave = .5;
 		$Rounded = FALSE;
 		$RoundRadius = 4;
 		$Surrounding = NULL;
