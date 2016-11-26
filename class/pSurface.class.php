@@ -25,13 +25,12 @@ class pSurface
 	var $pChartObject;
 	var $GridSizeX;
 	var $GridSizeY;
-	var $Points;
+	var $Points = [];
 	/* Class creator */
 	function __construct($pChartObject)
 	{
 		$this->pChartObject = $pChartObject;
-		$this->GridSize = 10;
-		$this->Points = [];
+		#$this->GridSize = 10; # UNUSED
 	}
 
 	/* Define the grid size and initialise the 2D matrix */
@@ -84,8 +83,7 @@ class pSurface
 		extract($Format);
 		
 		if ($Labels != NULL && !is_array($Labels)) {
-			$Label = $Labels;
-			$Labels = [$Label];
+			$Labels = [$Labels];
 		}
 
 		$X0 = $this->pChartObject->GraphAreaX1;
@@ -95,9 +93,8 @@ class pSurface
 			$YPos = $this->pChartObject->GraphAreaY1 - $Padding;
 			if ($Angle == 0) {
 				$Settings["Align"] = TEXT_ALIGN_BOTTOMMIDDLE;
-			}
-
-			if ($Angle != 0) { # ELSE ?!
+			} else {
+			# if ($Angle != 0) { # ELSE ?!
 				$Settings["Align"] = TEXT_ALIGN_MIDDLELEFT;
 			}
 			
@@ -106,9 +103,8 @@ class pSurface
 			$YPos = $this->pChartObject->GraphAreaY2 + $Padding;
 			if ($Angle == 0) {
 				$Settings["Align"] = TEXT_ALIGN_TOPMIDDLE;
-			}
-
-			if ($Angle != 0) { # ELSE ?!
+			} else {
+			#if ($Angle != 0) { # ELSE ?!
 				$Settings["Align"] = TEXT_ALIGN_MIDDLERIGHT;
 			}
 			
@@ -140,8 +136,7 @@ class pSurface
 		extract($Format);
 		
 		if ($Labels != NULL && !is_array($Labels)) {
-			$Label = $Labels;
-			$Labels = [$Label];
+			$Labels = [$Labels];
 		}
 
 		$Y0 = $this->pChartObject->GraphAreaY1;
@@ -191,10 +186,18 @@ class pSurface
 					$Y1 = floor($Y0 + $Y * $YSize) + $Padding;
 					$X2 = floor($X0 + $X * $XSize + $XSize);
 					$Y2 = floor($Y0 + $Y * $YSize + $YSize);
-					if ($X > 0 && $this->Points[$X - 1][$Y] != UNKNOWN && $this->Points[$X - 1][$Y] != IGNORED && $this->Points[$X - 1][$Y] < $Threshold) $this->pChartObject->drawLine($X1, $Y1, $X1, $Y2, $Color);
-					if ($Y > 0 && $this->Points[$X][$Y - 1] != UNKNOWN && $this->Points[$X][$Y - 1] != IGNORED && $this->Points[$X][$Y - 1] < $Threshold) $this->pChartObject->drawLine($X1, $Y1, $X2, $Y1, $Color);
-					if ($X < $this->GridSizeX && $this->Points[$X + 1][$Y] != UNKNOWN && $this->Points[$X + 1][$Y] != IGNORED && $this->Points[$X + 1][$Y] < $Threshold) $this->pChartObject->drawLine($X2, $Y1, $X2, $Y2, $Color);
-					if ($Y < $this->GridSizeY && $this->Points[$X][$Y + 1] != UNKNOWN && $this->Points[$X][$Y + 1] != IGNORED && $this->Points[$X][$Y + 1] < $Threshold) $this->pChartObject->drawLine($X1, $Y2, $X2, $Y2, $Color);
+					if ($X > 0 && $this->Points[$X - 1][$Y] != UNKNOWN && $this->Points[$X - 1][$Y] != IGNORED && $this->Points[$X - 1][$Y] < $Threshold){
+						$this->pChartObject->drawLine($X1, $Y1, $X1, $Y2, $Color);
+					}
+					if ($Y > 0 && $this->Points[$X][$Y - 1] != UNKNOWN && $this->Points[$X][$Y - 1] != IGNORED && $this->Points[$X][$Y - 1] < $Threshold){
+						$this->pChartObject->drawLine($X1, $Y1, $X2, $Y1, $Color);
+					}
+					if ($X < $this->GridSizeX && $this->Points[$X + 1][$Y] != UNKNOWN && $this->Points[$X + 1][$Y] != IGNORED && $this->Points[$X + 1][$Y] < $Threshold){
+						$this->pChartObject->drawLine($X2, $Y1, $X2, $Y2, $Color);
+					}
+					if ($Y < $this->GridSizeY && $this->Points[$X][$Y + 1] != UNKNOWN && $this->Points[$X][$Y + 1] != IGNORED && $this->Points[$X][$Y + 1] < $Threshold){
+						$this->pChartObject->drawLine($X1, $Y2, $X2, $Y2, $Color);
+					}
 				}
 			}
 		}
