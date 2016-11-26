@@ -370,7 +370,7 @@ class pDraw
 			imageline($this->Picture, $X1, $Yp, $X2, $Yp, $ManualColor);
 		}
 
-		$this->drawFilledRectangle($X1, $MinY + 1, floor($X2) , $MaxY - 1, $Color);
+		$this->drawFilledRectangle($X1, $MinY + 1, floor($X2), $MaxY - 1, $Color);
 		$Radius++;
 		$this->drawRoundedRectangle($X1, $Y1, $X2 + 1, $Y2 - 1, $Radius, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $Alpha]);
 		$this->Shadow = $RestoreShadow;
@@ -1106,7 +1106,7 @@ class pDraw
 			$Width = abs($X2 - $X1);
 		}
 
-		$Step = max(abs($EndR - $StartR) , abs($EndG - $StartG) , abs($EndB - $StartB));
+		$Step = max(abs($EndR - $StartR), abs($EndG - $StartG), abs($EndB - $StartB));
 		$StepSize = $Width / $Step;
 		$RStep = ($EndR - $StartR) / $Step;
 		$GStep = ($EndG - $StartG) / $Step;
@@ -1566,16 +1566,16 @@ class pDraw
 			
 			switch (TRUE) {
 				case ($ShowLabel && $LabelPos == LABEL_POS_BOTTOM):
-					$this->drawText($X + ($Width / 2) , $Y + $Margin, $Percent . "%", ["Align" => TEXT_ALIGN_TOPMIDDLE]);
+					$this->drawText($X + ($Width / 2), $Y + $Margin, $Percent . "%", ["Align" => TEXT_ALIGN_TOPMIDDLE]);
 					break;
 				case ($ShowLabel && $LabelPos == LABEL_POS_TOP):
-					$this->drawText($X + ($Width / 2) , $Y - $Height - $Margin, $Percent . "%", ["Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
+					$this->drawText($X + ($Width / 2), $Y - $Height - $Margin, $Percent . "%", ["Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
 					break;
 				case ($ShowLabel && $LabelPos == LABEL_POS_INSIDE):
-					$this->drawText($X + ($Width / 2) , $Y - $InnerHeight - $Margin, $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLELEFT,"Angle" => 90]);
+					$this->drawText($X + ($Width / 2), $Y - $InnerHeight - $Margin, $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLELEFT,"Angle" => 90]);
 					break;
 				case ($ShowLabel && $LabelPos == LABEL_POS_CENTER):
-					$this->drawText($X + ($Width / 2) , $Y - ($Height / 2) , $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"Angle" => 90]);
+					$this->drawText($X + ($Width / 2), $Y - ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"Angle" => 90]);
 					break;				
 			}
 
@@ -1597,16 +1597,16 @@ class pDraw
 			$this->Shadow = $RestoreShadow;
 			switch (TRUE) {
 				case ($ShowLabel && $LabelPos == LABEL_POS_LEFT):
-					$this->drawText($X - $Margin, $Y + ($Height / 2) , $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLERIGHT]);
+					$this->drawText($X - $Margin, $Y + ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLERIGHT]);
 					break;
 				case ($ShowLabel && $LabelPos == LABEL_POS_RIGHT):
-					$this->drawText($X + $Width + $Margin, $Y + ($Height / 2) , $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLELEFT]);
+					$this->drawText($X + $Width + $Margin, $Y + ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLELEFT]);
 					break;
 				case ($ShowLabel && $LabelPos == LABEL_POS_CENTER):
-					$this->drawText($X + ($Width / 2) , $Y + ($Height / 2) , $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLEMIDDLE]);
+					$this->drawText($X + ($Width / 2), $Y + ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLEMIDDLE]);
 					break;
 				case ($ShowLabel && $LabelPos == LABEL_POS_INSIDE):
-					$this->drawText($X + $InnerWidth + $Margin, $Y + ($Height / 2) , $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLELEFT]);
+					$this->drawText($X + $InnerWidth + $Margin, $Y + ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLELEFT]);
 					break;
 			}
 		}
@@ -1661,12 +1661,12 @@ class pDraw
 					}
 
 					$Lines = preg_split("/\n/", $Serie["Description"]);
-					$vY = $vY + max($this->FontSize * count($Lines) , $IconAreaHeight) + 5;
+					$vY = $vY + max($this->FontSize * count($Lines), $IconAreaHeight) + 5;
 				} elseif ($Mode == LEGEND_HORIZONTAL) {
 					$Lines = preg_split("/\n/", $Serie["Description"]);
 					$Width = [];
 					foreach($Lines as $Key => $Value) {
-						$BoxArray = $this->getTextBox($vX + $IconAreaWidth + 6, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key) , $FontName, $FontSize, 0, $Value);
+						$BoxArray = $this->getTextBox($vX + $IconAreaWidth + 6, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key), $FontName, $FontSize, 0, $Value);
 						if ($Boundaries["T"] > $BoxArray[2]["Y"] + $IconAreaHeight / 2) {
 							$Boundaries["T"] = $BoxArray[2]["Y"] + $IconAreaHeight / 2;
 						}
@@ -1763,14 +1763,14 @@ class pDraw
 					}
 
 					$Lines = preg_split("/\n/", $Serie["Description"]);
-					$vY = $vY + max($this->FontSize * count($Lines) , $IconAreaHeight) + 5;
+					$vY = $vY + max($this->FontSize * count($Lines), $IconAreaHeight) + 5;
 					
 				} elseif ($Mode == LEGEND_HORIZONTAL) {
 					
 					$Lines = preg_split("/\n/", $Serie["Description"]);
 					$Width = [];
 					foreach($Lines as $Key => $Value) {
-						$BoxArray = $this->getTextBox($vX + $IconAreaWidth + 6, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key) , $FontName, $FontSize, 0, $Value);
+						$BoxArray = $this->getTextBox($vX + $IconAreaWidth + 6, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key), $FontName, $FontSize, 0, $Value);
 						if ($Boundaries["T"] > $BoxArray[2]["Y"] + $IconAreaHeight / 2) {
 							$Boundaries["T"] = $BoxArray[2]["Y"] + $IconAreaHeight / 2;
 						}
@@ -1844,15 +1844,15 @@ class pDraw
 				if ($Mode == LEGEND_VERTICAL) {
 					$Lines = preg_split("/\n/", $Serie["Description"]);
 					foreach($Lines as $Key => $Value) {
-						$this->drawText($X + $IconAreaWidth + 4, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key) , $Value, ["R" => $FontR,"G" => $FontG,"B" => $FontB,"Align" => TEXT_ALIGN_MIDDLELEFT,"FontSize" => $FontSize,"FontName" => $FontName]);
+						$this->drawText($X + $IconAreaWidth + 4, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key), $Value, ["R" => $FontR,"G" => $FontG,"B" => $FontB,"Align" => TEXT_ALIGN_MIDDLELEFT,"FontSize" => $FontSize,"FontName" => $FontName]);
 					}
-					$Y = $Y + max($this->FontSize * count($Lines) , $IconAreaHeight) + 5;
+					$Y = $Y + max($this->FontSize * count($Lines), $IconAreaHeight) + 5;
 					
 				} elseif ($Mode == LEGEND_HORIZONTAL) {
 					$Lines = preg_split("/\n/", $Serie["Description"]);
 					$Width = [];
 					foreach($Lines as $Key => $Value) {
-						$BoxArray = $this->drawText($X + $IconAreaWidth + 4, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key) , $Value, ["R" => $FontR,"G" => $FontG,"B" => $FontB,"Align" => TEXT_ALIGN_MIDDLELEFT,"FontSize" => $FontSize,"FontName" => $FontName]);
+						$BoxArray = $this->drawText($X + $IconAreaWidth + 4, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key), $Value, ["R" => $FontR,"G" => $FontG,"B" => $FontB,"Align" => TEXT_ALIGN_MIDDLELEFT,"FontSize" => $FontSize,"FontName" => $FontName]);
 						$Width[] = $BoxArray[1]["X"];
 					}
 
@@ -2150,7 +2150,7 @@ class pDraw
 							}
 
 							if ($DrawArrows) {
-								$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["B"], $this->GraphAreaX2 + ($ArrowSize * 2) , $AxisPos["B"], ["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize]);
+								$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["B"], $this->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["B"], ["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize]);
 							}
 						}
 
@@ -2247,7 +2247,7 @@ class pDraw
 							}
 
 							if ($DrawArrows) {
-								$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["T"], $this->GraphAreaX2 + ($ArrowSize * 2) , $AxisPos["T"],["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize]);
+								$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["T"], $this->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["T"],["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize]);
 							}
 						}
 
@@ -2642,7 +2642,7 @@ class pDraw
 						}
 
 						if ($DrawArrows) {
-							$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["T"], $this->GraphAreaX2 + ($ArrowSize * 2) , $AxisPos["T"], ["FillR" => $AxisR,"FillG" => $AxisG, "FillB" => $AxisB,"Size" => $ArrowSize]);
+							$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["T"], $this->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["T"], ["FillR" => $AxisR,"FillG" => $AxisG, "FillB" => $AxisB,"Size" => $ArrowSize]);
 						}
 
 						$Width = ($this->GraphAreaX2 - $this->GraphAreaX1) - $Parameters["Margin"] * 2;
@@ -2699,7 +2699,7 @@ class pDraw
 						}
 
 						if ($DrawArrows) {
-							$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["B"], $this->GraphAreaX2 + ($ArrowSize * 2) , $AxisPos["B"], ["FillR" => $AxisR,"FillG" => $AxisG, "FillB" => $AxisB,"Size" => $ArrowSize]);
+							$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["B"], $this->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["B"], ["FillR" => $AxisR,"FillG" => $AxisG, "FillB" => $AxisB,"Size" => $ArrowSize]);
 						}
 
 						$Width = ($this->GraphAreaX2 - $this->GraphAreaX1) - $Parameters["Margin"] * 2;
@@ -3522,7 +3522,7 @@ class pDraw
 						$Sign = "-";
 					}
 
-					$Value = number_format($Value / pow(1024, ($Scale = floor(log($Value, 1024)))) , 2, ",", ".");
+					$Value = number_format($Value / pow(1024, ($Scale = floor(log($Value, 1024)))), 2, ",", ".");
 					$ret = $Sign . $Value . " " . $Units[$Scale];
 				}
 				break;
@@ -3655,7 +3655,7 @@ class pDraw
 						}
 
 						$XPos = $X + $MaxPos * $XStep + $SerieOffset;
-						$Label = $MaxLabelTxt . $this->scaleFormat(round($MaxValue, $Decimals) , $Mode, $Format, $Unit);
+						$Label = $MaxLabelTxt . $this->scaleFormat(round($MaxValue, $Decimals), $Mode, $Format, $Unit);
 						$TxtPos = $this->getTextBox($XPos, $YPos, $this->FontName, $this->FontSize, 0, $Label);
 						$XOffset = 0;
 						$YOffset = 0;
@@ -3694,7 +3694,7 @@ class pDraw
 						}
 
 						$XPos = $X + $MinPos * $XStep + $SerieOffset;
-						$Label = $MinLabelTxt . $this->scaleFormat(round($MinValue, $Decimals) , $Mode, $Format, $Unit);
+						$Label = $MinLabelTxt . $this->scaleFormat(round($MinValue, $Decimals), $Mode, $Format, $Unit);
 						$TxtPos = $this->getTextBox($XPos, $YPos, $this->FontName, $this->FontSize, 0, $Label);
 						$XOffset = 0;
 						$YOffset = 0;
@@ -3882,7 +3882,7 @@ class pDraw
 					$PosArray = $this->convertToArray($PosArray);
 					
 					foreach($PosArray as $Key => $Y) {
-						if ($DisplayValues) $this->drawText($X, $Y - $DisplayOffset - $SerieWeight - $BorderSize - $PicOffset, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit) , array(
+						if ($DisplayValues) $this->drawText($X, $Y - $DisplayOffset - $SerieWeight - $BorderSize - $PicOffset, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), array(
 							"R" => $DisplayR,
 							"G" => $DisplayG,
 							"B" => $DisplayB,
@@ -3890,7 +3890,7 @@ class pDraw
 						));
 						if ($Y != VOID) {
 							if ($RecordImageMap) {
-								$this->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $SerieWeight, $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $SerieWeight, $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 
 							if ($Picture != NULL) {
@@ -3919,7 +3919,7 @@ class pDraw
 					$PosArray = $this->convertToArray($PosArray);
 					
 					foreach($PosArray as $Key => $X) {
-						if ($DisplayValues) $this->drawText($X + $DisplayOffset + $SerieWeight + $BorderSize + $PicOffset, $Y, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit) , array(
+						if ($DisplayValues) $this->drawText($X + $DisplayOffset + $SerieWeight + $BorderSize + $PicOffset, $Y, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), array(
 							"Angle" => 270,
 							"R" => $DisplayR,
 							"G" => $DisplayG,
@@ -3928,7 +3928,7 @@ class pDraw
 						));
 						if ($X != VOID) {
 							if ($RecordImageMap) {
-								$this->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $SerieWeight, $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $SerieWeight, $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 
 							if ($Picture != NULL) {
@@ -4012,14 +4012,14 @@ class pDraw
 					$LastX = 1;
 					$LastY = 1;
 					foreach($PosArray as $Key => $Y) {
-						if ($DisplayValues) $this->drawText($X, $Y - $DisplayOffset, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit) , array(
+						if ($DisplayValues) $this->drawText($X, $Y - $DisplayOffset, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), array(
 							"R" => $DisplayR,
 							"G" => $DisplayG,
 							"B" => $DisplayB,
 							"Align" => TEXT_ALIGN_BOTTOMMIDDLE
 						));
 						if ($RecordImageMap && $Y != VOID) {
-							$this->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							$this->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
 
 						if ($Y == VOID && $LastY != NULL) {
@@ -4071,7 +4071,7 @@ class pDraw
 						}
 
 						if ($RecordImageMap && $X != VOID) {
-							$this->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							$this->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
 
 						if ($X == VOID && $LastX != NULL) {
@@ -4251,7 +4251,7 @@ class pDraw
 					
 					foreach($PosArray as $Key => $X) {
 						if ($DisplayValues) {
-							$this->drawText($X + $DisplayOffset, $Y, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit) , array(
+							$this->drawText($X + $DisplayOffset, $Y, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), array(
 								"Angle" => 270,
 								"R" => $DisplayR,
 								"G" => $DisplayG,
@@ -4398,7 +4398,7 @@ class pDraw
 						}
 
 						if ($RecordImageMap && $Y != VOID) {
-							$this->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							$this->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
 
 						if ($Y != VOID && $LastX != NULL && $LastY != NULL) $this->drawLine($LastX, $LastY, $X, $Y, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,	"Weight" => $Weight]);
@@ -4442,7 +4442,7 @@ class pDraw
 						}
 
 						if ($RecordImageMap && $X != VOID) {
-							$this->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							$this->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
 
 						if ($X != VOID && $LastX != NULL && $LastY != NULL) $this->drawLine($LastX, $LastY, $X, $Y, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight]);
@@ -4654,11 +4654,11 @@ class pDraw
 							if ($ReCenter && $X + $XStep < $this->GraphAreaX2 - $XMargin) {
 								$this->drawLine($X, $Y, $X + $XStep, $Y, $Color);
 								if ($RecordImageMap) {
-									$this->addToImageMap("RECT", floor($X - $ImageMapPlotSize) . "," . floor($Y - $ImageMapPlotSize) . "," . floor($X + $XStep + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+									$this->addToImageMap("RECT", floor($X - $ImageMapPlotSize) . "," . floor($Y - $ImageMapPlotSize) . "," . floor($X + $XStep + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 								}
 							} else {
 								if ($RecordImageMap) {
-									$this->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($LastY + $ImageMapPlotSize) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+									$this->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($LastY + $ImageMapPlotSize), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 								}
 							}
 						}
@@ -4667,12 +4667,12 @@ class pDraw
 							if ($ReCenter) {
 								$this->drawLine($LastGoodX + $XStep, $LastGoodY, $X, $LastGoodY, $BreakSettings);
 								if ($RecordImageMap) {
-									$this->addToImageMap("RECT", floor($LastGoodX + $XStep - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($LastGoodY + $ImageMapPlotSize) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+									$this->addToImageMap("RECT", floor($LastGoodX + $XStep - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($LastGoodY + $ImageMapPlotSize), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 								}
 							} else {
 								$this->drawLine($LastGoodX, $LastGoodY, $X, $LastGoodY, $BreakSettings);
 								if ($RecordImageMap) {
-									$this->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($LastGoodY + $ImageMapPlotSize) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+									$this->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($LastGoodY + $ImageMapPlotSize), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 								}
 							}
 
@@ -4682,7 +4682,7 @@ class pDraw
 						} elseif (!$BreakVoid && $LastGoodY == NULL && $Y != VOID) {
 							$this->drawLine($this->GraphAreaX1 + $XMargin, $Y, $X, $Y, $BreakSettings);
 							if ($RecordImageMap) {
-								$this->addToImageMap("RECT", floor($this->GraphAreaX1 + $XMargin - $ImageMapPlotSize) . "," . floor($Y - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->addToImageMap("RECT", floor($this->GraphAreaX1 + $XMargin - $ImageMapPlotSize) . "," . floor($Y - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 						}
 
@@ -4712,7 +4712,7 @@ class pDraw
 					if ($ReCenter) {
 						$this->drawLine($LastX, $LastY, $this->GraphAreaX2 - $XMargin, $LastY, $Color);
 						if ($RecordImageMap) {
-							$this->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($this->GraphAreaX2 - $XMargin + $ImageMapPlotSize) . "," . floor($LastY + $ImageMapPlotSize) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							$this->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($this->GraphAreaX2 - $XMargin + $ImageMapPlotSize) . "," . floor($LastY + $ImageMapPlotSize), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
 					}
 					
@@ -4749,19 +4749,19 @@ class pDraw
 							$this->drawLine($LastX, $LastY, $LastX, $Y, $Color);
 							$this->drawLine($LastX, $Y, $X, $Y, $Color);
 							if ($RecordImageMap) {
-								$this->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($LastX + $XStep + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($LastX + $XStep + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 						}
 
 						if ($X != VOID && $LastX == NULL && $LastGoodY != NULL && !$BreakVoid) {
 							$this->drawLine($LastGoodX, $LastGoodY, $LastGoodX, $LastGoodY + $YStep, $Color);
 							if ($RecordImageMap) {
-								$this->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($LastGoodX + $ImageMapPlotSize) . "," . floor($LastGoodY + $YStep + $ImageMapPlotSize) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($LastGoodX + $ImageMapPlotSize) . "," . floor($LastGoodY + $YStep + $ImageMapPlotSize), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 
 							$this->drawLine($LastGoodX, $LastGoodY + $YStep, $LastGoodX, $Y, $BreakSettings);
 							if ($RecordImageMap) {
-								$this->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY + $YStep - $ImageMapPlotSize) . "," . floor($LastGoodX + $ImageMapPlotSize) . "," . floor($YStep + $ImageMapPlotSize) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY + $YStep - $ImageMapPlotSize) . "," . floor($LastGoodX + $ImageMapPlotSize) . "," . floor($YStep + $ImageMapPlotSize), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 
 							$this->drawLine($LastGoodX, $Y, $X, $Y, $BreakSettings);
@@ -4769,7 +4769,7 @@ class pDraw
 						} elseif ($X != VOID && $LastGoodY == NULL && !$BreakVoid) {
 							$this->drawLine($X, $this->GraphAreaY1 + $XMargin, $X, $Y, $BreakSettings);
 							if ($RecordImageMap) {
-								$this->addToImageMap("RECT", floor($X - $ImageMapPlotSize) . "," . floor($this->GraphAreaY1 + $XMargin - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->addToImageMap("RECT", floor($X - $ImageMapPlotSize) . "," . floor($this->GraphAreaY1 + $XMargin - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 						}
 
@@ -4799,7 +4799,7 @@ class pDraw
 					if ($ReCenter) {
 						$this->drawLine($LastX, $LastY, $LastX, $this->GraphAreaY2 - $XMargin, $Color);
 						if ($RecordImageMap) {
-							$this->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($LastX + $ImageMapPlotSize) . "," . floor($this->GraphAreaY2 - $XMargin + $ImageMapPlotSize) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							$this->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($LastX + $ImageMapPlotSize) . "," . floor($this->GraphAreaY2 - $XMargin + $ImageMapPlotSize), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
 					}
 				}
@@ -5346,11 +5346,11 @@ class pDraw
 							if ($Serie["Data"][$Key] == 0) {
 								$this->drawLine($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y1, $Color);
 								if ($RecordImageMap) {
-									$this->addToImageMap("RECT", floor($X + $XOffset + $XSpace) . "," . floor($Y1 - 1) . "," . floor($X + $XOffset + $XSize - $XSpace) . "," . floor($Y1 + 1) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+									$this->addToImageMap("RECT", floor($X + $XOffset + $XSpace) . "," . floor($Y1 - 1) . "," . floor($X + $XOffset + $XSize - $XSpace) . "," . floor($Y1 + 1), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 								}
 							} else {
 								if ($RecordImageMap) {
-									$this->addToImageMap("RECT", floor($X + $XOffset + $XSpace) . "," . floor($Y1) . "," . floor($X + $XOffset + $XSize - $XSpace) . "," . floor($Y2) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+									$this->addToImageMap("RECT", floor($X + $XOffset + $XSpace) . "," . floor($Y1) . "," . floor($X + $XOffset + $XSize - $XSpace) . "," . floor($Y2), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 								}
 
 								if ($Rounded){
@@ -5386,8 +5386,8 @@ class pDraw
 									$Line0Color = ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 20];
 									$Line0Width = (abs($Y1 - $Y2) > 3) ? 3 : 1;
 									($Y1 - $Y2 < 0) AND $Line0Width = - $Line0Width;
-									$this->drawFilledRectangle($X + $XOffset + $XSpace, floor($Y1) , $X + $XOffset + $XSize - $XSpace, floor($Y1) - $Line0Width, $Line0Color);
-									$this->drawLine($X + $XOffset + $XSpace, floor($Y1) , $X + $XOffset + $XSize - $XSpace, floor($Y1) , $Line0Color);
+									$this->drawFilledRectangle($X + $XOffset + $XSpace, floor($Y1), $X + $XOffset + $XSize - $XSpace, floor($Y1) - $Line0Width, $Line0Color);
+									$this->drawLine($X + $XOffset + $XSpace, floor($Y1), $X + $XOffset + $XSize - $XSpace, floor($Y1), $Line0Color);
 								}
 							}
 
@@ -5467,11 +5467,11 @@ class pDraw
 							if ($Serie["Data"][$Key] == 0) {
 								$this->drawLine($X1, $Y + $YOffset + $YSpace, $X1, $Y + $YOffset + $YSize - $YSpace, $Color);
 								if ($RecordImageMap) {
-									$this->addToImageMap("RECT", floor($X1 - 1) . "," . floor($Y + $YOffset + $YSpace) . "," . floor($X1 + 1) . "," . floor($Y + $YOffset + $YSize - $YSpace) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+									$this->addToImageMap("RECT", floor($X1 - 1) . "," . floor($Y + $YOffset + $YSpace) . "," . floor($X1 + 1) . "," . floor($Y + $YOffset + $YSize - $YSpace), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 								}
 							} else {
 								if ($RecordImageMap) {
-									$this->addToImageMap("RECT", floor($X1) . "," . floor($Y + $YOffset + $YSpace) . "," . floor($X2) . "," . floor($Y + $YOffset + $YSize - $YSpace) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+									$this->addToImageMap("RECT", floor($X1) . "," . floor($Y + $YOffset + $YSpace) . "," . floor($X2) . "," . floor($Y + $YOffset + $YSize - $YSpace), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 								}
 
 								if ($Rounded) {
@@ -5508,8 +5508,8 @@ class pDraw
 									$Line0Color = ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 20];
 									$Line0Width = (abs($X1 - $X2) > 3) ? 3 : 1;
 									($X2 - $X1 < 0) AND $Line0Width = - $Line0Width;
-									$this->drawFilledRectangle(floor($X1) , $Y + $YOffset + $YSpace, floor($X1) + $Line0Width, $Y + $YOffset + $YSize - $YSpace, $Line0Color);
-									$this->drawLine(floor($X1) , $Y + $YOffset + $YSpace, floor($X1) , $Y + $YOffset + $YSize - $YSpace, $Line0Color);
+									$this->drawFilledRectangle(floor($X1), $Y + $YOffset + $YSpace, floor($X1) + $Line0Width, $Y + $YOffset + $YSize - $YSpace, $Line0Color);
+									$this->drawLine(floor($X1), $Y + $YOffset + $YSpace, floor($X1), $Y + $YOffset + $YSize - $YSpace, $Line0Color);
 								}
 							}
 
@@ -5662,7 +5662,7 @@ class pDraw
 							$YSpaceDown = (($Rounded || $BorderR != - 1) && ($Pos == "-" && $Y1 != $YZero)) ? 1 : 0;
 
 							if ($RecordImageMap) {
-								$this->addToImageMap("RECT", floor($X + $XOffset) . "," . floor($Y1 - $YSpaceUp + $YSpaceDown) . "," . floor($X + $XOffset + $XSize) . "," . floor($Y2) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->addToImageMap("RECT", floor($X + $XOffset) . "," . floor($Y1 - $YSpaceUp + $YSpaceDown) . "," . floor($X + $XOffset + $XSize) . "," . floor($Y2), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 
 							if ($Rounded) {
@@ -5672,7 +5672,7 @@ class pDraw
 								if ($InnerColor != NULL) {
 									$RestoreShadow = $this->Shadow;
 									$this->Shadow = FALSE;
-									$this->drawRectangle(min($X + $XOffset + 1, $X + $XOffset + $XSize) , min($Y1 - $YSpaceUp + $YSpaceDown, $Y2) + 1, max($X + $XOffset + 1, $X + $XOffset + $XSize) - 1, max($Y1 - $YSpaceUp + $YSpaceDown, $Y2) - 1, $InnerColor);
+									$this->drawRectangle(min($X + $XOffset + 1, $X + $XOffset + $XSize), min($Y1 - $YSpaceUp + $YSpaceDown, $Y2) + 1, max($X + $XOffset + 1, $X + $XOffset + $XSize) - 1, max($Y1 - $YSpaceUp + $YSpaceDown, $Y2) - 1, $InnerColor);
 									$this->Shadow = $RestoreShadow;
 								}
 
@@ -5696,7 +5696,7 @@ class pDraw
 							if ($DisplayValues) {
 								$BarHeight = abs($Y2 - $Y1) - 2;
 								$BarWidth = $XSize + ($XOffset / 2) - $FontFactor;
-								$Caption = $this->scaleFormat(round($Serie["Data"][$Key], $DisplayRound) , $Mode, $Format, $Unit);
+								$Caption = $this->scaleFormat(round($Serie["Data"][$Key], $DisplayRound), $Mode, $Format, $Unit);
 								$TxtPos = $this->getTextBox(0, 0, $DisplayFont, $DisplaySize, 0, $Caption);
 								$TxtHeight = abs($TxtPos[2]["Y"] - $TxtPos[0]["Y"]);
 								$TxtWidth = abs($TxtPos[1]["X"] - $TxtPos[0]["X"]);
@@ -5755,7 +5755,7 @@ class pDraw
 							$XSpaceRight = (($Rounded || $BorderR != - 1) && ($Pos == "-" && $X1 != $YZero)) ? 2 : 0;
 							
 							if ($RecordImageMap) {
-								$this->addToImageMap("RECT", floor($X1 + $XSpaceLeft) . "," . floor($Y + $YOffset) . "," . floor($X2 - $XSpaceRight) . "," . floor($Y + $YOffset + $YSize) , $this->toHTMLColor($R, $G, $B) , $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->addToImageMap("RECT", floor($X1 + $XSpaceLeft) . "," . floor($Y + $YOffset) . "," . floor($X2 - $XSpaceRight) . "," . floor($Y + $YOffset + $YSize), $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 
 							if ($Rounded) {
@@ -5789,7 +5789,7 @@ class pDraw
 							if ($DisplayValues) {
 								$BarWidth = abs($X2 - $X1) - $FontFactor;
 								$BarHeight = $YSize + ($YOffset / 2) - $FontFactor / 2;
-								$Caption = $this->scaleFormat(round($Serie["Data"][$Key], $DisplayRound) , $Mode, $Format, $Unit);
+								$Caption = $this->scaleFormat(round($Serie["Data"][$Key], $DisplayRound), $Mode, $Format, $Unit);
 								$TxtPos = $this->getTextBox(0, 0, $DisplayFont, $DisplaySize, 0, $Caption);
 								$TxtHeight = abs($TxtPos[2]["Y"] - $TxtPos[0]["Y"]);
 								$TxtWidth = abs($TxtPos[1]["X"] - $TxtPos[0]["X"]);
@@ -5899,7 +5899,7 @@ class pDraw
 				$Mode = $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
-				$PosArray = $this->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]] , TRUE);
+				$PosArray = $this->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]], TRUE);
 				$YZero = $this->scaleComputeY([1], ["AxisID" => $Serie["Axis"]]); // MOMCHIL FIX FOR THE INCIDENTS BY TYPE
 				$this->DataSet->Data["Series"][$SerieName]["XOffset"] = 0;
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
@@ -6120,7 +6120,7 @@ class pDraw
 								$this->drawFilledRectangle($StartX, $YPos, $EndX, $YPos + $CaptionHeight, ["R" => $CaptionFillR,"G" => $CaptionFillG,"B" => $CaptionFillB,"BorderR" => $CaptionBorderR,"BorderG" => $CaptionBorderG,"BorderB" => $CaptionBorderB,"Alpha" => $CaptionFillAlpha]);
 							}
 
-							$this->drawLine($StartX + 2, $YPos + ($CaptionHeight / 2) , $EndX - 2, $YPos + ($CaptionHeight / 2) , $CaptionSettings);
+							$this->drawLine($StartX + 2, $YPos + ($CaptionHeight / 2), $EndX - 2, $YPos + ($CaptionHeight / 2), $CaptionSettings);
 						
 						} else {
 							$this->drawFilledRectangle($this->GraphAreaX1 - $CaptionWidth + $XMargin - $CaptionMargin, $YPos, $this->GraphAreaX1 - $CaptionMargin + $XMargin, $YPos + $CaptionHeight, ["R" => $R,"G" => $G,"B" => $B,"BorderR" => $CaptionBorderR,"BorderG" => $CaptionBorderG,"BorderB" => $CaptionBorderB]);
@@ -6202,7 +6202,7 @@ class pDraw
 								$GradientSettings = ["StartR" => $LastColor["R"],"StartG" => $LastColor["G"],"StartB" => $LastColor["B"],"EndR" => $R,"EndG" => $G,"EndB" => $B];
 								$this->drawGradientArea($LastX, $TopY, $X, $BottomY, DIRECTION_HORIZONTAL, $GradientSettings);
 							} elseif (!$ShadedSlopeBox || $LastColor == NULL) { // || $Slope == 0
-								$this->drawFilledRectangle(floor($LastX) , $TopY, floor($X) , $BottomY, $Color);
+								$this->drawFilledRectangle(floor($LastX), $TopY, floor($X), $BottomY, $Color);
 							}
 							$LastColor = $Color;
 						}
@@ -6230,7 +6230,7 @@ class pDraw
 								$this->drawFilledRectangle($XPos, $StartY, $XPos + $CaptionHeight, $EndY, ["R" => $CaptionFillR,"G" => $CaptionFillG,"B" => $CaptionFillB,"BorderR" => $CaptionBorderR,"BorderG" => $CaptionBorderG,"BorderB" => $CaptionBorderB,"Alpha" => $CaptionFillAlpha]);
 							}
 
-							$this->drawLine($XPos + ($CaptionHeight / 2) , $StartY + 2, $XPos + ($CaptionHeight / 2) , $EndY - 2, $CaptionSettings);
+							$this->drawLine($XPos + ($CaptionHeight / 2), $StartY + 2, $XPos + ($CaptionHeight / 2), $EndY - 2, $CaptionSettings);
 						} else {
 							$this->drawFilledRectangle($XPos, $StartY, $XPos + $CaptionHeight, $EndY, ["R" => $R,"G" => $G,"B" => $B,"BorderR" => $CaptionBorderR,"BorderG" => $CaptionBorderG,"BorderB" => $CaptionBorderB]);
 						}
@@ -6298,7 +6298,7 @@ class pDraw
 								$GradientSettings = ["StartR" => $LastColor["R"],"StartG" => $LastColor["G"],"StartB" => $LastColor["B"],"EndR" => $R,"EndG" => $G,"EndB" => $B];
 								$this->drawGradientArea($TopX, $LastY, $BottomX, $Y, DIRECTION_VERTICAL, $GradientSettings);
 							} elseif (!$ShadedSlopeBox || $LastColor == NULL) {
-								$this->drawFilledRectangle($TopX, floor($LastY) , $BottomX, floor($Y) , $Color);
+								$this->drawFilledRectangle($TopX, floor($LastY), $BottomX, floor($Y), $Color);
 							}
 
 							$LastColor = $Color;
@@ -6752,12 +6752,12 @@ class pDraw
 		if (isset($Captions["Caption"])){ # Momchil TODO No idea why I have to do that
 				$TxtPos = $this->getTextBox($X, $Y, $FontName, $FontSize, 0, $Captions["Caption"]);
 				$CaptionWidth = max($CaptionWidth, ($TxtPos[1]["X"] - $TxtPos[0]["X"]) + $VerticalMargin * 2);
-				$CaptionHeight = $CaptionHeight + max(($TxtPos[0]["Y"] - $TxtPos[2]["Y"]) , ($SerieBoxSize + 2)) + $HorizontalMargin;				
+				$CaptionHeight = $CaptionHeight + max(($TxtPos[0]["Y"] - $TxtPos[2]["Y"]), ($SerieBoxSize + 2)) + $HorizontalMargin;				
 		} else {
 			foreach($Captions as $Caption) {
 				$TxtPos = $this->getTextBox($X, $Y, $FontName, $FontSize, 0, $Caption["Caption"]);
 				$CaptionWidth = max($CaptionWidth, ($TxtPos[1]["X"] - $TxtPos[0]["X"]) + $VerticalMargin * 2);
-				$CaptionHeight = $CaptionHeight + max(($TxtPos[0]["Y"] - $TxtPos[2]["Y"]) , ($SerieBoxSize + 2)) + $HorizontalMargin;
+				$CaptionHeight = $CaptionHeight + max(($TxtPos[0]["Y"] - $TxtPos[2]["Y"]), ($SerieBoxSize + 2)) + $HorizontalMargin;
 			}
 		}
 
