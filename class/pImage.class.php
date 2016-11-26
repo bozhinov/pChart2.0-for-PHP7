@@ -516,7 +516,7 @@ class pImage extends pDraw
 	}
 
 	/* Return the HTML converted color from the RGB composite values */
-	function toHTMLColor($R, $G, $B)
+	function toHTMLColor($R, $G, $B) # Momchil: Not worth caching
 	{
 		
 		$R = dechex(max(min(255, $R), 0));

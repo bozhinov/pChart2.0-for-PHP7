@@ -3946,8 +3946,11 @@ class pDraw
 	}
 
 	/* Draw a spline chart */
-	function drawSplineChart(array $Format = [])
+	function drawSplineChart($Format = [])
 	{
+		# Momchil: The sandbox system requires it
+		$Format = $this->convertToArray($Format);
+		
 		$BreakVoid = isset($Format["BreakVoid"]) ? $Format["BreakVoid"] : TRUE;
 		$VoidTicks = isset($Format["VoidTicks"]) ? $Format["VoidTicks"] : 4;
 		$BreakR = isset($Format["BreakR"]) ? $Format["BreakR"] : NULL; // 234
