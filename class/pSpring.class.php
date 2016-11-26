@@ -53,20 +53,19 @@ class pSpring
 	/* Set default links options */
 	function setLinkDefaults(array $Settings = [])
 	{
-		(isset($Settings["R"])) AND $this->Default["LinkR"] = $Settings["R"];
-		(isset($Settings["G"])) AND $this->Default["LinkG"] = $Settings["G"];
-		(isset($Settings["B"])) AND $this->Default["LinkB"] = $Settings["B"];
-		(isset($Settings["Alpha"])) AND $this->Default["LinkAlpha"] = $Settings["Alpha"];
+		#$vars = ["R", "G", "B", "Alpha"];
+		foreach ($Settings as $key => $value){
+			$this->Default["Link".$key] =  $value;
+		}
 	}
 
 	/* Set default links options */
 	function setLabelsSettings(array $Settings = [])
 	{
-		(isset($Settings["Type"])) AND $this->Labels["Type"] = $Settings["Type"];
-		(isset($Settings["R"])) AND $this->Labels["R"] = $Settings["R"];
-		(isset($Settings["G"])) AND $this->Labels["G"] = $Settings["G"];
-		(isset($Settings["B"])) AND $this->Labels["B"] = $Settings["B"];
-		(isset($Settings["Alpha"])) AND $this->Labels["Alpha"] = $Settings["Alpha"];
+		#$vars = ["Type", "R", "G", "B", "Alpha"];
+		foreach ($Settings as $key => $value){
+			$this->Labels[$key] =  $value;
+		}	
 	}
 
 	/* Auto compute the FreeZone size based on the number of connections */
@@ -89,12 +88,15 @@ class pSpring
 			return (0);
 		}
 
-		$R = isset($Settings["R"]) ? $Settings["R"] : 0;
-		$G = isset($Settings["G"]) ? $Settings["G"] : 0;
-		$B = isset($Settings["B"]) ? $Settings["B"] : 0;
-		$Alpha = isset($Settings["Alpha"]) ? $Settings["Alpha"] : 100;
-		$Name = isset($Settings["Name"]) ? $Settings["Name"] : NULL;
-		$Ticks = isset($Settings["Ticks"]) ? $Settings["Ticks"] : NULL;
+		$R = 0;
+		$G = 0;
+		$B = 0;
+		$Alpha = 100;
+		$Name = NULL;
+		$Ticks = NULL;
+		
+		extract($Settings);
+		
 		$this->Links[$FromNode][$ToNode]["R"] = $R;
 		$this->Links[$ToNode][$FromNode]["R"] = $R;
 		$this->Links[$FromNode][$ToNode]["G"] = $G;
@@ -111,23 +113,10 @@ class pSpring
 
 	function setNodeDefaults(array $Settings = [])
 	{
-		(isset($Settings["R"])) AND $this->Default["R"] = $Settings["R"];
-		(isset($Settings["G"])) AND $this->Default["G"] = $Settings["G"];
-		(isset($Settings["B"])) AND $this->Default["B"] = $Settings["B"];
-		(isset($Settings["Alpha"])) AND $this->Default["Alpha"] = $Settings["Alpha"];
-		(isset($Settings["BorderR"])) AND $this->Default["BorderR"] = $Settings["BorderR"];
-		(isset($Settings["BorderG"])) AND $this->Default["BorderG"] = $Settings["BorderG"];
-		(isset($Settings["BorderB"])) AND $this->Default["BorderB"] = $Settings["BorderB"];
-		(isset($Settings["BorderAlpha"])) AND $this->Default["BorderAlpha"] = $Settings["BorderAlpha"];
-		(isset($Settings["Surrounding"])) AND $this->Default["Surrounding"] = $Settings["Surrounding"];
-		(isset($Settings["BackgroundR"])) AND $this->Default["BackgroundR"] = $Settings["BackgroundR"];
-		(isset($Settings["BackgroundG"])) AND $this->Default["BackgroundG"] = $Settings["BackgroundG"];
-		(isset($Settings["BackgroundB"])) AND $this->Default["BackgroundB"] = $Settings["BackgroundB"];
-		(isset($Settings["BackgroundAlpha"])) AND $this->Default["BackgroundAlpha"] = $Settings["BackgroundAlpha"];
-		(isset($Settings["NodeType"])) AND $this->Default["NodeType"] = $Settings["NodeType"];
-		(isset($Settings["Size"])) AND $this->Default["Size"] = $Settings["Size"];
-		(isset($Settings["Shape"])) AND $this->Default["Shape"] = $Settings["Shape"];
-		(isset($Settings["FreeZone"])) AND $this->Default["FreeZone"] = $Settings["FreeZone"];
+		#$vars = ["R", "G", "B", "Alpha", "BorderR", "BorderG", "BorderB", "BorderAlpha", "Surrounding", "BackgroundR", "BackgroundG", "BackgroundB", "BackgroundAlpha", "NodeType", "Size", "Shape", "FreeZone"];
+		foreach ($Settings as $key => $value){
+			$this->Default[$key] =  $value;
+		}
 	}
 
 	/* Add a node */
@@ -138,26 +127,30 @@ class pSpring
 			return (0);
 		}
 
-		$Name = isset($Settings["Name"]) ? $Settings["Name"] : "Node " . $NodeID;
-		$Connections = isset($Settings["Connections"]) ? $Settings["Connections"] : NULL;
-		$R = isset($Settings["R"]) ? $Settings["R"] : $this->Default["R"];
-		$G = isset($Settings["G"]) ? $Settings["G"] : $this->Default["G"];
-		$B = isset($Settings["B"]) ? $Settings["B"] : $this->Default["B"];
-		$Alpha = isset($Settings["Alpha"]) ? $Settings["Alpha"] : $this->Default["Alpha"];
-		$BorderR = isset($Settings["BorderR"]) ? $Settings["BorderR"] : $this->Default["BorderR"];
-		$BorderG = isset($Settings["BorderG"]) ? $Settings["BorderG"] : $this->Default["BorderG"];
-		$BorderB = isset($Settings["BorderB"]) ? $Settings["BorderB"] : $this->Default["BorderB"];
-		$BorderAlpha = isset($Settings["BorderAlpha"]) ? $Settings["BorderAlpha"] : $this->Default["BorderAlpha"];
-		$Surrounding = isset($Settings["Surrounding"]) ? $Settings["Surrounding"] : $this->Default["Surrounding"];
-		$BackgroundR = isset($Settings["BackgroundR"]) ? $Settings["BackgroundR"] : $this->Default["BackgroundR"];
-		$BackgroundG = isset($Settings["BackgroundG"]) ? $Settings["BackgroundG"] : $this->Default["BackgroundG"];
-		$BackgroundB = isset($Settings["BackgroundB"]) ? $Settings["BackgroundB"] : $this->Default["BackgroundB"];
-		$BackgroundAlpha = isset($Settings["BackgroundAlpha"]) ? $Settings["BackgroundAlpha"] : $this->Default["BackgroundAlpha"];
-		$Force = isset($Settings["Force"]) ? $Settings["Force"] : $this->Default["Force"];
-		$NodeType = isset($Settings["NodeType"]) ? $Settings["NodeType"] : $this->Default["NodeType"];
-		$Size = isset($Settings["Size"]) ? $Settings["Size"] : $this->Default["Size"];
-		$Shape = isset($Settings["Shape"]) ? $Settings["Shape"] : $this->Default["Shape"];
-		$FreeZone = isset($Settings["FreeZone"]) ? $Settings["FreeZone"] : $this->Default["FreeZone"];
+		$Name = "Node " . $NodeID;
+		$Connections = NULL;
+		$R = $this->Default["R"];
+		$G = $this->Default["G"];
+		$B = $this->Default["B"];
+		$Alpha = $this->Default["Alpha"];
+		$BorderR = $this->Default["BorderR"];
+		$BorderG = $this->Default["BorderG"];
+		$BorderB = $this->Default["BorderB"];
+		$BorderAlpha = $this->Default["BorderAlpha"];
+		$Surrounding = $this->Default["Surrounding"];
+		$BackgroundR = $this->Default["BackgroundR"];
+		$BackgroundG = $this->Default["BackgroundG"];
+		$BackgroundB = $this->Default["BackgroundB"];
+		$BackgroundAlpha = $this->Default["BackgroundAlpha"];
+		$Force = $this->Default["Force"];
+		$NodeType = $this->Default["NodeType"];
+		$Size = $this->Default["Size"];
+		$Shape = $this->Default["Shape"];
+		$FreeZone = $this->Default["FreeZone"];
+		
+		/* Override defaults */
+		extract($Settings);
+		
 		if ($Surrounding != NULL) {
 			$BorderR = $R + $Surrounding;
 			$BorderG = $G + $Surrounding;
@@ -705,7 +698,7 @@ class pSpring
 			$FreeZone = $Settings["FreeZone"];
 			$Shape = $Settings["Shape"];
 			$Size = $Settings["Size"];
-			$Color = array(
+			$Color = [
 				"R" => $Settings["R"],
 				"G" => $Settings["G"],
 				"B" => $Settings["B"],
@@ -714,7 +707,7 @@ class pSpring
 				"BorderG" => $Settings["BorderG"],
 				"BorderB" => $Settings["BorderB"],
 				"BorderApha" => $Settings["BorderAlpha"]
-			);
+			];
 			if ($Shape == NODE_SHAPE_CIRCLE) {
 				$this->pChartObject->drawFilledCircle($X, $Y, $Size, $Color);
 			} elseif ($Shape == NODE_SHAPE_TRIANGLE) {
