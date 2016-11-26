@@ -101,12 +101,16 @@ class pImage extends pDraw
 	/* Enable / Disable and set shadow properties */
 	function setShadow($Enabled = TRUE, array $Format = [])
 	{
-		$X = isset($Format["X"]) ? $Format["X"] : 2;
-		$Y = isset($Format["Y"]) ? $Format["Y"] : 2;
-		$R = isset($Format["R"]) ? $Format["R"] : 0;
-		$G = isset($Format["G"]) ? $Format["G"] : 0;
-		$B = isset($Format["B"]) ? $Format["B"] : 0;
-		$Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 10;
+		$X = 2;
+		$Y = 2;
+		$R = 0;
+		$G = 0;
+		$B = 0;
+		$Alpha = 10;
+		
+		/* Override defaults */
+		extract($Format);
+		
 		$this->Shadow = $Enabled;
 		$this->ShadowX = $X;
 		$this->ShadowY = $Y;
@@ -258,12 +262,16 @@ class pImage extends pDraw
 	/* Set current font properties */
 	function setFontProperties(array $Format = [])
 	{
-		$R = isset($Format["R"]) ? $Format["R"] : -1;
-		$G = isset($Format["G"]) ? $Format["G"] : -1;
-		$B = isset($Format["B"]) ? $Format["B"] : -1;
-		$Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-		$FontName = isset($Format["FontName"]) ? $Format["FontName"] : NULL;
-		$FontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : NULL;
+		$R = -1;
+		$G = -1;
+		$B = -1;
+		$Alpha = 100;
+		$FontName = NULL;
+		$FontSize = NULL;
+		
+		/* Override defaults */
+		extract($Format);
+		
 		($R != - 1) AND $this->FontColorR = $R;
 		($G != - 1) AND $this->FontColorG = $G;
 		($B != - 1) AND $this->FontColorB = $B;

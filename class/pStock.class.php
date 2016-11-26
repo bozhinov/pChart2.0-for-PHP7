@@ -31,48 +31,51 @@ class pStock
 	/* Draw a stock chart */
 	function drawStockChart(array $Format = [])
 	{
-		$SerieOpen = isset($Format["SerieOpen"]) ? $Format["SerieOpen"] : "Open";
-		$SerieClose = isset($Format["SerieClose"]) ? $Format["SerieClose"] : "Close";
-		$SerieMin = isset($Format["SerieMin"]) ? $Format["SerieMin"] : "Min";
-		$SerieMax = isset($Format["SerieMax"]) ? $Format["SerieMax"] : "Max";
-		$SerieMedian = isset($Format["SerieMedian"]) ? $Format["SerieMedian"] : NULL;
-		$LineWidth = isset($Format["LineWidth"]) ? $Format["LineWidth"] : 1;
-		$LineR = isset($Format["LineR"]) ? $Format["LineR"] : 0;
-		$LineG = isset($Format["LineG"]) ? $Format["LineG"] : 0;
-		$LineB = isset($Format["LineB"]) ? $Format["LineB"] : 0;
-		$LineAlpha = isset($Format["LineAlpha"]) ? $Format["LineAlpha"] : 100;
-		$ExtremityWidth = isset($Format["ExtremityWidth"]) ? $Format["ExtremityWidth"] : 1;
-		$ExtremityLength = isset($Format["ExtremityLength"]) ? $Format["ExtremityLength"] : 3;
-		$ExtremityR = isset($Format["ExtremityR"]) ? $Format["ExtremityR"] : 0;
-		$ExtremityG = isset($Format["ExtremityG"]) ? $Format["ExtremityG"] : 0;
-		$ExtremityB = isset($Format["ExtremityB"]) ? $Format["ExtremityB"] : 0;
-		$ExtremityAlpha = isset($Format["ExtremityAlpha"]) ? $Format["ExtremityAlpha"] : 100;
-		$BoxWidth = isset($Format["BoxWidth"]) ? $Format["BoxWidth"] : 8;
+		$SerieOpen = "Open";
+		$SerieClose = "Close";
+		$SerieMin = "Min";
+		$SerieMax = "Max";
+		$SerieMedian = NULL;
+		$LineWidth = 1;
+		$LineR = 0;
+		$LineG = 0;
+		$LineB = 0;
+		$LineAlpha = 100;
+		$ExtremityWidth = 1;
+		$ExtremityLength = 3;
+		$ExtremityR = 0;
+		$ExtremityG = 0;
+		$ExtremityB = 0;
+		$ExtremityAlpha = 100;
+		$BoxWidth = 8;
 		$BoxUpR = isset($Format["BoxUpR"]) ? $Format["BoxUpR"] : 188;
 		$BoxUpG = isset($Format["BoxUpG"]) ? $Format["BoxUpG"] : 224;
 		$BoxUpB = isset($Format["BoxUpB"]) ? $Format["BoxUpB"] : 46;
-		$BoxUpAlpha = isset($Format["BoxUpAlpha"]) ? $Format["BoxUpAlpha"] : 100;
-		$BoxUpSurrounding = isset($Format["BoxUpSurrounding"]) ? $Format["BoxUpSurrounding"] : NULL;
-		$BoxUpBorderR = isset($Format["BoxUpBorderR"]) ? $Format["BoxUpBorderR"] : $BoxUpR - 20;
-		$BoxUpBorderG = isset($Format["BoxUpBorderG"]) ? $Format["BoxUpBorderG"] : $BoxUpG - 20;
-		$BoxUpBorderB = isset($Format["BoxUpBorderB"]) ? $Format["BoxUpBorderB"] : $BoxUpB - 20;
-		$BoxUpBorderAlpha = isset($Format["BoxUpBorderAlpha"]) ? $Format["BoxUpBorderAlpha"] : 100;
+		$BoxUpAlpha = 100;
+		$BoxUpSurrounding = NULL;
+		$BoxUpBorderR = $BoxUpR - 20;
+		$BoxUpBorderG = $BoxUpG - 20;
+		$BoxUpBorderB = $BoxUpB - 20;
+		$BoxUpBorderAlpha = 100;
 		$BoxDownR = isset($Format["BoxDownR"]) ? $Format["BoxDownR"] : 224;
 		$BoxDownG = isset($Format["BoxDownG"]) ? $Format["BoxDownG"] : 100;
 		$BoxDownB = isset($Format["BoxDownB"]) ? $Format["BoxDownB"] : 46;
-		$BoxDownAlpha = isset($Format["BoxDownAlpha"]) ? $Format["BoxDownAlpha"] : 100;
-		$BoxDownSurrounding = isset($Format["BoxDownSurrounding"]) ? $Format["BoxDownSurrounding"] : NULL;
-		$BoxDownBorderR = isset($Format["BoxDownBorderR"]) ? $Format["BoxDownBorderR"] : $BoxDownR - 20;
-		$BoxDownBorderG = isset($Format["BoxDownBorderG"]) ? $Format["BoxDownBorderG"] : $BoxDownG - 20;
-		$BoxDownBorderB = isset($Format["BoxDownBorderB"]) ? $Format["BoxDownBorderB"] : $BoxDownB - 20;
-		$BoxDownBorderAlpha = isset($Format["BoxDownBorderAlpha"]) ? $Format["BoxDownBorderAlpha"] : 100;
-		$ShadowOnBoxesOnly = isset($Format["ShadowOnBoxesOnly"]) ? $Format["ShadowOnBoxesOnly"] : TRUE;
-		$MedianR = isset($Format["MedianR"]) ? $Format["MedianR"] : 255;
-		$MedianG = isset($Format["MedianG"]) ? $Format["MedianG"] : 0;
-		$MedianB = isset($Format["MedianB"]) ? $Format["MedianB"] : 0;
-		$MedianAlpha = isset($Format["MedianAlpha"]) ? $Format["MedianAlpha"] : 100;
-		$RecordImageMap = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
-		$ImageMapTitle = isset($Format["ImageMapTitle"]) ? $Format["ImageMapTitle"] : "Stock Chart";
+		$BoxDownAlpha = 100;
+		$BoxDownSurrounding = NULL;
+		$BoxDownBorderR = $BoxDownR - 20;
+		$BoxDownBorderG = $BoxDownG - 20;
+		$BoxDownBorderB = $BoxDownB - 20;
+		$BoxDownBorderAlpha = 100;
+		$ShadowOnBoxesOnly = TRUE;
+		$MedianR = 255;
+		$MedianG = 0;
+		$MedianB = 0;
+		$MedianAlpha = 100;
+		$RecordImageMap = FALSE;
+		$ImageMapTitle = "Stock Chart";
+		
+		/* Override defaults */
+		extract($Format);
 		
 		/* Data Processing */
 		$Data = $this->pDataObject->getData();

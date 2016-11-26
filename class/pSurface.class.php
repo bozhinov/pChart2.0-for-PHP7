@@ -68,17 +68,21 @@ class pSurface
 	}
 
 	/* Write the X labels */
-	function writeXLabels($Format = "")
+	function writeXLabels(array $Format = [])
 	{
-		$R = isset($Format["R"]) ? $Format["R"] : $this->pChartObject->FontColorR;
-		$G = isset($Format["G"]) ? $Format["G"] : $this->pChartObject->FontColorG;
-		$B = isset($Format["B"]) ? $Format["B"] : $this->pChartObject->FontColorB;
-		$Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : $this->pChartObject->FontColorA;
-		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 0;
-		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 5;
-		$Position = isset($Format["Position"]) ? $Format["Position"] : LABEL_POSITION_TOP;
-		$Labels = isset($Format["Labels"]) ? $Format["Labels"] : NULL;
-		$CountOffset = isset($Format["CountOffset"]) ? $Format["CountOffset"] : 0;
+		$R = $this->pChartObject->FontColorR;
+		$G = $this->pChartObject->FontColorG;
+		$B = $this->pChartObject->FontColorB;
+		$Alpha = $this->pChartObject->FontColorA;
+		$Angle = 0;
+		$Padding = 5;
+		$Position = LABEL_POSITION_TOP;
+		$Labels = NULL;
+		$CountOffset = 0;
+		
+		/* Override defaults */
+		extract($Format);
+		
 		if ($Labels != NULL && !is_array($Labels)) {
 			$Label = $Labels;
 			$Labels = [$Label];
@@ -122,15 +126,19 @@ class pSurface
 	/* Write the Y labels */
 	function writeYLabels(array $Format = [])
 	{
-		$R = isset($Format["R"]) ? $Format["R"] : $this->pChartObject->FontColorR;
-		$G = isset($Format["G"]) ? $Format["G"] : $this->pChartObject->FontColorG;
-		$B = isset($Format["B"]) ? $Format["B"] : $this->pChartObject->FontColorB;
-		$Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : $this->pChartObject->FontColorA;
-		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 0;
-		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 5;
-		$Position = isset($Format["Position"]) ? $Format["Position"] : LABEL_POSITION_LEFT;
-		$Labels = isset($Format["Labels"]) ? $Format["Labels"] : NULL;
-		$CountOffset = isset($Format["CountOffset"]) ? $Format["CountOffset"] : 0;
+		$R = $this->pChartObject->FontColorR;
+		$G = $this->pChartObject->FontColorG;
+		$B = $this->pChartObject->FontColorB;
+		$Alpha = $this->pChartObject->FontColorA;
+		$Angle = 0;
+		$Padding = 5;
+		$Position = LABEL_POSITION_LEFT;
+		$Labels = NULL;
+		$CountOffset = 0;
+		
+		/* Override defaults */
+		extract($Format);
+		
 		if ($Labels != NULL && !is_array($Labels)) {
 			$Label = $Labels;
 			$Labels = [$Label];
@@ -160,12 +168,16 @@ class pSurface
 	/* Draw the area arround the specified Threshold */
 	function drawContour($Threshold, array $Format = [])
 	{
-		$R = isset($Format["R"]) ? $Format["R"] : 0;
-		$G = isset($Format["G"]) ? $Format["G"] : 0;
-		$B = isset($Format["B"]) ? $Format["B"] : 0;
-		$Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : 3;
-		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 0;
+		$R = 0;
+		$G = 0;
+		$B = 0;
+		$Alpha = 100;
+		$Ticks = 3;
+		$Padding = 0;
+		
+		/* Override defaults */
+		extract($Format);
+		
 		$X0 = $this->pChartObject->GraphAreaX1;
 		$Y0 = $this->pChartObject->GraphAreaY1;
 		$XSize = ($this->pChartObject->GraphAreaX2 - $this->pChartObject->GraphAreaX1) / ($this->GridSizeX + 1);
@@ -191,21 +203,25 @@ class pSurface
 	/* Draw the surface chart */
 	function drawSurface(array $Format = [])
 	{
-		$Palette = isset($Format["Palette"]) ? $Format["Palette"] : NULL;
-		$ShadeR1 = isset($Format["ShadeR1"]) ? $Format["ShadeR1"] : 77;
-		$ShadeG1 = isset($Format["ShadeG1"]) ? $Format["ShadeG1"] : 205;
-		$ShadeB1 = isset($Format["ShadeB1"]) ? $Format["ShadeB1"] : 21;
-		$ShadeA1 = isset($Format["ShadeA1"]) ? $Format["ShadeA1"] : 40;
-		$ShadeR2 = isset($Format["ShadeR2"]) ? $Format["ShadeR2"] : 227;
-		$ShadeG2 = isset($Format["ShadeG2"]) ? $Format["ShadeG2"] : 135;
-		$ShadeB2 = isset($Format["ShadeB2"]) ? $Format["ShadeB2"] : 61;
-		$ShadeA2 = isset($Format["ShadeA2"]) ? $Format["ShadeA2"] : 100;
-		$Border = isset($Format["Border"]) ? $Format["Border"] : FALSE;
-		$BorderR = isset($Format["BorderR"]) ? $Format["BorderR"] : 0;
-		$BorderG = isset($Format["BorderG"]) ? $Format["BorderG"] : 0;
-		$BorderB = isset($Format["BorderB"]) ? $Format["BorderB"] : 0;
-		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : -1;
-		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 1;
+		$Palette = NULL;
+		$ShadeR1 = 77;
+		$ShadeG1 = 205;
+		$ShadeB1 = 21;
+		$ShadeA1 = 40;
+		$ShadeR2 = 227;
+		$ShadeG2 = 135;
+		$ShadeB2 = 61;
+		$ShadeA2 = 100;
+		$Border = FALSE;
+		$BorderR = 0;
+		$BorderG = 0;
+		$BorderB = 0;
+		$Surrounding = -1;
+		$Padding = 1;
+		
+		/* Override defaults */
+		extract($Format);
+		
 		$X0 = $this->pChartObject->GraphAreaX1;
 		$Y0 = $this->pChartObject->GraphAreaY1;
 		$XSize = ($this->pChartObject->GraphAreaX2 - $this->pChartObject->GraphAreaX1) / ($this->GridSizeX + 1);
