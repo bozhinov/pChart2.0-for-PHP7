@@ -30,14 +30,9 @@ class pBubble
 	/* Prepare the scale */
 	function bubbleScale($DataSeries, $WeightSeries)
 	{
-		if (!is_array($DataSeries)) {
-			$DataSeries = [$DataSeries];
-		}
-
-		if (!is_array($WeightSeries)) {
-			$WeightSeries = [$WeightSeries];
-		}
-
+		(!is_array($DataSeries)) AND $DataSeries = [$DataSeries];
+		(!is_array($WeightSeries)) AND $WeightSeries = [$WeightSeries];
+		
 		/* Parse each data series to find the new min & max boundaries to scale */
 		$NewPositiveSerie = [];
 		$NewNegativeSerie = [];
@@ -106,10 +101,12 @@ class pBubble
 		$ID = 0;
 		foreach($Data["Series"] as $SerieName => $SeriesParameters) {
 			if ($SeriesParameters["isDrawable"]) {
-				$this->pDataObject->Data["Series"][$SerieName]["Color"]["R"] = $Palette[$ID]["R"];
-				$this->pDataObject->Data["Series"][$SerieName]["Color"]["G"] = $Palette[$ID]["G"];
-				$this->pDataObject->Data["Series"][$SerieName]["Color"]["B"] = $Palette[$ID]["B"];
-				$this->pDataObject->Data["Series"][$SerieName]["Color"]["Alpha"] = $Palette[$ID]["Alpha"];
+				$this->pDataObject->Data["Series"][$SerieName]["Color"] = [
+					"R" => $Palette[$ID]["R"],
+					"G" => $Palette[$ID]["G"],
+					"B" => $Palette[$ID]["B"],
+					"Alpha" => $Palette[$ID]["Alpha"]
+				];
 				$ID++;
 			}
 		}
@@ -128,14 +125,10 @@ class pBubble
 		$BorderB = isset($Format["BorderB"]) ? $Format["BorderB"] : 0;
 		$BorderAlpha = isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : 30;
 		$RecordImageMap = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
-		if (!is_array($DataSeries)) {
-			$DataSeries = [$DataSeries];
-		}
-
-		if (!is_array($WeightSeries)) {
-			$WeightSeries = [$WeightSeries];
-		}
-
+		
+		(!is_array($DataSeries)) AND $DataSeries = [$DataSeries];
+		(!is_array($WeightSeries)) AND $WeightSeries = [$WeightSeries];
+		
 		$Data = $this->pDataObject->getData();
 		$Palette = $this->pDataObject->getPalette();
 		if (isset($Data["Series"]["BubbleFakePositiveSerie"])) {
@@ -272,19 +265,17 @@ class pBubble
 
 	function writeBubbleLabel($SerieName, $SerieWeightName, $Points, array $Format = [])
 	{
-		$OverrideTitle = isset($Format["OverrideTitle"]) ? $Format["OverrideTitle"] : NULL;
-		$DrawPoint = isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
-		if (!is_array($Points)) {
-			$Point = $Points;
-			$Points = [$Point];
-		}
-
+		
 		$Data = $this->pDataObject->getData();
 		$Palette = $this->pDataObject->getPalette();
 		if (!isset($Data["Series"][$SerieName]) || !isset($Data["Series"][$SerieWeightName])) {
 			return (0);
 		}
-
+		
+		$OverrideTitle = isset($Format["OverrideTitle"]) ? $Format["OverrideTitle"] : NULL;
+		$DrawPoint = isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
+		(!is_array($Points)) AND $Points = [$Points];
+		
 		list($XMargin, $XDivs) = $this->pChartObject->scaleGetXSettings();
 		$AxisID = $Data["Series"][$SerieName]["Axis"];
 		$AxisMode = $Data["Axis"][$AxisID]["Display"];
