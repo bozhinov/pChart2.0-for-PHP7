@@ -115,16 +115,19 @@ class pBubble
 	/* Prepare the scale */
 	function drawBubbleChart($DataSeries, $WeightSeries, array $Format = [])
 	{
-		$ForceAlpha = isset($Format["ForceAlpha"]) ? $Format["ForceAlpha"] : VOID;
-		$DrawBorder = isset($Format["DrawBorder"]) ? $Format["DrawBorder"] : TRUE;
-		$BorderWidth = isset($Format["BorderWidth"]) ? $Format["BorderWidth"] : 1;
-		$Shape = isset($Format["Shape"]) ? $Format["Shape"] : BUBBLE_SHAPE_ROUND;
-		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
-		$BorderR = isset($Format["BorderR"]) ? $Format["BorderR"] : 0;
-		$BorderG = isset($Format["BorderG"]) ? $Format["BorderG"] : 0;
-		$BorderB = isset($Format["BorderB"]) ? $Format["BorderB"] : 0;
-		$BorderAlpha = isset($Format["BorderAlpha"]) ? $Format["BorderAlpha"] : 30;
-		$RecordImageMap = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
+		$ForceAlpha = VOID;
+		$DrawBorder = TRUE;
+		$BorderWidth = 1;
+		$Shape = BUBBLE_SHAPE_ROUND;
+		$Surrounding = NULL;
+		$BorderR = 0;
+		$BorderG = 0;
+		$BorderB = 0;
+		$BorderAlpha = 30;
+		$RecordImageMap = FALSE;
+		
+		/* Override defaults */
+		extract($Format);
 		
 		(!is_array($DataSeries)) AND $DataSeries = [$DataSeries];
 		(!is_array($WeightSeries)) AND $WeightSeries = [$WeightSeries];

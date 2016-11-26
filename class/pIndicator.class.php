@@ -22,7 +22,6 @@ define("INDICATOR_VALUE_LABEL", 700022);
 
 /* pIndicator class definition */
 class pIndicator
-
 {
 	var $pChartObject;
 	/* Class creator */
@@ -41,33 +40,37 @@ class pIndicator
 		} else {
 			return (0);
 		}
-		$Values = isset($Format["Values"]) ? $Format["Values"] : VOID;
+		$Values = VOID;
+		$ValueDisplay = INDICATOR_VALUE_BUBBLE;
+		$SectionsMargin = 4;
+		$DrawLeftHead = TRUE;
+		$DrawRightHead = TRUE;
+		$HeadSize = floor($Height / 4);
+		$TextPadding = 4;
+		$CaptionLayout = INDICATOR_CAPTION_EXTENDED;
+		$CaptionPosition = INDICATOR_CAPTION_INSIDE;
+		$CaptionColorFactor = NULL;
+		$CaptionR = 255;
+		$CaptionG = 255;
+		$CaptionB = 255;
+		$CaptionAlpha = 100;
+		$SubCaptionColorFactor = NULL;
+		$SubCaptionR = 50;
+		$SubCaptionG = 50;
+		$SubCaptionB = 50;
+		$SubCaptionAlpha = 100;
+		$ValueFontName = $this->pChartObject->FontName;
+		$ValueFontSize = $this->pChartObject->FontSize;
+		$CaptionFontName = $this->pChartObject->FontName;
+		$CaptionFontSize = $this->pChartObject->FontSize;
+		$Unit = "";
+		
+		/* Override defaults */
+		extract($Format);
+		
 		/* Convert the Values to display to an array if needed */
 		(!is_array($Values)) AND $Values = [$Values];
-		$ValueDisplay = isset($Format["ValueDisplay"]) ? $Format["ValueDisplay"] : INDICATOR_VALUE_BUBBLE;
-		$SectionsMargin = isset($Format["SectionsMargin"]) ? $Format["SectionsMargin"] : 4;
-		$DrawLeftHead = isset($Format["DrawLeftHead"]) ? $Format["DrawLeftHead"] : TRUE;
-		$DrawRightHead = isset($Format["DrawRightHead"]) ? $Format["DrawRightHead"] : TRUE;
-		$HeadSize = isset($Format["HeadSize"]) ? $Format["HeadSize"] : floor($Height / 4);
-		$TextPadding = isset($Format["TextPadding"]) ? $Format["TextPadding"] : 4;
-		$CaptionLayout = isset($Format["CaptionLayout"]) ? $Format["CaptionLayout"] : INDICATOR_CAPTION_EXTENDED;
-		$CaptionPosition = isset($Format["CaptionPosition"]) ? $Format["CaptionPosition"] : INDICATOR_CAPTION_INSIDE;
-		$CaptionColorFactor = isset($Format["CaptionColorFactor"]) ? $Format["CaptionColorFactor"] : NULL;
-		$CaptionR = isset($Format["CaptionR"]) ? $Format["CaptionR"] : 255;
-		$CaptionG = isset($Format["CaptionG"]) ? $Format["CaptionG"] : 255;
-		$CaptionB = isset($Format["CaptionB"]) ? $Format["CaptionB"] : 255;
-		$CaptionAlpha = isset($Format["CaptionAlpha"]) ? $Format["CaptionAlpha"] : 100;
-		$SubCaptionColorFactor = isset($Format["SubCaptionColorFactor"]) ? $Format["SubCaptionColorFactor"] : NULL;
-		$SubCaptionR = isset($Format["SubCaptionR"]) ? $Format["SubCaptionR"] : 50;
-		$SubCaptionG = isset($Format["SubCaptionG"]) ? $Format["SubCaptionG"] : 50;
-		$SubCaptionB = isset($Format["SubCaptionB"]) ? $Format["SubCaptionB"] : 50;
-		$SubCaptionAlpha = isset($Format["SubCaptionAlpha"]) ? $Format["SubCaptionAlpha"] : 100;
-		$ValueFontName = isset($Format["ValueFontName"]) ? $Format["ValueFontName"] : $this->pChartObject->FontName;
-		$ValueFontSize = isset($Format["ValueFontSize"]) ? $Format["ValueFontSize"] : $this->pChartObject->FontSize;
-		$CaptionFontName = isset($Format["CaptionFontName"]) ? $Format["CaptionFontName"] : $this->pChartObject->FontName;
-		$CaptionFontSize = isset($Format["CaptionFontSize"]) ? $Format["CaptionFontSize"] : $this->pChartObject->FontSize;
-		$Unit = isset($Format["Unit"]) ? $Format["Unit"] : "";
-
+		
 		/* Determine indicator visual configuration */
 		$OverallMin = $IndicatorSections[0]["End"];
 		$OverallMax = $IndicatorSections[0]["Start"];
@@ -209,8 +212,7 @@ class pIndicator
 							$Radius = floor(($TxtPos[1]["X"] - $TxtPos[0]["X"] + $TextPadding * 4) / 2);
 							$this->pChartObject->drawFilledCircle($X1, $Y, $Radius + 4, ["R" => $Settings["R"] + 20,"G" => $Settings["G"] + 20,"B" => $Settings["B"] + 20]);
 							$this->pChartObject->drawFilledCircle($X1, $Y, $Radius, ["R" => 255,"G" => 255,"B" => 255]);
-							$TextSettings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize];
-							$this->pChartObject->drawText($X1 - 1, $Y - 1, $Value . $Unit, $TextSettings);
+							$this->pChartObject->drawText($X1 - 1, $Y - 1, $Value . $Unit, ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize]);
 						} elseif ($ValueDisplay == INDICATOR_VALUE_LABEL) {
 							$Caption = array(
 								"Format" => ["R" => $Settings["R"],"G" => $Settings["G"],"B" => $Settings["B"],"Alpha" => 100],
