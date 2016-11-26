@@ -16,17 +16,14 @@ You can find the whole class documentation on the pChart web site.
 
 class pBarcode128
 {
-	var $Codes;
-	var $Reverse;
+	var $Codes = [];
+	var $Reverse = [];
 	var $Result;
 	var $pChartObject;
-	var $CRC;
 	
 	/* Class creator */
 	function __construct($BasePath = "")
 	{
-		$this->Codes = [];
-		$this->Reverse = [];
 		$FileHandle = @fopen($BasePath . "data/128B.db", "r");
 		if (!$FileHandle) {
 			die("Cannot find barcode database (" . $BasePath . "128B.db).");
@@ -34,8 +31,8 @@ class pBarcode128
 
 		while (!feof($FileHandle)) {
 			$Buffer = fgets($FileHandle, 4096);
-			$Buffer = str_replace(chr(10) , "", $Buffer);
-			$Buffer = str_replace(chr(13) , "", $Buffer);
+			$Buffer = str_replace(chr(10), "", $Buffer);
+			$Buffer = str_replace(chr(13), "", $Buffer);
 			$Values = preg_split("/;/", $Buffer);
 			$this->Codes[$Values[1]]["ID"] = $Values[0];
 			$this->Codes[$Values[1]]["Code"] = $Values[2];
@@ -49,44 +46,45 @@ class pBarcode128
 	/* Return the projected size of a barcode */
 	function getSize($TextString, array $Format = [])
 	{
-		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 0;
-		$ShowLegend = isset($Format["ShowLegend"]) ? $Format["ShowLegend"] : FALSE;
-		$LegendOffset = isset($Format["LegendOffset"]) ? $Format["LegendOffset"] : 5;
-		$DrawArea = isset($Format["DrawArea"]) ? $Format["DrawArea"] : FALSE;
-		$FontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : 12;
-		$Height = isset($Format["Height"]) ? $Format["Height"] : 30;
+		$Angle = 0;
+		$ShowLegend = FALSE;
+		$LegendOffset = 5;
+		$DrawArea = FALSE;
+		$FontSize = 12;
+		$Height = 30;
+		
+		/* Override defaults */
+		extract($Format);
+		
 		$TextString = $this->encode128($TextString);
 		$BarcodeLength = strlen($this->Result);
 		$WOffset = ($DrawArea) ? 20 : 0;
 		$HOffset = ($ShowLegend) ? $FontSize + $LegendOffset + $WOffset : 0;
-
 		$X1 = cos($Angle * PI / 180) * ($WOffset + $BarcodeLength);
 		$Y1 = sin($Angle * PI / 180) * ($WOffset + $BarcodeLength);
 		$X2 = $X1 + cos(($Angle + 90) * PI / 180) * ($HOffset + $Height);
 		$Y2 = $Y1 + sin(($Angle + 90) * PI / 180) * ($HOffset + $Height);
-		$AreaWidth = max(abs($X1) , abs($X2));
-		$AreaHeight = max(abs($Y1) , abs($Y2));
 		
-		return ["Width" => $AreaWidth,"Height" => $AreaHeight];
+		return ["Width" => max(abs($X1), abs($X2)),"Height" => max(abs($Y1), abs($Y2))];
 	}
 
 	function encode128($Value, $Format = "")
 	{
 		$this->Result = "11010010000";
-		$this->CRC = 104;
+		$CRC = 104;
 		$TextString = "";
 		for ($i = 1; $i <= strlen($Value); $i++) {
 			$CharCode = ord($this->mid($Value, $i, 1));
 			if (isset($this->Codes[$CharCode])) {
 				$this->Result = $this->Result . $this->Codes[$CharCode]["Code"];
-				$this->CRC = $this->CRC + $i * $this->Codes[$CharCode]["ID"];
+				$CRC = $CRC + $i * $this->Codes[$CharCode]["ID"];
 				$TextString = $TextString . chr($CharCode);
 			}
 		}
 
-		$this->CRC = $this->CRC - floor($this->CRC / 103) * 103;
-		$this->Result = $this->Result . $this->Reverse[$this->CRC]["Code"];
-		$this->Result = $this->Result . "1100011101011";
+		$CRC = $CRC - floor($CRC / 103) * 103;
+		$this->Result = $this->Result . $this->Reverse[$CRC]["Code"]. "1100011101011";
+
 		return ($TextString);
 	}
 
@@ -94,21 +92,25 @@ class pBarcode128
 	function draw($Object, $Value, $X, $Y, array $Format = [])
 	{
 		$this->pChartObject = $Object;
-		$R = isset($Format["R"]) ? $Format["R"] : 0;
-		$G = isset($Format["G"]) ? $Format["G"] : 0;
-		$B = isset($Format["B"]) ? $Format["B"] : 0;
-		$Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-		$Height = isset($Format["Height"]) ? $Format["Height"] : 30;
-		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 0;
-		$ShowLegend = isset($Format["ShowLegend"]) ? $Format["ShowLegend"] : FALSE;
-		$LegendOffset = isset($Format["LegendOffset"]) ? $Format["LegendOffset"] : 5;
-		$DrawArea = isset($Format["DrawArea"]) ? $Format["DrawArea"] : FALSE;
+		$R = 0;
+		$G = 0;
+		$B = 0;
+		$Alpha = 100;
+		$Height = 30;
+		$Angle = 0;
+		$ShowLegend = FALSE;
+		$LegendOffset = 5;
+		$DrawArea = FALSE;
 		$AreaR = isset($Format["AreaR"]) ? $Format["AreaR"] : 255;
 		$AreaG = isset($Format["AreaG"]) ? $Format["AreaG"] : 255;
 		$AreaB = isset($Format["AreaB"]) ? $Format["AreaB"] : 255;
-		$AreaBorderR = isset($Format["AreaBorderR"]) ? $Format["AreaBorderR"] : $AreaR;
-		$AreaBorderG = isset($Format["AreaBorderG"]) ? $Format["AreaBorderG"] : $AreaG;
-		$AreaBorderB = isset($Format["AreaBorderB"]) ? $Format["AreaBorderB"] : $AreaB;
+		$AreaBorderR = $AreaR;
+		$AreaBorderG = $AreaG;
+		$AreaBorderB = $AreaB;
+		
+		/* Override defaults */
+		extract($Format);
+		
 		$TextString = $this->encode128($Value);
 		if ($DrawArea) {
 			$X1 = $X + cos(($Angle - 135) * PI / 180) * 10;
@@ -125,9 +127,7 @@ class pBarcode128
 
 			$X4 = $X3 + cos(($Angle + 180) * PI / 180) * (strlen($this->Result) + 20);
 			$Y4 = $Y3 + sin(($Angle + 180) * PI / 180) * (strlen($this->Result) + 20);
-			$Polygon = [$X1,$Y1,$X2,$Y2,$X3,$Y3,$X4,$Y4];
-			$Settings = ["R" => $AreaR,"G" => $AreaG,"B" => $AreaB,"BorderR" => $AreaBorderR,"BorderG" => $AreaBorderG,"BorderB" => $AreaBorderB];
-			$this->pChartObject->drawPolygon($Polygon, $Settings);
+			$this->pChartObject->drawPolygon([$X1,$Y1,$X2,$Y2,$X3,$Y3,$X4,$Y4], ["R" => $AreaR,"G" => $AreaG,"B" => $AreaB,"BorderR" => $AreaBorderR,"BorderG" => $AreaBorderG,"BorderB" => $AreaBorderB]);
 		}
 
 		for ($i = 1; $i <= strlen($this->Result); $i++) {
@@ -136,8 +136,7 @@ class pBarcode128
 				$Y1 = $Y + sin($Angle * PI / 180) * $i;
 				$X2 = $X1 + cos(($Angle + 90) * PI / 180) * $Height;
 				$Y2 = $Y1 + sin(($Angle + 90) * PI / 180) * $Height;
-				$Settings = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
-				$this->pChartObject->drawLine($X1, $Y1, $X2, $Y2, $Settings);
+				$this->pChartObject->drawLine($X1, $Y1, $X2, $Y2, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha]);
 			}
 		}
 
@@ -146,8 +145,7 @@ class pBarcode128
 			$Y1 = $Y + sin($Angle * PI / 180) * (strlen($this->Result) / 2);
 			$LegendX = $X1 + cos(($Angle + 90) * PI / 180) * ($Height + $LegendOffset);
 			$LegendY = $Y1 + sin(($Angle + 90) * PI / 180) * ($Height + $LegendOffset);
-			$Settings = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Angle" => - $Angle,"Align" => TEXT_ALIGN_TOPMIDDLE];
-			$this->pChartObject->drawText($LegendX, $LegendY, $TextString, $Settings);
+			$this->pChartObject->drawText($LegendX, $LegendY, $TextString, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Angle" => - $Angle,"Align" => TEXT_ALIGN_TOPMIDDLE]);
 		}
 	}
 

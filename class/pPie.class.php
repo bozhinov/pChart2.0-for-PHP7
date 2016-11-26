@@ -72,7 +72,6 @@ class pPie
 		/* Override defaults */
 		extract($Format);
 		
-		
 		/* Data Processing */
 		$Data = $this->pDataObject->getData();
 		$Palette = $this->pDataObject->getPalette();
