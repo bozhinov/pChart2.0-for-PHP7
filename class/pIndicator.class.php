@@ -34,8 +34,15 @@ class pIndicator
 	/* Draw an indicator */
 	function draw($X, $Y, $Width, $Height, array $Format = [])
 	{
+
+		/* No section, let's die */
+		if (isset($Format["IndicatorSections"])){
+		} else {
+			return (0);
+		}
 		$Values = isset($Format["Values"]) ? $Format["Values"] : VOID;
-		$IndicatorSections = isset($Format["IndicatorSections"]) ? $Format["IndicatorSections"] : NULL;
+		/* Convert the Values to display to an array if needed */
+		(!is_array($Values)) AND $Values = [$Values];
 		$ValueDisplay = isset($Format["ValueDisplay"]) ? $Format["ValueDisplay"] : INDICATOR_VALUE_BUBBLE;
 		$SectionsMargin = isset($Format["SectionsMargin"]) ? $Format["SectionsMargin"] : 4;
 		$DrawLeftHead = isset($Format["DrawLeftHead"]) ? $Format["DrawLeftHead"] : TRUE;
@@ -59,28 +66,13 @@ class pIndicator
 		$CaptionFontName = isset($Format["CaptionFontName"]) ? $Format["CaptionFontName"] : $this->pChartObject->FontName;
 		$CaptionFontSize = isset($Format["CaptionFontSize"]) ? $Format["CaptionFontSize"] : $this->pChartObject->FontSize;
 		$Unit = isset($Format["Unit"]) ? $Format["Unit"] : "";
-		/* Convert the Values to display to an array if needed */
-		if (!is_array($Values)) {
-			$Value = $Values;
-			$Values = [$Value];
-		}
-
-		/* No section, let's die */
-		if ($IndicatorSections == NULL) {
-			return (0);
-		}
 
 		/* Determine indicator visual configuration */
 		$OverallMin = $IndicatorSections[0]["End"];
 		$OverallMax = $IndicatorSections[0]["Start"];
 		foreach($IndicatorSections as $Key => $Settings) {
-			if ($Settings["End"] > $OverallMax) {
-				$OverallMax = $Settings["End"];
-			}
-
-			if ($Settings["Start"] < $OverallMin) {
-				$OverallMin = $Settings["Start"];
-			}
+			($Settings["End"] > $OverallMax) AND $OverallMax = $Settings["End"];
+			($Settings["Start"] < $OverallMin) AND $OverallMin = $Settings["Start"];
 		}
 
 		$RealWidth = $Width - (count($IndicatorSections) - 1) * $SectionsMargin;
