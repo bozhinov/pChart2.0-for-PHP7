@@ -1006,12 +1006,7 @@ class pScatter
 	/* Draw a Scatter threshold */
 	function drawScatterThreshold($Value, array $Format = [])
 	{
-		
-		$Data = $this->pDataObject->getData();
-		if (!isset($Data["Axis"][$AxisID])) {
-			return (-1);
-		}
-		
+				
 		$AxisID = 0;
 		$R = 255;
 		$G = 0;
@@ -1046,6 +1041,11 @@ class pScatter
 		
 		/* Override defaults */
 		extract($Format);
+		
+		$Data = $this->pDataObject->getData();
+		if (!isset($Data["Axis"][$AxisID])) {
+			return (-1);
+		}
 		
 		($Caption == NULL) AND $Caption = $Value;
 		$CaptionSettings = [
@@ -1122,12 +1122,7 @@ class pScatter
 
 	/* Draw a Scatter threshold area */
 	function drawScatterThresholdArea($Value1, $Value2, array $Format = [])
-	{
-		$Data = $this->pDataObject->getData();
-		if (!isset($Data["Axis"][$AxisID])) {
-			return (-1);
-		}
-		
+	{		
 		$AxisID = 0;
 		$R = isset($Format["R"]) ? $Format["R"] : 255;
 		$G = isset($Format["G"]) ? $Format["G"] : 0;
@@ -1149,6 +1144,11 @@ class pScatter
 		
 		/* Override defaults */
 		extract($Format);
+		
+		$Data = $this->pDataObject->getData();
+		if (!isset($Data["Axis"][$AxisID])) {
+			return (-1);
+		}
 		
 		($BorderAlpha > 100) AND $BorderAlpha = 100;
 				

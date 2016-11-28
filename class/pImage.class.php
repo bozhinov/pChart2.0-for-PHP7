@@ -90,7 +90,7 @@ class pImage extends pDraw
 			imagealphablending($this->Picture, TRUE);
 			imagesavealpha($this->Picture, true);
 		} else {
-			imagefilledrectangle($this->Picture, 0, 0, $XSize, $YSize, $this->AllocateColor($this->Picture, 255, 255, 255));
+			imagefilledrectangle($this->Picture, 0, 0, $XSize, $YSize, $this->AllocateColor(255, 255, 255));
 		}
 	}
 	
