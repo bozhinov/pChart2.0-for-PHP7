@@ -110,7 +110,7 @@ class pImage extends pDraw
 		
 		/* Override defaults */
 		extract($Format);
-		
+				
 		$this->Shadow = $Enabled;
 		$this->ShadowX = $X;
 		$this->ShadowY = $Y;
@@ -118,6 +118,10 @@ class pImage extends pDraw
 		$this->ShadowG = $G;
 		$this->ShadowB = $B;
 		$this->Shadowa = $Alpha;
+		
+		if ($this->ShadowX == 0 || $this->ShadowY == 0){
+			die("Invalid shadow specs");
+		}
 	}
 
 	/* Set the graph area position */

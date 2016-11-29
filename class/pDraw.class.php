@@ -141,7 +141,7 @@ class pDraw
 		
 		$RestoreShadow = $this->Shadow;
 		if (!$NoFill) {
-			if ($this->Shadow && $this->ShadowX != 0 && $this->ShadowY != 0) {
+			if ($this->Shadow) {
 				$this->Shadow = FALSE;
 				$Shadow = []; // MOMCHIL: local var missing
 				for ($i = 0; $i <= count($Points) - 1; $i = $i + 2) {
@@ -292,7 +292,7 @@ class pDraw
 		}
 
 		$RestoreShadow = $this->Shadow;
-		if ($this->Shadow && $this->ShadowX != 0 && $this->ShadowY != 0) {
+		if ($this->Shadow) {
 			$this->Shadow = FALSE;
 			$this->drawRoundedFilledRectangle($X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, $Radius, ["R" => $this->ShadowR,"G" => $this->ShadowG,"B" => $this->ShadowB,"Alpha" => $this->Shadowa]);
 		}
@@ -401,7 +401,7 @@ class pDraw
 		}
 
 		$RestoreShadow = $this->Shadow;
-		if ($this->Shadow && $this->ShadowX != 0 && $this->ShadowY != 0) {
+		if ($this->Shadow) {
 			$this->Shadow = FALSE;
 			$this->drawRoundedFilledRectangle($X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, $Radius, ["R" => $this->ShadowR,"G" => $this->ShadowG,"B" => $this->ShadowB,"Alpha" => $this->Shadowa]);
 		}
@@ -490,26 +490,24 @@ class pDraw
 	function drawFilledRectangle($X1, $Y1, $X2, $Y2, array $Format = [])
 	{
 				
-		$R = 0;
-		$G = 0;
-		$B = 0;
+		$R = isset($Format["R"]) ? $Format["R"] : 0;
+		$G = isset($Format["G"]) ? $Format["G"] : 0;
+		$B = isset($Format["B"]) ? $Format["B"] : 0;
 		$Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-		$NoBorder = FALSE;
-		$Surrounding = NULL;
-		$Ticks = NULL;
-		$BorderR = -1;
-		$BorderG = -1;
-		$BorderB = -1;			
+		$NoBorder = isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
+		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
+		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
+		$BorderR = isset($Format["BorderR"]) ? $Format["BorderR"] : -1;
+		$BorderG = isset($Format["BorderG"]) ? $Format["BorderG"] : -1;
+		$BorderB = isset($Format["BorderB"]) ? $Format["BorderB"] : -1;			
 		$BorderAlpha = $Alpha;
-		$NoAngle = NULL;
-		$Dash = FALSE;
-		$DashStep = 4;
-		$DashR = 0;
-		$DashG = 0;
-		$DashB = 0;
-		
-		extract($Format);
-		
+		$NoAngle = isset($Format["NoAngle"]) ? $Format["NoAngle"] : NULL;
+		$Dash = isset($Format["Dash"]) ? $Format["Dash"] : FALSE;
+		$DashStep = isset($Format["DashStep"]) ? $Format["DashStep"] : 4;
+		$DashR = isset($Format["DashR"]) ? $Format["DashR"] : 0;
+		$DashG = isset($Format["DashG"]) ? $Format["DashG"] : 0;
+		$DashB = isset($Format["DashB"]) ? $Format["DashB"] : 0;
+				
 		if ($Surrounding != NULL) {
 			$BorderR = $R + $Surrounding;
 			$BorderG = $G + $Surrounding;
@@ -525,7 +523,7 @@ class pDraw
 		$Y2f = floor($Y2);
 
 		$RestoreShadow = $this->Shadow;
-		if ($this->Shadow && $this->ShadowX != 0 && $this->ShadowY != 0) {
+		if ($this->Shadow) {
 			$this->Shadow = FALSE;
 			$this->drawFilledRectangle($X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, ["R" => $this->ShadowR,"G" => $this->ShadowG,"B" => $this->ShadowB,"Alpha" => $this->Shadowa,"Ticks" => $Ticks,"NoAngle" => $NoAngle]);
 		}
@@ -814,7 +812,7 @@ class pDraw
 		$Mode = isset($Format["Mode"]) ? $Format["Mode"] : 1;
 				
 		if ($this->Antialias == FALSE && $Ticks == NULL) {
-			if ($this->Shadow && $this->ShadowX != 0 && $this->ShadowY != 0) {
+			if ($this->Shadow) {
 				$ShadowColor = $this->allocateColor($this->ShadowR, $this->ShadowG, $this->ShadowB, $this->Shadowa);
 				imageline($this->Picture, $X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, $ShadowColor);
 			}
@@ -903,6 +901,7 @@ class pDraw
 	/* Draw a circle */
 	function drawCircle($Xc, $Yc, $Height, $Width, array $Format = [])
 	{	
+	
 		$R = isset($Format["R"]) ? $Format["R"] : 0;
 		$G = isset($Format["G"]) ? $Format["G"] : 0;
 		$B = isset($Format["B"]) ? $Format["B"] : 0;
@@ -917,7 +916,7 @@ class pDraw
 		$Yc = floor($Yc);
 		$RestoreShadow = $this->Shadow;
 		
-		if ($this->Shadow && $this->ShadowX != 0 && $this->ShadowY != 0) {
+		if ($this->Shadow) {
 			$this->Shadow = FALSE;
 			$this->drawCircle($Xc + $this->ShadowX, $Yc + $this->ShadowY, $Height, $Width, ["R" => $this->ShadowR,"G" => $this->ShadowG,"B" => $this->ShadowB,"Alpha" => $this->Shadowa,"Ticks" => $Ticks]);
 		}
@@ -933,6 +932,7 @@ class pDraw
 		$Step = 360 / (2 * PI * max($Width, $Height));
 		$Mode = 1;
 		$Cpt = 1;
+				
 		for ($i = 0; $i <= 360; $i = $i + $Step) {
 			$X = cos($i * PI / 180) * $Height + $Xc;
 			$Y = sin($i * PI / 180) * $Width + $Yc;
@@ -984,7 +984,7 @@ class pDraw
 		$Y = floor($Y);
 		$Radius = abs($Radius);
 		$RestoreShadow = $this->Shadow;
-		if ($this->Shadow && $this->ShadowX != 0 && $this->ShadowY != 0) {
+		if ($this->Shadow) {
 			$this->Shadow = FALSE;
 			$this->drawFilledCircle($X + $this->ShadowX, $Y + $this->ShadowY, $Radius, ["R" => $this->ShadowR,"G" => $this->ShadowG,"B" => $this->ShadowB,"Alpha" => $this->Shadowa,"Ticks" => $Ticks]);
 		}
@@ -1101,7 +1101,7 @@ class pDraw
 
 		$X = $X - $TxtPos[$Align]["X"] + $X;
 		$Y = $Y - $TxtPos[$Align]["Y"] + $Y;
-		if ($this->Shadow && $this->ShadowX != 0 && $this->ShadowY != 0) {
+		if ($this->Shadow) {
 			$C_ShadowColor = $this->allocateColor($this->ShadowR, $this->ShadowG, $this->ShadowB, $this->Shadowa);
 			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $C_ShadowColor, $FontName, $Text);
 		}
@@ -1213,11 +1213,11 @@ class pDraw
 	/* Draw an aliased pixel */
 	function drawAntialiasPixel($X, $Y, array $Format = [])
 	{
-		
+				
 		if ($X < 0 || $Y < 0 || $X >= $this->XSize || $Y >= $this->YSize){
 			return (-1);
 		}
-
+		
 		# Momchil: This one is actually faster than extract
 		$R = isset($Format["R"]) ? $Format["R"] : 0;
 		$G = isset($Format["G"]) ? $Format["G"] : 0;
@@ -1232,7 +1232,7 @@ class pDraw
 		($B > 255) 	AND $B = 255;
 	
 		if (!$this->Antialias) {
-			if ($this->Shadow && $this->ShadowX != 0 && $this->ShadowY != 0) {
+			if ($this->Shadow) {
 				imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($this->ShadowR, $this->ShadowG, $this->ShadowB, $this->Shadowa));
 			}
 
@@ -1262,16 +1262,26 @@ class pDraw
 			# Momchil: well worth the local var
 			$AntialiasQuality = $this->AntialiasQuality; 
 			
-			if ($Yleaf == 0 && $AntialiasQuality == 0){ 
-			
-				# Momchil: Fast path: mostly zeroes in my test cases
-				# AntialiasQuality does not seem to be in use and is always 0
-
-				$this->drawAlphaPixel($Xi, $Yi, (1 - $Xleaf) * $Alpha, $R, $G, $B, true);
-				$this->drawAlphaPixel($Xi + 1, $Yi, $Xleaf * $Alpha, $R, $G, $B, true);
-											
+			# Momchil: Fast path: mostly zeroes in my test cases
+			# AntialiasQuality does not seem to be in use and is always 0
+			# $Xleaf is always > 0 && $Yleaf > 0 => $AlphaX > 0
+			if ($AntialiasQuality == 0) {
+				switch(TRUE){
+					case ($Yleaf == 0):
+						$this->drawAlphaPixel($Xi, $Yi, (1 - $Xleaf) * $Alpha, $R, $G, $B, true);
+						$this->drawAlphaPixel($Xi + 1, $Yi, $Xleaf * $Alpha, $R, $G, $B, true);
+						break;
+					case ($Xleaf == 0):
+						$this->drawAlphaPixel($Xi, $Yi, (1 - $Yleaf) * $Alpha, $R, $G, $B, true);
+						$this->drawAlphaPixel($Xi, $Yi + 1, $Yleaf * $Alpha, $R, $G, $B, true);		
+						break;						
+					default:
+						$this->drawAlphaPixel($Xi, $Yi, ((1 - $Xleaf) * (1 - $Yleaf) * $Alpha), $R, $G, $B, true);
+						$this->drawAlphaPixel($Xi + 1, $Yi, ($Xleaf * (1 - $Yleaf) * $Alpha), $R, $G, $B, true);
+						$this->drawAlphaPixel($Xi, $Yi + 1, (1 - $Xleaf) * $Yleaf * $Alpha, $R, $G, $B, true);
+						$this->drawAlphaPixel($Xi + 1, $Yi + 1, ($Xleaf * $Yleaf * $Alpha), $R, $G, $B, true);
+				}					
 			} else { # Momchil: no changes here
-
 				# Momchil: *100/100 seems redundand
 				#$Alpha1 = (((1 - $Xleaf) * (1 - $Yleaf) * 100) / 100) * $Alpha;
 				$Alpha1 = (1 - $Xleaf) * (1 - $Yleaf) * $Alpha;
@@ -1280,7 +1290,7 @@ class pDraw
 				}
 
 				#$Alpha2 = (($Xleaf * (1 - $Yleaf) * 100) / 100) * $Alpha;	
-				$Alpha2 = $Xleaf * (1 - $Yleaf) * $Alpha;					
+				$Alpha2 = $Xleaf * (1 - $Yleaf) * $Alpha;	
 				if ($Alpha2 > $AntialiasQuality) {
 					$this->drawAlphaPixel($Xi + 1, $Yi, $Alpha2, $R, $G, $B, true);
 				}
@@ -1296,25 +1306,23 @@ class pDraw
 				if ($Alpha4 > $AntialiasQuality) {
 					$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Alpha4, $R, $G, $B, true);
 				}
-													
 			}
-						
+																			
 		}
 	}
 
 	/* Draw a semi-transparent pixel */
 	function drawAlphaPixel($X, $Y, $Alpha, $R, $G, $B, $safe = FALSE)
 	{
+		
 		if (isset($this->Mask[$X])) {
 			if (isset($this->Mask[$X][$Y])) {
 				return (0);
 			}
 		}
 		
-		if ($this->Shadow && $this->ShadowX != 0 && $this->ShadowY != 0) {
-			$AlphaFactor = floor(($Alpha / 100) * $this->Shadowa);
-			$ShadowColor = $this->allocateColor($this->ShadowR, $this->ShadowG, $this->ShadowB, $AlphaFactor);
-			imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $ShadowColor);
+		if ($this->Shadow) {
+			imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($this->ShadowR, $this->ShadowG, $this->ShadowB, floor(($Alpha / 100) * $this->Shadowa)));
 		}
 		
 		if (!$safe){ # Momchil: Seems to be worth the micro optimization
@@ -1400,7 +1408,7 @@ class pDraw
 			}
 
 			$RestoreShadow = $this->Shadow;
-			if ($this->Shadow && $this->ShadowX != 0 && $this->ShadowY != 0) {
+			if ($this->Shadow) {
 				$this->Shadow = FALSE;
 				if ($PicType == 3) {
 					$this->drawFilledRectangle($X + $this->ShadowX, $Y + $this->ShadowY, $X + $Width + $this->ShadowX, $Y + $Height + $this->ShadowY, ["R" => $this->ShadowR,"G" => $this->ShadowG,"B" => $this->ShadowB,"Alpha" => $this->Shadowa]);
@@ -1447,7 +1455,7 @@ class pDraw
 		$RGB = ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $Alpha];
 		/* Override Shadow support, this will be managed internally */
 		$RestoreShadow = $this->Shadow;
-		if ($this->Shadow && $this->ShadowX != 0 && $this->ShadowY != 0) {
+		if ($this->Shadow) {
 			$this->Shadow = FALSE;
 			$this->drawArrow($X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, ["FillR" => $this->ShadowR,"FillG" => $this->ShadowG,"FillB" => $this->ShadowB,"Alpha" => $this->Shadowa,"Size" => $Size,"Ratio" => $Ratio,"TwoHeads" => $TwoHeads,"Ticks" => $Ticks]);
 		}
@@ -6750,25 +6758,26 @@ class pDraw
 		$XMin = $X - 5 - floor(($BoxWidth - 10) / 2);
 		$XMax = $X + 5 + floor(($BoxWidth - 10) / 2);
 		$RestoreShadow = $this->Shadow;
+		$ShadowX = $this->ShadowX; # Local var just for speed
 		if ($this->Shadow == TRUE) {
 			$this->Shadow = FALSE;
-			$Poly = [$X + $this->ShadowX, $Y + $this->ShadowX, $X + 5 + $this->ShadowX, $Y - 5 + $this->ShadowX, $XMax + $this->ShadowX, $Y - 5 + $this->ShadowX];
+			$Poly = [$X + $ShadowX, $Y + $ShadowX, $X + 5 + $ShadowX, $Y - 5 + $ShadowX, $XMax + $ShadowX, $Y - 5 + $ShadowX];
 			if ($NoTitle) {
-				$Poly[] = $XMax + $this->ShadowX;
-				$Poly[] = $Y - 5 - $TitleHeight - $CaptionHeight - $HorizontalMargin * 2 + $this->ShadowX;
-				$Poly[] = $XMin + $this->ShadowX;
-				$Poly[] = $Y - 5 - $TitleHeight - $CaptionHeight - $HorizontalMargin * 2 + $this->ShadowX;
+				$Poly[] = $XMax + $ShadowX;
+				$Poly[] = $Y - 5 - $TitleHeight - $CaptionHeight - $HorizontalMargin * 2 + $ShadowX;
+				$Poly[] = $XMin + $ShadowX;
+				$Poly[] = $Y - 5 - $TitleHeight - $CaptionHeight - $HorizontalMargin * 2 + $ShadowX;
 			} else {
-				$Poly[] = $XMax + $this->ShadowX;
-				$Poly[] = $Y - 5 - $TitleHeight - $CaptionHeight - $HorizontalMargin * 3 + $this->ShadowX;
-				$Poly[] = $XMin + $this->ShadowX;
-				$Poly[] = $Y - 5 - $TitleHeight - $CaptionHeight - $HorizontalMargin * 3 + $this->ShadowX;
+				$Poly[] = $XMax + $ShadowX;
+				$Poly[] = $Y - 5 - $TitleHeight - $CaptionHeight - $HorizontalMargin * 3 + $ShadowX;
+				$Poly[] = $XMin + $ShadowX;
+				$Poly[] = $Y - 5 - $TitleHeight - $CaptionHeight - $HorizontalMargin * 3 + $ShadowX;
 			}
 
-			$Poly[] = $XMin + $this->ShadowX;
-			$Poly[] = $Y - 5 + $this->ShadowX;
-			$Poly[] = $X - 5 + $this->ShadowX;
-			$Poly[] = $Y - 5 + $this->ShadowX;
+			$Poly[] = $XMin +  $ShadowX;
+			$Poly[] = $Y - 5 + $ShadowX;
+			$Poly[] = $X - 5 + $ShadowX;
+			$Poly[] = $Y - 5 + $ShadowX;
 			$this->drawPolygon($Poly, ["R" => $this->ShadowR,"G" => $this->ShadowG,"B" => $this->ShadowB,"Alpha" => $this->Shadowa]);
 		}
 

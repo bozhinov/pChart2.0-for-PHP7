@@ -468,6 +468,9 @@ class pPie
 		}
 
 		/* Draw the bottom shadow if needed */
+		# Momchil: this is the only place that uses this comparison
+		# All use cases check if both X & Y are !=0
+		# I will leave this here, but it can hit the break at class pImage line 123
 		if ($RestoreShadow && ($this->pChartObject->ShadowX != 0 || $this->pChartObject->ShadowY != 0)) {
 			foreach($Slices as $SliceID => $Plots) {
 				$ShadowPie = [];
