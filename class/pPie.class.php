@@ -170,6 +170,8 @@ class pPie
 				if ($SecondPass && ($i < 90)) {
 					$Yc++;
 				}
+				
+				# Momchil TODO: $i >= 90 && $i =< 180 ?
 
 				if ($SecondPass && ($i > 180 && $i < 270)) {
 					$Xc++;
@@ -894,29 +896,29 @@ class pPie
 			if (count($this->LabelPos) > 0) {
 				$Done = FALSE;
 				foreach($this->LabelPos as $Key => $Settings) {
-					if (!$Done) {
-						
-						$bool = (($YTop >= $Settings["YTop"] && $YTop <= $Settings["YBottom"]) || ($YBottom >= $Settings["YTop"] && $YBottom <= $Settings["YBottom"]));
-						
-						switch (TRUE) {
-							case ($Angle <= 90 && $bool):
-								$this->shift(0, 180, -($Height + 2), $Reversed);
-								$Done = TRUE;
-								break;
-							case ($Angle > 90 && $Angle <= 180 && $bool):
-								$this->shift(0, 180, -($Height + 2), $Reversed);
-								$Done = TRUE;
-								break;
-							case ($Angle > 180 && $Angle <= 270 && $bool):
-								$this->shift(180, 360, ($Height + 2), $Reversed);
-								$Done = TRUE;
-								break;
-							case ($Angle > 270 && $Angle <= 360 && $bool):
-								$this->shift(180, 360, ($Height + 2), $Reversed);
-								$Done = TRUE;
-								break;
+					if (!$Done) {						
+						if (($YTop >= $Settings["YTop"] && $YTop <= $Settings["YBottom"]) || ($YBottom >= $Settings["YTop"] && $YBottom <= $Settings["YBottom"])){
+							
+							switch (TRUE) {
+								case ($Angle <= 90):
+									$this->shift(0, 180, -($Height + 2), $Reversed);
+									$Done = TRUE;
+									break;
+								case ($Angle > 90 && $Angle <= 180):
+									$this->shift(0, 180, -($Height + 2), $Reversed);
+									$Done = TRUE;
+									break;
+								case ($Angle > 180 && $Angle <= 270):
+									$this->shift(180, 360, ($Height + 2), $Reversed);
+									$Done = TRUE;
+									break;
+								case ($Angle > 270 && $Angle <= 360):
+									$this->shift(180, 360, ($Height + 2), $Reversed);
+									$Done = TRUE;
+									break;
+							}
+							
 						}
-						
 					}
 				}
 			}
@@ -1062,6 +1064,7 @@ class pPie
 		$Offset = 0;
 		$ID = 0;
 		foreach($Values as $Key => $Value) {
+			
 			if ($Shadow) {
 				$Settings = ["R" => $this->pChartObject->ShadowR,"G" => $this->pChartObject->ShadowG,"B" => $this->pChartObject->ShadowB,"Alpha" => $this->pChartObject->Shadowa];
 				$BorderColor = $Settings;
@@ -1071,9 +1074,8 @@ class pPie
 					$Palette[$ID] = $Color;
 					$this->pDataObject->savePalette($ID, $Color);
 				}
-
 				$Settings = ["R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"]];
-				$BorderColor = ($Border) ?  ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha] : $Settings;
+				$BorderColor = ($Border) ? ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha] : $Settings;
 			}
 
 			$Plots = [];
@@ -1184,12 +1186,11 @@ class pPie
 			$Step = 360 / (2 * PI * $OuterRadius);
 			$Offset = 0;
 			foreach($Values as $Key => $Value) {
+				
 				$EndAngle = $Offset + ($Value * $ScaleFactor);
-				if ($EndAngle > 360) {
-					$EndAngle = 360;
-				}
-
+				($EndAngle > 360) AND $EndAngle = 360;
 				$Angle = $Offset + ($Value * $ScaleFactor) / 2;
+				
 				if ($ValuePosition == PIE_VALUE_OUTSIDE) {
 					$Xc = cos(($Angle - 90) * PI / 180) * ($OuterRadius + $ValuePadding) + $X;
 					$Yc = sin(($Angle - 90) * PI / 180) * ($OuterRadius + $ValuePadding) + $Y;
@@ -1314,6 +1315,7 @@ class pPie
 		$Visible = []; 
 		
 		foreach($Values as $Key => $Value) {
+			
 			if (!isset($Palette[$ID]["R"])) {
 				$Color = $this->pChartObject->getRandomColor();
 				$Palette[$ID] = $Color;
@@ -1369,6 +1371,7 @@ class pPie
 			$Step = (360 / (2 * PI * $InnerRadius)) / 2;
 			$InX1 = VOID;
 			$InY1 = VOID;
+			
 			for ($i = $EndAngle; $i <= $Offset; $i = $i + $Step) {
 				$Xc = cos(($i - 90) * PI / 180) * ($InnerRadius + $DataGapRadius - 1) + $X;
 				$Yc = sin(($i - 90) * PI / 180) * ($InnerRadius + $DataGapRadius - 1) * $SkewFactor + $Y;
@@ -1417,7 +1420,9 @@ class pPie
 			$Settings = $SliceColors[$SliceID];
 			$Settings["NoBorder"] = TRUE;
 			$this->pChartObject->drawPolygon($Plots["BottomPoly"], $Settings);
-			foreach($Plots["AA"] as $Key => $Pos) $this->pChartObject->drawAntialiasPixel($Pos[0], $Pos[1], $Settings);
+			foreach($Plots["AA"] as $Key => $Pos){
+				$this->pChartObject->drawAntialiasPixel($Pos[0], $Pos[1], $Settings);
+			}
 			$this->pChartObject->drawLine($Plots["InX1"], $Plots["InY1"], $Plots["OutX2"], $Plots["OutY2"], $Settings);
 			$this->pChartObject->drawLine($Plots["InX2"], $Plots["InY2"], $Plots["OutX1"], $Plots["OutY1"], $Settings);
 		}
@@ -1477,10 +1482,8 @@ class pPie
 				}
 			}
 
-			if (count($InnerPlotsA) > 0)
-			{
-				$this->pChartObject->drawPolygon(array_merge($InnerPlotsA, $this->arrayReverse($InnerPlotsB)), $Settings);
-			}
+			(count($InnerPlotsA) > 0) AND $this->pChartObject->drawPolygon(array_merge($InnerPlotsA, $this->arrayReverse($InnerPlotsB)), $Settings);
+			
 		}
 
 		/* Draw the splice top and left poly */
@@ -1560,10 +1563,8 @@ class pPie
 				}
 			}
 
-			if (count($OuterPlotsA) > 0) 
-			{
-				$this->pChartObject->drawPolygon(array_merge($OuterPlotsA, $this->arrayReverse($OuterPlotsB)), $Settings);
-			}
+			(count($OuterPlotsA) > 0) AND $this->pChartObject->drawPolygon(array_merge($OuterPlotsA, $this->arrayReverse($OuterPlotsB)), $Settings);
+			
 		}
 
 		$Slices = array_reverse($Slices);
@@ -1580,7 +1581,9 @@ class pPie
 				$this->pChartObject->addToImageMap("POLY", implode(",", $Plots["TopPoly"]), $this->pChartObject->toHTMLColor($Settings["R"], $Settings["G"], $Settings["B"]) , $Data["Series"][$Data["Abscissa"]]["Data"][$SliceID], $Data["Series"][$DataSerie]["Data"][count($Slices) - $SliceID - 1]);
 			}
 
-			foreach($Plots["AA"] as $Key => $Pos) $this->pChartObject->drawAntialiasPixel($Pos[0], $Pos[1] - $SliceHeight, $Settings);
+			foreach($Plots["AA"] as $Key => $Pos) {
+				$this->pChartObject->drawAntialiasPixel($Pos[0], $Pos[1] - $SliceHeight, $Settings);
+			}
 			$this->pChartObject->drawLine($Plots["InX1"], $Plots["InY1"] - $SliceHeight, $Plots["OutX2"], $Plots["OutY2"] - $SliceHeight, $Settings);
 			$this->pChartObject->drawLine($Plots["InX2"], $Plots["InY2"] - $SliceHeight, $Plots["OutX1"], $Plots["OutY1"] - $SliceHeight, $Settings);
 		}

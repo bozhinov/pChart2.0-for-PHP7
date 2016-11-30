@@ -98,11 +98,10 @@ class pData
 			if (empty($StrippedData)) {
 				$this->Data["Series"][$SerieName]["Max"] = 0;
 				$this->Data["Series"][$SerieName]["Min"] = 0;
-				return (0);
+			} else {
+				$this->Data["Series"][$SerieName]["Max"] = max($StrippedData);
+				$this->Data["Series"][$SerieName]["Min"] = min($StrippedData);
 			}
-
-			$this->Data["Series"][$SerieName]["Max"] = max($StrippedData);
-			$this->Data["Series"][$SerieName]["Min"] = min($StrippedData);
 		}
 	}
 
@@ -426,8 +425,7 @@ class pData
 				$DeviationSum = $DeviationSum + ($Value - $Average) * ($Value - $Average);
 			}
 
-			$Deviation = sqrt($DeviationSum / count($SerieData));
-			return ($Deviation);
+			return sqrt($DeviationSum / count($SerieData));
 		} else {
 			return (NULL);
 		}
@@ -493,14 +491,13 @@ class pData
 			return FALSE;
 		}
 
-		$Result = FALSE;
 		foreach($this->Data["Series"] as $Key => $Value) {
 			if ($this->Data["Abscissa"] != $Key && $this->Data["Series"][$Key]["isDrawable"] == TRUE) {
-				$Result = TRUE;
+				return TRUE;
 			}
 		}
 
-		return $Result;
+		return FALSE;
 	}
 
 	/* Set the display mode of an Axis */
@@ -616,16 +613,15 @@ class pData
 	{
 		if (!isset($this->Data["Series"][$Serie])) {
 			return NULL;
+		} else {
+			return [
+				"R" => $this->Data["Series"][$Serie]["Color"]["R"],
+				"G" => $this->Data["Series"][$Serie]["Color"]["G"],
+				"B" => $this->Data["Series"][$Serie]["Color"]["B"],
+				"Alpha" => $this->Data["Series"][$Serie]["Color"]["Alpha"]
+			];
 		}
-
-		$Result = [
-			"R" => $this->Data["Series"][$Serie]["Color"]["R"],
-			"G" => $this->Data["Series"][$Serie]["Color"]["G"],
-			"B" => $this->Data["Series"][$Serie]["Color"]["B"],
-			"Alpha" => $this->Data["Series"][$Serie]["Color"]["Alpha"]
-		];
 		
-		return ($Result);
 	}
 
 	/* Set the color of one serie */
@@ -677,8 +673,9 @@ class pData
 
 		while (!feof($fileHandle)) {
 			$buffer = fgets($fileHandle, 4096);
-			if (preg_match("/,/", $buffer)) {
-				list($R, $G, $B, $Alpha) = preg_split("/,/", $buffer);
+			$pal = explode(",", $buffer);
+			if (count($pal) > 1) {
+				list($R, $G, $B, $Alpha) = $pal;
 				$ID = ($this->Palette == []) ? 0 : count($this->Palette);
 				$this->Palette[$ID] = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
 			}
@@ -773,8 +770,9 @@ class pData
 		}
 
 		foreach($SelectedSeries as $Key => $SerieName) {
-			$this->Data["Series"][$SerieName]["Max"] = max($this->stripVOID($this->Data["Series"][$SerieName]["Data"]));
-			$this->Data["Series"][$SerieName]["Min"] = min($this->stripVOID($this->Data["Series"][$SerieName]["Data"]));
+			$data = $this->stripVOID($this->Data["Series"][$SerieName]["Data"]);
+			$this->Data["Series"][$SerieName]["Max"] = max($data);
+			$this->Data["Series"][$SerieName]["Min"] = min($data);
 		}
 	}
 
@@ -791,9 +789,8 @@ class pData
 			$SerieNames = [];
 			while (!feof($Handle)) {
 				$Buffer = fgets($Handle, 4096);
-				$Buffer = str_replace(chr(10) , "", $Buffer);
-				$Buffer = str_replace(chr(13) , "", $Buffer);
-				$Values = preg_split("/" . $Delimiter . "/", $Buffer);
+				$Buffer = str_replace([chr(10),chr(13)], ["",""], $Buffer); # TODO consider stream_get_line
+				$Values = preg_split("/" . $Delimiter . "/", $Buffer); #TODO consider explode
 				if ($Buffer != "") {
 					if ($GotHeader && !$HeaderParsed) {
 						foreach($Values as $Key => $Name) {
@@ -802,7 +799,7 @@ class pData
 
 						$HeaderParsed = TRUE;
 					} else {
-						if ($SerieNames == []) {
+						if (count($SerieNames) == 0) {
 							foreach($Values as $Key => $Name) {
 								(!in_array($Key, $SkipColumns)) AND $SerieNames[$Key] = $DefaultSerieName . $Key;
 							}
@@ -875,8 +872,9 @@ class pData
 				}
 
 				$this->Data["Series"][$SerieName]["Data"] = $Data;
-				$this->Data["Series"][$SerieName]["Max"] = max($this->stripVOID($this->Data["Series"][$SerieName]["Data"]));
-				$this->Data["Series"][$SerieName]["Min"] = min($this->stripVOID($this->Data["Series"][$SerieName]["Data"]));
+				$Data = $this->stripVOID($Data);
+				$this->Data["Series"][$SerieName]["Max"] = max($Data);
+				$this->Data["Series"][$SerieName]["Min"] = min($Data);
 			}
 		}
 	}

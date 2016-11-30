@@ -618,68 +618,68 @@ class pDraw
 	/* Drawn a spline based on the bezier function */
 	function drawSpline(array $Coordinates, array $Format = []): array {
 		
-			$R = 0;
-			$G = 0;
-			$B = 0;
-			$Alpha = 100;
-			$Ticks = NULL;
-			$PathOnly = FALSE;
-			$Weight = NULL;
-			$ShowC = FALSE;			
-			$Force = 30;
-			$Forces = NULL;
-			
-			extract($Format);
+		#$R = 0; # UNUSED
+		#$G = 0;
+		#$B = 0;
+		#$Alpha = 100;
+		#$Ticks = NULL;
+		$PathOnly = FALSE;
+		#$Weight = NULL;
+		#$ShowC = FALSE;			
+		$Force = 30;
+		$Forces = NULL;
+		
+		extract($Format);
 
-			$Cpt = NULL;
-			$Mode = NULL;
-			$Result = [];
-			for ($i = 1; $i <= count($Coordinates) - 1; $i++) {
-				$X1 = $Coordinates[$i - 1][0];
-				$Y1 = $Coordinates[$i - 1][1];
-				$X2 = $Coordinates[$i][0];
-				$Y2 = $Coordinates[$i][1];
-				if ($Forces != NULL) {
-					$Force = $Forces[$i];
-				}
-
-				/* First segment */
-				if ($i == 1) {
-					$Xv1 = $X1;
-					$Yv1 = $Y1;
-				} else {
-					$Angle1 = $this->getAngle($XLast, $YLast, $X1, $Y1);
-					$Angle2 = $this->getAngle($X1, $Y1, $X2, $Y2);
-					$XOff = cos($Angle2 * PI / 180) * $Force + $X1;
-					$YOff = sin($Angle2 * PI / 180) * $Force + $Y1;
-					$Xv1 = cos($Angle1 * PI / 180) * $Force + $XOff;
-					$Yv1 = sin($Angle1 * PI / 180) * $Force + $YOff;
-				}
-
-				/* Last segment */
-				if ($i == count($Coordinates) - 1) {
-					$Xv2 = $X2;
-					$Yv2 = $Y2;
-				} else {
-					$Angle1 = $this->getAngle($X2, $Y2, $Coordinates[$i + 1][0], $Coordinates[$i + 1][1]);
-					$Angle2 = $this->getAngle($X1, $Y1, $X2, $Y2);
-					$XOff = cos(($Angle2 + 180) * PI / 180) * $Force + $X2;
-					$YOff = sin(($Angle2 + 180) * PI / 180) * $Force + $Y2;
-					$Xv2 = cos(($Angle1 + 180) * PI / 180) * $Force + $XOff;
-					$Yv2 = sin(($Angle1 + 180) * PI / 180) * $Force + $YOff;
-				}
-
-				$Path = $this->drawBezier($X1, $Y1, $X2, $Y2, $Xv1, $Yv1, $Xv2, $Yv2, $Format);
-				if ($PathOnly) {
-					$Result[] = $Path;
-				}
-
-				$XLast = $X1;
-				$YLast = $Y1;
+		#$Cpt = NULL; # UNUSED
+		#$Mode = NULL;
+		$Result = [];
+		for ($i = 1; $i <= count($Coordinates) - 1; $i++) {
+			$X1 = $Coordinates[$i - 1][0];
+			$Y1 = $Coordinates[$i - 1][1];
+			$X2 = $Coordinates[$i][0];
+			$Y2 = $Coordinates[$i][1];
+			if ($Forces != NULL) {
+				$Force = $Forces[$i];
 			}
 
-			return $Result;
+			/* First segment */
+			if ($i == 1) {
+				$Xv1 = $X1;
+				$Yv1 = $Y1;
+			} else {
+				$Angle1 = $this->getAngle($XLast, $YLast, $X1, $Y1);
+				$Angle2 = $this->getAngle($X1, $Y1, $X2, $Y2);
+				$XOff = cos($Angle2 * PI / 180) * $Force + $X1;
+				$YOff = sin($Angle2 * PI / 180) * $Force + $Y1;
+				$Xv1 = cos($Angle1 * PI / 180) * $Force + $XOff;
+				$Yv1 = sin($Angle1 * PI / 180) * $Force + $YOff;
+			}
+
+			/* Last segment */
+			if ($i == count($Coordinates) - 1) {
+				$Xv2 = $X2;
+				$Yv2 = $Y2;
+			} else {
+				$Angle1 = $this->getAngle($X2, $Y2, $Coordinates[$i + 1][0], $Coordinates[$i + 1][1]);
+				$Angle2 = $this->getAngle($X1, $Y1, $X2, $Y2);
+				$XOff = cos(($Angle2 + 180) * PI / 180) * $Force + $X2;
+				$YOff = sin(($Angle2 + 180) * PI / 180) * $Force + $Y2;
+				$Xv2 = cos(($Angle1 + 180) * PI / 180) * $Force + $XOff;
+				$Yv2 = sin(($Angle1 + 180) * PI / 180) * $Force + $YOff;
+			}
+
+			$Path = $this->drawBezier($X1, $Y1, $X2, $Y2, $Xv1, $Yv1, $Xv2, $Yv2, $Format);
+			if ($PathOnly) {
+				$Result[] = $Path;
+			}
+
+			$XLast = $X1;
+			$YLast = $Y1;
 		}
+
+		return $Result;
+	}
 
 	/* Draw a bezier curve with two controls points */
 	function drawBezier($X1, $Y1, $X2, $Y2, $Xv1, $Yv1, $Xv2, $Yv2, array $Format = [])
