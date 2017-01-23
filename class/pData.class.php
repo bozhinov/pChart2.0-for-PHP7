@@ -659,7 +659,7 @@ class pData
 	function loadPalette($FileName, $Overwrite = FALSE)
 	{
 		if (!file_exists($FileName)) {
-			return (-1);
+			die("Palette not found");
 		}
 
 		if ($Overwrite) {
@@ -677,6 +677,9 @@ class pData
 			if (count($pal) > 1) {
 				list($R, $G, $B, $Alpha) = $pal;
 				$ID = ($this->Palette == []) ? 0 : count($this->Palette);
+				if (substr($Alpha,-1,1) == "\n"){ # fix for PHP 7.1.1
+					$Alpha = substr($Alpha, 0, -1);
+				}
 				$this->Palette[$ID] = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
 			}
 		}
