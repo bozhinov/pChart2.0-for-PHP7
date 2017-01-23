@@ -1,7 +1,7 @@
 pChart 2.0 library for PHP 7
 ===================
 
-The good old pChart got a overhaul
+The good old pChart got an overhaul
 
  - All examples work fine with zero code modifications to them
  - Code was beautified
