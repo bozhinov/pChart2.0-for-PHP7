@@ -1996,6 +1996,9 @@ class pDraw
 			if ($Mode == SCALE_MODE_FLOATING || $Mode == SCALE_MODE_START0) {
 				foreach($Data["Series"] as $SerieID => $SerieParameter) {
 					if ($SerieParameter["Axis"] == $AxisID && $Data["Series"][$SerieID]["isDrawable"] && $Data["Abscissa"] != $SerieID) {
+						if (!is_numeric($Data["Series"][$SerieID]["Max"]) || !is_numeric($Data["Series"][$SerieID]["Min"])){
+							die("Series ".$SerieID.": non-numeric input");
+						}
 						$AxisMax = max($AxisMax, $Data["Series"][$SerieID]["Max"]);
 						$AxisMin = min($AxisMin, $Data["Series"][$SerieID]["Min"]);
 					}
