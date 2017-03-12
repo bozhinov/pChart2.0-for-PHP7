@@ -40,7 +40,7 @@ class pPie
 	}
 
 	/* Draw a pie chart */
-	function draw2DPie($X, $Y, array $Format = [])
+	function draw2DPie($X, $Y, $Format = [])
 	{
 		$Precision = 0;
 		$SecondPass = TRUE;
@@ -322,7 +322,7 @@ class pPie
 	}
 
 	/* Draw a 3D pie chart */
-	function draw3DPie($X, $Y, array $Format = [])
+	function draw3DPie($X, $Y, $Format = [])
 	{
 		$Precision = 0;
 		$SecondPass = TRUE;
@@ -756,7 +756,7 @@ class pPie
 		return (PIE_RENDERED);
 	}
 	
-	function drawPieLegend($X, $Y, array $Format = [])
+	function drawPieLegend($X, $Y, $Format = [])
 	{
 		$FontName = $this->pChartObject->FontName;
 		$FontSize = $this->pChartObject->FontSize;
@@ -866,7 +866,7 @@ class pPie
 	}
 
 	/* Set the color of the specified slice */
-	function setSliceColor($SliceID, array $Format = [])
+	function setSliceColor($SliceID, $Format = [])
 	{
 		$this->pDataObject->Palette[$SliceID] = [
 			"R" => isset($Format["R"]) ? $Format["R"] : 0,
@@ -977,7 +977,7 @@ class pPie
 	}
 
 	/* Draw a ring chart */
-	function draw2DRing($X, $Y, array $Format = [])
+	function draw2DRing($X, $Y, $Format = [])
 	{	
 		$Precision = 0;
 		$Border = FALSE;
@@ -1221,7 +1221,7 @@ class pPie
 		return (PIE_RENDERED);
 	}
 
-	function draw3DRing($X, $Y, array $Format = [])
+	function draw3DRing($X, $Y, $Format = [])
 	{
 		$Precision = 0;
 		$Border = FALSE;

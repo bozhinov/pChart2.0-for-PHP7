@@ -29,7 +29,7 @@ class pStock
 	}
 
 	/* Draw a stock chart */
-	function drawStockChart(array $Format = [])
+	function drawStockChart($Format = [])
 	{
 		$SerieOpen = "Open";
 		$SerieClose = "Close";

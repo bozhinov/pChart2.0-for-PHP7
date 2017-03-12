@@ -67,7 +67,7 @@ class pSurface
 	}
 
 	/* Write the X labels */
-	function writeXLabels(array $Format = [])
+	function writeXLabels($Format = [])
 	{
 		$R = $this->pChartObject->FontColorR;
 		$G = $this->pChartObject->FontColorG;
@@ -120,7 +120,7 @@ class pSurface
 	}
 
 	/* Write the Y labels */
-	function writeYLabels(array $Format = [])
+	function writeYLabels($Format = [])
 	{
 		$R = $this->pChartObject->FontColorR;
 		$G = $this->pChartObject->FontColorG;
@@ -161,7 +161,7 @@ class pSurface
 	}
 
 	/* Draw the area arround the specified Threshold */
-	function drawContour($Threshold, array $Format = [])
+	function drawContour($Threshold, $Format = [])
 	{
 		$R = 0;
 		$G = 0;
@@ -204,7 +204,7 @@ class pSurface
 	}
 
 	/* Draw the surface chart */
-	function drawSurface(array $Format = [])
+	function drawSurface($Format = [])
 	{
 		$Palette = NULL;
 		$ShadeR1 = 77;

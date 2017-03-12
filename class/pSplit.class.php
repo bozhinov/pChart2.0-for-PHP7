@@ -24,7 +24,7 @@ class pSplit
 	function __construct(){}
 
 	/* Create the encoded string */
-	function drawSplitPath($Object, $Values, array $Format = [])
+	function drawSplitPath($Object, $Values, $Format = [])
 	{
 		$this->pChartObject = $Object;
 		$Spacing = isset($Format["Spacing"]) ? $Format["Spacing"] : 20;

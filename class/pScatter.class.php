@@ -28,7 +28,7 @@ class pScatter
 	}
 
 	/* Prepare the scale */
-	function drawScatterScale(array $Format = [])
+	function drawScatterScale($Format = [])
 	{
 		
 		/* Check if we have at least both one X and Y axis */
@@ -444,7 +444,7 @@ class pScatter
 	}
 
 	/* Draw a scatter plot chart */
-	function drawScatterPlotChart(array $Format = [])
+	function drawScatterPlotChart($Format = [])
 	{
 		$PlotSize = 3;
 		$PlotBorder = FALSE;
@@ -516,7 +516,7 @@ class pScatter
 	}
 
 	/* Draw a scatter line chart */
-	function drawScatterLineChart(array $Format = [])
+	function drawScatterLineChart($Format = [])
 	{
 		$Data = $this->pDataObject->getData();
 		$Palette = $this->pDataObject->getPalette();
@@ -571,7 +571,7 @@ class pScatter
 	}
 
 	/* Draw a scatter spline chart */
-	function drawScatterSplineChart(array $Format = [])
+	function drawScatterSplineChart($Format = [])
 	{
 		$Data = $this->pDataObject->getData();
 		$Palette = $this->pDataObject->getPalette();
@@ -676,7 +676,7 @@ class pScatter
 	}
 
 	/* Draw the legend of the active series */
-	function drawScatterLegend($X, $Y, array $Format = [])
+	function drawScatterLegend($X, $Y, $Format = [])
 	{
 		$Family = LEGEND_FAMILY_BOX;
 		$FontName = $this->pChartObject->FontName;
@@ -817,7 +817,7 @@ class pScatter
 	} 
 
 	/* Get the legend box size */
-	function getScatterLegendSize(array $Format = [])
+	function getScatterLegendSize($Format = [])
 	{
 		$FontName = isset($Format["FontName"]) ? $Format["FontName"] : $this->pChartObject->FontName;
 		$FontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : $this->pChartObject->FontSize;
@@ -883,7 +883,7 @@ class pScatter
 	}
 
 	/* Draw the line of best fit */
-	function drawScatterBestFit(array $Format = [])
+	function drawScatterBestFit($Format = [])
 	{
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : 0;
 		$Data = $this->pDataObject->getData();
@@ -952,7 +952,7 @@ class pScatter
 		}
 	}
 
-	function writeScatterLabel($ScatterSerieID, $Points, array $Format = [])
+	function writeScatterLabel($ScatterSerieID, $Points, $Format = [])
 	{
 		$Data = $this->pDataObject->getData();
 		$Palette = $this->pDataObject->getPalette();
@@ -1004,7 +1004,7 @@ class pScatter
 	}
 
 	/* Draw a Scatter threshold */
-	function drawScatterThreshold($Value, array $Format = [])
+	function drawScatterThreshold($Value, $Format = [])
 	{
 				
 		$AxisID = 0;
@@ -1121,7 +1121,7 @@ class pScatter
 	}
 
 	/* Draw a Scatter threshold area */
-	function drawScatterThresholdArea($Value1, $Value2, array $Format = [])
+	function drawScatterThresholdArea($Value1, $Value2, $Format = [])
 	{		
 		$AxisID = 0;
 		$R = isset($Format["R"]) ? $Format["R"] : 255;

@@ -27,7 +27,7 @@ class pRadar
 	function __construct(){}
 	
 	/* Draw a radar chart */
-	function drawRadar($Object, $Values, array $Format = [])
+	function drawRadar($Object, $Values, $Format = [])
 	{
 		$this->pChartObject = $Object;
 		$FixedMax = VOID;
@@ -396,7 +396,7 @@ class pRadar
 	}
 
 	/* Draw a radar chart */
-	function drawPolar($Object, $Values, array $Format = [])
+	function drawPolar($Object, $Values, $Format = [])
 	{
 		$this->pChartObject = $Object;
 		$FixedMax = VOID;

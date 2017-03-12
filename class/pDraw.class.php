@@ -110,7 +110,7 @@ class pDraw
 	}
 
 	/* Draw a polygon */
-	function drawPolygon($Points, array $Format = [])
+	function drawPolygon($Points, $Format = [])
 	{
 		$R = isset($Format["R"]) ? $Format["R"] : 0;
 		$G = isset($Format["G"]) ? $Format["G"] : 0;
@@ -203,7 +203,7 @@ class pDraw
 	}
 
 	/* Draw a rectangle with rounded corners */
-	function drawRoundedRectangle($X1, $Y1, $X2, $Y2, $Radius, array $Format = [])
+	function drawRoundedRectangle($X1, $Y1, $X2, $Y2, $Radius, $Format = [])
 	{
 		$R = isset($Format["R"]) ? $Format["R"] : 0;
 		$G = isset($Format["G"]) ? $Format["G"] : 0;
@@ -252,7 +252,7 @@ class pDraw
 	}
 
 	/* Draw a rectangle with rounded corners */
-	function drawRoundedFilledRectangle($X1, $Y1, $X2, $Y2, $Radius, array $Format = [])
+	function drawRoundedFilledRectangle($X1, $Y1, $X2, $Y2, $Radius, $Format = [])
 	{		
 		$R = 0;
 		$G = 0;
@@ -366,7 +366,7 @@ class pDraw
 	}
 
 	/* Draw a rectangle with rounded corners */
-	function drawRoundedFilledRectangle_deprecated($X1, $Y1, $X2, $Y2, $Radius, array $Format = []) # UNUSED
+	function drawRoundedFilledRectangle_deprecated($X1, $Y1, $X2, $Y2, $Radius, $Format = []) # UNUSED
 	{
 		$R = 0;
 		$G = 0;
@@ -456,7 +456,7 @@ class pDraw
 	}
 
 	/* Draw a rectangle */
-	function drawRectangle($X1, $Y1, $X2, $Y2, array $Format = [])
+	function drawRectangle($X1, $Y1, $X2, $Y2, $Format = [])
 	{		
 		$R = isset($Format["R"]) ? $Format["R"] : 0;
 		$G = isset($Format["G"]) ? $Format["G"] : 0;
@@ -487,7 +487,7 @@ class pDraw
 	}
 
 	/* Draw a filled rectangle */
-	function drawFilledRectangle($X1, $Y1, $X2, $Y2, array $Format = [])
+	function drawFilledRectangle($X1, $Y1, $X2, $Y2, $Format = [])
 	{
 				
 		$R = isset($Format["R"]) ? $Format["R"] : 0;
@@ -608,7 +608,7 @@ class pDraw
 	}
 
 	/* Draw a rectangular marker of the specified size */
-	function drawRectangleMarker($X, $Y, array $Format = [])
+	function drawRectangleMarker($X, $Y, $Format = [])
 	{
 		$Size = isset($Format["Size"]) ? $Format["Size"] : 4;
 		$HalfSize = floor($Size / 2);
@@ -616,7 +616,7 @@ class pDraw
 	}
 
 	/* Drawn a spline based on the bezier function */
-	function drawSpline(array $Coordinates, array $Format = []): array {
+	function drawSpline($Coordinates, $Format = []){
 		
 		#$R = 0; # UNUSED
 		#$G = 0;
@@ -682,7 +682,7 @@ class pDraw
 	}
 
 	/* Draw a bezier curve with two controls points */
-	function drawBezier($X1, $Y1, $X2, $Y2, $Xv1, $Yv1, $Xv2, $Yv2, array $Format = [])
+	function drawBezier($X1, $Y1, $X2, $Y2, $Xv1, $Yv1, $Xv2, $Yv2, $Format = [])
 	{
 		
 		$R = 0;
@@ -799,7 +799,7 @@ class pDraw
 	}
 
 	/* Draw a line between two points */
-	function drawLine($X1, $Y1, $X2, $Y2, array $Format = []) # FAST
+	function drawLine($X1, $Y1, $X2, $Y2, $Format = []) # FAST
 	{
 		$R = isset($Format["R"]) ? $Format["R"] : 0;
 		$G = isset($Format["G"]) ? $Format["G"] : 0;
@@ -899,7 +899,7 @@ class pDraw
 	}
 
 	/* Draw a circle */
-	function drawCircle($Xc, $Yc, $Height, $Width, array $Format = [])
+	function drawCircle($Xc, $Yc, $Height, $Width, $Format = [])
 	{	
 	
 		$R = isset($Format["R"]) ? $Format["R"] : 0;
@@ -956,7 +956,7 @@ class pDraw
 	}
 
 	/* Draw a filled circle */
-	function drawFilledCircle($X, $Y, $Radius, array $Format = [])
+	function drawFilledCircle($X, $Y, $Radius, $Format = [])
 	{
 		
 		$R = 0;
@@ -1014,7 +1014,7 @@ class pDraw
 	}
 
 	/* Write text */
-	function drawText($X, $Y, $Text, array $Format = [])
+	function drawText($X, $Y, $Text, $Format = [])
 	{
 		$R = $this->FontColorR;
 		$G = $this->FontColorG;
@@ -1114,7 +1114,7 @@ class pDraw
 	}
 
 	/* Draw a gradient within a defined area */
-	function drawGradientArea($X1, $Y1, $X2, $Y2, $Direction, array $Format = [])
+	function drawGradientArea($X1, $Y1, $X2, $Y2, $Direction, $Format = [])
 	{
 		$StartR = 90;
 		$StartG = 90;
@@ -1211,7 +1211,7 @@ class pDraw
 	}
 
 	/* Draw an aliased pixel */
-	function drawAntialiasPixel($X, $Y, array $Format = [])
+	function drawAntialiasPixel($X, $Y, $Format = [])
 	{
 				
 		if ($X < 0 || $Y < 0 || $X >= $this->XSize || $Y >= $this->YSize){
@@ -1434,7 +1434,7 @@ class pDraw
 	} 
 
 		/* Draw an arrow */
-	function drawArrow($X1, $Y1, $X2, $Y2, array $Format = [])
+	function drawArrow($X1, $Y1, $X2, $Y2, $Format = [])
 	{
 		$FillR = isset($Format["FillR"]) ? $Format["FillR"] : 0;
 		$FillG = isset($Format["FillG"]) ? $Format["FillG"] : 0;
@@ -1498,7 +1498,7 @@ class pDraw
 	}
 
 	/* Draw a label with associated arrow */
-	function drawArrowLabel($X1, $Y1, $Text, array $Format = [])
+	function drawArrowLabel($X1, $Y1, $Text, $Format = [])
 	{
 		$FillR = isset($Format["FillR"]) ? $Format["FillR"] : 0;
 		$FillG = isset($Format["FillG"]) ? $Format["FillG"] : 0;
@@ -1555,7 +1555,7 @@ class pDraw
 	}
 
 	/* Draw a progress bar filled with specified % */
-	function drawProgress($X, $Y, $Percent, array $Format = [])
+	function drawProgress($X, $Y, $Percent, $Format = [])
 	{
 		($Percent > 100) AND $Percent = 100;
 		($Percent < 0) AND $Percent = 0;
@@ -1672,7 +1672,7 @@ class pDraw
 	}
 
 	/* Get the legend box size */
-	function getLegendSize(array $Format = [])
+	function getLegendSize($Format = [])
 	{
 		$FontName = $this->FontName;
 		$FontSize = $this->FontSize;
@@ -1741,7 +1741,7 @@ class pDraw
 	}
 
 	/* Draw the legend of the active series */
-	function drawLegend($X, $Y, array $Format = [])
+	function drawLegend($X, $Y, $Format = [])
 	{
 		$Family = LEGEND_FAMILY_BOX;
 		$FontName = $this->FontName;
@@ -1885,7 +1885,7 @@ class pDraw
 		$this->Shadow = $RestoreShadow;
 	}
 
-	function drawScale(array $Format = [])
+	function drawScale($Format = [])
 	{
 		$Pos = SCALE_POS_LEFTRIGHT;
 		$Floating = FALSE;
@@ -2942,7 +2942,7 @@ class pDraw
 	}
 
 	/* Draw an X threshold */
-	function drawXThreshold($Value, array $Format = [])
+	function drawXThreshold($Value, $Format = [])
 	{
 		$R = 255;
 		$G = 0;
@@ -3086,7 +3086,7 @@ class pDraw
 	}
 
 	/* Draw an X threshold area */
-	function drawXThresholdArea($Value1, $Value2, array $Format = []) 
+	function drawXThresholdArea($Value1, $Value2, $Format = []) 
 	{
 		$R = isset($Format["R"]) ? $Format["R"] : 255;
 		$G = isset($Format["G"]) ? $Format["G"] : 0;
@@ -3186,7 +3186,7 @@ class pDraw
 	}
 
 	/* Draw an Y threshold with the computed scale */
-	function drawThreshold($Value, array $Format = [])
+	function drawThreshold($Value, $Format = [])
 	{
 				
 		$AxisID = 0;
@@ -3320,7 +3320,7 @@ class pDraw
 	}
 
 	/* Draw a threshold with the computed scale */
-	function drawThresholdArea($Value1, $Value2, array $Format = []) 
+	function drawThresholdArea($Value1, $Value2, $Format = []) 
 	{
 		$AxisID = 0;
 		$R = isset($Format["R"]) ? $Format["R"] : 255;
@@ -3441,7 +3441,7 @@ class pDraw
 		}
 	}
 
-	function scaleComputeY($Values, array $Option, $ReturnOnly0Height = FALSE) // $values is often set to 0 not [0]
+	function scaleComputeY($Values, $Option, $ReturnOnly0Height = FALSE) // $values is often set to 0 not [0]
 	{
 		$Values = $this->convertToArray($Values);
 		if (count($Values) == 0) { // Momchil
@@ -3564,7 +3564,7 @@ class pDraw
 	}
 
 	/* Write Max value on a chart */
-	function writeBounds($Type = BOUND_BOTH, array $Format = [])
+	function writeBounds($Type = BOUND_BOTH, $Format = [])
 	{
 		$MaxLabelTxt = "max=";
 		$MinLabelTxt = "min=";
@@ -3779,7 +3779,7 @@ class pDraw
 	}
 
 	/* Draw a plot chart */
-	function drawPlotChart(array $Format = [])
+	function drawPlotChart($Format = [])
 	{
 		$PlotSize = NULL;
 		$PlotBorder = FALSE;
@@ -4085,7 +4085,7 @@ class pDraw
 	}
 
 	/* Draw a filled spline chart */
-	function drawFilledSplineChart(array $Format = [])
+	function drawFilledSplineChart($Format = [])
 	{
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
@@ -4293,7 +4293,7 @@ class pDraw
 	}
 
 	/* Draw a line chart */
-	function drawLineChart(array $Format = [])
+	function drawLineChart($Format = [])
 	{
 		$BreakVoid = TRUE;
 		$VoidTicks = 4;
@@ -4455,7 +4455,7 @@ class pDraw
 	}
 
 	/* Draw a line chart */
-	function drawZoneChart($SerieA, $SerieB, array $Format = [])
+	function drawZoneChart($SerieA, $SerieB, $Format = [])
 	{
 		$AxisID = 0;
 		$LineR = 150;
@@ -4559,7 +4559,7 @@ class pDraw
 	}
 
 	/* Draw a step chart */
-	function drawStepChart(array $Format = [])
+	function drawStepChart($Format = [])
 	{
 		$BreakVoid = FALSE;
 		$ReCenter = TRUE;
@@ -4801,7 +4801,7 @@ class pDraw
 	}
 
 	/* Draw a step chart */
-	function drawFilledStepChart(array $Format = [])
+	function drawFilledStepChart($Format = [])
 	{
 		$ReCenter = TRUE;
 		$DisplayValues = FALSE;
@@ -4993,7 +4993,7 @@ class pDraw
 	}
 
 	/* Draw an area chart */
-	function drawAreaChart(array $Format = [])
+	function drawAreaChart($Format = [])
 	{
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
@@ -5204,7 +5204,7 @@ class pDraw
 	}
 	
 	/* Draw a bar chart */
-	function drawBarChart(array $Format = [])
+	function drawBarChart($Format = [])
 	{
 		$Floating0Serie = NULL;
 		$Floating0Value = NULL;
@@ -5549,7 +5549,7 @@ class pDraw
 	}
 
 	/* Draw a bar chart */
-	function drawStackedBarChart(array $Format = [])
+	function drawStackedBarChart($Format = [])
 	{
 		$DisplayValues = FALSE;
 		$DisplayOrientation = ORIENTATION_AUTO;
@@ -5810,7 +5810,7 @@ class pDraw
 	} 
 
 	/* Draw a stacked area chart */
-	function drawStackedAreaChart(array $Format = [])
+	function drawStackedAreaChart($Format = [])
 	{
 		$DrawLine = FALSE;
 		$LineSurrounding = NULL;
@@ -6032,7 +6032,7 @@ class pDraw
 	}
 
 	/* Draw the derivative chart associated to the data series */
-	function drawDerivative(array $Format = [])
+	function drawDerivative($Format = [])
 	{
 		$Offset = 10;
 		$SerieSpacing = 3;
@@ -6303,7 +6303,7 @@ class pDraw
 	} 
 
 	/* Draw the line of best fit */
-	function drawBestFit(array $Format = [])
+	function drawBestFit($Format = [])
 	{
 		$OverrideTicks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$OverrideR = isset($Format["R"]) ? $Format["R"] : VOID;
@@ -6449,7 +6449,7 @@ class pDraw
 	}
 
 	/* Write labels */
-	function writeLabel($SeriesName, $Indexes, array $Format = [])
+	function writeLabel($SeriesName, $Indexes, $Format = [])
 	{
 		$OverrideTitle = NULL;
 		$ForceLabels = NULL;
@@ -6682,7 +6682,7 @@ class pDraw
 	}
 
 	/* Draw a label box */
-	function drawLabelBox($X, $Y, $Title, $Captions, array $Format = [])
+	function drawLabelBox($X, $Y, $Title, $Captions, $Format = [])
 	{
 
 		$NoTitle = NULL;
@@ -6931,7 +6931,7 @@ class pDraw
 		}
 	}
 
-	function drawPolygonChart($Points, array $Format = [])
+	function drawPolygonChart($Points, $Format = [])
 	{
 		$R = isset($Format["R"]) ? $Format["R"] : 0;
 		$G = isset($Format["G"]) ? $Format["G"] : 0;

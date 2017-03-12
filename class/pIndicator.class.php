@@ -31,7 +31,7 @@ class pIndicator
 	}
 
 	/* Draw an indicator */
-	function draw($X, $Y, $Width, $Height, array $Format = [])
+	function draw($X, $Y, $Width, $Height, $Format = [])
 	{
 
 		/* No section, let's die */
