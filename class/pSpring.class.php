@@ -81,11 +81,11 @@ class pSpring
 	function linkProperties($FromNode, $ToNode, array $Settings)
 	{
 		if (!isset($this->Data[$FromNode])) {
-			return (0);
+			return 0;
 		}
 
 		if (!isset($this->Data[$ToNode])) {
-			return (0);
+			return 0;
 		}
 
 		$R = 0;
@@ -124,7 +124,7 @@ class pSpring
 	{
 		/* if the node already exists, ignore */
 		if (isset($this->Data[$NodeID])) {
-			return (0);
+			return 0;
 		}
 
 		$Name = "Node " . $NodeID;
@@ -233,7 +233,7 @@ class pSpring
 	/* Returns all the nodes details */
 	function dumpNodes()
 	{
-		return ($this->Data);
+		return $this->Data;
 	}
 
 	/* Check if a connection exists and create it if required */
@@ -242,7 +242,7 @@ class pSpring
 		if (isset($this->Data[$SourceID]["Connections"])) {
 			foreach($this->Data[$SourceID]["Connections"] as $Key => $ConnectionID) {
 				if ($TargetID == $ConnectionID) {
-					return (TRUE);
+					return TRUE;
 				}
 			}
 		}
@@ -271,7 +271,7 @@ class pSpring
 	function getBiggestPartner($Key)
 	{
 		if (!isset($this->Data[$Key]["Connections"])) {
-			return ("");
+			return "";
 		}
 
 		$MaxWeight = 0;
@@ -283,7 +283,7 @@ class pSpring
 			}
 		}
 
-		return ($Result);
+		return $Result;
 	}
 
 	/* Do the initial node positions computing pass */
@@ -763,7 +763,7 @@ class pSpring
 	/* Return the distance between two points */
 	function getDistance($X1, $Y1, $X2, $Y2)
 	{
-		return (sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1)));
+		return sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1));
 	}
 
 	/* Return the angle made by a line and the X axis */
@@ -782,23 +782,23 @@ class pSpring
 		$A = (($X3 * $Y4 - $X4 * $Y3) * ($X1 - $X2) - ($X1 * $Y2 - $X2 * $Y1) * ($X3 - $X4));
 		$B = (($Y1 - $Y2) * ($X3 - $X4) - ($Y3 - $Y4) * ($X1 - $X2));
 		if ($B == 0) {
-			return (FALSE);
+			return FALSE;
 		}
 
 		$Xi = $A / $B;
 		$C = ($X1 - $X2);
 		if ($C == 0) {
-			return (FALSE);
+			return FALSE;
 		}
 
 		$Yi = $Xi * (($Y1 - $Y2) / $C) + (($X1 * $Y2 - $X2 * $Y1) / $C);
 		if ($Xi >= min($X1, $X2) && $Xi >= min($X3, $X4) && $Xi <= max($X1, $X2) && $Xi <= max($X3, $X4)) {
 			if ($Yi >= min($Y1, $Y2) && $Yi >= min($Y3, $Y4) && $Yi <= max($Y1, $Y2) && $Yi <= max($Y3, $Y4)) {
-				return (TRUE);
+				return TRUE;
 			}
 		}
 
-		return (FALSE);
+		return FALSE;
 	}
 }
 

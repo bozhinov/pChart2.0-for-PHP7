@@ -49,7 +49,7 @@ define("EURO_SYMBOL", utf8_encode("&#8364;"));
 class pData
 {
 	var $Data;
-	var $Palette = array(
+	var $Palette = [
 		"0" => ["R" => 188,"G" => 224,"B" => 46,"Alpha" => 100],
 		"1" => ["R" => 224,"G" => 100,"B" => 46,"Alpha" => 100],
 		"2" => ["R" => 224,"G" => 214,"B" => 46,"Alpha" => 100],
@@ -58,7 +58,7 @@ class pData
 		"5" => ["R" => 224,"G" => 46,"B" => 117,"Alpha" => 100],
 		"6" => ["R" => 92,"G" => 224,"B" => 46,	"Alpha" => 100],
 		"7" => ["R" => 224,"G" => 176,"B" => 46,"Alpha" => 100]
-	);
+	];
 	/* Class creator */
 	function __construct()
 	{
@@ -130,7 +130,7 @@ class pData
 	function removeSerie($Series)
 	{
 
-		$Series = $this->convertToArrayIfNeeded($Series);
+		$Series = $this->convertToArray($Series);
 
 		foreach($Series as $Key => $Serie) {
 			if (isset($this->Data["Series"][$Serie])) {
@@ -155,7 +155,7 @@ class pData
 	function reverseSerie($Series)
 	{
 
-		$Series = $this->convertToArrayIfNeeded($Series);
+		$Series = $this->convertToArray($Series);
 
 		foreach($Series as $Key => $Serie) {
 			if (isset($this->Data["Series"][$Serie]["Data"])) {
@@ -185,7 +185,7 @@ class pData
 	/* Set the description of a given serie */
 	function setSerieShape($Series, $Shape = SERIE_SHAPE_FILLEDCIRCLE)
 	{
-		$Series = $this->convertToArrayIfNeeded($Series);
+		$Series = $this->convertToArray($Series);
 
 		foreach($Series as $Key => $Serie) {
 			if (isset($this->Data["Series"][$Serie])) {
@@ -197,7 +197,7 @@ class pData
 	/* Set the description of a given serie */
 	function setSerieDescription($Series, $Description = "My serie")
 	{
-		$Series = $this->convertToArrayIfNeeded($Series);
+		$Series = $this->convertToArray($Series);
 
 		foreach($Series as $Key => $Serie) {
 			if (isset($this->Data["Series"][$Serie])) {
@@ -209,7 +209,7 @@ class pData
 	/* Set a serie as "drawable" while calling a rendering function */
 	function setSerieDrawable($Series, $Drawable = TRUE)
 	{
-		$Series = $this->convertToArrayIfNeeded($Series);
+		$Series = $this->convertToArray($Series);
 
 		foreach($Series as $Key => $Serie) {
 			if (isset($this->Data["Series"][$Serie])) {
@@ -221,7 +221,7 @@ class pData
 	/* Set the icon associated to a given serie */
 	function setSeriePicture($Series, $Picture = NULL)
 	{
-		$Series = $this->convertToArrayIfNeeded($Series);
+		$Series = $this->convertToArray($Series);
 
 		foreach($Series as $Key => $Serie) {
 			if (isset($this->Data["Series"][$Serie])) {
@@ -378,7 +378,7 @@ class pData
 			$SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
 			return (array_sum($SerieData) / sizeof($SerieData));
 		} else {
-			return (NULL);
+			return NULL;
 		}
 	}
 
@@ -394,7 +394,7 @@ class pData
 
 			return (pow($Seriesum, 1 / sizeof($SerieData)));
 		} else {
-			return (NULL);
+			return NULL;
 		}
 	}
 
@@ -410,7 +410,7 @@ class pData
 
 			return (sizeof($SerieData) / $Seriesum);
 		} else {
-			return (NULL);
+			return NULL;
 		}
 	}
 
@@ -427,7 +427,7 @@ class pData
 
 			return sqrt($DeviationSum / count($SerieData));
 		} else {
-			return (NULL);
+			return NULL;
 		}
 	}
 
@@ -439,7 +439,7 @@ class pData
 			$StandardDeviation = $this->getStandardDeviation($Serie);
 			return ($StandardDeviation != 0) ? ($StandardDeviation / $Average) : NULL;
 		} else {
-			return (NULL);
+			return NULL;
 		}
 	}
 
@@ -452,7 +452,7 @@ class pData
 			$SerieCenter = floor(sizeof($SerieData) / 2);
 			return (isset($SerieData[$SerieCenter])) ? $SerieData[$SerieCenter] : NULL;
 		} else {
-			return (NULL);
+			return NULL;
 		}
 	}
 
@@ -460,7 +460,7 @@ class pData
 	function getSeriePercentile($Serie = "Serie1", $Percentil = 95)
 	{
 		if (!isset($this->Data["Series"][$Serie]["Data"])) {
-			return (NULL);
+			return NULL;
 		}
 
 		$Values = count($this->Data["Series"][$Serie]["Data"]) - 1;
@@ -559,7 +559,7 @@ class pData
 	/* Associate one data serie with one axis */
 	function setSerieOnAxis($Series, $AxisID)
 	{
-		$Series = $this->convertToArrayIfNeeded($Series);
+		$Series = $this->convertToArray($Series);
 		
 		foreach($Series as $Key => $Serie) {
 			$PreviousAxis = $this->Data["Series"][$Serie]["Axis"];
@@ -587,7 +587,7 @@ class pData
 	/* Define if a serie should be draw with ticks */
 	function setSerieTicks($Series, $Width = 0)
 	{
-		$Series = $this->convertToArrayIfNeeded($Series);
+		$Series = $this->convertToArray($Series);
 
 		foreach($Series as $Key => $Serie) {
 			if (isset($this->Data["Series"][$Serie])) {
@@ -599,7 +599,7 @@ class pData
 	/* Define if a serie should be draw with a special weight */
 	function setSerieWeight($Series, $Weight = 0)
 	{
-		$Series = $this->convertToArrayIfNeeded($Series);
+		$Series = $this->convertToArray($Series);
 	
 		foreach($Series as $Key => $Serie) {
 			if (isset($this->Data["Series"][$Serie])) {
@@ -627,7 +627,7 @@ class pData
 	/* Set the color of one serie */
 	function setPalette($Series, array $Format = [])
 	{
-		$Series = $this->convertToArrayIfNeeded($Series);
+		$Series = $this->convertToArray($Series);
 		$R = isset($Format["R"]) ? $Format["R"] : 0;
 		$G = isset($Format["G"]) ? $Format["G"] : 0;
 		$B = isset($Format["B"]) ? $Format["B"] : 0;
@@ -668,7 +668,7 @@ class pData
 
 		$fileHandle = @fopen($FileName, "r");
 		if (!$fileHandle) {
-			return (-1);
+			return -1;
 		}
 
 		while (!feof($fileHandle)) {
@@ -699,7 +699,7 @@ class pData
 	function initScatterSerie($ID)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
-			return (0);
+			return 0;
 		}
 
 		$this->Data["ScatterSeries"][$ID] = [
@@ -824,7 +824,7 @@ class pData
 	{
 		
 		if ($Formula == "") {
-			return (0);
+			return 0;
 		}
 		
 		$MinX = isset($Options["MinX"]) ? $Options["MinX"] : -10;
@@ -865,7 +865,7 @@ class pData
 
 	function negateValues($Series)
 	{
-		$Series = $this->convertToArrayIfNeeded($Series);
+		$Series = $this->convertToArray($Series);
 
 		foreach($Series as $Key => $SerieName) {
 			if (isset($this->Data["Series"][$SerieName])) {
@@ -885,7 +885,7 @@ class pData
 	/* Return the data & configuration of the series */
 	function getData()
 	{
-		return ($this->Data);
+		return $this->Data;
 	}
 
 	/* Save a palette element */
@@ -897,7 +897,7 @@ class pData
 	/* Return the palette of the series */
 	function getPalette()
 	{
-		return ($this->Palette);
+		return $this->Palette;
 	}
 
 	/* Called by the scaling algorithm to save the config */
@@ -925,7 +925,7 @@ class pData
 	}
 
 	/* Convert a string to a single elements array */
-	function convertToArrayIfNeeded($Value)
+	function convertToArray($Value)
 	{
 		return (is_array($Value)) ? $Value : [$Value];
 	}
@@ -933,7 +933,7 @@ class pData
 	/* Class string wrapper */
 	function __toString()
 	{
-		return ("pData object.");
+		return "pData object.";
 	}
 
 	function left($value, $NbChar)

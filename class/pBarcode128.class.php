@@ -33,7 +33,7 @@ class pBarcode128
 			$Buffer = fgets($FileHandle, 4096);
 			$Buffer = str_replace(chr(10), "", $Buffer);
 			$Buffer = str_replace(chr(13), "", $Buffer);
-			$Values = preg_split("/;/", $Buffer);
+			$Values = explode(";", $Buffer);
 			$this->Codes[$Values[1]]["ID"] = $Values[0];
 			$this->Codes[$Values[1]]["Code"] = $Values[2];
 			$this->Reverse[$Values[0]]["Code"] = $Values[2];
@@ -85,7 +85,7 @@ class pBarcode128
 		$CRC = $CRC - floor($CRC / 103) * 103;
 		$this->Result = $this->Result . $this->Reverse[$CRC]["Code"]. "1100011101011";
 
-		return ($TextString);
+		return $TextString;
 	}
 
 	/* Create the encoded string */

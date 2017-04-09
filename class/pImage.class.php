@@ -128,7 +128,7 @@ class pImage extends pDraw
 	function setGraphArea($X1, $Y1, $X2, $Y2)
 	{
 		if ($X2 < $X1 || $X1 == $X2 || $Y2 < $Y1 || $Y1 == $Y2) {
-			return (-1);
+			return -1;
 		}
 
 		$this->GraphAreaX1 = $X1;
@@ -144,13 +144,13 @@ class pImage extends pDraw
 	/* Return the width of the picture */
 	function getWidth()
 	{
-		return ($this->XSize);
+		return $this->XSize;
 	}
 
 	/* Return the heigth of the picture */
 	function getHeight()
 	{
-		return ($this->YSize);
+		return $this->YSize;
 	}
 
 	/* Render the picture to a file */
@@ -226,7 +226,7 @@ class pImage extends pDraw
 		$RealPos[TEXT_ALIGN_BOTTOMLEFT]["Y"] = $RealPos[0]["Y"];
 		$RealPos[TEXT_ALIGN_BOTTOMRIGHT]["X"] = $RealPos[1]["X"];
 		$RealPos[TEXT_ALIGN_BOTTOMRIGHT]["Y"] = $RealPos[1]["Y"];
-		return ($RealPos);
+		return $RealPos;
 	}
 
 	/* Return the surrounding box of text area */
@@ -260,7 +260,7 @@ class pImage extends pDraw
 		$RealPos[TEXT_ALIGN_MIDDLERIGHT]["Y"] = ($RealPos[1]["Y"] - $RealPos[2]["Y"]) / 2 + $RealPos[2]["Y"];
 		$RealPos[TEXT_ALIGN_MIDDLEMIDDLE]["X"] = ($RealPos[1]["X"] - $RealPos[3]["X"]) / 2 + $RealPos[3]["X"];
 		$RealPos[TEXT_ALIGN_MIDDLEMIDDLE]["Y"] = ($RealPos[0]["Y"] - $RealPos[2]["Y"]) / 2 + $RealPos[2]["Y"];
-		return ($RealPos);
+		return $RealPos;
 	}
 
 	/* Set current font properties */
@@ -288,7 +288,7 @@ class pImage extends pDraw
 	/* Returns the 1st decimal values (used to correct AA bugs) */
 	function getFirstDecimal($Value)
 	{
-		$Values = preg_split("/\./", $Value);
+		$Values = explode(".", $Value);
 		return (isset($Values[1])) ? substr($Values[1], 0, 1) : 0;
 	}
 
@@ -358,7 +358,7 @@ class pImage extends pDraw
 	function removeVOIDFromArray($SerieName, array $Values)
 	{
 		if (!isset($this->DataSet->Data["Series"][$SerieName])) {
-			return (-1);
+			return -1;
 		}
 
 		$Result = [];
@@ -368,14 +368,14 @@ class pImage extends pDraw
 			}
 		}
 
-		return ($Result);
+		return $Result;
 	}
 
 	/* Replace the title of one image map serie */
 	function replaceImageMapTitle($OldTitle, $NewTitle)
 	{
 		if ($this->ImageMapStorageMode == NULL) {
-			return (-1);
+			return -1;
 		}
 
 		if (is_array($NewTitle)) {
@@ -384,7 +384,7 @@ class pImage extends pDraw
 
 		if ($this->ImageMapStorageMode == IMAGE_MAP_STORAGE_SESSION) {
 			if (!isset($_SESSION)) {
-				return (-1);
+				return -1;
 			}
 
 			if (is_array($NewTitle)) {
@@ -408,7 +408,7 @@ class pImage extends pDraw
 			$Handle = @fopen($this->ImageMapStorageFolder . "/" . $this->ImageMapFileName . ".map", "r");
 			if ($Handle) {
 				while (($Buffer = fgets($Handle, 4096)) !== false) {
-					$Fields = preg_split("/" . IMAGE_MAP_DELIMITER . "/", str_replace([chr(10),chr(13)] , "", $Buffer));
+					$Fields = preg_split("/" . IMAGE_MAP_DELIMITER . "/", str_replace([chr(10), chr(13)] , "", $Buffer));
 					$TempArray[] = [$Fields[0],$Fields[1],$Fields[2],$Fields[3],$Fields[4]];
 				}
 
@@ -443,14 +443,14 @@ class pImage extends pDraw
 	function replaceImageMapValues($Title, array $Values)
 	{
 		if ($this->ImageMapStorageMode == NULL) {
-			return (-1);
+			return -1;
 		}
 
 		$Values = $this->removeVOIDFromArray($Title, $Values);
 		$ID = 0;
 		if ($this->ImageMapStorageMode == IMAGE_MAP_STORAGE_SESSION) {
 			if (!isset($_SESSION)) {
-				return (-1);
+				return -1;
 			}
 
 			foreach($_SESSION[$this->ImageMapIndex] as $Key => $Settings) {
@@ -467,7 +467,7 @@ class pImage extends pDraw
 			$Handle = @fopen($this->ImageMapStorageFolder . "/" . $this->ImageMapFileName . ".map", "r");
 			if ($Handle) {
 				while (($Buffer = fgets($Handle, 4096)) !== false) {
-					$Fields = preg_split("/" . IMAGE_MAP_DELIMITER . "/", str_replace([chr(10) ,chr(13)] , "", $Buffer));
+					$Fields = preg_split("/" . IMAGE_MAP_DELIMITER . "/", str_replace([chr(10), chr(13)] , "", $Buffer));
 					$TempArray[] = [$Fields[0],$Fields[1],$Fields[2],$Fields[3],$Fields[4]];
 				}
 
@@ -539,7 +539,7 @@ class pImage extends pDraw
 		$Color.= (strlen($G) < 2 ? '0' : '') . $G;
 		$Color.= (strlen($B) < 2 ? '0' : '') . $B;
 		
-		return ($Color);
+		return $Color;
 	}
 
 	/* Reverse an array of points */
@@ -551,7 +551,7 @@ class pImage extends pDraw
 			$Result[] = $Plots[$i + 1];
 		}
 
-		return ($Result);
+		return $Result;
 	}
 
 	/* Mirror Effect */

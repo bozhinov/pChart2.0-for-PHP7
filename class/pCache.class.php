@@ -114,7 +114,7 @@ class pCache
 			$Object = $this->isInCache($ID, TRUE);
 			/* If it's not in the cache DB, go away */
 			if (!$Object) {
-				return (0);
+				return 0;
 			}
 		}
 
@@ -137,7 +137,7 @@ class pCache
 			$Entry = fgets($IndexHandle, 4096);
 			$Entry = str_replace("\r", "", $Entry);
 			$Entry = str_replace("\n", "", $Entry);
-			$Settings = preg_split("/,/", $Entry);
+			$Settings = explode(",", $Entry);
 			if ($Entry != "") {
 				$PicID = $Settings[0];
 				$DBPos = $Settings[1];
@@ -177,7 +177,7 @@ class pCache
 			$IndexPos = ftell($Handle);
 			$Entry = fgets($Handle, 4096);
 			if ($Entry != "") {
-				$Settings = preg_split("/,/", $Entry);
+				$Settings = explode(",", $Entry);
 				$PicID = $Settings[0];
 				if ($PicID == $ID) {
 					fclose($Handle);
@@ -198,9 +198,9 @@ class pCache
 					}
 
 					if ($Verbose) {
-						return (["DBPos" => $DBPos,"PicSize" => $PicSize,"GeneratedTS" => $GeneratedTS,"Hits" => $Hits]);
+						return ["DBPos" => $DBPos,"PicSize" => $PicSize,"GeneratedTS" => $GeneratedTS,"Hits" => $Hits];
 					} else {
-						return (TRUE);
+						return TRUE;
 					}
 				}
 			}
@@ -208,7 +208,7 @@ class pCache
 
 		fclose($Handle);
 		/* Picture isn't in the cache */
-		return (FALSE);
+		return FALSE;
 	}
 
 	/* Automatic output method based on the calling interface */
@@ -227,12 +227,12 @@ class pCache
 		$Picture = $this->getFromCache($ID);
 		/* Do we have a hit? */
 		if ($Picture == NULL) {
-			return (FALSE);
+			return FALSE;
 		}
 
 		header('Content-type: image/png');
 		echo $Picture;
-		return (TRUE);
+		return TRUE;
 	}
 
 	function saveFromCache($ID, $Destination)
@@ -241,7 +241,7 @@ class pCache
 		$Picture = $this->getFromCache($ID);
 		/* Do we have a hit? */
 		if ($Picture == NULL) {
-			return (FALSE);
+			return FALSE;
 		}
 
 		/* Flush the picture to a file */
@@ -249,7 +249,7 @@ class pCache
 		fwrite($Handle, $Picture);
 		fclose($Handle);
 		/* All went fine */
-		return (TRUE);
+		return TRUE;
 	}
 
 	function getFromCache($ID)
@@ -260,7 +260,7 @@ class pCache
 		$CacheInfo = $this->isInCache($ID, TRUE, TRUE);
 		/* Not in the cache */
 		if (!$CacheInfo) {
-			return (NULL);
+			return NULL;
 		}
 
 		/* Get the database extended information */
@@ -272,7 +272,7 @@ class pCache
 		$Picture = fread($Handle, $PicSize);
 		fclose($Handle);
 		/* Return back the raw picture data */
-		return ($Picture);
+		return $Picture;
 	}
 }
 

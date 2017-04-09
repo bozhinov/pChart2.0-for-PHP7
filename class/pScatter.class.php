@@ -40,11 +40,11 @@ class pScatter
 		}
 
 		if (!$GotXAxis) {
-			return (SCATTER_MISSING_X_SERIE);
+			return SCATTER_MISSING_X_SERIE;
 		}
 
 		if (!$GotYAxis) {
-			return (SCATTER_MISSING_Y_SERIE);
+			return SCATTER_MISSING_Y_SERIE;
 		}
 		
 		$Mode = SCALE_MODE_FLOATING;
@@ -958,7 +958,7 @@ class pScatter
 		$Palette = $this->pDataObject->getPalette();
 				
 		if (!isset($Data["ScatterSeries"][$ScatterSerieID])) {
-			return (0);
+			return 0;
 		}
 		
 		(!is_array($Points)) AND $Points = [$Points]; 
@@ -1044,7 +1044,7 @@ class pScatter
 		
 		$Data = $this->pDataObject->getData();
 		if (!isset($Data["Axis"][$AxisID])) {
-			return (-1);
+			return -1;
 		}
 		
 		($Caption == NULL) AND $Caption = $Value;
@@ -1147,7 +1147,7 @@ class pScatter
 		
 		$Data = $this->pDataObject->getData();
 		if (!isset($Data["Axis"][$AxisID])) {
-			return (-1);
+			return -1;
 		}
 		
 		($BorderAlpha > 100) AND $BorderAlpha = 100;

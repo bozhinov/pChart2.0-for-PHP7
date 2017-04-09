@@ -101,7 +101,7 @@ class pStock
 		$Data = $this->pChartObject->DataSet->getData();
 		list($XMargin, $XDivs) = $this->pChartObject->scaleGetXSettings();
 		if (!isset($Data["Series"][$SerieOpen]) || !isset($Data["Series"][$SerieClose]) || !isset($Data["Series"][$SerieMin]) || !isset($Data["Series"][$SerieMax])) {
-			return (STOCK_MISSING_SERIE);
+			return STOCK_MISSING_SERIE;
 		}
 
 		$Plots = [];

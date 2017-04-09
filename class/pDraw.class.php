@@ -96,17 +96,18 @@ class pDraw
 			}
 		}
 
-		return ($Results);
+		return $Results;
 	}
 
 	/* Fix box coordinates */
 	function fixBoxCoordinates($Xa, $Ya, $Xb, $Yb)
 	{
-		$X1 = min($Xa, $Xb);
-		$Y1 = min($Ya, $Yb);
-		$X2 = max($Xa, $Xb);
-		$Y2 = max($Ya, $Yb);
-		return [$X1,$Y1,$X2,$Y2];
+		return [
+			min($Xa, $Xb),
+			min($Ya, $Yb),
+			max($Xa, $Xb),
+			max($Ya, $Yb)
+		];
 	}
 
 	/* Draw a polygon */
@@ -168,7 +169,9 @@ class pDraw
 
 			for ($i = 0; $i <= count($Points) - 1; $i = $i + 2) {
 				if (isset($Points[$i + 2])) {
-					if (!($Points[$i] == $Points[$i + 2] && $Points[$i] == $SkipX) && !($Points[$i + 1] == $Points[$i + 3] && $Points[$i + 1] == $SkipY)) $this->drawLine($Points[$i], $Points[$i + 1], $Points[$i + 2], $Points[$i + 3], $BorderSettings);
+					if (!($Points[$i] == $Points[$i + 2] && $Points[$i] == $SkipX) && !($Points[$i + 1] == $Points[$i + 3] && $Points[$i + 1] == $SkipY)){
+						$this->drawLine($Points[$i], $Points[$i + 1], $Points[$i + 2], $Points[$i + 3], $BorderSettings);
+					}
 				} else {
 					if (!($Points[$i] == $Points[0] && $Points[$i] == $SkipX) && !($Points[$i + 1] == $Points[1] && $Points[$i + 1] == $SkipY)) {
 						$this->drawLine($Points[$i], $Points[$i + 1], $Points[0], $Points[1], $BorderSettings);
@@ -190,11 +193,12 @@ class pDraw
 		} elseif ($Value == 0) {
 			 $ret = 0;
 		} else {
-			$matrix = [];
-			$matrix[1] = [1 => .9,.1 => .9,.2 => .8,.3 => .8,.4 => .7,.5 => .5,.6 => .8,.7 => .7,.8 => .6,.9 => .9];
-			$matrix[2] = [1 => .9,.1 => .1,.2 => .2,.3 => .3,.4 => .4,.5 => .5,.6 => .8,.7 => .7,.8 => .8,.9 => .9];
-			$matrix[3] = [1 => .9,.1 => .1,.2 => .2,.3 => .3,.4 => .4,.5 => .9,.6 => .6,.7 => .7,.8 => .4,.9 => .5];
-			$matrix[4] = [1 => -1,.1 => .1,.2 => .2,.3 => .3,.4 => .1,.5 => -.1,.6 => .8,.7 => .1,.8 => .1,.9 => .1];
+			$matrix = [
+				1 => [1 => .9,.1 => .9,.2 => .8,.3 => .8,.4 => .7,.5 => .5,.6 => .8,.7 => .7,.8 => .6,.9 => .9],
+				2 => [1 => .9,.1 => .1,.2 => .2,.3 => .3,.4 => .4,.5 => .5,.6 => .8,.7 => .7,.8 => .8,.9 => .9],
+				3 => [1 => .9,.1 => .1,.2 => .2,.3 => .3,.4 => .4,.5 => .9,.6 => .6,.7 => .7,.8 => .4,.9 => .5],
+				4 => [1 => -1,.1 => .1,.2 => .2,.3 => .3,.4 => .1,.5 => -.1,.6 => .8,.7 => .1,.8 => .1,.9 => .1]
+			];
 			$ret = $matrix[$Mode][$Value];
 		}
 		
@@ -217,7 +221,7 @@ class pDraw
 		
 		if ($Radius <= 0) {
 			$this->drawRectangle($X1, $Y1, $X2, $Y2, $Color);
-			return (0);
+			return 0;
 		}
 
 		if ($this->Antialias) {
@@ -300,7 +304,7 @@ class pDraw
 		$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"NoBorder" => TRUE];
 		if ($Radius <= 0) {
 			$this->drawFilledRectangle($X1, $Y1, $X2, $Y2, $Color);
-			return (0);
+			return 0;
 		}
 
 		$YTop = $Y1 + $Radius;
@@ -795,7 +799,7 @@ class pDraw
 			}
 		}
 
-		return ($Q);
+		return $Q;
 	}
 
 	/* Draw a line between two points */
@@ -819,12 +823,12 @@ class pDraw
 
 			$Color = $this->allocateColor($R, $G, $B, $Alpha);
 			imageline($this->Picture, $X1, $Y1, $X2, $Y2, $Color);
-			return (0);
+			return 0;
 		}
 
 		$Distance = sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1));
 		if ($Distance == 0) {
-			return (-1);
+			return -1;
 		}
 
 		/* Derivative algorithm for overweighted lines, re-route to polygons primitives */
@@ -849,7 +853,7 @@ class pDraw
 				}
 			}
 
-			return (1);
+			return 1;
 		}
 
 		$XStep = ($X2 - $X1) / $Distance;
@@ -942,7 +946,7 @@ class pDraw
 					$Mode = ($Mode == 1) ? 0 : 1;
 				}
 
-				if ($Mode == 1) {
+				if ($Mode == 1) { # Mode seems to always be 1
 					$this->drawAntialiasPixel($X, $Y, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha]);
 				}
 
@@ -1065,7 +1069,7 @@ class pDraw
 			$T = [0 => ["X" => 0, "Y" => 0]];
 			#$T[0]["X"] = 0;
 			#$T[0]["Y"] = 0; 
-			#$T[1]["X"] = 0; # Momchil: Not used
+			#$T[1]["X"] = 0; # Momchil: Only $T[0] is in use
 			#$T[1]["Y"] = 0;
 			#$T[2]["X"] = 0;
 			#$T[2]["Y"] = 0;
@@ -1110,7 +1114,7 @@ class pDraw
 		imagettftext($this->Picture, $FontSize, $Angle, $X, $Y, $C_TextColor, $FontName, $Text);
 		$this->Shadow = $Shadow;
 		
-		return ($TxtPos);
+		return $TxtPos;
 	}
 
 	/* Draw a gradient within a defined area */
@@ -1132,7 +1136,7 @@ class pDraw
 		$this->Shadow = FALSE;
 		if ($StartR == $EndR && $StartG == $EndG && $StartB == $EndB) {
 			$this->drawFilledRectangle($X1, $Y1, $X2, $Y2, ["R" => $StartR,"G" => $StartG,"B" => $StartB,"Alpha" => $Alpha]);
-			return (0);
+			return 0;
 		}
 
 		if ($Levels != NULL) {
@@ -1215,7 +1219,7 @@ class pDraw
 	{
 				
 		if ($X < 0 || $Y < 0 || $X >= $this->XSize || $Y >= $this->YSize){
-			return (-1);
+			return -1;
 		}
 		
 		# Momchil: This one is actually faster than extract
@@ -1237,7 +1241,7 @@ class pDraw
 			}
 
 			imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($R, $G, $B, $Alpha));
-			return (0);
+			return 0;
 		}
 
 		// $Plot = ""; # UNUSED
@@ -1256,7 +1260,7 @@ class pDraw
 			
 			# Momchil: That allows to skip the check in drawAlphaPixel and reuse the safe param
 			if (($Xi + 1) >= $this->XSize || ($Yi + 1) >= $this->YSize){ 
-				return (-1);
+				return -1;
 			}
 			
 			# Momchil: well worth the local var
@@ -1317,7 +1321,7 @@ class pDraw
 		
 		if (isset($this->Mask[$X])) {
 			if (isset($this->Mask[$X][$Y])) {
-				return (0);
+				return 0;
 			}
 		}
 		
@@ -1328,7 +1332,7 @@ class pDraw
 		if (!$safe){ # Momchil: Seems to be worth the micro optimization
 		
 			if ($X < 0 || $Y < 0 || $X >= $this->XSize || $Y >= $this->YSize) {
-				return (-1);
+				return -1;
 			}
 		
 			($R < 0)	AND $R = 0;
@@ -1387,7 +1391,7 @@ class pDraw
 		$Type = $Infos["mime"];
 		($Type == "image/png") AND $Type = 1;
 		($Type == "image/gif") AND $Type = 2;
-		($Type == "image/jpeg ") AND $Type = 3;
+		($Type == "image/jpeg") AND $Type = 3;
 		
 		return [$Width,$Height,$Type];
 	}
@@ -1396,6 +1400,7 @@ class pDraw
 	function drawFromPicture($PicType, $FileName, $X, $Y)
 	{
 		if (file_exists($FileName)) {
+			# getPicInfo returns and array of 3 elements, but the "Type" is not used
 			list($Width, $Height) = $this->getPicInfo($FileName);
 			if ($PicType == 1) {
 				$Raster = imagecreatefrompng($FileName);
@@ -1404,7 +1409,7 @@ class pDraw
 			} elseif ($PicType == 3) {
 				$Raster = imagecreatefromjpeg($FileName);
 			} else {
-				return (0);
+				return 0;
 			}
 
 			$RestoreShadow = $this->Shadow;
@@ -2808,7 +2813,7 @@ class pDraw
 		/* Remove scales that are creating to much decimals */
 		$GoodScaleFactors = [];
 		foreach($Results as $Key => $Result) {
-			$Decimals = preg_split("/\./", $Result["RowHeight"]);
+			$Decimals = explode(".", $Result["RowHeight"]);
 			if ((!isset($Decimals[1])) || (strlen($Decimals[1]) < 6)) {
 				$GoodScaleFactors[] = $Key;
 			}
@@ -2819,7 +2824,7 @@ class pDraw
 		// if ( $GoodScaleFactors == "" ) { return($Results[$Factors[0]]); }
 
 		if (count($GoodScaleFactors) == 0) {
-			return ($Results[$Factors[0]]);
+			return $Results[$Factors[0]];
 		}
 
 		/* Find the factor that cause the maximum number of Rows */
@@ -2833,7 +2838,7 @@ class pDraw
 		}
 
 		/* Return the best visual scale */
-		return ($Results[$BestFactor]);
+		return $Results[$BestFactor];
 	}
 
 	/* Compute the best matching scale based on size & factors */
@@ -2916,7 +2921,7 @@ class pDraw
 			$Scale["XMax"] = $XMax + 1;
 		}
 
-		return ($Scale);
+		return $Scale;
 	}
 
 	function modulo($Value1, $Value2)
@@ -2925,7 +2930,7 @@ class pDraw
 		return (floor($Value2) == 0) ? 0 : ($Value1 % $Value2);
 		
 		#if (floor($Value2) == 0) {
-		#	return (0);
+		#	return 0;
 		#}
 
 		#if (floor($Value2) != 0) {
@@ -2987,7 +2992,7 @@ class pDraw
 			foreach($Value as $Key => $ID) {
 				$this->drawXThreshold($ID, $Format);
 			}
-			return (0);
+			return 0;
 		}
 
 		if ($ValueIsLabel) {
@@ -2997,7 +3002,7 @@ class pDraw
 					$this->drawXThreshold($Key, $Format);
 				}
 			}
-			return (0);
+			return 0;
 		}
 
 		$CaptionSettings = [
@@ -3227,7 +3232,7 @@ class pDraw
 		
 		$Data = $this->DataSet->getData();
 		if (!isset($Data["Axis"][$AxisID])) {
-			return (-1);
+			return -1;
 		}
 		
 		if (is_array($Value)) {
@@ -3235,7 +3240,7 @@ class pDraw
 				$this->drawThreshold($ID, $Format);
 			}
 
-			return (0);
+			return 0;
 		}
 
 		$CaptionSettings = [
@@ -3346,7 +3351,7 @@ class pDraw
 		
 		$Data = $this->DataSet->getData();
 		if (!isset($Data["Axis"][$AxisID])) {
-			return (-1);
+			return -1;
 		}
 		
 		if ($Value1 > $Value2) {
@@ -3452,7 +3457,7 @@ class pDraw
 		$SerieName = isset($Option["SerieName"]) ? $Option["SerieName"] : NULL;
 		$Data = $this->DataSet->getData();
 		if (!isset($Data["Axis"][$AxisID])) {
-			return (-1);
+			return -1;
 		}
 
 		if ($SerieName != NULL) {
@@ -3553,7 +3558,7 @@ class pDraw
 				if (abs($Value) >= 1000) {
 					$ret = (round($Value / 1000, $Format) . "k" . $Unit);
 				} elseif (abs($Value) > 1000000) {
-					$ret =(round($Value / 1000000, $Format) . "m" . $Unit);
+					$ret = (round($Value / 1000000, $Format) . "m" . $Unit);
 				} elseif (abs($Value) > 1000000000) {
 					$ret = (round($Value / 1000000000, $Format) . "g" . $Unit);
 				}
@@ -3619,15 +3624,15 @@ class pDraw
 		$Data = $this->DataSet->getData();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"] && !isset($ExcludedSeries[$SerieName])) {
-				$R = $Serie["Color"]["R"];
-				$G = $Serie["Color"]["G"];
-				$B = $Serie["Color"]["B"];
-				$Alpha = $Serie["Color"]["Alpha"];
-				$Ticks = $Serie["Ticks"];
+				#$R = $Serie["Color"]["R"];
+				#$G = $Serie["Color"]["G"]; # Momchil: UNUSED
+				#$B = $Serie["Color"]["B"];
+				#$Alpha = $Serie["Color"]["Alpha"];
+				#$Ticks = $Serie["Ticks"];
 				if ($DisplayColor == DISPLAY_AUTO) {
-					$DisplayR = $R;
-					$DisplayG = $G;
-					$DisplayB = $B;
+					$DisplayR = $Serie["Color"]["R"];
+					$DisplayG = $Serie["Color"]["G"];
+					$DisplayB = $Serie["Color"]["B"];
 				}
 
 				$MinValue = $this->DataSet->getMin($SerieName);
@@ -4474,7 +4479,7 @@ class pDraw
 		$this->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
 		$Data = $this->DataSet->getData();
 		if (!isset($Data["Series"][$SerieA]["Data"]) || !isset($Data["Series"][$SerieB]["Data"])) {
-			return (0);
+			return 0;
 		}
 
 		$SerieAData = $Data["Series"][$SerieA]["Data"];
@@ -4486,7 +4491,7 @@ class pDraw
 		$PosArrayA = $this->scaleComputeY($SerieAData, ["AxisID" => $AxisID]);
 		$PosArrayB = $this->scaleComputeY($SerieBData, ["AxisID" => $AxisID]);
 		if (count($PosArrayA) != count($PosArrayB)) {
-			return (0);
+			return 0;
 		}
 
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
@@ -6994,7 +6999,7 @@ class pDraw
 		/* Do we have something to draw */
 
 		if (count($Segments) == 0) {
-			return (0);
+			return 0;
 		}
 
 		/* For segments debugging purpose */
@@ -7169,7 +7174,7 @@ class pDraw
 			}
 		}
 
-		return (0);
+		return 0;
 	}
 
 	/* Convert a string to a single element array */

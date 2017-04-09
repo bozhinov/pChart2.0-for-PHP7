@@ -38,7 +38,7 @@ class pIndicator
 		if (isset($Format["IndicatorSections"])){
 			$IndicatorSections = $Format["IndicatorSections"];
 		} else {
-			return (0);
+			return 0;
 		}
 		$Values = VOID;
 		$ValueDisplay = INDICATOR_VALUE_BUBBLE;

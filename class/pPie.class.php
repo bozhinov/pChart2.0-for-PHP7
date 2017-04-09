@@ -77,7 +77,7 @@ class pPie
 		$Palette = $this->pDataObject->getPalette();
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "") {
-			return (PIE_NO_ABSCISSA);
+			return PIE_NO_ABSCISSA;
 		}
 
 		/* Try to find the data serie */
@@ -90,7 +90,7 @@ class pPie
 
 		/* Do we have data to compute? */
 		if ($DataSerie == "") {
-			return (PIE_NO_DATASERIE);
+			return PIE_NO_DATASERIE;
 		}
 
 		/* Remove unused data */
@@ -99,7 +99,7 @@ class pPie
 		$SerieSum = $this->pDataObject->getSum($DataSerie);
 		/* Do we have data to draw? */
 		if ($SerieSum == 0) {
-			return (PIE_SUMISNULL);
+			return PIE_SUMISNULL;
 		}
 
 		/* Dump the real number of data to draw */
@@ -318,7 +318,7 @@ class pPie
 		}
 
 		$this->pChartObject->Shadow = $RestoreShadow;
-		return (PIE_RENDERED);
+		return PIE_RENDERED;
 	}
 
 	/* Draw a 3D pie chart */
@@ -361,7 +361,7 @@ class pPie
 		$Palette = $this->pDataObject->getPalette();
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "") {
-			return (PIE_NO_ABSCISSA);
+			return PIE_NO_ABSCISSA;
 		}
 
 		/* Try to find the data serie */
@@ -374,7 +374,7 @@ class pPie
 
 		/* Do we have data to compute? */
 		if ($DataSerie == "") {
-			return (PIE_NO_DATASERIE);
+			return PIE_NO_DATASERIE;
 		}
 
 		/* Remove unused data */
@@ -383,7 +383,7 @@ class pPie
 		$SerieSum = $this->pDataObject->getSum($DataSerie);
 		/* Do we have data to draw? */
 		if ($SerieSum == 0) {
-			return (PIE_SUMISNULL);
+			return PIE_SUMISNULL;
 		}
 
 		/* Dump the real number of data to draw */
@@ -753,7 +753,7 @@ class pPie
 		}
 
 		$this->pChartObject->Shadow = $RestoreShadow;
-		return (PIE_RENDERED);
+		return PIE_RENDERED;
 	}
 	
 	function drawPieLegend($X, $Y, array $Format = [])
@@ -792,7 +792,7 @@ class pPie
 		$Palette = $this->pDataObject->getPalette();
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "") {
-			return (PIE_NO_ABSCISSA);
+			return PIE_NO_ABSCISSA;
 		}
 
 		$Boundaries = ["L" => $X, "T" => $Y, "R" => 0, "B" => 0];
@@ -1013,7 +1013,7 @@ class pPie
 		$Palette = $this->pDataObject->getPalette();
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "") {
-			return (PIE_NO_ABSCISSA);
+			return PIE_NO_ABSCISSA;
 		}
 
 		/* Try to find the data serie */
@@ -1026,7 +1026,7 @@ class pPie
 
 		/* Do we have data to compute? */
 		if ($DataSerie == "") {
-			return (PIE_NO_DATASERIE);
+			return PIE_NO_DATASERIE;
 		}
 
 		/* Remove unused data */
@@ -1035,7 +1035,7 @@ class pPie
 		$SerieSum = $this->pDataObject->getSum($DataSerie);
 		/* Do we have data to draw? */
 		if ($SerieSum == 0) {
-			return (PIE_SUMISNULL);
+			return PIE_SUMISNULL;
 		}
 
 		/* Dump the real number of data to draw */
@@ -1218,7 +1218,7 @@ class pPie
 		}
 
 		$this->pChartObject->Shadow = $RestoreShadow;
-		return (PIE_RENDERED);
+		return PIE_RENDERED;
 	}
 
 	function draw3DRing($X, $Y, array $Format = [])
@@ -1262,7 +1262,7 @@ class pPie
 		$Palette = $this->pDataObject->getPalette();
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "") {
-			return (PIE_NO_ABSCISSA);
+			return PIE_NO_ABSCISSA;
 		}
 
 		/* Try to find the data serie */
@@ -1275,7 +1275,7 @@ class pPie
 
 		/* Do we have data to compute? */
 		if ($DataSerie == "") {
-			return (PIE_NO_DATASERIE);
+			return PIE_NO_DATASERIE;
 		}
 
 		/* Remove unused data */
@@ -1284,7 +1284,7 @@ class pPie
 		$SerieSum = $this->pDataObject->getSum($DataSerie);
 		/* Do we have data to draw? */
 		if ($SerieSum == 0) {
-			return (PIE_SUMISNULL);
+			return PIE_SUMISNULL;
 		}
 
 		/* Dump the real number of data to draw */
@@ -1629,7 +1629,7 @@ class pPie
 		}
 
 		$this->pChartObject->Shadow = $RestoreShadow;
-		return (PIE_RENDERED);
+		return PIE_RENDERED;
 	}
 
 	/* Reverse an array */
@@ -1641,7 +1641,7 @@ class pPie
 			$Result[] = $Plots[$i];
 		}
 
-		return ($Result);
+		return $Result;
 	}
 
 	/* Remove unused series & values */

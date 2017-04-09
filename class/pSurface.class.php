@@ -50,11 +50,11 @@ class pSurface
 	function addPoint($X, $Y, $Value, $Force = TRUE)
 	{
 		if ($X < 0 || $X > $this->GridSizeX) {
-			return (0);
+			return 0;
 		}
 
 		if ($Y < 0 || $Y > $this->GridSizeY) {
-			return (0);
+			return 0;
 		}
 
 		if ($this->Points[$X][$Y] == UNKNOWN || $Force) {
@@ -109,7 +109,7 @@ class pSurface
 			}
 			
 		} else {
-			return (-1);
+			return -1;
 		}
 
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
@@ -150,7 +150,7 @@ class pSurface
 			$XPos = $this->pChartObject->GraphAreaX2 + $Padding;
 			$Settings["Align"] = TEXT_ALIGN_MIDDLELEFT;
 		} else {
-			return (-1);
+			return -1;
 		}
 
 		for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {
@@ -278,13 +278,14 @@ class pSurface
 		$Missing = [];
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
 			for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {
-				if ($this->Points[$X][$Y] == UNKNOWN) $Missing[] = $X . "," . $Y;
+				if ($this->Points[$X][$Y] == UNKNOWN) {
+					$Missing[] = [$X, $Y];
+				}
 			}
 		}
 
 		shuffle($Missing);
-		foreach($Missing as $Key => $Pos) {
-			$Pos = preg_split("/,/", $Pos);
+		foreach($Missing as $Pos) {
 			$X = $Pos[0];
 			$Y = $Pos[1];
 			if ($this->Points[$X][$Y] == UNKNOWN) {
@@ -324,7 +325,7 @@ class pSurface
 			}
 		}
 
-		return ($Nearest);
+		return $Nearest;
 	}
 }
 

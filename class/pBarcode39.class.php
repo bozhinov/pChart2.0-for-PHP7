@@ -35,7 +35,7 @@ class pBarcode39
 			$Buffer = fgets($FileHandle, 4096);
 			$Buffer = str_replace(chr(10), "", $Buffer);
 			$Buffer = str_replace(chr(13), "", $Buffer);
-			$Values = preg_split("/;/", $Buffer);
+			$Values = explode(";", $Buffer);
 			$this->Codes[$Values[0]] = $Values[1];
 		}
 
@@ -95,7 +95,7 @@ class pBarcode39
 		$this->Result = $this->Result . "100101101101";
 		$TextString = "*" . $TextString . "*";
 		
-		return ($TextString);
+		return $TextString;
 	}
 
 	/* Create the encoded string */

@@ -272,7 +272,7 @@ class pBubble
 		$Data = $this->pDataObject->getData();
 		$Palette = $this->pDataObject->getPalette();
 		if (!isset($Data["Series"][$SerieName]) || !isset($Data["Series"][$SerieWeightName])) {
-			return (0);
+			return 0;
 		}
 		
 		$OverrideTitle = isset($Format["OverrideTitle"]) ? $Format["OverrideTitle"] : NULL;
