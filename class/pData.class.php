@@ -123,7 +123,7 @@ class pData
 	/* Return the number of values contained in a given serie */
 	function getSerieCount($Serie)
 	{
-		return (isset($this->Data["Series"][$Serie]["Data"])) ? sizeof($this->Data["Series"][$Serie]["Data"]) : 0;
+		return (isset($this->Data["Series"][$Serie]["Data"])) ? count($this->Data["Series"][$Serie]["Data"]) : 0;
 	}
 
 	/* Remove a serie from the pData object */
@@ -376,7 +376,7 @@ class pData
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
-			return (array_sum($SerieData) / sizeof($SerieData));
+			return (array_sum($SerieData) / count($SerieData));
 		} else {
 			return NULL;
 		}
@@ -392,7 +392,7 @@ class pData
 				$Seriesum = $Seriesum * $Value;
 			}
 
-			return (pow($Seriesum, 1 / sizeof($SerieData)));
+			return (pow($Seriesum, 1 / count($SerieData)));
 		} else {
 			return NULL;
 		}
@@ -408,7 +408,7 @@ class pData
 				$Seriesum = $Seriesum + 1 / $Value;
 			}
 
-			return (sizeof($SerieData) / $Seriesum);
+			return (count($SerieData) / $Seriesum);
 		} else {
 			return NULL;
 		}
@@ -449,7 +449,7 @@ class pData
 		if (isset($this->Data["Series"][$Serie])) {
 			$SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
 			sort($SerieData);
-			$SerieCenter = floor(sizeof($SerieData) / 2);
+			$SerieCenter = floor(count($SerieData) / 2);
 			return (isset($SerieData[$SerieCenter])) ? $SerieData[$SerieCenter] : NULL;
 		} else {
 			return NULL;
