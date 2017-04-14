@@ -327,7 +327,7 @@ class pData
 	}
 
 	/* Associate a color to a scatter serie */
-	function setScatterSerieColor($ID, array $Format)
+	function setScatterSerieColor($ID, $Format)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
 			$this->Data["ScatterSeries"][$ID]["Color"] = [
@@ -536,7 +536,7 @@ class pData
 	}
 
 	/* Associate a color to an axis */
-	function setAxisColor($AxisID, array $Format)
+	function setAxisColor($AxisID, $Format)
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
 			$this->Data["Axis"][$AxisID]["Color"] = [
@@ -625,7 +625,7 @@ class pData
 	}
 
 	/* Set the color of one serie */
-	function setPalette($Series, array $Format = [])
+	function setPalette($Series, $Format = [])
 	{
 		$Series = $this->convertToArray($Series);
 		$R = isset($Format["R"]) ? $Format["R"] : 0;
@@ -780,7 +780,7 @@ class pData
 	}
 
 	/* Load data from a CSV (or similar) data source */
-	function importFromCSV($FileName, array $Options = [])
+	function importFromCSV($FileName, $Options = [])
 	{
 		$Delimiter = isset($Options["Delimiter"]) ? $Options["Delimiter"] : ",";
 		$GotHeader = isset($Options["GotHeader"]) ? $Options["GotHeader"] : FALSE;
@@ -820,7 +820,7 @@ class pData
 	}
 
 	/* Create a dataset based on a formula */
-	function createFunctionSerie($SerieName, $Formula = "", array $Options = [])
+	function createFunctionSerie($SerieName, $Formula = "", $Options = [])
 	{
 		
 		if ($Formula == "") {

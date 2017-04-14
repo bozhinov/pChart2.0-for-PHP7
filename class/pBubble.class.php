@@ -113,7 +113,7 @@ class pBubble
 	}
 
 	/* Prepare the scale */
-	function drawBubbleChart($DataSeries, $WeightSeries, array $Format = [])
+	function drawBubbleChart($DataSeries, $WeightSeries, $Format = [])
 	{
 		$ForceAlpha = VOID;
 		$DrawBorder = TRUE;
@@ -266,7 +266,7 @@ class pBubble
 		}
 	}
 
-	function writeBubbleLabel($SerieName, $SerieWeightName, $Points, array $Format = [])
+	function writeBubbleLabel($SerieName, $SerieWeightName, $Points, $Format = [])
 	{
 		
 		$Data = $this->pDataObject->getData();

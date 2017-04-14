@@ -99,7 +99,7 @@ class pImage extends pDraw
 	}
 
 	/* Enable / Disable and set shadow properties */
-	function setShadow($Enabled = TRUE, array $Format = [])
+	function setShadow($Enabled = TRUE, $Format = [])
 	{
 		$X = 2;
 		$Y = 2;
@@ -264,7 +264,7 @@ class pImage extends pDraw
 	}
 
 	/* Set current font properties */
-	function setFontProperties(array $Format = [])
+	function setFontProperties($Format = [])
 	{
 		$R = -1;
 		$G = -1;
@@ -355,7 +355,7 @@ class pImage extends pDraw
 	}
 
 	/* Remove VOID values from an imagemap custom values array */
-	function removeVOIDFromArray($SerieName, array $Values)
+	function removeVOIDFromArray($SerieName, $Values)
 	{
 		if (!isset($this->DataSet->Data["Series"][$SerieName])) {
 			return -1;
@@ -440,7 +440,7 @@ class pImage extends pDraw
 	}
 
 	/* Replace the values of the image map contents */
-	function replaceImageMapValues($Title, array $Values)
+	function replaceImageMapValues($Title, $Values)
 	{
 		if ($this->ImageMapStorageMode == NULL) {
 			return -1;
@@ -555,7 +555,7 @@ class pImage extends pDraw
 	}
 
 	/* Mirror Effect */
-	function drawAreaMirror($X, $Y, $Width, $Height, array $Format = [])
+	function drawAreaMirror($X, $Y, $Width, $Height, $Format = [])
 	{
 		$StartAlpha = isset($Format["StartAlpha"]) ? $Format["StartAlpha"] : 80;
 		$EndAlpha = isset($Format["EndAlpha"]) ? $Format["EndAlpha"] : 0;

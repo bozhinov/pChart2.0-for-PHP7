@@ -51,7 +51,7 @@ class pSpring
 	}
 
 	/* Set default links options */
-	function setLinkDefaults(array $Settings = [])
+	function setLinkDefaults($Settings = [])
 	{
 		#$vars = ["R", "G", "B", "Alpha"];
 		foreach ($Settings as $key => $value){
@@ -60,7 +60,7 @@ class pSpring
 	}
 
 	/* Set default links options */
-	function setLabelsSettings(array $Settings = [])
+	function setLabelsSettings($Settings = [])
 	{
 		#$vars = ["Type", "R", "G", "B", "Alpha"];
 		foreach ($Settings as $key => $value){
@@ -78,7 +78,7 @@ class pSpring
 	}
 
 	/* Set link properties */
-	function linkProperties($FromNode, $ToNode, array $Settings)
+	function linkProperties($FromNode, $ToNode, $Settings)
 	{
 		if (!isset($this->Data[$FromNode])) {
 			return 0;
@@ -111,7 +111,7 @@ class pSpring
 		$this->Links[$ToNode][$FromNode]["Ticks"] = $Ticks;
 	}
 
-	function setNodeDefaults(array $Settings = [])
+	function setNodeDefaults($Settings = [])
 	{
 		#$vars = ["R", "G", "B", "Alpha", "BorderR", "BorderG", "BorderB", "BorderAlpha", "Surrounding", "BackgroundR", "BackgroundG", "BackgroundB", "BackgroundAlpha", "NodeType", "Size", "Shape", "FreeZone"];
 		foreach ($Settings as $key => $value){
@@ -120,7 +120,7 @@ class pSpring
 	}
 
 	/* Add a node */
-	function addNode($NodeID, array $Settings = [])
+	function addNode($NodeID, $Settings = [])
 	{
 		/* if the node already exists, ignore */
 		if (isset($this->Data[$NodeID])) {
@@ -190,7 +190,7 @@ class pSpring
 	}
 
 	/* Set color attribute for a list of nodes */
-	function setNodesColor($Nodes, array $Settings = [])
+	function setNodesColor($Nodes, $Settings = [])
 	{
 		if (is_array($Nodes)) {
 			foreach($Nodes as $Key => $NodeID) {
@@ -580,7 +580,7 @@ class pSpring
 	}
 
 	/* Create the encoded string */
-	function drawSpring($Object, array $Settings = [])
+	function drawSpring($Object, $Settings = [])
 	{
 		$this->pChartObject = $Object;
 		$Pass = isset($Settings["Pass"]) ? $Settings["Pass"] : 50;

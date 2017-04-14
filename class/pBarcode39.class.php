@@ -43,7 +43,7 @@ class pBarcode39
 	}
 
 	/* Return the projected size of a barcode */
-	function getSize($TextString, array $Format = [])
+	function getSize($TextString, $Format = [])
 	{
 		$Angle = 0;
 		$ShowLegend = FALSE;
@@ -99,7 +99,7 @@ class pBarcode39
 	}
 
 	/* Create the encoded string */
-	function draw($Object, $Value, $X, $Y, array $Format = [])
+	function draw($Object, $Value, $X, $Y, $Format = [])
 	{
 		$this->pChartObject = $Object;
 		$R = 0;
