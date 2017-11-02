@@ -55,7 +55,7 @@ class pSpring
 	{
 		#$vars = ["R", "G", "B", "Alpha"];
 		foreach ($Settings as $key => $value){
-			$this->Default["Link".$key] =  $value;
+			$this->Default["Link".$key] = $value;
 		}
 	}
 
@@ -64,7 +64,7 @@ class pSpring
 	{
 		#$vars = ["Type", "R", "G", "B", "Alpha"];
 		foreach ($Settings as $key => $value){
-			$this->Labels[$key] =  $value;
+			$this->Labels[$key] = $value;
 		}	
 	}
 
@@ -115,7 +115,7 @@ class pSpring
 	{
 		#$vars = ["R", "G", "B", "Alpha", "BorderR", "BorderG", "BorderB", "BorderAlpha", "Surrounding", "BackgroundR", "BackgroundG", "BackgroundB", "BackgroundAlpha", "NodeType", "Size", "Shape", "FreeZone"];
 		foreach ($Settings as $key => $value){
-			$this->Default[$key] =  $value;
+			$this->Default[$key] = $value;
 		}
 	}
 
@@ -223,9 +223,9 @@ class pSpring
 			(isset($Settings["BorderAlpha"])) AND $this->Data[$Nodes]["BorderAlpha"] = $Settings["BorderAlpha"];
 
 			if (isset($Settings["Surrounding"])) {
-				$this->Data[$Nodes]["BorderR"] = $this->Data[$NodeID]["R"] + $Settings["Surrounding"];
-				$this->Data[$NodeID]["BorderG"] = $this->Data[$NodeID]["G"] + $Settings["Surrounding"];
-				$this->Data[$NodeID]["BorderB"] = $this->Data[$NodeID]["B"] + $Settings["Surrounding"];
+				$this->Data[$Nodes]["BorderR"] = $this->Data[$Nodes]["R"] + $Settings["Surrounding"];
+				$this->Data[$Nodes]["BorderG"] = $this->Data[$Nodes]["G"] + $Settings["Surrounding"];
+				$this->Data[$Nodes]["BorderB"] = $this->Data[$Nodes]["B"] + $Settings["Surrounding"];
 			}
 		}
 	}
@@ -769,9 +769,9 @@ class pSpring
 	/* Return the angle made by a line and the X axis */
 	function getAngle($X1, $Y1, $X2, $Y2)
 	{
-		$Opposite = $Y2 - $Y1;
-		$Adjacent = $X2 - $X1;
-		$Angle = rad2deg(atan2($Opposite, $Adjacent));
+		#$Opposite = $Y2 - $Y1;
+		#$Adjacent = $X2 - $X1;
+		$Angle = rad2deg(atan2(($Y2 - $Y1), ($X2 - $X1)));
 
 		return ($Angle > 0) ? $Angle : (360 - abs($Angle));
 
