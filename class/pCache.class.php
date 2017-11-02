@@ -22,33 +22,33 @@ class pCache
 	/* Class creator */
 	function __construct(array $Settings = [])
 	{
-		$CacheFolder = isset($Settings["CacheFolder"]) ? $Settings["CacheFolder"] : "cache";
-		$CacheIndex = isset($Settings["CacheIndex"]) ? $Settings["CacheIndex"] : "index.db";
-		$CacheDB = isset($Settings["CacheDB"]) ? $Settings["CacheDB"] : "cache.db";
-		$this->CacheFolder = $CacheFolder;
-		$this->CacheIndex = $CacheIndex;
-		$this->CacheDB = $CacheDB;
-		if (!file_exists($this->CacheFolder . "/" . $this->CacheIndex)) {
-			touch($this->CacheFolder . "/" . $this->CacheIndex);
+		
+		#if (!is_dir("cache")){
+		#	mkdir("cache", 0775);
+		#}
+		
+		$this->CacheFolder = isset($Settings["CacheFolder"]) ? $Settings["CacheFolder"] : "cache";
+		
+		$this->CacheIndex = isset($Settings["CacheIndex"]) ? $Settings["CacheIndex"] : "index.db";
+		$this->CacheIndex = $this->CacheFolder . "/" . $this->CacheIndex;
+		
+		$this->CacheDB = isset($Settings["CacheDB"]) ? $Settings["CacheDB"] : "cache.db";
+		$this->CacheDB = $this->CacheFolder . "/" . $this->CacheDB;
+		
+		if (!file_exists($this->CacheIndex)) {
+			touch($this->CacheIndex);
 		}
 
-		if (!file_exists($this->CacheFolder . "/" . $this->CacheDB)) {
-			touch($this->CacheFolder . "/" . $this->CacheDB);
+		if (!file_exists($this->CacheDB)) {
+			touch($this->CacheDB);
 		}
 	}
 
 	/* Flush the cache contents */
 	function flush()
 	{
-		if (file_exists($this->CacheFolder . "/" . $this->CacheIndex)) {
-			unlink($this->CacheFolder . "/" . $this->CacheIndex);
-			touch($this->CacheFolder . "/" . $this->CacheIndex);
-		}
-
-		if (file_exists($this->CacheFolder . "/" . $this->CacheDB)) {
-			unlink($this->CacheFolder . "/" . $this->CacheDB);
-			touch($this->CacheFolder . "/" . $this->CacheDB);
-		}
+		file_put_contents($this->CacheIndex, "");
+		file_put_contents($this->CacheDB, "");
 	}
 
 	/* Return the MD5 of the data array to clearly identify the chart */
@@ -62,15 +62,14 @@ class pCache
 	{
 		/* Compute the paths */
 		$TemporaryFile = $this->CacheFolder . "/tmp_" . rand(0, 1000) . ".png";
-		$Database = $this->CacheFolder . "/" . $this->CacheDB;
-		$Index = $this->CacheFolder . "/" . $this->CacheIndex;
+
 		/* Flush the picture to a temporary file */
 		imagepng($pChartObject->Picture, $TemporaryFile);
 		/* Retrieve the files size */
 		$PictureSize = filesize($TemporaryFile);
-		$DBSize = filesize($Database);
+		$DBSize = filesize($this->CacheDB);
 		/* Save the index */
-		$Handle = fopen($Index, "a");
+		$Handle = fopen($this->CacheIndex, "a");
 		fwrite($Handle, $ID . "," . $DBSize . "," . $PictureSize . "," . time() . ",0      \r\n");
 		fclose($Handle);
 		/* Get the picture raw contents */
@@ -78,7 +77,7 @@ class pCache
 		$Raw = fread($Handle, $PictureSize);
 		fclose($Handle);
 		/* Save the picture in the solid database file */
-		$Handle = fopen($Database, "a");
+		$Handle = fopen($this->CacheDB, "a");
 		fwrite($Handle, $Raw);
 		fclose($Handle);
 		/* Remove temporary file */
@@ -104,16 +103,12 @@ class pCache
 		$Expiry = isset($Settings["Expiry"]) ? $Settings["Expiry"] : -(24 * 60 * 60);
 		$TS = time() - $Expiry;
 		/* Compute the paths */
-		$Database = $this->CacheFolder . "/" . $this->CacheDB;
-		$Index = $this->CacheFolder . "/" . $this->CacheIndex;
-		$DatabaseTemp = $this->CacheFolder . "/" . $this->CacheDB . ".tmp";
-		$IndexTemp = $this->CacheFolder . "/" . $this->CacheIndex . ".tmp";
+		$DatabaseTemp = $this->CacheDB . ".tmp";
+		$IndexTemp = $this->CacheIndex . ".tmp";
 		/* Single file removal */
 		if ($ID != NULL) {
-			/* Retrieve object informations */
-			$Object = $this->isInCache($ID, TRUE);
 			/* If it's not in the cache DB, go away */
-			if (!$Object) {
+			if (!$this->isInCache($ID, TRUE)) {
 				return 0;
 			}
 		}
@@ -128,9 +123,9 @@ class pCache
 		}
 
 		/* Open the file handles */
-		$IndexHandle = @fopen($Index, "r");
+		$IndexHandle = @fopen($this->CacheIndex, "r");
 		$IndexTempHandle = @fopen($IndexTemp, "w");
-		$DBHandle = @fopen($Database, "r");
+		$DBHandle = @fopen($this->CacheDB, "r");
 		$DBTempHandle = @fopen($DatabaseTemp, "w");
 		/* Remove the selected ID from the database */
 		while (!feof($IndexHandle)) {
@@ -160,19 +155,17 @@ class pCache
 		fclose($DBHandle);
 		fclose($DBTempHandle);
 		/* Remove the prod files */
-		unlink($Database);
-		unlink($Index);
+		unlink($this->CacheDB);
+		unlink($this->CacheIndex);
 		/* Swap the temp & prod DB */
-		rename($DatabaseTemp, $Database);
-		rename($IndexTemp, $Index);
+		rename($DatabaseTemp, $this->CacheDB);
+		rename($IndexTemp, $this->CacheIndex);
 	}
 
 	function isInCache($ID, $Verbose = FALSE, $UpdateHitsCount = FALSE)
 	{
-		/* Compute the paths */
-		$Index = $this->CacheFolder . "/" . $this->CacheIndex;
 		/* Search the picture in the index file */
-		$Handle = @fopen($Index, "r");
+		$Handle = @fopen($this->CacheIndex, "r");
 		while (!feof($Handle)) {
 			$IndexPos = ftell($Handle);
 			$Entry = fgets($Handle, 4096);
@@ -191,7 +184,7 @@ class pCache
 							$Hits = $Hits . str_repeat(" ", 7 - strlen($Hits));
 						}
 
-						$Handle = @fopen($Index, "r+");
+						$Handle = @fopen($this->CacheIndex, "r+");
 						fseek($Handle, $IndexPos);
 						fwrite($Handle, $PicID . "," . $DBPos . "," . $PicSize . "," . $GeneratedTS . "," . $Hits . "\r\n");
 						fclose($Handle);
@@ -254,8 +247,6 @@ class pCache
 
 	function getFromCache($ID)
 	{
-		/* Compute the path */
-		$Database = $this->CacheFolder . "/" . $this->CacheDB;
 		/* Lookup for the picture in the cache */
 		$CacheInfo = $this->isInCache($ID, TRUE, TRUE);
 		/* Not in the cache */
@@ -267,7 +258,7 @@ class pCache
 		$DBPos = $CacheInfo["DBPos"];
 		$PicSize = $CacheInfo["PicSize"];
 		/* Extract the picture from the solid cache file */
-		$Handle = @fopen($Database, "r");
+		$Handle = @fopen($this->CacheDB, "r");
 		fseek($Handle, $DBPos);
 		$Picture = fread($Handle, $PicSize);
 		fclose($Handle);

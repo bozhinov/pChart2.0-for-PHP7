@@ -454,7 +454,7 @@ class pSpring
 								$Force = log(($Distance - $FreeZone) + 1);
 							} else {
 								$Force = log(($FreeZone - $Distance) + 1);
-								($Angle = $Angle + 180);
+								$Angle += 180;
 							}
 
 							if ($Force > 1) {
