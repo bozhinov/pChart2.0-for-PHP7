@@ -149,13 +149,13 @@ class pCache
 					}
 				}
 			}
+			/* Close the handles */
+			fclose($IndexHandle);
+			fclose($IndexTempHandle);
+			fclose($DBHandle);
+			fclose($DBTempHandle);
 		}
 
-		/* Close the handles */
-		fclose($IndexHandle);
-		fclose($IndexTempHandle);
-		fclose($DBHandle);
-		fclose($DBTempHandle);
 		/* Remove the prod files */
 		unlink($this->CacheDB);
 		unlink($this->CacheIndex);
@@ -201,9 +201,10 @@ class pCache
 					}
 				}
 			}
+			
+			fclose($Handle);
 		}
 
-		fclose($Handle);
 		/* Picture isn't in the cache */
 		return FALSE;
 	}
