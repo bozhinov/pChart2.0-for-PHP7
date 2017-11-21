@@ -195,7 +195,7 @@ class pImage extends pDraw
 	/* Return the length between two points */
 	function getLength($X1, $Y1, $X2, $Y2)
 	{
-		return (sqrt(pow(max($X1, $X2) - min($X1, $X2) , 2) + pow(max($Y1, $Y2) - min($Y1, $Y2) , 2)));
+		return (sqrt(pow(max($X1, $X2) - min($X1, $X2), 2) + pow(max($Y1, $Y2) - min($Y1, $Y2), 2)));
 	}
 
 	/* Return the orientation of a line */
@@ -333,7 +333,7 @@ class pImage extends pDraw
 
 		/* Encode the characters in the imagemap in HTML standards */
 		$Title = str_replace("&#8364;", "\u20AC", $Title); # Momchil TODO TEST THIS
-		$Title = htmlentities($Title, ENT_QUOTES ); #, "ISO-8859-15"); # As of PHP 5.6 The default value for the encoding parameter = the default_charset config option.
+		$Title = htmlentities($Title, ENT_QUOTES); #, "ISO-8859-15"); # As of PHP 5.6 The default value for the encoding parameter = the default_charset config option.
 		
 		if ($HTMLEncode) {
 			$Message = htmlentities($Message, ENT_QUOTES); #, "ISO-8859-15");
@@ -408,8 +408,8 @@ class pImage extends pDraw
 			$Handle = fopen($this->ImageMapStorageFolder . "/" . $this->ImageMapFileName . ".map", "r");
 			if ($Handle) {
 				while (($Buffer = fgets($Handle, 4096)) !== false) {
-					$Fields = preg_split("/" . IMAGE_MAP_DELIMITER . "/", str_replace([chr(10), chr(13)] , "", $Buffer));
-					$TempArray[] = [$Fields[0],$Fields[1],$Fields[2],$Fields[3],$Fields[4]];
+					$Fields = preg_split("/" . IMAGE_MAP_DELIMITER . "/", str_replace([chr(10), chr(13)], "", $Buffer));
+					$TempArray[] = [$Fields[0], $Fields[1], $Fields[2], $Fields[3], $Fields[4]];
 				}
 
 				fclose($Handle);
@@ -467,8 +467,8 @@ class pImage extends pDraw
 			$Handle = fopen($this->ImageMapStorageFolder . "/" . $this->ImageMapFileName . ".map", "r");
 			if ($Handle) {
 				while (($Buffer = fgets($Handle, 4096)) !== false) {
-					$Fields = preg_split("/" . IMAGE_MAP_DELIMITER . "/", str_replace([chr(10), chr(13)] , "", $Buffer));
-					$TempArray[] = [$Fields[0],$Fields[1],$Fields[2],$Fields[3],$Fields[4]];
+					$Fields = preg_split("/" . IMAGE_MAP_DELIMITER . "/", str_replace([chr(10), chr(13)], "", $Buffer));
+					$TempArray[] = [$Fields[0], $Fields[1], $Fields[2], $Fields[3], $Fields[4]];
 				}
 
 				fclose($Handle);
@@ -564,7 +564,7 @@ class pImage extends pDraw
 		imagecopy($Picture, $this->Picture, 0, 0, 0, 0, $this->XSize, $this->YSize);
 		for ($i = 1; $i <= $Height; $i++) {
 			if ($Y + ($i - 1) < $this->YSize && $Y - $i > 0) {
-				imagecopymerge($Picture, $this->Picture, $X, $Y + ($i - 1) , $X, $Y - $i, $Width, 1, $StartAlpha - $AlphaStep * $i);
+				imagecopymerge($Picture, $this->Picture, $X, $Y + ($i - 1), $X, $Y - $i, $Width, 1, $StartAlpha - $AlphaStep * $i);
 			}
 		}
 
