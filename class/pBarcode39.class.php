@@ -26,7 +26,7 @@ class pBarcode39
 	{
 		$this->MOD43 = $EnableMOD43;
 
-		$FileHandle = @fopen($BasePath . "data/39.db", "r");
+		$FileHandle = fopen($BasePath . "data/39.db", "r");
 		if (!$FileHandle) {
 			die("Cannot find barcode database (" . $BasePath . "data/39.db).");
 		}

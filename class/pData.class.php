@@ -666,7 +666,7 @@ class pData
 			$this->Palette = [];
 		}
 
-		$fileHandle = @fopen($FileName, "r");
+		$fileHandle = fopen($FileName, "r");
 		if (!$fileHandle) {
 			return -1;
 		}
@@ -786,7 +786,7 @@ class pData
 		$GotHeader = isset($Options["GotHeader"]) ? $Options["GotHeader"] : FALSE;
 		$SkipColumns = isset($Options["SkipColumns"]) ? $Options["SkipColumns"] : [-1];
 		$DefaultSerieName = isset($Options["DefaultSerieName"]) ? $Options["DefaultSerieName"] : "Serie";
-		$Handle = @fopen($FileName, "r");
+		$Handle = fopen($FileName, "r");
 		if ($Handle) {
 			$HeaderParsed = FALSE;
 			$SerieNames = [];
@@ -839,7 +839,7 @@ class pData
 		
 		for ($i = $MinX; $i <= $MaxX; $i = $i + $XStep) {
 			$Expression = "\$return = '!'.(" . str_replace("z", $i, $Formula) . ");";
-			if (@eval($Expression) === FALSE) {
+			if (eval($Expression) === FALSE) {
 				$return = VOID;
 			}
 

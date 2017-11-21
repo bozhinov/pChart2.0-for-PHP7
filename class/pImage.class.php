@@ -405,7 +405,7 @@ class pImage extends pDraw
 			
 		} elseif ($this->ImageMapStorageMode == IMAGE_MAP_STORAGE_FILE) {
 			$TempArray = [];
-			$Handle = @fopen($this->ImageMapStorageFolder . "/" . $this->ImageMapFileName . ".map", "r");
+			$Handle = fopen($this->ImageMapStorageFolder . "/" . $this->ImageMapFileName . ".map", "r");
 			if ($Handle) {
 				while (($Buffer = fgets($Handle, 4096)) !== false) {
 					$Fields = preg_split("/" . IMAGE_MAP_DELIMITER . "/", str_replace([chr(10), chr(13)] , "", $Buffer));
@@ -464,7 +464,7 @@ class pImage extends pDraw
 			
 		} elseif ($this->ImageMapStorageMode == IMAGE_MAP_STORAGE_FILE) {
 			$TempArray = [];
-			$Handle = @fopen($this->ImageMapStorageFolder . "/" . $this->ImageMapFileName . ".map", "r");
+			$Handle = fopen($this->ImageMapStorageFolder . "/" . $this->ImageMapFileName . ".map", "r");
 			if ($Handle) {
 				while (($Buffer = fgets($Handle, 4096)) !== false) {
 					$Fields = preg_split("/" . IMAGE_MAP_DELIMITER . "/", str_replace([chr(10), chr(13)] , "", $Buffer));
@@ -509,7 +509,7 @@ class pImage extends pDraw
 			
 		} elseif ($this->ImageMapStorageMode == IMAGE_MAP_STORAGE_FILE) {
 			if (file_exists($StorageFolder . "/" . $UniqueID . ".map")) {
-				$Handle = @fopen($StorageFolder . "/" . $UniqueID . ".map", "r");
+				$Handle = fopen($StorageFolder . "/" . $UniqueID . ".map", "r");
 				if ($Handle) {
 					while (($Buffer = fgets($Handle, 4096)) !== false) {
 						echo $Buffer;

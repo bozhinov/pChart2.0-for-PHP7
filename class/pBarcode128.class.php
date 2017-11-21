@@ -24,7 +24,7 @@ class pBarcode128
 	/* Class creator */
 	function __construct($BasePath = "")
 	{
-		$FileHandle = @fopen($BasePath . "data/128B.db", "r");
+		$FileHandle = fopen($BasePath . "data/128B.db", "r");
 		if (!$FileHandle) {
 			die("Cannot find barcode database (" . $BasePath . "128B.db).");
 		}
