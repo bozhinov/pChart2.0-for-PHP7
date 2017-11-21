@@ -123,28 +123,30 @@ class pCache
 		}
 
 		/* Open the file handles */
-		$IndexHandle = @fopen($this->CacheIndex, "r");
-		$IndexTempHandle = @fopen($IndexTemp, "w");
-		$DBHandle = @fopen($this->CacheDB, "r");
-		$DBTempHandle = @fopen($DatabaseTemp, "w");
+		$IndexHandle = fopen($this->CacheIndex, "r");
+		$IndexTempHandle = fopen($IndexTemp, "w");
+		$DBHandle = fopen($this->CacheDB, "r");
+		$DBTempHandle = fopen($DatabaseTemp, "w");
 		/* Remove the selected ID from the database */
-		while (!feof($IndexHandle)) {
-			$Entry = fgets($IndexHandle, 4096);
-			$Entry = str_replace("\r", "", $Entry);
-			$Entry = str_replace("\n", "", $Entry);
-			$Settings = explode(",", $Entry);
-			if ($Entry != "") {
-				$PicID = $Settings[0];
-				$DBPos = $Settings[1];
-				$PicSize = $Settings[2];
-				$GeneratedTS = $Settings[3];
-				$Hits = $Settings[4];
-				if ($Settings[0] != $ID && $GeneratedTS > $TS) {
-					$CurrentPos = ftell($DBTempHandle);
-					fwrite($IndexTempHandle, $PicID . "," . $CurrentPos . "," . $PicSize . "," . $GeneratedTS . "," . $Hits . "\r\n");
-					fseek($DBHandle, $DBPos);
-					$Picture = fread($DBHandle, $PicSize);
-					fwrite($DBTempHandle, $Picture);
+		if ($IndexHandle && $IndexTempHandle && $DBHandle && $DBTempHandle) {
+			while (!feof($IndexHandle)) {
+				$Entry = fgets($IndexHandle, 4096);
+				$Entry = str_replace("\r", "", $Entry);
+				$Entry = str_replace("\n", "", $Entry);
+				$Settings = explode(",", $Entry);
+				if ($Entry != "") {
+					$PicID = $Settings[0];
+					$DBPos = $Settings[1];
+					$PicSize = $Settings[2];
+					$GeneratedTS = $Settings[3];
+					$Hits = $Settings[4];
+					if ($Settings[0] != $ID && $GeneratedTS > $TS) {
+						$CurrentPos = ftell($DBTempHandle);
+						fwrite($IndexTempHandle, $PicID . "," . $CurrentPos . "," . $PicSize . "," . $GeneratedTS . "," . $Hits . "\r\n");
+						fseek($DBHandle, $DBPos);
+						$Picture = fread($DBHandle, $PicSize);
+						fwrite($DBTempHandle, $Picture);
+					}
 				}
 			}
 		}
@@ -165,35 +167,37 @@ class pCache
 	function isInCache($ID, $Verbose = FALSE, $UpdateHitsCount = FALSE)
 	{
 		/* Search the picture in the index file */
-		$Handle = @fopen($this->CacheIndex, "r");
-		while (!feof($Handle)) {
-			$IndexPos = ftell($Handle);
-			$Entry = fgets($Handle, 4096);
-			if ($Entry != "") {
-				$Settings = explode(",", $Entry);
-				$PicID = $Settings[0];
-				if ($PicID == $ID) {
-					fclose($Handle);
-					$DBPos = $Settings[1];
-					$PicSize = $Settings[2];
-					$GeneratedTS = $Settings[3];
-					$Hits = intval($Settings[4]);
-					if ($UpdateHitsCount) {
-						$Hits++;
-						if (strlen($Hits) < 7) {
-							$Hits = $Hits . str_repeat(" ", 7 - strlen($Hits));
+		$Handle = fopen($this->CacheIndex, "r");
+		if ($Handle){
+			while (!feof($Handle)) {
+				$IndexPos = ftell($Handle);
+				$Entry = fgets($Handle, 4096);
+				if ($Entry != "") {
+					$Settings = explode(",", $Entry);
+					$PicID = $Settings[0];
+					if ($PicID == $ID) {
+						fclose($Handle);
+						$DBPos = $Settings[1];
+						$PicSize = $Settings[2];
+						$GeneratedTS = $Settings[3];
+						$Hits = intval($Settings[4]);
+						if ($UpdateHitsCount) {
+							$Hits++;
+							if (strlen($Hits) < 7) {
+								$Hits = $Hits . str_repeat(" ", 7 - strlen($Hits));
+							}
+
+							$Handle = fopen($this->CacheIndex, "r+");
+							fseek($Handle, $IndexPos);
+							fwrite($Handle, $PicID . "," . $DBPos . "," . $PicSize . "," . $GeneratedTS . "," . $Hits . "\r\n");
+							fclose($Handle);
 						}
 
-						$Handle = @fopen($this->CacheIndex, "r+");
-						fseek($Handle, $IndexPos);
-						fwrite($Handle, $PicID . "," . $DBPos . "," . $PicSize . "," . $GeneratedTS . "," . $Hits . "\r\n");
-						fclose($Handle);
-					}
-
-					if ($Verbose) {
-						return ["DBPos" => $DBPos,"PicSize" => $PicSize,"GeneratedTS" => $GeneratedTS,"Hits" => $Hits];
-					} else {
-						return TRUE;
+						if ($Verbose) {
+							return ["DBPos" => $DBPos,"PicSize" => $PicSize,"GeneratedTS" => $GeneratedTS,"Hits" => $Hits];
+						} else {
+							return TRUE;
+						}
 					}
 				}
 			}
@@ -258,7 +262,7 @@ class pCache
 		$DBPos = $CacheInfo["DBPos"];
 		$PicSize = $CacheInfo["PicSize"];
 		/* Extract the picture from the solid cache file */
-		$Handle = @fopen($this->CacheDB, "r");
+		$Handle = fopen($this->CacheDB, "r");
 		fseek($Handle, $DBPos);
 		$Picture = fread($Handle, $PicSize);
 		fclose($Handle);
