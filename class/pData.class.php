@@ -680,7 +680,7 @@ class pData
 				if (substr($Alpha,-1,1) == "\n"){ # fix for PHP 7.1.1
 					$Alpha = substr($Alpha, 0, -1);
 				}
-				$this->Palette[$ID] = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
+				$this->Palette[$ID] = ["R" => intval($R),"G" => intval($G),"B" => intval($B),"Alpha" => intval($Alpha)];
 			}
 		}
 
