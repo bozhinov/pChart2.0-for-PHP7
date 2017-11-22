@@ -91,22 +91,11 @@ class pSurface
 		$Settings = ["Angle" => $Angle,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
 		if ($Position == LABEL_POSITION_TOP) {
 			$YPos = $this->pChartObject->GraphAreaY1 - $Padding;
-			if ($Angle == 0) {
-				$Settings["Align"] = TEXT_ALIGN_BOTTOMMIDDLE;
-			} else {
-			# if ($Angle != 0) { # ELSE ?!
-				$Settings["Align"] = TEXT_ALIGN_MIDDLELEFT;
-			}
+			$Settings["Align"] = ($Angle == 0) ? TEXT_ALIGN_BOTTOMMIDDLE : TEXT_ALIGN_MIDDLELEFT;
 			
 		} elseif ($Position == LABEL_POSITION_BOTTOM) {
-			
 			$YPos = $this->pChartObject->GraphAreaY2 + $Padding;
-			if ($Angle == 0) {
-				$Settings["Align"] = TEXT_ALIGN_TOPMIDDLE;
-			} else {
-			#if ($Angle != 0) { # ELSE ?!
-				$Settings["Align"] = TEXT_ALIGN_MIDDLERIGHT;
-			}
+			$Settings["Align"] = ($Angle == 0) ? TEXT_ALIGN_TOPMIDDLE : TEXT_ALIGN_MIDDLERIGHT;
 			
 		} else {
 			return -1;
