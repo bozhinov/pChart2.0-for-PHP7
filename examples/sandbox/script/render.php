@@ -716,8 +716,10 @@
   {
    list($R,$G,$B) = extractColors($l_font_color);
 
-   $Config = "";
-   $Config["FontR"]    = $R; $Config["FontG"] = $G; $Config["FontB"] = $B;
+   $Config = [];
+   $Config["FontR"] = $R; 
+   $Config["FontG"] = $G; 
+   $Config["FontB"] = $B;
    $Config["FontName"] = "../../../fonts/".$l_font;
    $Config["FontSize"] = $l_font_size;
    $Config["Margin"]   = $l_margin;
@@ -829,20 +831,20 @@
   {
    $Values = preg_split("/!/",right($Values,strlen($Values)-1));
 
-   $Temp = ""; $Result = "";
+   $Temp = []; $Result = [];
    foreach($Values as $Key => $Value)
     {
      if ( $Value == "" )
       { $Temp[] = VOID; }
      else
       {
-       if ( $Temp != "" && $Result != "" )
+       if ( $Temp != [] && $Result != [] )
         { $Result = array_merge($Result,$Temp); }
-       elseif( $Temp != "" && $Result == "" )
+       elseif( $Temp != [] && $Result == [] )
         { $Result = $Temp; }
 
        $Result[] = $Value;
-       $Temp = "";
+       $Temp = [];
       }
     }
 
@@ -859,7 +861,7 @@
    $handle = @fopen($FileName, "r");
    if ($handle)
     {
-     $Result = "";
+     $Result = [];
      while (($buffer = fgets($handle, 4096)) !== false)
       {
        $Values = preg_split("/,/",$buffer);
