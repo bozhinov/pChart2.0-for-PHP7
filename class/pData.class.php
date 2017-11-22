@@ -835,17 +835,26 @@ class pData
 		
 		$Result = [];
 		$Abscissa = [];
-		
-		for ($i = $MinX; $i <= $MaxX; $i = $i + $XStep) {
-			$Expression = "\$return = '!'.(" . str_replace("z", $i, $Formula) . ");";
-			if (eval($Expression) === FALSE) {
-				$return = VOID;
-			}
 
-			$return = ($return == "!") ? VOID : $this->right($return, strlen($return) - 1);
+		for ($i = $MinX; $i <= $MaxX; $i = $i + $XStep) {
 			
-			if (in_array($return, ["NAN", "INF", "-INF"])){
+			if ($i == 0){
 				$return = VOID;
+				
+			} else {
+				
+				$Expression = "\$return = '!'.(" . str_replace("z", $i, $Formula) . ");";
+
+				if (eval($Expression) === FALSE) {
+					$return = VOID;
+				}
+
+				$return = ($return == "!") ? VOID : $this->right($return, strlen($return) - 1);
+				
+				if (in_array($return, ["NAN", "INF", "-INF"])){
+					$return = VOID;
+				}
+			
 			}
 			
 			$Abscissa[] = $i;
@@ -860,6 +869,7 @@ class pData
 		if ($RecordAbscissa) {
 			$this->addPoints($Abscissa, $AbscissaSerie);
 		}
+
 	}
 
 	function negateValues($Series)
