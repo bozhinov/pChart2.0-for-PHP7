@@ -39,7 +39,7 @@
  /* Build a list of the examples & categories */
  $DirectoryHandle = opendir("scripts");
   {
-   $Tree = "";
+   $Tree = [];
    while (($FileName = readdir($DirectoryHandle)) !== false)
    {
     if ( !in_array($FileName,$Exclusion))
