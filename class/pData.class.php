@@ -662,29 +662,27 @@ class pData
 			die("Palette not found");
 		}
 
+		$buffer = file_get_contents($FileName);
+		if ($buffer === false) {
+			die("Invalid palette");
+		}
+
 		if ($Overwrite) {
 			$this->Palette = [];
 		}
 
-		$fileHandle = fopen($FileName, "r");
-		if (!$fileHandle) {
-			return -1;
-		}
+		$lines = explode(PHP_EOL, $buffer);
+		$ID = 0;
 
-		while (!feof($fileHandle)) {
-			$buffer = fgets($fileHandle, 4096);
-			$pal = explode(",", $buffer);
-			if (count($pal) > 1) {
+		foreach($lines as $line){
+			$pal = explode(",", $line);
+			if (count($pal) == 4) {
 				list($R, $G, $B, $Alpha) = $pal;
-				$ID = ($this->Palette == []) ? 0 : count($this->Palette);
-				if (substr($Alpha,-1,1) == "\n"){ # fix for PHP 7.1.1
-					$Alpha = substr($Alpha, 0, -1);
-				}
 				$this->Palette[$ID] = ["R" => intval($R),"G" => intval($G),"B" => intval($B),"Alpha" => intval($Alpha)];
+				$ID++;
 			}
 		}
 
-		fclose($fileHandle);
 		/* Apply changes to current series */
 		$ID = 0;
 		if (isset($this->Data["Series"])) {
@@ -693,6 +691,7 @@ class pData
 				$ID++;
 			}
 		}
+
 	}
 
 	/* Initialise a given scatter serie */
