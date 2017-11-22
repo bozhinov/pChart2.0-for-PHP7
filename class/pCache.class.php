@@ -224,13 +224,12 @@ class pCache
 		/* Get the raw picture from the cache */
 		$Picture = $this->getFromCache($ID);
 		/* Do we have a hit? */
-		if ($Picture == NULL) {
+		if ($Picture == FALSE) {
 			return FALSE;
 		}
 
 		header('Content-type: image/png');
 		echo $Picture;
-		return TRUE;
 	}
 
 	function saveFromCache($ID, $Destination)
@@ -238,16 +237,12 @@ class pCache
 		/* Get the raw picture from the cache */
 		$Picture = $this->getFromCache($ID);
 		/* Do we have a hit? */
-		if ($Picture == NULL) {
+		if ($Picture == FALSE) {
 			return FALSE;
 		}
 
 		/* Flush the picture to a file */
-		$Handle = fopen($Destination, "w");
-		fwrite($Handle, $Picture);
-		fclose($Handle);
-		/* All went fine */
-		return TRUE;
+		file_put_contents($Destination, $Picture);
 	}
 
 	function getFromCache($ID)
@@ -255,8 +250,9 @@ class pCache
 		/* Lookup for the picture in the cache */
 		$CacheInfo = $this->isInCache($ID, TRUE, TRUE);
 		/* Not in the cache */
-		if (!$CacheInfo) {
-			return NULL;
+		if (!$CacheInfo) { 
+			# Momchil: fread returns FALSE on failure. Return FALSE here as well and not NULL
+			return FALSE;
 		}
 
 		/* Get the database extended information */
