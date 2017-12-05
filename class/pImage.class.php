@@ -211,7 +211,7 @@ class pImage extends pDraw
 	/* Return the surrounding box of text area */
 	function getTextBox_deprecated($X, $Y, $FontName, $FontSize, $Angle, $Text)
 	{
-		$Size = imagettfbbox($FontSize, $Angle, $FontName, $Text);
+		$Size = imagettfbbox($FontSize, $Angle, realpath($FontName), $Text);
 		$Width = $this->getLength($Size[0], $Size[1], $Size[2], $Size[3]) + 1;
 		$Height = $this->getLength($Size[2], $Size[3], $Size[4], $Size[5]) + 1;
 		$RealPos[0]["X"] = $X;
@@ -232,7 +232,7 @@ class pImage extends pDraw
 	/* Return the surrounding box of text area */
 	function getTextBox($X, $Y, $FontName, $FontSize, $Angle, $Text)
 	{
-		$coords = imagettfbbox($FontSize, 0, $FontName, $Text);
+		$coords = imagettfbbox($FontSize, 0, realpath($FontName), $Text);
 		$a = deg2rad($Angle);
 		$ca = cos($a);
 		$sa = sin($a);

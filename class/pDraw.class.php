@@ -1107,11 +1107,11 @@ class pDraw
 		$Y = $Y - $TxtPos[$Align]["Y"] + $Y;
 		if ($this->Shadow) {
 			$C_ShadowColor = $this->allocateColor($this->ShadowR, $this->ShadowG, $this->ShadowB, $this->Shadowa);
-			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $C_ShadowColor, $FontName, $Text);
+			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $C_ShadowColor, realpath($FontName), $Text);
 		}
 
 		$C_TextColor = $this->AllocateColor($R, $G, $B, $Alpha);
-		imagettftext($this->Picture, $FontSize, $Angle, $X, $Y, $C_TextColor, $FontName, $Text);
+		imagettftext($this->Picture, $FontSize, $Angle, $X, $Y, $C_TextColor, realpath($FontName), $Text);
 		$this->Shadow = $Shadow;
 		
 		return $TxtPos;

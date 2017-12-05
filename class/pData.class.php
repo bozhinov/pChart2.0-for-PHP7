@@ -671,7 +671,7 @@ class pData
 			$this->Palette = [];
 		}
 
-		$lines = explode(PHP_EOL, $buffer);
+		$lines = explode("\n", $buffer);
 		$ID = 0;
 
 		foreach($lines as $line){
