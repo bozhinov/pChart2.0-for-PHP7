@@ -1530,7 +1530,7 @@ class pDraw
 		($RoundPos && $Angle > 180) AND $Y2 = floor($Y2);
 
 		$this->drawArrow($X2, $Y2, $X1, $Y1, $Format);
-		$Size = imagettfbbox($FontSize, 0, $FontName, $Text);
+		$Size = imagettfbbox($FontSize, 0, realpath($FontName), $Text);
 		$TxtWidth = max(abs($Size[2] - $Size[0]), abs($Size[0] - $Size[6]));
 		#$TxtHeight = max(abs($Size[1] - $Size[7]), abs($Size[3] - $Size[1])); # UNUSED
 		$RGB = ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $Alpha];
