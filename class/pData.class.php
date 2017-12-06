@@ -837,14 +837,12 @@ class pData
 		$Abscissa = [];
 
 		for ($i = $MinX; $i <= $MaxX; $i = $i + $XStep) {
-			
-			#if ($i == 0){
-			#	$return = VOID;
-				
-			#} else {
-				
-				$Expression = "\$return = '!'.(" . str_replace("z", $i, $Formula) . ");";
+							
+			$Expression = "\$return = '!'.(" . str_replace("z", $i, $Formula) . ");";
 
+			if (substr($Expression, -4, 4) == "/0);"){ # Division by zero in ..\pData.class.php(849) : eval()'d code on line 1
+				$return = VOID;
+			} else {
 				if (eval($Expression) === FALSE) {
 					$return = VOID;
 				}
@@ -854,9 +852,8 @@ class pData
 				if (in_array($return, ["NAN", "INF", "-INF"])){
 					$return = VOID;
 				}
-			
-			#}
-			
+			}
+				
 			$Abscissa[] = $i;
 			$Result[] = $return;
 		}
