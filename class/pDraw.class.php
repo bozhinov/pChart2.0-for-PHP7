@@ -2042,7 +2042,11 @@ class pDraw
 					foreach($Series as $SerieID => $ValuesCount) {
 						if (isset($Data["Series"][$SerieID]["Data"][$ID]) && $Data["Series"][$SerieID]["Data"][$ID] != NULL) {
 							$Value = $Data["Series"][$SerieID]["Data"][$ID];
-							$PointMax = ($Value > 0) ? $PointMax + $Value : $PointMin + $Value;
+							if ($Value > 0) {
+								$PointMax = $PointMax + $Value; 
+							} else { 
+								$PointMin = $PointMin + $Value; 
+							}
 						}
 					}
 
