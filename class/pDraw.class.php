@@ -4902,8 +4902,7 @@ class pDraw
 						if ($Y != VOID) {
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						} else { # Momchil
-						#if ($Y == VOID) {
+						} else { 
 							$Y = NULL;
 						}
 
@@ -4922,7 +4921,8 @@ class pDraw
 					}
 
 					if ($ReCenter) {
-						$Points += [$LastX + $XStep / 2, $LastY,$LastX + $XStep / 2, $YZero];
+						$Points[] = $LastX+$XStep/2; $Points[] = $LastY;
+						$Points[] = $LastX+$XStep/2; $Points[] = $YZero;
 					} else {
 						$Points[] = $LastX;
 						$Points[] = $YZero;
@@ -4964,14 +4964,18 @@ class pDraw
 
 						if ($X != VOID && $LastX != NULL && $LastY != NULL) {
 							(count($Points) == 0) AND $Points = [$YZero, $LastY];
-							$Points += [$LastX,$LastY,$LastX,$Y,$X,$Y];
+							$Points[] = $LastX; 
+							$Points[] = $LastY;
+							$Points[] = $LastX;
+							$Points[] = $Y;
+							$Points[] = $X;
+							$Points[] = $Y;
 						}
 
 						if ($X != VOID) {
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						} else { # Momchil
-						#if ($X == VOID) {
+						} else { 
 							$X = NULL;
 						}
 
@@ -4989,7 +4993,10 @@ class pDraw
 					}
 
 					if ($ReCenter) {
-						$Points += [$LastX,$LastY + $YStep / 2,$YZero,$LastY + $YStep / 2];
+						$Points[] = $LastX;
+						$Points[] = $LastY+$YStep/2;
+						$Points[] = $YZero;
+						$Points[] = $LastY+$YStep/2;
 					} else {
 						$Points[] = $YZero;
 						$Points[] = $LastY;
