@@ -4884,7 +4884,12 @@ class pDraw
 					foreach($PosArray as $Key => $Y) {
 
 						if ($Y == VOID && $LastX != NULL && $LastY != NULL && (count($Points) > 0)) {
-							$Points += [$LastX,$LastY,$X,$LastY,$X,$YZero];
+							$Points[] = $LastX;
+							$Points[] = $LastY;
+							$Points[] = $X;
+							$Points[] = $LastY;
+							$Points[] = $X;
+							$Points[] = $YZero;
 							$this->drawPolygon($Points, $Color);
 							$Points = [];
 						}
@@ -4896,7 +4901,12 @@ class pDraw
 								$Points[] = $YZero;
 							}
 
-							$Points += [$LastX,$LastY,$X,$LastY,$X,$Y];
+							$Points[] = $LastX;
+							$Points[] = $LastY;
+							$Points[] = $X;
+							$Points[] = $LastY;
+							$Points[] = $X;
+							$Points[] = $Y;
 						}
 
 						if ($Y != VOID) {
@@ -4957,7 +4967,12 @@ class pDraw
 					foreach($PosArray as $Key => $X) {
 
 						if ($X == VOID && $LastX != NULL && $LastY != NULL && (count($Points) > 0)) {
-							$Points += [$LastX,$LastY,$LastX,$Y,$YZero,$Y];
+							$Points[] = $LastX;
+							$Points[] = $LastY;
+							$Points[] = $LastX;
+							$Points[] = $Y;
+							$Points[] = $YZero;
+							$Points[] = $Y;
 							$this->drawPolygon($Points, $Color);
 							$Points = [];
 						}
