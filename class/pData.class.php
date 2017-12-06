@@ -838,10 +838,10 @@ class pData
 
 		for ($i = $MinX; $i <= $MaxX; $i = $i + $XStep) {
 			
-			if ($i == 0){
-				$return = VOID;
+			#if ($i == 0){
+			#	$return = VOID;
 				
-			} else {
+			#} else {
 				
 				$Expression = "\$return = '!'.(" . str_replace("z", $i, $Formula) . ");";
 
@@ -855,7 +855,7 @@ class pData
 					$return = VOID;
 				}
 			
-			}
+			#}
 			
 			$Abscissa[] = $i;
 			$Result[] = $return;
