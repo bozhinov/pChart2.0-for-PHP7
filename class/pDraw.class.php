@@ -698,7 +698,7 @@ class pDraw
 		$NoDraw = FALSE;
 		$PathOnly = FALSE;
 		$Weight = NULL;
-		$ShowC = FALSE;
+		$ShowC	= isset($Format["ShowControl"]) ? $Format["ShowControl"] : FALSE;
 		$DrawArrow = FALSE;
 		$ArrowSize = 10;
 		$ArrowRatio = .5;
