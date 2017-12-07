@@ -1,7 +1,7 @@
 {
   "name": "bozhinov/pChart2.0-for-PHP7",
-  "description": "Fork of pChart 2.0 compatible with PHP 7",
-  "Version": "1.3",
+  "description": "pChart 2.2 compatible with PHP 7",
+  "Version": "1.4",
   "keywords": [
     "php",
     "charts",
@@ -9,7 +9,6 @@
     "form",
     "pie",
     "bar",
-    "pizza",
     "server side charts"
   ],
   "homepage": "https://github.com/bozhinov/pChart2.0-for-PHP7",
