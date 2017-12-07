@@ -23,7 +23,7 @@ $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 $myPicture->myData->setAbscissaName("Time (years)");
 
-/* Turn of Antialiasing */
+/* Turn of Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background and the border  */
@@ -45,10 +45,10 @@ $myPicture->setGraphArea(40,40,680,200);
 $scaleSettings = array("LabelSkip"=>4,"XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridAlpha"=>30,"GridR"=>140,"GridG"=>140,"GridB"=>140,"DrawSubTicks"=>TRUE);
 $myPicture->drawScale($scaleSettings);
 
-/* Turn on Antialiasing */
+/* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
 
-/* Create the pMist object */
+/* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 /* Draw the line chart */

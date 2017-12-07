@@ -20,7 +20,7 @@ $myPicture->myData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun"),"Labels
 $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 
-/* Turn of Antialiasing */
+/* Turn of Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */
@@ -49,13 +49,13 @@ $myPicture->setGraphArea(60,40,650,200);
 $scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200,"GridG"=>200,"GridB"=>200,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
 $myPicture->drawScale($scaleSettings);
 
-/* Turn on Antialiasing */
+/* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
 
 /* Enable shadow computing */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 
-/* Create the pMist object */
+/* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 /* Draw the line chart */

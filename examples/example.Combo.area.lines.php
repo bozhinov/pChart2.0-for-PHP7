@@ -19,7 +19,7 @@ $myPicture->myData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun"),"Labels
 $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 
-/* Turn of Antialiasing */
+/* Turn of Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */ 
@@ -50,10 +50,10 @@ $myPicture->drawScale($scaleSettings);
 /* Write the chart legend */
 $myPicture->drawLegend(540,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
-/* Turn on Antialiasing */
+/* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
 
-/* Create the pMist object */
+/* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 /* Draw the area chart */

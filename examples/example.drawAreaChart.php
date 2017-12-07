@@ -45,7 +45,7 @@ $myPicture->setGraphArea(60,60,450,190);
 $myPicture->drawFilledRectangle(60,60,450,190,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10]);
 $myPicture->drawScale(["DrawSubTicks"=>TRUE]);
 
-/* Create the pMist object */
+/* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 $pCharts->myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));

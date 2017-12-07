@@ -17,7 +17,7 @@ $myPicture->myData->createFunctionSerie("Serie 3","(z*15)*z",array("AutoDescript
 $myPicture->myData->setAxisName(0,"functions");
 $myPicture->myData->setAbscissa("Labels");
 
-/* Turn of Antialiasing */
+/* Turn of Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */
@@ -47,7 +47,7 @@ $myPicture->setGraphArea(60,40,650,200);
 $scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200,"GridG"=>200,"GridB"=>200,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
 $myPicture->drawScale($scaleSettings);
 
-/* Turn on Antialiasing */
+/* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
 
 /* Turn on shadows */
@@ -57,7 +57,7 @@ $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 $myPicture->drawThreshold(0,["Alpha"=>70,"Ticks"=>1]);
 $myPicture->drawXThreshold(10,["Alpha"=>70,"Ticks"=>1]);
 
-/* Create the pMist object */
+/* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 /* Draw a zone chart */

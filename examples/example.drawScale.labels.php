@@ -43,7 +43,7 @@ $myPicture->drawText(350,55,"My chart title",array("FontSize"=>20,"Align"=>TEXT_
 $myPicture->setGraphArea(60,70,660,200);
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
 
-/* Create the pMist object */
+/* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 /* Draw the scale */

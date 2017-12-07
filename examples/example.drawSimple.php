@@ -31,7 +31,7 @@ $myPicture->setGraphArea(60,40,670,190);
 $myPicture->drawFilledRectangle(60,40,670,190,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10]);
 $myPicture->drawScale(["GridR"=>180,"GridG"=>180,"GridB"=>180]);
 
-/* Create the pMist object */
+/* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 /* Draw a spline chart on top */

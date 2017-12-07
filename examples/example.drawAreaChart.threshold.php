@@ -18,7 +18,7 @@ for($i=0;$i<=30;$i++)
 $myPicture->myData->setSerieTicks("Probe 2",4);
 $myPicture->myData->setAxisName(0,"Temperatures");
 
-/* Turn of Antialiasing */
+/* Turn of Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
@@ -45,7 +45,7 @@ $myPicture->drawScale($scaleSettings);
 /* Write the chart legend */
 $myPicture->drawLegend(640,20,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
-/* Turn on Antialiasing */
+/* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
 
 /* Enable shadow computing */
@@ -60,7 +60,7 @@ $Threshold = [
 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>20]);
 
-/* Create the pMist object */
+/* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 $pCharts->drawAreaChart(["Threshold"=>$Threshold]);

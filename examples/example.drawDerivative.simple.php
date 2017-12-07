@@ -31,7 +31,7 @@ $myPicture->setGraphArea(50,40,680,170);
 $scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSubTicks"=>TRUE,"GridR"=>100,"GridG"=>100,"GridB"=>100,"GridAlpha"=>15);
 $myPicture->drawScale($scaleSettings);
 
-/* Create the pMist object */
+/* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 /* Draw the chart */

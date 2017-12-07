@@ -54,7 +54,7 @@ $myPicture->drawLegend(540,20,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTA
 /* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
 
-/* Create the pMist object */
+/* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 /* Draw the area chart */

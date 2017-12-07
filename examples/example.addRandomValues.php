@@ -43,7 +43,7 @@ $myPicture->drawScale(["CycleBackground"=>TRUE,"LabelSkip"=>4,"DrawSubTicks"=>TR
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 $myPicture->drawText(50,52,"Magnetic noise",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMLEFT]);
 
-/* Create the pMist object */
+/* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 /* Draw the data series */

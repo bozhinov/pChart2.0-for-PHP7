@@ -16,7 +16,7 @@ $myPicture->myData->setSerieTicks("Last year",4);
 $myPicture->myData->addPoints(["Year","Month","Day"],"Labels");
 $myPicture->myData->setAbscissa("Labels");
 
-/* Turn on antialiasing */
+/* Turn on anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Create a solid background */
@@ -46,7 +46,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","Fon
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 $myPicture->drawText(50,52,"Chart subtitle",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMLEFT]);
 
-/* Create the pMist object */
+/* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 /* Draw the bar chart chart */
@@ -54,7 +54,7 @@ $pCharts->myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_f
 $pCharts->myPicture->myData->setSerieDrawable("Last year",FALSE);
 $pCharts->drawBarChart();
 
-/* Turn on antialiasing */
+/* Turn on anti-aliasing */
 $myPicture->Antialias = TRUE;
 
 /* Draw the line and plot chart */
