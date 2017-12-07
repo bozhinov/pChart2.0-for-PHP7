@@ -2,12 +2,12 @@
 /*
 pCache - speed up the rendering by caching up the pictures
 
-Version     : 2.1.4
+Version     : 2.2.0
 Made by     : Jean-Damien POGOLOTTI
-Last Update : 19/01/2014
+Maintainedby: Momchil Bozhinov
+Last Update : 01/01/2018
 
-This file can be distributed under the license you can find at :
-
+This file can be distributed under the license you can find at:
 http://www.pchart.net/license
 
 You can find the whole class documentation on the pChart web site.
@@ -265,13 +265,10 @@ class pCache
 			return FALSE;
 		}
 
-		/* Get the database extended information */
-		$DBPos = $CacheInfo["DBPos"];
-		$PicSize = $CacheInfo["PicSize"];
 		/* Extract the picture from the solid cache file */
 		$Handle = fopen($this->CacheDB, "r");
-		fseek($Handle, $DBPos);
-		$Picture = fread($Handle, $PicSize);
+		fseek($Handle, $CacheInfo["DBPos"]);
+		$Picture = fread($Handle, $CacheInfo["PicSize"]);
 		fclose($Handle);
 		/* Return back the raw picture data */
 		return $Picture;

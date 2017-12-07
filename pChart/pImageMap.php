@@ -6,7 +6,7 @@ Version     : 0.1
 Made by     : Forked by Momchil Bozhinov from the original pImage class from Jean-Damien POGOLOTTI
 Last Update : 27/11/2017
 
-This file can be distributed under the license you can find at :
+This file can be distributed under the license you can find at:
 http://www.pchart.net/license
 
 */
