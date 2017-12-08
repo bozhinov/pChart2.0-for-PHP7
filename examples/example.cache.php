@@ -16,8 +16,11 @@ $myPicture = new pDraw(700,230);
 /* Add data in your dataset */ 
 $myPicture->myData->addPoints([1,3,4,3,5]);
 
+/* Id to help identify the image later */
+$uniqueId = serialize($myPicture->myData->Data);
+
 /* Create the cache object */
-$myCache = new pCache(["CacheFolder"=>"cache"], $myPicture->myData);
+$myCache = new pCache(["CacheFolder"=>"cache"], $uniqueId);
 
 /* Test if we got this hash in our cache already */
 if ($myCache->isInCache()){

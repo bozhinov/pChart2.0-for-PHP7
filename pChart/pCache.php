@@ -2,7 +2,7 @@
 /*
 pCache - speed up the rendering by caching up the pictures
 
-Version     : 2.2.0
+Version     : 2.2.1-dev
 Made by     : Jean-Damien POGOLOTTI
 Maintainedby: Momchil Bozhinov
 Last Update : 01/01/2018
@@ -18,33 +18,29 @@ namespace pChart;
 
 class pCache
 {
-	var $CacheFolder;
 	var $CacheIndex;
 	var $CacheDB;
 	var $ID;
 	
 	/* Class creator */
-	function __construct(array $Settings = [], $myData, string $Marker = "")
+	function __construct(array $Settings = [], string $uniqueId)
 	{
 		
 		#if (!is_dir("cache")){
 		#	mkdir("cache", 0775);
 		#}
+
+		$this->ID = md5($uniqueId);
 		
-		/* Compute the hash linked to the chart data */
-		if (!($myData instanceof pData)){
-			die("Cache is expecting a pData object!");
-		}
-		$this->ID = $this->getHash($myData, $Marker);
-		
-		$this->CacheFolder = isset($Settings["CacheFolder"]) ? $Settings["CacheFolder"] : "cache";
+		$CacheFolder = isset($Settings["CacheFolder"]) ? $Settings["CacheFolder"] : "cache";
 		
 		$this->CacheIndex = isset($Settings["CacheIndex"]) ? $Settings["CacheIndex"] : "index.db";
-		$this->CacheIndex = $this->CacheFolder . "/" . $this->CacheIndex;
+		$this->CacheIndex = $CacheFolder . "/" . $this->CacheIndex;
 		
 		$this->CacheDB = isset($Settings["CacheDB"]) ? $Settings["CacheDB"] : "cache.db";
-		$this->CacheDB = $this->CacheFolder . "/" . $this->CacheDB;
+		$this->CacheDB = $CacheFolder . "/" . $this->CacheDB;
 		
+		/* Create the cache Db and Index */
 		if (!file_exists($this->CacheIndex)) {
 			touch($this->CacheIndex);
 		}
@@ -52,6 +48,11 @@ class pCache
 		if (!file_exists($this->CacheDB)) {
 			touch($this->CacheDB);
 		}
+	}
+	
+	/* For when you need to work with multiple cached images */
+	function changeID(string $uniqueId){
+		$this->ID = md5($uniqueId);
 	}
 
 	/* Flush the cache contents */
@@ -61,37 +62,34 @@ class pCache
 		file_put_contents($this->CacheDB, "");
 	}
 
-	/* Return the MD5 of the data array to clearly identify the chart */
-	function getHash($Data, $Marker)
-	{
-		return (md5($Marker . serialize($Data->Data)));
-	}
-
 	/* Write the generated picture to the cache */
 	function writeToCache($pChartObject)
 	{
-		/* Compute the paths */
-		$TemporaryFile = $this->CacheFolder . "/tmp_" . rand(0, 1000) . ".png";
+		if (!($pChartObject instanceof pDraw)){
+			die("pPie needs a pDraw object. Please check the examples.");
+		}
+
+		/* Create a temporary stream */
+		$TempHandle = fopen("php://temp", "wb");
 
 		/* Flush the picture to a temporary file */
-		imagepng($pChartObject->Picture, $TemporaryFile);
+		imagepng($pChartObject->Picture, $TempHandle);
+		
 		/* Retrieve the files size */
-		$PictureSize = filesize($TemporaryFile);
-		$DBSize = filesize($this->CacheDB);
+		$stats = fstat($TempHandle);
+		$PicSize = $stats['size'];
+		$DbSize = filesize($this->CacheDB);
 		/* Save the index */
-		$Handle = fopen($this->CacheIndex, "a");
-		fwrite($Handle, $this->ID . "," . $DBSize . "," . $PictureSize . "," . time() . ",0      \r\n");
-		fclose($Handle);
+		file_put_contents($this->CacheIndex, $this->ID.",".$DbSize.",".$PicSize.",".time().",0      \r\n", FILE_APPEND | LOCK_EX);
 		/* Get the picture raw contents */
-		$Handle = fopen($TemporaryFile, "r");
-		$Raw = fread($Handle, $PictureSize);
-		fclose($Handle);
+		rewind($TempHandle);
+		$Raw = fread($TempHandle, $PicSize);
+		/* Close the temporary stream */
+		fclose($TempHandle);
+		
 		/* Save the picture in the solid database file */
-		$Handle = fopen($this->CacheDB, "a");
-		fwrite($Handle, $Raw);
-		fclose($Handle);
-		/* Remove temporary file */
-		unlink($TemporaryFile);
+		file_put_contents($this->CacheDB, $Raw, FILE_APPEND | LOCK_EX);
+
 	}
 
 	/* Remove object older than the specified TS */
@@ -106,117 +104,85 @@ class pCache
 		$this->dbRemoval(["Name" => $this->ID]);
 	}
 
-	/* Remove with specified criterias */
+	/* Remove with specified criteria */
 	function dbRemoval($Settings)
 	{
 		$ID = isset($Settings["Name"]) ? $Settings["Name"] : NULL;
 		$Expiry = isset($Settings["Expiry"]) ? $Settings["Expiry"] : -(24 * 60 * 60);
 		$TS = time() - $Expiry;
-		/* Compute the paths */
-		$DatabaseTemp = $this->CacheDB . ".tmp";
-		$IndexTemp = $this->CacheIndex . ".tmp";
+
 		/* Single file removal */
 		if ($ID != NULL) {
 			/* If it's not in the cache DB, go away */
-			if (!$this->isInCache(TRUE)) {
+			if (!$this->isInCache()) {
 				return 0;
 			}
 		}
 
-		/* Create the temporary files */
-		if (!file_exists($DatabaseTemp)) {
-			touch($DatabaseTemp);
-		}
-
-		if (!file_exists($IndexTemp)) {
-			touch($IndexTemp);
-		}
-
 		/* Open the file handles */
-		$IndexHandle = fopen($this->CacheIndex, "r");
-		$IndexTempHandle = fopen($IndexTemp, "w");
-		$DBHandle = fopen($this->CacheDB, "r");
-		$DBTempHandle = fopen($DatabaseTemp, "w");
+		$TempIndex = "";
+		$TempDb = "";
+				
 		/* Remove the selected ID from the database */
-		if ($IndexHandle && $IndexTempHandle && $DBHandle && $DBTempHandle) {
-			while (!feof($IndexHandle)) {
-				$Entry = fgets($IndexHandle, 4096);
-				$Entry = str_replace("\r", "", $Entry);
-				$Entry = str_replace("\n", "", $Entry);
-				$Settings = explode(",", $Entry);
-				if ($Entry != "") {
-					$PicID = $Settings[0];
-					$DBPos = $Settings[1];
-					$PicSize = $Settings[2];
-					$GeneratedTS = $Settings[3];
-					$Hits = $Settings[4];
-					if ($Settings[0] != $ID && $GeneratedTS > $TS) {
-						$CurrentPos = ftell($DBTempHandle);
-						fwrite($IndexTempHandle, $PicID . "," . $CurrentPos . "," . $PicSize . "," . $GeneratedTS . "," . $Hits . "\r\n");
-						fseek($DBHandle, $DBPos);
-						$Picture = fread($DBHandle, $PicSize);
-						fwrite($DBTempHandle, $Picture);
-					}
-				}
+		$IndexContent = file($this->CacheIndex, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		
+		foreach ($IndexContent as $line){
+			
+			list($PicID, $DbPos, $PicSize, $GeneratedTS, $Hits) = explode(",", $line);
+			
+			/* filter out the ID for removal and OlderThan X */
+			if ($PicID != $ID && $GeneratedTS > $TS) {
+				$TempIndex .= $PicID.",".strlen($TempDb).",".$PicSize.",".$GeneratedTS.",".$Hits."\r\n";
+				$TempDb .= file_get_contents($this->CacheDB, NULL, NULL, $DbPos, $PicSize);
 			}
-			/* Close the handles */
-			fclose($IndexHandle);
-			fclose($IndexTempHandle);
-			fclose($DBHandle);
-			fclose($DBTempHandle);
 		}
-
-		/* Remove the prod files */
-		unlink($this->CacheDB);
-		unlink($this->CacheIndex);
+		
 		/* Swap the temp & prod DB */
-		rename($DatabaseTemp, $this->CacheDB);
-		rename($IndexTemp, $this->CacheIndex);
+		file_put_contents($this->CacheDB, $TempDb, LOCK_EX);
+		file_put_contents($this->CacheIndex, $TempIndex, LOCK_EX);
 	}
 
 	function isInCache($Verbose = FALSE, $UpdateHitsCount = FALSE)
 	{
-		/* Search the picture in the index file */
-		$Handle = fopen($this->CacheIndex, "r");
-		if ($Handle){
-			while (!feof($Handle)) {
-				$IndexPos = ftell($Handle);
-				$Entry = fgets($Handle, 4096);
-				if ($Entry != "") {
-					$Settings = explode(",", $Entry);
-					$PicID = $Settings[0];
-					if ($PicID == $this->ID) {
-						fclose($Handle);
-						$DBPos = $Settings[1];
-						$PicSize = $Settings[2];
-						$GeneratedTS = $Settings[3];
-						$Hits = intval($Settings[4]);
-						if ($UpdateHitsCount) {
-							$Hits++;
-							if (strlen($Hits) < 7) {
-								$Hits = $Hits . str_repeat(" ", 7 - strlen($Hits));
-							}
 
-							$Handle = fopen($this->CacheIndex, "r+");
-							fseek($Handle, $IndexPos);
-							fwrite($Handle, $PicID . "," . $DBPos . "," . $PicSize . "," . $GeneratedTS . "," . $Hits . "\r\n");
-							fclose($Handle);
-						}
+		$IndexContent = file($this->CacheIndex, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		$UpdatedIndexContent = "";
+		$i = 0;
+		$ret = FALSE;
+		
+		foreach ($IndexContent as $line){
 
-						if ($Verbose) {
-							return ["DBPos" => $DBPos,"PicSize" => $PicSize,"GeneratedTS" => $GeneratedTS,"Hits" => $Hits];
-						} else {
-							return TRUE;
-						}
+			list($PicID, $DBPos, $PicSize, $GeneratedTS, $Hits) = explode(",", $line);
+			
+			if ($PicID == $this->ID) {
+				if ($UpdateHitsCount) {
+					/* increment hints as an INT and then convert back to STR */
+					$Hits = intval($Hits);
+					$Hits++; 
+					$Hits = strval($Hits);
+					
+					if (strlen($Hits) < 7) {
+						$Hits .= str_repeat(" ", 7 - strlen($Hits));
 					}
 				}
+				/* Update Index if we have a hit */
+				/* A downside to this refactoring is that it will scroll all index entries even past the point of getting a hit */
+				/* I don't expect anyone to use it for a large volume of images
+					for such I will add caching to a proper data base or several of them */
+				$IndexContent[$i] = $PicID.",".$DBPos.",".$PicSize.",".$GeneratedTS.",".$Hits."\r\n";
+				$ret = ($Verbose) ? ["DBPos" => $DBPos,"PicSize" => $PicSize,"GeneratedTS" => $GeneratedTS,"Hits" => $Hits] : TRUE;
 			}
 			
-			fclose($Handle);
+			$UpdatedIndexContent .= $IndexContent[$i];
+			$i++;
 		}
-
-		/* Picture isn't in the cache */
-		return FALSE;
+		
+		/* Update Index file if we have a hit */
+		if ($ret != FALSE){
+			file_put_contents($this->CacheIndex, $UpdatedIndexContent, LOCK_EX);
+		}
+		
+		return $ret;
 	}
 
 	/* Automatic output method based on the calling interface */
@@ -261,15 +227,14 @@ class pCache
 		$CacheInfo = $this->isInCache(TRUE, TRUE);
 		/* Not in the cache */
 		if (!$CacheInfo) { 
-			# Momchil: fread returns FALSE on failure. Return FALSE here as well and not NULL
+			# Momchil: fread returns FALSE on failure. 
+			# Return FALSE here as well and not NULL
 			return FALSE;
 		}
 
 		/* Extract the picture from the solid cache file */
-		$Handle = fopen($this->CacheDB, "r");
-		fseek($Handle, $CacheInfo["DBPos"]);
-		$Picture = fread($Handle, $CacheInfo["PicSize"]);
-		fclose($Handle);
+		$Picture = file_get_contents($this->CacheDB, NULL, NULL, $CacheInfo["DBPos"], $CacheInfo["PicSize"]);
+		
 		/* Return back the raw picture data */
 		return $Picture;
 	}
