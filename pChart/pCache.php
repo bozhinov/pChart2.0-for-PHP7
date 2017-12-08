@@ -12,27 +12,33 @@ http://www.pchart.net/license
 
 You can find the whole class documentation on the pChart web site.
 */
-/* pData class definition */
 
 namespace pChart;
 
-class pCache
+class pCache implements pCacheInterface
 {
 	var $CacheIndex;
 	var $CacheDB;
-	var $ID;
+	var $Id;
 	
 	/* Class creator */
 	function __construct(array $Settings = [], string $uniqueId)
 	{
 		
-		#if (!is_dir("cache")){
-		#	mkdir("cache", 0775);
+		$CacheFolder = isset($Settings["CacheFolder"]) ? $Settings["CacheFolder"] : "cache";
+		
+		#if (!is_dir($CacheFolder)){
+		#	mkdir($CacheFolder, 0775);
 		#}
 
-		$this->ID = md5($uniqueId);
+		$this->Id = md5($uniqueId);
 		
-		$CacheFolder = isset($Settings["CacheFolder"]) ? $Settings["CacheFolder"] : "cache";
+		/* blocking the file access to the cache seems a good idea 
+		<Files ~ "\cache">
+			Order allow,deny
+			Deny from all
+		</Files> 
+		*/
 		
 		$this->CacheIndex = isset($Settings["CacheIndex"]) ? $Settings["CacheIndex"] : "index.db";
 		$this->CacheIndex = $CacheFolder . "/" . $this->CacheIndex;
@@ -52,7 +58,7 @@ class pCache
 	
 	/* For when you need to work with multiple cached images */
 	function changeID(string $uniqueId){
-		$this->ID = md5($uniqueId);
+		$this->Id = md5($uniqueId);
 	}
 
 	/* Flush the cache contents */
@@ -80,7 +86,7 @@ class pCache
 		$PicSize = $stats['size'];
 		$DbSize = filesize($this->CacheDB);
 		/* Save the index */
-		file_put_contents($this->CacheIndex, $this->ID.",".$DbSize.",".$PicSize.",".time().",0      \r\n", FILE_APPEND | LOCK_EX);
+		file_put_contents($this->CacheIndex, $this->Id.",".$DbSize.",".$PicSize.",".time().",0      \r\n", FILE_APPEND | LOCK_EX);
 		/* Get the picture raw contents */
 		rewind($TempHandle);
 		$Raw = fread($TempHandle, $PicSize);
@@ -101,7 +107,7 @@ class pCache
 	/* Remove an object from the cache */
 	function remove()
 	{
-		$this->dbRemoval(["Name" => $this->ID]);
+		$this->dbRemoval(["Name" => $this->Id]);
 	}
 
 	/* Remove with specified criteria */
@@ -154,7 +160,7 @@ class pCache
 
 			list($PicID, $DBPos, $PicSize, $GeneratedTS, $Hits) = explode(",", $line);
 			
-			if ($PicID == $this->ID) {
+			if ($PicID == $this->Id) {
 				if ($UpdateHitsCount) {
 					/* increment hints as an INT and then convert back to STR */
 					$Hits = intval($Hits);

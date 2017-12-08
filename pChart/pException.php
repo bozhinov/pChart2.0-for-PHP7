@@ -51,6 +51,11 @@ class pException extends \Exception
 	{
 		return new static(sprintf('pChart: The serie name "%s" was not found in the dataset', $text));
 	}
+	
+	public static function SQLiteException($text)
+	{
+		return new static(sprintf('pCache: %s', $text));
+	}
 }
 
 ?>
