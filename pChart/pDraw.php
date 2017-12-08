@@ -106,8 +106,8 @@ class pDraw
 	var $XSize = NULL; // Width of the picture
 	var $YSize = NULL; // Height of the picture
 	var $Picture; // GD picture object
-	var $Antialias = TRUE; // Turn antialias on or off
-	var $AntialiasQuality = 0; // Quality of the antialiasing implementation (0-1)
+	var $Antialias = TRUE; // Turn anti alias on or off
+	var $AntialiasQuality = 0; // Quality of the anti aliasing implementation (0-1)
 
 	// var $Mask		= "";				// Already drawn pixels mask (Filled circle implementation) # UNUSED
 
@@ -118,7 +118,7 @@ class pDraw
 	var $GraphAreaX2 = NULL; // Graph area bottom right X position
 	var $GraphAreaY2 = NULL; // Graph area bottom right Y position
 	/* Scale settings */
-	var $ScaleMinDivHeight = 20; // Minimum height for scame divs
+	var $ScaleMinDivHeight = 20; // Minimum height for scale divs
 	/* Font properties */
 	var $FontName = "pChart/fonts/GeosansLight.ttf"; // Default font file
 	var $FontSize = 12; // Default font size
@@ -150,7 +150,7 @@ class pDraw
 				
 		if (!($XSize > 0 && $YSize > 0)){
 			$this->Picture = imagecreatetruecolor(1, 1);
-			throw pException::InvalidDimentions("Image dimentions (X * Y) must be > 0!");
+			throw pException::InvalidDimentions("Image dimensions (X * Y) must be > 0!");
 		}
 		
 		$memory_limit = ini_get("memory_limit");
@@ -4807,7 +4807,7 @@ class pDraw
 		return $this->XSize;
 	}
 
-	/* Return the heigth of the picture */
+	/* Return the height of the picture */
 	function getHeight()
 	{
 		return $this->YSize;
@@ -4941,7 +4941,7 @@ class pDraw
 	}
 
 	/* Attach a dataset to your pChart Object */
-	function setDataSet(&$myData)
+	function setDataSet($myData)
 	{
 		$this->myData = $myData;
 	}

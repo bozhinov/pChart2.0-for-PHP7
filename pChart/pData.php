@@ -271,7 +271,7 @@ class pData
 		$this->Data["AbscissaName"] = $Name;
 	}
 
-	/* Create a scatter group specifyin X and Y data series */
+	/* Create a scatter group specifying X and Y data series */
 	function setScatterSerie($SerieX, $SerieY, $ID = 0)
 	{
 		if (isset($this->Data["Series"][$SerieX]) && isset($this->Data["Series"][$SerieY])) {
@@ -281,7 +281,7 @@ class pData
 		}
 	}
 
-	/* Set the shape of a given sctatter serie */
+	/* Set the shape of a given scatter serie */
 	function setScatterSerieShape($ID, $Shape = SERIE_SHAPE_FILLEDCIRCLE)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
@@ -459,7 +459,7 @@ class pData
 		}
 	}
 
-	/* Return the x th percentil of the given serie */
+	/* Return the x th percentile of the given serie */
 	function getSeriePercentile($Serie = "Serie1", $Percentil = 95)
 	{
 		if (!isset($this->Data["Series"][$Serie]["Data"])) {
@@ -697,7 +697,7 @@ class pData
 
 	}
 
-	/* Initialise a given scatter serie */
+	/* Initialize a given scatter serie */
 	function initScatterSerie($ID)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
@@ -714,7 +714,7 @@ class pData
 		];
 	}
 
-	/* Initialise a given serie */
+	/* Initialize a given serie */
 	function initialise($Serie)
 	{
 		$ID = (isset($this->Data["Series"])) ? count($this->Data["Series"]) : 0;
@@ -788,36 +788,40 @@ class pData
 		$GotHeader = isset($Options["GotHeader"]) ? $Options["GotHeader"] : FALSE;
 		$SkipColumns = isset($Options["SkipColumns"]) ? $Options["SkipColumns"] : [-1];
 		$DefaultSerieName = isset($Options["DefaultSerieName"]) ? $Options["DefaultSerieName"] : "Serie";
-		$Handle = fopen($FileName, "r");
-		if ($Handle) {
-			$HeaderParsed = FALSE;
-			$SerieNames = [];
-			while (!feof($Handle)) {
-				$Buffer = fgets($Handle, 4096);
-				$Buffer = str_replace([chr(10),chr(13)], ["",""], $Buffer); # TODO consider stream_get_line
-				$Values = preg_split("/" . $Delimiter . "/", $Buffer); #TODO consider explode
-				if ($Buffer != "") {
-					if ($GotHeader && !$HeaderParsed) {
-						foreach($Values as $Key => $Name) {
-							(!in_array($Key, $SkipColumns)) AND $SerieNames[$Key] = $Name;
-						}
+		
+		if (strlen($Delimiter) > 1){
+			die("pChart: delimiter has to be a single char"); # No need to throw exception here
+		}
+		
+		if (!file_exists($FileName)){
+			die("pChart: could not find the CSV file"); # No need to throw exception here
+		}
+		
+		$CSVContent = file($FileName, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		$SerieNames = [];
+		
+		if ($GotHeader) {
+			$line1 = explode($Delimiter, array_shift($CSVContent));
+			foreach($line1 as $Key => $Name) {
+				(!in_array($Key, $SkipColumns)) AND $SerieNames[$Key] = $Name;
+			}
+		}
+			
+		foreach ($CSVContent as $line){
 
-						$HeaderParsed = TRUE;
-					} else {
-						if (count($SerieNames) == 0) {
-							foreach($Values as $Key => $Name) {
-								(!in_array($Key, $SkipColumns)) AND $SerieNames[$Key] = $DefaultSerieName . $Key;
-							}
-						}
+			$line = str_replace([chr(10),chr(13)], ["",""], $line); 
+			$Values = explode($Delimiter, $line);
 
-						foreach($Values as $Key => $Value) {
-							(!in_array($Key, $SkipColumns)) AND $this->addPoints($Value, $SerieNames[$Key]);
-						}
-					} 
-				} # $Buffer != ""
-			} # while
+			if (count($SerieNames) == 0) {
+				foreach($Values as $Key => $Name) {
+					(!in_array($Key, $SkipColumns)) AND $SerieNames[$Key] = $DefaultSerieName . $Key;
+				}
+			}
 
-			fclose($Handle);
+			foreach($Values as $Key => $Value) {
+				(!in_array($Key, $SkipColumns)) AND $this->addPoints($Value, $SerieNames[$Key]);
+			}
+		
 		}
 	}
 
