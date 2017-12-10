@@ -36,7 +36,12 @@ class pException extends \Exception
 	{
 		return new static(sprintf('pChart: %s', $text));
 	}
-
+	
+	public static function InvalidImageFilter($text)
+	{
+		return new static(sprintf('pChart: %s', $text));
+	}
+	
 	public static function ImageMapInvalidID($text)
 	{
 		return new static(sprintf('pChart: %s', $text));

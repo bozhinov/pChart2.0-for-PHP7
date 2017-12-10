@@ -45,7 +45,11 @@ $mystockChart = new pStock($myPicture);
 $stockSettings = array("BoxUpR"=>255,"BoxUpG"=>255,"BoxUpB"=>255,"BoxDownR"=>0,"BoxDownG"=>0,"BoxDownB"=>0);
 $mystockChart->drawStockChart($stockSettings);
 
+/* http://php.net/manual/en/function.imagefilter.php */
+$myPicture->setFilter(IMG_FILTER_GRAYSCALE);
+
 /* Render the picture (choose the best way) */
-$myPicture->autoOutput("temp/example.drawStockChart.simple.png");
+/* Momchil: applied filters + the gray scale palette results in significantly smaller image */
+$myPicture->autoOutput("temp/example.drawStockChart.simple.png", 9, PNG_ALL_FILTERS);
 
 ?>

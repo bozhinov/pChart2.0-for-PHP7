@@ -4793,6 +4793,16 @@ class pDraw
 	{
 		return $this->YSize;
 	}
+	
+	/* http://php.net/manual/en/function.imagefilter.php */
+	function setFilter(int $filtertype, int $arg1 = 0, int $arg2 = 0, int $arg3 = 0, int $arg4 = 0){
+	
+		$ret = imagefilter($this->Picture, $filtertype, $arg1, $arg2, $arg3, $arg4);
+		
+		if (!$ret){
+			throw pException::InvalidImageFilter("Could not apply image filter!");
+		}
+	}
 
 	/* Render the picture to a file */
 	function render($FileName, $Compression = 0, $Filters = PNG_NO_FILTER)
@@ -4826,7 +4836,9 @@ class pDraw
 	/*	Automatic output method based on the calling interface
 		Momchil: Added support for Compression & Filters
 		Compression must be between 0 and 9 -> http://php.net/manual/en/function.imagepng.php 
-		http://php.net/manual/en/image.constants.php */
+		http://php.net/manual/en/image.constants.php
+		https://www.w3.org/TR/PNG-Filters.html
+		*/
 	
 	function autoOutput($FileName = "output.png", $Compression = 0, $Filters = PNG_NO_FILTER)
 	{
