@@ -103,8 +103,8 @@ class pDraw
 	var $LastChartLayout = CHART_LAST_LAYOUT_REGULAR; // Last layout : regular or stacked
 	
 	/* Image settings, size, quality, .. */
-	var $XSize = NULL; // Width of the picture
-	var $YSize = NULL; // Height of the picture
+	var $XSize = 0; // Width of the picture
+	var $YSize = 0; // Height of the picture
 	var $Picture; // GD picture object
 	var $Antialias = TRUE; // Turn anti alias on or off
 	var $AntialiasQuality = 0; // Quality of the anti aliasing implementation (0-1)
@@ -113,10 +113,10 @@ class pDraw
 
 	var $TransparentBackground = FALSE; // Just to know if we need to flush the alpha channels when rendering
 	/* Graph area settings */
-	var $GraphAreaX1 = NULL; // Graph area X origin
-	var $GraphAreaY1 = NULL; // Graph area Y origin
-	var $GraphAreaX2 = NULL; // Graph area bottom right X position
-	var $GraphAreaY2 = NULL; // Graph area bottom right Y position
+	var $GraphAreaX1 = 0; // Graph area X origin
+	var $GraphAreaY1 = 0; // Graph area Y origin
+	var $GraphAreaX2 = 0; // Graph area bottom right X position
+	var $GraphAreaY2 = 0; // Graph area bottom right Y position
 	/* Scale settings */
 	var $ScaleMinDivHeight = 20; // Minimum height for scale divs
 	/* Font properties */
@@ -129,12 +129,12 @@ class pDraw
 	var $FontColorA = 100; // Default transparency
 	/* Shadow properties */
 	var $Shadow = FALSE; // Turn shadows on or off
-	var $ShadowX = NULL; // X Offset of the shadow
-	var $ShadowY = NULL; // Y Offset of the shadow
-	var $ShadowR = NULL; // R component of the shadow
-	var $ShadowG = NULL; // G component of the shadow
-	var $ShadowB = NULL; // B component of the shadow
-	var $Shadowa = NULL; // Alpha level of the shadow
+	var $ShadowX = 0; // X Offset of the shadow
+	var $ShadowY = 0; // Y Offset of the shadow
+	var $ShadowR = 0; // R component of the shadow
+	var $ShadowG = 0; // G component of the shadow
+	var $ShadowB = 0; // B component of the shadow
+	var $Shadowa = 0; // Alpha level of the shadow
 
 	/* Data Set */
 	var $myData = []; // Attached myData
@@ -625,21 +625,12 @@ class pDraw
 	/* Drawn a spline based on the bezier function */
 	function drawSpline(array $Coordinates, array $Format = []): array {
 		
-		#$R = 0; # UNUSED
-		#$G = 0;
-		#$B = 0;
-		#$Alpha = 100;
-		#$Ticks = NULL;
-		$PathOnly = FALSE;
-		#$Weight = NULL;
-		#$ShowC = FALSE;			
+		$PathOnly = FALSE;		
 		$Force = 30;
 		$Forces = NULL;
 		
 		extract($Format);
 
-		#$Cpt = NULL; # UNUSED
-		#$Mode = NULL;
 		$Result = [];
 		for ($i = 1; $i <= count($Coordinates) - 1; $i++) {
 			$X1 = $Coordinates[$i - 1][0];
@@ -1267,7 +1258,7 @@ class pDraw
 			# Momchil: well worth the local var
 			$AntialiasQuality = $this->AntialiasQuality; 
 			
-			# Momchil: Fast path: mostly zeroes in my test cases
+			# Momchil: Fast path: mostly zeros in my test cases
 			# AntialiasQuality does not seem to be in use and is always 0
 			# $Xleaf is always > 0 && $Yleaf > 0 => $AlphaX > 0
 			if ($AntialiasQuality == 0) {
@@ -1387,6 +1378,10 @@ class pDraw
 
 	function getPicInfo($FileName)
 	{
+		if (!file_exists($FileName)) {
+			throw pException::InvalidImageType("Image ".$FileName." was not found");
+		}
+		
 		$Info = getimagesize($FileName);
 		
 		switch ($Info["mime"]){
@@ -1409,36 +1404,34 @@ class pDraw
 	/* Generic loader function for external pictures */
 	function drawFromPicture($PicInfo, $FileName, $X, $Y)
 	{
-		if (file_exists($FileName)) {
-			
-			list($Width, $Height, $PicType) = $PicInfo;
+		list($Width, $Height, $PicType) = $PicInfo;
 
-			$Raster = $PicType($FileName);
+		$Raster = $PicType($FileName);
 
-			$RestoreShadow = $this->Shadow;
-			if ($this->Shadow) {
-				$this->Shadow = FALSE;
-				if ($PicType == 'imagecreatefromjpeg') {
-					$this->drawFilledRectangle($X + $this->ShadowX, $Y + $this->ShadowY, $X + $Width + $this->ShadowX, $Y + $Height + $this->ShadowY, ["R" => $this->ShadowR,"G" => $this->ShadowG,"B" => $this->ShadowB,"Alpha" => $this->Shadowa]);
-				} else {
-					$TranparentID = imagecolortransparent($Raster);
-					for ($Xc = 0; $Xc <= $Width - 1; $Xc++) {
-						for ($Yc = 0; $Yc <= $Height - 1; $Yc++) {
-							$RGBa = imagecolorat($Raster, $Xc, $Yc);
-							$Values = imagecolorsforindex($Raster, $RGBa);
-							if ($Values["alpha"] < 120) {
-								$AlphaFactor = floor(($this->Shadowa / 100) * ((100 / 127) * (127 - $Values["alpha"])));
-								$this->drawAlphaPixel($X + $Xc + $this->ShadowX, $Y + $Yc + $this->ShadowY, $AlphaFactor, $this->ShadowR, $this->ShadowG, $this->ShadowB);
-							}
+		$RestoreShadow = $this->Shadow;
+		if ($this->Shadow) {
+			$this->Shadow = FALSE;
+			if ($PicType == 'imagecreatefromjpeg') {
+				$this->drawFilledRectangle($X + $this->ShadowX, $Y + $this->ShadowY, $X + $Width + $this->ShadowX, $Y + $Height + $this->ShadowY, ["R" => $this->ShadowR,"G" => $this->ShadowG,"B" => $this->ShadowB,"Alpha" => $this->Shadowa]);
+			} else {
+				$TranparentID = imagecolortransparent($Raster);
+				for ($Xc = 0; $Xc <= $Width - 1; $Xc++) {
+					for ($Yc = 0; $Yc <= $Height - 1; $Yc++) {
+						$RGBa = imagecolorat($Raster, $Xc, $Yc);
+						$Values = imagecolorsforindex($Raster, $RGBa);
+						if ($Values["alpha"] < 120) {
+							$AlphaFactor = floor(($this->Shadowa / 100) * ((100 / 127) * (127 - $Values["alpha"])));
+							$this->drawAlphaPixel($X + $Xc + $this->ShadowX, $Y + $Yc + $this->ShadowY, $AlphaFactor, $this->ShadowR, $this->ShadowG, $this->ShadowB);
 						}
 					}
 				}
 			}
-
-			$this->Shadow = $RestoreShadow;
-			imagecopy($this->Picture, $Raster, $X, $Y, 0, 0, $Width, $Height);
-			imagedestroy($Raster);
 		}
+
+		$this->Shadow = $RestoreShadow;
+		imagecopy($this->Picture, $Raster, $X, $Y, 0, 0, $Width, $Height);
+		imagedestroy($Raster);
+
 	} 
 
 		/* Draw an arrow */
@@ -3631,11 +3624,6 @@ class pDraw
 		$Data = $this->myData->Data;
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"] && !isset($ExcludedSeries[$SerieName])) {
-				#$R = $Serie["Color"]["R"];
-				#$G = $Serie["Color"]["G"]; # Momchil: UNUSED
-				#$B = $Serie["Color"]["B"];
-				#$Alpha = $Serie["Color"]["Alpha"];
-				#$Ticks = $Serie["Ticks"];
 				if ($DisplayColor == DISPLAY_AUTO) {
 					$DisplayR = $Serie["Color"]["R"];
 					$DisplayG = $Serie["Color"]["G"];
