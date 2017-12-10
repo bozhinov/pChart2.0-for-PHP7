@@ -287,10 +287,15 @@ class pPie
 		}
 
 		if ($WriteValues != NULL && !$Shadow) {
-			#$Step = 360 / (2 * PI * $Radius); # UNUSED
+
 			$Offset = 0;
-			#$ID = count($Values) - 1; # UNUSED
 			$Settings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"R" => $ValueR,"G" => $ValueG,"B" => $ValueB,"Alpha" => $ValueAlpha];
+			
+			if ($ValuePosition == PIE_VALUE_OUTSIDE) {
+				$Radius = $Radius + $ValuePadding;
+			} else {
+				$Radius = $Radius / 2;
+			}
 			
 			foreach($Values as $Key => $Value) {
 				$EndAngle = ($Value * $ScaleFactor) + $Offset;
@@ -298,13 +303,8 @@ class pPie
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
 				$Angle = ($Angle - 90) * PI / 180;
 				
-				if ($ValuePosition == PIE_VALUE_OUTSIDE) {
-					$Xc = cos($Angle) * ($Radius + $ValuePadding) + $X;
-					$Yc = sin($Angle) * ($Radius + $ValuePadding) + $Y;
-				} else {
-					$Xc = cos($Angle) * ($Radius) / 2 + $X;
-					$Yc = sin($Angle) * ($Radius) / 2 + $Y;
-				}
+				$Xc = cos($Angle) * $Radius + $X;
+				$Yc = sin($Angle) * $Radius + $Y;
 
 				if ($WriteValues == PIE_VALUE_PERCENTAGE) {
 					$Display = round((100 / $SerieSum) * $Value, $Precision) . "%";
@@ -314,7 +314,6 @@ class pPie
 
 				$this->myPicture->drawText($Xc, $Yc, $Display, $Settings);
 				$Offset = $EndAngle + $DataGapAngle;
-				#$ID--; # UNUSED
 			}
 		}
 
@@ -690,9 +689,7 @@ class pPie
 
 		if ($WriteValues != NULL) {
 			
-			# $Step = 360 / (2 * PI * $Radius); # UNUSED
 			$Offset = 360;
-			# $ID = count($Values) - 1; # UNUSED
 			$Settings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"R" => $ValueR,"G" => $ValueG,"B" => $ValueB,"Alpha" => $ValueAlpha];
 			
 			foreach($Values as $Key => $Value) {
@@ -718,12 +715,10 @@ class pPie
 
 				$this->myPicture->drawText($Xc, $Yc, $Display, $Settings);
 				$Offset = $EndAngle - $DataGapAngle;
-				# $ID--; # UNUSED
 			}
 		}
 
 		if ($DrawLabels) {
-			#$Step = 360 / (2 * PI * $Radius); # UNUSED
 			$Offset = 360;
 			$ID = count($Values) - 1;
 			foreach($Values as $Key => $Value) {
@@ -1052,7 +1047,7 @@ class pPie
 		}
 
 		/* Compute the wasted angular space between series */
-		$WastedAngular = (count($Values) == 1) ? 0 : 0; # WTF MOMCHIL TODO
+		$WastedAngular = (count($Values) == 1) ? 0 : 0; # MOMCHIL TODO
 
 		/* Compute the scale */
 		$ScaleFactor = (360 - $WastedAngular) / $SerieSum;
@@ -1332,7 +1327,7 @@ class pPie
 			$StartAngle = $Offset;
 			$EndAngle = $Offset - ($Value * $ScaleFactor);
 			($EndAngle < 0) AND $EndAngle = 0;
-			$Visible[$Slice]["Start"] = ($StartAngle > 180) ? TRUE : TRUE; # WTF MOMCHIL TODO
+			$Visible[$Slice]["Start"] = ($StartAngle > 180) ? TRUE : TRUE; # MOMCHIL TODO
 			$Visible[$Slice]["End"] = ($EndAngle < 180) ? FALSE : TRUE;
 			$Step = (360 / (2 * PI * $OuterRadius)) / 2;
 			$OutX1 = VOID;
@@ -1596,7 +1591,7 @@ class pPie
 		if ($DrawLabels) {
 			$Offset = 360;
 			foreach($Values as $Key => $Value) {
-				# $StartAngle = $Offset; UNUSED
+
 				$EndAngle = $Offset - ($Value * $ScaleFactor);
 				($EndAngle < 0) AND $EndAngle = 0;
 			
@@ -1625,7 +1620,6 @@ class pPie
 
 				$Offset = $EndAngle - $DataGapAngle;
 				$ID--;
-				# $Slice++; # UNUSED
 			}
 		}
 
