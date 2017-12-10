@@ -1041,7 +1041,7 @@ class pScatter
 		$BoxG = 0;
 		$BoxB = 0;
 		$BoxAlpha = 20;
-		$BoxSurrounding = "";
+		$BoxSurrounding = 0;
 		$BoxBorderR = 255;
 		$BoxBorderG = 255;
 		$BoxBorderB = 255;

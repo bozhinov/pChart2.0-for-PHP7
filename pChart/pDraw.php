@@ -405,13 +405,13 @@ class pDraw
 		$Step = 360 / (2 * PI * $Radius);
 		$Positions = [];
 		$Radius--;
-		$MinY = "";
-		$MaxY = "";
+		$MinY = 0;
+		$MaxY = 0;
 		for ($i = 0; $i <= 90; $i = $i + $Step) {
 			$Xp1 = cos(($i + 180) * PI / 180) * $Radius + $X1 + $Radius;
 			$Xp2 = cos(((90 - $i) + 270) * PI / 180) * $Radius + $X2 - $Radius;
 			$Yp = floor(sin(($i + 180) * PI / 180) * $Radius + $YTop);
-			($MinY == "" || $Yp > $MinY) AND $MinY = $Yp;
+			($MinY == 0 || $Yp > $MinY) AND $MinY = $Yp;
 			($Xp1 <= floor($X1)) AND $Xp1++;
 			($Xp2 >= floor($X2)) AND $Xp2--;
 			$Xp1++;
@@ -426,7 +426,7 @@ class pDraw
 			$Xp1 = cos(($i + 90) * PI / 180) * $Radius + $X1 + $Radius;
 			$Xp2 = cos((90 - $i) * PI / 180) * $Radius + $X2 - $Radius;
 			$Yp = floor(sin(($i + 90) * PI / 180) * $Radius + $YBottom);
-			($MaxY == "" || $Yp < $MaxY) AND $MaxY = $Yp;
+			($MaxY == 0 || $Yp < $MaxY) AND $MaxY = $Yp;
 			($Xp1 <= floor($X1)) AND $Xp1++;
 			($Xp2 >= floor($X2)) AND $Xp2--;
 			$Xp1++;
@@ -725,7 +725,7 @@ class pDraw
 
 		/* Compute the bezier points */
 		$Q = [];
-		$ID = 0; //$Path = ""; # UNUSED
+		$ID = 0;
 		for ($i = 0; $i <= $Precision; $i = $i + 1) {
 			$u = $i / $Precision;
 			$C = [
@@ -1042,7 +1042,7 @@ class pDraw
 		$BoxG = 255;
 		$BoxB = 255;
 		$BoxAlpha = 50;
-		$BoxSurrounding = "";
+		$BoxSurrounding = 0;
 		$BoxBorderR = isset($Format["BoxR"]) ? $Format["BoxR"] : 0;
 		$BoxBorderG = isset($Format["BoxG"]) ? $Format["BoxG"] : 0;
 		$BoxBorderB = isset($Format["BoxB"]) ? $Format["BoxB"] : 0;
@@ -1055,7 +1055,7 @@ class pDraw
 		$Shadow = $this->Shadow;
 		($NoShadow) AND $this->Shadow = FALSE;
 		
-		if ($BoxSurrounding != "") {
+		if ($BoxSurrounding != 0) {
 			$BoxBorderR = $BoxR - $BoxSurrounding;
 			$BoxBorderG = $BoxG - $BoxSurrounding;
 			$BoxBorderB = $BoxB - $BoxSurrounding;
@@ -1247,8 +1247,6 @@ class pDraw
 			return 0;
 		}
 
-		// $Plot = ""; # UNUSED
-
 		$Xi = floor($X);
 		$Yi = floor($Y);
 		
@@ -1289,26 +1287,21 @@ class pDraw
 						$this->drawAlphaPixel($Xi + 1, $Yi + 1, ($Xleaf * $Yleaf * $Alpha), $R, $G, $B, true);
 				}					
 			} else { # Momchil: no changes here
-				# Momchil: *100/100 seems redundand
-				#$Alpha1 = (((1 - $Xleaf) * (1 - $Yleaf) * 100) / 100) * $Alpha;
 				$Alpha1 = (1 - $Xleaf) * (1 - $Yleaf) * $Alpha;
 				if ($Alpha1 > $AntialiasQuality) {
 					$this->drawAlphaPixel($Xi, $Yi, $Alpha1, $R, $G, $B, true);
 				}
 
-				#$Alpha2 = (($Xleaf * (1 - $Yleaf) * 100) / 100) * $Alpha;	
 				$Alpha2 = $Xleaf * (1 - $Yleaf) * $Alpha;	
 				if ($Alpha2 > $AntialiasQuality) {
 					$this->drawAlphaPixel($Xi + 1, $Yi, $Alpha2, $R, $G, $B, true);
 				}
-
-				#$Alpha3 = (((1 - $Xleaf) * $Yleaf * 100) / 100) * $Alpha;
+				
 				$Alpha3 = (1 - $Xleaf) * $Yleaf * $Alpha;
 				if ($Alpha3 > $AntialiasQuality) {
 					$this->drawAlphaPixel($Xi, $Yi + 1, $Alpha3, $R, $G, $B, true);
 				}
 
-				#$Alpha4 = (($Xleaf * $Yleaf * 100) / 100) * $Alpha;
 				$Alpha4 = $Xleaf * $Yleaf * $Alpha;
 				if ($Alpha4 > $AntialiasQuality) {
 					$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Alpha4, $R, $G, $B, true);
@@ -2988,7 +2981,7 @@ class pDraw
 		$BoxG = 0;
 		$BoxB = 0;
 		$BoxAlpha = 30;
-		$BoxSurrounding = "";
+		$BoxSurrounding = 0;
 		$BoxBorderR = 255;
 		$BoxBorderG = 255;
 		$BoxBorderB = 255;
@@ -3234,7 +3227,7 @@ class pDraw
 		$BoxG = 0;
 		$BoxB = 0;
 		$BoxAlpha = 20;
-		$BoxSurrounding = "";
+		$BoxSurrounding = 0;
 		$BoxBorderR = 255;
 		$BoxBorderG = 255;
 		$BoxBorderB = 255;
@@ -3608,7 +3601,7 @@ class pDraw
 		$BoxG = 0;
 		$BoxB = 0;
 		$BoxAlpha = 20;
-		$BoxSurrounding = "";
+		$BoxSurrounding = 0;
 		$BoxBorderR = 255;
 		$BoxBorderG = 255;
 		$BoxBorderB = 255;

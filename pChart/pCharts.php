@@ -428,7 +428,6 @@ class pCharts {
 						$YZero = $this->myPicture->GraphAreaY1 + 1;
 					}
 
-					// $LastX = ""; $LastY = ""; # UNUSED
 					$PosArray = $this->myPicture->convertToArray($PosArray);
 				
 					foreach($PosArray as $Key => $Y) {
@@ -438,7 +437,7 @@ class pCharts {
 
 						if ($Y == VOID) {
 							$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"PathOnly" => TRUE]);
-							if (count($Area) > 0) //if ( $Area != "" )
+							if (count($Area) > 0)
 							{
 								foreach($Area as $key => $Points) {
 									$Corners = [$Area[$key][0]["X"], $YZero];
@@ -464,7 +463,7 @@ class pCharts {
 					}
 
 					$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"PathOnly" => TRUE]);
-					if (count($Area) > 0) //if ( $Area != "" )
+					if (count($Area) > 0)
 					{
 						foreach($Area as $key => $Points) {
 							$Corners = [$Area[$key][0]["X"], $YZero];
@@ -516,7 +515,7 @@ class pCharts {
 
 						if ($X == VOID) {
 							$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"PathOnly" => TRUE]);
-							if (count($Area) > 0) // if ( $Area != "" )
+							if (count($Area) > 0)
 							{
 								foreach($Area as $key => $Points) {
 									$Corners = [$YZero,$Area[$key][0]["Y"]];
@@ -542,7 +541,7 @@ class pCharts {
 					}
 
 					$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"PathOnly" => TRUE]);
-					if (count($Area) > 0) // if ( $Area != "" )
+					if (count($Area) > 0)
 					{
 						foreach($Area as $key => $Points) {
 							$Corners = [];
@@ -2155,8 +2154,6 @@ class pCharts {
 		}
 
 		$SerieOrder = array_reverse($SerieOrder);
-
-		// $LastX = ""; $LastY = ""; # UNUSED
 
 		foreach($SerieOrder as $Key => $SerieName) {
 			$Serie = $Data["Series"][$SerieName];

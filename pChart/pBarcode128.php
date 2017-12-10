@@ -77,7 +77,7 @@ class pBarcode128
 		return ["Width" => max(abs($X1), abs($X2)),"Height" => max(abs($Y1), abs($Y2))];
 	}
 
-	function encode128($Value, $Format = "")
+	function encode128($Value)
 	{
 		$this->Result = "11010010000";
 		$CRC = 104;
