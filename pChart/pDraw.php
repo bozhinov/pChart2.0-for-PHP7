@@ -1110,11 +1110,11 @@ class pDraw
 		$Y = $Y - $TxtPos[$Align]["Y"] + $Y;
 		if ($this->Shadow) {
 			$C_ShadowColor = $this->allocateColor($this->ShadowR, $this->ShadowG, $this->ShadowB, $this->Shadowa);
-			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $C_ShadowColor, $FontName, $Text);
+			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $C_ShadowColor, realpath($FontName), $Text);
 		}
 
 		$C_TextColor = $this->AllocateColor($R, $G, $B, $Alpha);
-		imagettftext($this->Picture, $FontSize, $Angle, $X, $Y, $C_TextColor, $FontName, $Text);
+		imagettftext($this->Picture, $FontSize, $Angle, $X, $Y, $C_TextColor, realpath($FontName), $Text);
 		$this->Shadow = $Shadow;
 		
 		return $TxtPos;
@@ -1540,7 +1540,7 @@ class pDraw
 		($RoundPos && $Angle > 180) AND $Y2 = floor($Y2);
 
 		$this->drawArrow($X2, $Y2, $X1, $Y1, $Format);
-		$Size = imagettfbbox($FontSize, 0, $FontName, $Text);
+		$Size = imagettfbbox($FontSize, 0, realpath($FontName), $Text);
 		$TxtWidth = max(abs($Size[2] - $Size[0]), abs($Size[0] - $Size[6]));
 		#$TxtHeight = max(abs($Size[1] - $Size[7]), abs($Size[3] - $Size[1])); # UNUSED
 		$RGB = ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $Alpha];
@@ -4875,7 +4875,7 @@ class pDraw
 	/* Return the surrounding box of text area */
 	function getTextBox($X, $Y, $FontName, $FontSize, $Angle, $Text)
 	{
-		$coords = imagettfbbox($FontSize, 0, $FontName, $Text);
+		$coords = imagettfbbox($FontSize, 0, realpath($FontName), $Text);
 		$a = deg2rad($Angle);
 		$ca = cos($a);
 		$sa = sin($a);
