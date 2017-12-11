@@ -227,7 +227,7 @@ $Axis = [];
 if ($d_serie1_enabled == "true"){
 	
 	$data0  = stripTail($data0);
-	$Values = preg_split("/!/",right($data0,strlen($data0)-1));
+	$Values = explode("!",substr($data0,1));
 	foreach($Values as $key => $Value){
 		($Value == "") AND $Value = "VOID"; 
 		$myPicture->myData->addPoints($Value,"Serie1");
@@ -244,7 +244,7 @@ if ($d_serie1_enabled == "true"){
 			($Value == "" || $Value == VOID) AND $Value = "VOID"; 
 			$Data = $Data.",".toString($Value); 
 		}
-		$Data = right($Data,strlen($Data)-1);
+		$Data = substr($Data,1);
 
 		echo '$myPicture->myData->addPoints(array('.$Data.'),"Serie1");'."\r\n";
 		echo '$myPicture->myData->setSerieDescription("Serie1","'.$d_serie1_name.'");'."\r\n";
@@ -257,7 +257,7 @@ if ($d_serie1_enabled == "true"){
 if ($d_serie2_enabled == "true"){
 	
 	$data1  = stripTail($data1);
-	$Values = preg_split("/!/",right($data1,strlen($data1)-1));
+	$Values = explode("!",substr($data1,1));
 	foreach($Values as $key => $Value){
 		($Value == "") AND $Value = "VOID"; 
 		$myPicture->myData->addPoints($Value,"Serie2");
@@ -274,7 +274,7 @@ if ($d_serie2_enabled == "true"){
 			($Value == "") AND $Value = "VOID"; 
 			$Data = $Data.",".toString($Value);
 		}
-		$Data = right($Data,strlen($Data)-1);
+		$Data = substr($Data,1);
 
 		echo '$myPicture->myData->addPoints(array('.$Data.'),"Serie2");'."\r\n";
 		echo '$myPicture->myData->setSerieDescription("Serie2","'.$d_serie2_name.'");'."\r\n";
@@ -287,7 +287,7 @@ if ($d_serie2_enabled == "true"){
 if ($d_serie3_enabled == "true"){
 	
 	$data2  = stripTail($data2);
-	$Values = preg_split("/!/",right($data2,strlen($data2)-1));
+	$Values = explode("!",substr($data2,1));
 	foreach($Values as $key => $Value){
 		($Value == "") AND $Value = "VOID"; 
 		$myPicture->myData->addPoints($Value,"Serie3"); 
@@ -304,7 +304,7 @@ if ($d_serie3_enabled == "true"){
 			($Value == "") AND $Value = "VOID"; 
 			$Data = $Data.",".toString($Value); 
 		}
-		$Data = right($Data,strlen($Data)-1);
+		$Data = substr($Data,1);
 
 		echo '$myPicture->myData->addPoints(array('.$Data.'),"Serie3");'."\r\n";
 		echo '$myPicture->myData->setSerieDescription("Serie3","'.$d_serie3_name.'");'."\r\n";
@@ -317,7 +317,7 @@ if ($d_serie3_enabled == "true"){
 if ($d_absissa_enabled == "true")
 {
 	$absissa = stripTail($absissa);
-	$Values  = preg_split("/!/",right($absissa,strlen($absissa)-1));
+	$Values  = explode("!",substr($absissa,1));
 	foreach($Values as $key => $Value){
 		($Value == "") AND $Value = VOID;
 		$myPicture->myData->addPoints($Value,"Absissa"); 
@@ -331,7 +331,7 @@ if ($d_absissa_enabled == "true")
 			($Value == "") AND $Value = "VOID";
 			$Data = $Data.",".toString($Value); 
 		}
-		$Data = right($Data,strlen($Data)-1);
+		$Data = substr($Data,1);
 
 		echo '$myPicture->myData->addPoints(array('.$Data.'),"Absissa");'."\r\n";
 		echo '$myPicture->myData->setAbscissa("Absissa");'."\r\n\r\n";
@@ -853,9 +853,9 @@ function extractColors($Hexa)
 		return [0,0,0]; 
 	}
 
-	$R = hexdec(left($Hexa,2));
-	$G = hexdec(mid($Hexa,3,2));
-	$B = hexdec(right($Hexa,2));
+	$R = hexdec($Hexa[0].$Hexa[1]);
+	$G = hexdec($Hexa[2].$Hexa[3]);
+	$B = hexdec($Hexa[4].$Hexa[5]);
 
 	return [$R,$G,$B];
 }
@@ -885,8 +885,8 @@ function dumpArray($Name,$Values)
 	foreach ($Values as $Key => $Value){
 		$Result .= chr(39).$Key.chr(39).'=>'.translate($Value).', '; 
 	}
-
-	return left($Result,strlen($Result)-2).");\r\n";
+	
+	return substr($Result, 0, -2).");\r\n";
 }
 
 function translate($Value)
@@ -899,7 +899,7 @@ function translate($Value)
 
 function stripTail($Values)
 {
-	$Values = preg_split("/!/",right($Values,strlen($Values)-1));
+	$Values = explode("!", substr($Values, 1));
 
 	$Temp = [];
 	$Result = [];
@@ -924,7 +924,7 @@ function stripTail($Values)
 		$Serialized .= $Value."!"; 
 	}
 	
-	return left($Serialized,strlen($Serialized)-1);
+	return substr($Serialized, 0, -1);
 }
 
 function readConstantFile()
@@ -945,20 +945,5 @@ function toString($Value)
 {
 	return (is_numeric($Value) || $Value == "VOID") ? $Value : chr(34).$Value.chr(34);
 }
-
-function left($value,$NbChar)  
-{ 
-	return substr($value, 0, $NbChar); 
-}  
-
-function right($value,$NbChar)  
-{ 
-	return substr($value, strlen($value)-$NbChar, $NbChar); 
-}  
-
-function mid($value,$Depart,$NbChar)  
-{ 
-	return substr($value, $Depart-1, $NbChar); 
-}  
 
 ?>
