@@ -18,8 +18,8 @@ for($i=0;$i<=720;$i=$i+20)
 	$myPicture->myData->addPoints(cos(deg2rad($i+90))*60,"Probe 2");
 }
 
-$myPicture->drawGradientArea(0,0,700,304,DIRECTION_VERTICAL,array("StartR"=>47,"StartG"=>47,"StartB"=>47,"EndR"=>17,"EndG"=>17,"EndB"=>17,"Alpha"=>100));
-$myPicture->drawGradientArea(0,230,700,304,DIRECTION_VERTICAL,array("StartR"=>47,"StartG"=>47,"StartB"=>47,"EndR"=>27,"EndG"=>27,"EndB"=>27,"Alpha"=>100));
+$myPicture->drawGradientArea(0,0,700,304,DIRECTION_VERTICAL,["StartR"=>47,"StartG"=>47,"StartB"=>47,"EndR"=>17,"EndG"=>17,"EndB"=>17,"Alpha"=>100]);
+$myPicture->drawGradientArea(0,230,700,304,DIRECTION_VERTICAL,["StartR"=>47,"StartG"=>47,"StartB"=>47,"EndR"=>27,"EndG"=>27,"EndB"=>27,"Alpha"=>100]);
 $myPicture->drawLine(0,209,847,209,["R"=>0,"G"=>0,"B"=>0]);
 $myPicture->drawLine(0,210,847,210,["R"=>70,"G"=>70,"B"=>70]);
 
@@ -34,7 +34,7 @@ $myPicture->drawText(340,12,"Cyclic magnetic field strength",["R"=>255,"G"=>255,
 $myPicture->setGraphArea(48,17,680,190);
 
 /* Draw a rectangle */
-$myPicture->drawFilledRectangle(53,22,675,185,array("R"=>0,"G"=>0,"B"=>0,"Dash"=>TRUE,"DashR"=>0,"DashG"=>51,"DashB"=>51,"BorderR"=>0,"BorderG"=>0,"BorderB"=>0));
+$myPicture->drawFilledRectangle(53,22,675,185,["R"=>0,"G"=>0,"B"=>0,"Dash"=>TRUE,"DashR"=>0,"DashG"=>51,"DashB"=>51,"BorderR"=>0,"BorderG"=>0,"BorderB"=>0]);
 
 /* Turn on shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>20]);
@@ -56,7 +56,7 @@ $myPicture->drawThreshold(0,["WriteCaption"=>TRUE]);
 
 /* Write the chart legend */
 $myPicture->setFontProperties(["R"=>255,"G"=>255,"B"=>255]);
-$myPicture->drawLegend(580,217,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+$myPicture->drawLegend(580,217,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Write the 1st data series statistics */
 $Settings = array("R"=>188,"G"=>224,"B"=>46,"Align"=>TEXT_ALIGN_BOTTOMLEFT);
@@ -67,7 +67,7 @@ $myPicture->drawText(110,222,"Avg : ".ceil($myPicture->myData->getSerieAverage("
 /* Write the 2nd data series statistics */
 $Settings = array("R"=>224,"G"=>100,"B"=>46,"Align"=>TEXT_ALIGN_BOTTOMLEFT);
 $myPicture->drawText(160,222,"Max : ".ceil($myPicture->myData->getMax("Probe 2")),$Settings);
-$myPicture->drawText(210,222,"Min : ".ceil($myPicture->myData->myData->getMin("Probe 2")),$Settings);
+$myPicture->drawText(210,222,"Min : ".ceil($myPicture->myData->getMin("Probe 2")),$Settings);
 $myPicture->drawText(260,222,"Avg : ".ceil($myPicture->myData->getSerieAverage("Probe 2")),$Settings);
 
 /* Render the picture (choose the best way) */

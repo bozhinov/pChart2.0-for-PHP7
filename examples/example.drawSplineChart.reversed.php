@@ -23,9 +23,9 @@ $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 
 /* Reverse the Y axis trick */
-$myPicture->myData->->setAbsicssaPosition(AXIS_POSITION_TOP);
-$myPicture->myData->->NegateValues(array("Probe 1","Probe 2","Probe 3"));
-$myPicture->myData->->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"NegateValues"); 
+$myPicture->myData->setAbsicssaPosition(AXIS_POSITION_TOP);
+$myPicture->myData->NegateValues(array("Probe 1","Probe 2","Probe 3"));
+$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"NegateValues"); 
 
 function NegateValues($Value) { 
 	return ($Value == VOID) ? VOID : -$Value;

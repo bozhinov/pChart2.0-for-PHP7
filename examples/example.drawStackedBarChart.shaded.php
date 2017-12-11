@@ -13,7 +13,7 @@ $myPicture = new pDraw(700,230);
 /* Populate the pData object */  
 $myPicture->myData->addPoints([-4,VOID,VOID,12,8,3],"Frontend #1");
 $myPicture->myData->addPoints([3,12,15,8,5,-5],"Frontend #2");
-$myPicture->myData->addPoints([(2,7,5,18,19,22],"Frontend #3");
+$myPicture->myData->addPoints([2,7,5,18,19,22],"Frontend #3");
 $myPicture->myData->setAxisName(0,"Average Usage");
 $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
@@ -22,8 +22,8 @@ $myPicture->myData->setAbscissa("Labels");
 /* Normalize all the data series to 100% */
 $myPicture->myData->normalize(100,"%");
 
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,array("StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>100));
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,array("StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>20));
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>100]);
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,["StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>20]);
 
 /* Set the default font properties */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));

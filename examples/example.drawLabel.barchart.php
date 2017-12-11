@@ -12,11 +12,11 @@ $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */
 $myPicture->myData->loadPalette("pChart/palettes/autumn.color",TRUE);
-$myPicture->myData->addPoints(array(4,12,15,8,5,-5),"Probe 1");
-$myPicture->myData->addPoints(array(7,2,4,14,8,3),"Probe 2");
+$myPicture->myData->addPoints([4,12,15,8,5,-5],"Probe 1");
+$myPicture->myData->addPoints([7,2,4,14,8,3],"Probe 2");
 $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->myData->setAxisUnit(0,"°C");
-$myPicture->myData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun"),"Labels");
+$myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 
@@ -30,11 +30,11 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
 $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>80));
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
+$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawLabel() - Write labels over your charts",array("R"=>255,"G"=>255,"B"=>255));
+$myPicture->drawText(10,13,"drawLabel() - Write labels over your charts",["R"=>255,"G"=>255,"B"=>255]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
@@ -42,9 +42,9 @@ $myPicture->drawText(155,55,"Average temperature",array("FontSize"=>20,"Align"=>
 
 /* Draw the scale and the 1st chart */
 $myPicture->setGraphArea(60,60,670,190);
-$myPicture->drawFilledRectangle(60,60,670,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
-$myPicture->setFontProperties(array("FontName"=>"../fonts/pf_arma_five.ttf","FontSize"=>6));
-$myPicture->drawScale(array("DrawSubTicks"=>TRUE));
+$myPicture->drawFilledRectangle(60,60,670,190,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10]);
+$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->drawScale(["DrawSubTicks"=>TRUE]);
 $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
 (new pCharts($myPicture))->drawBarChart();
 $myPicture->setShadow(FALSE);
@@ -52,7 +52,7 @@ $myPicture->setShadow(FALSE);
 /* Write the chart legend */
 $myPicture->drawLegend(600,210,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
-$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
 
 /* Write a label over the chart */
