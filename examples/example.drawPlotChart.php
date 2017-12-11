@@ -43,21 +43,21 @@ $myPicture->drawText(250,55,"Average temperature",array("FontSize"=>20,"Align"=>
 $pCharts = new pCharts($myPicture);
 
 /* Draw the scale and the 1st chart */
-$myPicture->setGraphArea(60,60,450,190);
-$myPicture->drawFilledRectangle(60,60,450,190,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10]);
-$myPicture->drawScale(array("DrawSubTicks"=>TRUE));
+$pCharts->myPicture->setGraphArea(60,60,450,190);
+$pCharts->myPicture->drawFilledRectangle(60,60,450,190,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10]);
+$pCharts->myPicture->drawScale(array("DrawSubTicks"=>TRUE));
 $pCharts->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 $pCharts->myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
 $pCharts->drawPlotChart(array("BorderSize"=>1,"Surrounding"=>40,"BorderAlpha"=>100,"PlotSize"=>2,"PlotBorder"=>TRUE,"DisplayValues"=>TRUE,"DisplayColor"=>DISPLAY_AUTO));
-#$myPicture->setShadow(FALSE);
+$pCharts->myPicture->setShadow(FALSE);
 
 /* Draw the scale and the 2nd chart */
-$myPicture->setGraphArea(500,60,670,190);
-$myPicture->drawFilledRectangle(500,60,670,190,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10]);
-$myPicture->drawScale(["Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE]);
+$pCharts->myPicture->setGraphArea(500,60,670,190);
+$pCharts->myPicture->drawFilledRectangle(500,60,670,190,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10]);
+$pCharts->myPicture->drawScale(["Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE]);
 $pCharts->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 $pCharts->drawPlotChart(["PlotSize"=>1,"PlotBorder"=>TRUE,"BorderSize"=>1]);
-#$myPicture->setShadow(FALSE);
+$pCharts->myPicture->setShadow(FALSE);
 
 /* Write the chart legend */
 $myPicture->drawLegend(510,205,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
