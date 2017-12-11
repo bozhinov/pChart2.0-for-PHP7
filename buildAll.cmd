@@ -26,12 +26,12 @@ ECHO Processing examples : >temp\errors.log
 
 REM SET /P Var="   Progress : "<NUL
 
-FOR %%f IN (examples\*.*) DO (
+FOR %%f IN (examples\example*.*) DO (
    set t=%%f
    if !t:~-3! == php (
      SET /P Var=þ<NUL
      ECHO %%f >>temp\errors.log
-     php -q "%%f" 1>NUL 2>>temp\errors.log
+     php -q "%%f" 2>&1>>temp\errors.log
     )
 )
 
