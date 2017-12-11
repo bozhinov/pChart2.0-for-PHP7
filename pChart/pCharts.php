@@ -2286,7 +2286,7 @@ class pCharts {
 		$G = isset($Format["G"]) ? $Format["G"] : 0;
 		$B = isset($Format["B"]) ? $Format["B"] : 0;
 		$Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-		$Threshold = NULL;
+		$Threshold = [];
 		$NoFill = FALSE;
 		$NoBorder = FALSE;
 		$Surrounding = NULL;

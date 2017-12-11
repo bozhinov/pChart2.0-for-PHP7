@@ -369,28 +369,4 @@ function goCheck($Script)
 	exit();
 }
 
-function size($Value)
-{
-	if ($Value < 1024){ 
-		return $Value." o.";
-	}
-	if ($Value >= 1024 && $Value < 1024000){ 
-		return floor($Value/1024)." ko."; 
-	}
-	
-	return floor($Value/1024000)." mo.";
-}
-
-function left($value,$NbChar){ 
-	return substr($value,0,$NbChar);
-}  
-
-function right($value,$NbChar){
-	return substr($value,strlen($value)-$NbChar,$NbChar); 
-}  
-
-function mid($value,$Depart,$NbChar){ 
-	return substr($value,$Depart-1,$NbChar);
-}  
-
 ?>
