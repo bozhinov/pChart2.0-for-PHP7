@@ -804,7 +804,7 @@ class pDraw
 		$B = isset($Format["B"]) ? $Format["B"] : 0;
 		$Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
 		$Cpt = isset($Format["Cpt"]) ? $Format["Cpt"] : 1;
-		$Threshold = isset($Format["Threshold"]) ? $Format["Threshold"] : NULL;
+		$Threshold = isset($Format["Threshold"]) ? $Format["Threshold"] : [];
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$Weight = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
 		$Mode = isset($Format["Mode"]) ? $Format["Mode"] : 1;
@@ -854,7 +854,7 @@ class pDraw
 		$YStep = ($Y2 - $Y1) / $Distance;
 		$defaultColor = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
 
-		if ($Threshold == NULL && $Ticks == NULL){ # Momchil: Fast path based on my test cases
+		if (count($Threshold) == 0 && $Ticks == NULL){ # Momchil: Fast path based on my test cases
 		
 			for ($i = 0; $i <= $Distance; $i++) {	
 				$this->drawAntialiasPixel($i * $XStep + $X1, $i * $YStep + $Y1, $defaultColor);
@@ -867,15 +867,13 @@ class pDraw
 				$Y = $i * $YStep + $Y1;
 				$Color = $defaultColor;	
 				
-				if ($Threshold != NULL) {
-					foreach($Threshold as $Key => $Parameters) {
-						if ($Y <= $Parameters["MinX"] && $Y >= $Parameters["MaxX"]) {
-							$RT = (isset($Parameters["R"])) ? $Parameters["R"] : 0;
-							$GT = (isset($Parameters["G"])) ? $Parameters["G"] : 0;
-							$BT = (isset($Parameters["B"])) ? $Parameters["B"] : 0;
-							$AlphaT = (isset($Parameters["Alpha"])) ? $Parameters["Alpha"] : 0;
-							$Color = ["R" => $RT,"G" => $GT,"B" => $BT,"Alpha" => $AlphaT];
-						}
+				foreach($Threshold as $Key => $Parameters) {
+					if ($Y <= $Parameters["MinX"] && $Y >= $Parameters["MaxX"]) {
+						$RT = (isset($Parameters["R"])) ? $Parameters["R"] : 0;
+						$GT = (isset($Parameters["G"])) ? $Parameters["G"] : 0;
+						$BT = (isset($Parameters["B"])) ? $Parameters["B"] : 0;
+						$AlphaT = (isset($Parameters["Alpha"])) ? $Parameters["Alpha"] : 0;
+						$Color = ["R" => $RT,"G" => $GT,"B" => $BT,"Alpha" => $AlphaT];
 					}
 				}
 
@@ -4470,14 +4468,9 @@ class pDraw
 	/* Draw a label box */
 	function drawLabelBox($X, $Y, $Title, $Captions, array $Format = [])
 	{
-
-		$NoTitle = NULL;
+		$NoTitle = FALSE;
 		$BoxWidth = 50;
 		$DrawSerieColor = TRUE;
-		$SerieR = NULL;
-		$SerieG = NULL;
-		$SerieB = NULL;
-		$SerieAlpha = NULL;
 		$SerieBoxSize = 6;
 		$SerieBoxSpacing = 4;
 		$VerticalMargin = 10;
@@ -4523,7 +4516,7 @@ class pDraw
 		
 		$CaptionWidth = 0;
 		$CaptionHeight = - $HorizontalMargin;
-		if (isset($Captions["Caption"])){ # Momchil TODO No idea why I have to do that
+		if (isset($Captions["Caption"])){ 
 				$TxtPos = $this->getTextBox($X, $Y, $FontName, $FontSize, 0, $Captions["Caption"]);
 				$CaptionWidth = max($CaptionWidth, ($TxtPos[1]["X"] - $TxtPos[0]["X"]) + $VerticalMargin * 2);
 				$CaptionHeight = $CaptionHeight + max(($TxtPos[0]["Y"] - $TxtPos[2]["Y"]), ($SerieBoxSize + 2)) + $HorizontalMargin;				

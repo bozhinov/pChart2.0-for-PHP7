@@ -19,7 +19,6 @@ namespace pChart;
 class pBarcode39
 {
 	var $Codes = [];
-	var $Result;
 	var $myPicture;
 	var $MOD43;
 	
@@ -64,53 +63,50 @@ class pBarcode39
 		/* Override defaults */
 		extract($Format);
 		
-		$TextString = $this->encode39($TextString);
-		$BarcodeLength = strlen($this->Result);
+		list($TextString, $Result) = $this->encode39($TextString);
+		$BarcodeLength = strlen($Result);
 		$WOffset = ($DrawArea) ? 20 : 0;
 		$HOffset = ($ShowLegend) ? $FontSize + $LegendOffset + $WOffset : 0;
-
 		$X1 = cos($Angle * PI / 180) * ($WOffset + $BarcodeLength);
 		$Y1 = sin($Angle * PI / 180) * ($WOffset + $BarcodeLength);
 		$X2 = $X1 + cos(($Angle + 90) * PI / 180) * ($HOffset + $Height);
 		$Y2 = $Y1 + sin(($Angle + 90) * PI / 180) * ($HOffset + $Height);
-		$AreaWidth = max(abs($X1), abs($X2));
-		$AreaHeight = max(abs($Y1), abs($Y2));
 		
-		return ["Width" => $AreaWidth, "Height" => $AreaHeight];
+		return ["Width" => max(abs($X1), abs($X2)), "Height" => max(abs($Y1), abs($Y2))];
 	}
 
 	/* Create the encoded string */
 	function encode39($Value)
 	{
-		$this->Result = "100101101101" . "0";
+		$Result = "100101101101" . "0";
 		$TextString = "";
 		for ($i = 1; $i <= strlen($Value); $i++) {
-			$CharCode = ord($this->mid($Value, $i, 1));
+			$CharCode = ord(substr($Value, $i - 1, 1));
 			if ($CharCode >= 97 && $CharCode <= 122) {
 				$CharCode = $CharCode - 32;
 			}
 
-			if (isset($this->Codes[chr($CharCode) ])) {
-				$this->Result = $this->Result . $this->Codes[chr($CharCode) ] . "0";
-				$TextString = $TextString . chr($CharCode);
+			if (isset($this->Codes[chr($CharCode)])) {
+				$Result .= $this->Codes[chr($CharCode)] . "0";
+				$TextString .= chr($CharCode);
 			}
 		}
 
 		if ($this->MOD43) {
 			$Checksum = $this->checksum($TextString);
-			$this->Result = $this->Result . $this->Codes[$Checksum] . "0";
+			$Result .= $this->Codes[$Checksum] . "0";
 		}
 
-		$this->Result = $this->Result . "100101101101";
+		$Result .= "100101101101";
 		
-		return "*" . $TextString . "*";
+		return ["*" . $TextString . "*", $Result];
 
 	}
 
 	/* Create the encoded string */
 	function draw($Value, $X, $Y, array $Format = [])
 	{
-				
+
 		$R = 0;
 		$G = 0;
 		$B = 0;
@@ -130,8 +126,8 @@ class pBarcode39
 		/* Override defaults */
 		extract($Format);
 		
-		$TextString = $this->encode39($Value);
-		$BarcodeLength = strlen($this->Result);
+		list($TextString, $Result) = $this->encode39($Value);
+		$BarcodeLength = strlen($Result);
 		
 		if ($DrawArea) {
 			$X1 = $X + cos(($Angle - 135) * PI / 180) * 10;
@@ -152,7 +148,7 @@ class pBarcode39
 		}
 
 		for ($i = 1; $i <= $BarcodeLength; $i++) {
-			if ($this->mid($this->Result, $i, 1) == 1) {
+			if (substr($Result, $i - 1, 1) == "1") {
 				$X1 = $X + cos($Angle * PI / 180) * $i;
 				$Y1 = $Y + sin($Angle * PI / 180) * $i;
 				$X2 = $X1 + cos(($Angle + 90) * PI / 180) * $Height;
@@ -181,20 +177,6 @@ class pBarcode39
 		return substr($charset, ($checksum % 43), 1);
 	}
 
-	function left($value, $NbChar)
-	{
-		return substr($value, 0, $NbChar);
-	}
-
-	function right($value, $NbChar)
-	{
-		return substr($value, strlen($value) - $NbChar, $NbChar);
-	}
-
-	function mid($value, $Depart, $NbChar)
-	{
-		return substr($value, $Depart - 1, $NbChar);
-	}
 }
 
 ?>

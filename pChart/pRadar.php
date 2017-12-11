@@ -71,7 +71,7 @@ class pRadar
 		$BackgroundG = 255;
 		$BackgroundB = 255;
 		$BackgroundAlpha = 50;
-		$BackgroundGradient = NULL;
+		$BackgroundGradient = [];
 		$Layout = RADAR_LAYOUT_STAR;
 		$SegmentHeight = SEGMENT_HEIGHT_AUTO;
 		$Segments = 4;
@@ -162,7 +162,7 @@ class pRadar
 		if ($DrawBackground) {
 			$RestoreShadow = $this->myPicture->Shadow;
 			$this->myPicture->Shadow = FALSE;
-			if ($BackgroundGradient == NULL) {
+			if (count($BackgroundGradient) == 0) {
 				if ($Layout == RADAR_LAYOUT_STAR) {
 					
 					$Color = ["R" => $BackgroundR,	"G" => $BackgroundG, "B" => $BackgroundB, "Alpha" => $BackgroundAlpha];
@@ -439,7 +439,7 @@ class pRadar
 		$BackgroundG = 255;
 		$BackgroundB = 255;
 		$BackgroundAlpha = 50;
-		$BackgroundGradient = NULL;
+		$BackgroundGradient = [];
 		$AxisSteps = 20;
 		$SegmentHeight = SEGMENT_HEIGHT_AUTO;
 		$Segments = 4;
@@ -520,7 +520,7 @@ class pRadar
 		if ($DrawBackground) {
 			$RestoreShadow = $this->myPicture->Shadow;
 			$this->myPicture->Shadow = FALSE;
-			if ($BackgroundGradient == NULL) {
+			if (count($BackgroundGradient) == 0) {
 				$Color = ["R" => $BackgroundR,"G" => $BackgroundG,"B" => $BackgroundB,"Alpha" => $BackgroundAlpha];
 				$this->myPicture->drawFilledCircle($CenterX, $CenterY, $EdgeHeight, $Color);
 			} else {

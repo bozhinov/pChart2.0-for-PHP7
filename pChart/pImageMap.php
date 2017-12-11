@@ -107,13 +107,10 @@ class pImageMap extends pDraw
 	/* Replace the title of one image map series */
 	function replaceImageMapTitle($OldTitle, $NewTitle)
 	{
-
-		if (is_array($NewTitle)) {
-			$NewTitle = $this->stripFromSerie($OldTitle, $NewTitle);
-		}
 				
 		if (is_array($NewTitle)) {
 			$ID = 0;
+			$NewTitle = $this->stripFromSerie($OldTitle, $NewTitle);
 			foreach($this->ImageMapBuffer as $Key => $Settings) {
 				if ($Settings[3] == $OldTitle && isset($NewTitle[$ID])) {
 					$this->ImageMapBuffer[$Key][3] = $NewTitle[$ID];

@@ -14,12 +14,12 @@ $myPicture = new pDraw(700,230);
 $myPicture->myData->addPoints(array(150,220,300,250,420,200,300,200,100),"Server A");
 $myPicture->myData->addPoints(array(140,0,340,300,320,300,200,100,50),"Server B");
 $myPicture->myData->setAxisName(0,"Hits");
-$myPicture->myData->addPoints(array("January","February","March","April","May","Juin","July","August","September"),"Months");
+$myPicture->myData->addPoints(array("January","February","March","April","May","June","July","August","September"),"Months");
 $myPicture->myData->setSerieDescription("Months","Month");
 $myPicture->myData->setAbscissa("Months");
 $myPicture->myData->setAbsicssaPosition(AXIS_POSITION_TOP); 
 
-/* Turn of Antialiasing */
+/* Turn of anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */

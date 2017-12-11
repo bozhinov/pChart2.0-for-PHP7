@@ -71,7 +71,7 @@ class pCharts {
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
 				$SerieWeight = (isset($Serie["Weight"])) ? $Serie["Weight"] + 2 : 2;
-				($PlotSize != NULL) AND 	$SerieWeight = $PlotSize;
+				($PlotSize != NULL) AND $SerieWeight = $PlotSize;
 				$R = $Serie["Color"]["R"];
 				$G = $Serie["Color"]["G"];
 				$B = $Serie["Color"]["B"];
@@ -338,12 +338,9 @@ class pCharts {
 
 						if ($X != VOID) {
 							$WayPoints[] = [$X,	$Y];
-						#} # Momchil 
-						#if ($X != VOID) {
 							$LastGoodX = $X;
 							$LastGoodY = $Y;
 						} else {
-						#if ($X == VOID) {
 							$X = NULL;
 						}
 
@@ -368,7 +365,7 @@ class pCharts {
 		$DisplayG = 0;
 		$DisplayB = 0;
 		$AroundZero = TRUE;
-		$Threshold = NULL;
+		$Threshold = [];
 		
 		/* Override defaults */
 		extract($Format);
@@ -398,11 +395,9 @@ class pCharts {
 					$YZero = $this->myPicture->scaleComputeY(0, ["AxisID" => $Serie["Axis"]]);
 				}
 
-				if ($Threshold != NULL) {
-					foreach($Threshold as $Key => $Params) {
-						$Threshold[$Key]["MinX"] = $this->myPicture->scaleComputeY($Params["Min"], ["AxisID" => $Serie["Axis"]]);
-						$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeY($Params["Max"], ["AxisID" => $Serie["Axis"]]);
-					}
+				foreach($Threshold as $Key => $Params) {
+					$Threshold[$Key]["MinX"] = $this->myPicture->scaleComputeY($Params["Min"], ["AxisID" => $Serie["Axis"]]);
+					$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeY($Params["Max"], ["AxisID" => $Serie["Axis"]]);
 				}
 
 				$this->myData->Data["Series"][$SerieName]["XOffset"] = 0;
@@ -1044,9 +1039,7 @@ class pCharts {
 						if ($X != VOID) {
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						}
-
-						if ($X == VOID) {
+						} else {
 							$X = NULL;
 						}
 
@@ -1300,7 +1293,7 @@ class pCharts {
 		$DisplayB = 0;
 		$ForceTransparency = 25;
 		$AroundZero = TRUE;
-		$Threshold = NULL;
+		$Threshold = [];
 		
 		/* Override defaults */
 		extract($Format);
@@ -1327,11 +1320,9 @@ class pCharts {
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
 				$YZero = $this->myPicture->scaleComputeY(0, ["AxisID" => $Serie["Axis"]]);
-				if ($Threshold != NULL) {
-					foreach($Threshold as $Key => $Params) {
-						$Threshold[$Key]["MinX"] = $this->myPicture->scaleComputeY($Params["Min"], ["AxisID" => $Serie["Axis"]]);
-						$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeY($Params["Max"], ["AxisID" => $Serie["Axis"]]);
-					}
+				foreach($Threshold as $Key => $Params) {
+					$Threshold[$Key]["MinX"] = $this->myPicture->scaleComputeY($Params["Min"], ["AxisID" => $Serie["Axis"]]);
+					$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeY($Params["Max"], ["AxisID" => $Serie["Axis"]]);
 				}
 
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
@@ -1535,7 +1526,7 @@ class pCharts {
 		$GradientEndG = 0;
 		$GradientEndB = 0;
 		$TxtMargin = 6;
-		$OverrideColors = NULL;
+		$OverrideColors = [];
 		$OverrideSurrounding = 30;
 		$InnerSurrounding = NULL;
 		$InnerBorderR = -1;
@@ -1549,7 +1540,7 @@ class pCharts {
 		$this->myPicture->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
-		if ($OverrideColors != NULL) {
+		if (count($OverrideColors) > 0) {
 			$OverrideColors = $this->myPicture->validatePalette($OverrideColors, $OverrideSurrounding);
 			$this->myPicture->myData->saveExtendedData("Palette", $OverrideColors);
 		}
@@ -2353,11 +2344,6 @@ class pCharts {
 			return 0;
 		}
 
-		/* For segments debugging purpose */
-
-		// foreach($Segments as $Key => $Pos)
-		// echo $Pos["X1"].",".$Pos["Y1"].",".$Pos["X2"].",".$Pos["Y2"]."\r\n";
-
 		/* Find out the min & max Y boundaries */
 		$MinY = OUT_OF_SIGHT;
 		$MaxY = OUT_OF_SIGHT;
@@ -2376,14 +2362,10 @@ class pCharts {
 		$MaxY = floor($MaxY);
 		/* Scan each Y lines */
 		$DefaultColor = $this->myPicture->allocateColor($R, $G, $B, $Alpha);
-		#$DebugLine = 0;
-		$DebugColor = $this->myPicture->allocateColor(255, 0, 0, 100);
 		$MinY = floor($MinY);
 		$MaxY = floor($MaxY);
 		$YStep = 1;
 		if (!$NoFill) {
-
-			// if ( $DebugLine ) { $MinY = $DebugLine; $MaxY = $DebugLine; }
 
 			for ($Y = $MinY; $Y <= $MaxY; $Y = $Y + $YStep) {
 				$Intersections = [];
@@ -2420,9 +2402,6 @@ class pCharts {
 						} elseif (!in_array($X, $Intersections)) {
 							$Intersections[] = $X;
 						} elseif (in_array($X, $Intersections)) {
-							#if ($Y == $DebugLine) {
-							#	echo $Slope . "/" . $LastSlope . "(" . $X . ") ";
-							#}
 
 							if ($Slope == "=" && $LastSlope == "-") {
 								$Intersections[] = $X;
@@ -2452,9 +2431,6 @@ class pCharts {
 
 				if (is_array($Intersections)) {
 					sort($Intersections);
-					#if ($Y == $DebugLine) {
-					#	print_r($Intersections);
-					#}
 
 					/* Remove NULL plots */
 					$Result = [];
@@ -2466,8 +2442,6 @@ class pCharts {
 							}
 						}
 					}
-
-					// if ( is_array($Result) )
 
 					if (count($Result) > 0) {
 						$Intersections = $Result;
@@ -2481,23 +2455,19 @@ class pCharts {
 								}
 
 								$Color = $DefaultColor;
-								if ($Threshold != NULL) {
-									foreach($Threshold as $Key => $Parameters) {
-										if ($Y <= $Parameters["MinX"] && $Y >= $Parameters["MaxX"]) {
-											$R = (isset($Parameters["R"])) ? $Parameters["R"] : 0;
-											$G = (isset($Parameters["G"])) ? $Parameters["G"] : 0;
-											$B = (isset($Parameters["B"])) ? $Parameters["B"] : 0;
-											$Alpha = (isset($Parameters["Alpha"])) ? $Parameters["Alpha"] : 100;
-											$Color = $this->myPicture->allocateColor($R, $G, $B, $Alpha);
-										}
+
+								foreach($Threshold as $Key => $Parameters) {
+									if ($Y <= $Parameters["MinX"] && $Y >= $Parameters["MaxX"]) {
+										$R = (isset($Parameters["R"])) ? $Parameters["R"] : 0;
+										$G = (isset($Parameters["G"])) ? $Parameters["G"] : 0;
+										$B = (isset($Parameters["B"])) ? $Parameters["B"] : 0;
+										$Alpha = (isset($Parameters["Alpha"])) ? $Parameters["Alpha"] : 100;
+										$Color = $this->myPicture->allocateColor($R, $G, $B, $Alpha);
 									}
 								}
 
 								imageline($this->myPicture->Picture, $LastX, $Y, $X, $Y, $Color);
-								#if ($Y == $DebugLine) {
-								#	imageline($this->myPicture->Picture, $LastX, $Y, $X, $Y, $DebugColor);
-								#}
-
+								
 								$LastX = OUT_OF_SIGHT;
 							}
 						}

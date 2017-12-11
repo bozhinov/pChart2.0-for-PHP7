@@ -460,10 +460,8 @@ class pScatter
 		$BorderB = 250;
 		$BorderAlpha = 30;
 		$BorderSize = 1;
-		$Surrounding = NULL;
 		$RecordImageMap = FALSE;
-		$ImageMapTitle = NULL;
-		$ImageMapPrecision = 2;
+		$ImageMapTitle = "";
 		
 		/* Override defaults */
 		extract($Format);
@@ -479,7 +477,7 @@ class pScatter
 				$SerieY = $Series["Y"];
 				$SerieValuesY = $Data["Series"][$SerieY]["Data"];
 				$SerieYAxis = $Data["Series"][$SerieY]["Axis"];
-				$Description = ($ImageMapTitle == NULL) ? $Data["Series"][$Series["X"]]["Description"] . " / " . $Data["Series"][$Series["Y"]]["Description"] : $ImageMapTitle;
+				$Description = ($ImageMapTitle == "") ? $Data["Series"][$Series["X"]]["Description"] . " / " . $Data["Series"][$Series["Y"]]["Description"] : $ImageMapTitle;
 
 				if (isset($Series["Picture"]) && $Series["Picture"] != "") {
 					$Picture = $Series["Picture"];
@@ -838,6 +836,7 @@ class pScatter
 		$X = 100;
 		$Y = 100;
 		$Data = $this->myPicture->myData->Data;
+		
 		foreach($Data["ScatterSeries"] as $Key => $Series) {
 			if ($Series["isDrawable"] == TRUE && isset($Series["Picture"])) {
 				list($PicWidth, $PicHeight) = $this->myPicture->getPicInfo($Series["Picture"]);
@@ -895,6 +894,7 @@ class pScatter
 	{
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : 0;
 		$Data = $this->myPicture->myData->Data;
+		
 		foreach($Data["ScatterSeries"] as $Key => $Series) {
 			if ($Series["isDrawable"] == TRUE) {
 				$SerieX = $Series["X"];
@@ -1142,7 +1142,7 @@ class pScatter
 		$BorderB = $B;
 		$BorderAlpha = $Alpha + 20;
 		$BorderTicks = 2;
-		$AreaName = "La ouate de phoque"; //NULL;
+		$AreaName = NULL; //;"La ouate de phoque"
 		$NameAngle = ZONE_NAME_ANGLE_AUTO;
 		$NameR = 255;
 		$NameG = 255;

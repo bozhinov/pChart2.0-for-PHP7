@@ -152,19 +152,11 @@ class pStock
 			}
 
 			if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-				if ($YZero > $this->myPicture->GraphAreaY2 - 1) {
-					$YZero = $this->myPicture->GraphAreaY2 - 1;
-				}
+				
+				($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
+				($YZero < $this->myPicture->GraphAreaY1 + 1) AND $YZero = $this->myPicture->GraphAreaY1 + 1;
 
-				if ($YZero < $this->myPicture->GraphAreaY1 + 1) {
-					$YZero = $this->myPicture->GraphAreaY1 + 1;
-				}
-
-				if ($XDivs == 0) {
-					$XStep = 0;
-				} else {
-					$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
-				}
+				$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
 
 				if ($ShadowOnBoxesOnly) {
 					$RestoreShadow = $this->myPicture->Shadow;
@@ -191,38 +183,21 @@ class pStock
 					}
 				}
 
-				if ($ShadowOnBoxesOnly) {
-					$this->myPicture->Shadow = $RestoreShadow;
-				}
+				($ShadowOnBoxesOnly) AND $this->myPicture->Shadow = $RestoreShadow;
+				
+				$this->myPicture->drawFilledRectangle($X - $BoxOffset, $PosArray[0], $X + $BoxOffset, $PosArray[1], ($PosArray[0] > $PosArray[1]) ? $BoxUpSettings : $BoxDownSettings);
 
-				if ($PosArray[0] > $PosArray[1]) {
-					$this->myPicture->drawFilledRectangle($X - $BoxOffset, $PosArray[0], $X + $BoxOffset, $PosArray[1], $BoxUpSettings);
-				} else {
-					$this->myPicture->drawFilledRectangle($X - $BoxOffset, $PosArray[0], $X + $BoxOffset, $PosArray[1], $BoxDownSettings);
-				}
-
-				if (isset($PosArray[4])) {
-					$this->myPicture->drawLine($X - $ExtremityLength, $PosArray[4], $X + $ExtremityLength, $PosArray[4], $MedianSettings);
-				}
+				(isset($PosArray[4])) AND $this->myPicture->drawLine($X - $ExtremityLength, $PosArray[4], $X + $ExtremityLength, $PosArray[4], $MedianSettings);
 
 				$X = $X + $XStep;
 				
 			} elseif ($Data["Orientation"] == SCALE_POS_TOPBOTTOM) {
 				
-				if ($YZero > $this->myPicture->GraphAreaX2 - 1) {
-					$YZero = $this->myPicture->GraphAreaX2 - 1;
-				}
-
-				if ($YZero < $this->myPicture->GraphAreaX1 + 1) {
-					$YZero = $this->myPicture->GraphAreaX1 + 1;
-				}
-
-				if ($XDivs == 0) {
-					$XStep = 0;
-				} else {
-					$XStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
-				}
-
+				($YZero > $this->myPicture->GraphAreaX2 - 1) AND $YZero = $this->myPicture->GraphAreaX2 - 1;
+				($YZero < $this->myPicture->GraphAreaX1 + 1) AND $YZero = $this->myPicture->GraphAreaX1 + 1;
+				
+				$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+			
 				if ($LineWidth == 1) {
 					$this->myPicture->drawLine($PosArray[2], $Y, $PosArray[3], $Y, $LineSettings);
 				} else {
@@ -248,19 +223,11 @@ class pStock
 					}
 				}
 
-				if ($ShadowOnBoxesOnly) {
-					$this->myPicture->Shadow = $RestoreShadow;
-				}
+				($ShadowOnBoxesOnly) AND $this->myPicture->Shadow = $RestoreShadow;
 
-				if ($PosArray[0] < $PosArray[1]) {
-					$this->myPicture->drawFilledRectangle($PosArray[0], $Y - $BoxOffset, $PosArray[1], $Y + $BoxOffset, $BoxUpSettings);
-				} else {
-					$this->myPicture->drawFilledRectangle($PosArray[0], $Y - $BoxOffset, $PosArray[1], $Y + $BoxOffset, $BoxDownSettings);
-				}
+				$this->myPicture->drawFilledRectangle($PosArray[0], $Y - $BoxOffset, $PosArray[1], $Y + $BoxOffset, ($PosArray[0] < $PosArray[1]) ? $BoxUpSettings : $BoxDownSettings);
 
-				if (isset($PosArray[4])) {
-					$this->myPicture->drawLine($PosArray[4], $Y - $ExtremityLength, $PosArray[4], $Y + $ExtremityLength, $MedianSettings);
-				}
+				(isset($PosArray[4])) AND $this->myPicture->drawLine($PosArray[4], $Y - $ExtremityLength, $PosArray[4], $Y + $ExtremityLength, $MedianSettings);
 
 				$Y = $Y + $XStep;
 			}

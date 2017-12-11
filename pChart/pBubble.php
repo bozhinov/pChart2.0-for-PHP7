@@ -172,12 +172,7 @@ class pBubble
 						$BorderR = $Palette[$Key]["R"] + $Surrounding;
 						$BorderG = $Palette[$Key]["G"] + $Surrounding;
 						$BorderB = $Palette[$Key]["B"] + $Surrounding;
-					} else {
-						$BorderR = $BorderR;
-						$BorderG = $BorderG;
-						$BorderB = $BorderB;
-					}
-
+					} 
 					if ($ForceAlpha != VOID) {
 						$BorderAlpha = $ForceAlpha / 2;
 					}
@@ -236,12 +231,7 @@ class pBubble
 					$X = $X + $XStep;
 					
 				} elseif ($Data["Orientation"] == SCALE_POS_TOPBOTTOM) {
-					if ($XDivs == 0) {
-						$XStep = 0;
-					} else {
-						$XStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
-					}
-
+					$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
 					$X = floor($PosArray);
 					$CircleRadius = floor(abs($PosArray - $WeightArray) / 2);
 					if ($Shape == BUBBLE_SHAPE_SQUARE) {
@@ -276,14 +266,13 @@ class pBubble
 
 	function writeBubbleLabel($SerieName, $SerieWeightName, $Points, array $Format = [])
 	{
-		
 		$Data = $this->myPicture->myData->Data;
 		$Palette = $this->myPicture->myData->Palette;
+		
 		if (!isset($Data["Series"][$SerieName]) || !isset($Data["Series"][$SerieWeightName])) {
 			return 0;
 		}
-		
-		$OverrideTitle = isset($Format["OverrideTitle"]) ? $Format["OverrideTitle"] : NULL;
+
 		$DrawPoint = isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
 		(!is_array($Points)) AND $Points = [$Points];
 		

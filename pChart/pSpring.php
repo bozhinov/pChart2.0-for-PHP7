@@ -44,11 +44,34 @@ class pSpring
 	/* Class creator */
 	function __construct($pChartObject)
 	{
-		/* Initialise data arrays */
+		/* Initialize data arrays */
 		$this->Data = [];
 		$this->Links = [];
 		/* Set nodes defaults */
-		$this->Default = ["R" => 255, "G" => 255, "B" => 255, "Alpha" => 100, "BorderR" => 0, "BorderG" => 0, "BorderB" => 0, "BorderAlpha" => 100, "Surrounding" => NULL, "BackgroundR" => 255, "BackgroundG" => 255, "BackgroundB" => 255, "BackgroundAlpha" => 0, "Force" => 1, "NodeType" => NODE_TYPE_FREE, "Size" => 5, "Shape" => NODE_SHAPE_CIRCLE, "FreeZone" => 40, "LinkR" => 0, "LinkG" => 0, "LinkB" => 0, "LinkAlpha" => 0];
+		$this->Default = [
+			"R" => 255,
+			"G" => 255,
+			"B" => 255,
+			"Alpha" => 100,
+			"BorderR" => 0,
+			"BorderG" => 0,
+			"BorderB" => 0,
+			"BorderAlpha" => 100,
+			"Surrounding" => NULL,
+			"BackgroundR" => 255,
+			"BackgroundG" => 255,
+			"BackgroundB" => 255,
+			"BackgroundAlpha" => 0,
+			"Force" => 1,
+			"NodeType" => NODE_TYPE_FREE,
+			"Size" => 5,
+			"Shape" => NODE_SHAPE_CIRCLE,
+			"FreeZone" => 40,
+			"LinkR" => 0,
+			"LinkG" => 0,
+			"LinkB" => 0, 
+			"LinkAlpha" => 0
+		];
 		$this->Labels = ["Type" => LABEL_CLASSIC, "R" => 0, "G" => 0, "B" => 0, "Alpha" => 100];
 		$this->AutoComputeFreeZone = FALSE;
 		
@@ -475,7 +498,7 @@ class pSpring
 			}
 		}
 
-		/* Move the nodes accoding to the vectors */
+		/* Move the nodes according to the vectors */
 		foreach($this->Data as $Key => $Settings) {
 			$X = $Settings["X"];
 			$Y = $Settings["Y"];
@@ -665,7 +688,7 @@ class pSpring
 						$Y2 = $this->Data[$NodeID]["Y"];
 						$this->myPicture->drawLine($X, $Y, $X2, $Y2, $Color);
 						$Drawn[$Key][$NodeID] = TRUE;
-						#if (isset($this->Links) && $this->Links != "") {
+
 						if (count($this->Links) > 0) {
 							if (isset($this->Links[$Key][$NodeID]["Name"]) || isset($this->Links[$NodeID][$Key]["Name"])) {
 								$Name = isset($this->Links[$Key][$NodeID]["Name"]) ? $this->Links[$Key][$NodeID]["Name"] : $this->Links[$NodeID][$Key]["Name"];

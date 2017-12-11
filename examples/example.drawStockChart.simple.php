@@ -13,10 +13,10 @@ use pChart\{
 $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */
-$myPicture->myData->addPoints(array(35,28,17,27,12,12,20,15,20,28),"Open");
-$myPicture->myData->addPoints(array(20,17,25,20,25,23,16,29,26,17),"Close");
-$myPicture->myData->addPoints(array(10,11,14,11,9,4,3,7,9,5),"Min");
-$myPicture->myData->addPoints(array(37,32,33,29,29,25,22,34,29,31),"Max");
+$myPicture->myData->addPoints([35,28,17,27,12,12,20,15,20,28],"Open");
+$myPicture->myData->addPoints([20,17,25,20,25,23,16,29,26,17],"Close");
+$myPicture->myData->addPoints([10,11,14,11,9,4,3,7,9,5],"Min");
+$myPicture->myData->addPoints([37,32,33,29,29,25,22,34,29,31],"Max");
 $myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CURRENCY,"$");
 
 $myPicture->myData->addPoints(array("Dec 13","Dec 14","Dec 15","Dec 16","Dec 17", "Dec 20","Dec 21","Dec 22","Dec 23","Dec 24"),"Time");
@@ -27,7 +27,7 @@ $myPicture->myData->setAbscissaName("Time");
 $myPicture->Antialias = FALSE;
 
 /* Draw the border */
-$myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
+$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
 

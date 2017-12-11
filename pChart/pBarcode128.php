@@ -20,7 +20,6 @@ class pBarcode128
 {
 	var $Codes = [];
 	var $Reverse = [];
-	var $Result;
 	var $myPicture;
 	
 	/* Class creator */
@@ -65,8 +64,8 @@ class pBarcode128
 		/* Override defaults */
 		extract($Format);
 		
-		$TextString = $this->encode128($TextString);
-		$BarcodeLength = strlen($this->Result);
+		list($TextString, $Result) = $this->encode128($TextString);
+		$BarcodeLength = strlen($Result);
 		$WOffset = ($DrawArea) ? 20 : 0;
 		$HOffset = ($ShowLegend) ? $FontSize + $LegendOffset + $WOffset : 0;
 		$X1 = cos($Angle * PI / 180) * ($WOffset + $BarcodeLength);
@@ -79,22 +78,22 @@ class pBarcode128
 
 	function encode128($Value)
 	{
-		$this->Result = "11010010000";
+		$Result = "11010010000";
 		$CRC = 104;
 		$TextString = "";
 		for ($i = 1; $i <= strlen($Value); $i++) {
-			$CharCode = ord($this->mid($Value, $i, 1));
+			$CharCode = ord(substr($Value, $i - 1, 1));
 			if (isset($this->Codes[$CharCode])) {
-				$this->Result = $this->Result . $this->Codes[$CharCode]["Code"];
+				$Result .= $this->Codes[$CharCode]["Code"];
 				$CRC = $CRC + $i * $this->Codes[$CharCode]["ID"];
-				$TextString = $TextString . chr($CharCode);
+				$TextString .= chr($CharCode);
 			}
 		}
 
 		$CRC = $CRC - floor($CRC / 103) * 103;
-		$this->Result = $this->Result . $this->Reverse[$CRC]["Code"]. "1100011101011";
+		$Result .= $this->Reverse[$CRC]["Code"]. "1100011101011";
 
-		return $TextString;
+		return [$TextString, $Result];
 	}
 
 	/* Create the encoded string */
@@ -120,8 +119,8 @@ class pBarcode128
 		/* Override defaults */
 		extract($Format);
 		
-		$TextString = $this->encode128($Value);
-		$BarcodeLength = strlen($this->Result);
+		list($TextString, $Result) = $this->encode128($Value);
+		$BarcodeLength = strlen($Result);
 		
 		if ($DrawArea) {
 			$X1 = $X + cos(($Angle - 135) * PI / 180) * 10;
@@ -142,7 +141,7 @@ class pBarcode128
 		}
 
 		for ($i = 1; $i <= $BarcodeLength; $i++) {
-			if ($this->mid($this->Result, $i, 1) == 1) {
+			if (substr($Result, $i - 1, 1) == "1") {
 				$X1 = $X + cos($Angle * PI / 180) * $i;
 				$Y1 = $Y + sin($Angle * PI / 180) * $i;
 				$X2 = $X1 + cos(($Angle + 90) * PI / 180) * $Height;
@@ -160,20 +159,6 @@ class pBarcode128
 		}
 	}
 
-	function left($value, $NbChar)
-	{
-		return substr($value, 0, $NbChar);
-	}
-
-	function right($value, $NbChar)
-	{
-		return substr($value, strlen($value) - $NbChar, $NbChar);
-	}
-
-	function mid($value, $Depart, $NbChar)
-	{
-		return substr($value, $Depart - 1, $NbChar);
-	}
 }
 
 ?>

@@ -69,7 +69,7 @@ class pSplit
 		}
 
 		$LeftHeight = $DataSerieSum * $YScale;
-		/* Re-compute graph width depending of the text mode choosen */
+		/* Re-compute graph width depending of the text mode chosen */
 		if ($TextPos == TEXT_POS_RIGHT) {
 			$MaxWidth = 0;
 			foreach($Data["Series"][$LabelSerie]["Data"] as $Key => $Label) {

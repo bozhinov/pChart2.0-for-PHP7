@@ -41,7 +41,7 @@ class pSurface
 		#$this->GridSize = 10; # UNUSED
 	}
 
-	/* Define the grid size and initialise the 2D matrix */
+	/* Define the grid size and initialize the 2D matrix */
 	function setGrid($XSize = 10, $YSize = 10)
 	{
 		for ($X = 0; $X <= $XSize; $X++) {
@@ -84,16 +84,12 @@ class pSurface
 		$Angle = 0;
 		$Padding = 5;
 		$Position = LABEL_POSITION_TOP;
-		$Labels = NULL;
+		$Labels = [];
 		$CountOffset = 0;
 		
 		/* Override defaults */
 		extract($Format);
 		
-		if ($Labels != NULL && !is_array($Labels)) {
-			$Labels = [$Labels];
-		}
-
 		$X0 = $this->myPicture->GraphAreaX1;
 		$XSize = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / ($this->GridSizeX + 1);
 		$Settings = ["Angle" => $Angle,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
@@ -111,7 +107,7 @@ class pSurface
 
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
 			$XPos = floor($X0 + $X * $XSize + $XSize / 2);
-			$Value = ($Labels == NULL || !isset($Labels[$X])) ? $X + $CountOffset : $Labels[$X];
+			$Value = (count($Labels) == 0 || !isset($Labels[$X])) ? $X + $CountOffset : $Labels[$X];
 			$this->myPicture->drawText($XPos, $YPos, $Value, $Settings);
 		}
 	}
@@ -126,16 +122,12 @@ class pSurface
 		$Angle = 0;
 		$Padding = 5;
 		$Position = LABEL_POSITION_LEFT;
-		$Labels = NULL;
+		$Labels = [];
 		$CountOffset = 0;
 		
 		/* Override defaults */
 		extract($Format);
 		
-		if ($Labels != NULL && !is_array($Labels)) {
-			$Labels = [$Labels];
-		}
-
 		$Y0 = $this->myPicture->GraphAreaY1;
 		$YSize = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / ($this->GridSizeY + 1);
 		$Settings = ["Angle" => $Angle,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
@@ -152,12 +144,12 @@ class pSurface
 
 		for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {
 			$YPos = floor($Y0 + $Y * $YSize + $YSize / 2);
-			$Value = ($Labels == NULL || !isset($Labels[$Y])) ? $Y + $CountOffset : $Labels[$Y];
+			$Value = (count($Labels) == 0 || !isset($Labels[$Y])) ? $Y + $CountOffset : $Labels[$Y];
 			$this->myPicture->drawText($XPos, $YPos, $Value, $Settings);
 		}
 	}
 
-	/* Draw the area arround the specified Threshold */
+	/* Draw the area around the specified Threshold */
 	function drawContour($Threshold, array $Format = [])
 	{
 		$R = 0;
@@ -203,7 +195,7 @@ class pSurface
 	/* Draw the surface chart */
 	function drawSurface(array $Format = [])
 	{
-		$Palette = NULL;
+		$Palette = [];
 		$ShadeR1 = 77;
 		$ShadeG1 = 205;
 		$ShadeB1 = 21;
@@ -236,7 +228,7 @@ class pSurface
 					$X2 = floor($X0 + $X * $XSize + $XSize);
 					$Y2 = floor($Y0 + $Y * $YSize + $YSize);
 					
-					if ($Palette != NULL) {
+					if (count($Palette) != 0) {
 						$R = (isset($Palette[$Value]) && isset($Palette[$Value]["R"])) ? $Palette[$Value]["R"] : 0;
 						$G = (isset($Palette[$Value]) && isset($Palette[$Value]["G"])) ? $Palette[$Value]["G"] : 0;
 						$B = (isset($Palette[$Value]) && isset($Palette[$Value]["B"])) ? $Palette[$Value]["B"] : 0;

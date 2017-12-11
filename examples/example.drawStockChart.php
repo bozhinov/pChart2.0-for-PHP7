@@ -31,20 +31,20 @@ $Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
 
 /* Draw the border */
-$myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
+$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
 
 /* Write the title */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
-$myPicture->drawText(60,45,"Stock price",array("FontSize"=>28,"Align"=>TEXT_ALIGN_BOTTOMLEFT));
+$myPicture->drawText(60,45,"Stock price",["FontSize"=>28,"Align"=>TEXT_ALIGN_BOTTOMLEFT]);
 
 /* Draw the 1st scale */
 $myPicture->setGraphArea(60,60,450,190);
-$myPicture->drawFilledRectangle(60,60,450,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
+$myPicture->drawFilledRectangle(60,60,450,190,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10]);
 $myPicture->drawScale(array("DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE));
 
 /* Draw the 1st stock chart */
 $mystockChart = new pStock($myPicture);
-$mystockChart->myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30));
+$mystockChart->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30]);
 $mystockChart->drawStockChart();
 
 /* Reset the display mode because of the graph small size */
@@ -58,7 +58,7 @@ $myPicture->drawScale(array("Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE));
 
 /* Draw the 2nd stock chart */
 $mystockChart = new pStock($myPicture);
-$mystockChart->myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30));
+$mystockChart->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30]);
 $mystockChart->drawStockChart();
 
 /* Render the picture (choose the best way) */
