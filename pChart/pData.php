@@ -107,6 +107,12 @@ class pData
 			}
 		}
 	}
+	
+	/* In case you add points to the a serie with the same name - pSplit */
+	function clearPoints($SerieName = "Serie1")
+	{
+		$this->Data["Series"][$SerieName]["Data"] = [];
+	}
 
 	/* Strip VOID values */
 	function stripVOID($Values)
@@ -853,8 +859,8 @@ class pData
 				if (eval($Expression) === FALSE) {
 					$return = VOID;
 				}
-
-				$return = ($return == "!") ? VOID : $this->right($return, strlen($return) - 1);
+													
+				$return = ($return == "!") ? VOID : substr($return, 1); # substr will remove the !
 				
 				if (in_array($return, ["NAN", "INF", "-INF"])){
 					$return = VOID;
@@ -943,26 +949,6 @@ class pData
 		return (is_array($Value)) ? $Value : [$Value];
 	}
 
-	/* Class string wrapper */
-	function __toString()
-	{
-		return "pData object.";
-	}
-
-	function left($value, $NbChar)
-	{
-		return substr($value, 0, $NbChar);
-	}
-
-	function right($value, $NbChar)
-	{
-		return substr($value, strlen($value) - $NbChar, $NbChar);
-	}
-
-	function mid($value, $Depart, $NbChar)
-	{
-		return substr($value, $Depart - 1, $NbChar);
-	}
 }
 
 ?>

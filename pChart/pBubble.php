@@ -35,11 +35,8 @@ class pBubble
 	}
 
 	/* Prepare the scale */
-	function bubbleScale($DataSeries, $WeightSeries)
-	{
-		(!is_array($DataSeries)) AND $DataSeries = [$DataSeries];
-		(!is_array($WeightSeries)) AND $WeightSeries = [$WeightSeries];
-		
+	function bubbleScale(array $DataSeries, array $WeightSeries)
+	{		
 		/* Parse each data series to find the new min & max boundaries to scale */
 		$NewPositiveSerie = [];
 		$NewNegativeSerie = [];
@@ -120,7 +117,7 @@ class pBubble
 	}
 
 	/* Prepare the scale */
-	function drawBubbleChart($DataSeries, $WeightSeries, array $Format = [])
+	function drawBubbleChart(array $DataSeries, array $WeightSeries, array $Format = [])
 	{
 		$ForceAlpha = VOID;
 		$DrawBorder = TRUE;
@@ -135,10 +132,7 @@ class pBubble
 		
 		/* Override defaults */
 		extract($Format);
-		
-		(!is_array($DataSeries)) AND $DataSeries = [$DataSeries];
-		(!is_array($WeightSeries)) AND $WeightSeries = [$WeightSeries];
-		
+				
 		$Data = $this->myPicture->myData->Data;
 		$Palette = $this->myPicture->myData->Palette;
 		
@@ -301,9 +295,8 @@ class pBubble
 
 			$Value = $this->myPicture->scaleFormat($Value, $AxisMode, $AxisFormat, $AxisUnit);
 			$Weight = $Data["Series"][$SerieWeightName]["Data"][$Point];
-			$Caption = $Abscissa . $Value . " / " . $Weight;
 			$Description = (isset($Data["Series"][$SerieName]["Description"])) ? $Data["Series"][$SerieName]["Description"] : "No description";
-			$Series = ["Format" => $Color,"Caption" => $Caption];
+			$Series = ["Format" => $Color,"Caption" => $Abscissa . $Value . " / " . $Weight];
 			
 			if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 				$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
