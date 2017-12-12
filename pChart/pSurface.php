@@ -2,7 +2,7 @@
 /*
 pSurface - class to draw surface charts
 
-Version     : 2.2.1-dev
+Version     : 2.2.2-dev
 Made by     : Jean-Damien POGOLOTTI
 Maintainedby: Momchil Bozhinov
 Last Update : 01/01/2018

@@ -2,7 +2,7 @@
 /*
 pBarcode39 - class to create barcodes (39B)
 
-Version     : 2.2.1-dev
+Version     : 2.2.2-dev
 Made by     : Jean-Damien POGOLOTTI
 Maintainedby: Momchil Bozhinov
 Last Update : 01/01/2018
