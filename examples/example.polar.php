@@ -18,7 +18,7 @@ $myPicture->myData->addPoints([20,40,50,12,10,30,40,50,60],"ScoreB");
 $myPicture->myData->setSerieDescription("ScoreA","Coverage A");
 $myPicture->myData->setSerieDescription("ScoreB","Coverage B");
 
-/* Define the absissa serie */
+/* Define the abscissa serie */
 $myPicture->myData->addPoints([40,80,120,160,200,240,280,320,360],"Coord");
 $myPicture->myData->setAbscissa("Coord");
 

@@ -19,16 +19,16 @@ $myPicture->drawFilledRectangle(0,0,400,400,$Settings);
 /* Do a gradient overlay */
 $Settings = array("StartR"=>194, "StartG"=>131, "StartB"=>44, "EndR"=>43, "EndG"=>7, "EndB"=>58, "Alpha"=>50);
 $myPicture->drawGradientArea(0,0,400,400,DIRECTION_VERTICAL,$Settings);
-$myPicture->drawGradientArea(0,0,400,20,DIRECTION_VERTICAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>100));
+$myPicture->drawGradientArea(0,0,400,20,DIRECTION_VERTICAL,["StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>100]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,399,399,array("R"=>0,"G"=>0,"B"=>0));
+$myPicture->drawRectangle(0,0,399,399,["R"=>0,"G"=>0,"B"=>0]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"pSurface() :: 2D surface charts",array("R"=>255,"G"=>255,"B"=>255));
+$myPicture->drawText(10,13,"pSurface() :: 2D surface charts",["R"=>255,"G"=>255,"B"=>255]);
 
-$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1));
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1]);
 
 /* Create the surface object */
 $mySurface = new pSurface($myPicture);

@@ -20,7 +20,7 @@ $myPicture->myData->setSerieDescription("ScoreA","Application A");
 $myPicture->myData->setSerieDescription("ScoreB","Application B");
 $myPicture->myData->setSerieDescription("ScoreC","Application C");
 
-/* Define the absissa serie */
+/* Define the abscissa serie */
 $myPicture->myData->addPoints(["Size","Speed","Reliability","Functionalities","Ease of use","Weight"],"Labels");
 $myPicture->myData->setAbscissa("Labels");
 

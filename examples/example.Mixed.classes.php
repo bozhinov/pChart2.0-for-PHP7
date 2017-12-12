@@ -20,7 +20,7 @@ for($i=0;$i<=80;$i++) {
 $myPicture->myData->setAxisName(0,"Probability");
 $myPicture->myData->setAxisUnit(0,"%");
 
-/* Turn of Antialiasing */
+/* Turn of Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */
@@ -46,7 +46,7 @@ $myPicture->setGraphArea(60,40,650,200);
 $scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"LabelSkip"=>4,"GridR"=>220,"GridG"=>220,"GridB"=>220,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
 $myPicture->drawScale($scaleSettings);
 
-/* Turn on Antialiasing */
+/* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
 
 /* Draw the line of best fit */

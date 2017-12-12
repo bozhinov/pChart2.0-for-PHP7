@@ -14,7 +14,7 @@ $myPicture = new pDraw(300,260);
 $myPicture->myData->addPoints([50,2,3,4,7,10,25,48,41,10],"ScoreA");  
 $myPicture->myData->setSerieDescription("ScoreA","Application A");
 
-/* Define the absissa serie */
+/* Define the abscissa serie */
 $myPicture->myData->addPoints(["A0","B1","C2","D3","E4","F5","G6","H7","I8","J9"],"Labels");
 $myPicture->myData->setAbscissa("Labels");
 

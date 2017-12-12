@@ -14,7 +14,7 @@ $myPicture = new pDraw(700,230);
 $myPicture->myData->addPoints([40,60,15,10,6,4],"ScoreA");  
 $myPicture->myData->setSerieDescription("ScoreA","Application A");
 
-/* Define the absissa serie */
+/* Define the abscissa serie */
 $myPicture->myData->addPoints(["<10","10<>20","20<>40","40<>60","60<>80",">80"],"Labels");
 $myPicture->myData->setAbscissa("Labels");
 
@@ -49,14 +49,14 @@ $PieChart->draw2DPie(120,125,["SecondPass"=>FALSE]);
 /* Draw an AA pie chart */ 
 $PieChart->draw2DPie(340,125,["DrawLabels"=>TRUE,"LabelStacked"=>TRUE,"Border"=>TRUE]);
 
-/* Draw a splitted pie chart */ 
+/* Draw a split pie chart */ 
 $PieChart->draw2DPie(560,125,["WriteValues"=>PIE_VALUE_PERCENTAGE,"DataGapAngle"=>10,"DataGapRadius"=>6,"Border"=>TRUE,"BorderR"=>255,"BorderG"=>255,"BorderB"=>255]);
 
 /* Write the legend */
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>20]);
 $myPicture->drawText(120,200,"Single AA pass",["DrawBox"=>TRUE,"BoxRounded"=>TRUE,"R"=>0,"G"=>0,"B"=>0,"Align"=>TEXT_ALIGN_TOPMIDDLE]);
-$myPicture->drawText(440,200,"Extended AA pass / Splitted",["DrawBox"=>TRUE,"BoxRounded"=>TRUE,"R"=>0,"G"=>0,"B"=>0,"Align"=>TEXT_ALIGN_TOPMIDDLE]);
+$myPicture->drawText(440,200,"Extended AA pass / Split",["DrawBox"=>TRUE,"BoxRounded"=>TRUE,"R"=>0,"G"=>0,"B"=>0,"Align"=>TEXT_ALIGN_TOPMIDDLE]);
 
 /* Write the legend box */ 
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6,"R"=>255,"G"=>255,"B"=>255]);
