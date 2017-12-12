@@ -2818,9 +2818,6 @@ class pDraw
 		}
 
 		/* Found no correct scale, shame,... returns the 1st one as default */
-
-		// if ( $GoodScaleFactors == "" ) { return($Results[$Factors[0]]); }
-
 		if (count($GoodScaleFactors) == 0) {
 			return $Results[$Factors[0]];
 		}
@@ -2927,15 +2924,7 @@ class pDraw
 		
 		return (floor($Value2) == 0) ? 0 : ($Value1 % $Value2);
 		
-		#if (floor($Value2) == 0) {
-		#	return 0;
-		#}
-
-		#if (floor($Value2) != 0) {
-		#	return ($Value1 % $Value2);
-		#}
-
-		#$MinValue = min($Value1, $Value2); # Momchil TODO: Does it ever get here ?
+		#$MinValue = min($Value1, $Value2); # Momchil TODO: dead code
 		#$Factor = 10;
 		#while (floor($MinValue * $Factor) == 0) {
 		#	$Factor = $Factor * 10;
@@ -2983,7 +2972,7 @@ class pDraw
 		extract($Format);
 		
 		$Data = $this->myData->Data;
-		$AbscissaMargin = $this->getAbscissaMargin($Data);
+		$AbscissaMargin = $this->myData->getAbscissaMargin();
 		$XScale = $this->scaleGetXSettings();
 		
 		if (is_array($Value)) {
@@ -3116,7 +3105,7 @@ class pDraw
 		($BorderAlpha > 100) AND $BorderAlpha = 100;
 		$Data = $this->myData->Data;
 		$XScale = $this->scaleGetXSettings();
-		$AbscissaMargin = $this->getAbscissaMargin($Data);
+		$AbscissaMargin =  $this->myData->getAbscissaMargin();
 		
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 			$XStep = (($this->GraphAreaX2 - $this->GraphAreaX1) - $XScale[0] * 2) / $XScale[1];
@@ -3262,7 +3251,7 @@ class pDraw
 			"Alpha" => $CaptionAlpha
 		];
 		
-		$AbscissaMargin = $this->getAbscissaMargin($Data);
+		$AbscissaMargin =  $this->myData->getAbscissaMargin();
 		($NoMargin) AND $AbscissaMargin = 0;
 		($Caption == NULL) AND $Caption = $Value;
 
@@ -3360,7 +3349,7 @@ class pDraw
 		($DisableShadowOnArea && $this->Shadow) AND $this->Shadow = FALSE;
 		($BorderAlpha > 100) AND $BorderAlpha = 100;
 			
-		$AbscissaMargin = $this->getAbscissaMargin($Data);
+		$AbscissaMargin = $this->myData->getAbscissaMargin();
 		($NoMargin) AND $AbscissaMargin = 0;
 	
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
@@ -4710,18 +4699,6 @@ class pDraw
 		}
 	}
 	
-	/* Return the abscissa margin */
-	function getAbscissaMargin($Data)
-	{
-		foreach($Data["Axis"] as $AxisID => $Values) {
-			if ($Values["Identity"] == AXIS_X) {
-				return ($Values["Margin"]);
-			}
-		}
-
-		return 0;
-	}
-
 	/* Convert a string to a single element array */
 	function convertToArray($Value)
 	{
@@ -4924,18 +4901,6 @@ class pDraw
 	{
 		$Values = explode(".", $Value);
 		return (isset($Values[1])) ? substr($Values[1], 0, 1) : 0;
-	}
-
-	/* Attach a dataset to your pChart Object */
-	function setDataSet($myData)
-	{
-		$this->myData = $myData;
-	}
-
-	/* Print attached dataset contents to STDOUT */
-	function printDataSet()
-	{
-		print_r($this->myData);
 	}
 
 	/* Return the HTML converted color from the RGB composite values */

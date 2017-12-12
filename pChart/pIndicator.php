@@ -89,6 +89,9 @@ class pIndicator
 		$XScale = $RealWidth / ($OverallMax - $OverallMin);
 		$X1 = $X;
 		$ValuesPos = [];
+		$RestoreShadow = $this->myPicture->Shadow;
+		$this->myPicture->Shadow = FALSE;
+			
 		foreach($IndicatorSections as $Key => $Settings) {
 			$Color = ["R" => $Settings["R"],"G" => $Settings["G"],"B" => $Settings["B"]];
 			$Caption = $Settings["Caption"];
@@ -191,8 +194,6 @@ class pIndicator
 				$SubCaptionColor = ["Align" => TEXT_ALIGN_TOPLEFT,"FontName" => $CaptionFontName,"FontSize" => $CaptionFontSize,"R" => $Settings["R"] + $SubCaptionColorFactor,"G" => $Settings["G"] + $SubCaptionColorFactor,"B" => $Settings["B"] + $SubCaptionColorFactor];
 			}
 
-			$RestoreShadow = $this->myPicture->Shadow;
-			$this->myPicture->Shadow = FALSE;
 			if ($CaptionLayout == INDICATOR_CAPTION_DEFAULT) {
 				$this->myPicture->drawText($X1, $Y + $Height + $TextPadding, $Caption, $CaptionColor);
 			} elseif ($CaptionLayout == INDICATOR_CAPTION_EXTENDED) {
@@ -202,12 +203,9 @@ class pIndicator
 				$this->myPicture->drawText($X1 + $XOffset, $Y + $Height - $YOffset + $CaptionHeight + $TextPadding * 2, $SubCaption, $SubCaptionColor);
 			}
 
-			$this->myPicture->Shadow = $RestoreShadow;
 			$X1 = $X2 + $SectionsMargin;
 		}
 
-		$RestoreShadow = $this->myPicture->Shadow;
-		$this->myPicture->Shadow = FALSE;
 		foreach($Values as $Key => $Value) {
 			if ($Value >= $OverallMin && $Value <= $OverallMax) {
 				foreach($IndicatorSections as $Key => $Settings) {

@@ -110,7 +110,7 @@ class pSpring
 	}
 
 	/* Set link properties */
-	function linkProperties($FromNode, $ToNode, array $Settings)
+	function linkProperties(int $FromNode, int $ToNode, array $Settings)
 	{
 		if (!isset($this->Data[$FromNode])) {
 			return 0;
@@ -152,15 +152,15 @@ class pSpring
 	}
 
 	/* Add a node */
-	function addNode($NodeID, array $Settings = [])
+	function addNode(int $NodeID, array $Settings = [])
 	{
 		/* if the node already exists, ignore */
 		if (isset($this->Data[$NodeID])) {
 			return 0;
 		}
 
-		$Name = "Node " . $NodeID;
-		$Connections = NULL;
+		$Name = "Node " . strval($NodeID);
+		$Connections = [];
 		$R = $this->Default["R"];
 		$G = $this->Default["G"];
 		$B = $this->Default["B"];
@@ -209,63 +209,38 @@ class pSpring
 			"Shape" => $Shape,
 			"FreeZone" => $FreeZone
 		];
+
+		if (!is_array($Connections)){
+			throw pException::SprintIvalidConnectionsException();
+		}
 		
-		if ($Connections != NULL) {
-			if (is_array($Connections)) {
-				foreach($Connections as $Key => $Value){
-					$this->Data[$NodeID]["Connections"][] = $Value;
-				}
-			} else {
-				$this->Data[$NodeID]["Connections"][] = $Connections;
-			}
+		foreach($Connections as $Key => $Value){
+			$this->Data[$NodeID]["Connections"][] = $Value;
 		}
 	}
 
 	/* Set color attribute for a list of nodes */
-	function setNodesColor($Nodes, array $Settings = [])
+	function setNodesColor(array $Nodes, array $Settings = [])
 	{
-		if (is_array($Nodes)) {
-			foreach($Nodes as $Key => $NodeID) {
-				if (isset($this->Data[$NodeID])) {
-					
-					(isset($Settings["R"])) AND $this->Data[$NodeID]["R"] = $Settings["R"];
-					(isset($Settings["G"])) AND $this->Data[$NodeID]["G"] = $Settings["G"];
-					(isset($Settings["B"])) AND $this->Data[$NodeID]["B"] = $Settings["B"];
-					(isset($Settings["Alpha"])) AND $this->Data[$NodeID]["Alpha"] = $Settings["Alpha"];
-					(isset($Settings["BorderR"])) AND $this->Data[$NodeID]["BorderR"] = $Settings["BorderR"];
-					(isset($Settings["BorderG"])) AND $this->Data[$NodeID]["BorderG"] = $Settings["BorderG"];
-					(isset($Settings["BorderB"])) AND $this->Data[$NodeID]["BorderB"] = $Settings["BorderB"];
-					(isset($Settings["BorderAlpha"])) AND $this->Data[$NodeID]["BorderAlpha"] = $Settings["BorderAlpha"];
+		foreach($Nodes as $Key => $NodeID) {
+			if (isset($this->Data[$NodeID])) {
+				
+				(isset($Settings["R"])) AND $this->Data[$NodeID]["R"] = $Settings["R"];
+				(isset($Settings["G"])) AND $this->Data[$NodeID]["G"] = $Settings["G"];
+				(isset($Settings["B"])) AND $this->Data[$NodeID]["B"] = $Settings["B"];
+				(isset($Settings["Alpha"])) AND $this->Data[$NodeID]["Alpha"] = $Settings["Alpha"];
+				(isset($Settings["BorderR"])) AND $this->Data[$NodeID]["BorderR"] = $Settings["BorderR"];
+				(isset($Settings["BorderG"])) AND $this->Data[$NodeID]["BorderG"] = $Settings["BorderG"];
+				(isset($Settings["BorderB"])) AND $this->Data[$NodeID]["BorderB"] = $Settings["BorderB"];
+				(isset($Settings["BorderAlpha"])) AND $this->Data[$NodeID]["BorderAlpha"] = $Settings["BorderAlpha"];
 
-					if (isset($Settings["Surrounding"])) {
-						$this->Data[$NodeID]["BorderR"] = $this->Data[$NodeID]["R"] + $Settings["Surrounding"];
-						$this->Data[$NodeID]["BorderG"] = $this->Data[$NodeID]["G"] + $Settings["Surrounding"];
-						$this->Data[$NodeID]["BorderB"] = $this->Data[$NodeID]["B"] + $Settings["Surrounding"];
-					}
+				if (isset($Settings["Surrounding"])) {
+					$this->Data[$NodeID]["BorderR"] = $this->Data[$NodeID]["R"] + $Settings["Surrounding"];
+					$this->Data[$NodeID]["BorderG"] = $this->Data[$NodeID]["G"] + $Settings["Surrounding"];
+					$this->Data[$NodeID]["BorderB"] = $this->Data[$NodeID]["B"] + $Settings["Surrounding"];
 				}
 			}
-		} else {
-			(isset($Settings["R"])) AND $this->Data[$Nodes]["R"] = $Settings["R"];
-			(isset($Settings["G"])) AND $this->Data[$Nodes]["G"] = $Settings["G"];
-			(isset($Settings["B"])) AND $this->Data[$Nodes]["B"] = $Settings["B"];
-			(isset($Settings["Alpha"])) AND $this->Data[$Nodes]["Alpha"] = $Settings["Alpha"];
-			(isset($Settings["BorderR"])) AND $this->Data[$Nodes]["BorderR"] = $Settings["BorderR"];
-			(isset($Settings["BorderG"])) AND $this->Data[$Nodes]["BorderG"] = $Settings["BorderG"];
-			(isset($Settings["BorderB"])) AND $this->Data[$Nodes]["BorderB"] = $Settings["BorderB"];
-			(isset($Settings["BorderAlpha"])) AND $this->Data[$Nodes]["BorderAlpha"] = $Settings["BorderAlpha"];
-
-			if (isset($Settings["Surrounding"])) {
-				$this->Data[$Nodes]["BorderR"] = $this->Data[$Nodes]["R"] + $Settings["Surrounding"];
-				$this->Data[$Nodes]["BorderG"] = $this->Data[$Nodes]["G"] + $Settings["Surrounding"];
-				$this->Data[$Nodes]["BorderB"] = $this->Data[$Nodes]["B"] + $Settings["Surrounding"];
-			}
 		}
-	}
-
-	/* Returns all the nodes details */
-	function dumpNodes()
-	{
-		return $this->Data;
 	}
 
 	/* Check if a connection exists and create it if required */

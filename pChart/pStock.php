@@ -15,8 +15,6 @@ You can find the whole class documentation on the pChart web site.
 
 namespace pChart;
 
-define("STOCK_MISSING_SERIE", 180001);
-
 /* pStock class definition */
 class pStock
 {
@@ -105,7 +103,7 @@ class pStock
 
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
 		if (!isset($Data["Series"][$SerieOpen]) || !isset($Data["Series"][$SerieClose]) || !isset($Data["Series"][$SerieMin]) || !isset($Data["Series"][$SerieMax])) {
-			return STOCK_MISSING_SERIE;
+			throw pException::StockMissingSerieException();
 		}
 
 		$Plots = [];

@@ -276,6 +276,19 @@ class pData
 	{
 		$this->Data["AbscissaName"] = $Name;
 	}
+	
+	/* Return the abscissa margin */
+	function getAbscissaMargin()
+	{
+		foreach($this->Data["Axis"] as $AxisID => $Values) {
+			if ($Values["Identity"] == AXIS_X) {
+				return ($Values["Margin"]);
+			}
+		}
+
+		return 0;
+	}
+
 
 	/* Create a scatter group specifying X and Y data series */
 	function setScatterSerie($SerieX, $SerieY, $ID = 0)

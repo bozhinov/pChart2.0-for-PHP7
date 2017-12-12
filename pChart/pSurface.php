@@ -55,7 +55,7 @@ class pSurface
 	}
 
 	/* Add a point on the grid */
-	function addPoint($X, $Y, $Value, $Force = TRUE)
+	function addPoint(int $X, int $Y, $Value, $Force = TRUE)
 	{
 		if ($X < 0 || $X > $this->GridSizeX) {
 			return 0;
@@ -65,7 +65,7 @@ class pSurface
 			return 0;
 		}
 
-		if ($this->Points[$X][$Y] == UNKNOWN || $Force) {
+		if ($Force) {
 			$this->Points[$X][$Y] = $Value;
 		} elseif ($this->Points[$X][$Y] == UNKNOWN) {
 			$this->Points[$X][$Y] = $Value;

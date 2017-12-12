@@ -16,10 +16,6 @@ You can find the whole class documentation on the pChart web site.
 namespace pChart;
 
 /* Class return codes */
-define("PIE_NO_ABSCISSA", 140001);
-define("PIE_NO_DATASERIE", 140002);
-define("PIE_SUMISNULL", 140003);
-define("PIE_RENDERED", 140000);
 define("PIE_LABEL_COLOR_AUTO", 140010);
 define("PIE_LABEL_COLOR_MANUAL", 140011);
 define("PIE_VALUE_NATURAL", 140020);
@@ -82,7 +78,7 @@ class pPie
 		$Palette = $this->myPicture->myData->Palette;
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "") {
-			return PIE_NO_ABSCISSA;
+			throw pException::PieNoAbscissaException();
 		}
 
 		/* Try to find the data serie */
@@ -95,7 +91,7 @@ class pPie
 
 		/* Do we have data to compute? */
 		if ($DataSerie == "") {
-			return PIE_NO_DATASERIE;
+			throw pException::PieNoDataSerieException();
 		}
 
 		/* Remove unused data */
@@ -104,7 +100,7 @@ class pPie
 		$SerieSum = $this->myPicture->myData->getSum($DataSerie);
 		/* Do we have data to draw? */
 		if ($SerieSum == 0) {
-			return PIE_SUMISNULL;
+			throw pException::PieNoDataToDrawException();
 		}
 
 		/* Dump the real number of data to draw */
@@ -322,7 +318,6 @@ class pPie
 		}
 
 		$this->myPicture->Shadow = $RestoreShadow;
-		return PIE_RENDERED;
 	}
 
 	/* Draw a 3D pie chart */
@@ -365,7 +360,7 @@ class pPie
 		$Palette = $this->myPicture->myData->Palette;
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "") {
-			return PIE_NO_ABSCISSA;
+			throw pException::PieNoAbscissaException();
 		}
 
 		/* Try to find the data serie */
@@ -378,7 +373,7 @@ class pPie
 
 		/* Do we have data to compute? */
 		if ($DataSerie == "") {
-			return PIE_NO_DATASERIE;
+			throw pException::PieNoDataSerieException();
 		}
 
 		/* Remove unused data */
@@ -387,7 +382,7 @@ class pPie
 		$SerieSum = $this->myPicture->myData->getSum($DataSerie);
 		/* Do we have data to draw? */
 		if ($SerieSum == 0) {
-			return PIE_SUMISNULL;
+			throw pException::PieNoDataToDrawException();
 		}
 
 		/* Dump the real number of data to draw */
@@ -753,7 +748,6 @@ class pPie
 		}
 
 		$this->myPicture->Shadow = $RestoreShadow;
-		return PIE_RENDERED;
 	}
 	
 	function drawPieLegend($X, $Y, array $Format = [])
@@ -792,7 +786,7 @@ class pPie
 		$Palette = $this->myPicture->myData->Palette;
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "") {
-			return PIE_NO_ABSCISSA;
+			throw pException::PieNoAbscissaException();
 		}
 
 		$Boundaries = ["L" => $X, "T" => $Y, "R" => 0, "B" => 0];
@@ -1013,7 +1007,7 @@ class pPie
 		$Palette = $this->myPicture->myData->Palette;
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "") {
-			return PIE_NO_ABSCISSA;
+			throw pException::PieNoAbscissaException();
 		}
 
 		/* Try to find the data serie */
@@ -1026,7 +1020,7 @@ class pPie
 
 		/* Do we have data to compute? */
 		if ($DataSerie == "") {
-			return PIE_NO_DATASERIE;
+			throw pException::PieNoDataSerieException();
 		}
 
 		/* Remove unused data */
@@ -1035,7 +1029,7 @@ class pPie
 		$SerieSum = $this->myPicture->myData->getSum($DataSerie);
 		/* Do we have data to draw? */
 		if ($SerieSum == 0) {
-			return PIE_SUMISNULL;
+			throw pException::PieNoDataToDrawException();
 		}
 
 		/* Dump the real number of data to draw */
@@ -1218,7 +1212,6 @@ class pPie
 		}
 
 		$this->myPicture->Shadow = $RestoreShadow;
-		return PIE_RENDERED;
 	}
 
 	function draw3DRing($X, $Y, array $Format = [])
@@ -1262,7 +1255,7 @@ class pPie
 		$Palette = $this->myPicture->myData->Palette;
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "") {
-			return PIE_NO_ABSCISSA;
+			throw pException::PieNoAbscissaException();
 		}
 
 		/* Try to find the data serie */
@@ -1275,7 +1268,7 @@ class pPie
 
 		/* Do we have data to compute? */
 		if ($DataSerie == "") {
-			return PIE_NO_DATASERIE;
+			throw pException::PieNoDataSerieException();
 		}
 
 		/* Remove unused data */
@@ -1284,7 +1277,7 @@ class pPie
 		$SerieSum = $this->myPicture->myData->getSum($DataSerie);
 		/* Do we have data to draw? */
 		if ($SerieSum == 0) {
-			return PIE_SUMISNULL;
+			throw pException::PieNoDataToDrawException();
 		}
 
 		/* Dump the real number of data to draw */
@@ -1628,7 +1621,6 @@ class pPie
 		}
 
 		$this->myPicture->Shadow = $RestoreShadow;
-		return PIE_RENDERED;
 	}
 
 	/* Reverse an array */
@@ -1672,6 +1664,7 @@ class pPie
 		
 		return [$Data,$NewPalette];
 	}
+
 }
 
 ?>

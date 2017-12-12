@@ -36,12 +36,7 @@ class pException extends \Exception
 	{
 		return new static(sprintf('pChart: %s', $text));
 	}
-	
-	public static function InvalidImageFilter($text)
-	{
-		return new static(sprintf('pChart: %s', $text));
-	}
-	
+
 	public static function ImageMapInvalidID($text)
 	{
 		return new static(sprintf('pChart: %s', $text));
@@ -60,6 +55,31 @@ class pException extends \Exception
 	public static function SQLiteException($text)
 	{
 		return new static(sprintf('pCache: %s', $text));
+	}
+
+	public static function PieNoAbscissaException()
+	{
+		return new static('pPie: No Abscissa');
+	}
+
+	public static function PieNoDataSerieException()
+	{
+		return new static('pPie: No DataSerie');
+	}
+	
+	public static function PieNoDataToDrawException()
+	{
+		return new static('pPie: No Data to draw');
+	}
+	
+	public static function StockMissingSerieException()
+	{
+		return new static('pStock: No DataSerie');
+	}
+
+	public static function SprintIvalidConnectionsException()
+	{
+		return new static('pSpring: Connections needs to be an array');
 	}
 }
 

@@ -727,7 +727,7 @@ class pCharts {
 	}
 
 	/* Draw a line chart */
-	function drawZoneChart($SerieA, $SerieB, array $Format = [])
+	function drawZoneChart(string $SerieA, string $SerieB, array $Format = [])
 	{
 		$AxisID = 0;
 		$LineR = 150;
@@ -2280,7 +2280,7 @@ class pCharts {
 		$this->myPicture->Shadow = $RestoreShadow;
 	}
 
-	function drawPolygonChart($Points, array $Format = [])
+	function drawPolygonChart(array $Points, array $Format = [])
 	{
 		$R = isset($Format["R"]) ? $Format["R"] : 0;
 		$G = isset($Format["G"]) ? $Format["G"] : 0;

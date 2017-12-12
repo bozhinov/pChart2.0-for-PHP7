@@ -291,7 +291,7 @@ class pRadar
 				if ($ID % $SkipLabels == 0) {
 					if ($LabelPos == RADAR_LABELS_ROTATED) {
 						$Align = ["Angle" => (360 - ($i + $AxisRotation + $Axisoffset)) - 90,"Align" => TEXT_ALIGN_BOTTOMMIDDLE];
-					} else {
+					} else { # RADAR_LABELS_HORIZONTAL
 						switch (TRUE) {
 							case ((floor($LabelX) == floor($CenterX)) && (floor($LabelY) < floor($CenterY))):
 								$Align = ["Align" => TEXT_ALIGN_BOTTOMMIDDLE];
@@ -582,7 +582,7 @@ class pRadar
 				
 				if ($LabelPos == RADAR_LABELS_ROTATED) {
 					$Align = ["Angle" => (360 - $i),"Align" => TEXT_ALIGN_BOTTOMMIDDLE];
-				} else {
+				} else { # RADAR_LABELS_HORIZONTAL
 					switch (TRUE) {
 						case ((floor($LabelX) == floor($CenterX)) && (floor($LabelY) < floor($CenterY))):
 							$Align = ["Align" => TEXT_ALIGN_BOTTOMMIDDLE];
