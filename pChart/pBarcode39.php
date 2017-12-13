@@ -86,10 +86,12 @@ class pBarcode39
 	{
 		$Result = "100101101101" . "0";
 		$TextString = "";
-		for ($i = 1; $i <= strlen($Value); $i++) {
-			$CharCode = ord(substr($Value, $i - 1, 1));
+		$Arr = str_split($Value);
+
+		foreach($Arr as $char) {
+			$CharCode = ord($char);
 			if ($CharCode >= 97 && $CharCode <= 122) {
-				$CharCode = $CharCode - 32;
+				$CharCode -= 32;
 			}
 
 			if (isset($this->Codes[chr($CharCode)])) {
@@ -102,11 +104,8 @@ class pBarcode39
 			$Checksum = $this->checksum($TextString);
 			$Result .= $this->Codes[$Checksum] . "0";
 		}
-
-		$Result .= "100101101101";
 		
-		return ["*" . $TextString . "*", $Result];
-
+		return ["*" . $TextString . "*", $Result . "100101101101"];
 	}
 
 	/* Create the encoded string */

@@ -64,7 +64,7 @@ class pBarcode128
 		/* Override defaults */
 		extract($Format);
 		
-		list($TextString, $Result) = $this->encode128($TextString);
+		list($TextString, $Result) = $this->encode128($TextString); # Momchil: result could be cached
 		$BarcodeLength = strlen($Result);
 
 		$WOffset = ($DrawArea) ? 20 : 0;
@@ -86,20 +86,20 @@ class pBarcode128
 	{
 		$Result = "11010010000";
 		$CRC = 104;
-		$TextString = "";
-		for ($i = 1; $i <= strlen($Value); $i++) {
-			$CharCode = ord(substr($Value, $i - 1, 1));
+		$Arr = str_split($Value);
+
+		foreach($Arr as $i => $char) {
+			$CharCode = ord($char);
 			if (isset($this->Codes[$CharCode])) {
 				$Result .= $this->Codes[$CharCode]["Code"];
-				$CRC = $CRC + $i * $this->Codes[$CharCode]["ID"];
-				$TextString .= chr($CharCode);
+				$CRC += ($i + 1) * $this->Codes[$CharCode]["ID"];
 			}
 		}
 
-		$CRC = $CRC - floor($CRC / 103) * 103;
+		$CRC -= floor($CRC / 103) * 103;
 		$Result .= $this->Reverse[$CRC]["Code"]. "1100011101011";
 
-		return [$TextString, $Result];
+		return [$Value, $Result];
 	}
 
 	/* Create the encoded string */

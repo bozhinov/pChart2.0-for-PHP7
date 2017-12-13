@@ -2372,7 +2372,6 @@ class pCharts {
 			for ($Y = $MinY; $Y <= $MaxY; $Y = $Y + $YStep) {
 				$Intersections = [];
 				$LastSlope = NULL;
-				$RestoreLast = "-";
 				foreach($Segments as $Key => $Coords) {
 					$X1 = $Coords["X1"];
 					$X2 = $Coords["X2"];
@@ -2399,11 +2398,9 @@ class pCharts {
 							}
 						}
 
-						if (!is_array($Intersections)) {
+						if (!in_array($X, $Intersections)) {
 							$Intersections[] = $X;
-						} elseif (!in_array($X, $Intersections)) {
-							$Intersections[] = $X;
-						} elseif (in_array($X, $Intersections)) {
+						} else {
 
 							if ($Slope == "=" && $LastSlope == "-") {
 								$Intersections[] = $X;
@@ -2416,65 +2413,60 @@ class pCharts {
 							if ($Slope != $LastSlope && $LastSlope == "!" && $Slope == "+") {
 								$Intersections[] = $X;
 							}
-						}
-
-						if (is_array($Intersections) && in_array($X, $Intersections) && $LastSlope == "=" && ($Slope == "-")) {
-							$Intersections[] = $X;
+							
+							if ($LastSlope == "=" && $Slope == "-") {
+								$Intersections[] = $X;
+							}
 						}
 
 						$LastSlope = $Slope;
 					}
 				}
 
-				if ($RestoreLast != "-") {
-					$Intersections[] = $RestoreLast;
-					echo "@" . $Y . "\r\n";
-				}
+				sort($Intersections);
 
-				if (is_array($Intersections)) {
-					sort($Intersections);
-
-					/* Remove NULL plots */
-					$Result = [];
-					for ($i = 0; $i <= count($Intersections) - 1; $i = $i + 2) {
-						if (isset($Intersections[$i + 1])) {
-							if ($Intersections[$i] != $Intersections[$i + 1]) {
-								$Result[] = $Intersections[$i];
-								$Result[] = $Intersections[$i + 1];
-							}
-						}
-					}
-
-					if (count($Result) > 0) {
-						$Intersections = $Result;
-						$LastX = OUT_OF_SIGHT;
-						foreach($Intersections as $Key => $X) {
-							if ($LastX == OUT_OF_SIGHT) {
-								$LastX = $X;
-							} elseif ($LastX != OUT_OF_SIGHT) {
-								if ($this->myPicture->getFirstDecimal($LastX) > 1) {
-									$LastX++;
-								}
-
-								$Color = $DefaultColor;
-
-								foreach($Threshold as $Key => $Parameters) {
-									if ($Y <= $Parameters["MinX"] && $Y >= $Parameters["MaxX"]) {
-										$R = (isset($Parameters["R"])) ? $Parameters["R"] : 0;
-										$G = (isset($Parameters["G"])) ? $Parameters["G"] : 0;
-										$B = (isset($Parameters["B"])) ? $Parameters["B"] : 0;
-										$Alpha = (isset($Parameters["Alpha"])) ? $Parameters["Alpha"] : 100;
-										$Color = $this->myPicture->allocateColor($R, $G, $B, $Alpha);
-									}
-								}
-
-								imageline($this->myPicture->Picture, $LastX, $Y, $X, $Y, $Color);
-								
-								$LastX = OUT_OF_SIGHT;
-							}
+				/* Remove NULL plots */
+				$Result = [];
+				for ($i = 0; $i <= count($Intersections) - 1; $i = $i + 2) {
+					if (isset($Intersections[$i + 1])) {
+						if ($Intersections[$i] != $Intersections[$i + 1]) {
+							$Result[] = $Intersections[$i];
+							$Result[] = $Intersections[$i + 1];
 						}
 					}
 				}
+
+				if (count($Result) > 0) {
+					$Intersections = $Result;
+					$LastX = OUT_OF_SIGHT;
+					foreach($Intersections as $Key => $X) {
+						if ($LastX == OUT_OF_SIGHT) {
+							$LastX = $X;
+						} else {
+							if ($this->myPicture->getFirstDecimal($LastX) > 1) {
+								$LastX++;
+							}
+
+							$Color = $DefaultColor;
+
+							foreach($Threshold as $Key => $Parameters) {
+								if ($Y <= $Parameters["MinX"] && $Y >= $Parameters["MaxX"]) {
+									$Color = $this->myPicture->allocateColor(
+										(isset($Parameters["R"])) ? $Parameters["R"] : 0,
+										(isset($Parameters["G"])) ? $Parameters["G"] : 0,
+										(isset($Parameters["B"])) ? $Parameters["B"] : 0,
+										(isset($Parameters["Alpha"])) ? $Parameters["Alpha"] : 100
+									);
+								}
+							}
+
+							imageline($this->myPicture->Picture, $LastX, $Y, $X, $Y, $Color);
+							
+							$LastX = OUT_OF_SIGHT;
+						}
+					}
+				}
+
 			}
 		} # No Fill
 

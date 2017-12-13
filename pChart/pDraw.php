@@ -926,12 +926,6 @@ class pDraw
 		}
 
 		($Width == 0) AND $Width = $Height;
-		#($R < 0) AND $R = 0; # # Will be done in drawAntialiasPixel anyway
-		#($R > 255) AND $R = 255;
-		#($G < 0) AND $G = 0;
-		#($G > 255) AND $G = 255;
-		#($B < 0) AND $B = 0;
-		#($B > 255) AND $B = 255;
 
 		$Step = 360 / (2 * PI * max($Width, $Height));
 		$Mode = 1;
@@ -946,7 +940,7 @@ class pDraw
 					$Mode = ($Mode == 1) ? 0 : 1;
 				}
 
-				if ($Mode == 1) { # Mode seems to always be 1
+				if ($Mode == 1) { 
 					$this->drawAntialiasPixel($X, $Y, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha]);
 				}
 
@@ -999,7 +993,7 @@ class pDraw
 			$Slice = sqrt($Radius * $Radius - ($Radius - $i) * ($Radius - $i));
 			$XPos = floor($Slice);
 			$YPos = $Y + $i - $Radius;
-			$AAlias = $Slice - floor($Slice);
+			#$AAlias = $Slice - floor($Slice); # Momchil: UNUSED
 			$this->Mask[$X - $XPos][$YPos] = TRUE;
 			$this->Mask[$X + $XPos][$YPos] = TRUE;
 			imageline($this->Picture, $X - $XPos, $YPos, $X + $XPos, $YPos, $Color);
