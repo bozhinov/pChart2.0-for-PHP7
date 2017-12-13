@@ -833,11 +833,11 @@ if ($sl_enabled == "true"){
 	($sl_caption_line == "true") AND $Config["CaptionLine"] = TRUE;
 
 	if ($Mode == "Render"){
-		$myPicture->drawDerivative($Config);
+		(new pCharts($myPicture))->drawDerivative($Config);
 	} else {
 		echo "\r\n";
 		echo dumpArray("Config",$Config);
-		echo '$myPicture->drawDerivative($Config);'."\r\n";
+		echo '(new pCharts($myPicture))->drawDerivative($Config);'."\r\n";
 	}
 }
 

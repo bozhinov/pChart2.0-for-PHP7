@@ -11,7 +11,7 @@ use pChart\pCharts;
 $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */
-$myPicture->myData->addPoints(array(3,12,15,8,5,-5,5,-5,-3,4,5,10),"Probe");
+$myPicture->myData->addPoints([3,12,15,8,5,-5,5,-5,-3,4,5,10],"Probe");
 $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->myData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"),"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
@@ -37,13 +37,13 @@ $pCharts = new pCharts($myPicture);
 /* Draw the chart */
 $pCharts->myPicture->Antialias = TRUE;
 $pCharts->drawSplineChart();
-$myPicture->Antialias = FALSE; # Momchil: requried ?
+$pCharts->myPicture->Antialias = FALSE; # Momchil: required ?
 
 /* Draw the series derivative graph */
-$myPicture->drawDerivative(array("Caption"=>FALSE));
+$pCharts->drawDerivative(["Caption"=>FALSE]);
 
 /* Write the chart legend */
-$myPicture->drawLegend(640,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+$myPicture->drawLegend(640,20,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawDerivative.simple.png");

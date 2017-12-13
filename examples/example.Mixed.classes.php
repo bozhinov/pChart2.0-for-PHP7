@@ -53,10 +53,11 @@ $myPicture->Antialias = TRUE;
 $myPicture->drawBestFit(["Ticks"=>4,"Alpha"=>50,"R"=>0,"G"=>0,"B"=>0]);
 
 /* Draw the line chart */
-(new pCharts($myPicture))->drawLineChart();
+$myCharts = new pCharts($myPicture);
+$myCharts->drawLineChart();
 
 /* Draw the series derivative graph */
-$myPicture->drawDerivative(["ShadedSlopeBox"=>TRUE,"CaptionLine"=>TRUE]);
+$myCharts->drawDerivative(["ShadedSlopeBox"=>TRUE,"CaptionLine"=>TRUE]);
 
 /* Write the chart legend */
 $myPicture->drawLegend(570,20,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);

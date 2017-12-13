@@ -48,10 +48,11 @@ $myPicture->drawScale(["DrawSubTicks"=>TRUE]);
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
 
-(new pCharts($myPicture))->drawLineChart(["DisplayValues"=>TRUE,"DisplayColor"=>DISPLAY_AUTO]);
+$myCharts = new pCharts($myPicture);
+$myCharts->drawLineChart(["DisplayValues"=>TRUE,"DisplayColor"=>DISPLAY_AUTO]);
 
 /* Draw the series derivative graph */
-$myPicture->drawDerivative(["ShadedSlopeBox"=>TRUE,"CaptionLine"=>TRUE]);
+$myCharts->drawDerivative(["ShadedSlopeBox"=>TRUE,"CaptionLine"=>TRUE]);
 
 /* Write the chart legend */
 $myPicture->setFontProperties(["R"=>255,"G"=>255,"B"=>255]);

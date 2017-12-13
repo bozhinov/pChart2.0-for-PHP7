@@ -108,9 +108,7 @@ class pDraw
 	var $Picture; // GD picture object
 	var $Antialias = TRUE; // Turn anti alias on or off
 	var $AntialiasQuality = 0; // Quality of the anti aliasing implementation (0-1)
-
-	// var $Mask		= "";				// Already drawn pixels mask (Filled circle implementation) # UNUSED
-
+	# var $Mask		= "";				// Already drawn pixels mask (Filled circle implementation) # UNUSED
 	var $TransparentBackground = FALSE; // Just to know if we need to flush the alpha channels when rendering
 	/* Graph area settings */
 	var $GraphAreaX1 = 0; // Graph area X origin
@@ -118,7 +116,7 @@ class pDraw
 	var $GraphAreaX2 = 0; // Graph area bottom right X position
 	var $GraphAreaY2 = 0; // Graph area bottom right Y position
 	/* Scale settings */
-	var $ScaleMinDivHeight = 20; // Minimum height for scale divs
+	# var $ScaleMinDivHeight = 20; // Minimum height for scale divs # UNUSED
 	/* Font properties */
 	var $FontName = "pChart/fonts/GeosansLight.ttf"; // Default font file
 	var $FontSize = 12; // Default font size
@@ -275,7 +273,7 @@ class pDraw
 					}
 				} else {
 					if (!($Points[$i] == $Points[0] && $Points[$i] == $SkipX) && !($Points[$i + 1] == $Points[1] && $Points[$i + 1] == $SkipY)) {
-						$this->drawLine($Points[$i], $Points[$i + 1], $Points[0], $Points[1], $BorderSettings);
+						$this->drawLine($Points[$i], $Points[$i + 1], $Points[0], $Points[1], $BorderSettings); # TODO Fix the bug here
 					}
 				}
 			}
@@ -825,13 +823,18 @@ class pDraw
 
 			$Color = $this->allocateColor($R, $G, $B, $Alpha);
 			imageline($this->Picture, $X1, $Y1, $X2, $Y2, $Color);
-			return 0;
+			return;
 		}
-
+		
 		$Distance = sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1));
 		if ($Distance == 0) {
-			return -1;
+			# throw pException::InvalidDimentions("Line coordinates are not valid!");
+			# Momchil: that one revealed way to many bugs to fix now
+			return;
 		}
+		
+		$XStep = ($X2 - $X1) / $Distance;
+		$YStep = ($Y2 - $Y1) / $Distance;
 
 		/* Derivative algorithm for overweighted lines, re-route to polygons primitives */
 		if ($Weight != NULL) {
@@ -846,20 +849,18 @@ class pDraw
 				$this->drawPolygon($Points, $PolySettings);
 			} else {
 				for ($i = 0; $i <= $Distance; $i = $i + $Ticks * 2) {
-					$Xa = (($X2 - $X1) / $Distance) * $i + $X1;
-					$Ya = (($Y2 - $Y1) / $Distance) * $i + $Y1;
-					$Xb = (($X2 - $X1) / $Distance) * ($i + $Ticks) + $X1;
-					$Yb = (($Y2 - $Y1) / $Distance) * ($i + $Ticks) + $Y1;
+					$Xa = $XStep * $i + $X1;
+					$Ya = $YStep * $i + $Y1;
+					$Xb = $XStep * ($i + $Ticks) + $X1;
+					$Yb = $YStep * ($i + $Ticks) + $Y1;
 					$Points = [$AngleCosMinus90 + $Xa, $AngleSinMinus90 + $Ya, $AngleCosPlus90 + $Xa, $AngleSinPlus90 + $Ya, $AngleCosPlus90 + $Xb, $AngleSinPlus90 + $Yb, $AngleCosMinus90 + $Xb, $AngleSinMinus90 + $Yb];
 					$this->drawPolygon($Points, $PolySettings);
 				}
 			}
 
-			return 1;
+			return;
 		}
 
-		$XStep = ($X2 - $X1) / $Distance;
-		$YStep = ($Y2 - $Y1) / $Distance;
 		$defaultColor = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
 
 		if (count($Threshold) == 0 && $Ticks == NULL){ # Momchil: Fast path based on my test cases
@@ -870,18 +871,20 @@ class pDraw
 
 		} else {
 			
+			$Color = $defaultColor;	
+			
 			for ($i = 0; $i <= $Distance; $i++) {
 				$X = $i * $XStep + $X1;
 				$Y = $i * $YStep + $Y1;
-				$Color = $defaultColor;	
 				
 				foreach($Threshold as $Key => $Parameters) {
 					if ($Y <= $Parameters["MinX"] && $Y >= $Parameters["MaxX"]) {
-						$RT = (isset($Parameters["R"])) ? $Parameters["R"] : 0;
-						$GT = (isset($Parameters["G"])) ? $Parameters["G"] : 0;
-						$BT = (isset($Parameters["B"])) ? $Parameters["B"] : 0;
-						$AlphaT = (isset($Parameters["Alpha"])) ? $Parameters["Alpha"] : 0;
-						$Color = ["R" => $RT,"G" => $GT,"B" => $BT,"Alpha" => $AlphaT];
+						$Color = [
+							(isset($Parameters["R"])) ? $Parameters["R"] : 0,
+							(isset($Parameters["G"])) ? $Parameters["G"] : 0,
+							(isset($Parameters["B"])) ? $Parameters["B"] : 0,
+							(isset($Parameters["Alpha"])) ? $Parameters["Alpha"] : 0
+						];
 					}
 				}
 
@@ -899,7 +902,6 @@ class pDraw
 			
 		}
 
-		return [$Cpt,$Mode];
 	}
 
 	/* Draw a circle */
@@ -3467,9 +3469,9 @@ class pDraw
 					if ($Value == VOID) {
 						$Result[] = VOID;
 					} else {
-						if (!is_numeric($Value)) { // Momchil: No idea how that will affect the overall image
-							$Value = 1;
-						}		
+						#if (!is_numeric($Value)) { // Momchil: No idea how that will affect the overall image
+						#	$Value = 1;			   // Second update: that one should be sorted now
+						#}		
 						$Result[] = $this->GraphAreaY2 - $Data["Axis"][$AxisID]["Margin"] - ($Step * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));
 					}
 				}
@@ -3488,9 +3490,9 @@ class pDraw
 					if ($Value == VOID) {
 						$Result[] = VOID;
 					} else {
-						if (!is_numeric($Value)) { // Momchil: No idea how that will affect the overall image
-							$Value = 1;
-						} 
+						#if (!is_numeric($Value)) {
+						#	$Value = 1;
+						#} 
 						$Result[] = $this->GraphAreaX1 + $Data["Axis"][$AxisID]["Margin"] + ($Step * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));
 					}
 				}
@@ -3806,277 +3808,6 @@ class pDraw
 		return ($Result);
 	}
 
-	/* Draw the derivative chart associated to the data series */
-	function drawDerivative(array $Format = [])
-	{
-		$Offset = 10;
-		$SerieSpacing = 3;
-		$DerivativeHeight = 4;
-		$ShadedSlopeBox = FALSE;
-		$DrawBackground = TRUE;
-		$BackgroundR = 255;
-		$BackgroundG = 255;
-		$BackgroundB = 255;
-		$BackgroundAlpha = 20;
-		$DrawBorder = TRUE;
-		$BorderR = 0;
-		$BorderG = 0;
-		$BorderB = 0;
-		$BorderAlpha = 100;
-		$Caption = TRUE;
-		$CaptionHeight = 10;
-		$CaptionWidth = 20;
-		$CaptionMargin = 4;
-		$CaptionLine = FALSE;
-		$CaptionBox = FALSE;
-		$CaptionBorderR = 0;
-		$CaptionBorderG = 0;
-		$CaptionBorderB = 0;
-		$CaptionFillR = 255;
-		$CaptionFillG = 255;
-		$CaptionFillB = 255;
-		$CaptionFillAlpha = 80;
-		$PositiveSlopeStartR = 184;
-		$PositiveSlopeStartG = 234;
-		$PositiveSlopeStartB = 88;
-		$PositiveSlopeEndR = 239;
-		$PositiveSlopeEndG = 31;
-		$PositiveSlopeEndB = 36;
-		$NegativeSlopeStartR = 184;
-		$NegativeSlopeStartG = 234;
-		$NegativeSlopeStartB = 88;
-		$NegativeSlopeEndR = 67;
-		$NegativeSlopeEndG = 124;
-		$NegativeSlopeEndB = 227;
-		
-		/* Override defaults */
-		extract($Format);
-		
-		$Data = $this->myData->Data;
-		list($XMargin, $XDivs) = $this->scaleGetXSettings();
-		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-			$YPos = $this->myData->Data["GraphArea"]["Y2"] + $Offset;
-		} else {
-			$XPos = $this->myData->Data["GraphArea"]["X2"] + $Offset;
-		}
-
-		foreach($Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
-				$R = $Serie["Color"]["R"];
-				$G = $Serie["Color"]["G"];
-				$B = $Serie["Color"]["B"];
-				$Alpha = $Serie["Color"]["Alpha"];
-				$Ticks = $Serie["Ticks"];
-				$Weight = $Serie["Weight"];
-				$AxisID = $Serie["Axis"];
-				$PosArray = $this->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
-				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-					if ($Caption) {
-						if ($CaptionLine) {
-							$StartX = floor($this->GraphAreaX1 - $CaptionWidth + $XMargin - $CaptionMargin);
-							$EndX = floor($this->GraphAreaX1 - $CaptionMargin + $XMargin);
-							$CaptionSettings = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight];
-							if ($CaptionBox) {
-								$this->drawFilledRectangle($StartX, $YPos, $EndX, $YPos + $CaptionHeight, ["R" => $CaptionFillR,"G" => $CaptionFillG,"B" => $CaptionFillB,"BorderR" => $CaptionBorderR,"BorderG" => $CaptionBorderG,"BorderB" => $CaptionBorderB,"Alpha" => $CaptionFillAlpha]);
-							}
-
-							$this->drawLine($StartX + 2, $YPos + ($CaptionHeight / 2), $EndX - 2, $YPos + ($CaptionHeight / 2), $CaptionSettings);
-						
-						} else {
-							$this->drawFilledRectangle($this->GraphAreaX1 - $CaptionWidth + $XMargin - $CaptionMargin, $YPos, $this->GraphAreaX1 - $CaptionMargin + $XMargin, $YPos + $CaptionHeight, ["R" => $R,"G" => $G,"B" => $B,"BorderR" => $CaptionBorderR,"BorderG" => $CaptionBorderG,"BorderB" => $CaptionBorderB]);
-						}
-					}
-
-					if ($XDivs == 0) {
-						$XStep = ($this->GraphAreaX2 - $this->GraphAreaX1) / 4;
-					} else {
-						$XStep = ($this->GraphAreaX2 - $this->GraphAreaX1 - $XMargin * 2) / $XDivs;
-					}
-
-					$X = $this->GraphAreaX1 + $XMargin;
-					$TopY = $YPos + ($CaptionHeight / 2) - ($DerivativeHeight / 2);
-					$BottomY = $YPos + ($CaptionHeight / 2) + ($DerivativeHeight / 2);
-					$StartX = floor($this->GraphAreaX1 + $XMargin);
-					$EndX = floor($this->GraphAreaX2 - $XMargin);
-					
-					if ($DrawBackground) {
-						$this->drawFilledRectangle($StartX - 1, $TopY - 1, $EndX + 1, $BottomY + 1, ["R" => $BackgroundR,"G" => $BackgroundG,"B" => $BackgroundB,"Alpha" => $BackgroundAlpha]);
-					}
-
-					if ($DrawBorder) {
-						$this->drawRectangle($StartX - 1, $TopY - 1, $EndX + 1, $BottomY + 1, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha]);
-					}
-
-					$PosArray = $this->convertToArray($PosArray);
-					
-					$RestoreShadow = $this->Shadow;
-					$this->Shadow = FALSE;
-					/* Determine the Max slope index */
-					$LastX = NULL;
-					$LastY = NULL;
-					$MinSlope = 0;
-					$MaxSlope = 1;
-					foreach($PosArray as $Key => $Y) {
-						if ($Y != VOID && $LastX != NULL) {
-							$Slope = ($LastY - $Y);
-							($Slope > $MaxSlope) AND $MaxSlope = $Slope;
-							($Slope < $MinSlope) AND $MinSlope = $Slope;
-						}
-
-						if ($Y == VOID) {
-							$LastX = NULL;
-							$LastY = NULL;
-						} else {
-							$LastX = $X;
-							$LastY = $Y;
-						}
-					}
-
-					$LastX = NULL;
-					$LastY = NULL;
-					$LastColor = NULL;
-					foreach($PosArray as $Key => $Y) {
-						if ($Y != VOID && $LastY != NULL) {
-							$Slope = ($LastY - $Y);
-							if ($Slope >= 0) {
-								$SlopeIndex = (100 / $MaxSlope) * $Slope;
-								$R = (($PositiveSlopeEndR - $PositiveSlopeStartR) / 100) * $SlopeIndex + $PositiveSlopeStartR;
-								$G = (($PositiveSlopeEndG - $PositiveSlopeStartG) / 100) * $SlopeIndex + $PositiveSlopeStartG;
-								$B = (($PositiveSlopeEndB - $PositiveSlopeStartB) / 100) * $SlopeIndex + $PositiveSlopeStartB;
-							} elseif ($Slope < 0) {
-								$SlopeIndex = (100 / abs($MinSlope)) * abs($Slope);
-								$R = (($NegativeSlopeEndR - $NegativeSlopeStartR) / 100) * $SlopeIndex + $NegativeSlopeStartR;
-								$G = (($NegativeSlopeEndG - $NegativeSlopeStartG) / 100) * $SlopeIndex + $NegativeSlopeStartG;
-								$B = (($NegativeSlopeEndB - $NegativeSlopeStartB) / 100) * $SlopeIndex + $NegativeSlopeStartB;
-							}
-
-							$Color = ["R" => $R,"G" => $G,"B" => $B];
-							
-							if ($ShadedSlopeBox && $LastColor != NULL) // && $Slope != 0
-							{
-								$GradientSettings = ["StartR" => $LastColor["R"],"StartG" => $LastColor["G"],"StartB" => $LastColor["B"],"EndR" => $R,"EndG" => $G,"EndB" => $B];
-								$this->drawGradientArea($LastX, $TopY, $X, $BottomY, DIRECTION_HORIZONTAL, $GradientSettings);
-							} elseif (!$ShadedSlopeBox || $LastColor == NULL) { // || $Slope == 0
-								$this->drawFilledRectangle(floor($LastX), $TopY, floor($X), $BottomY, $Color);
-							}
-							$LastColor = $Color;
-						}
-
-						if ($Y == VOID) {
-							$LastY = NULL;
-						} else {
-							$LastX = $X;
-							$LastY = $Y;
-						}
-
-						$X = $X + $XStep;
-					}
-
-					$YPos = $YPos + $CaptionHeight + $SerieSpacing;
-					
-				} else { # ($Data["Orientation"] == SCALE_POS_LEFTRIGHT)
-				
-					if ($Caption) {
-						$StartY = floor($this->GraphAreaY1 - $CaptionWidth + $XMargin - $CaptionMargin);
-						$EndY = floor($this->GraphAreaY1 - $CaptionMargin + $XMargin);
-						if ($CaptionLine) {
-							$CaptionSettings = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight];
-							if ($CaptionBox) {
-								$this->drawFilledRectangle($XPos, $StartY, $XPos + $CaptionHeight, $EndY, ["R" => $CaptionFillR,"G" => $CaptionFillG,"B" => $CaptionFillB,"BorderR" => $CaptionBorderR,"BorderG" => $CaptionBorderG,"BorderB" => $CaptionBorderB,"Alpha" => $CaptionFillAlpha]);
-							}
-
-							$this->drawLine($XPos + ($CaptionHeight / 2), $StartY + 2, $XPos + ($CaptionHeight / 2), $EndY - 2, $CaptionSettings);
-						} else {
-							$this->drawFilledRectangle($XPos, $StartY, $XPos + $CaptionHeight, $EndY, ["R" => $R,"G" => $G,"B" => $B,"BorderR" => $CaptionBorderR,"BorderG" => $CaptionBorderG,"BorderB" => $CaptionBorderB]);
-						}
-					}
-
-					if ($XDivs == 0) {
-						$XStep = ($this->GraphAreaY2 - $this->GraphAreaY1) / 4;
-					} else {
-						$XStep = ($this->GraphAreaY2 - $this->GraphAreaY1 - $XMargin * 2) / $XDivs;
-					}
-
-					$Y = $this->GraphAreaY1 + $XMargin;
-					$TopX = $XPos + ($CaptionHeight / 2) - ($DerivativeHeight / 2);
-					$BottomX = $XPos + ($CaptionHeight / 2) + ($DerivativeHeight / 2);
-					$StartY = floor($this->GraphAreaY1 + $XMargin);
-					$EndY = floor($this->GraphAreaY2 - $XMargin);
-					if ($DrawBackground) {
-						$this->drawFilledRectangle($TopX - 1, $StartY - 1, $BottomX + 1, $EndY + 1, ["R" => $BackgroundR,"G" => $BackgroundG,"B" => $BackgroundB,"Alpha" => $BackgroundAlpha]);
-					}
-
-					if ($DrawBorder) {
-						$this->drawRectangle($TopX - 1, $StartY - 1, $BottomX + 1, $EndY + 1, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha]);
-					}
-
-					$PosArray = $this->convertToArray($PosArray);
-					
-					$RestoreShadow = $this->Shadow;
-					$this->Shadow = FALSE;
-					/* Determine the Max slope index */
-					$LastX = NULL;
-					$LastY = NULL;
-					$MinSlope = 0;
-					$MaxSlope = 1;
-					foreach($PosArray as $Key => $X) {
-						if ($X != VOID && $LastX != NULL) {
-							$Slope = ($X - $LastX);
-							($Slope > $MaxSlope) AND $MaxSlope = $Slope;
-							($Slope < $MinSlope) AND $MinSlope = $Slope;
-						}
-
-						$LastX = ($X == VOID) ? NULL : $X;
-					}
-
-					$LastX = NULL;
-					$LastY = NULL;
-					$LastColor = NULL;
-					foreach($PosArray as $Key => $X) {
-						if ($X != VOID && $LastX != NULL) {
-							$Slope = ($X - $LastX);
-							if ($Slope >= 0) {
-								$SlopeIndex = (100 / $MaxSlope) * $Slope;
-								$R = (($PositiveSlopeEndR - $PositiveSlopeStartR) / 100) * $SlopeIndex + $PositiveSlopeStartR;
-								$G = (($PositiveSlopeEndG - $PositiveSlopeStartG) / 100) * $SlopeIndex + $PositiveSlopeStartG;
-								$B = (($PositiveSlopeEndB - $PositiveSlopeStartB) / 100) * $SlopeIndex + $PositiveSlopeStartB;
-							} elseif ($Slope < 0) {
-								$SlopeIndex = (100 / abs($MinSlope)) * abs($Slope);
-								$R = (($NegativeSlopeEndR - $NegativeSlopeStartR) / 100) * $SlopeIndex + $NegativeSlopeStartR;
-								$G = (($NegativeSlopeEndG - $NegativeSlopeStartG) / 100) * $SlopeIndex + $NegativeSlopeStartG;
-								$B = (($NegativeSlopeEndB - $NegativeSlopeStartB) / 100) * $SlopeIndex + $NegativeSlopeStartB;
-							}
-
-							$Color = ["R" => $R,"G" => $G,"B" => $B];
-							
-							if ($ShadedSlopeBox && $LastColor != NULL) {
-								$GradientSettings = ["StartR" => $LastColor["R"],"StartG" => $LastColor["G"],"StartB" => $LastColor["B"],"EndR" => $R,"EndG" => $G,"EndB" => $B];
-								$this->drawGradientArea($TopX, $LastY, $BottomX, $Y, DIRECTION_VERTICAL, $GradientSettings);
-							} elseif (!$ShadedSlopeBox || $LastColor == NULL) {
-								$this->drawFilledRectangle($TopX, floor($LastY), $BottomX, floor($Y), $Color);
-							}
-
-							$LastColor = $Color;
-						}
-
-						if ($X == VOID) {
-							$LastX = NULL;
-						} else {
-							$LastX = $X;
-							$LastY = $Y;
-						}
-
-						$Y = $Y + $XStep;
-					}
-
-					$XPos = $XPos + $CaptionHeight + $SerieSpacing;
-				}
-
-				$this->Shadow = $RestoreShadow;
-			}
-		}
-	} 
-
 	/* Draw the line of best fit */
 	function drawBestFit(array $Format = [])
 	{
@@ -4106,6 +3837,7 @@ class pDraw
 				$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks];
 				$AxisID = $Serie["Axis"];
 				$PosArray = $this->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
+				$PosArray = $this->convertToArray($PosArray);
 				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					
@@ -4115,10 +3847,7 @@ class pDraw
 						$XStep = ($this->GraphAreaX2 - $this->GraphAreaX1 - $XMargin * 2) / $XDivs;
 					}
 
-					$X = $this->GraphAreaX1 + $XMargin;
-
-					$PosArray = $this->convertToArray($PosArray);
-					
+					$X = $this->GraphAreaX1 + $XMargin;					
 					$Sxy = 0;
 					$Sx = 0;
 					$Sy = 0;
@@ -4172,9 +3901,6 @@ class pDraw
 					}
 
 					$Y = $this->GraphAreaY1 + $XMargin;
-
-					$PosArray = $this->convertToArray($PosArray);
-					
 					$Sxy = 0;
 					$Sx = 0;
 					$Sy = 0;

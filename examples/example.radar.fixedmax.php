@@ -17,7 +17,7 @@ $myPicture->myData->addPoints([1,5,6,1,5,7,3,6,5,4,1,0],"ScoreA");
 $myPicture->myData->setSerieDescription("ScoreA","Application A");
 $myPicture->myData->setPalette("ScoreA",["R"=>150,"G"=>5,"B"=>217]);
 
-/* Define the absissa serie */
+/* Define the abscissa serie */
 $myPicture->myData->addPoints([1,2,3,4,5,6,7,8,9,10,11,12],"Time");
 $myPicture->myData->setAbscissa("Time");
 
