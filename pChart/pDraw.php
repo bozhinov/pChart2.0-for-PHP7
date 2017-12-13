@@ -140,7 +140,7 @@ class pDraw
 	var $myData = []; // Attached myData
 	
 	/* Class constructor */
-	function __construct($XSize, $YSize, $TransparentBackground = FALSE)
+	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE)
 	{
 		
 		$this->myData = new pData();
@@ -174,8 +174,16 @@ class pDraw
 		}
 	}
 	
-	function __destruct(){
+	function __destruct()
+	{
 		imagedestroy($this->Picture);
+	}
+	
+	/* Destroy the image and start over. Required for pBarcodes */
+	function resize(int $XSize, int $YSize)
+	{
+		imagedestroy($this->Picture);
+		$this->__construct($XSize, $YSize, $this->TransparentBackground);
 	}
 		
 	/* Returns the number of drawable series */
@@ -4775,7 +4783,7 @@ class pDraw
 	}
 
 	/* Render the picture to a file */
-	function render($FileName, $Compression = 0, $Filters = PNG_NO_FILTER)
+	function render($FileName, $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
 		if ($this->TransparentBackground) {
 			imagealphablending($this->Picture, false);
@@ -4786,7 +4794,7 @@ class pDraw
 	}
 
 	/* Render the picture to a web browser stream */
-	function stroke($BrowserExpire = FALSE, $Compression = 0, $Filters = PNG_NO_FILTER)
+	function stroke($BrowserExpire = FALSE, $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
 		if ($this->TransparentBackground) {
 			imagealphablending($this->Picture, false);
@@ -4810,7 +4818,7 @@ class pDraw
 		https://www.w3.org/TR/PNG-Filters.html
 		*/
 	
-	function autoOutput($FileName = "output.png", $Compression = 0, $Filters = PNG_NO_FILTER)
+	function autoOutput($FileName = "output.png", $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
 		if (php_sapi_name() == "cli") {
 			$this->Render($FileName, $Compression, $Filters);
