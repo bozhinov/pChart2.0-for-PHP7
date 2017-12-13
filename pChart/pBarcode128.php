@@ -69,12 +69,17 @@ class pBarcode128
 
 		$WOffset = ($DrawArea) ? 20 : 0;
 		$HOffset = ($ShowLegend) ? $FontSize + $LegendOffset + $WOffset : 0;
-		$X1 = cos($Angle * PI / 180) * ($WOffset + $BarcodeLength);
-		$Y1 = sin($Angle * PI / 180) * ($WOffset + $BarcodeLength);
-		$X2 = $X1 + cos(($Angle + 90) * PI / 180) * ($HOffset + $Height);
-		$Y2 = $Y1 + sin(($Angle + 90) * PI / 180) * ($HOffset + $Height);
 		
-		return [ceil(max(abs($X1), abs($X2))), ceil(max(abs($Y1), abs($Y2)))]; # "Width", "Height"
+		if ($Angle == 0){
+			return [$WOffset + $BarcodeLength, $Height + $HOffset];
+		} else {
+			$X1 = cos($Angle * PI / 180) * ($WOffset + $BarcodeLength);
+			$Y1 = sin($Angle * PI / 180) * ($WOffset + $BarcodeLength);
+			$X2 = $X1 + cos(($Angle + 90) * PI / 180) * ($HOffset + $Height);
+			$Y2 = $Y1 + sin(($Angle + 90) * PI / 180) * ($HOffset + $Height);
+			
+			return [ceil(max(abs($X1), abs($X2))), ceil(max(abs($Y1), abs($Y2)))]; # "Width", "Height"
+		}
 	}
 
 	function encode128($Value)
