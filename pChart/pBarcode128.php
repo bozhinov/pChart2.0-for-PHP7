@@ -52,7 +52,7 @@ class pBarcode128
 	}
 
 	/* Return the projected size of a barcode */
-	function getSize($TextString, array $Format = [])
+	function getProjection($TextString, array $Format = [])
 	{
 		$Angle = 0;
 		$ShowLegend = FALSE;
@@ -66,6 +66,7 @@ class pBarcode128
 		
 		list($TextString, $Result) = $this->encode128($TextString);
 		$BarcodeLength = strlen($Result);
+
 		$WOffset = ($DrawArea) ? 20 : 0;
 		$HOffset = ($ShowLegend) ? $FontSize + $LegendOffset + $WOffset : 0;
 		$X1 = cos($Angle * PI / 180) * ($WOffset + $BarcodeLength);
@@ -73,7 +74,7 @@ class pBarcode128
 		$X2 = $X1 + cos(($Angle + 90) * PI / 180) * ($HOffset + $Height);
 		$Y2 = $Y1 + sin(($Angle + 90) * PI / 180) * ($HOffset + $Height);
 		
-		return ["Width" => max(abs($X1), abs($X2)),"Height" => max(abs($Y1), abs($Y2))];
+		return [ceil(max(abs($X1), abs($X2))), ceil(max(abs($Y1), abs($Y2)))]; # "Width", "Height"
 	}
 
 	function encode128($Value)
