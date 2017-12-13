@@ -213,7 +213,7 @@ class pCharts {
 		/* Override defaults */
 		extract($Format);
 		
-		$this->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
+		$this->myPicture->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
