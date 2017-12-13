@@ -33,7 +33,7 @@ $myPicture->myData->setSerieDescription("TimeStamp","time");
 $myPicture->myData->setAbscissa("TimeStamp");
 $myPicture->myData->setXAxisDisplay(AXIS_FORMAT_TIME,"H:00"); 
 
-/* Turn of Antialiasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw a background */
@@ -62,7 +62,7 @@ $myPicture->setGraphArea(60,40,680,200);
 $scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200,"GridG"=>200,"GridB"=>200,"RemoveSkippedAxis"=>TRUE,"DrawSubTicks"=>FALSE,"Mode"=>SCALE_MODE_START0,"LabelingMethod"=>LABELING_DIFFERENT);
 $myPicture->drawScale($scaleSettings);
 
-/* Turn on Antialiasing */
+/* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
 
 /* Draw the line chart */

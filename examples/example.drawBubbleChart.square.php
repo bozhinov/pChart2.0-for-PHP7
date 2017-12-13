@@ -24,7 +24,7 @@ $myPicture->myData->addPoints(["Apple","Banana","Orange","Lemon","Peach","Strawb
 $myPicture->myData->setAbscissa("Product");
 $myPicture->myData->setAbscissaName("Selected Products");
 
-/* Turn of AAliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the border */

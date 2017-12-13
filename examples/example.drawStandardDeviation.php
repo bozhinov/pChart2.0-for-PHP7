@@ -24,7 +24,7 @@ $myPicture->drawFilledRectangle(0,0,700,230,$Settings);
 $Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
 
-/* Turn of Antialiasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
@@ -45,7 +45,7 @@ $myPicture->setGraphArea(60,50,670,200);
 $scaleSettings = array("LabelSkip"=>9,"GridR"=>200,"GridG"=>200,"GridB"=>200,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
 $myPicture->drawScale($scaleSettings);
 
-/* Turn on Antialiasing */
+/* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 

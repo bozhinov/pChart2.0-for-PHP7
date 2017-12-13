@@ -16,7 +16,7 @@ if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){
 	$myPicture->dumpImageMap();
 }
 
-/* Turn of Anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */
@@ -52,7 +52,7 @@ $PolygonSettings = array("R"=>71,"G"=>87,"B"=>145,"Dash"=>TRUE,"BorderR"=>255,"B
 $myPicture->drawPolygon($Plots,$PolygonSettings);
 $myPicture->addToImageMap("POLY","402,62,460,80,420,190,360,168",$myPicture->toHTMLColor(71,87,145),"Polygon","My Message");
 
-/* Turn of Anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw a customized filled rectangle */ 

@@ -21,7 +21,7 @@ $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 
-/* Turn of Antialiasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
@@ -41,7 +41,7 @@ $myPicture->setGraphArea(60,40,650,200);
 $scaleSettings = ["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200,"GridG"=>200,"GridB"=>200,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE];
 $myPicture->drawScale($scaleSettings);
 
-/* Turn on Antialiasing */
+/* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
 
 /* Draw the line chart */

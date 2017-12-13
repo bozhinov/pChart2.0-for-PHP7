@@ -18,7 +18,7 @@ $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 $myPicture->myData->setAbscissaName("Months");
 
-/* Turn of AAliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Set the default font */ 

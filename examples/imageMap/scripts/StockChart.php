@@ -29,7 +29,7 @@ $myPicture->myData->addPoints(array("Dec 13","Dec 14","Dec 15","Dec 16","Dec 17"
 $myPicture->myData->setAbscissa("Time");
 $myPicture->myData->setAbscissaName("Time");
 
-/* Turn of AAliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the border */

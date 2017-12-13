@@ -18,7 +18,7 @@ $myPicture->myData->addPoints(array("January","February","March","April","May","
 $myPicture->myData->setSerieDescription("Months","Month");
 $myPicture->myData->setAbscissa("Months");
 
-/* Turn of Antialiasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */

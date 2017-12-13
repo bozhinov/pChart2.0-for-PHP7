@@ -17,7 +17,7 @@ for($i=0;$i<=20;$i++) {
 $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->myData->setAbscissaName("Samples");
 
-/* Turn of Antialiasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
@@ -37,7 +37,7 @@ $myPicture->setGraphArea(60,40,650,200);
 $scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200,"GridG"=>200,"GridB"=>200,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
 $myPicture->drawScale($scaleSettings);
 
-/* Turn on Antialiasing */
+/* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
 
 /* Draw the line of best fit */

@@ -29,7 +29,7 @@ $myPicture->myData->addPoints(array("Apple","Banana","Orange","Lemon","Peach","S
 $myPicture->myData->setAbscissa("Product");
 $myPicture->myData->setAbscissaName("Selected Products");
 
-/* Turn of Anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */

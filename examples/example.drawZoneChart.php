@@ -23,7 +23,7 @@ $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 $myPicture->myData->setAbscissaName("Time (years)");
 
-/* Turn of Anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background and the border  */

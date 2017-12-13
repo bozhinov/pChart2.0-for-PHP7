@@ -29,7 +29,7 @@ function NegateValues($Value) {
 	return ($Value == VOID) ? VOID : -$Value;
 }
 
-/* Turn of Anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */

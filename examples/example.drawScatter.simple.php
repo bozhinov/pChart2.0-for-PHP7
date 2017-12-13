@@ -39,7 +39,7 @@ $myPicture->myData->setScatterSerieColor(0,array("R"=>0,"G"=>0,"B"=>0));
 $myPicture->myData->setScatterSerie("Probe 2","Probe 3",1);
 $myPicture->myData->setScatterSerieDescription(1,"Last Year");
 
-/* Turn of Anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */

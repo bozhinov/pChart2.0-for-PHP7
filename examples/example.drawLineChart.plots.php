@@ -20,7 +20,7 @@ $myPicture->myData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun"),"Labels
 $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 
-/* Turn of Anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */

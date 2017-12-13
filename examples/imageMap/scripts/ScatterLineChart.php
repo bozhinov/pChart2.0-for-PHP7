@@ -47,7 +47,7 @@ $myPicture->myData->setScatterSerieColor(0,["R"=>0,"G"=>0,"B"=>0]);
 $myPicture->myData->setScatterSerie("Probe 2","Probe 3",1);
 $myPicture->myData->setScatterSerieDescription(1,"Last Year");
 
-/* Turn of Anti aliasing */
+/* Turn off Anti aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */
@@ -76,7 +76,7 @@ $myScatter->drawScatterScale();
 /* Turn on shadow computing */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 
-/* Turn of Anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = TRUE;
 
 /* Draw a scatter plot chart */

@@ -18,7 +18,7 @@ for($i=0;$i<=30;$i++)
 $myPicture->myData->setSerieTicks("Probe 2",4);
 $myPicture->myData->setAxisName(0,"Temperatures");
 
-/* Turn of Anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */

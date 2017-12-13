@@ -19,7 +19,7 @@ $myPicture->myData->setSerieDescription("Months","Month");
 $myPicture->myData->setAbscissa("Months");
 $myPicture->myData->setAbsicssaPosition(AXIS_POSITION_TOP); 
 
-/* Turn of anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */

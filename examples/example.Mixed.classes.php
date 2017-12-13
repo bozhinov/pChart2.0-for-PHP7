@@ -20,7 +20,7 @@ for($i=0;$i<=80;$i++) {
 $myPicture->myData->setAxisName(0,"Probability");
 $myPicture->myData->setAxisUnit(0,"%");
 
-/* Turn of Anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */

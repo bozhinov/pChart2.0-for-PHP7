@@ -30,7 +30,7 @@ $myPicture->myData->setSerieShape("Probe 2",SERIE_SHAPE_FILLEDSQUARE);
 $myPicture->myData->setSerieWeight("Probe 2",2);
 $myPicture->myData->setAxisName(0,"Temperatures");
 
-/* Turn of Anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */

@@ -17,7 +17,7 @@ $myPicture->myData->createFunctionSerie("Serie 3","(z*15)*z",array("AutoDescript
 $myPicture->myData->setAxisName(0,"functions");
 $myPicture->myData->setAbscissa("Labels");
 
-/* Turn of Anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */

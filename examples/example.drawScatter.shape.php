@@ -41,7 +41,7 @@ $myPicture->myData->setScatterSerie("Probe 2","Probe 3",1);
 $myPicture->myData->setScatterSerieDescription(1,"Last Year");
 $myPicture->myData->setScatterSerieShape(1,SERIE_SHAPE_FILLEDTRIANGLE);
 
-/* Turn of Anti-aliasing */
+/* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
