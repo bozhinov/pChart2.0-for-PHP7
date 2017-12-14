@@ -87,14 +87,19 @@ class pException extends \Exception
 		return new static('pSpring: Connections needs to be an array');
 	}
 	
-	public static function ZoneChartInvalidInputException()
+	public static function ZoneChartInvalidInputException($text)
 	{
 		return new static(sprintf('pCharts: %s', $text));
 	}
 	
-	public static function ScatterInvalidInputException()
+	public static function ScatterInvalidInputException($text)
 	{
 		return new static(sprintf('pScatter: %s', $text));
+	}
+
+	public static function SurfaceInvalidInputException($text)
+	{
+		return new static(sprintf('pSurface: %s', $text));
 	}
 }
 

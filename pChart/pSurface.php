@@ -96,13 +96,11 @@ class pSurface
 		if ($Position == LABEL_POSITION_TOP) {
 			$YPos = $this->myPicture->GraphAreaY1 - $Padding;
 			$Settings["Align"] = ($Angle == 0) ? TEXT_ALIGN_BOTTOMMIDDLE : TEXT_ALIGN_MIDDLELEFT;
-			
 		} elseif ($Position == LABEL_POSITION_BOTTOM) {
 			$YPos = $this->myPicture->GraphAreaY2 + $Padding;
 			$Settings["Align"] = ($Angle == 0) ? TEXT_ALIGN_TOPMIDDLE : TEXT_ALIGN_MIDDLERIGHT;
-			
 		} else {
-			return -1;
+			throw pException::SurfaceInvalidInputException("Invalid label position");
 		}
 
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
@@ -139,7 +137,7 @@ class pSurface
 			$XPos = $this->myPicture->GraphAreaX2 + $Padding;
 			$Settings["Align"] = TEXT_ALIGN_MIDDLELEFT;
 		} else {
-			return -1;
+			throw pException::SurfaceInvalidInputException("Invalid label position");
 		}
 
 		for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {
