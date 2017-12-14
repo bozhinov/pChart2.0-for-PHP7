@@ -44,7 +44,7 @@ class pIndicator
 		if (isset($Format["IndicatorSections"])){
 			$IndicatorSections = $Format["IndicatorSections"];
 		} else {
-			return 0;
+			throw pException::InvalidInput("Missing indicator settings");
 		}
 		$Values = VOID;
 		$ValueDisplay = INDICATOR_VALUE_BUBBLE;

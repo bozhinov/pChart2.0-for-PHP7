@@ -142,7 +142,7 @@ class pCacheSQLite implements pCacheInterface
 		if ($ID != "") {
 			/* If it's not in the cache DB, go away */
 			if (!$this->isInCache()) {
-				return 0;
+				throw pException::SQLiteException(" ID ".$ID ." not in cache!");
 			}
 		}
 		

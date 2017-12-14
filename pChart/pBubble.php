@@ -264,7 +264,7 @@ class pBubble
 		$Palette = $this->myPicture->myData->Palette;
 		
 		if (!isset($Data["Series"][$SerieName]) || !isset($Data["Series"][$SerieWeightName])) {
-			return 0;
+			throw pException::BubbleInvalidInputException("Serie name or Weight is invalid!");
 		}
 
 		$DrawPoint = isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;

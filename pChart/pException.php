@@ -101,6 +101,7 @@ class pException extends \Exception
 	{
 		return new static(sprintf('pSurface: %s', $text));
 	}
+
 }
 
 ?>

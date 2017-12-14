@@ -113,11 +113,11 @@ class pSpring
 	function linkProperties(int $FromNode, int $ToNode, array $Settings)
 	{
 		if (!isset($this->Data[$FromNode])) {
-			return 0;
+			throw pException:: SprintInvalidInputException("No data FromNode!");
 		}
 
 		if (!isset($this->Data[$ToNode])) {
-			return 0;
+			throw pException:: SprintInvalidInputException("No data ToNode!");
 		}
 
 		$R = 0;
@@ -156,7 +156,7 @@ class pSpring
 	{
 		/* if the node already exists, ignore */
 		if (isset($this->Data[$NodeID])) {
-			return 0;
+			throw pException:: SprintInvalidInputException("Node ".$NodeID." is invalid!");
 		}
 
 		$Name = "Node " . strval($NodeID);

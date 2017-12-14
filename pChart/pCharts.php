@@ -2285,9 +2285,8 @@ class pCharts {
 
 		$Segments = $Result;
 		/* Do we have something to draw */
-
 		if (count($Segments) == 0) {
-			return 0;
+			return; # Momchil That's OK
 		}
 
 		/* Find out the min & max Y boundaries */

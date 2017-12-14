@@ -948,7 +948,7 @@ class pPie
 	{
 
 		if (count($this->LabelPos) == 0) {
-			return 0;
+			return; # Momchil: example.draw2DPie.labels
 		}
 
 		foreach($this->LabelPos as $Key => $Settings) {

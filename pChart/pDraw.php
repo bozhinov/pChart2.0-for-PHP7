@@ -301,7 +301,7 @@ class pDraw
 		
 		if ($Radius <= 0) {
 			$this->drawRectangle($X1, $Y1, $X2, $Y2, $Color);
-			return 0;
+			return;
 		}
 
 		if ($this->Antialias) {
@@ -384,7 +384,7 @@ class pDraw
 		$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"NoBorder" => TRUE];
 		if ($Radius <= 0) {
 			$this->drawFilledRectangle($X1, $Y1, $X2, $Y2, $Color);
-			return 0;
+			return;
 		}
 
 		$YTop = $Y1 + $Radius;
@@ -1113,7 +1113,7 @@ class pDraw
 		$this->Shadow = FALSE;
 		if ($StartR == $EndR && $StartG == $EndG && $StartB == $EndB) {
 			$this->drawFilledRectangle($X1, $Y1, $X2, $Y2, ["R" => $StartR,"G" => $StartG,"B" => $StartB,"Alpha" => $Alpha]);
-			return 0;
+			return;
 		}
 
 		if ($Levels != NULL) {
@@ -1218,7 +1218,7 @@ class pDraw
 			}
 
 			imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($R, $G, $B, $Alpha));
-			return 0;
+			return;
 		}
 
 		$Xi = floor($X);
@@ -1235,7 +1235,7 @@ class pDraw
 			
 			# Momchil: That allows to skip the check in drawAlphaPixel and reuse the safe param
 			if (($Xi + 1) >= $this->XSize || ($Yi + 1) >= $this->YSize){ 
-				return -1;
+				return;
 			}
 			
 			# Momchil: well worth the local var
@@ -1291,7 +1291,7 @@ class pDraw
 		
 		if (isset($this->Mask[$X])) {
 			if (isset($this->Mask[$X][$Y])) {
-				return 0;
+				return;
 			}
 		}
 		
@@ -2988,7 +2988,7 @@ class pDraw
 						$this->drawXThreshold([$Key], $Format);
 					}
 				}
-				return 0;
+				return;
 			}
 			
 			if ($Caption == NULL) {
@@ -4420,10 +4420,10 @@ class pDraw
 	}
 
 	/* Set the graph area position */
-	function setGraphArea($X1, $Y1, $X2, $Y2)
+	function setGraphArea(int $X1, int $Y1, int $X2, int $Y2)
 	{
 		if ($X2 < $X1 || $X1 == $X2 || $Y2 < $Y1 || $Y1 == $Y2) {
-			return -1;
+			throw pException::InvalidInput("Invalid graph specs");
 		}
 
 		$this->GraphAreaX1 = $X1;

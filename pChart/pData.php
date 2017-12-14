@@ -264,7 +264,7 @@ class pData
 			}
 		}
 
-		return 0;
+		throw pException::InvalidInput("No margin set!");
 	}
 
 	/* Create a scatter group specifying X and Y data series */
