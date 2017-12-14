@@ -56,7 +56,12 @@ class pException extends \Exception
 	{
 		return new static(sprintf('pCache: %s', $text));
 	}
-
+	
+	public static function CacheException($text)
+	{
+		return new static(sprintf('pCache: %s', $text));
+	}
+	
 	public static function PieNoAbscissaException()
 	{
 		return new static('pPie: No Abscissa');
@@ -85,6 +90,11 @@ class pException extends \Exception
 	public static function ZoneChartInvalidInputException()
 	{
 		return new static(sprintf('pCharts: %s', $text));
+	}
+	
+	public static function ScatterInvalidInputException()
+	{
+		return new static(sprintf('pScatter: %s', $text));
 	}
 }
 

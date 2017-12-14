@@ -258,7 +258,7 @@ class pBubble
 		}
 	}
 
-	function writeBubbleLabel($SerieName, $SerieWeightName, $Points, array $Format = [])
+	function writeBubbleLabel(string $SerieName, string $SerieWeightName, int $Point, array $Format = [])
 	{
 		$Data = $this->myPicture->myData->Data;
 		$Palette = $this->myPicture->myData->Palette;
@@ -268,8 +268,7 @@ class pBubble
 		}
 
 		$DrawPoint = isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
-		(!is_array($Points)) AND $Points = [$Points];
-		
+
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		$AxisID = $Data["Series"][$SerieName]["Axis"];
 		$AxisMode = $Data["Axis"][$AxisID]["Display"];
@@ -284,38 +283,37 @@ class pBubble
 			"B" => $Data["Series"][$SerieName]["Color"]["B"],
 			"Alpha" => $Data["Series"][$SerieName]["Color"]["Alpha"]
 		];
-		foreach($Points as $Key => $Point) {
-			$Value = $Data["Series"][$SerieName]["Data"][$Point];
-			$Pos = $this->myPicture->scaleComputeYSingle($Value, ["AxisID" => $AxisID]);
-			if (isset($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Point])) {
-				$Abscissa = $Data["Series"][$Data["Abscissa"]]["Data"][$Point] . " : ";
-			} else {
-				$Abscissa = "";
-			}
 
-			$Value = $this->myPicture->scaleFormat($Value, $AxisMode, $AxisFormat, $AxisUnit);
-			$Weight = $Data["Series"][$SerieWeightName]["Data"][$Point];
-			$Description = (isset($Data["Series"][$SerieName]["Description"])) ? $Data["Series"][$SerieName]["Description"] : "No description";
-			$Series = ["Format" => $Color,"Caption" => $Abscissa . $Value . " / " . $Weight];
-			
-			if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-				$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
-				$X = floor($X + $Point * $XStep);
-				$Y = floor($Pos);
-			} else {
-				$YStep = ($XDivs == 0) ? 0 :($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
-				$X = floor($Pos);
-				$Y = floor($Y + $Point * $YStep);
-			}
-
-			if ($DrawPoint == LABEL_POINT_CIRCLE) {
-				$this->myPicture->drawFilledCircle($X, $Y, 3, ["R" => 255,"G" => 255,"B" => 255,"BorderR" => 0,"BorderG" => 0,"BorderB" => 0]);
-			} elseif ($DrawPoint == LABEL_POINT_BOX) {
-				$this->myPicture->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["R" => 255,"G" => 255,"B" => 255,"BorderR" => 0,	"BorderG" => 0,	"BorderB" => 0]);
-			}
-
-			$this->myPicture->drawLabelBox($X, $Y - 3, $Description, $Series, $Format);
+		$Value = $Data["Series"][$SerieName]["Data"][$Point];
+		$Pos = $this->myPicture->scaleComputeYSingle($Value, ["AxisID" => $AxisID]);
+		if (isset($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Point])) {
+			$Abscissa = $Data["Series"][$Data["Abscissa"]]["Data"][$Point] . " : ";
+		} else {
+			$Abscissa = "";
 		}
+
+		$Value = $this->myPicture->scaleFormat($Value, $AxisMode, $AxisFormat, $AxisUnit);
+		$Weight = $Data["Series"][$SerieWeightName]["Data"][$Point];
+		$Description = (isset($Data["Series"][$SerieName]["Description"])) ? $Data["Series"][$SerieName]["Description"] : "No description";
+		$Series = ["Format" => $Color,"Caption" => $Abscissa . $Value . " / " . $Weight];
+		
+		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
+			$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+			$X = floor($X + $Point * $XStep);
+			$Y = floor($Pos);
+		} else {
+			$YStep = ($XDivs == 0) ? 0 :($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+			$X = floor($Pos);
+			$Y = floor($Y + $Point * $YStep);
+		}
+
+		if ($DrawPoint == LABEL_POINT_CIRCLE) {
+			$this->myPicture->drawFilledCircle($X, $Y, 3, ["R" => 255,"G" => 255,"B" => 255,"BorderR" => 0,"BorderG" => 0,"BorderB" => 0]);
+		} elseif ($DrawPoint == LABEL_POINT_BOX) {
+			$this->myPicture->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["R" => 255,"G" => 255,"B" => 255,"BorderR" => 0,	"BorderG" => 0,	"BorderB" => 0]);
+		}
+
+		$this->myPicture->drawLabelBox($X, $Y - 3, $Description, $Series, $Format);
 	}
 }
 

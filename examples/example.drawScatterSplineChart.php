@@ -16,8 +16,8 @@ $Points_2 = [];
 $Points_3 = [];
 for ($i=0;$i<=360;$i=$i+90)
 { 
-	$Points_1[] = rand(1,3)+$i;
-	$Points_2[] = rand(1,3)+$i;
+	$Points_1[] = rand(1,30);
+	$Points_2[] = rand(1,30);
 	$Points_3[] = $i;
 }
 $myPicture->myData->addPoints($Points_1,"Probe 1"); 

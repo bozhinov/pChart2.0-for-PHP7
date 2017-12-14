@@ -121,7 +121,7 @@ class pCache implements pCacheInterface
 		if ($ID != NULL) {
 			/* If it's not in the cache DB, go away */
 			if (!$this->isInCache()) {
-				return 0;
+				throw pException::CacheException(" ID ".$ID ." not in cache!");
 			}
 		}
 

@@ -82,7 +82,7 @@ class pData
 	}
 
 	/* Add a single point or an array to the given serie */
-	function addPoints(array $Values, $SerieName = "Serie1")
+	function addPoints(array $Values, string $SerieName = "Serie1")
 	{
 		if (!isset($this->Data["Series"][$SerieName])){
 			$this->initialise($SerieName);
@@ -222,14 +222,14 @@ class pData
 	}
 
 	/* Set the display mode of the  X Axis */
-	function setXAxisDisplay($Mode, $Format = NULL)
+	function setXAxisDisplay(int $Mode, string $Format = NULL)
 	{
 		$this->Data["XAxisDisplay"] = $Mode;
 		$this->Data["XAxisFormat"] = $Format;
 	}
 
 	/* Set the unit that will be displayed on the X axis */
-	function setXAxisUnit($Unit)
+	function setXAxisUnit(string $Unit)
 	{
 		$this->Data["XAxisUnit"] = $Unit;
 	}
@@ -267,14 +267,15 @@ class pData
 		return 0;
 	}
 
-
 	/* Create a scatter group specifying X and Y data series */
-	function setScatterSerie($SerieX, $SerieY, $ID = 0)
+	function setScatterSerie(string $SerieX, string $SerieY, int $ID = 0)
 	{
 		if (isset($this->Data["Series"][$SerieX]) && isset($this->Data["Series"][$SerieY])) {
 			$this->initScatterSerie($ID);
 			$this->Data["ScatterSeries"][$ID]["X"] = $SerieX;
 			$this->Data["ScatterSeries"][$ID]["Y"] = $SerieY;
+		} else {
+			throw pException::InvalidInput("Invalid scatter serie names");
 		}
 	}
 
@@ -749,14 +750,14 @@ class pData
 		];
 	}
 
-	function normalize($NormalizationFactor = 100, $UnitChange = NULL, $Round = 1)
+	function normalize(int $NormalizationFactor = 100, string $UnitChange = "", int $Round = 1)
 	{
 		$Abscissa = $this->Data["Abscissa"];
 		$SelectedSeries = [];
 		$MaxVal = 0;
 		foreach($this->Data["Axis"] as $AxisID => $Axis) {
 			
-			($UnitChange != NULL) AND $this->Data["Axis"][$AxisID]["Unit"] = $UnitChange;
+			($UnitChange != "") AND $this->Data["Axis"][$AxisID]["Unit"] = $UnitChange;
 		
 			foreach($this->Data["Series"] as $SerieName => $Serie) {
 				if ($Serie["Axis"] == $AxisID && $Serie["isDrawable"] == TRUE && $SerieName != $Abscissa) {

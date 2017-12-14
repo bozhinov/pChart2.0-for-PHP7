@@ -16,21 +16,23 @@ $myPicture = new pDraw(700,230);
 /* Populate the pData object */
 $BaseTs = mktime(0,0,0,12,25,2011);
 $LastIn = 0; 
-$LastInArr = []; 
 $LastOut = 0;
+$LastInArr = []; 
 $LastOutArr = [];
+$BaseTsArr = [];
 
 for($i=0; $i<= 1440; $i++)
 {
 	$LastIn  = abs($LastIn + rand(-1000,+1000));
-	$LastInArr[] = $LastIn;
 	$LastOut = abs($LastOut + rand(-1000,+1000));
+	$LastInArr[]  = $LastIn;
 	$LastOutArr[] = $LastOut;
+	$BaseTsArr[]  = $BaseTs+$i*60;
 }
 
 $myPicture->myData->addPoints($LastInArr,"Inbound");
 $myPicture->myData->addPoints($LastOutArr,"Outbound");
-$myPicture->myData->addPoints([$BaseTs+$i*60],"TimeStamp");
+$myPicture->myData->addPoints($BaseTsArr,"TimeStamp");
 
 $myPicture->myData->setAxisName(0,"Bandwidth");
 $myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_TRAFFIC);
