@@ -113,11 +113,11 @@ class pSpring
 	function linkProperties(int $FromNode, int $ToNode, array $Settings)
 	{
 		if (!isset($this->Data[$FromNode])) {
-			throw pException:: SprintInvalidInputException("No data FromNode!");
+			throw pException::SpringInvalidInputException("No data FromNode!");
 		}
 
 		if (!isset($this->Data[$ToNode])) {
-			throw pException:: SprintInvalidInputException("No data ToNode!");
+			throw pException::SpringInvalidInputException("No data ToNode!");
 		}
 
 		$R = 0;
@@ -156,7 +156,7 @@ class pSpring
 	{
 		/* if the node already exists, ignore */
 		if (isset($this->Data[$NodeID])) {
-			throw pException:: SprintInvalidInputException("Node ".$NodeID." is invalid!");
+			throw pException::SpringInvalidInputException("Node ".$NodeID." is invalid!");
 		}
 
 		$Name = "Node " . strval($NodeID);
@@ -211,7 +211,7 @@ class pSpring
 		];
 
 		if (!is_array($Connections)){
-			throw pException::SprintIvalidConnectionsException();
+			throw pException::SpringIvalidConnectionsException();
 		}
 		
 		foreach($Connections as $Key => $Value){
@@ -258,7 +258,7 @@ class pSpring
 	}
 
 	/* Get the median linked nodes position */
-	function getMedianOffset($Key, $X, $Y)
+	function getMedianOffset(int $Key, int $X, int $Y)
 	{
 		$Cpt = 1;
 		if (isset($this->Data[$Key]["Connections"])) {
@@ -275,10 +275,10 @@ class pSpring
 	}
 
 	/* Return the ID of the attached partner with the biggest weight */
-	function getBiggestPartner($Key)
+	function getBiggestPartner(int $Key)
 	{
 		if (!isset($this->Data[$Key]["Connections"])) {
-			return "";
+			throw pException::SpringInvalidInputException("Connection ID is invalid");
 		}
 
 		$MaxWeight = 0;

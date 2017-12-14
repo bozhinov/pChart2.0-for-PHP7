@@ -26,7 +26,7 @@ class pImageMap extends pDraw
 	var $ImageMapBuffer = [];
 	
 	/* Class constructor */
-	function __construct($XSize, $YSize, $TransparentBackground = FALSE, $Name = "pChart", $StorageMode = IMAGE_MAP_STORAGE_SESSION, $UniqueID = "imageMap", $StorageFolder = "temp")
+	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE, $Name = "pChart", int $StorageMode = IMAGE_MAP_STORAGE_SESSION, string $UniqueID = "imageMap", string $StorageFolder = "temp")
 	{
 		/* Initialize the image map methods */
 		$this->ImageMapIndex = $Name;
@@ -71,7 +71,7 @@ class pImageMap extends pDraw
 	}
 	
 	/* Add a zone to the image map */
-	function addToImageMap($Type, $Plots, $Color = NULL, $Title = NULL, $Message = NULL, $HTMLEncode = FALSE)
+	function addToImageMap(string $Type, string $Plots, string $Color = "", string $Title = "", string $Message = "", bool $HTMLEncode = FALSE)
 	{
 		/* Encode the characters in the imagemap in HTML standards */
 		$Title = str_replace("&#8364;", "\u20AC", $Title); # Momchil TODO TEST THIS
@@ -88,7 +88,7 @@ class pImageMap extends pDraw
 	}
 
 	/* Remove VOID values from an imagemap custom values array */
-	function stripFromSerie($SerieName, array $Values)
+	function stripFromSerie(string $SerieName, array $Values)
 	{
 		if (!isset($this->myData->Data["Series"][$SerieName])) {
 			throw pException::ImageMapInvalidSerieName($SerieName);
@@ -105,7 +105,7 @@ class pImageMap extends pDraw
 	}
 	
 	/* Replace the title of one image map series */
-	function replaceImageMapTitle($OldTitle, $NewTitle)
+	function replaceImageMapTitle(string $OldTitle, $NewTitle)
 	{
 				
 		if (is_array($NewTitle)) {
@@ -128,7 +128,7 @@ class pImageMap extends pDraw
 	}
 
 	/* Replace the values of the image map contents */
-	function replaceImageMapValues($Title, array $Values)
+	function replaceImageMapValues(string $Title, array $Values)
 	{
 
 		$Values = $this->stripFromSerie($Title, $Values);

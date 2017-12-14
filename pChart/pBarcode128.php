@@ -23,7 +23,7 @@ class pBarcode128
 	var $myPicture;
 	
 	/* Class creator */
-	function __construct($pChartObject, $dbFileName = "")
+	function __construct($pChartObject, string $dbFileName = "")
 	{
 		
 		if (!($pChartObject instanceof pDraw)){
@@ -52,7 +52,7 @@ class pBarcode128
 	}
 
 	/* Return the projected size of a barcode */
-	function getProjection($TextString, array $Format = [])
+	function getProjection(string $TextString, array $Format = [])
 	{
 		$Angle = 0;
 		$ShowLegend = FALSE;
@@ -82,7 +82,7 @@ class pBarcode128
 		}
 	}
 
-	function encode128($Value)
+	function encode128(string $Value)
 	{
 		$Result = "11010010000";
 		$CRC = 104;
@@ -103,9 +103,8 @@ class pBarcode128
 	}
 
 	/* Create the encoded string */
-	function draw($Value, $X, $Y, array $Format = [])
+	function draw(string $Value, int $X, int $Y, array $Format = [])
 	{
-		
 		$R = 0;
 		$G = 0;
 		$B = 0;

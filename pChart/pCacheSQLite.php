@@ -120,7 +120,7 @@ class pCacheSQLite implements pCacheInterface
 	}
 
 	/* Remove object older than the specified TS */
-	function removeOlderThan($Expiry)
+	function removeOlderThan(int $Expiry)
 	{
 		$this->dbRemoval(["Expiry" => $Expiry]);
 	}
@@ -132,7 +132,7 @@ class pCacheSQLite implements pCacheInterface
 	}
 
 	/* Remove with specified criteria */
-	function dbRemoval($Settings)
+	function dbRemoval(array $Settings)
 	{
 		$ID = isset($Settings["Name"]) ? $Settings["Name"] : "";
 		$Expiry = isset($Settings["Expiry"]) ? $Settings["Expiry"] : -(24 * 60 * 60);
@@ -163,7 +163,7 @@ class pCacheSQLite implements pCacheInterface
 
 	}
 
-	function isInCache($Verbose = FALSE, $UpdateHitsCount = FALSE)
+	function isInCache(bool $Verbose = FALSE, bool $UpdateHitsCount = FALSE)
 	{
 		try{ 
 			$q = $this->DbSQLite->prepare("SELECT Id,hits,data FROM cache WHERE Id= :Id;");
@@ -191,7 +191,7 @@ class pCacheSQLite implements pCacheInterface
 	}
 
 	/* Automatic output method based on the calling interface */
-	function autoOutput($Destination = "output.png")
+	function autoOutput(string $Destination = "output.png")
 	{
 		if (php_sapi_name() == "cli") {
 			$this->saveFromCache($Destination);
@@ -213,7 +213,7 @@ class pCacheSQLite implements pCacheInterface
 		}
 	}
 
-	function saveFromCache($Destination)
+	function saveFromCache(string $Destination)
 	{
 		/* Get the raw picture from the cache */
 		$Picture = $this->getFromCache();

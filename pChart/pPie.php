@@ -41,7 +41,7 @@ class pPie
 	}
 
 	/* Draw a pie chart */
-	function draw2DPie($X, $Y, array $Format = [])
+	function draw2DPie(int $X, int $Y, array $Format = [])
 	{
 		$Precision = 0;
 		$SecondPass = TRUE;
@@ -321,7 +321,7 @@ class pPie
 	}
 
 	/* Draw a 3D pie chart */
-	function draw3DPie($X, $Y, array $Format = [])
+	function draw3DPie(int $X, int $Y, array $Format = [])
 	{
 		$Precision = 0;
 		$SecondPass = TRUE;
@@ -750,7 +750,7 @@ class pPie
 		$this->myPicture->Shadow = $RestoreShadow;
 	}
 	
-	function drawPieLegend($X, $Y, array $Format = [])
+	function drawPieLegend(int $X, int $Y, array $Format = [])
 	{
 		$FontName = $this->myPicture->FontName;
 		$FontSize = $this->myPicture->FontSize;
@@ -860,7 +860,7 @@ class pPie
 	}
 
 	/* Set the color of the specified slice */
-	function setSliceColor($SliceID, array $Format = [])
+	function setSliceColor(int $SliceID, array $Format = [])
 	{
 		$this->myPicture->myData->Palette[$SliceID] = [
 			"R" => isset($Format["R"]) ? $Format["R"] : 0,
@@ -971,7 +971,7 @@ class pPie
 	}
 
 	/* Draw a ring chart */
-	function draw2DRing($X, $Y, array $Format = [])
+	function draw2DRing(int $X, int $Y, array $Format = [])
 	{	
 		$Precision = 0;
 		$Border = FALSE;
@@ -1214,7 +1214,7 @@ class pPie
 		$this->myPicture->Shadow = $RestoreShadow;
 	}
 
-	function draw3DRing($X, $Y, array $Format = [])
+	function draw3DRing(int $X, int $Y, array $Format = [])
 	{
 		$Precision = 0;
 		$Border = FALSE;
@@ -1624,7 +1624,7 @@ class pPie
 	}
 
 	/* Reverse an array */
-	function arrayReverse($Plots) # Not really reversing it
+	function arrayReverse(array $Plots) # Not really reversing it
 	{
 		$Result = [];
 		for ($i = count($Plots) - 1; $i >= 0; $i = $i - 2) {
@@ -1636,7 +1636,7 @@ class pPie
 	}
 
 	/* Remove unused series & values */
-	function clean0Values($Data, $Palette, $DataSerie, $AbscissaSerie)
+	function clean0Values(array $Data, array $Palette, string $DataSerie, string $AbscissaSerie)
 	{
 		$NewPalette = [];
 		$NewData = [];

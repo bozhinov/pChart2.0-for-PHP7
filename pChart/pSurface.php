@@ -42,7 +42,7 @@ class pSurface
 	}
 
 	/* Define the grid size and initialize the 2D matrix */
-	function setGrid($XSize = 10, $YSize = 10)
+	function setGrid(int $XSize = 10, int $YSize = 10)
 	{
 		for ($X = 0; $X <= $XSize; $X++) {
 			for ($Y = 0; $Y <= $YSize; $Y++) {
@@ -150,7 +150,7 @@ class pSurface
 	}
 
 	/* Draw the area around the specified Threshold */
-	function drawContour($Threshold, array $Format = [])
+	function drawContour(int $Threshold, array $Format = [])
 	{
 		$R = 0;
 		$G = 0;

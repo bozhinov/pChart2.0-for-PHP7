@@ -23,7 +23,7 @@ class pBarcode39
 	var $MOD43;
 	
 	/* Class creator */
-	function __construct($pChartObject, $EnableMOD43 = FALSE, $dbFileName = "")
+	function __construct($pChartObject, bool $EnableMOD43 = FALSE, string $dbFileName = "")
 	{
 		
 		if (!($pChartObject instanceof pDraw)){
@@ -51,7 +51,7 @@ class pBarcode39
 	}
 
 	/* Return the projected size of a barcode */
-	function getProjection($TextString, array $Format = [])
+	function getProjection(string $TextString, array $Format = [])
 	{
 		$Angle = 0;
 		$ShowLegend = FALSE;
@@ -82,7 +82,7 @@ class pBarcode39
 	}
 	
 	/* Create the encoded string */
-	function encode39($Value)
+	function encode39(string $Value)
 	{
 		$Result = "100101101101" . "0";
 		$TextString = "";
@@ -109,7 +109,7 @@ class pBarcode39
 	}
 
 	/* Create the encoded string */
-	function draw($Value, $X, $Y, array $Format = [])
+	function draw(string $Value, int $X, int $Y, array $Format = [])
 	{
 
 		$R = 0;
@@ -171,7 +171,7 @@ class pBarcode39
 		}
 	}
 
-	function checksum($string)
+	function checksum(string $string)
 	{
 		$checksum = 0;
 		$charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%';

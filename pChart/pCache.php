@@ -99,7 +99,7 @@ class pCache implements pCacheInterface
 	}
 
 	/* Remove object older than the specified TS */
-	function removeOlderThan($Expiry)
+	function removeOlderThan(int $Expiry)
 	{
 		$this->dbRemoval(["Expiry" => $Expiry]);
 	}
@@ -111,7 +111,7 @@ class pCache implements pCacheInterface
 	}
 
 	/* Remove with specified criteria */
-	function dbRemoval($Settings)
+	function dbRemoval(array $Settings)
 	{
 		$ID = isset($Settings["Name"]) ? $Settings["Name"] : NULL;
 		$Expiry = isset($Settings["Expiry"]) ? $Settings["Expiry"] : -(24 * 60 * 60);
@@ -148,7 +148,7 @@ class pCache implements pCacheInterface
 		file_put_contents($this->CacheIndex, $TempIndex, LOCK_EX);
 	}
 
-	function isInCache($Verbose = FALSE, $UpdateHitsCount = FALSE)
+	function isInCache(bool $Verbose = FALSE, bool $UpdateHitsCount = FALSE)
 	{
 
 		$IndexContent = file($this->CacheIndex, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -192,7 +192,7 @@ class pCache implements pCacheInterface
 	}
 
 	/* Automatic output method based on the calling interface */
-	function autoOutput($Destination = "output.png")
+	function autoOutput(string $Destination = "output.png")
 	{
 		if (php_sapi_name() == "cli") {
 			$this->saveFromCache($Destination);
@@ -214,7 +214,7 @@ class pCache implements pCacheInterface
 		echo $Picture;
 	}
 
-	function saveFromCache($Destination)
+	function saveFromCache(string $Destination)
 	{
 		/* Get the raw picture from the cache */
 		$Picture = $this->getFromCache();

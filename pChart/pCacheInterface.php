@@ -16,35 +16,28 @@ namespace pChart;
 
 Interface pCacheInterface
 {
-	/* Class creator */
+
 	function __construct(array $Settings = [], string $uniqueId);
 	
-	/* For when you need to work with multiple cached images */
 	function changeID(string $uniqueId);
 
-	/* Flush the cache contents */
 	function flush();
 
-	/* Write the generated picture to the cache */
 	function writeToCache($pChartObject);
 
-	/* Remove object older than the specified TS */
-	function removeOlderThan($Expiry);
+	function removeOlderThan(int $Expiry);
 
-	/* Remove an object from the cache */
 	function remove();
 
-	/* Remove with specified criteria */
-	function dbRemoval($Settings);
+	function dbRemoval(array $Settings);
 
-	function isInCache($Verbose = FALSE, $UpdateHitsCount = FALSE);
+	function isInCache(bool $Verbose = FALSE, bool $UpdateHitsCount = FALSE);
 
-	/* Automatic output method based on the calling interface */
-	function autoOutput($Destination = "output.png");
+	function autoOutput(string $Destination = "output.png");
 
 	function strokeFromCache();
 
-	function saveFromCache($Destination);
+	function saveFromCache(string $Destination);
 
 	function getFromCache();
 }

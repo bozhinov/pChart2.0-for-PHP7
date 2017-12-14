@@ -82,9 +82,14 @@ class pException extends \Exception
 		return new static('pStock: No DataSerie');
 	}
 
-	public static function SprintIvalidConnectionsException()
+	public static function SpringIvalidConnectionsException()
 	{
 		return new static('pSpring: Connections needs to be an array');
+	}
+	
+	public static function SpringInvalidInputException($text)
+	{
+		return new static(sprintf('pSprint: %s', $text));
 	}
 	
 	public static function ZoneChartInvalidInputException($text)
