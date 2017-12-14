@@ -48,7 +48,7 @@ $Palette = [
 $myPicture->drawLegend(570,215,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
 
 /* Write a label over the chart */
-$myPicture->writeLabel("Hits",array(1,4));
+$myPicture->writeLabel(["Hits"],[1,4]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawBarChart.vertical.png");

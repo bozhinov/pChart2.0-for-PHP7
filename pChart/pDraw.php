@@ -3945,7 +3945,7 @@ class pDraw
 	}
 
 	/* Write labels */
-	function writeLabel($SeriesName, $Indexes, array $Format = [])
+	function writeLabel(array $SeriesName, array $Indexes, array $Format = [])
 	{
 		$OverrideTitle = NULL;
 		$ForceLabels = NULL;
@@ -3962,9 +3962,6 @@ class pDraw
 		
 		$Data = $this->myData->Data;
 		list($XMargin, $XDivs) = $this->scaleGetXSettings();
-
-		$Indexes = $this->convertToArray($Indexes);
-		$SeriesName = $this->convertToArray($SeriesName);
 		
 		if ($ForceLabels != NULL) {
 			$ForceLabels = $this->convertToArray($ForceLabels);
@@ -3972,6 +3969,7 @@ class pDraw
 
 		foreach($Indexes as $Key => $Index) {
 			$Series = [];
+			$Index = intval($Index);
 			if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 				if ($XDivs == 0) {
 					$XStep = ($this->GraphAreaX2 - $this->GraphAreaX1) / 4;
@@ -3987,6 +3985,8 @@ class pDraw
 				$MinY = $this->GraphAreaY2;
 				
 				foreach($SeriesName as $iKey => $SerieName) {
+					
+					$SerieName = strval($SerieName);
 					
 					if (isset($Data["Series"][$SerieName]["Data"][$Index])) {
 						$AxisID = $Data["Series"][$SerieName]["Axis"];

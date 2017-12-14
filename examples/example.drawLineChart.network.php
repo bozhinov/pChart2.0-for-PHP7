@@ -70,7 +70,7 @@ $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10)
 (new pCharts($myPicture))->drawLineChart();
 
 /* Write a label over the chart */ 
-$myPicture->writeLabel("Inbound",720);
+$myPicture->writeLabel(["Inbound"],[720]);
 
 /* Write the chart legend */
 $myPicture->drawLegend(580,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));

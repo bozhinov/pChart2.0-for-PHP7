@@ -72,7 +72,7 @@ $myPicture->drawText(150,35,"Probability of heart disease",["FontSize"=>20,"Alig
 
 /* Write a label over the chart */
 $LabelSettings = array("DrawVerticalLine"=>TRUE,"TitleMode"=>LABEL_TITLE_BACKGROUND,"TitleR"=>255,"TitleG"=>255,"TitleB"=>255);
-$myPicture->writeLabel("Statistical probability",35,$LabelSettings);
+$myPicture->writeLabel(["Statistical probability"],[35],$LabelSettings);
 
 /* Create the pIndicator object */ 
 $Indicator = new pIndicator($myPicture);

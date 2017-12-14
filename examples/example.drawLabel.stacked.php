@@ -36,7 +36,7 @@ $myPicture->drawScale(array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSu
 $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
 
 /* Write a label */
-$myPicture->writeLabel(array("Frontend #1","Frontend #2","Frontend #3"),1,["DrawVerticalLine"=>TRUE]); 
+$myPicture->writeLabel(["Frontend #1","Frontend #2","Frontend #3"],[1],["DrawVerticalLine"=>TRUE]); 
 
 /* Write the chart legend */ 
 $myPicture->drawLegend(480,210,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);

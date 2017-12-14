@@ -67,7 +67,7 @@ $myPicture->writeLabel(["Probe 2"],[1,3],$LabelSettings);
 
 /* Write a label over the chart */
 $LabelSettings = array("NoTitle"=>TRUE,"GradientEndR"=>255,"GradientEndG"=>200,"GradientEndB"=>200);
-$myPicture->writeLabel(["Probe 1"],5,$LabelSettings);
+$myPicture->writeLabel(["Probe 1"],[5],$LabelSettings);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawLabel.caption.png");
