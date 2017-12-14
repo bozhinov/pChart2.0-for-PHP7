@@ -91,17 +91,12 @@ define("NONE", 31);
 define("AUTO", 690000);
 define("OUT_OF_SIGHT", -10000000000000);
 
-/* Last generated chart layout */
-define("CHART_LAST_LAYOUT_REGULAR", 680011);
-define("CHART_LAST_LAYOUT_STACKED", 680012);
-
 class pDraw
 {
 
 	var $aColorCache = [];
 	/* Last generated chart info */
-	var $LastChartLayout = CHART_LAST_LAYOUT_REGULAR; // Last layout : regular or stacked
-	
+	var $isChartLayoutStacked = FALSE; // Last layout : regular or stacked
 	/* Image settings, size, quality, .. */
 	var $XSize = 0; // Width of the picture
 	var $YSize = 0; // Height of the picture
@@ -4032,7 +4027,7 @@ class pDraw
 							$Caption = $this->scaleFormat($Value, $AxisMode, $AxisFormat, $AxisUnit);
 						}
 
-						if ($this->LastChartLayout == CHART_LAST_LAYOUT_STACKED) {
+						if ($this->isChartLayoutStacked == TRUE) {
 							$LookFor = ($Value >= 0) ? "+" : "-";
 							$Value = 0;
 							foreach($Data["Series"] as $Name => $SerieLookup) {
@@ -4138,7 +4133,7 @@ class pDraw
 							$Value = "NaN";
 						}
 
-						if ($this->LastChartLayout == CHART_LAST_LAYOUT_STACKED) {
+						if ($this->isChartLayoutStacked == TRUE) {
 							$LookFor = ($Value >= 0) ? "+" : "-";
 							$Value = 0;
 

@@ -70,7 +70,7 @@ class pCharts {
 		/* Override defaults */
 		extract($Format);
 		
-		$this->myPicture->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
+		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -213,7 +213,7 @@ class pCharts {
 		/* Override defaults */
 		extract($Format);
 		
-		$this->myPicture->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
+		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -367,7 +367,7 @@ class pCharts {
 		/* Override defaults */
 		extract($Format);
 		
-		$this->myPicture->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
+		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -574,7 +574,7 @@ class pCharts {
 		/* Override defaults */
 		extract($Format);
 		
-		$this->myPicture->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
+		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -726,7 +726,7 @@ class pCharts {
 		/* Override defaults */
 		extract($Format);
 		
-		$this->myPicture->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
+		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		if (!isset($Data["Series"][$SerieA]["Data"]) || !isset($Data["Series"][$SerieB]["Data"])) {
 			return 0;
@@ -834,7 +834,7 @@ class pCharts {
 		/* Override defaults */
 		extract($Format);
 		
-		$this->myPicture->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
+		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -1064,7 +1064,7 @@ class pCharts {
 		/* Override defaults */
 		extract($Format);
 		
-		$this->myPicture->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
+		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -1272,7 +1272,7 @@ class pCharts {
 		/* Override defaults */
 		extract($Format);
 		
-		$this->myPicture->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
+		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -1508,7 +1508,7 @@ class pCharts {
 		/* Override defaults */
 		extract($Format);
 		
-		$this->myPicture->LastChartLayout = CHART_LAST_LAYOUT_REGULAR;
+		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
 		if (count($OverrideColors) > 0) {
@@ -1843,7 +1843,7 @@ class pCharts {
 		/* Override defaults */
 		extract($Format);
 		
-		$this->myPicture->LastChartLayout = CHART_LAST_LAYOUT_STACKED;
+		$this->myPicture->isChartLayoutStacked = TRUE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
 		$RestoreShadow = $this->myPicture->Shadow;
@@ -2085,7 +2085,7 @@ class pCharts {
 		/* Override defaults */
 		extract($Format);
 		
-		$this->myPicture->LastChartLayout = CHART_LAST_LAYOUT_STACKED;
+		$this->myPicture->isChartLayoutStacked = TRUE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
 		$RestoreShadow = $this->myPicture->Shadow;
