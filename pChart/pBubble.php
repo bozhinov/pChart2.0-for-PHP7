@@ -145,7 +145,7 @@ class pBubble
 		}
 
 		$this->resetSeriesColors();
-		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
+		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($DataSeries as $Key => $SerieName) {
 			$AxisID = $Data["Series"][$SerieName]["Axis"];
 			$Mode = $Data["Axis"][$AxisID]["Display"];
@@ -270,7 +270,7 @@ class pBubble
 		$DrawPoint = isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
 		(!is_array($Points)) AND $Points = [$Points];
 		
-		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
+		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		$AxisID = $Data["Series"][$SerieName]["Axis"];
 		$AxisMode = $Data["Axis"][$AxisID]["Display"];
 		$AxisFormat = $Data["Axis"][$AxisID]["Format"];

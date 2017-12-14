@@ -179,20 +179,6 @@ class pDraw
 		$this->__construct($XSize, $YSize, $this->TransparentBackground);
 	}
 		
-	/* Returns the number of drawable series */
-	function countDrawableSeries()
-	{
-		$Results = 0;
-		$Data = $this->myData->Data;
-		foreach($Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
-				$Results++;
-			}
-		}
-
-		return $Results;
-	}
-
 	/* Fix box coordinates */
 	function fixBoxCoordinates($Xa, $Ya, $Xb, $Yb)
 	{
@@ -2779,7 +2765,6 @@ class pDraw
 
 	function isValidLabel($Value, $LastValue, $LabelingMethod, $ID, $LabelSkip)
 	{
-		
 		$ret = TRUE;
 		
 		switch(TRUE){
@@ -2796,7 +2781,6 @@ class pDraw
 		}
 
 		return $ret;
-		
 	}
 
 	/* Compute the scale, check for the best visual factors */
@@ -2972,7 +2956,7 @@ class pDraw
 		
 		$Data = $this->myData->Data;
 		$AbscissaMargin = $this->myData->getAbscissaMargin();
-		$XScale = $this->scaleGetXSettings();
+		$XScale = $this->myData->scaleGetXSettings();
 		
 		$CaptionSettings = [
 			"DrawBox" => $DrawBox,
@@ -3097,8 +3081,8 @@ class pDraw
 		($DisableShadowOnArea && $this->Shadow) AND $this->Shadow = FALSE;
 		($BorderAlpha > 100) AND $BorderAlpha = 100;
 		$Data = $this->myData->Data;
-		$XScale = $this->scaleGetXSettings();
-		$AbscissaMargin =  $this->myData->getAbscissaMargin();
+		$XScale = $this->myData->scaleGetXSettings();
+		#$AbscissaMargin =  $this->myData->getAbscissaMargin(); # UNUSED
 		
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 			$XStep = (($this->GraphAreaX2 - $this->GraphAreaX1) - $XScale[0] * 2) / $XScale[1];
@@ -3397,16 +3381,6 @@ class pDraw
 		
 		$this->Shadow = $RestoreShadow;
 	}
-
-	function scaleGetXSettings()
-	{
-		$Data = $this->myData->Data;
-		foreach($Data["Axis"] as $AxisID => $Settings) {
-			if ($Settings["Identity"] == AXIS_X) {
-				return [$Settings["Margin"],$Settings["Rows"]];
-			}
-		}
-	}
 	
 	function scaleComputeYSingle($Value, array $Option)
 	{
@@ -3608,7 +3582,7 @@ class pDraw
 			"BoxBorderAlpha" => $BoxBorderAlpha
 		];
 		
-		list($XMargin, $XDivs) = $this->scaleGetXSettings();
+		list($XMargin, $XDivs) = $this->myData->scaleGetXSettings();
 		$Data = $this->myData->Data;
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"] && !isset($ExcludedSeries[$SerieName])) {
@@ -3814,7 +3788,7 @@ class pDraw
 		$OverrideB = isset($Format["B"]) ? $Format["B"] : VOID;
 		$OverrideAlpha = isset($Format["Alpha"]) ? $Format["Alpha"] : VOID;
 		$Data = $this->myData->Data;
-		list($XMargin, $XDivs) = $this->scaleGetXSettings();
+		list($XMargin, $XDivs) = $this->myData->scaleGetXSettings();
 		
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			
@@ -3962,7 +3936,7 @@ class pDraw
 		extract($Format);
 		
 		$Data = $this->myData->Data;
-		list($XMargin, $XDivs) = $this->scaleGetXSettings();
+		list($XMargin, $XDivs) = $this->myData->scaleGetXSettings();
 		
 		foreach($Indexes as $Key => $Index) {
 			$Series = [];

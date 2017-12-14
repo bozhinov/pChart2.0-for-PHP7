@@ -101,7 +101,7 @@ class pStock
 
 		$BoxOffset = $BoxWidth / 2;
 
-		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
+		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		if (!isset($Data["Series"][$SerieOpen]) || !isset($Data["Series"][$SerieClose]) || !isset($Data["Series"][$SerieMin]) || !isset($Data["Series"][$SerieMax])) {
 			throw pException::StockMissingSerieException();
 		}

@@ -846,6 +846,19 @@ class pData
 		
 		}
 	}
+	
+	/* Returns the number of drawable series */
+	function countDrawableSeries()
+	{
+		$Results = 0;
+		foreach($this->Data["Series"] as $SerieName => $Serie) {
+			if ($Serie["isDrawable"] == TRUE && $SerieName != $this->Data["Abscissa"]) {
+				$Results++;
+			}
+		}
+
+		return $Results;
+	}
 
 	/* Create a dataset based on a formula */
 	function createFunctionSerie(string $SerieName, string $Formula = "", array $Options = [])
@@ -915,6 +928,15 @@ class pData
 		}
 	}
 
+	function scaleGetXSettings()
+	{
+		foreach($this->Data["Axis"] as $AxisID => $Settings) {
+			if ($Settings["Identity"] == AXIS_X) {
+				return [$Settings["Margin"],$Settings["Rows"]];
+			}
+		}
+	}
+		
 	/* Return the data & configuration of the series */
 	function getData()
 	{
