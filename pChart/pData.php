@@ -400,7 +400,7 @@ class pData
 			$SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
 			return (array_sum($SerieData) / count($SerieData));
 		} else {
-			return NULL;
+			throw pException::InvalidInput("Invalid serie ID");
 		}
 	}
 
@@ -416,7 +416,7 @@ class pData
 
 			return (pow($Seriesum, 1 / count($SerieData)));
 		} else {
-			return NULL;
+			throw pException::InvalidInput("Invalid serie ID");
 		}
 	}
 
@@ -432,7 +432,7 @@ class pData
 
 			return (count($SerieData) / $Seriesum);
 		} else {
-			return NULL;
+			throw pException::InvalidInput("Invalid serie ID");
 		}
 	}
 
@@ -449,7 +449,7 @@ class pData
 
 			return sqrt($DeviationSum / count($SerieData));
 		} else {
-			return NULL;
+			throw pException::InvalidInput("Invalid serie ID");
 		}
 	}
 
@@ -461,7 +461,7 @@ class pData
 			$StandardDeviation = $this->getStandardDeviation($Serie);
 			return ($StandardDeviation != 0) ? ($StandardDeviation / $Average) : NULL;
 		} else {
-			return NULL;
+			throw pException::InvalidInput("Invalid serie ID");
 		}
 	}
 
@@ -474,7 +474,7 @@ class pData
 			$SerieCenter = floor(count($SerieData) / 2);
 			return (isset($SerieData[$SerieCenter])) ? $SerieData[$SerieCenter] : NULL;
 		} else {
-			return NULL;
+			throw pException::InvalidInput("Invalid serie ID");
 		}
 	}
 
@@ -482,7 +482,7 @@ class pData
 	function getSeriePercentile($Serie = "Serie1", $Percentil = 95)
 	{
 		if (!isset($this->Data["Series"][$Serie]["Data"])) {
-			return NULL;
+			throw pException::InvalidInput("Invalid serie ID");
 		}
 
 		$Values = count($this->Data["Series"][$Serie]["Data"]) - 1;
@@ -634,7 +634,7 @@ class pData
 	function getSeriePalette($Serie)
 	{
 		if (!isset($this->Data["Series"][$Serie])) {
-			return NULL;
+			throw pException::InvalidInput("Invalid serie ID");
 		} else {
 			return [
 				"R" => $this->Data["Series"][$Serie]["Color"]["R"],
@@ -720,7 +720,7 @@ class pData
 	function initScatterSerie($ID)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
-			return 0;
+			throw pException::InvalidInput("Invalid scatter serie ID");
 		}
 
 		$this->Data["ScatterSeries"][$ID] = [
@@ -849,7 +849,7 @@ class pData
 	{
 		
 		if ($Formula == "") {
-			return 0;
+			throw pException::InvalidInput("Serie formula can not be empty");
 		}
 		
 		$MinX = isset($Options["MinX"]) ? $Options["MinX"] : -10;

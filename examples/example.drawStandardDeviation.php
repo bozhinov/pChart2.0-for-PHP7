@@ -64,12 +64,12 @@ $myPicture->drawThresholdArea($Average - $StandardDeviation, $Average + $Standar
 $myPicture->setShadow(TRUE);
 
 /* Draw the serie average */
-$myPicture->drawThreshold($Average,["WriteCaption"=>TRUE,"Caption"=>"Average value","AxisID"=>0]);
+$myPicture->drawThreshold([$Average],["WriteCaption"=>TRUE,"Caption"=>"Average value","AxisID"=>0]);
 
 /* Draw the standard deviation boundaries */
 $ThresholdSettings = array("WriteCaption"=>TRUE,"CaptionAlign"=>CAPTION_RIGHT_BOTTOM ,"Caption"=>"SD","AxisID"=>0,"R"=>0,"G"=>0,"B"=>0);
-$myPicture->drawThreshold($Average+$StandardDeviation,$ThresholdSettings);
-$myPicture->drawThreshold($Average-$StandardDeviation,$ThresholdSettings);
+$myPicture->drawThreshold([$Average+$StandardDeviation],$ThresholdSettings);
+$myPicture->drawThreshold([$Average-$StandardDeviation],$ThresholdSettings);
 
 /* Write the coefficient of variation */
 $CoefficientOfVariation = round($myPicture->myData->getCoefficientOfVariation("Probe 1"),1);

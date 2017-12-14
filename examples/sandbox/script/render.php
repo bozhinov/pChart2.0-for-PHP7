@@ -766,13 +766,13 @@ if ($t_enabled == "true"){
 	}
 
 	if ($Mode == "Render"){
-		$myPicture->drawThreshold($t_value,$Config);
+		$myPicture->drawThreshold([$t_value],$Config);
 	} else {
 		$Config["Caption"] = chr(34).$t_caption.chr(34);
 
 		echo "\r\n";
 		echo dumpArray("Config",$Config);
-		echo '$myPicture->drawThreshold('.$t_value.',$Config);'."\r\n";
+		echo '$myPicture->drawThreshold(['.$t_value.'],$Config);'."\r\n";
 	}
 }
 

@@ -57,7 +57,7 @@ $BoundsSettings = array("MaxDisplayR"=>237,"MaxDisplayG"=>23,"MaxDisplayB"=>48,"
 $myPicture->writeBounds(BOUND_BOTH,$BoundsSettings);
 
 /* Write the 0 line */
-$myPicture->drawThreshold(0,["WriteCaption"=>TRUE]);
+$myPicture->drawThreshold([0],["WriteCaption"=>TRUE]);
 
 /* Write the chart legend */
 $myPicture->setFontProperties(["R"=>255,"G"=>255,"B"=>255]);

@@ -21,7 +21,7 @@ $myPicture->myData->setAbscissaName("Samples");
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
+$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
@@ -41,10 +41,11 @@ $myPicture->drawScale($scaleSettings);
 $myPicture->Antialias = TRUE;
 
 /* Draw the line of best fit */
-$myPicture->drawThreshold($myPicture->myData->getSerieMedian("Probe 1"),array("WriteCaption"=>TRUE,"Caption"=>"Median value"));
+$Median = $myPicture->myData->getSerieMedian("Probe 1");
+$myPicture->drawThreshold([$Median],["WriteCaption"=>TRUE,"Caption"=>"Median value"]);
 
 /* Turn on shadows */
-$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 
 /* Draw the line chart */
 (new pCharts($myPicture))->drawPlotChart();

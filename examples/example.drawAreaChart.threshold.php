@@ -22,8 +22,8 @@ $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,array("StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>100));
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,array("StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>20));
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>100]);
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,["StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>20]);
 
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
@@ -72,8 +72,8 @@ $pCharts->drawLineChart(["ForceColor"=>TRUE,"ForceR"=>0,"ForceG"=>0,"ForceB"=>0]
 $pCharts->drawPlotChart(["PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-255,"BorderAlpha"=>80]);
 
 /* Write the thresholds */
-$myPicture->drawThreshold(5,["WriteCaption"=>TRUE,"Caption"=>"Warn Zone","Alpha"=>70,"Ticks"=>2,"R"=>0,"G"=>0,"B"=>255]);
-$myPicture->drawThreshold(10,["WriteCaption"=>TRUE,"Caption"=>"Error Zone","Alpha"=>70,"Ticks"=>2,"R"=>0,"G"=>0,"B"=>255]);
+$myPicture->drawThreshold([5],["WriteCaption"=>TRUE,"Caption"=>"Warn Zone","Alpha"=>70,"Ticks"=>2,"R"=>0,"G"=>0,"B"=>255]);
+$myPicture->drawThreshold([10],["WriteCaption"=>TRUE,"Caption"=>"Error Zone","Alpha"=>70,"Ticks"=>2,"R"=>0,"G"=>0,"B"=>255]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawAreaChart.threshold.png");

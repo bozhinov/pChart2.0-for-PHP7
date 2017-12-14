@@ -22,7 +22,7 @@ $myPicture->myData->setAbscissaName("Samples");
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
+$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
@@ -42,7 +42,7 @@ $myPicture->drawScale($scaleSettings);
 $myPicture->Antialias = TRUE;
 
 /* Turn on shadows */
-$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 
 /* Draw the line chart */
 (new pCharts($myPicture))->drawPlotChart();
@@ -50,8 +50,8 @@ $myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10)
 /* Draw the standard mean and the harmonic one */
 $Mean         = $myPicture->myData->getSerieAverage("Probe 1");
 $HarmonicMean = $myPicture->myData->getHarmonicMean("Probe 1");
-$myPicture->drawThreshold($HarmonicMean,array("WriteCaption"=>TRUE,"Caption"=>"Harmonic mean"));
-$myPicture->drawThreshold($Mean,array("WriteCaption"=>TRUE,"Caption"=>"Mean","CaptionAlign"=>CAPTION_RIGHT_BOTTOM));
+$myPicture->drawThreshold([$HarmonicMean],["WriteCaption"=>TRUE,"Caption"=>"Harmonic mean"]);
+$myPicture->drawThreshold([$Mean],["WriteCaption"=>TRUE,"Caption"=>"Mean","CaptionAlign"=>CAPTION_RIGHT_BOTTOM]);
 
 /* Write the computed values */
 $myPicture->drawText(550,20,"Arithmetic average : ".round($Mean,2));

@@ -51,7 +51,7 @@ $pCharts = new pCharts($myPicture);
 $pCharts->drawStackedAreaChart(["DisplayValues"=>TRUE,"DisplayColor"=>DISPLAY_AUTO,"DrawPlot"=>TRUE,"DrawLine"=>TRUE,"LineSurrounding"=>-250]);
 
 /* Draw one static threshold */ 
-$myPicture->drawThreshold(0,["Alpha"=>70,"Ticks"=>1,"NoMargin"=>TRUE]);
+$myPicture->drawThreshold([0],["Alpha"=>70,"Ticks"=>1,"NoMargin"=>TRUE]);
 
 /* Draw the scale and the 2nd chart */
 $myPicture->setGraphArea(500,60,670,190);
@@ -62,7 +62,7 @@ $myPicture->setShadow(FALSE);
 $pCharts->drawStackedAreaChart(["Surrounding"=>10]);
 
 /* Draw one static threshold */ 
-$myPicture->drawThreshold(0,["Alpha"=>70,"Ticks"=>1,"NoMargin"=>TRUE]);
+$myPicture->drawThreshold([0],["Alpha"=>70,"Ticks"=>1,"NoMargin"=>TRUE]);
 
 /* Write the chart legend */
 $myPicture->drawLegend(510,205,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);

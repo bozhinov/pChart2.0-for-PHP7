@@ -54,8 +54,8 @@ $myPicture->Antialias = TRUE;
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 
 /* Draw the 0 threshold */
-$myPicture->drawThreshold(0,["Alpha"=>70,"Ticks"=>1]);
-$myPicture->drawXThreshold(10,["Alpha"=>70,"Ticks"=>1]);
+$myPicture->drawThreshold([0],["Alpha"=>70,"Ticks"=>1]);
+$myPicture->drawXThreshold([10],["Alpha"=>70,"Ticks"=>1]);
 
 /* Create the pCharts object */
 $pCharts = new pCharts($myPicture);

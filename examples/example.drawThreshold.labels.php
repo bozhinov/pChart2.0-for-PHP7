@@ -34,12 +34,12 @@ $myPicture->setFontProperties(array("R"=>255,"G"=>255,"B"=>255,"FontName"=>"pCha
 $myPicture->drawScale(array("AxisR"=>255,"AxisG"=>255,"AxisB"=>255,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE));
 
 /* Write two thresholds over the chart */
-$myPicture->drawThreshold(10,array("WriteCaption"=>TRUE,"Caption"=>"Agreed SLA","NoMargin"=>TRUE));
-$myPicture->drawThreshold(15,array("WriteCaption"=>TRUE,"Caption"=>"Best effort","NoMargin"=>TRUE));
+$myPicture->drawThreshold([10],["WriteCaption"=>TRUE,"Caption"=>"Agreed SLA","NoMargin"=>TRUE]);
+$myPicture->drawThreshold([15],["WriteCaption"=>TRUE,"Caption"=>"Best effort","NoMargin"=>TRUE]);
 
 /* Draw one static X threshold area */
-$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30));
-$myPicture->drawXThresholdArea(3,5,array("AreaName"=>"Service closed","R"=>226,"G"=>194,"B"=>54,"Alpha"=>40));
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30]);
+$myPicture->drawXThresholdArea(3,5,["AreaName"=>"Service closed","R"=>226,"G"=>194,"B"=>54,"Alpha"=>40]);
 $myPicture->setShadow(FALSE);
 
 /* Create the pCharts object */

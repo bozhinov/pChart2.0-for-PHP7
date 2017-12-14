@@ -39,8 +39,8 @@ $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 
 /* Draw some thresholds */
 $myPicture->setShadow(FALSE);
-$myPicture->drawThreshold(-40,["WriteCaption"=>TRUE,"R"=>0,"G"=>0,"B"=>0,"Ticks"=>4]);
-$myPicture->drawThreshold(28,["WriteCaption"=>TRUE,"R"=>0,"G"=>0,"B"=>0,"Ticks"=>4]);
+$myPicture->drawThreshold([-40],["WriteCaption"=>TRUE,"R"=>0,"G"=>0,"B"=>0,"Ticks"=>4]);
+$myPicture->drawThreshold([28],["WriteCaption"=>TRUE,"R"=>0,"G"=>0,"B"=>0,"Ticks"=>4]);
 
 /* Draw the chart */
 (new pCharts($myPicture))->drawStackedBarChart(["Rounded"=>TRUE,"DisplayValues"=>TRUE,"DisplayColor"=>DISPLAY_AUTO,"DisplaySize"=>6,"BorderR"=>255,"BorderG"=>255,"BorderB"=>255]);
