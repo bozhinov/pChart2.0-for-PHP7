@@ -31,9 +31,9 @@ Interface pCacheInterface
 
 	function dbRemoval(array $Settings);
 
-	function isInCache(bool $Verbose = FALSE, bool $UpdateHitsCount = FALSE);
+	function isInCache(bool $Verbose, bool $UpdateHitsCount);
 
-	function autoOutput(string $Destination = "output.png");
+	function autoOutput(string $Destination);
 
 	function strokeFromCache();
 

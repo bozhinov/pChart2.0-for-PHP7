@@ -192,7 +192,7 @@ class pCharts {
 	}
 
 	/* Draw a spline chart */
-	function drawSplineChart($Format = [])
+	function drawSplineChart(array $Format = [])
 	{
 		
 		$BreakVoid = TRUE;
