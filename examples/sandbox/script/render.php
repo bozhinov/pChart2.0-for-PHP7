@@ -230,7 +230,7 @@ if ($d_serie1_enabled == "true"){
 	$Values = explode("!",substr($data0,1));
 	foreach($Values as $key => $Value){
 		($Value == "") AND $Value = "VOID"; 
-		$myPicture->myData->addPoints($Value,"Serie1");
+		$myPicture->myData->addPoints([$Value],"Serie1");
 	}
 
 	$myPicture->myData->setSerieDescription("Serie1",$d_serie1_name);
@@ -260,7 +260,7 @@ if ($d_serie2_enabled == "true"){
 	$Values = explode("!",substr($data1,1));
 	foreach($Values as $key => $Value){
 		($Value == "") AND $Value = "VOID"; 
-		$myPicture->myData->addPoints($Value,"Serie2");
+		$myPicture->myData->addPoints([$Value],"Serie2");
 	}
 
 	$myPicture->myData->setSerieDescription("Serie2",$d_serie2_name);
@@ -290,7 +290,7 @@ if ($d_serie3_enabled == "true"){
 	$Values = explode("!",substr($data2,1));
 	foreach($Values as $key => $Value){
 		($Value == "") AND $Value = "VOID"; 
-		$myPicture->myData->addPoints($Value,"Serie3"); 
+		$myPicture->myData->addPoints([$Value],"Serie3"); 
 	}
 
 	$myPicture->myData->setSerieDescription("Serie3",$d_serie3_name);
@@ -320,7 +320,7 @@ if ($d_absissa_enabled == "true")
 	$Values  = explode("!",substr($absissa,1));
 	foreach($Values as $key => $Value){
 		($Value == "") AND $Value = VOID;
-		$myPicture->myData->addPoints($Value,"Absissa"); 
+		$myPicture->myData->addPoints([$Value],"Absissa"); 
 	}
 
 	$myPicture->myData->setAbscissa("Absissa");
