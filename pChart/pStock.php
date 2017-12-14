@@ -124,7 +124,7 @@ class pStock
 		$Mode = $Data["Axis"][$AxisID]["Display"];
 		$Format = $Data["Axis"][$AxisID]["Format"];
 		$Unit = $Data["Axis"][$AxisID]["Unit"];
-		$YZero = $this->myPicture->scaleComputeY(0, ["AxisID" => $AxisID]);
+		$YZero = $this->myPicture->scaleComputeYSingle(0, ["AxisID" => $AxisID]);
 		$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
 		$X = $this->myPicture->GraphAreaX1 + $XMargin;
 		$Y = $this->myPicture->GraphAreaY1 + $XMargin;

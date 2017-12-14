@@ -110,7 +110,6 @@ class pCharts {
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
-				$PosArray = $this->myPicture->convertToArray($PosArray);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
@@ -242,7 +241,6 @@ class pCharts {
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
-				$PosArray = $this->myPicture->convertToArray($PosArray);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($XDivs == 0) {
@@ -388,14 +386,13 @@ class pCharts {
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
-				$PosArray = $this->myPicture->convertToArray($PosArray);
 				if ($AroundZero) {
-					$YZero = $this->myPicture->scaleComputeY(0, ["AxisID" => $Serie["Axis"]]);
+					$YZero = $this->myPicture->scaleComputeYSingle(0, ["AxisID" => $Serie["Axis"]]);
 				}
 
 				foreach($Threshold as $Key => $Params) {
-					$Threshold[$Key]["MinX"] = $this->myPicture->scaleComputeY($Params["Min"], ["AxisID" => $Serie["Axis"]]);
-					$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeY($Params["Max"], ["AxisID" => $Serie["Axis"]]);
+					$Threshold[$Key]["MinX"] = $this->myPicture->scaleComputeYSingle($Params["Min"], ["AxisID" => $Serie["Axis"]]);
+					$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeYSingle($Params["Max"], ["AxisID" => $Serie["Axis"]]);
 				}
 
 				$this->myData->Data["Series"][$SerieName]["XOffset"] = 0;
@@ -610,7 +607,6 @@ class pCharts {
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
-				$PosArray = $this->myPicture->convertToArray($PosArray);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($XDivs == 0) {
@@ -729,19 +725,17 @@ class pCharts {
 		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		if (!isset($Data["Series"][$SerieA]["Data"]) || !isset($Data["Series"][$SerieB]["Data"])) {
-			return 0;
+			throw pException::ZoneChartInvalidInputException("Invalid data #1");
 		}
 
-		$SerieAData = $Data["Series"][$SerieA]["Data"];
-		$SerieBData = $Data["Series"][$SerieB]["Data"];
 		list($XMargin, $XDivs) = $this->myPicture->scaleGetXSettings();
-		$Mode = $Data["Axis"][$AxisID]["Display"];
-		$Format = $Data["Axis"][$AxisID]["Format"];
-		$Unit = $Data["Axis"][$AxisID]["Unit"];
-		$PosArrayA = $this->myPicture->scaleComputeY($SerieAData, ["AxisID" => $AxisID]);
-		$PosArrayB = $this->myPicture->scaleComputeY($SerieBData, ["AxisID" => $AxisID]);
+		# $Mode = $Data["Axis"][$AxisID]["Display"]; # UNUSED
+		# $Format = $Data["Axis"][$AxisID]["Format"]; # UNUSED
+		# $Unit = $Data["Axis"][$AxisID]["Unit"]; # UNUSED
+		$PosArrayA = $this->myPicture->scaleComputeY($Data["Series"][$SerieA]["Data"], ["AxisID" => $AxisID]);
+		$PosArrayB = $this->myPicture->scaleComputeY($Data["Series"][$SerieB]["Data"], ["AxisID" => $AxisID]);
 		if (count($PosArrayA) != count($PosArrayB)) {
-			return 0;
+			throw pException::ZoneChartInvalidInputException("Invalid data #2");
 		}
 
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
@@ -865,7 +859,6 @@ class pCharts {
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
-				$PosArray = $this->myPicture->convertToArray($PosArray);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
@@ -1088,8 +1081,7 @@ class pCharts {
 				$Color = ["R" => $R,"G" => $G,"B" => $B];
 				$Color["Alpha"] = ($ForceTransparency != NULL) ? $ForceTransparency : $Alpha;
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"],["AxisID" => $Serie["Axis"]]);
-				$PosArray = $this->myPicture->convertToArray($PosArray);
-				$YZero = $this->myPicture->scaleComputeY(0, ["AxisID" => $Serie["Axis"]]);
+				$YZero = $this->myPicture->scaleComputeYSingle(0, ["AxisID" => $Serie["Axis"]]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($YZero > $this->myPicture->GraphAreaY2 - 1) {
@@ -1293,11 +1285,10 @@ class pCharts {
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
-				$PosArray = $this->myPicture->convertToArray($PosArray);
-				$YZero = $this->myPicture->scaleComputeY(0, ["AxisID" => $Serie["Axis"]]);
+				$YZero = $this->myPicture->scaleComputeYSingle(0, ["AxisID" => $Serie["Axis"]]);
 				foreach($Threshold as $Key => $Params) {
-					$Threshold[$Key]["MinX"] = $this->myPicture->scaleComputeY($Params["Min"], ["AxisID" => $Serie["Axis"]]);
-					$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeY($Params["Max"], ["AxisID" => $Serie["Axis"]]);
+					$Threshold[$Key]["MinX"] = $this->myPicture->scaleComputeYSingle($Params["Min"], ["AxisID" => $Serie["Axis"]]);
+					$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeYSingle($Params["Max"], ["AxisID" => $Serie["Axis"]]);
 				}
 
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
@@ -1550,16 +1541,10 @@ class pCharts {
 				$Mode = $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
-				$SerieDescription =  (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
-
+				$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
-				$PosArray = $this->myPicture->convertToArray($PosArray);
-				
-				if ($Floating0Value != NULL) {
-					$YZero = $this->myPicture->scaleComputeY($Floating0Value, ["AxisID" => $Serie["Axis"]]);
-				} else {
-					$YZero = $this->myPicture->scaleComputeY([], ["AxisID" => $Serie["Axis"]]);
-				}
+				$Floating0Value = ($Floating0Value != NULL) ? $Floating0Value : 0;
+				$YZero = $this->myPicture->scaleComputeYSingle($Floating0Value, ["AxisID" => $Serie["Axis"]]);
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
@@ -1586,7 +1571,7 @@ class pCharts {
 					foreach($PosArray as $Key => $Y2) {
 						if ($Floating0Serie != NULL) {
 							$Value = (isset($Data["Series"][$Floating0Serie]["Data"][$Key])) ? $Data["Series"][$Floating0Serie]["Data"][$Key] : 0;
-							$YZero = $this->myPicture->scaleComputeY($Value, ["AxisID" => $Serie["Axis"]]);
+							$YZero = $this->myPicture->scaleComputeYSingle($Value, ["AxisID" => $Serie["Axis"]]);
 							($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
 							($YZero < $this->myPicture->GraphAreaY1 + 1) AND $YZero = $this->myPicture->GraphAreaY1 + 1;
 							$Y1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
@@ -1705,7 +1690,7 @@ class pCharts {
 					foreach($PosArray as $Key => $X2) {
 						if ($Floating0Serie != NULL) {
 							$Value = (isset($Data["Series"][$Floating0Serie]["Data"][$Key])) ? $Data["Series"][$Floating0Serie]["Data"][$Key] : 0;
-							$YZero = $this->myPicture->scaleComputeY($Value, ["AxisID" => $Serie["Axis"]]);
+							$YZero = $this->myPicture->scaleComputeYSingle($Value, ["AxisID" => $Serie["Axis"]]);
 							($YZero < $this->myPicture->GraphAreaX1 + 1) AND $YZero = $this->myPicture->GraphAreaX1 + 1;
 							($YZero > $this->myPicture->GraphAreaX2 - 1) AND $YZero = $this->myPicture->GraphAreaX2 - 1;
 							$X1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
@@ -1881,8 +1866,7 @@ class pCharts {
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]], TRUE);
-				$PosArray = $this->myPicture->convertToArray($PosArray);
-				$YZero = $this->myPicture->scaleComputeY(0, ["AxisID" => $Serie["Axis"]]);
+				$YZero = $this->myPicture->scaleComputeYSingle(0, ["AxisID" => $Serie["Axis"]]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				$Color = ["TransCorner" => TRUE,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"BorderR" => $BorderR,"BorderG" => $BorderG,"BorderB" => $BorderB];
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
@@ -2143,8 +2127,7 @@ class pCharts {
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]], TRUE);
-				$PosArray = $this->myPicture->convertToArray($PosArray);
-				$YZero = $this->myPicture->scaleComputeY([1], ["AxisID" => $Serie["Axis"]]); // MOMCHIL FIX FOR THE INCIDENTS BY TYPE
+				$YZero = $this->myPicture->scaleComputeYSingle(1, ["AxisID" => $Serie["Axis"]]); // MOMCHIL FIX FOR THE INCIDENTS BY TYPE
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					($YZero < $this->myPicture->GraphAreaY1 + 1) AND $YZero = $this->myPicture->GraphAreaY1 + 1;
@@ -2611,7 +2594,6 @@ class pCharts {
 				$Weight = $Serie["Weight"];
 				$AxisID = $Serie["Axis"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
-				$PosArray = $this->myPicture->convertToArray($PosArray);
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($Caption) {
 						if ($CaptionLine) {

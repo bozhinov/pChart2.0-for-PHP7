@@ -3237,7 +3237,7 @@ class pDraw
 			($Caption == NULL) AND $Caption = $Value;
 
 			if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-				$YPos = $this->scaleComputeY($Value, ["AxisID" => $AxisID]);
+				$YPos = $this->scaleComputeYSingle($Value, ["AxisID" => $AxisID]);
 				if ($YPos >= $this->GraphAreaY1 + $Data["Axis"][$AxisID]["Margin"] && $YPos <= $this->GraphAreaY2 - $Data["Axis"][$AxisID]["Margin"]) {
 					$X1 = $this->GraphAreaX1 + $AbscissaMargin;
 					$X2 = $this->GraphAreaX2 - $AbscissaMargin;
@@ -3262,7 +3262,7 @@ class pDraw
 			}
 
 			if ($Data["Orientation"] == SCALE_POS_TOPBOTTOM) {
-				$XPos = $this->scaleComputeY($Value,["AxisID" => $AxisID]);
+				$XPos = $this->scaleComputeYSingle($Value,["AxisID" => $AxisID]);
 				if ($XPos >= $this->GraphAreaX1 + $Data["Axis"][$AxisID]["Margin"] && $XPos <= $this->GraphAreaX2 - $Data["Axis"][$AxisID]["Margin"]) {
 					$Y1 = $this->GraphAreaY1 + $AbscissaMargin;
 					$Y2 = $this->GraphAreaY2 - $AbscissaMargin;
@@ -3336,8 +3336,8 @@ class pDraw
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 			$XPos1 = $this->GraphAreaX1 + $AbscissaMargin;
 			$XPos2 = $this->GraphAreaX2 - $AbscissaMargin;
-			$YPos1 = $this->scaleComputeY($Value1, ["AxisID" => $AxisID]);
-			$YPos2 = $this->scaleComputeY($Value2, ["AxisID" => $AxisID]);
+			$YPos1 = $this->scaleComputeYSingle($Value1, ["AxisID" => $AxisID]);
+			$YPos2 = $this->scaleComputeYSingle($Value2, ["AxisID" => $AxisID]);
 			
 			($YPos1 < $this->GraphAreaY1 + $margin) AND $YPos1 = $this->GraphAreaY1 + $margin;
 			($YPos1 > $this->GraphAreaY2 - $margin) AND $YPos1 = $this->GraphAreaY2 - $margin;
@@ -3364,8 +3364,8 @@ class pDraw
 			
 			$YPos1 = $this->GraphAreaY1 + $AbscissaMargin;
 			$YPos2 = $this->GraphAreaY2 - $AbscissaMargin;
-			$XPos1 = $this->scaleComputeY($Value1, ["AxisID" => $AxisID]);
-			$XPos2 = $this->scaleComputeY($Value2, ["AxisID" => $AxisID]);
+			$XPos1 = $this->scaleComputeYSingle($Value1, ["AxisID" => $AxisID]);
+			$XPos2 = $this->scaleComputeYSingle($Value2, ["AxisID" => $AxisID]);
 			
 			($XPos1 < $this->GraphAreaX1 + $margin) AND $XPos1 = $this->GraphAreaX1 + $margin;
 			($XPos1 > $this->GraphAreaX2 - $margin) AND $XPos1 = $this->GraphAreaX2 - $margin;
@@ -3407,19 +3407,51 @@ class pDraw
 			}
 		}
 	}
-
-	function scaleComputeY($Values, array $Option, $ReturnOnly0Height = FALSE) // $values is often set to 0 not [0]
+	
+	function scaleComputeYSingle($Value, array $Option)
 	{
-		$Values = $this->convertToArray($Values);
+		if ($Value == VOID) {
+			return VOID;
+		}
+		$AxisID = isset($Option["AxisID"]) ? $Option["AxisID"] : 0;
+		$SerieName = isset($Option["SerieName"]) ? $Option["SerieName"] : NULL;
+		$Data = $this->myData->Data;
+		if (!isset($Data["Axis"][$AxisID])) {
+			throw pException::InvalidInput("Invalid serie ID");
+		}
+
+		if ($SerieName != NULL) {
+			$AxisID = $Data["Series"][$SerieName]["Axis"];
+		}
+
+		$Result = 0;
+		$Scale = $Data["Axis"][$AxisID]["ScaleMax"] - $Data["Axis"][$AxisID]["ScaleMin"];
+		
+		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
+			$Height = ($this->GraphAreaY2 - $this->GraphAreaY1) - $Data["Axis"][$AxisID]["Margin"] * 2;	
+			$Step = $Height / $Scale;
+			$Result = $this->GraphAreaY2 - $Data["Axis"][$AxisID]["Margin"] - ($Step * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));				
+		} else {
+			$Width = ($this->GraphAreaX2 - $this->GraphAreaX1) - $Data["Axis"][$AxisID]["Margin"] * 2;
+			$Step = $Width / $Scale;
+			$Result = $this->GraphAreaX1 + $Data["Axis"][$AxisID]["Margin"] + ($Step * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));
+		}		
+
+		return $Result;
+	}
+
+	function scaleComputeY(array $Values, array $Option, $ReturnOnly0Height = FALSE): array
+	{
+
 		if (count($Values) == 0) { // Momchil
-			$Values = [0];
+			DIE("WTF");
 		}
 
 		$AxisID = isset($Option["AxisID"]) ? $Option["AxisID"] : 0;
 		$SerieName = isset($Option["SerieName"]) ? $Option["SerieName"] : NULL;
 		$Data = $this->myData->Data;
 		if (!isset($Data["Axis"][$AxisID])) {
-			return -1;
+			throw pException::InvalidInput("Invalid serie ID");
 		}
 
 		if ($SerieName != NULL) {
@@ -3440,9 +3472,6 @@ class pDraw
 					if ($Value == VOID) {
 						$Result[] = VOID;
 					} else {
-						#if (!is_numeric($Value)) { // Momchil: No idea how that will affect the overall image
-						#	$Value = 1;			   // Second update: that one should be sorted now
-						#}		
 						$Result[] = $this->GraphAreaY2 - $Data["Axis"][$AxisID]["Margin"] - ($Step * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));
 					}
 				}
@@ -3461,9 +3490,6 @@ class pDraw
 					if ($Value == VOID) {
 						$Result[] = VOID;
 					} else {
-						#if (!is_numeric($Value)) {
-						#	$Value = 1;
-						#} 
 						$Result[] = $this->GraphAreaX1 + $Data["Axis"][$AxisID]["Margin"] + ($Step * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));
 					}
 				}
@@ -3808,7 +3834,6 @@ class pDraw
 				$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks];
 				$AxisID = $Serie["Axis"];
 				$PosArray = $this->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
-				$PosArray = $this->convertToArray($PosArray);
 				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					
@@ -3924,7 +3949,7 @@ class pDraw
 	function writeLabel(array $SeriesName, array $Indexes, array $Format = [])
 	{
 		$OverrideTitle = NULL;
-		$ForceLabels = NULL;
+		$ForceLabels = [];
 		$DrawPoint = LABEL_POINT_BOX;
 		$DrawVerticalLine = FALSE;
 		$VerticalLineR = 0;
@@ -3939,10 +3964,6 @@ class pDraw
 		$Data = $this->myData->Data;
 		list($XMargin, $XDivs) = $this->scaleGetXSettings();
 		
-		if ($ForceLabels != NULL) {
-			$ForceLabels = $this->convertToArray($ForceLabels);
-		}
-
 		foreach($Indexes as $Key => $Index) {
 			$Series = [];
 			$Index = intval($Index);
@@ -3997,7 +4018,7 @@ class pDraw
 						$Value = $Data["Series"][$SerieName]["Data"][$Index];
 						($Value == VOID) AND $Value = "NaN";
 						
-						if ($ForceLabels != NULL) {
+						if (count($ForceLabels) == 0) {
 							$Caption = isset($ForceLabels[$Key]) ? $ForceLabels[$Key] : "Not set";
 						} else {
 							$Caption = $this->scaleFormat($Value, $AxisMode, $AxisFormat, $AxisUnit);
@@ -4026,7 +4047,7 @@ class pDraw
 						}
 
 						$X = floor($this->GraphAreaX1 + $XMargin + $Index * $XStep + $SerieOffset);
-						$Y = floor($this->scaleComputeY($Value, ["AxisID" => $AxisID]));
+						$Y = floor($this->scaleComputeYSingle($Value, ["AxisID" => $AxisID]));
 						if ($Y < $MinY) {
 							$MinY = $Y;
 						}
@@ -4099,7 +4120,7 @@ class pDraw
 						}
 
 						$Value = $Data["Series"][$SerieName]["Data"][$Index];
-						if ($ForceLabels != NULL) {
+						if (count($ForceLabels) == 0) {
 							$Caption = isset($ForceLabels[$Key]) ? $ForceLabels[$Key] : "Not set";
 						} else {
 							$Caption = $this->scaleFormat($Value, $AxisMode, $AxisFormat, $AxisUnit);
@@ -4132,7 +4153,7 @@ class pDraw
 							}
 						}
 
-						$X = floor($this->scaleComputeY($Value,["AxisID" => $AxisID]));
+						$X = floor($this->scaleComputeYSingle($Value,["AxisID" => $AxisID]));
 						$Y = floor($this->GraphAreaY1 + $XMargin + $Index * $XStep + $SerieOffset);
 						if ($X < $MinX) {
 							$MinX = $X;
@@ -4396,12 +4417,6 @@ class pDraw
 				$this->drawPolygon($Pos, $RGB);		
 				break;
 		}
-	}
-	
-	/* Convert a string to a single element array */
-	function convertToArray($Value)
-	{
-		return (is_array($Value)) ? $Value : [$Value];
 	}
 	
 	/*

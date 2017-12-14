@@ -192,12 +192,12 @@ class pBubble
 
 			foreach($Data["Series"][$SerieName]["Data"] as $iKey => $Point) {
 				$Weight = $Point + $Data["Series"][$WeightSeries[$Key]]["Data"][$iKey];
-				$PosArray = $this->myPicture->scaleComputeY($Point, ["AxisID" => $AxisID]);
-				$WeightArray = $this->myPicture->scaleComputeY($Weight, ["AxisID" => $AxisID]);
+				$Weight = $this->myPicture->scaleComputeYSingle($Weight, ["AxisID" => $AxisID]);
+				$Pos = $this->myPicture->scaleComputeYSingle($Point, ["AxisID" => $AxisID]);
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
-					$Y = floor($PosArray);
-					$CircleRadius = floor(abs($PosArray - $WeightArray) / 2);
+					$Y = floor($Pos);
+					$CircleRadius = floor(abs($Pos - $Weight) / 2);
 					if ($Shape == BUBBLE_SHAPE_SQUARE) {
 						if ($RecordImageMap) {
 							$this->myPicture->addToImageMap("RECT", floor($X - $CircleRadius) . "," . floor($Y - $CircleRadius) . "," . floor($X + $CircleRadius) . "," . floor($Y + $CircleRadius), $this->myPicture->toHTMLColor($Palette[$Key]["R"], $Palette[$Key]["G"], $Palette[$Key]["B"]), $SerieDescription, $Data["Series"][$WeightSeries[$Key]]["Data"][$iKey]);
@@ -226,8 +226,8 @@ class pBubble
 					
 				} elseif ($Data["Orientation"] == SCALE_POS_TOPBOTTOM) {
 					$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
-					$X = floor($PosArray);
-					$CircleRadius = floor(abs($PosArray - $WeightArray) / 2);
+					$X = floor($Pos);
+					$CircleRadius = floor(abs($Pos - $Weight) / 2);
 					if ($Shape == BUBBLE_SHAPE_SQUARE) {
 						if ($RecordImageMap) {
 							$this->myPicture->addToImageMap("RECT", floor($X - $CircleRadius) . "," . floor($Y - $CircleRadius) . "," . floor($X + $CircleRadius) . "," . floor($Y + $CircleRadius), $this->myPicture->toHTMLColor($Palette[$Key]["R"], $Palette[$Key]["G"], $Palette[$Key]["B"]), $SerieDescription, $Data["Series"][$WeightSeries[$Key]]["Data"][$iKey]);
@@ -286,7 +286,7 @@ class pBubble
 		];
 		foreach($Points as $Key => $Point) {
 			$Value = $Data["Series"][$SerieName]["Data"][$Point];
-			$PosArray = $this->myPicture->scaleComputeY($Value, ["AxisID" => $AxisID]);
+			$Pos = $this->myPicture->scaleComputeYSingle($Value, ["AxisID" => $AxisID]);
 			if (isset($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Point])) {
 				$Abscissa = $Data["Series"][$Data["Abscissa"]]["Data"][$Point] . " : ";
 			} else {
@@ -301,10 +301,10 @@ class pBubble
 			if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 				$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
 				$X = floor($X + $Point * $XStep);
-				$Y = floor($PosArray);
+				$Y = floor($Pos);
 			} else {
 				$YStep = ($XDivs == 0) ? 0 :($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
-				$X = floor($PosArray);
+				$X = floor($Pos);
 				$Y = floor($Y + $Point * $YStep);
 			}
 

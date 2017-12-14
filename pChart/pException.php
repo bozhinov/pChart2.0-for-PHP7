@@ -81,6 +81,11 @@ class pException extends \Exception
 	{
 		return new static('pSpring: Connections needs to be an array');
 	}
+	
+	public static function ZoneChartInvalidInputException()
+	{
+		return new static(sprintf('pCharts: %s', $text));
+	}
 }
 
 ?>

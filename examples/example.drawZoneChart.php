@@ -53,7 +53,8 @@ $pCharts = new pCharts($myPicture);
 
 /* Draw the line chart */
 $pCharts->drawZoneChart("Bounds 1","Bounds 2",["LineAlpha"=>100,"AreaR"=>230,"AreaG"=>230,"AreaB"=>230,"AreaAlpha"=>20,"LineTicks"=>3]);
-$pCharts->myPicture->myData->setSerieDrawable(["Bounds 1","Bounds 2"],FALSE);
+$pCharts->myPicture->myData->setSerieDrawable("Bounds 1",FALSE);
+$pCharts->myPicture->myData->setSerieDrawable("Bounds 2",FALSE);
 
 /* Draw the line chart */
 $pCharts->drawLineChart();
