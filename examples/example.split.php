@@ -48,6 +48,7 @@ $myPicture->setGraphArea(10,20,340,230);
 $SplitChart->drawSplitPath($Settings);
 /* Clear the existing points otherwise the next pSplit will add to these */
 $SplitChart->myPicture->myData->clearPoints("Score");
+$SplitChart->myPicture->myData->clearPoints("Labels");
 
 /* Populate the pData object again */
 $SplitChart->myPicture->myData->addPoints([30,20,15],"Score"); 
