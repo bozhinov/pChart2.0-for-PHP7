@@ -11,22 +11,24 @@ use pChart\pScatter;
 $myPicture = new pDraw(400,400);
 
 /* Create the X axis and the binded series */
-for ($i=0;$i<=360;$i=$i+10) {
-	$myPicture->myData->addPoints(cos(deg2rad($i))*20,"Probe 1"); 
+$Points_1 = [];
+$Points_2 = [];
+$Points_3 = [];
+for($i=0;$i<=360;$i=$i+10) 
+{
+	$Points_1[] = cos(deg2rad($i))*20;
+	$Points_2[] = sin(deg2rad($i))*20;
+	$Points_3[] = $i;
 }
-for ($i=0;$i<=360;$i=$i+10) {
-	$myPicture->myData->addPoints(sin(deg2rad($i))*20,"Probe 2"); 
-}
+$myPicture->myData->addPoints($Points_1,"Probe 1"); 
+$myPicture->myData->addPoints($Points_2,"Probe 2"); 
+$myPicture->myData->addPoints($Points_3,"Probe 3"); 
 
 $myPicture->myData->setAxisName(0,"Index");
 $myPicture->myData->setAxisXY(0,AXIS_X);
 $myPicture->myData->setAxisPosition(0,AXIS_POSITION_BOTTOM);
 
 /* Create the Y axis and the binded series */
-for ($i=0;$i<=360;$i=$i+10) { 
-	$myPicture->myData->addPoints($i,"Probe 3"); 
-}
-
 $myPicture->myData->setSerieOnAxis("Probe 3",1);
 $myPicture->myData->setAxisName(1,"Degree");
 $myPicture->myData->setAxisXY(1,AXIS_Y);
@@ -37,7 +39,7 @@ $myPicture->myData->setAxisPosition(1,AXIS_POSITION_RIGHT);
 $myPicture->myData->setScatterSerie("Probe 1","Probe 3",0);
 $myPicture->myData->setScatterSerieDescription(0,"This year");
 $myPicture->myData->setScatterSerieTicks(0,4);
-$myPicture->myData->setScatterSerieColor(0,array("R"=>0,"G"=>0,"B"=>0));
+$myPicture->myData->setScatterSerieColor(0,["R"=>0,"G"=>0,"B"=>0]);
 
 /* Create the 2nd scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 2","Probe 3",1);
@@ -50,14 +52,14 @@ $myPicture->drawFilledRectangle(0,0,400,400,$Settings);
 /* Overlay with a gradient */
 $Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
 $myPicture->drawGradientArea(0,0,400,400,DIRECTION_VERTICAL,$Settings);
-$myPicture->drawGradientArea(0,0,400,20,DIRECTION_VERTICAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>80));
+$myPicture->drawGradientArea(0,0,400,20,DIRECTION_VERTICAL,["StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>80]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawScatterLineChart() - Draw a scatter line chart",array("R"=>255,"G"=>255,"B"=>255));
+$myPicture->drawText(10,13,"drawScatterLineChart() - Draw a scatter line chart",["R"=>255,"G"=>255,"B"=>255]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,399,399,array("R"=>0,"G"=>0,"B"=>0));
+$myPicture->drawRectangle(0,0,399,399,["R"=>0,"G"=>0,"B"=>0]);
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
@@ -72,7 +74,7 @@ $myScatter = new pScatter($myPicture);
 $myScatter->drawScatterScale();
 
 /* Turn on shadow computing */
-$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 
 /* Draw a scatter plot chart */
 $myScatter->drawScatterLineChart();

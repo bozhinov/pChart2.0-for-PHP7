@@ -3747,14 +3747,10 @@ class pDraw
 	}
 
 	/* Validate a palette */
-	function validatePalette($Colors, $Surrounding = NULL)
+	function validatePalette(array $Colors, $Surrounding = NULL)
 	{
 		$Result = [];
 		
-		if (!is_array($Colors)) {
-			return ($this->getRandomColor());
-		}
-
 		foreach($Colors as $Key => $Values) {
 			
 			$Result[$Key]["R"] = (isset($Values["R"])) ? $Values["R"] : rand(0, 255);
@@ -3992,7 +3988,7 @@ class pDraw
 						$Value = $Data["Series"][$SerieName]["Data"][$Index];
 						($Value == VOID) AND $Value = "NaN";
 						
-						if (count($ForceLabels) == 0) {
+						if (count($ForceLabels) != 0) {
 							$Caption = isset($ForceLabels[$Key]) ? $ForceLabels[$Key] : "Not set";
 						} else {
 							$Caption = $this->scaleFormat($Value, $AxisMode, $AxisFormat, $AxisUnit);
@@ -4094,7 +4090,7 @@ class pDraw
 						}
 
 						$Value = $Data["Series"][$SerieName]["Data"][$Index];
-						if (count($ForceLabels) == 0) {
+						if (count($ForceLabels) != 0) {
 							$Caption = isset($ForceLabels[$Key]) ? $ForceLabels[$Key] : "Not set";
 						} else {
 							$Caption = $this->scaleFormat($Value, $AxisMode, $AxisFormat, $AxisUnit);

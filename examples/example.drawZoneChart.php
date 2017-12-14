@@ -11,13 +11,22 @@ use pChart\pCharts;
 $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */
+$Points_1 = [];
+$Points_2 = [];
+$Points_3 = [];
+$Points_4 = [];
 for($i=0; $i<=10;$i=$i+.2)
-{
-	$myPicture->myData->addPoints(log($i+1)*10,"Bounds 1");
-	$myPicture->myData->addPoints(log($i+3)*10+rand(0,2)-1,"Probe 1");
-	$myPicture->myData->addPoints(log($i+6)*10,"Bounds 2");
-	$myPicture->myData->addPoints($i*10,"Labels");
+{ 
+	$Points_1[] = log($i+1)*10;
+	$Points_2[] = log($i+3)*10+rand(0,2)-1;
+	$Points_3[] = log($i+6)*10;
+	$Points_4[] = $i*10;
 }
+$myPicture->myData->addPoints($Points_1,"Bounds 1"); 
+$myPicture->myData->addPoints($Points_2,"Probe 1"); 
+$myPicture->myData->addPoints($Points_3,"Bounds 2"); 
+$myPicture->myData->addPoints($Points_3,"Labels"); 
+
 $myPicture->myData->setAxisName(0,"Size (cm)");
 $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");

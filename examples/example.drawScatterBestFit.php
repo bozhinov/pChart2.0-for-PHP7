@@ -11,20 +11,24 @@ use pChart\pScatter;
 $myPicture = new pDraw(400,400);
 
 /* Create the X axis and the binded series */
-for ($i=0;$i<=360;$i=$i+10) { 
-	$myPicture->myData->addPoints(rand(1,20)*10+rand(0,$i),"Probe 1");
+$Points_1 = [];
+$Points_2 = [];
+$Points_3 = [];
+for($i=0;$i<=360;$i=$i+10) 
+{
+	$Points_1[] = rand(1,20)*10+rand(0,$i);
+	$Points_2[] = rand(1,2)*10+rand(0,$i);
+	$Points_3[] = $i;
 }
-for ($i=0;$i<=360;$i=$i+10) {
-	$myPicture->myData->addPoints(rand(1,2)*10+rand(0,$i),"Probe 2"); 
-}
+$myPicture->myData->addPoints($Points_1,"Probe 1"); 
+$myPicture->myData->addPoints($Points_2,"Probe 2"); 
+$myPicture->myData->addPoints($Points_3,"Probe 3"); 
+
 $myPicture->myData->setAxisName(0,"X-Index");
 $myPicture->myData->setAxisXY(0,AXIS_X);
 $myPicture->myData->setAxisPosition(0,AXIS_POSITION_TOP);
 
 /* Create the Y axis and the binded series */
-for ($i=0;$i<=360;$i=$i+10) { 
-	$myPicture->myData->addPoints($i,"Probe 3"); 
-}
 $myPicture->myData->setSerieOnAxis("Probe 3",1);
 $myPicture->myData->setAxisName(1,"Y-Index");
 $myPicture->myData->setAxisXY(1,AXIS_Y);

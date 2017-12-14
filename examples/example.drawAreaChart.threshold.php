@@ -13,7 +13,7 @@ $myPicture = new pDraw(700,230);
 /* Populate the pData object */ 
 for($i=0;$i<=30;$i++) 
 { 
-	$myPicture->myData->addPoints(rand(1,15),"Probe 1"); 
+	$myPicture->myData->addPoints([rand(1,15)],"Probe 1"); 
 }
 /* Momchil: setSerieTicks only sets it if Serie is defined. Probe 2 isn't
 $myPicture->myData->setSerieTicks("Probe 2",4);

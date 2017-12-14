@@ -11,13 +11,19 @@ use pChart\pCharts;
 $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */
-$myPicture->myData->setAxisName(0,"Strength");
+$Points_1 = [];
+$Points_2 = [];
 for($i=0;$i<=720;$i=$i+20)
 {
-	$myPicture->myData->addPoints(cos(deg2rad($i))*100,"Probe 1");
-	$myPicture->myData->addPoints(cos(deg2rad($i+90))*60,"Probe 2");
+	$Points_1[] = cos(deg2rad($i))*100;
+	$Points_2[] = cos(deg2rad($i+90))*60;
 }
 
+$myPicture->myData->addPoints($Points_1,"Probe 1");
+$myPicture->myData->addPoints($Points_2,"Probe 2");
+
+$myPicture->myData->setAxisName(0,"Strength");
+	
 $myPicture->drawGradientArea(0,0,700,304,DIRECTION_VERTICAL,["StartR"=>47,"StartG"=>47,"StartB"=>47,"EndR"=>17,"EndG"=>17,"EndB"=>17,"Alpha"=>100]);
 $myPicture->drawGradientArea(0,230,700,304,DIRECTION_VERTICAL,["StartR"=>47,"StartG"=>47,"StartB"=>47,"EndR"=>27,"EndG"=>27,"EndB"=>27,"Alpha"=>100]);
 $myPicture->drawLine(0,209,847,209,["R"=>0,"G"=>0,"B"=>0]);

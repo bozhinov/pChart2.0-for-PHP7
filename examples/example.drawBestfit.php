@@ -11,15 +11,15 @@ use pChart\pCharts;
 $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */
+$Points_1 = [];
+$Points_2 = [];
 for($i=0;$i<=20;$i++) 
 { 
-	$myPicture->myData->addPoints(rand(10,30)+$i,"Probe 1"); 
+	$Points_1[] = rand(10,30)+$i;
+	$Points_2[] = rand(0,10)+$i;
 }
-
-for($i=0;$i<=20;$i++) 
-{ 
-	$myPicture->myData->addPoints(rand(0,10)+$i,"Probe 2"); 
-}
+$myPicture->myData->addPoints($Points_1,"Probe 1"); 
+$myPicture->myData->addPoints($Points_2,"Probe 2"); 
 
 /* Give a name to the Y axis */
 $myPicture->myData->setAxisName(0,"Temperatures");
@@ -28,7 +28,7 @@ $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
+$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));

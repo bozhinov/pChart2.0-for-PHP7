@@ -11,10 +11,12 @@ use pChart\pCharts;
 $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */ 
-for($i=0;$i<=20;$i++)
+$Points = [];
+for($i=0;$i<=20;$i++) 
 { 
-	$myPicture->myData->addPoints(rand(10,30)+$i,"Probe 1"); 
+	$Points[] = rand(10,30)+$i;
 }
+$myPicture->myData->addPoints($Points,"Probe 1"); 
 $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->myData->setAbscissaName("Samples");
 

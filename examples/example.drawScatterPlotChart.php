@@ -11,23 +11,24 @@ use pChart\pScatter;
 $myPicture = new pDraw(400,400);
 
 /* Create the X axis and the binded series */
-for ($i=0;$i<=360;$i=$i+10) { 
-	$myPicture->myData->addPoints(cos(deg2rad($i))*20,"Probe 1"); 
+$Points_1 = [];
+$Points_2 = [];
+$Points_3 = [];
+for($i=0;$i<=360;$i=$i+10) 
+{
+	$Points_1[] = cos(deg2rad($i))*20;
+	$Points_2[] = sin(deg2rad($i))*20;
+	$Points_3[] = $i;
 }
-
-for ($i=0;$i<=360;$i=$i+10) {
-	$myPicture->myData->addPoints(sin(deg2rad($i))*20,"Probe 2"); 
-}
+$myPicture->myData->addPoints($Points_1,"Probe 1"); 
+$myPicture->myData->addPoints($Points_2,"Probe 2"); 
+$myPicture->myData->addPoints($Points_3,"Probe 3"); 
 
 $myPicture->myData->setAxisName(0,"Index");
 $myPicture->myData->setAxisXY(0,AXIS_X);
 $myPicture->myData->setAxisPosition(0,AXIS_POSITION_BOTTOM);
 
 /* Create the Y axis and the binded series */
-for ($i=0;$i<=360;$i=$i+10) { 
-	$myPicture->myData->addPoints($i,"Probe 3"); 
-}
-
 $myPicture->myData->setSerieOnAxis("Probe 3",1);
 $myPicture->myData->setAxisName(1,"Degree");
 $myPicture->myData->setAxisXY(1,AXIS_Y);

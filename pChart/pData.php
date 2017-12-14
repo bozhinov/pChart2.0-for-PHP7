@@ -82,29 +82,23 @@ class pData
 	}
 
 	/* Add a single point or an array to the given serie */
-	function addPoints($Values, $SerieName = "Serie1")
+	function addPoints(array $Values, $SerieName = "Serie1")
 	{
 		if (!isset($this->Data["Series"][$SerieName])){
 			$this->initialise($SerieName);
 		}
-		
-		if (is_array($Values)) {
-			foreach($Values as $Key => $Value) {
-				$this->Data["Series"][$SerieName]["Data"][] = $Value;
-			}
-		} else {
-			$this->Data["Series"][$SerieName]["Data"][] = $Values;
+
+		foreach($Values as $Key => $Value) {
+			$this->Data["Series"][$SerieName]["Data"][] = $Value;
 		}
-		
-		if ($Values != VOID) {
-			$StrippedData = $this->stripVOID($this->Data["Series"][$SerieName]["Data"]);
-			if (empty($StrippedData)) {
-				$this->Data["Series"][$SerieName]["Max"] = 0;
-				$this->Data["Series"][$SerieName]["Min"] = 0;
-			} else {
-				$this->Data["Series"][$SerieName]["Max"] = max($StrippedData);
-				$this->Data["Series"][$SerieName]["Min"] = min($StrippedData);
-			}
+
+		$StrippedData = $this->stripVOID($this->Data["Series"][$SerieName]["Data"]);
+		if (empty($StrippedData)) {
+			$this->Data["Series"][$SerieName]["Max"] = 0;
+			$this->Data["Series"][$SerieName]["Min"] = 0;
+		} else {
+			$this->Data["Series"][$SerieName]["Max"] = max($StrippedData);
+			$this->Data["Series"][$SerieName]["Min"] = min($StrippedData);
 		}
 	}
 	
@@ -115,12 +109,8 @@ class pData
 	}
 
 	/* Strip VOID values */
-	function stripVOID($Values)
+	function stripVOID(array $Values)
 	{
-		if (!is_array($Values)) {
-			return [];
-		}
-
 		$Result = [];
 		foreach($Values as $Key => $Value) {
 			($Value != VOID) AND $Result[] = $Value;
@@ -502,10 +492,14 @@ class pData
 		$Min = isset($Options["Min"]) ? $Options["Min"] : 0;
 		$Max = isset($Options["Max"]) ? $Options["Max"] : 100;
 		$withFloat = isset($Options["withFloat"]) ? $Options["withFloat"] : FALSE;
+		
+		$Points = [];
 		for ($i = 0; $i <= $Values; $i++) {
-			$Value = ($withFloat) ? (rand($Min * 100, $Max * 100) / 100) : rand($Min, $Max);
-			$this->addPoints($Value, $SerieName);
+			$Points[] = ($withFloat) ? (rand($Min * 100, $Max * 100) / 100) : rand($Min, $Max);
+			
 		}
+		
+		$this->addPoints($Points, $SerieName);
 	}
 
 	/* Test if we have valid data */
@@ -841,7 +835,7 @@ class pData
 			}
 
 			foreach($Values as $Key => $Value) {
-				(!in_array($Key, $SkipColumns)) AND $this->addPoints($Value, $SerieNames[$Key]);
+				(!in_array($Key, $SkipColumns)) AND $this->addPoints([$Value], $SerieNames[$Key]);
 			}
 		
 		}

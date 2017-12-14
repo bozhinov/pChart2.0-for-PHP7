@@ -14,9 +14,11 @@ use pChart\{
 $myPicture = new pDraw(700,350);
 
 /* Populate the pData object */
+$Points = [];
 for($i=0;$i<=80;$i++) {
-	$myPicture->myData->addPoints(($i/10)*($i/10),"Statistical probability"); 
+	$Points[] = ($i/10)*($i/10);
 }
+$myPicture->myData->addPoints($Points,"Statistical probability"); 
 $myPicture->myData->setAxisName(0,"Probability");
 $myPicture->myData->setAxisUnit(0,"%");
 
