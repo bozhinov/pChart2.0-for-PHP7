@@ -16,17 +16,17 @@ $myPicture->drawFilledRectangle(0,0,700,230,$Settings);
 /* Overlay with a gradient */
 $Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
-$myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>80));
+$myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,["StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>80]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
+$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawArrowLabel() - Adaptative label positionning",array("R"=>255,"G"=>255,"B"=>255));
+$myPicture->drawText(10,13,"drawArrowLabel() - Adaptive label positioning",["R"=>255,"G"=>255,"B"=>255]);
 
 /* Turn on shadow computing */ 
-$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 
 /* Draw an arrow with a 45 degree angle */ 
 $ArrowSettings = array("FillR"=>37,"FillG"=>78,"FillB"=>117,"Length"=>40,"Angle"=>45);

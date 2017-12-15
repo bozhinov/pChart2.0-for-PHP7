@@ -14,7 +14,7 @@ $myPicture = new pDraw(700,230);
 $Points_1 = [];
 for($i=0;$i<=100;$i++)
 { 
-	$Points_1[] = rand(0,20)+$i;
+	$Points_1[] = rand(0,20);
 }
 $myPicture->myData->addPoints($Points_1,"Probe 1"); 
 $myPicture->myData->setAxisName(0,"Temperatures");

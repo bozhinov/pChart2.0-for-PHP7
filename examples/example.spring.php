@@ -41,15 +41,15 @@ $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 $SpringChart = new pSpring($myPicture);
 
 /* Create some nodes */ 
-$SpringChart->addNode(0,array("Name"=>"","Shape"=>NODE_SHAPE_SQUARE,"FreeZone"=>60,"Size"=>20,"NodeType"=>NODE_TYPE_CENTRAL));
-$SpringChart->addNode(1,array("Name"=>"Johanna","Connections"=>[0]));
-$SpringChart->addNode(2,array("Name"=>"Martin","Connections"=>[0]));
-$SpringChart->addNode(3,array("Name"=>"Kevin","Connections"=>[1]));
-$SpringChart->addNode(4,array("Name"=>"Alex","Connections"=>[1]));
-$SpringChart->addNode(5,array("Name"=>"Julia","Connections"=>[1]));
-$SpringChart->addNode(6,array("Name"=>"Lena","Connections"=>[2]));
-$SpringChart->addNode(7,array("Name"=>"Elisa","Connections"=>[2]));
-$SpringChart->addNode(8,array("Name"=>"Omar","Connections"=>[2]));
+$SpringChart->addNode(0,["Name"=>"","Shape"=>NODE_SHAPE_SQUARE,"FreeZone"=>60,"Size"=>20,"NodeType"=>NODE_TYPE_CENTRAL]);
+$SpringChart->addNode(1,["Name"=>"Johanna","Connections"=>[0]]);
+$SpringChart->addNode(2,["Name"=>"Martin","Connections"=>[0]]);
+$SpringChart->addNode(3,["Name"=>"Kevin","Connections"=>[1]]);
+$SpringChart->addNode(4,["Name"=>"Alex","Connections"=>[1]]);
+$SpringChart->addNode(5,["Name"=>"Julia","Connections"=>[1]]);
+$SpringChart->addNode(6,["Name"=>"Lena","Connections"=>[2]]);
+$SpringChart->addNode(7,["Name"=>"Elisa","Connections"=>[2]]);
+$SpringChart->addNode(8,["Name"=>"Omar","Connections"=>[2]]);
 
 /* Set the nodes color */ 
 $SpringChart->setNodesColor([0],["R"=>215,"G"=>163,"B"=>121,"BorderR"=>166,"BorderG"=>115,"BorderB"=>74]);
