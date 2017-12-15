@@ -305,7 +305,7 @@ class pPie
 				if ($WriteValues == PIE_VALUE_PERCENTAGE) {
 					$Display = round((100 / $SerieSum) * $Value, $Precision) . "%";
 				} elseif ($WriteValues == PIE_VALUE_NATURAL) {
-					$Display = $Value . $ValueSuffix;
+					$Display = strval($Value) . $ValueSuffix;
 				}
 
 				$this->myPicture->drawText($Xc, $Yc, $Display, $Settings);
@@ -705,7 +705,7 @@ class pPie
 				if ($WriteValues == PIE_VALUE_PERCENTAGE) {
 					$Display = round((100 / $SerieSum) * $Value, $Precision) . "%";
 				} elseif ($WriteValues == PIE_VALUE_NATURAL) {
-					$Display = $Value . $ValueSuffix;
+					$Display = strval($Value) . $ValueSuffix;
 				}
 
 				$this->myPicture->drawText($Xc, $Yc, $Display, $Settings);
@@ -1201,7 +1201,7 @@ class pPie
 				if ($WriteValues == PIE_VALUE_PERCENTAGE) {
 					$Display = round((100 / $SerieSum) * $Value, $Precision) . "%";
 				} elseif ($WriteValues == PIE_VALUE_NATURAL) {
-					$Display = $Value . $ValueSuffix;
+					$Display = strval($Value) . $ValueSuffix;
 				} else {
 					$Label = "";
 				}
@@ -1217,7 +1217,7 @@ class pPie
 	function draw3DRing(int $X, int $Y, array $Format = [])
 	{
 		$Precision = 0;
-		$Border = FALSE;
+		#$Border = FALSE; # UNUSED
 		$Shadow = FALSE;
 		$DrawLabels = FALSE;
 		$LabelStacked = FALSE;
@@ -1227,12 +1227,12 @@ class pPie
 		$LabelB = 0;
 		$LabelAlpha = 100;
 		$WriteValues = NULL;
-		$ValuePosition = PIE_VALUE_OUTSIDE;
-		$ValueSuffix = "";
-		$ValueR = 255;
-		$ValueG = 255;
-		$ValueB = 255;
-		$ValueAlpha = 100;
+		#$ValuePosition = PIE_VALUE_OUTSIDE;  # UNUSED
+		#$ValueSuffix = "";
+		#$ValueR = 255;
+		#$ValueG = 255;
+		#$ValueB = 255;
+		#$ValueAlpha = 100;
 		$RecordImageMap = FALSE;				
 		$OuterRadius = 100;
 		$InnerRadius = 30;
@@ -1242,7 +1242,7 @@ class pPie
 		$DataGapRadius = 10;
 		$Cf = 20;
 		$WriteValues = PIE_VALUE_NATURAL;
-		$ValuePadding = $SliceHeight + 15;
+		# $ValuePadding = $SliceHeight + 15; # UNUSED
 		
 		/* Override defaults */
 		extract($Format);

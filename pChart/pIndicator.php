@@ -46,7 +46,7 @@ class pIndicator
 		} else {
 			throw pException::InvalidInput("Missing indicator settings");
 		}
-		$Values = VOID;
+		$Values = [];
 		$ValueDisplay = INDICATOR_VALUE_BUBBLE;
 		$SectionsMargin = 4;
 		$DrawLeftHead = TRUE;
@@ -65,17 +65,14 @@ class pIndicator
 		$SubCaptionG = 50;
 		$SubCaptionB = 50;
 		$SubCaptionAlpha = 100;
-		$ValueFontName = $this->myPicture->FontName;
-		$ValueFontSize = $this->myPicture->FontSize;
+		$FontName = $this->myPicture->FontName;
+		$FontSize = $this->myPicture->FontSize;
 		$CaptionFontName = $this->myPicture->FontName;
 		$CaptionFontSize = $this->myPicture->FontSize;
 		$Unit = "";
 		
 		/* Override defaults */
 		extract($Format);
-		
-		/* Convert the Values to display to an array if needed */
-		(!is_array($Values)) AND $Values = [$Values];
 		
 		/* Determine indicator visual configuration */
 		$OverallMin = $IndicatorSections[0]["End"];
@@ -212,15 +209,15 @@ class pIndicator
 					if ($Value >= $Settings["Start"] && $Value <= $Settings["End"]) {
 						$X1 = $ValuesPos[$Value]; //$X + $Key*$SectionsMargin + ($Value - $OverallMin) * $XScale;
 						if ($ValueDisplay == INDICATOR_VALUE_BUBBLE) {
-							$TxtPos = $this->myPicture->getTextBox($X1, $Y, $ValueFontName, $ValueFontSize, 0, $Value . $Unit);
+							$TxtPos = $this->myPicture->getTextBox($X1, $Y, $FontName, $FontSize, 0, strval($Value) . $Unit);
 							$Radius = floor(($TxtPos[1]["X"] - $TxtPos[0]["X"] + $TextPadding * 4) / 2);
 							$this->myPicture->drawFilledCircle($X1, $Y, $Radius + 4, ["R" => $Settings["R"] + 20,"G" => $Settings["G"] + 20,"B" => $Settings["B"] + 20]);
 							$this->myPicture->drawFilledCircle($X1, $Y, $Radius, ["R" => 255,"G" => 255,"B" => 255]);
-							$this->myPicture->drawText($X1 - 1, $Y - 1, $Value . $Unit, ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize]);
+							$this->myPicture->drawText($X1 - 1, $Y - 1, strval($Value) . $Unit, ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $FontName,"FontSize" => $FontSize]);
 						} elseif ($ValueDisplay == INDICATOR_VALUE_LABEL) {
 							$Caption = array(
 								"Format" => ["R" => $Settings["R"],"G" => $Settings["G"],"B" => $Settings["B"],"Alpha" => 100],
-								"Caption" => $Value . $Unit
+								"Caption" => strval($Value) . $Unit
 							);
 							$this->myPicture->drawLabelBox(floor($X1), floor($Y) + 2, "Value - " . $Settings["Caption"], $Caption);
 						}

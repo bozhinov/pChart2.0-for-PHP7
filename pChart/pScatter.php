@@ -602,7 +602,7 @@ class pScatter
 				foreach($PosArrayX as $Key => $Value) {
 					$X = $Value;
 					$Y = $PosArrayY[$Key];
-					$Force = $this->myPicture->getLength($LastX, $LastY, $X, $Y) / 5;
+					$Force = $this->myPicture->getDistance($LastX, $LastY, $X, $Y) / 5;
 					if ($X != VOID && $Y != VOID) {
 						$RealValue = round($Data["Series"][$Series["X"]]["Data"][$Key], 2) . " / " . round($Data["Series"][$Series["Y"]]["Data"][$Key], 2);
 						if ($RecordImageMap) {
@@ -1010,7 +1010,7 @@ class pScatter
 	}
 
 	/* Draw a Scatter threshold */
-	function drawScatterThreshold(int $Value, array $Format = [])
+	function drawScatterThreshold($Value, array $Format = [])
 	{
 				
 		$AxisID = 0;
@@ -1124,7 +1124,7 @@ class pScatter
 	}
 
 	/* Draw a Scatter threshold area */
-	function drawScatterThresholdArea(int $Value1, int $Value2, array $Format = [])
+	function drawScatterThresholdArea($Value1, $Value2, array $Format = [])
 	{		
 		$AxisID = 0;
 		$R = isset($Format["R"]) ? $Format["R"] : 255;

@@ -81,7 +81,7 @@ $Indicator = new pIndicator($myPicture);
 
 /* Define the indicator sections */
 $IndicatorSettings = [
-	"Values"=>35,
+	"Values"=>[35],
 	"Unit"=>"%",
 	"CaptionPosition"=>INDICATOR_CAPTION_BOTTOM,
 	"CaptionR"=>0,

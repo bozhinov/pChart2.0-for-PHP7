@@ -436,8 +436,8 @@ class pSpring
 						$X2 = $this->Data[$Key2]["X"];
 						$Y2 = $this->Data[$Key2]["Y"];
 						$FreeZone = $this->Data[$Key2]["FreeZone"];
-						$Distance = $this->getDistance($X1, $Y1, $X2, $Y2);
-						$Angle = $this->getAngle($X1, $Y1, $X2, $Y2) + 180;
+						$Distance = $this->myPicture->getDistance($X1, $Y1, $X2, $Y2);
+						$Angle = $this->myPicture->getAngle($X1, $Y1, $X2, $Y2) + 180;
 						/* Nodes too close, repulsion occurs */
 						if ($Distance < $FreeZone) {
 							$Force = log(pow(2, $FreeZone - $Distance));
@@ -455,8 +455,8 @@ class pSpring
 							$X2 = $this->Data[$NodeID]["X"];
 							$Y2 = $this->Data[$NodeID]["Y"];
 							$FreeZone = $this->Data[$Key2]["FreeZone"];
-							$Distance = $this->getDistance($X1, $Y1, $X2, $Y2);
-							$Angle = $this->getAngle($X1, $Y1, $X2, $Y2);
+							$Distance = $this->myPicture->getDistance($X1, $Y1, $X2, $Y2);
+							$Angle = $this->myPicture->getAngle($X1, $Y1, $X2, $Y2);
 							if ($Distance > $FreeZone) {
 								$Force = log(($Distance - $FreeZone) + 1);
 							} else {
@@ -670,9 +670,9 @@ class pSpring
 								$TxtX = ($X2 - $X) / 2 + $X;
 								$TxtY = ($Y2 - $Y) / 2 + $Y;
 								if ($X <= $X2) {
-									$Angle = (360 - $this->getAngle($X, $Y, $X2, $Y2)) % 360;
+									$Angle = (360 - $this->myPicture->getAngle($X, $Y, $X2, $Y2)) % 360;
 								} else {
-									$Angle = (360 - $this->getAngle($X2, $Y2, $X, $Y)) % 360;
+									$Angle = (360 - $this->myPicture->getAngle($X2, $Y2, $X, $Y)) % 360;
 								}
 
 								$Settings = $Color;
@@ -764,23 +764,6 @@ class pSpring
 		}
 
 		return ["Pass" => $Jobs,"Conflicts" => $Conflicts];
-	}
-
-	/* Return the distance between two points */
-	function getDistance($X1, $Y1, $X2, $Y2)
-	{
-		return sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1));
-	}
-
-	/* Return the angle made by a line and the X axis */
-	function getAngle($X1, $Y1, $X2, $Y2)
-	{
-		#$Opposite = $Y2 - $Y1;
-		#$Adjacent = $X2 - $X1;
-		$Angle = rad2deg(atan2(($Y2 - $Y1), ($X2 - $X1)));
-
-		return ($Angle > 0) ? $Angle : (360 - abs($Angle));
-
 	}
 
 	function intersect($X1, $Y1, $X2, $Y2, $X3, $Y3, $X4, $Y4)

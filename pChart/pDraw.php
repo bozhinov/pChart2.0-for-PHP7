@@ -614,7 +614,7 @@ class pDraw
 		
 		$PathOnly = FALSE;		
 		$Force = 30;
-		$Forces = NULL;
+		$Forces = [];
 		
 		extract($Format);
 
@@ -624,7 +624,7 @@ class pDraw
 			$Y1 = $Coordinates[$i - 1][1];
 			$X2 = $Coordinates[$i][0];
 			$Y2 = $Coordinates[$i][1];
-			if ($Forces != NULL) {
+			if (count($Forces) != 0) { # Momchil: used in Scatter
 				$Force = $Forces[$i];
 			}
 
@@ -688,7 +688,7 @@ class pDraw
 		extract($Format);
 		
 		if ($Segments == NULL) {
-			$Length = $this->getLength($X1, $Y1, $X2, $Y2);
+			$Length = $this->getDistance($X1, $Y1, $X2, $Y2);
 			$Precision = ($Length * 125) / 1000;
 		} else {
 			$Precision = $Segments;
@@ -908,10 +908,10 @@ class pDraw
 			$this->drawCircle($Xc + $this->ShadowX, $Yc + $this->ShadowY, $Height, $Width, ["R" => $this->ShadowR,"G" => $this->ShadowG,"B" => $this->ShadowB,"Alpha" => $this->Shadowa,"Ticks" => $Ticks]);
 		}
 
-		($Width == 0) AND $Width = $Height;
+		#($Width == 0) AND $Width = $Height; # UNUSED
 
 		$Step = 360 / (2 * PI * max($Width, $Height));
-		$Mode = 1;
+		$Mode = TRUE;
 		$Cpt = 1;
 				
 		for ($i = 0; $i <= 360; $i = $i + $Step) {
@@ -920,10 +920,10 @@ class pDraw
 			if ($Ticks != NULL) {
 				if ($Cpt % $Ticks == 0) {
 					$Cpt = 0;
-					$Mode = ($Mode == 1) ? 0 : 1;
+					$Mode ^= 1; # invert
 				}
 
-				if ($Mode == 1) { 
+				if ($Mode) { 
 					$this->drawAntialiasPixel($X, $Y, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha]);
 				}
 
@@ -937,7 +937,7 @@ class pDraw
 	}
 
 	/* Draw a filled circle */
-	function drawFilledCircle($X, $Y, $Radius, array $Format = [])
+	function drawFilledCircle(int $X, int $Y, int $Radius, array $Format = [])
 	{
 		
 		$R = 0;
@@ -952,8 +952,6 @@ class pDraw
 		$BorderAlpha = $Alpha;
 		
 		extract($Format);
-
-		($Radius == 0) AND $Radius = 1;
 		
 		if ($Surrounding != NULL) {
 			$BorderR = $R + $Surrounding;
@@ -963,7 +961,9 @@ class pDraw
 
 		$X = floor($X);
 		$Y = floor($Y);
+		($Radius == 0) AND $Radius = 1;
 		$Radius = abs($Radius);
+		
 		$RestoreShadow = $this->Shadow;
 		if ($this->Shadow) {
 			$this->Shadow = FALSE;
@@ -995,7 +995,7 @@ class pDraw
 	}
 
 	/* Write text */
-	function drawText($X, $Y, $Text, array $Format = [])
+	function drawText(int $X, int $Y, string $Text, array $Format = [])
 	{
 		$R = $this->FontColorR;
 		$G = $this->FontColorG;
@@ -1044,8 +1044,6 @@ class pDraw
 		$TxtPos = $this->getTextBox($X, $Y, $FontName, $FontSize, $Angle, $Text);
 		if ($DrawBox && ($Angle == 0 || $Angle == 90 || $Angle == 180 || $Angle == 270)) {
 			$T = [0 => ["X" => 0, "Y" => 0]];
-			#$T[0]["X"] = 0;
-			#$T[0]["Y"] = 0; 
 			#$T[1]["X"] = 0; # Momchil: Only $T[0] is in use
 			#$T[1]["Y"] = 0;
 			#$T[2]["X"] = 0;
@@ -1054,8 +1052,6 @@ class pDraw
 			#$T[3]["Y"] = 0;
 			if ($Angle == 0) {
 				$T = [0 => ["X" => - $TOffset, "Y" => $TOffset]];
-				#$T[0]["X"] = - $TOffset;
-				#$T[0]["Y"] = $TOffset;
 				#$T[1]["X"] = $TOffset;
 				#$T[1]["Y"] = $TOffset;
 				#$T[2]["X"] = $TOffset;
@@ -1192,7 +1188,7 @@ class pDraw
 	}
 
 	/* Draw an aliased pixel */
-	function drawAntialiasPixel($X, $Y, array $Format = [])
+	function drawAntialiasPixel($X, $Y, array $Format = []) # FAST
 	{
 				
 		if ($X < 0 || $Y < 0 || $X >= $this->XSize || $Y >= $this->YSize){
@@ -1286,7 +1282,7 @@ class pDraw
 	}
 
 	/* Draw a semi-transparent pixel */
-	function drawAlphaPixel($X, $Y, $Alpha, $R, $G, $B, $safe = FALSE)
+	function drawAlphaPixel($X, $Y, $Alpha, $R, $G, $B, $safe = FALSE) # FAST
 	{
 		
 		if (isset($this->Mask[$X])) {
@@ -1317,7 +1313,7 @@ class pDraw
 	}
 
 	/* Allocate a color with transparency */
-	function allocateColor($R, $G, $B, $Alpha = 100)
+	function allocateColor($R, $G, $B, $Alpha = 100) # FAST
 	{
 		if (!isset($this->aColorCache["$R.$G.$B.$Alpha"])){
 			($R < 0)	AND $R = 0;
@@ -1430,7 +1426,7 @@ class pDraw
 		$Size =10;
 		$Ratio = .5;
 		$TwoHeads = FALSE;
-		$Ticks = FALSE;
+		$Ticks = NULL; # Momchil: Was FALSE. drawLine checks if NULL
 		
 		extract($Format);
 		
@@ -2380,7 +2376,7 @@ class pDraw
 								if (isset($Parameters["ScaleMin"]) && isset($Parameters["RowHeight"])) {
 									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
 								} else {
-									$Value = $i;
+									$Value = strval($i);
 								}
 							}
 
@@ -2477,7 +2473,7 @@ class pDraw
 								if (isset($Parameters["ScaleMin"]) && isset($Parameters["RowHeight"])) {
 									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
 								} else {
-									$Value = $i;
+									$Value = strval($i);
 								}
 							}
 
@@ -3055,7 +3051,7 @@ class pDraw
 	}
 
 	/* Draw an X threshold area */
-	function drawXThresholdArea(int $Value1, int $Value2, array $Format = []) 
+	function drawXThresholdArea($Value1, $Value2, array $Format = []) 
 	{
 		$R = isset($Format["R"]) ? $Format["R"] : 255;
 		$G = isset($Format["G"]) ? $Format["G"] : 0;
@@ -3275,7 +3271,7 @@ class pDraw
 	}
 
 	/* Draw a threshold with the computed scale */
-	function drawThresholdArea(int $Value1, int $Value2, array $Format = []) 
+	function drawThresholdArea($Value1, $Value2, array $Format = []) 
 	{
 		$AxisID = 0;
 		$R = isset($Format["R"]) ? $Format["R"] : 255;
@@ -3481,7 +3477,9 @@ class pDraw
 			return "";
 		}
 		
-		$ret = $Value . $Unit; # Momchil: this is not the same as default for the switch
+		# Momchil: this is not the same as default for the switch
+		# $Value comes as an INT or FLOAT but is used as a STRING as well
+		$ret = strval($Value) . $Unit; 
 		
 		switch ($Mode) {
 			case AXIS_FORMAT_TRAFFIC:
@@ -3497,7 +3495,7 @@ class pDraw
 					}
 
 					$Value = number_format($Value / pow(1024, ($Scale = floor(log($Value, 1024)))), 2, ",", ".");
-					$ret = $Sign . $Value . " " . $Units[$Scale];
+					$ret = $Sign . strval($Value) . " " . $Units[$Scale];
 				}
 				break;
 			case AXIS_FORMAT_CUSTOM:
@@ -3506,12 +3504,10 @@ class pDraw
 				}
 				break;
 			case AXIS_FORMAT_DATE:
-				$Pattern = ($Format == NULL) ? "d/m/Y" : $Format;
-				$ret = gmdate($Pattern, $Value);	
+				$ret = gmdate(($Format == NULL) ? "d/m/Y" : $Format, $Value);	
 				break;
 			case AXIS_FORMAT_TIME:
-				$Pattern = ($Format == NULL) ? "H:i:s" : $Format;
-				$ret = gmdate($Pattern, $Value);	
+				$ret = gmdate(($Format == NULL) ? "H:i:s" : $Format, $Value);	
 				break;
 			case AXIS_FORMAT_CURRENCY:
 				$ret = $Format . number_format($Value, 2);
@@ -3527,7 +3523,7 @@ class pDraw
 				break;
 		}
 
-		return $ret;
+		return strval($ret);
 	}
 
 	/* Write Max value on a chart */
@@ -3536,7 +3532,7 @@ class pDraw
 		$MaxLabelTxt = "max=";
 		$MinLabelTxt = "min=";
 		$Decimals = 1;
-		$ExcludedSeries = "";
+		$ExcludedSeries = [];
 		$DisplayOffset = 4;
 		$DisplayColor = DISPLAY_MANUAL;
 		$MaxDisplayR = 0;
@@ -4357,11 +4353,9 @@ class pDraw
 				break;
 			case SERIE_SHAPE_FILLEDTRIANGLE:
 				if ($PlotBorder) {
-					$Pos = [$X, $Y - $PlotSize - $BorderSize, $X - $PlotSize - $BorderSize, $Y + $PlotSize + $BorderSize, $X + $PlotSize + $BorderSize, $Y + $PlotSize + $BorderSize];
-					$this->drawPolygon($Pos, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha]);
+					$this->drawPolygon([$X, $Y - $PlotSize - $BorderSize, $X - $PlotSize - $BorderSize, $Y + $PlotSize + $BorderSize, $X + $PlotSize + $BorderSize, $Y + $PlotSize + $BorderSize], ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha]);
 				}
-				$Pos = [$X, $Y - $PlotSize, $X - $PlotSize, $Y + $PlotSize, $X + $PlotSize, $Y + $PlotSize];
-				$this->drawPolygon($Pos, $RGB);	
+				$this->drawPolygon([$X, $Y - $PlotSize, $X - $PlotSize, $Y + $PlotSize, $X + $PlotSize, $Y + $PlotSize], $RGB);	
 				break;
 			case SERIE_SHAPE_TRIANGLE:
 				$this->drawLine($X, $Y - $PlotSize, $X - $PlotSize, $Y + $PlotSize, $RGB);
@@ -4375,16 +4369,13 @@ class pDraw
 				$this->drawCircle($X, $Y, $PlotSize, $PlotSize, $RGB);
 				break;
 			case SERIE_SHAPE_DIAMOND:
-				$Pos = [$X - $PlotSize, $Y, $X, $Y - $PlotSize, $X + $PlotSize, $Y, $X, $Y + $PlotSize];
-				$this->drawPolygon($Pos, ["NoFill" => TRUE,"BorderR" => $R,"BorderG" => $G,"BorderB" => $B,"BorderAlpha" => $Alpha]);	
+				$this->drawPolygon([$X - $PlotSize, $Y, $X, $Y - $PlotSize, $X + $PlotSize, $Y, $X, $Y + $PlotSize], ["NoFill" => TRUE,"BorderR" => $R,"BorderG" => $G,"BorderB" => $B,"BorderAlpha" => $Alpha]);	
 				break;
 			case SERIE_SHAPE_FILLEDDIAMOND:
 				if ($PlotBorder) {
-					$Pos = [$X - $PlotSize - $BorderSize, $Y, $X, $Y - $PlotSize - $BorderSize, $X + $PlotSize + $BorderSize, $Y, $X, $Y + $PlotSize + $BorderSize];
-					$this->drawPolygon($Pos, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha]);
+					$this->drawPolygon([$X - $PlotSize - $BorderSize, $Y, $X, $Y - $PlotSize - $BorderSize, $X + $PlotSize + $BorderSize, $Y, $X, $Y + $PlotSize + $BorderSize], ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha]);
 				}
-				$Pos = [$X - $PlotSize, $Y, $X, $Y - $PlotSize, $X + $PlotSize, $Y, $X, $Y + $PlotSize];
-				$this->drawPolygon($Pos, $RGB);		
+				$this->drawPolygon([$X - $PlotSize, $Y, $X, $Y - $PlotSize, $X + $PlotSize, $Y, $X, $Y + $PlotSize], $RGB);		
 				break;
 		}
 	}
@@ -4394,7 +4385,7 @@ class pDraw
 	 */
 	
 	/* Enable / Disable and set shadow properties */
-	function setShadow($Enabled = TRUE, array $Format = [])
+	function setShadow(bool $Enabled = TRUE, array $Format = [])
 	{
 		$X = 2;
 		$Y = 2;
@@ -4459,7 +4450,7 @@ class pDraw
 	}
 
 	/* Render the picture to a file */
-	function render($FileName, $Compression = 6, $Filters = PNG_NO_FILTER)
+	function render(string $FileName, int $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
 		if ($this->TransparentBackground) {
 			imagealphablending($this->Picture, false);
@@ -4470,7 +4461,7 @@ class pDraw
 	}
 
 	/* Render the picture to a web browser stream */
-	function stroke($BrowserExpire = FALSE, $Compression = 6, $Filters = PNG_NO_FILTER)
+	function stroke(bool $BrowserExpire = FALSE, int $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
 		if ($this->TransparentBackground) {
 			imagealphablending($this->Picture, false);
@@ -4494,7 +4485,7 @@ class pDraw
 		https://www.w3.org/TR/PNG-Filters.html
 		*/
 	
-	function autoOutput($FileName = "output.png", $Compression = 6, $Filters = PNG_NO_FILTER)
+	function autoOutput(string $FileName = "output.png", int $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
 		if (php_sapi_name() == "cli") {
 			$this->Render($FileName, $Compression, $Filters);
@@ -4503,18 +4494,18 @@ class pDraw
 		}
 	}
 
-	/* Return the length between two points */
-	function getLength($X1, $Y1, $X2, $Y2)
+	/* Return the distance between two points */
+	function getDistance($X1, $Y1, $X2, $Y2)
 	{
-		return (sqrt(pow(max($X1, $X2) - min($X1, $X2), 2) + pow(max($Y1, $Y2) - min($Y1, $Y2), 2)));
+		return sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1));
 	}
 
 	/* Return the orientation of a line */
 	function getAngle($X1, $Y1, $X2, $Y2)
 	{
-		$Opposite = $Y2 - $Y1;
-		$Adjacent = $X2 - $X1;
-		$Angle = rad2deg(atan2($Opposite, $Adjacent));
+		#$Opposite = $Y2 - $Y1;
+		#$Adjacent = $X2 - $X1;
+		$Angle = rad2deg(atan2($Y2 - $Y1, $X2 - $X1));
 		
 		return (($Angle > 0) ? $Angle : (360 - abs($Angle)));
 	}
@@ -4583,8 +4574,7 @@ class pDraw
 	/* Returns the 1st decimal values (used to correct AA bugs) */
 	function getFirstDecimal($Value)
 	{
-		$Values = explode(".", $Value);
-		return (isset($Values[1])) ? substr($Values[1], 0, 1) : 0;
+		return floor(($Value - floor($Value))*10);
 	}
 
 	/* Return the HTML converted color from the RGB composite values */

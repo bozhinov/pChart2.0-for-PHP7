@@ -148,9 +148,9 @@ class pBubble
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($DataSeries as $Key => $SerieName) {
 			$AxisID = $Data["Series"][$SerieName]["Axis"];
-			$Mode = $Data["Axis"][$AxisID]["Display"];
-			$Format = $Data["Axis"][$AxisID]["Format"];
-			$Unit = $Data["Axis"][$AxisID]["Unit"];
+			#$Mode = $Data["Axis"][$AxisID]["Display"]; # UNUSED
+			#$Format = $Data["Axis"][$AxisID]["Format"];
+			#$Unit = $Data["Axis"][$AxisID]["Unit"];
 			$SerieDescription = (isset($Data["Series"][$SerieName]["Description"])) ? $Data["Series"][$SerieName]["Description"] : $SerieName;
 			$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
 			$X = $this->myPicture->GraphAreaX1 + $XMargin;
