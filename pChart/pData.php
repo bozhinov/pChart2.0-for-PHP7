@@ -110,13 +110,13 @@ class pData
 	}
 
 	/* Return the number of values contained in a given serie */
-	function getSerieCount(string $Serie)
+	function getSerieCount(string $Serie) # UNUSED
 	{
 		return (isset($this->Data["Series"][$Serie]["Data"])) ? count($this->Data["Series"][$Serie]["Data"]) : 0;
 	}
 
 	/* Remove a serie from the pData object */
-	function removeSerie(string $Serie)
+	function removeSerie(string $Serie)  # UNUSED
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			unset($this->Data["Series"][$Serie]);
@@ -128,17 +128,17 @@ class pData
 	/* Return a value from given serie & index */ # UNUSED
 	function getValueAt(string $Serie, int $Index = 0)
 	{
-		return (isset($this->Data["Series"][$Serie]["Data"][$Index])) ? $this->Data["Series"][$Serie]["Data"][$Index] : NULL;
+		return (isset($this->Data["Series"][$Serie]["Data"][$Index])) ? $this->Data["Series"][$Serie]["Data"][$Index] : FALSE;
 	}
 
 	/* Return the values array */ # UNUSED
 	function getValues(string $Serie)
 	{
-		return (isset($this->Data["Series"][$Serie]["Data"])) ? $this->Data["Series"][$Serie]["Data"] : NULL;
+		return (isset($this->Data["Series"][$Serie]["Data"])) ? $this->Data["Series"][$Serie]["Data"] : [];
 	}
 
 	/* Reverse the values in the given serie */
-	function reverseSerie(string $Serie)
+	function reverseSerie(string $Serie) # UNUSED
 	{
 		if (isset($this->Data["Series"][$Serie]["Data"])) {
 			$this->Data["Series"][$Serie]["Data"] = array_reverse($this->Data["Series"][$Serie]["Data"]);
@@ -150,19 +150,19 @@ class pData
 	/* Return the sum of the serie values */
 	function getSum(string $Serie)
 	{
-		return (isset($this->Data["Series"][$Serie])) ? array_sum($this->Data["Series"][$Serie]["Data"]) : NULL;
+		return (isset($this->Data["Series"][$Serie])) ? array_sum($this->Data["Series"][$Serie]["Data"]) : 0;
 	}
 
 	/* Return the max value of a given serie */
 	function getMax(string $Serie)
 	{
-		return (isset($this->Data["Series"][$Serie]["Max"])) ? $this->Data["Series"][$Serie]["Max"] : NULL;
+		return (isset($this->Data["Series"][$Serie]["Max"])) ? $this->Data["Series"][$Serie]["Max"] : 0;
 	}
 
 	/* Return the min value of a given serie */
 	function getMin(string $Serie)
 	{
-		return (isset($this->Data["Series"][$Serie]["Min"])) ? $this->Data["Series"][$Serie]["Min"] : NULL;
+		return (isset($this->Data["Series"][$Serie]["Min"])) ? $this->Data["Series"][$Serie]["Min"] : 0;
 	}
 
 	/* Set the description of a given serie */
@@ -196,9 +196,12 @@ class pData
 	}
 
 	/* Set the icon associated to a given serie */
-	function setSeriePicture(string $Serie, string $Picture = NULL)
+	function setSeriePicture(string $Serie, string $Picture = "XX")
 	{
 		if (isset($this->Data["Series"][$Serie])) {
+			if (!file_exists($Picture)){
+				throw pException::InvalidInput("Serie picture could not be found");
+			}
 			$this->Data["Series"][$Serie]["Picture"] = $Picture;
 		} else {
 			throw pException::InvalidInput("Invalid serie name");
@@ -290,9 +293,12 @@ class pData
 	}
 
 	/* Set the icon associated to a given scatter serie */
-	function setScatterSeriePicture(int $ID, $Picture = NULL)
+	function setScatterSeriePicture(int $ID, string $Picture = "xx")
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
+			if (!file_exists($Picture)){
+				throw pException::InvalidInput("ScatterSerie picture could not be found");
+			}
 			$this->Data["ScatterSeries"][$ID]["Picture"] = $Picture;
 		} else {
 			throw pException::InvalidInput("Invalid serie ID");
@@ -397,7 +403,7 @@ class pData
 				$Seriesum = $Seriesum * $Value;
 			}
 
-			return (pow($Seriesum, 1 / count($SerieData)));
+			return pow($Seriesum, 1 / count($SerieData));
 		} else {
 			throw pException::InvalidInput("Invalid serie name");
 		}
@@ -442,7 +448,7 @@ class pData
 		if (isset($this->Data["Series"][$Serie])) {
 			$Average = $this->getSerieAverage($Serie);
 			$StandardDeviation = $this->getStandardDeviation($Serie);
-			return ($StandardDeviation != 0) ? ($StandardDeviation / $Average) : NULL;
+			return ($StandardDeviation != 0) ? ($StandardDeviation / $Average) : 0;
 		} else {
 			throw pException::InvalidInput("Invalid serie name");
 		}
@@ -455,14 +461,14 @@ class pData
 			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
 			sort($SerieData);
 			$SerieCenter = floor(count($SerieData) / 2);
-			return (isset($SerieData[$SerieCenter])) ? $SerieData[$SerieCenter] : NULL;
+			return (isset($SerieData[$SerieCenter])) ? $SerieData[$SerieCenter] : 0;
 		} else {
 			throw pException::InvalidInput("Invalid serie name");
 		}
 	}
 
 	/* Return the x th percentile of the given serie */
-	function getSeriePercentile(string $Serie = "Serie1", int $Percentil = 95)
+	function getSeriePercentile(string $Serie = "Serie1", int $Percentil = 95) # UNUSED
 	{
 		if (!isset($this->Data["Series"][$Serie]["Data"])) {
 			throw pException::InvalidInput("Invalid serie name");
@@ -473,7 +479,7 @@ class pData
 		$PercentilID = floor(($Values / 100) * $Percentil + .5);
 		$SortedValues = $this->Data["Series"][$Serie]["Data"];
 		sort($SortedValues);
-		return (is_numeric($SortedValues[$PercentilID])) ? $SortedValues[$PercentilID] : NULL;
+		return (is_numeric($SortedValues[$PercentilID])) ? $SortedValues[$PercentilID] : 0;
 	}
 
 	/* Add random values to a given serie */
@@ -625,12 +631,7 @@ class pData
 		if (!isset($this->Data["Series"][$Serie])) {
 			throw pException::InvalidInput("Invalid serie name");
 		} else {
-			return [
-				"R" => $this->Data["Series"][$Serie]["Color"]["R"],
-				"G" => $this->Data["Series"][$Serie]["Color"]["G"],
-				"B" => $this->Data["Series"][$Serie]["Color"]["B"],
-				"Alpha" => $this->Data["Series"][$Serie]["Color"]["Alpha"]
-			];
+			return $this->Data["Series"][$Serie]["Color"];
 		}
 		
 	}
@@ -638,14 +639,16 @@ class pData
 	/* Set the color of one serie */
 	function setPalette(string $Serie, array $Format = [])
 	{
-		$R = isset($Format["R"]) ? $Format["R"] : 0;
-		$G = isset($Format["G"]) ? $Format["G"] : 0;
-		$B = isset($Format["B"]) ? $Format["B"] : 0;
-		$Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
+		$New = [
+			"R" => isset($Format["R"]) ? $Format["R"] : 0,
+			"G" => isset($Format["G"]) ? $Format["G"] : 0,
+			"B" => isset($Format["B"]) ? $Format["B"] : 0,
+			"Alpha" => isset($Format["Alpha"]) ? $Format["Alpha"] : 100
+		];
 
 		if (isset($this->Data["Series"][$Serie])) {
+			
 			$Old = $this->Data["Series"][$Serie]["Color"];
-			$New = ["R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha];
 			$this->Data["Series"][$Serie]["Color"] = $New;
 			/* Do reverse processing on the internal palette array */
 			foreach($this->Palette as $Key => $Value) {
