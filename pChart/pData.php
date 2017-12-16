@@ -91,8 +91,9 @@ class pData
 		foreach($Values as $Key => $Value) {
 			$this->Data["Series"][$SerieName]["Data"][] = $Value;
 		}
-
-		$StrippedData = $this->stripVOID($this->Data["Series"][$SerieName]["Data"]);
+		
+		$StrippedData = array_diff($this->Data["Series"][$SerieName]["Data"], [VOID]);
+				
 		if (empty($StrippedData)) {
 			$this->Data["Series"][$SerieName]["Max"] = 0;
 			$this->Data["Series"][$SerieName]["Min"] = 0;
@@ -106,17 +107,6 @@ class pData
 	function clearPoints(string $SerieName = "Serie1")
 	{
 		$this->Data["Series"][$SerieName]["Data"] = [];
-	}
-
-	/* Strip VOID values */
-	function stripVOID(array $Values)
-	{
-		$Result = [];
-		foreach($Values as $Key => $Value) {
-			($Value != VOID) AND $Result[] = $Value;
-		}
-
-		return $Result;
 	}
 
 	/* Return the number of values contained in a given serie */
@@ -390,7 +380,7 @@ class pData
 	function getSerieAverage(string $Serie)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
-			$SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
+			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
 			return (array_sum($SerieData) / count($SerieData));
 		} else {
 			throw pException::InvalidInput("Invalid serie name");
@@ -401,7 +391,7 @@ class pData
 	function getGeometricMean(string $Serie)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
-			$SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
+			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
 			$Seriesum = 1;
 			foreach($SerieData as $Key => $Value) {
 				$Seriesum = $Seriesum * $Value;
@@ -417,7 +407,7 @@ class pData
 	function getHarmonicMean(string $Serie)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
-			$SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
+			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
 			$Seriesum = 0;
 			foreach($SerieData as $Key => $Value) {
 				$Seriesum = $Seriesum + 1 / $Value;
@@ -434,7 +424,7 @@ class pData
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$Average = $this->getSerieAverage($Serie);
-			$SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
+			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
 			$DeviationSum = 0;
 			foreach($SerieData as $Key => $Value) {
 				$DeviationSum = $DeviationSum + ($Value - $Average) * ($Value - $Average);
@@ -462,7 +452,7 @@ class pData
 	function getSerieMedian(string $Serie)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
-			$SerieData = $this->stripVOID($this->Data["Series"][$Serie]["Data"]);
+			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
 			sort($SerieData);
 			$SerieCenter = floor(count($SerieData) / 2);
 			return (isset($SerieData[$SerieCenter])) ? $SerieData[$SerieCenter] : NULL;
@@ -535,6 +525,8 @@ class pData
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
 			$this->Data["Axis"][$AxisID]["Position"] = $Position;
+		} else {
+			throw pException::InvalidInput("Invalid Axis ID");
 		}
 	}
 
@@ -646,33 +638,24 @@ class pData
 	/* Set the color of one serie */
 	function setPalette(string $Serie, array $Format = [])
 	{
-
 		$R = isset($Format["R"]) ? $Format["R"] : 0;
 		$G = isset($Format["G"]) ? $Format["G"] : 0;
 		$B = isset($Format["B"]) ? $Format["B"] : 0;
 		$Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
 
 		if (isset($this->Data["Series"][$Serie])) {
-			$OldR = $this->Data["Series"][$Serie]["Color"]["R"];
-			$OldG = $this->Data["Series"][$Serie]["Color"]["G"];
-			$OldB = $this->Data["Series"][$Serie]["Color"]["B"];
-			$this->Data["Series"][$Serie]["Color"]["R"] = $R;
-			$this->Data["Series"][$Serie]["Color"]["G"] = $G;
-			$this->Data["Series"][$Serie]["Color"]["B"] = $B;
-			$this->Data["Series"][$Serie]["Color"]["Alpha"] = $Alpha;
+			$Old = $this->Data["Series"][$Serie]["Color"];
+			$New = ["R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha];
+			$this->Data["Series"][$Serie]["Color"] = $New;
 			/* Do reverse processing on the internal palette array */
 			foreach($this->Palette as $Key => $Value) {
-				if ($Value["R"] == $OldR && $Value["G"] == $OldG && $Value["B"] == $OldB) {
-					$this->Palette[$Key]["R"] = $R;
-					$this->Palette[$Key]["G"] = $G;
-					$this->Palette[$Key]["B"] = $B;
-					$this->Palette[$Key]["Alpha"] = $Alpha;
+				if ($Value == $Old) {
+					$this->Palette[$Key] = $New;
 				}
 			}
 		} else {
 			throw pException::InvalidInput("Invalid serie name");
 		}
-
 	}
 
 	/* Load a palette file */
@@ -792,7 +775,7 @@ class pData
 		}
 
 		foreach($SelectedSeries as $Key => $SerieName) {
-			$data = $this->stripVOID($this->Data["Series"][$SerieName]["Data"]);
+			$data = array_diff($this->Data["Series"][$SerieName]["Data"],[VOID]);
 			$this->Data["Series"][$SerieName]["Max"] = max($data);
 			$this->Data["Series"][$SerieName]["Min"] = min($data);
 		}
@@ -916,7 +899,7 @@ class pData
 				}
 
 				$this->Data["Series"][$SerieName]["Data"] = $Data;
-				$Data = $this->stripVOID($Data);
+				$Data = array_diff($Data, [VOID]);
 				$this->Data["Series"][$SerieName]["Max"] = max($Data);
 				$this->Data["Series"][$SerieName]["Min"] = min($Data);
 			}

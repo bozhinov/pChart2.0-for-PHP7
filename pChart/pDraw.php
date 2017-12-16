@@ -3818,7 +3818,7 @@ class pDraw
 						$X = $X + $XStep;
 					}
 
-					$n = count($this->myData->stripVOID($PosArray)); //$n = count($PosArray);
+					$n = count(array_diff($PosArray, [VOID])); //$n = count($PosArray);
 					$M = (($n * $Sxy) - ($Sx * $Sy)) / (($n * $Sxx) - ($Sx * $Sx));
 					$B = (($Sy) - ($M * $Sx)) / ($n);
 					$X1 = $this->GraphAreaX1 + $XMargin;
@@ -3870,9 +3870,9 @@ class pDraw
 						$Y = $Y + $YStep;
 					}
 
-					$n = count($this->myData->stripVOID($PosArray)); //$n = count($PosArray);
+					$n = count(array_diff($PosArray, [VOID])); //$n = count($PosArray);
 					$M = (($n * $Sxy) - ($Sx * $Sy)) / (($n * $Sxx) - ($Sx * $Sx));
-					$B = (($Sy) - ($M * $Sx)) / ($n);
+					$B = (($Sy) - ($M * $Sx)) / $n;
 					$Y1 = $this->GraphAreaY1 + $XMargin;
 					$X1 = $M * $Y1 + $B;
 					$Y2 = $this->GraphAreaY2 - $XMargin;
