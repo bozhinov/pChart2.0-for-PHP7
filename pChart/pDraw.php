@@ -628,7 +628,7 @@ class pDraw
 			$Y1 = $Coordinates[$i - 1][1];
 			$X2 = $Coordinates[$i][0];
 			$Y2 = $Coordinates[$i][1];
-			if (count($Forces) != 0) { # Momchil: used in Scatter
+			if (!empty($Forces)) { # Momchil: used in Scatter
 				$Force = $Forces[$i];
 			}
 
@@ -756,7 +756,7 @@ class pDraw
 				$X = $Point["X"];
 				$Y = $Point["Y"];
 				/* Get the first segment */
-				if (count($ArrowS) == 0 && $LastX != NULL && $LastY != NULL) {
+				if (empty($ArrowS) && $LastX != NULL && $LastY != NULL) {
 					$ArrowS["X2"] = $LastX;
 					$ArrowS["Y2"] = $LastY;
 					$ArrowS["X1"] = $X;
@@ -848,7 +848,7 @@ class pDraw
 
 		$defaultColor = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
 
-		if (count($Threshold) == 0 && $Ticks == NULL){ # Momchil: Fast path based on my test cases
+		if (empty($Threshold) && $Ticks == NULL){ # Momchil: Fast path based on my test cases
 		
 			for ($i = 0; $i <= $Distance; $i++) {	
 				$this->drawAntialiasPixel($i * $XStep + $X1, $i * $YStep + $Y1, $defaultColor);
@@ -2780,7 +2780,7 @@ class pDraw
 	}
 
 	/* Compute the scale, check for the best visual factors */
-	function computeScale($XMin, $XMax, $MaxDivs, $Factors, $AxisID = 0)
+	function computeScale($XMin, $XMax, $MaxDivs, array $Factors, $AxisID = 0)
 	{
 		/* Compute each factors */
 		$Results = [];
@@ -2797,7 +2797,7 @@ class pDraw
 		}
 
 		/* Found no correct scale, shame,... returns the 1st one as default */
-		if (count($GoodScaleFactors) == 0) {
+		if (empty($GoodScaleFactors)) {
 			return $Results[$Factors[0]];
 		}
 
@@ -2831,14 +2831,25 @@ class pDraw
 			while (!$Found) {
 				foreach($Factors as $Key => $Factor) {
 					if (!$Found) {
-						$XMinRescaled = (!($this->modulo($XMin, $Factor * $Scaled10Factor) == 0) || ($XMin != floor($XMin))) ? (floor($XMin / ($Factor * $Scaled10Factor)) * $Factor * $Scaled10Factor) : $XMin;
-						$XMaxRescaled = (!($this->modulo($XMax, $Factor * $Scaled10Factor) == 0) || ($XMax != floor($XMax))) ? (floor($XMax / ($Factor * $Scaled10Factor)) * $Factor * $Scaled10Factor + ($Factor * $Scaled10Factor)) : $XMax;
-
+						$R = $Factor * $Scaled10Factor;
+						if ($Factor == 0 || floor($Factor) == 0){ # Momchil: avoid division by 9
+							throw pException::InvalidInput("Scale factor must be > 1.00");
+						} else {
+							if (floor($R) != 0){
+								$XMinRescaled = ((($XMin % $R) != 0) || ($XMin != floor($XMin))) ? (floor($XMin / $R) * $R) : $XMin;
+								$XMaxRescaled = ((($XMax % $R) != 0) || ($XMax != floor($XMax))) ? (floor($XMax / $R) * $R + $R) : $XMax;
+							} else {
+								$XMinRescaled = floor($XMin / $R) * $R;
+								$XMaxRescaled = floor($XMax / $R) * $R + $R;
+							}
+						}
+						
 						$ScaleHeightRescaled = abs($XMaxRescaled - $XMinRescaled);
-						if (!$Found && floor($ScaleHeightRescaled / ($Factor * $Scaled10Factor)) <= $MaxDivs) {
+						
+						if (!$Found && floor($ScaleHeightRescaled / $R) <= $MaxDivs) {
 							$Found = TRUE;
 							$Rescaled = TRUE;
-							$Result = $Factor * $Scaled10Factor;
+							$Result = $R;
 						}
 					}
 				}
@@ -2896,20 +2907,6 @@ class pDraw
 		}
 
 		return $Scale;
-	}
-
-	function modulo($Value1, $Value2)
-	{
-		
-		return (floor($Value2) == 0) ? 0 : ($Value1 % $Value2);
-		
-		#$MinValue = min($Value1, $Value2); # Momchil TODO: dead code
-		#$Factor = 10;
-		#while (floor($MinValue * $Factor) == 0) {
-		#	$Factor = $Factor * 10;
-		#}
-
-		#return (($Value1 * $Factor) % ($Value2 * $Factor));
 	}
 
 	/* Draw an X threshold */
@@ -3976,7 +3973,7 @@ class pDraw
 						$Value = $Data["Series"][$SerieName]["Data"][$Index];
 						($Value == VOID) AND $Value = "NaN";
 						
-						if (count($ForceLabels) != 0) {
+						if (!empty($ForceLabels)) {
 							$Caption = isset($ForceLabels[$Key]) ? $ForceLabels[$Key] : "Not set";
 						} else {
 							$Caption = $this->scaleFormat($Value, $AxisMode, $AxisFormat, $AxisUnit);
@@ -4078,7 +4075,7 @@ class pDraw
 						}
 
 						$Value = $Data["Series"][$SerieName]["Data"][$Index];
-						if (count($ForceLabels) != 0) {
+						if (!empty($ForceLabels)) {
 							$Caption = isset($ForceLabels[$Key]) ? $ForceLabels[$Key] : "Not set";
 						} else {
 							$Caption = $this->scaleFormat($Value, $AxisMode, $AxisFormat, $AxisUnit);
