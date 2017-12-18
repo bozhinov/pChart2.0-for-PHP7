@@ -785,7 +785,7 @@ class pData
 	}
 
 	/* Load data from a CSV (or similar) data source */
-	function importFromCSV($FileName, array $Options = [])
+	function importFromCSV($FileName, array $Options = []) # Momchil: TODO: I need a sample here
 	{
 		$Delimiter = isset($Options["Delimiter"]) ? $Options["Delimiter"] : ",";
 		$GotHeader = isset($Options["GotHeader"]) ? $Options["GotHeader"] : FALSE;
@@ -806,25 +806,17 @@ class pData
 		if ($GotHeader) {
 			$line1 = explode($Delimiter, array_shift($CSVContent));
 			foreach($line1 as $Key => $Name) {
-				(!in_array($Key, $SkipColumns)) AND $SerieNames[$Key] = $Name;
+				(!in_array($Key, $SkipColumns)) AND $SerieNames[$Key] = $DefaultSerieName . $Name;
 			}
 		}
-			
+
 		foreach ($CSVContent as $line){
-
-			$line = str_replace([chr(10),chr(13)], ["",""], $line); 
 			$Values = explode($Delimiter, $line);
-
-			if (count($SerieNames) == 0) {
-				foreach($Values as $Key => $Name) {
-					(!in_array($Key, $SkipColumns)) AND $SerieNames[$Key] = $DefaultSerieName . $Key;
+			foreach($Values as $Key => $Value) {
+				if (!in_array($Key, $SkipColumns)){
+					$this->addPoints([$Value], (isset($SerieNames[$Key])) ? $SerieNames[$Key] : "Serie".$Key);
 				}
 			}
-
-			foreach($Values as $Key => $Value) {
-				(!in_array($Key, $SkipColumns)) AND $this->addPoints([$Value], $SerieNames[$Key]);
-			}
-		
 		}
 	}
 	
