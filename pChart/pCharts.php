@@ -2114,7 +2114,7 @@ class pCharts {
 				#$Format = $Data["Axis"][$AxisID]["Format"];
 				#$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]], TRUE);
-				$YZero = $this->myPicture->scaleComputeYSingle(1, ["AxisID" => $Serie["Axis"]]);
+				$YZero = $this->myPicture->scaleComputeYSingle(0, ["AxisID" => $Serie["Axis"]]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
