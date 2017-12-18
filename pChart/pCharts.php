@@ -2061,10 +2061,8 @@ class pCharts {
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		$RestoreShadow = $this->myPicture->Shadow;
 		$this->myPicture->Shadow = FALSE;
+		
 		/* Build the offset data series */
-
-		// $OffsetData    = ""; # UNUSED
-
 		$OverallOffset = [];
 		$SerieOrder = [];
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -2109,10 +2107,6 @@ class pCharts {
 					$PlotBorderColor = ["R" => $PlotBorderR,"G" => $PlotBorderG,"B" => $PlotBorderB,"Alpha" => $PlotBorderAlpha];
 				}
 
-				#$AxisID = $Serie["Axis"]; # UNUSED
-				#$Mode = $Data["Axis"][$AxisID]["Display"];
-				#$Format = $Data["Axis"][$AxisID]["Format"];
-				#$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]], TRUE);
 				$YZero = $this->myPicture->scaleComputeYSingle(0, ["AxisID" => $Serie["Axis"]]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
@@ -2563,20 +2557,21 @@ class pCharts {
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-			$YPos = $this->myPicture->myData->Data["GraphArea"]["Y2"] + $Offset;
+			$YPos = $this->myPicture->GraphAreaY2 + $Offset;
 		} else {
-			$XPos = $this->myPicture->myData->Data["GraphArea"]["X2"] + $Offset;
+			$XPos = $this->myPicture->GraphAreaX2 + $Offset;
 		}
 
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
+				
 				$R = $Serie["Color"]["R"];
 				$G = $Serie["Color"]["G"];
 				$B = $Serie["Color"]["B"];
 				$Alpha = $Serie["Color"]["Alpha"];
 				$Ticks = $Serie["Ticks"];
 				$Weight = $Serie["Weight"];
-				#$AxisID = $Serie["Axis"];
+				
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
 				
 				$LastX = NULL;
@@ -2684,7 +2679,7 @@ class pCharts {
 
 					$YPos = $YPos + $CaptionHeight + $SerieSpacing;
 					
-				} else { # ($Data["Orientation"] == SCALE_POS_LEFTRIGHT)
+				} elseif ($Data["Orientation"] == SCALE_POS_LEFTRIGHT){
 				
 					if ($Caption) {
 						$StartY = floor($this->myPicture->GraphAreaY1 - $CaptionWidth + $XMargin - $CaptionMargin);

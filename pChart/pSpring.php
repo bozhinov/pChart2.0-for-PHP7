@@ -436,7 +436,7 @@ class pSpring
 						$X2 = $this->Data[$Key2]["X"];
 						$Y2 = $this->Data[$Key2]["Y"];
 						$FreeZone = $this->Data[$Key2]["FreeZone"];
-						$Distance = $this->myPicture->getDistance($X1, $Y1, $X2, $Y2);
+						$Distance = sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1)); # GetDistance
 						$Angle = $this->myPicture->getAngle($X1, $Y1, $X2, $Y2) + 180;
 						/* Nodes too close, repulsion occurs */
 						if ($Distance < $FreeZone) {
@@ -455,7 +455,7 @@ class pSpring
 							$X2 = $this->Data[$NodeID]["X"];
 							$Y2 = $this->Data[$NodeID]["Y"];
 							$FreeZone = $this->Data[$Key2]["FreeZone"];
-							$Distance = $this->myPicture->getDistance($X1, $Y1, $X2, $Y2);
+							$Distance = sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1)); # GetDistance
 							$Angle = $this->myPicture->getAngle($X1, $Y1, $X2, $Y2);
 							if ($Distance > $FreeZone) {
 								$Force = log(($Distance - $FreeZone) + 1);

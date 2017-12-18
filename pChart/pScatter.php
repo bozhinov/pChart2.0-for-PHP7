@@ -255,7 +255,6 @@ class pScatter
 						$XPos = $this->myPicture->GraphAreaX1 + ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 2;
 						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"], ["Align" => TEXT_ALIGN_TOPMIDDLE]);
 						$MaxBottom = $Bounds[0]["Y"];
-						$this->myPicture->myData->Data["GraphArea"]["Y2"] = $MaxBottom + $this->myPicture->FontSize;
 					}
 
 					$AxisPos["B"] = $MaxBottom + $ScaleSpacing;
@@ -329,7 +328,6 @@ class pScatter
 						$XPos = $this->myPicture->GraphAreaX1 + ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 2;
 						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
 						$MinTop = $Bounds[2]["Y"];
-						$this->myPicture->myData->Data["GraphArea"]["Y1"] = $MinTop;
 					}
 
 					$AxisPos["T"] = $MinTop - $ScaleSpacing;
@@ -384,7 +382,6 @@ class pScatter
 						$YPos = $this->myPicture->GraphAreaY1 + ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 2;
 						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"],["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 90]);
 						$MinLeft = $Bounds[2]["X"];
-						$this->myPicture->myData->Data["GraphArea"]["X1"] = $MinLeft;
 					}
 
 					$AxisPos["L"] = $MinLeft - $ScaleSpacing;
@@ -436,7 +433,6 @@ class pScatter
 						$YPos = $this->myPicture->GraphAreaY1 + ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 2;
 						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 270]);
 						$MaxLeft = $Bounds[2]["X"];
-						$this->myPicture->myData->Data["GraphArea"]["X2"] = $MaxLeft + $this->myPicture->FontSize;
 					}
 
 					$AxisPos["R"] = $MaxLeft + $ScaleSpacing;
@@ -571,62 +567,51 @@ class pScatter
 	function drawScatterSplineChart(array $Format = [])
 	{
 		$Data = $this->myPicture->myData->Data;
-		$Palette = $this->myPicture->myData->Palette;
 		$RecordImageMap = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
 		$ImageMapTitle = isset($Format["ImageMapTitle"]) ? $Format["ImageMapTitle"] : NULL;
 		$ImageMapPlotSize = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 10;
 		$ImageMapPrecision = isset($Format["ImageMapPrecision"]) ? $Format["ImageMapPrecision"] : 2;
 		foreach($Data["ScatterSeries"] as $Key => $Series) {
-			if ($Series["isDrawable"] == TRUE) {
+			if ($Series["isDrawable"]) {
 				$SerieX = $Series["X"];
-				$SerieValuesX = $Data["Series"][$SerieX]["Data"];
-				$SerieXAxis = $Data["Series"][$SerieX]["Axis"];
 				$SerieY = $Series["Y"];
-				$SerieValuesY = $Data["Series"][$SerieY]["Data"];
-				$SerieYAxis = $Data["Series"][$SerieY]["Axis"];
-				$Ticks = $Series["Ticks"];
-				$Weight = $Series["Weight"];
 				$Description = ($ImageMapTitle == NULL) ? $Data["Series"][$Series["X"]]["Description"] . " / " . $Data["Series"][$Series["Y"]]["Description"] : $ImageMapTitle;
 
-				$PosArrayX = $this->getPosArray($SerieValuesX, $SerieXAxis);
-				$PosArrayY = $this->getPosArray($SerieValuesY, $SerieYAxis);
+				$PosArrayX = $this->getPosArray($Data["Series"][$SerieX]["Data"], $Data["Series"][$SerieX]["Axis"]);
+				$PosArrayY = $this->getPosArray($Data["Series"][$SerieY]["Data"], $Data["Series"][$SerieY]["Axis"]);
 
-				$SplineSettings = ["R" => $Series["Color"]["R"],"G" => $Series["Color"]["G"],"B" => $Series["Color"]["B"],"Alpha" => $Series["Color"]["Alpha"]];
-				($Ticks != 0) AND $SplineSettings["Ticks"] = $Ticks;
-				($Weight != 0) AND $SplineSettings["Weight"] = $Weight;
+				$SplineSettings = $Series["Color"];
+				($Series["Ticks"] != 0) AND $SplineSettings["Ticks"] = $Series["Ticks"];
+				($Series["Weight"] != 0) AND $SplineSettings["Weight"] = $Series["Weight"];
 				
 				$LastX = VOID;
 				$LastY = VOID;
 				$WayPoints = [];
-				$Forces = [];
+				$SplineSettings["Forces"] = [];
+				
 				foreach($PosArrayX as $Key => $Value) {
 					$X = $Value;
 					$Y = $PosArrayY[$Key];
-					$Force = $this->myPicture->getDistance($LastX, $LastY, $X, $Y) / 5;
+
 					if ($X != VOID && $Y != VOID) {
 						$RealValue = round($Data["Series"][$Series["X"]]["Data"][$Key], 2) . " / " . round($Data["Series"][$Series["Y"]]["Data"][$Key], 2);
 						if ($RecordImageMap) {
 							$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $this->myPicture->toHTMLColor($Series["Color"]["R"], $Series["Color"]["G"], $Series["Color"]["B"]), $Description, $RealValue);
 						}
-					}
-
-					if ($X != VOID && $Y != VOID) {
 						$WayPoints[] = [$X,$Y];
-						$Forces[] = $Force;
+						$SplineSettings["Forces"][] = sqrt(($X - $LastX) * ($X - $LastX) + ($Y - $LastY) * ($Y - $LastY)) / 5; # GetDistance
 					}
 
 					if ($Y == VOID || $X == VOID) {
-						$SplineSettings["Forces"] = $Forces;
 						$this->myPicture->drawSpline($WayPoints, $SplineSettings);
 						$WayPoints = [];
-						$Forces = [];
+						$SplineSettings["Forces"] = [];
 					}
 
 					$LastX = $X;
 					$LastY = $Y;
 				}
 
-				$SplineSettings["Forces"] = $Forces;
 				$this->myPicture->drawSpline($WayPoints, $SplineSettings);
 			}
 		}

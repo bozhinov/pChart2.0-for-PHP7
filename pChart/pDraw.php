@@ -615,14 +615,12 @@ class pDraw
 
 	/* Drawn a spline based on the bezier function */
 	function drawSpline(array $Coordinates, array $Format = []): array {
-		
-		$PathOnly = FALSE;		
-		$Force = 30;
-		$Forces = [];
-		
-		extract($Format);
 
+		$PathOnly = isset($Format["PathOnly"]) ? $Format["PathOnly"] : FALSE;	
+		$Force = isset($Format["Force"]) ? $Format["Force"] : 30;
+		$Forces = isset($Format["Forces"]) ? $Format["Forces"] : [];
 		$Result = [];
+
 		for ($i = 1; $i <= count($Coordinates) - 1; $i++) {
 			$X1 = $Coordinates[$i - 1][0];
 			$Y1 = $Coordinates[$i - 1][1];
@@ -683,7 +681,7 @@ class pDraw
 		$NoDraw = FALSE;
 		$PathOnly = FALSE;
 		$Weight = NULL;
-		$ShowC	= isset($Format["ShowControl"]) ? $Format["ShowControl"] : FALSE;
+		$ShowControl = FALSE;
 		$DrawArrow = FALSE;
 		$ArrowSize = 10;
 		$ArrowRatio = .5;
@@ -692,7 +690,7 @@ class pDraw
 		extract($Format);
 		
 		if ($Segments == NULL) {
-			$Length = $this->getDistance($X1, $Y1, $X2, $Y2);
+			$Length = sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1));
 			$Precision = ($Length * 125) / 1000;
 		} else {
 			$Precision = $Segments;
@@ -729,59 +727,62 @@ class pDraw
 
 		$Q[$ID]["X"] = $X2;
 		$Q[$ID]["Y"] = $Y2;
-		if (!$NoDraw) {
-			/* Display the control points */
-			if ($ShowC && !$PathOnly) {
-				$Xv1 = floor($Xv1);
-				$Yv1 = floor($Yv1);
-				$Xv2 = floor($Xv2);
-				$Yv2 = floor($Yv2);
-				$this->drawLine($X1, $Y1, $X2, $Y2, ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 30]);
-				$MyMarkerSettings = ["R" => 255,"G" => 0,"B" => 0,"BorderR" => 255,"BorderB" => 255,"BorderG" => 255,"Size" => 4];
-				$this->drawRectangleMarker($Xv1, $Yv1, $MyMarkerSettings);
-				$this->drawText($Xv1 + 4, $Yv1, "v1");
-				$MyMarkerSettings = ["R" => 0,"G" => 0,"B" => 255,"BorderR" => 255,"BorderB" => 255,"BorderG" => 255,"Size" => 4];
-				$this->drawRectangleMarker($Xv2, $Yv2, $MyMarkerSettings);
-				$this->drawText($Xv2 + 4, $Yv2, "v2");
+		
+		if ($NoDraw) {
+			return $Q;
+		}
+		
+		/* Display the control points */
+		if ($ShowControl && !$PathOnly) {
+			$Xv1 = floor($Xv1);
+			$Yv1 = floor($Yv1);
+			$Xv2 = floor($Xv2);
+			$Yv2 = floor($Yv2);
+			$this->drawLine($X1, $Y1, $X2, $Y2, ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 30]);
+			$MyMarkerSettings = ["R" => 255,"G" => 0,"B" => 0,"BorderR" => 255,"BorderB" => 255,"BorderG" => 255,"Size" => 4];
+			$this->drawRectangleMarker($Xv1, $Yv1, $MyMarkerSettings);
+			$this->drawText($Xv1 + 4, $Yv1, "v1");
+			$MyMarkerSettings = ["R" => 0,"G" => 0,"B" => 255,"BorderR" => 255,"BorderB" => 255,"BorderG" => 255,"Size" => 4];
+			$this->drawRectangleMarker($Xv2, $Yv2, $MyMarkerSettings);
+			$this->drawText($Xv2 + 4, $Yv2, "v2");
+		}
+
+		/* Draw the bezier */
+		$LastX = NULL;
+		$LastY = NULL;
+		$Cpt = NULL;
+		$Mode = NULL;
+		$ArrowS = [];
+		$ArrowE = [];
+		foreach($Q as $Key => $Point) {
+			$X = $Point["X"];
+			$Y = $Point["Y"];
+			/* Get the first segment */
+			if (empty($ArrowS) && $LastX != NULL && $LastY != NULL) {
+				$ArrowS["X2"] = $LastX;
+				$ArrowS["Y2"] = $LastY;
+				$ArrowS["X1"] = $X;
+				$ArrowS["Y1"] = $Y;
 			}
 
-			/* Draw the bezier */
-			$LastX = NULL;
-			$LastY = NULL;
-			$Cpt = NULL;
-			$Mode = NULL;
-			$ArrowS = [];
-			$ArrowE = [];
-			foreach($Q as $Key => $Point) {
-				$X = $Point["X"];
-				$Y = $Point["Y"];
-				/* Get the first segment */
-				if (empty($ArrowS) && $LastX != NULL && $LastY != NULL) {
-					$ArrowS["X2"] = $LastX;
-					$ArrowS["Y2"] = $LastY;
-					$ArrowS["X1"] = $X;
-					$ArrowS["Y1"] = $Y;
-				}
-
-				if ($LastX != NULL && $LastY != NULL && !$PathOnly) {
-					list($Cpt, $Mode) = $this->drawLine($LastX, $LastY, $X, $Y, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Cpt" => $Cpt,"Mode" => $Mode,"Weight" => $Weight]);
-				}
-				/* Get the last segment */
-				$ArrowE["X1"] = $LastX;
-				$ArrowE["Y1"] = $LastY;
-				$ArrowE["X2"] = $X;
-				$ArrowE["Y2"] = $Y;
-				$LastX = $X;
-				$LastY = $Y;
+			if ($LastX != NULL && $LastY != NULL && !$PathOnly) {
+				list($Cpt, $Mode) = $this->drawLine($LastX, $LastY, $X, $Y, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Cpt" => $Cpt,"Mode" => $Mode,"Weight" => $Weight]);
 			}
+			/* Get the last segment */
+			$ArrowE["X1"] = $LastX;
+			$ArrowE["Y1"] = $LastY;
+			$ArrowE["X2"] = $X;
+			$ArrowE["Y2"] = $Y;
+			$LastX = $X;
+			$LastY = $Y;
+		}
 
-			if ($DrawArrow && !$PathOnly) {
-				$ArrowSettings = ["FillR" => $R,"FillG" => $G,"FillB" => $B,"Alpha" => $Alpha,"Size" => $ArrowSize,"Ratio" => $ArrowRatio];
-				if ($ArrowTwoHeads) {
-					$this->drawArrow($ArrowS["X1"], $ArrowS["Y1"], $ArrowS["X2"], $ArrowS["Y2"], $ArrowSettings);
-				}
-				$this->drawArrow($ArrowE["X1"], $ArrowE["Y1"], $ArrowE["X2"], $ArrowE["Y2"], $ArrowSettings);
+		if ($DrawArrow && !$PathOnly) {
+			$ArrowSettings = ["FillR" => $R,"FillG" => $G,"FillB" => $B,"Alpha" => $Alpha,"Size" => $ArrowSize,"Ratio" => $ArrowRatio];
+			if ($ArrowTwoHeads) {
+				$this->drawArrow($ArrowS["X1"], $ArrowS["Y1"], $ArrowS["X2"], $ArrowS["Y2"], $ArrowSettings);
 			}
+			$this->drawArrow($ArrowE["X1"], $ArrowE["Y1"], $ArrowE["X2"], $ArrowE["Y2"], $ArrowSettings);
 		}
 
 		return $Q;
@@ -2219,7 +2220,6 @@ class pDraw
 							$XPos = $this->GraphAreaX1 + ($this->GraphAreaX2 - $this->GraphAreaX1) / 2;
 							$Bounds = $this->drawText($XPos, $YPos, $Parameters["Name"], ["Align" => TEXT_ALIGN_TOPMIDDLE]);
 							$MaxBottom = $Bounds[0]["Y"];
-							$this->myData->Data["GraphArea"]["Y2"] = $MaxBottom + $this->FontSize;
 						}
 
 						$AxisPos["B"] = $MaxBottom + $ScaleSpacing;
@@ -2316,7 +2316,6 @@ class pDraw
 							$XPos = $this->GraphAreaX1 + ($this->GraphAreaX2 - $this->GraphAreaX1) / 2;
 							$Bounds = $this->drawText($XPos, $YPos, $Parameters["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
 							$MinTop = $Bounds[2]["Y"];
-							$this->myData->Data["GraphArea"]["Y1"] = $MinTop;
 						}
 
 						$AxisPos["T"] = $MinTop - $ScaleSpacing;
@@ -2416,7 +2415,6 @@ class pDraw
 							$YPos = $this->GraphAreaY1 + ($this->GraphAreaY2 - $this->GraphAreaY1) / 2;
 							$Bounds = $this->drawText($XPos, $YPos, $Parameters["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 90]);
 							$MinLeft = $Bounds[0]["X"];
-							$this->myData->Data["GraphArea"]["X1"] = $MinLeft;
 						}
 
 						$AxisPos["L"] = $MinLeft - $ScaleSpacing;
@@ -2513,7 +2511,6 @@ class pDraw
 							$YPos = $this->GraphAreaY1 + ($this->GraphAreaY2 - $this->GraphAreaY1) / 2;
 							$Bounds = $this->drawText($XPos, $YPos, $Parameters["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 270]);
 							$MaxRight = $Bounds[1]["X"];
-							$this->myData->Data["GraphArea"]["X2"] = $MaxRight + $this->FontSize;
 						}
 
 						$AxisPos["R"] = $MaxRight + $ScaleSpacing;
@@ -2575,7 +2572,6 @@ class pDraw
 							$YPos = $this->GraphAreaY1 + ($this->GraphAreaY2 - $this->GraphAreaY1) / 2;
 							$Bounds = $this->drawText($XPos, $YPos, $Parameters["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 90]);
 							$MinLeft = $Bounds[2]["X"];
-							$this->myData->Data["GraphArea"]["X1"] = $MinLeft;
 						}
 
 						$AxisPos["L"] = $MinLeft - $ScaleSpacing;
@@ -2632,7 +2628,6 @@ class pDraw
 							$YPos = $this->GraphAreaY1 + ($this->GraphAreaY2 - $this->GraphAreaY1) / 2;
 							$Bounds = $this->drawText($XPos, $YPos, $Parameters["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 270]);
 							$MaxLeft = $Bounds[2]["X"];
-							$this->myData->Data["GraphArea"]["X2"] = $MaxLeft + $this->FontSize;
 						}
 
 						$AxisPos["R"] = $MaxLeft + $ScaleSpacing;
@@ -2692,7 +2687,6 @@ class pDraw
 							$XPos = $this->GraphAreaX1 + ($this->GraphAreaX2 - $this->GraphAreaX1) / 2;
 							$Bounds = $this->drawText($XPos, $YPos, $Parameters["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
 							$MinTop = $Bounds[2]["Y"];
-							$this->myData->Data["GraphArea"]["Y1"] = $MinTop;
 						}
 
 						$AxisPos["T"] = $MinTop - $ScaleSpacing;
@@ -2749,7 +2743,6 @@ class pDraw
 							$XPos = $this->GraphAreaX1 + ($this->GraphAreaX2 - $this->GraphAreaX1) / 2;
 							$Bounds = $this->drawText($XPos, $YPos, $Parameters["Name"], ["Align" => TEXT_ALIGN_TOPMIDDLE]);
 							$MaxBottom = $Bounds[0]["Y"];
-							$this->myData->Data["GraphArea"]["Y2"] = $MaxBottom + $this->FontSize;
 						}
 
 						$AxisPos["B"] = $MaxBottom + $ScaleSpacing;
@@ -4407,13 +4400,9 @@ class pDraw
 		}
 
 		$this->GraphAreaX1 = $X1;
-		$this->myData->Data["GraphArea"]["X1"] = $X1;
 		$this->GraphAreaY1 = $Y1;
-		$this->myData->Data["GraphArea"]["Y1"] = $Y1;
 		$this->GraphAreaX2 = $X2;
-		$this->myData->Data["GraphArea"]["X2"] = $X2;
 		$this->GraphAreaY2 = $Y2;
-		$this->myData->Data["GraphArea"]["Y2"] = $Y2;
 	}
 
 	/* Return the width of the picture */
@@ -4481,7 +4470,7 @@ class pDraw
 		}
 	}
 
-	/* Return the distance between two points */
+	/* Return the distance between two points */ # UNUSED
 	function getDistance($X1, $Y1, $X2, $Y2)
 	{
 		return sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1));
