@@ -242,6 +242,13 @@ class pCharts {
 				$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
+				
+				$WayPoints = [];
+				$LastGoodY = NULL;
+				$LastGoodX = NULL;
+				$LastX = 1;
+				$LastY = 1;
+					
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($XDivs == 0) {
 						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
@@ -250,12 +257,8 @@ class pCharts {
 					}
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
-					$WayPoints = [];
 					$Force = $XStep / 5;					
-					$LastGoodY = NULL;
-					$LastGoodX = NULL;
-					$LastX = 1;
-					$LastY = 1;
+
 					foreach($PosArray as $Key => $Y) {
 						if ($DisplayValues) {
 							$this->myPicture->drawText(
@@ -307,12 +310,8 @@ class pCharts {
 					}
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-					$WayPoints = [];
 					$Force = $YStep / 5;					
-					$LastGoodY = NULL;
-					$LastGoodX = NULL;
-					$LastX = 1;
-					$LastY = 1;
+
 					foreach($PosArray as $Key => $X) {
 						if ($DisplayValues) {
 							$this->myPicture->drawText($X + $DisplayOffset, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Angle" => 270,"R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
@@ -608,6 +607,12 @@ class pCharts {
 				$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
+				
+				$LastX = NULL;
+				$LastY = NULL;
+				$LastGoodY = NULL;
+				$LastGoodX = NULL;
+				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($XDivs == 0) {
 						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
@@ -616,10 +621,7 @@ class pCharts {
 					}
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
-					$LastX = NULL;
-					$LastY = NULL;
-					$LastGoodY = NULL;
-					$LastGoodX = NULL;
+
 					foreach($PosArray as $Key => $Y) {
 						if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
 							if ($Serie["Data"][$Key] > 0) {
@@ -668,10 +670,6 @@ class pCharts {
 					}
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-					$LastX = NULL;
-					$LastY = NULL;					
-					$LastGoodY = NULL;
-					$LastGoodX = NULL;
 					foreach($PosArray as $Key => $X) {
 						if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
 							$this->myPicture->drawText($X + $DisplayOffset + $Weight, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Angle" => 270,"R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
@@ -737,6 +735,13 @@ class pCharts {
 		if (count($PosArrayA) != count($PosArrayB)) {
 			throw pException::ZoneChartInvalidInputException("Invalid data #2");
 		}
+		
+		$LastX = NULL;
+		$LastY = NULL;
+		$LastY1 = NULL;
+		$LastY2 = NULL;
+		$BoundsA = [];
+		$BoundsB = [];
 
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 			if ($XDivs == 0) {
@@ -746,13 +751,7 @@ class pCharts {
 			}
 
 			$X = $this->myPicture->GraphAreaX1 + $XMargin;
-			$LastX = NULL;
-			$LastY = NULL;
-			$LastX = NULL;
-			$LastY1 = NULL;
-			$LastY2 = NULL;
-			$BoundsA = [];
-			$BoundsB = [];
+
 			foreach($PosArrayA as $Key => $Y1) {
 				$Y2 = $PosArrayB[$Key];
 				$BoundsA[] = $X;
@@ -779,13 +778,7 @@ class pCharts {
 			}
 
 			$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-			$LastX = NULL;
-			$LastY = NULL;
-			$LastY = NULL;
-			$LastX1 = NULL;
-			$LastX2 = NULL;
-			$BoundsA = [];
-			$BoundsB = [];
+
 			foreach($PosArrayA as $Key => $X1) {
 				$X2 = $PosArrayB[$Key];
 				$BoundsA[] = $X1;
@@ -861,6 +854,12 @@ class pCharts {
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
+				$LastX = NULL;
+				$LastY = NULL;
+				$LastGoodY = NULL;
+				$LastGoodX = NULL;
+				$Init = FALSE;
+				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($XDivs == 0) {
 						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
@@ -869,11 +868,7 @@ class pCharts {
 					}
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
-					$LastX = NULL;
-					$LastY = NULL;					
-					$LastGoodY = NULL;
-					$LastGoodX = NULL;
-					$Init = FALSE;
+
 					foreach($PosArray as $Key => $Y) {
 						if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
 							if ($Y <= $LastY) {
@@ -963,11 +958,7 @@ class pCharts {
 					}
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-					$LastX = NULL;
-					$LastY = NULL;					
-					$LastGoodY = NULL;
-					$LastGoodX = NULL;
-					$Init = FALSE;
+	
 					foreach($PosArray as $Key => $X) {
 						if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
 							if ($X >= $LastX) {
@@ -1083,6 +1074,13 @@ class pCharts {
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"],["AxisID" => $Serie["Axis"]]);
 				$YZero = $this->myPicture->scaleComputeYSingle(0, ["AxisID" => $Serie["Axis"]]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
+				
+				$LastX = NULL;
+				$LastY = NULL;
+				$LastGoodY = NULL;
+				$LastGoodX = NULL;
+				$Points = [];
+					
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($YZero > $this->myPicture->GraphAreaY2 - 1) {
 						$YZero = $this->myPicture->GraphAreaY2 - 1;
@@ -1099,14 +1097,10 @@ class pCharts {
 					}
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
-					$LastX = NULL;
-					$LastY = NULL;
+					
 					if (!$AroundZero) {
 						$YZero = $this->myPicture->GraphAreaY2 - 1;
 					}
-					$LastGoodY = NULL;
-					$LastGoodX = NULL;
-					$Points = [];
 					$Init = FALSE;
 					
 					foreach($PosArray as $Key => $Y) {
@@ -1184,11 +1178,7 @@ class pCharts {
 					}
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-					$LastX = NULL;
-					$LastY = NULL;					
-					$LastGoodY = NULL;
-					$LastGoodX = NULL;
-					$Points = [];
+
 					foreach($PosArray as $Key => $X) {
 
 						if ($X == VOID && $LastX != NULL && $LastY != NULL && (count($Points) > 0)) {
@@ -2104,7 +2094,7 @@ class pCharts {
 				$G = $Serie["Color"]["G"];
 				$B = $Serie["Color"]["B"];
 				$Alpha = $Serie["Color"]["Alpha"];
-				$Ticks = $Serie["Ticks"];
+				#$Ticks = $Serie["Ticks"]; # UNUSED
 				($ForceTransparency != NULL) AND $Alpha = $ForceTransparency;
 				$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
 				
@@ -2122,13 +2112,14 @@ class pCharts {
 					$PlotBorderColor = ["R" => $PlotBorderR,"G" => $PlotBorderG,"B" => $PlotBorderB,"Alpha" => $PlotBorderAlpha];
 				}
 
-				$AxisID = $Serie["Axis"];
-				$Mode = $Data["Axis"][$AxisID]["Display"];
-				$Format = $Data["Axis"][$AxisID]["Format"];
-				$Unit = $Data["Axis"][$AxisID]["Unit"];
+				#$AxisID = $Serie["Axis"]; # UNUSED
+				#$Mode = $Data["Axis"][$AxisID]["Display"];
+				#$Format = $Data["Axis"][$AxisID]["Format"];
+				#$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]], TRUE);
-				$YZero = $this->myPicture->scaleComputeYSingle(1, ["AxisID" => $Serie["Axis"]]); // MOMCHIL FIX FOR THE INCIDENTS BY TYPE
+				$YZero = $this->myPicture->scaleComputeYSingle(1, ["AxisID" => $Serie["Axis"]]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
+				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					($YZero < $this->myPicture->GraphAreaY1 + 1) AND $YZero = $this->myPicture->GraphAreaY1 + 1;
 					($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
@@ -2591,8 +2582,15 @@ class pCharts {
 				$Alpha = $Serie["Color"]["Alpha"];
 				$Ticks = $Serie["Ticks"];
 				$Weight = $Serie["Weight"];
-				$AxisID = $Serie["Axis"];
+				#$AxisID = $Serie["Axis"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
+				
+				$LastX = NULL;
+				$LastY = NULL;
+				$MinSlope = 0;
+				$MaxSlope = 1;
+				$LastColor = NULL;
+				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($Caption) {
 						if ($CaptionLine) {
@@ -2633,10 +2631,7 @@ class pCharts {
 					$RestoreShadow = $this->myPicture->Shadow;
 					$this->myPicture->Shadow = FALSE;
 					/* Determine the Max slope index */
-					$LastX = NULL;
-					$LastY = NULL;
-					$MinSlope = 0;
-					$MaxSlope = 1;
+
 					foreach($PosArray as $Key => $Y) {
 						if ($Y != VOID && $LastX != NULL) {
 							$Slope = ($LastY - $Y);
@@ -2655,7 +2650,7 @@ class pCharts {
 
 					$LastX = NULL;
 					$LastY = NULL;
-					$LastColor = NULL;
+					
 					foreach($PosArray as $Key => $Y) {
 						if ($Y != VOID && $LastY != NULL) {
 							$Slope = ($LastY - $Y);
@@ -2734,10 +2729,7 @@ class pCharts {
 					$RestoreShadow = $this->myPicture->Shadow;
 					$this->myPicture->Shadow = FALSE;
 					/* Determine the Max slope index */
-					$LastX = NULL;
-					$LastY = NULL;
-					$MinSlope = 0;
-					$MaxSlope = 1;
+
 					foreach($PosArray as $Key => $X) {
 						if ($X != VOID && $LastX != NULL) {
 							$Slope = ($X - $LastX);
@@ -2750,7 +2742,7 @@ class pCharts {
 
 					$LastX = NULL;
 					$LastY = NULL;
-					$LastColor = NULL;
+
 					foreach($PosArray as $Key => $X) {
 						if ($X != VOID && $LastX != NULL) {
 							$Slope = ($X - $LastX);
