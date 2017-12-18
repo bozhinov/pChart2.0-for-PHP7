@@ -649,7 +649,7 @@ class pSpring
 					if (isset($this->Data[$NodeID]) && !isset($Drawn[$Key][$NodeID]) && !isset($Drawn[$NodeID][$Key])) {
 						$Color = ["R" => $this->Default["LinkR"],"G" => $this->Default["LinkG"],"B" => $this->Default["LinkB"],"Alpha" => $this->Default["Alpha"]];
 						#if ($this->Links != "") {
-						if (count($this->Links) > 0) {	
+						if (!empty($this->Links)) {	
 							if (isset($this->Links[$Key][$NodeID]["R"])) {
 								$Color = ["R" => $this->Links[$Key][$NodeID]["R"],"G" => $this->Links[$Key][$NodeID]["G"],"B" => $this->Links[$Key][$NodeID]["B"],"Alpha" => $this->Links[$Key][$NodeID]["Alpha"]];
 							}
@@ -664,7 +664,7 @@ class pSpring
 						$this->myPicture->drawLine($X, $Y, $X2, $Y2, $Color);
 						$Drawn[$Key][$NodeID] = TRUE;
 
-						if (count($this->Links) > 0) {
+						if (!empty($this->Links)) {
 							if (isset($this->Links[$Key][$NodeID]["Name"]) || isset($this->Links[$NodeID][$Key]["Name"])) {
 								$Name = isset($this->Links[$Key][$NodeID]["Name"]) ? $this->Links[$Key][$NodeID]["Name"] : $this->Links[$NodeID][$Key]["Name"];
 								$TxtX = ($X2 - $X) / 2 + $X;

@@ -424,22 +424,20 @@ class pCharts {
 
 						if ($Y == VOID) {
 							$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"PathOnly" => TRUE]);
-							if (count($Area) > 0)
-							{
-								foreach($Area as $key => $Points) {
-									$Corners = [$Area[$key][0]["X"], $YZero];
-									foreach($Points as $subKey => $Point) {
-										$Corners[] = ($subKey == count($Points) - 1) ? $Point["X"] - 1 : $Point["X"];
-										$Corners[] = $Point["Y"] + 1;
-									}
 
-									$Corners[] = $Points[$subKey]["X"] - 1;
-									$Corners[] = $YZero;
-									$this->drawPolygonChart($Corners, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / 2,"NoBorder" => TRUE,"Threshold" => $Threshold]);
+							foreach($Area as $key => $Points) {
+								$Corners = [$Area[$key][0]["X"], $YZero];
+								foreach($Points as $subKey => $Point) {
+									$Corners[] = ($subKey == count($Points) - 1) ? $Point["X"] - 1 : $Point["X"];
+									$Corners[] = $Point["Y"] + 1;
 								}
 
-								$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks]);
+								$Corners[] = $Points[$subKey]["X"] - 1;
+								$Corners[] = $YZero;
+								$this->drawPolygonChart($Corners, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / 2,"NoBorder" => TRUE,"Threshold" => $Threshold]);
 							}
+
+							$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks]);
 
 							$WayPoints = [];
 						} else {
@@ -450,22 +448,21 @@ class pCharts {
 					}
 
 					$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"PathOnly" => TRUE]);
-					if (count($Area) > 0)
-					{
-						foreach($Area as $key => $Points) {
-							$Corners = [$Area[$key][0]["X"], $YZero];
-							foreach($Points as $subKey => $Point) {
-								$Corners[] = ($subKey == count($Points) - 1) ? $Point["X"] - 1 : $Point["X"];
-								$Corners[] = $Point["Y"] + 1;
-							}
 
-							$Corners[] = $Points[$subKey]["X"] - 1;
-							$Corners[] = $YZero;
-							$this->drawPolygonChart($Corners, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / 2,"NoBorder" => TRUE,"Threshold" => $Threshold]);
+					foreach($Area as $key => $Points) {
+						$Corners = [$Area[$key][0]["X"], $YZero];
+						foreach($Points as $subKey => $Point) {
+							$Corners[] = ($subKey == count($Points) - 1) ? $Point["X"] - 1 : $Point["X"];
+							$Corners[] = $Point["Y"] + 1;
 						}
 
-						$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks]);
+						$Corners[] = $Points[$subKey]["X"] - 1;
+						$Corners[] = $YZero;
+						$this->drawPolygonChart($Corners, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / 2,"NoBorder" => TRUE,"Threshold" => $Threshold]);
 					}
+
+					$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks]);
+
 				} else {
 					if ($XDivs == 0) {
 						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 4;
@@ -1105,7 +1102,7 @@ class pCharts {
 					
 					foreach($PosArray as $Key => $Y) {
 
-						if ($Y == VOID && $LastX != NULL && $LastY != NULL && (count($Points) > 0)) {
+						if ($Y == VOID && $LastX != NULL && $LastY != NULL && (!empty($Points))) {
 							$Points[] = $LastX;
 							$Points[] = $LastY;
 							$Points[] = $X;
@@ -1118,7 +1115,7 @@ class pCharts {
 
 						if ($Y != VOID && $LastX != NULL && $LastY != NULL) {
 
-							if (count($Points) == 0) {
+							if (empty($Points)) {
 								$Points[] = $LastX;
 								$Points[] = $YZero;
 							}
@@ -1181,7 +1178,7 @@ class pCharts {
 
 					foreach($PosArray as $Key => $X) {
 
-						if ($X == VOID && $LastX != NULL && $LastY != NULL && (count($Points) > 0)) {
+						if ($X == VOID && $LastX != NULL && $LastY != NULL && (!empty($Points))) {
 							$Points[] = $LastX;
 							$Points[] = $LastY;
 							$Points[] = $LastX;
@@ -1193,7 +1190,7 @@ class pCharts {
 						}
 
 						if ($X != VOID && $LastX != NULL && $LastY != NULL) {
-							(count($Points) == 0) AND $Points = [$YZero, $LastY];
+							(empty($Points)) AND $Points = [$YZero, $LastY];
 							$Points[] = $LastX; 
 							$Points[] = $LastY;
 							$Points[] = $LastX;
@@ -1492,7 +1489,7 @@ class pCharts {
 		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
-		if (count($OverrideColors) > 0) {
+		if (!empty($OverrideColors)) {
 			$OverrideColors = $this->myPicture->validatePalette($OverrideColors, $OverrideSurrounding);
 			$this->myPicture->myData->saveExtendedData("Palette", $OverrideColors);
 		}
@@ -2276,7 +2273,7 @@ class pCharts {
 
 		$Segments = $Result;
 		/* Do we have something to draw */
-		if (count($Segments) == 0) {
+		if (empty($Segments)) {
 			return; # Momchil That's OK
 		}
 
@@ -2370,34 +2367,31 @@ class pCharts {
 					}
 				}
 
-				if (count($Result) > 0) {
-					$Intersections = $Result;
-					$LastX = OUT_OF_SIGHT;
-					foreach($Intersections as $Key => $X) {
-						if ($LastX == OUT_OF_SIGHT) {
-							$LastX = $X;
-						} else {
-							if ($this->myPicture->getFirstDecimal($LastX) > 1) {
-								$LastX++;
-							}
-
-							$Color = $DefaultColor;
-
-							foreach($Threshold as $Key => $Parameters) {
-								if ($Y <= $Parameters["MinX"] && $Y >= $Parameters["MaxX"]) {
-									$Color = $this->myPicture->allocateColor(
-										(isset($Parameters["R"])) ? $Parameters["R"] : 0,
-										(isset($Parameters["G"])) ? $Parameters["G"] : 0,
-										(isset($Parameters["B"])) ? $Parameters["B"] : 0,
-										(isset($Parameters["Alpha"])) ? $Parameters["Alpha"] : 100
-									);
-								}
-							}
-
-							imageline($this->myPicture->Picture, $LastX, $Y, $X, $Y, $Color);
-							
-							$LastX = OUT_OF_SIGHT;
+				$LastX = OUT_OF_SIGHT;
+				foreach($Result as $Key => $X) {
+					if ($LastX == OUT_OF_SIGHT) {
+						$LastX = $X;
+					} else {
+						if ($this->myPicture->getFirstDecimal($LastX) > 1) {
+							$LastX++;
 						}
+
+						$Color = $DefaultColor;
+
+						foreach($Threshold as $Key => $Parameters) {
+							if ($Y <= $Parameters["MinX"] && $Y >= $Parameters["MaxX"]) {
+								$Color = $this->myPicture->allocateColor(
+									(isset($Parameters["R"])) ? $Parameters["R"] : 0,
+									(isset($Parameters["G"])) ? $Parameters["G"] : 0,
+									(isset($Parameters["B"])) ? $Parameters["B"] : 0,
+									(isset($Parameters["Alpha"])) ? $Parameters["Alpha"] : 100
+								);
+							}
+						}
+
+						imageline($this->myPicture->Picture, $LastX, $Y, $X, $Y, $Color);
+						
+						$LastX = OUT_OF_SIGHT;
 					}
 				}
 

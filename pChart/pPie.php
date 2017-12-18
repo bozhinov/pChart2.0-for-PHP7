@@ -887,7 +887,7 @@ class pPie
 			$Height = $TxtPos[0]["Y"] - $TxtPos[2]["Y"];
 			$YTop = $Y2 - $Height / 2 - 2;
 			$YBottom = $Y2 + $Height / 2 + 2;
-			if (count($this->LabelPos) > 0) {
+			if (!empty($this->LabelPos)) {
 				$Done = FALSE;
 				foreach($this->LabelPos as $Key => $Settings) {
 					if (!$Done) {						
@@ -947,7 +947,7 @@ class pPie
 	function writeShiftedLabels()
 	{
 
-		if (count($this->LabelPos) == 0) {
+		if (empty($this->LabelPos)) {
 			return; # Momchil: example.draw2DPie.labels
 		}
 
@@ -1475,7 +1475,7 @@ class pPie
 				}
 			}
 
-			(count($InnerPlotsA) > 0) AND $this->myPicture->drawPolygon(array_merge($InnerPlotsA, $this->arrayReverse($InnerPlotsB)), $Settings);
+			(!empty($InnerPlotsA)) AND $this->myPicture->drawPolygon(array_merge($InnerPlotsA, $this->arrayReverse($InnerPlotsB)), $Settings);
 			
 		}
 
@@ -1556,7 +1556,7 @@ class pPie
 				}
 			}
 
-			(count($OuterPlotsA) > 0) AND $this->myPicture->drawPolygon(array_merge($OuterPlotsA, $this->arrayReverse($OuterPlotsB)), $Settings);
+			(!empty($OuterPlotsA)) AND $this->myPicture->drawPolygon(array_merge($OuterPlotsA, $this->arrayReverse($OuterPlotsB)), $Settings);
 			
 		}
 

@@ -356,7 +356,7 @@ class pData
 		$GlobalMin = ABSOLUTE_MAX;
 		$GlobalMax = ABSOLUTE_MIN;
 		foreach($this->Data["Series"] as $Key => $Value) {
-			if ($this->Data["Abscissa"] != $Key && $this->Data["Series"][$Key]["isDrawable"] == TRUE) {
+			if ($this->Data["Abscissa"] != $Key && $this->Data["Series"][$Key]["isDrawable"]) {
 				if ($GlobalMin > $this->Data["Series"][$Key]["Min"]) {
 					$GlobalMin = $this->Data["Series"][$Key]["Min"];
 				}
@@ -507,7 +507,7 @@ class pData
 		}
 
 		foreach($this->Data["Series"] as $Key => $Value) {
-			if ($this->Data["Abscissa"] != $Key && $this->Data["Series"][$Key]["isDrawable"] == TRUE) {
+			if ($this->Data["Abscissa"] != $Key && $this->Data["Series"][$Key]["isDrawable"]) {
 				return TRUE;
 			}
 		}
@@ -516,11 +516,11 @@ class pData
 	}
 
 	/* Set the display mode of an Axis */
-	function setAxisDisplay(int $AxisID, int $Mode = AXIS_FORMAT_DEFAULT, string $Format = NULL)
+	function setAxisDisplay(int $AxisID, int $Mode = AXIS_FORMAT_DEFAULT, string $Format = "")
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
 			$this->Data["Axis"][$AxisID]["Display"] = $Mode;
-			if ($Format != NULL) {
+			if ($Format != "") {
 				$this->Data["Axis"][$AxisID]["Format"] = $Format;
 			}
 		}
@@ -669,7 +669,7 @@ class pData
 		}
 
 		$buffer = file_get_contents($FileName);
-		if ($buffer === false) {
+		if ($buffer === FALSE) {
 			throw pException::InvalidInput("Invalid palette");
 		}
 
@@ -785,7 +785,7 @@ class pData
 	}
 
 	/* Load data from a CSV (or similar) data source */
-	function importFromCSV($FileName, array $Options = []) # Momchil: TODO: I need a sample here
+	function importFromCSV($FileName, array $Options = []) # Momchil: TODO: I need a sample here UNUSED
 	{
 		$Delimiter = isset($Options["Delimiter"]) ? $Options["Delimiter"] : ",";
 		$GotHeader = isset($Options["GotHeader"]) ? $Options["GotHeader"] : FALSE;
@@ -814,7 +814,7 @@ class pData
 			$Values = explode($Delimiter, $line);
 			foreach($Values as $Key => $Value) {
 				if (!in_array($Key, $SkipColumns)){
-					$this->addPoints([$Value], (isset($SerieNames[$Key])) ? $SerieNames[$Key] : "Serie".$Key);
+					$this->addPoints([$Value], (isset($SerieNames[$Key])) ? $SerieNames[$Key] : $DefaultSerieName . $Key);
 				}
 			}
 		}
@@ -825,7 +825,7 @@ class pData
 	{
 		$Results = 0;
 		foreach($this->Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $this->Data["Abscissa"]) {
+			if ($Serie["isDrawable"] && $SerieName != $this->Data["Abscissa"]) {
 				$Results++;
 			}
 		}

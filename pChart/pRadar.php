@@ -162,7 +162,7 @@ class pRadar
 		if ($DrawBackground) {
 			$RestoreShadow = $this->myPicture->Shadow;
 			$this->myPicture->Shadow = FALSE;
-			if (count($BackgroundGradient) == 0) {
+			if (empty($BackgroundGradient)) {
 				if ($Layout == RADAR_LAYOUT_STAR) {
 					
 					$Color = ["R" => $BackgroundR,	"G" => $BackgroundG, "B" => $BackgroundB, "Alpha" => $BackgroundAlpha];
@@ -520,7 +520,7 @@ class pRadar
 		if ($DrawBackground) {
 			$RestoreShadow = $this->myPicture->Shadow;
 			$this->myPicture->Shadow = FALSE;
-			if (count($BackgroundGradient) == 0) {
+			if (empty($BackgroundGradient)) {
 				$Color = ["R" => $BackgroundR,"G" => $BackgroundG,"B" => $BackgroundB,"Alpha" => $BackgroundAlpha];
 				$this->myPicture->drawFilledCircle($CenterX, $CenterY, $EdgeHeight, $Color);
 			} else {

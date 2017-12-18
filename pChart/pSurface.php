@@ -107,7 +107,7 @@ class pSurface
 
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
 			$XPos = floor($X0 + $X * $XSize + $XSize / 2);
-			$Value = (count($Labels) == 0 || !isset($Labels[$X])) ? $X + $CountOffset : $Labels[$X];
+			$Value = (empty($Labels) || !isset($Labels[$X])) ? $X + $CountOffset : $Labels[$X];
 			$this->myPicture->drawText($XPos, $YPos, $Value, $Settings);
 		}
 	}
@@ -144,7 +144,7 @@ class pSurface
 
 		for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {
 			$YPos = floor($Y0 + $Y * $YSize + $YSize / 2);
-			$Value = (count($Labels) == 0 || !isset($Labels[$Y])) ? $Y + $CountOffset : $Labels[$Y];
+			$Value = (empty($Labels) || !isset($Labels[$Y])) ? $Y + $CountOffset : $Labels[$Y];
 			$this->myPicture->drawText($XPos, $YPos, $Value, $Settings);
 		}
 	}
@@ -228,7 +228,7 @@ class pSurface
 					$X2 = floor($X0 + $X * $XSize + $XSize);
 					$Y2 = floor($Y0 + $Y * $YSize + $YSize);
 					
-					if (count($Palette) != 0) {
+					if (!empty($Palette)) {
 						$R = (isset($Palette[$Value]) && isset($Palette[$Value]["R"])) ? $Palette[$Value]["R"] : 0;
 						$G = (isset($Palette[$Value]) && isset($Palette[$Value]["G"])) ? $Palette[$Value]["G"] : 0;
 						$B = (isset($Palette[$Value]) && isset($Palette[$Value]["B"])) ? $Palette[$Value]["B"] : 0;

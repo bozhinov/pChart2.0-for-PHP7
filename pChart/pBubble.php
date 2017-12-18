@@ -74,7 +74,7 @@ class pBubble
 		}
 
 		/* Check for missing values and all the fake positive serie */
-		if (count($NewPositiveSerie) > 0) //if ( $NewPositiveSerie != "" )
+		if (!empty($NewPositiveSerie))
 		{
 			for ($i = 0; $i < $MaxValues; $i++) {
 				if (!isset($NewPositiveSerie[$i])) {
@@ -86,7 +86,7 @@ class pBubble
 		}
 
 		/* Check for missing values and all the fake negative serie */
-		if (count($NewNegativeSerie) > 0) // if ( $NewNegativeSerie != "" )
+		if (!empty($NewNegativeSerie))
 		{
 			for ($i = 0; $i < $MaxValues; $i++) {
 				if (!isset($NewNegativeSerie[$i])) {

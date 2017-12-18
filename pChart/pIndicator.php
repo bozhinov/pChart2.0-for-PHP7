@@ -112,7 +112,7 @@ class pIndicator
 			}
 
 			if ($ValueDisplay == INDICATOR_VALUE_LABEL) {
-				if (count($Break) == 0){
+				if (empty($Break)){
 					$this->myPicture->drawFilledRectangle($X1, $Y, $X2, $Y + $Height, $Color);
 				} else {
 					sort($Break);

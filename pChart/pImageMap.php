@@ -45,7 +45,7 @@ class pImageMap extends pDraw
 	
 	function __destruct(){
 		
-		if (count($this->ImageMapBuffer) > 0){
+		if (!empty($this->ImageMapBuffer)){
 			if ($this->ImageMapStorageMode == IMAGE_MAP_STORAGE_SESSION) {
 
 				$_SESSION[$this->ImageMapIndex] = $this->ImageMapBuffer;
