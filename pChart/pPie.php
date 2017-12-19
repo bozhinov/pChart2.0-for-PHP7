@@ -1217,7 +1217,6 @@ class pPie
 	function draw3DRing(int $X, int $Y, array $Format = [])
 	{
 		$Precision = 0;
-		#$Border = FALSE; # UNUSED
 		$Shadow = FALSE;
 		$DrawLabels = FALSE;
 		$LabelStacked = FALSE;
@@ -1227,12 +1226,6 @@ class pPie
 		$LabelB = 0;
 		$LabelAlpha = 100;
 		$WriteValues = NULL;
-		#$ValuePosition = PIE_VALUE_OUTSIDE;  # UNUSED
-		#$ValueSuffix = "";
-		#$ValueR = 255;
-		#$ValueG = 255;
-		#$ValueB = 255;
-		#$ValueAlpha = 100;
 		$RecordImageMap = FALSE;				
 		$OuterRadius = 100;
 		$InnerRadius = 30;
@@ -1242,7 +1235,6 @@ class pPie
 		$DataGapRadius = 10;
 		$Cf = 20;
 		$WriteValues = PIE_VALUE_NATURAL;
-		# $ValuePadding = $SliceHeight + 15; # UNUSED
 		
 		/* Override defaults */
 		extract($Format);
@@ -1475,7 +1467,7 @@ class pPie
 				}
 			}
 
-			(!empty($InnerPlotsA)) AND $this->myPicture->drawPolygon(array_merge($InnerPlotsA, $this->arrayReverse($InnerPlotsB)), $Settings);
+			(!empty($InnerPlotsA)) AND $this->myPicture->drawPolygon(array_merge($InnerPlotsA, $this->myPicture->reversePlots($InnerPlotsB)), $Settings);
 			
 		}
 
@@ -1556,7 +1548,7 @@ class pPie
 				}
 			}
 
-			(!empty($OuterPlotsA)) AND $this->myPicture->drawPolygon(array_merge($OuterPlotsA, $this->arrayReverse($OuterPlotsB)), $Settings);
+			(!empty($OuterPlotsA)) AND $this->myPicture->drawPolygon(array_merge($OuterPlotsA, $this->myPicture->reversePlots($OuterPlotsB)), $Settings);
 			
 		}
 
@@ -1621,18 +1613,6 @@ class pPie
 		}
 
 		$this->myPicture->Shadow = $RestoreShadow;
-	}
-
-	/* Reverse an array */
-	function arrayReverse(array $Plots) # Not really reversing it
-	{
-		$Result = [];
-		for ($i = count($Plots) - 1; $i >= 0; $i = $i - 2) {
-			$Result[] = $Plots[$i - 1];
-			$Result[] = $Plots[$i];
-		}
-
-		return $Result;
 	}
 
 	/* Remove unused series & values */
