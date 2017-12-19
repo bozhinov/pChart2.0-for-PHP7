@@ -124,6 +124,17 @@ class pData
 			throw pException::InvalidInput("Invalid serie name");
 		}
 	}
+	
+	function resetSeriesColors() # pBubble
+	{
+		$ID = 0;
+		foreach($this->Data["Series"] as $SerieName => $SeriesParameters) {
+			if ($SeriesParameters["isDrawable"]) {
+				$this->Data["Series"][$SerieName]["Color"] = $this->Palette[$ID];
+				$ID++;
+			}
+		}
+	}
 
 	/* Return a value from given serie & index */ # UNUSED
 	function getValueAt(string $Serie, int $Index = 0)

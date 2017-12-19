@@ -98,24 +98,6 @@ class pBubble
 		}
 	}
 
-	function resetSeriesColors()
-	{
-		$Data = $this->myPicture->myData->Data;
-		$Palette = $this->myPicture->myData->Palette;
-		$ID = 0;
-		foreach($Data["Series"] as $SerieName => $SeriesParameters) {
-			if ($SeriesParameters["isDrawable"]) {
-				$this->myPicture->myData->Data["Series"][$SerieName]["Color"] = [
-					"R" => $Palette[$ID]["R"],
-					"G" => $Palette[$ID]["G"],
-					"B" => $Palette[$ID]["B"],
-					"Alpha" => $Palette[$ID]["Alpha"]
-				];
-				$ID++;
-			}
-		}
-	}
-
 	/* Prepare the scale */
 	function drawBubbleChart(array $DataSeries, array $WeightSeries, array $Format = [])
 	{
@@ -144,13 +126,9 @@ class pBubble
 			$this->myPicture->myData->setSerieDrawable("BubbleFakeNegativeSerie", FALSE);
 		}
 
-		$this->resetSeriesColors();
+		$this->myPicture->myData->resetSeriesColors();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($DataSeries as $Key => $SerieName) {
-			$AxisID = $Data["Series"][$SerieName]["Axis"];
-			#$Mode = $Data["Axis"][$AxisID]["Display"]; # UNUSED
-			#$Format = $Data["Axis"][$AxisID]["Format"];
-			#$Unit = $Data["Axis"][$AxisID]["Unit"];
 			$SerieDescription = (isset($Data["Series"][$SerieName]["Description"])) ? $Data["Series"][$SerieName]["Description"] : $SerieName;
 			$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
 			$X = $this->myPicture->GraphAreaX1 + $XMargin;
@@ -192,8 +170,8 @@ class pBubble
 
 			foreach($Data["Series"][$SerieName]["Data"] as $iKey => $Point) {
 				$Weight = $Point + $Data["Series"][$WeightSeries[$Key]]["Data"][$iKey];
-				$Weight = $this->myPicture->scaleComputeYSingle($Weight, ["AxisID" => $AxisID]);
-				$Pos = $this->myPicture->scaleComputeYSingle($Point, ["AxisID" => $AxisID]);
+				$Weight = $this->myPicture->scaleComputeYSingle($Weight, ["AxisID" => $Data["Series"][$SerieName]["Axis"]]);
+				$Pos = $this->myPicture->scaleComputeYSingle($Point, ["AxisID" => $Data["Series"][$SerieName]["Axis"]]);
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
 					$Y = floor($Pos);
@@ -261,7 +239,6 @@ class pBubble
 	function writeBubbleLabel(string $SerieName, string $SerieWeightName, int $Point, array $Format = [])
 	{
 		$Data = $this->myPicture->myData->Data;
-		$Palette = $this->myPicture->myData->Palette;
 		
 		if (!isset($Data["Series"][$SerieName]) || !isset($Data["Series"][$SerieWeightName])) {
 			throw pException::BubbleInvalidInputException("Serie name or Weight is invalid!");
