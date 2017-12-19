@@ -530,23 +530,21 @@ class pPie
 		}
 
 		/* Draw the two vertical edges */
-		$Slices = array_reverse($Slices);
-		$SliceColors = array_reverse($SliceColors);
-		foreach($Slices as $SliceID => $Plots) {
-			$Settings = $SliceColors[$SliceID];
+		$SlicesR = array_reverse($Slices);
+		$SliceColorsR = array_reverse($SliceColors);
+		foreach($SlicesR as $SliceID => $Plots) {
+			$Settings = $SliceColorsR[$SliceID];
 			$Settings["R"]+= 10;
 			$Settings["G"]+= 10;
 			$Settings["B"]+= 10;
 			$Settings["NoBorder"] = TRUE;
 			if ($Visible[$SliceID]["Start"] && isset($Plots[2])) /* Empty error handling */ {
-				$this->myPicture->drawLine($Plots[2], $Plots[3], $Plots[2], $Plots[3] - $SliceHeight, ["R" => $Settings["R"],"G" => $Settings["G"],"B" => $Settings["B"]]);
+				$this->myPicture->drawLine($Plots[2], $Plots[3], $Plots[2], $Plots[3] - $SliceHeight, $Settings);
 				$Border = [$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $Plots[2], $Plots[3] - $SliceHeight, $Plots[2], $Plots[3]];
 				$this->myPicture->drawPolygon($Border, $Settings);
 			}
 		}
 
-		$Slices = array_reverse($Slices);
-		$SliceColors = array_reverse($SliceColors);
 		foreach($Slices as $SliceID => $Plots) {
 			$Settings = $SliceColors[$SliceID];
 			$Settings["R"]+= 10;
@@ -554,7 +552,7 @@ class pPie
 			$Settings["B"]+= 10;
 			$Settings["NoBorder"] = TRUE;
 			if ($Visible[$SliceID]["End"]) {
-				$this->myPicture->drawLine($Plots[count($Plots) - 2], $Plots[count($Plots) - 1], $Plots[count($Plots) - 2], $Plots[count($Plots) - 1] - $SliceHeight,["R" => $Settings["R"],"G" => $Settings["G"],"B" => $Settings["B"]]);
+				$this->myPicture->drawLine($Plots[count($Plots) - 2], $Plots[count($Plots) - 1], $Plots[count($Plots) - 2], $Plots[count($Plots) - 1] - $SliceHeight, $Settings);
 				$Border = [$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $Plots[count($Plots) - 2], $Plots[count($Plots) - 1] - $SliceHeight, $Plots[count($Plots) - 2], $Plots[count($Plots) - 1]];
 				$this->myPicture->drawPolygon($Border, $Settings);
 			}
