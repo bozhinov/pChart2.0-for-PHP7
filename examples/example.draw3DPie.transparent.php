@@ -14,7 +14,7 @@ $myPicture = new pDraw(240,180,TRUE);
 $myPicture->myData->addPoints([40,30,20],"ScoreA");  
 $myPicture->myData->setSerieDescription("ScoreA","Application A");
 
-/* Define the absissa serie */
+/* Define the abscissa serie */
 $myPicture->myData->addPoints(["A","B","C"],"Labels");
 $myPicture->myData->setAbscissa("Labels");
 
@@ -27,7 +27,7 @@ $PieChart = new pPie($myPicture);
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>3,"Y"=>3,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 
-/* Draw a splitted pie chart */ 
+/* Draw a split pie chart */ 
 $PieChart->draw3DPie(120,90,["Radius"=>100,"DataGapAngle"=>12,"DataGapRadius"=>10,"Border"=>TRUE]);
 
 /* Write the legend box */ 
