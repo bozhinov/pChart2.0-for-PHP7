@@ -2775,16 +2775,17 @@ class pDraw
 	/* Compute the scale, check for the best visual factors */
 	function computeScale($XMin, $XMax, $MaxDivs, array $Factors, $AxisID = 0)
 	{
-		/* Compute each factors */
 		$Results = [];
+		$GoodScaleFactors = [];
+		
+		/* Compute each factors */
 		foreach($Factors as $Key => $Factor) {
 			$Results[$Factor] = $this->processScale($XMin, $XMax, $MaxDivs, [$Factor], $AxisID);
 		}
+		
 		/* Remove scales that are creating to much decimals */
-		$GoodScaleFactors = [];
 		foreach($Results as $Key => $Result) {
-			$Decimals = explode(".", $Result["RowHeight"]);
-			if ((!isset($Decimals[1])) || (strlen($Decimals[1]) < 6)) {
+			if (($Result["RowHeight"] - floor($Result["RowHeight"])) < .6) {
 				$GoodScaleFactors[] = $Key;
 			}
 		}
