@@ -8,6 +8,7 @@ Made by     : Forked by Momchil Bozhinov from the original pDraw class from Jean
 Last Update : 11/12/2017
 
 Contains functions:
+	validatePalette
 	drawPolygonChart
 	drawStackedAreaChart
 	drawStackedBarChart
@@ -46,6 +47,35 @@ class pCharts {
 		}
 		
 		$this->myPicture = $pChartObject;
+	}
+	
+	/* Validate a palette */
+	function validatePalette(array $Colors, $Surrounding = NULL)
+	{
+		$Result = [];
+		
+		foreach($Colors as $Key => $Values) {
+			
+			$Result[$Key]["R"] = (isset($Values["R"])) ? $Values["R"] : rand(0, 255);
+			$Result[$Key]["G"] = (isset($Values["G"])) ? $Values["G"] : rand(0, 255);
+			$Result[$Key]["B"] = (isset($Values["B"])) ? $Values["B"] : rand(0, 255);
+			$Result[$Key]["Alpha"] = (isset($Values["Alpha"])) ? $Values["Alpha"] : 100;
+
+			if ($Surrounding != NULL) {
+				$Result[$Key]["BorderR"] = $Result[$Key]["R"] + $Surrounding;
+				$Result[$Key]["BorderG"] = $Result[$Key]["G"] + $Surrounding;
+				$Result[$Key]["BorderB"] = $Result[$Key]["B"] + $Surrounding;
+				
+			} else {
+				$Result[$Key]["BorderR"] = (isset($Values["BorderR"])) ? $Values["BorderR"] : $Result[$Key]["R"];
+				$Result[$Key]["BorderG"] = (isset($Values["BorderG"])) ? $Values["BorderG"] : $Result[$Key]["G"];
+				$Result[$Key]["BorderB"] = (isset($Values["BorderB"])) ? $Values["BorderB"] : $Result[$Key]["B"];
+				$Result[$Key]["BorderAlpha"] = (isset($Values["BorderAlpha"])) ? $Values["BorderAlpha"] : $Result[$Key]["Alpha"];
+
+			}
+		}
+
+		return ($Result);
 	}
 
 	/* Draw a plot chart */
@@ -1490,7 +1520,7 @@ class pCharts {
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		if (!empty($OverrideColors)) {
-			$OverrideColors = $this->myPicture->validatePalette($OverrideColors, $OverrideSurrounding);
+			$OverrideColors = $this->validatePalette($OverrideColors, $OverrideSurrounding);
 			$this->myPicture->myData->saveExtendedData("Palette", $OverrideColors);
 		}
 

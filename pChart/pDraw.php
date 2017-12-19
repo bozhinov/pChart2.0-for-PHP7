@@ -3725,35 +3725,6 @@ class pDraw
 		return ["R" => rand(0, 255),"G" => rand(0, 255),"B" => rand(0, 255),"Alpha" => $Alpha];
 	}
 
-	/* Validate a palette */
-	function validatePalette(array $Colors, $Surrounding = NULL)
-	{
-		$Result = [];
-		
-		foreach($Colors as $Key => $Values) {
-			
-			$Result[$Key]["R"] = (isset($Values["R"])) ? $Values["R"] : rand(0, 255);
-			$Result[$Key]["G"] = (isset($Values["G"])) ? $Values["G"] : rand(0, 255);
-			$Result[$Key]["B"] = (isset($Values["B"])) ? $Values["B"] : rand(0, 255);
-			$Result[$Key]["Alpha"] = (isset($Values["Alpha"])) ? $Values["Alpha"] : 100;
-
-			if ($Surrounding != NULL) {
-				$Result[$Key]["BorderR"] = $Result[$Key]["R"] + $Surrounding;
-				$Result[$Key]["BorderG"] = $Result[$Key]["G"] + $Surrounding;
-				$Result[$Key]["BorderB"] = $Result[$Key]["B"] + $Surrounding;
-				
-			} else {
-				$Result[$Key]["BorderR"] = (isset($Values["BorderR"])) ? $Values["BorderR"] : $Result[$Key]["R"];
-				$Result[$Key]["BorderG"] = (isset($Values["BorderG"])) ? $Values["BorderG"] : $Result[$Key]["G"];
-				$Result[$Key]["BorderB"] = (isset($Values["BorderB"])) ? $Values["BorderB"] : $Result[$Key]["B"];
-				$Result[$Key]["BorderAlpha"] = (isset($Values["BorderAlpha"])) ? $Values["BorderAlpha"] : $Result[$Key]["Alpha"];
-
-			}
-		}
-
-		return ($Result);
-	}
-
 	/* Draw the line of best fit */
 	function drawBestFit(array $Format = [])
 	{
