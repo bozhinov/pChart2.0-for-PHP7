@@ -157,7 +157,7 @@ class pCharts {
 				$Mode = $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
-				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
+				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				if ($RecordImageMap) {
@@ -278,7 +278,7 @@ class pCharts {
 				$Mode = $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
-				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
+				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				$WayPoints = [];
@@ -419,14 +419,14 @@ class pCharts {
 				$Mode = $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
-				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
+				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				if ($AroundZero) {
-					$YZero = $this->myPicture->scaleComputeYSingle(0, ["AxisID" => $Serie["Axis"]]);
+					$YZero = $this->myPicture->scaleComputeYSingle(0, $AxisID);
 				}
 
 				foreach($Threshold as $Key => $Params) {
-					$Threshold[$Key]["MinX"] = $this->myPicture->scaleComputeYSingle($Params["Min"], ["AxisID" => $Serie["Axis"]]);
-					$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeYSingle($Params["Max"], ["AxisID" => $Serie["Axis"]]);
+					$Threshold[$Key]["MinX"] = $this->myPicture->scaleComputeYSingle($Params["Min"], $AxisID);
+					$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeYSingle($Params["Max"], $AxisID);
 				}
 
 				$this->myData->Data["Series"][$SerieName]["XOffset"] = 0;
@@ -629,7 +629,7 @@ class pCharts {
 				$Mode = $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
-				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
+				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				$LastX = NULL;
@@ -749,8 +749,8 @@ class pCharts {
 		}
 
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
-		$PosArrayA = $this->myPicture->scaleComputeY($Data["Series"][$SerieA]["Data"], ["AxisID" => $AxisID]);
-		$PosArrayB = $this->myPicture->scaleComputeY($Data["Series"][$SerieB]["Data"], ["AxisID" => $AxisID]);
+		$PosArrayA = $this->myPicture->scaleComputeY($Data["Series"][$SerieA]["Data"], $AxisID);
+		$PosArrayB = $this->myPicture->scaleComputeY($Data["Series"][$SerieB]["Data"], $AxisID);
 		if (count($PosArrayA) != count($PosArrayB)) {
 			throw pException::ZoneChartInvalidInputException("Invalid data #2");
 		}
@@ -862,7 +862,7 @@ class pCharts {
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight];
-				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
+				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				$LastX = NULL;
@@ -1079,8 +1079,8 @@ class pCharts {
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$Color = ["R" => $R,"G" => $G,"B" => $B];
 				$Color["Alpha"] = ($ForceTransparency != NULL) ? $ForceTransparency : $Alpha;
-				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"],["AxisID" => $Serie["Axis"]]);
-				$YZero = $this->myPicture->scaleComputeYSingle(0, ["AxisID" => $Serie["Axis"]]);
+				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
+				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				$LastX = NULL;
@@ -1272,11 +1272,11 @@ class pCharts {
 				$Mode = $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
-				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
-				$YZero = $this->myPicture->scaleComputeYSingle(0, ["AxisID" => $Serie["Axis"]]);
+				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
+				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
 				foreach($Threshold as $Key => $Params) {
-					$Threshold[$Key]["MinX"] = $this->myPicture->scaleComputeYSingle($Params["Min"], ["AxisID" => $Serie["Axis"]]);
-					$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeYSingle($Params["Max"], ["AxisID" => $Serie["Axis"]]);
+					$Threshold[$Key]["MinX"] = $this->myPicture->scaleComputeYSingle($Params["Min"], $Serie["Axis"]);
+					$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeYSingle($Params["Max"], $Serie["Axis"]);
 				}
 
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
@@ -1520,9 +1520,9 @@ class pCharts {
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
-				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
+				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$Floating0Value = ($Floating0Value != NULL) ? $Floating0Value : 0;
-				$YZero = $this->myPicture->scaleComputeYSingle($Floating0Value, ["AxisID" => $Serie["Axis"]]);
+				$YZero = $this->myPicture->scaleComputeYSingle($Floating0Value, $Serie["Axis"]);
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
@@ -1549,7 +1549,7 @@ class pCharts {
 					foreach($PosArray as $Key => $Y2) {
 						if ($Floating0Serie != NULL) {
 							$Value = (isset($Data["Series"][$Floating0Serie]["Data"][$Key])) ? $Data["Series"][$Floating0Serie]["Data"][$Key] : 0;
-							$YZero = $this->myPicture->scaleComputeYSingle($Value, ["AxisID" => $Serie["Axis"]]);
+							$YZero = $this->myPicture->scaleComputeYSingle($Value, $Serie["Axis"]);
 							($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
 							($YZero < $this->myPicture->GraphAreaY1 + 1) AND $YZero = $this->myPicture->GraphAreaY1 + 1;
 							$Y1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
@@ -1668,7 +1668,7 @@ class pCharts {
 					foreach($PosArray as $Key => $X2) {
 						if ($Floating0Serie != NULL) {
 							$Value = (isset($Data["Series"][$Floating0Serie]["Data"][$Key])) ? $Data["Series"][$Floating0Serie]["Data"][$Key] : 0;
-							$YZero = $this->myPicture->scaleComputeYSingle($Value, ["AxisID" => $Serie["Axis"]]);
+							$YZero = $this->myPicture->scaleComputeYSingle($Value, $Serie["Axis"]);
 							($YZero < $this->myPicture->GraphAreaX1 + 1) AND $YZero = $this->myPicture->GraphAreaX1 + 1;
 							($YZero > $this->myPicture->GraphAreaX2 - 1) AND $YZero = $this->myPicture->GraphAreaX2 - 1;
 							$X1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
@@ -1842,8 +1842,8 @@ class pCharts {
 				$Mode = $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
-				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]], TRUE);
-				$YZero = $this->myPicture->scaleComputeYSingle(0, ["AxisID" => $Serie["Axis"]]);
+				$PosArray = $this->myPicture->scaleComputeY0HeightOnly($Serie["Data"], $Serie["Axis"]);
+				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				$Color = ["TransCorner" => TRUE,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"BorderR" => $BorderR,"BorderG" => $BorderG,"BorderB" => $BorderB];
 				
@@ -2093,8 +2093,8 @@ class pCharts {
 					$PlotBorderColor = ["R" => $PlotBorderR,"G" => $PlotBorderG,"B" => $PlotBorderB,"Alpha" => $PlotBorderAlpha];
 				}
 
-				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]], TRUE);
-				$YZero = $this->myPicture->scaleComputeYSingle(0, ["AxisID" => $Serie["Axis"]]);
+				$PosArray = $this->myPicture->scaleComputeY0HeightOnly($Serie["Data"], $Serie["Axis"]);
+				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
@@ -2548,7 +2548,7 @@ class pCharts {
 				$Ticks = $Serie["Ticks"];
 				$Weight = $Serie["Weight"];
 				
-				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
+				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				
 				$LastX = NULL;
 				$LastY = NULL;

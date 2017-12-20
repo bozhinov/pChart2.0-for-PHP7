@@ -141,7 +141,7 @@ class pStock
 		
 		foreach($Plots as $Key => $Points) {
 			
-			$PosArray = $this->myPicture->scaleComputeY($Points, ["AxisID" => $Data[$SerieOpen]["Axis"]]);
+			$PosArray = $this->myPicture->scaleComputeY($Points, $Data[$SerieOpen]["Axis"]);
 			
 			if ($RecordImageMap) {
 				$Values = "Open :".$Data[$SerieOpen]["Data"][$Key]."<br />Close : ".$Data[$SerieClose]["Data"][$Key]."<br />Min : ".$Data[$SerieMin]["Data"][$Key]."<br />Max : ".$Data[$SerieMax]["Data"][$Key]."<br />";

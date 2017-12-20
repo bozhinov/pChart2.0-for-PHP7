@@ -187,8 +187,8 @@ class pBubble
 			foreach($Data[$SerieName]["Data"] as $iKey => $Point) {
 				
 				$DataWeightSeries = $Data[$WeightSeries[$Key]]["Data"][$iKey];
-				$Weight = $this->myPicture->scaleComputeYSingle($Point + $DataWeightSeries, ["AxisID" => $Data[$SerieName]["Axis"]]);
-				$Pos = $this->myPicture->scaleComputeYSingle($Point, ["AxisID" => $Data[$SerieName]["Axis"]]);
+				$Weight = $this->myPicture->scaleComputeYSingle($Point + $DataWeightSeries, $Data[$SerieName]["Axis"]);
+				$Pos = $this->myPicture->scaleComputeYSingle($Point, $Data[$SerieName]["Axis"]);
 				$Radius = floor(abs($Pos - $Weight) / 2);
 				
 				if ($Orientation == SCALE_POS_LEFTRIGHT) {
@@ -237,7 +237,7 @@ class pBubble
 		
 		$AxisID = $Data["Series"][$SerieName]["Axis"];
 		$Value = $Data["Series"][$SerieName]["Data"][$Point];
-		$Pos = $this->myPicture->scaleComputeYSingle($Value, ["AxisID" => $AxisID]);
+		$Pos = $this->myPicture->scaleComputeYSingle($Value, $AxisID);
 		$Value = $this->myPicture->scaleFormat($Value, $Data["Axis"][$AxisID]["Display"], $Data["Axis"][$AxisID]["Format"], $Data["Axis"][$AxisID]["Unit"]);
 		$Description = (isset($Data["Series"][$SerieName]["Description"])) ? $Data["Series"][$SerieName]["Description"] : "No description";
 		$Abscissa = (isset($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Point])) ? $Data["Series"][$Data["Abscissa"]]["Data"][$Point]." : " : "";
