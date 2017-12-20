@@ -689,10 +689,7 @@ class pSpring
 		/* Draw the quiet zones */
 		if ($DrawQuietZone) {
 			foreach($this->Data as $Key => $Settings) {
-				$X = $Settings["X"];
-				$Y = $Settings["Y"];
-				$FreeZone = $Settings["FreeZone"];
-				$this->myPicture->drawFilledCircle($X, $Y, $FreeZone, ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 2]);
+				$this->myPicture->drawFilledCircle($Settings["X"], $Settings["Y"],$Settings["FreeZone"], ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 2]);
 			}
 		}
 
@@ -701,7 +698,7 @@ class pSpring
 			$X = $Settings["X"];
 			$Y = $Settings["Y"];
 			$Name = $Settings["Name"];
-			$FreeZone = $Settings["FreeZone"];
+			#$FreeZone = $Settings["FreeZone"]; # UNUSED
 			$Shape = $Settings["Shape"];
 			$Size = $Settings["Size"];
 			$Color = [
