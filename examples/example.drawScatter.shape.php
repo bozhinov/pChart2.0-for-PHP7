@@ -37,7 +37,7 @@ $myPicture->myData->setAxisPosition(1,AXIS_POSITION_LEFT);
 /* Create the 1st scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 1","Probe 3",0);
 $myPicture->myData->setScatterSerieDescription(0,"This year");
-$myPicture->myData->setScatterSerieColor(0,array("R"=>0,"G"=>0,"B"=>0));
+$myPicture->myData->setScatterSerieColor(0,["R"=>0,"G"=>0,"B"=>0]);
 $myPicture->myData->setScatterSerieShape(0,SERIE_SHAPE_TRIANGLE);
 
 /* Create the 2nd scatter chart binding */
@@ -49,7 +49,7 @@ $myPicture->myData->setScatterSerieShape(1,SERIE_SHAPE_FILLEDTRIANGLE);
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,399,399,array("R"=>0,"G"=>0,"B"=>0));
+$myPicture->drawRectangle(0,0,399,399,["R"=>0,"G"=>0,"B"=>0]);
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));

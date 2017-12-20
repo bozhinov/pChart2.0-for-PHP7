@@ -620,26 +620,10 @@ class pScatter
 	/* Return the scaled plot position */
 	function getPosArray(array $Values, int $AxisID) : array
 	{
-		$Data = $this->myPicture->myData->Data;
-		$ScaleHeight = $Data["Axis"][$AxisID]["ScaleMax"] - $Data["Axis"][$AxisID]["ScaleMin"];
-		
 		$Result = [];
-
-		if ($Data["Axis"][$AxisID]["Identity"] == AXIS_X) {
-			$Height = $this->myPicture->GraphAreaXdiff - $Data["Axis"][$AxisID]["Margin"] * 2;
-			$Step = $Height / $ScaleHeight;
-
-			foreach($Values as $Key => $Value) {
-				$Result[] = ($Value == VOID) ? VOID : $this->myPicture->GraphAreaX1 + $Data["Axis"][$AxisID]["Margin"] + ($Step * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));
-			}
-			
-		} else {
-			$Height = $this->myPicture->GraphAreaYdiff - $Data["Axis"][$AxisID]["Margin"] * 2;
-			$Step = $Height / $ScaleHeight;
-
-			foreach($Values as $Key => $Value) {
-				$Result[] = ($Value == VOID) ? VOID : $this->myPicture->GraphAreaY2 - $Data["Axis"][$AxisID]["Margin"] - ($Step * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));
-			}
+		
+		foreach($Values as $Value) {
+			$Result[] = $this->getPosArraySingle($Value, $AxisID);
 		}
 		
 		return $Result;
@@ -652,19 +636,14 @@ class pScatter
 			return VOID;
 		}
 		
-		$Data = $this->myPicture->myData->Data;
-		$ScaleHeight = $Data["Axis"][$AxisID]["ScaleMax"] - $Data["Axis"][$AxisID]["ScaleMin"];
-		$Result = 0;
+		$Data = $this->myPicture->myData->Data["Axis"];
 
-		if ($Data["Axis"][$AxisID]["Identity"] == AXIS_X) {
-			$Height = $this->myPicture->GraphAreaXdiff - $Data["Axis"][$AxisID]["Margin"] * 2;
-			$Step = $Height / $ScaleHeight;
-			$Result = $this->myPicture->GraphAreaX1 + $Data["Axis"][$AxisID]["Margin"] + ($Step * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));
-			
+		if ($Data[$AxisID]["Identity"] == AXIS_X) {
+			$Height = $this->myPicture->GraphAreaXdiff - $Data[$AxisID]["Margin"] * 2;
+			$Result = $this->myPicture->GraphAreaX1 + $Data[$AxisID]["Margin"] + (($Height / ($Data[$AxisID]["ScaleMax"] - $Data[$AxisID]["ScaleMin"])) * ($Value - $Data[$AxisID]["ScaleMin"]));
 		} else {
-			$Height = $this->myPicture->GraphAreaYdiff - $Data["Axis"][$AxisID]["Margin"] * 2;
-			$Step = $Height / $ScaleHeight;
-			$Result = $this->myPicture->GraphAreaY2 - $Data["Axis"][$AxisID]["Margin"] - ($Step * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));
+			$Height = $this->myPicture->GraphAreaYdiff - $Data[$AxisID]["Margin"] * 2;
+			$Result = $this->myPicture->GraphAreaY2 - $Data[$AxisID]["Margin"] - (($Height / ($Data[$AxisID]["ScaleMax"] - $Data[$AxisID]["ScaleMin"])) * ($Value - $Data[$AxisID]["ScaleMin"]));
 		}
 		
 		return $Result;
