@@ -1209,7 +1209,7 @@ class pPie
 				} elseif ($WriteValues == PIE_VALUE_NATURAL) {
 					$Display = $Value . $ValueSuffix;
 				} else {
-					$Label = "";
+					$Display = "";
 				}
 
 				$this->pChartObject->drawText($Xc, $Yc, $Display, ["Align" => $Align,"R" => $ValueR,"G" => $ValueG,"B" => $ValueB]);
@@ -1605,7 +1605,7 @@ class pPie
 				$Xc = cos(($Angle - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) + $X;
 				$Yc = sin(($Angle - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) * $SkewFactor + $Y;
 				if ($WriteValues == PIE_VALUE_PERCENTAGE) {
-					$Label = $Display = round((100 / $SerieSum) * $Value, $Precision) . "%";
+					$Label = round((100 / $SerieSum) * $Value, $Precision) . "%";
 				} elseif ($WriteValues == PIE_VALUE_NATURAL) {
 					$Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
 				} else {
