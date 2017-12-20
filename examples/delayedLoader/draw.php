@@ -3,7 +3,8 @@
 $Seed = (!isset($_GET["Seed"])) ? "Unknown" : $_GET["Seed"];
 
 /* Include all the classes */ 
-require_once("examples/bootstrap.php");
+chdir("../");
+require_once("bootstrap.php");
 
 use pChart\pDraw;
 
