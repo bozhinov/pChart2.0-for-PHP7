@@ -218,31 +218,23 @@ class pSurface
 		$Y0 = $this->myPicture->GraphAreaY1;
 		$XSize = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / ($this->GridSizeX + 1);
 		$YSize = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / ($this->GridSizeY + 1);
+		
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
 			for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {
 				$Value = $this->Points[$X][$Y];
 				if ($Value != UNKNOWN && $Value != IGNORED) {
 					
-					$X1 = floor($X0 + $X * $XSize) + $Padding;
-					$Y1 = floor($Y0 + $Y * $YSize) + $Padding;
-					$X2 = floor($X0 + $X * $XSize + $XSize);
-					$Y2 = floor($Y0 + $Y * $YSize + $YSize);
-					
 					if (!empty($Palette)) {
-						$R = (isset($Palette[$Value]) && isset($Palette[$Value]["R"])) ? $Palette[$Value]["R"] : 0;
-						$G = (isset($Palette[$Value]) && isset($Palette[$Value]["G"])) ? $Palette[$Value]["G"] : 0;
-						$B = (isset($Palette[$Value]) && isset($Palette[$Value]["B"])) ? $Palette[$Value]["B"] : 0;
-						$Alpha = (isset($Palette[$Value]) && isset($Palette[$Value]["Alpha"])) ? $Palette[$Value]["Alpha"] : 1000;
-						
+						$Settings = (isset($Palette[$Value])) ? $Palette[$Value] : ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 100];					
 					} else {
-						$R = (($ShadeR2 - $ShadeR1) / 100) * $Value + $ShadeR1;
-						$G = (($ShadeG2 - $ShadeG1) / 100) * $Value + $ShadeG1;
-						$B = (($ShadeB2 - $ShadeB1) / 100) * $Value + $ShadeB1;
-						$Alpha = (($ShadeA2 - $ShadeA1) / 100) * $Value + $ShadeA1;
+						$Settings = [
+							"R" => (($ShadeR2 - $ShadeR1) / 100) * $Value + $ShadeR1,
+							"G" => (($ShadeG2 - $ShadeG1) / 100) * $Value + $ShadeG1,
+							"B" => (($ShadeB2 - $ShadeB1) / 100) * $Value + $ShadeB1,
+							"Alpha" => (($ShadeA2 - $ShadeA1) / 100) * $Value + $ShadeA1
+						];
 					}
 
-					$Settings = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
-					
 					if ($Border) {
 						$Settings["BorderR"] = $BorderR;
 						$Settings["BorderG"] = $BorderG;
@@ -250,12 +242,18 @@ class pSurface
 					}
 
 					if ($Surrounding != - 1) {
-						$Settings["BorderR"] = $R + $Surrounding;
-						$Settings["BorderG"] = $G + $Surrounding;
-						$Settings["BorderB"] = $B + $Surrounding;
+						$Settings["BorderR"] = $Settings["R"] + $Surrounding;
+						$Settings["BorderG"] = $Settings["G"] + $Surrounding;
+						$Settings["BorderB"] = $Settings["B"] + $Surrounding;
 					}
 
-					$this->myPicture->drawFilledRectangle($X1, $Y1, $X2 - 1, $Y2 - 1, $Settings);
+					$this->myPicture->drawFilledRectangle(
+						floor($X0 + $X * $XSize) + $Padding,
+						floor($Y0 + $Y * $YSize) + $Padding, 
+						floor($X0 + $X * $XSize + $XSize) - 1,
+						floor($Y0 + $Y * $YSize + $YSize) - 1,
+						$Settings
+					);
 				}
 			}
 		}
