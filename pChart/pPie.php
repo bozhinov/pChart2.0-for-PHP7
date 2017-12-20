@@ -104,12 +104,7 @@ class pPie
 		}
 
 		/* Dump the real number of data to draw */
-		$Values = [];
-		foreach($Data["Series"][$DataSerie]["Data"] as $Key => $Value) {
-			if ($Value != 0) {
-				$Values[] = $Value;
-			}
-		}
+		$Values = array_diff($Data["Series"][$DataSerie]["Data"], [0]);
 
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
@@ -139,7 +134,7 @@ class pPie
 					$this->myPicture->myData->savePalette($ID, $Color);
 				}
 
-				$Settings = ["R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"]];
+				$Settings = $Palette[$ID];
 			}
 
 			if (!$SecondPass && !$Shadow) {
@@ -386,12 +381,7 @@ class pPie
 		}
 
 		/* Dump the real number of data to draw */
-		$Values = [];
-		foreach($Data["Series"][$DataSerie]["Data"] as $Key => $Value) {
-			if ($Value != 0) {
-				$Values[] = $Value;
-			}
-		}
+		$Values = array_diff($Data["Series"][$DataSerie]["Data"], [0]);
 
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
@@ -642,7 +632,7 @@ class pPie
 					if ($Border) {
 						$Settings = ["R" => $Palette[$ID]["R"] + 30,"G" => $Palette[$ID]["G"] + 30,"B" => $Palette[$ID]["B"] + 30,"Alpha" => $Palette[$ID]["Alpha"]];
 					} else {
-						$Settings = ["R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"]];
+						$Settings = $Palette[$ID];
 					}
 				}
 
@@ -814,37 +804,20 @@ class pPie
 			$Boundaries["B"] = $vY + $BoxSize + $TopOffset;
 		}
 
+		$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"BorderR" => $BorderR,"BorderG" => $BorderG,"BorderB" => $BorderB];
 		if ($Style == LEGEND_ROUND) {
-			$this->myPicture->drawRoundedFilledRectangle($Boundaries["L"] - $Margin, $Boundaries["T"] - $Margin, $Boundaries["R"] + $Margin, $Boundaries["B"] + $Margin, $Margin, array(
-				"R" => $R,
-				"G" => $G,
-				"B" => $B,
-				"Alpha" => $Alpha,
-				"BorderR" => $BorderR,
-				"BorderG" => $BorderG,
-				"BorderB" => $BorderB
-			));
-			
+			$this->myPicture->drawRoundedFilledRectangle($Boundaries["L"] - $Margin, $Boundaries["T"] - $Margin, $Boundaries["R"] + $Margin, $Boundaries["B"] + $Margin, $Margin, $Color);
 		} elseif ($Style == LEGEND_BOX) {
-			$this->myPicture->drawFilledRectangle($Boundaries["L"] - $Margin, $Boundaries["T"] - $Margin, $Boundaries["R"] + $Margin, $Boundaries["B"] + $Margin, array(
-				"R" => $R,
-				"G" => $G,
-				"B" => $B,
-				"Alpha" => $Alpha,
-				"BorderR" => $BorderR,
-				"BorderG" => $BorderG,
-				"BorderB" => $BorderB
-			));
+			$this->myPicture->drawFilledRectangle($Boundaries["L"] - $Margin, $Boundaries["T"] - $Margin, $Boundaries["R"] + $Margin, $Boundaries["B"] + $Margin, $Color);
 		}
 
 		$RestoreShadow = $this->myPicture->Shadow;
 		$this->myPicture->Shadow = FALSE;
 		foreach($Data["Series"][$Data["Abscissa"]]["Data"] as $Key => $Value) {
-			$R = $Palette[$Key]["R"];
-			$G = $Palette[$Key]["G"];
-			$B = $Palette[$Key]["B"];
+			$Color = $Palette[$Key];
+			$Color["Surrounding"] = 20;
 			$this->myPicture->drawFilledRectangle($X + 1, $Y + 1, $X + $BoxSize + 1, $Y + $BoxSize + 1, ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 20]);
-			$this->myPicture->drawFilledRectangle($X, $Y, $X + $BoxSize, $Y + $BoxSize, ["R" => $R,"G" => $G,"B" => $B,"Surrounding" => 20]);
+			$this->myPicture->drawFilledRectangle($X, $Y, $X + $BoxSize, $Y + $BoxSize, $Color);
 			if ($Mode == LEGEND_VERTICAL) {
 				$this->myPicture->drawText($X + $BoxSize + 4, $Y + $BoxSize / 2, $Value, ["R" => $FontR,"G" => $FontG,"B" => $FontB,"Align" => TEXT_ALIGN_MIDDLELEFT,"FontName" => $FontName,"FontSize" => $FontSize]);
 				$Y = $Y + $YStep;
@@ -955,15 +928,13 @@ class pPie
 			$X2 = $Settings["X2"];
 			$Y2 = $Settings["Y2"];
 			$X3 = $Settings["X3"];
-			$Angle = $Settings["Angle"];
-			$Label = $Settings["Label"];
 			$this->myPicture->drawArrow($X2, $Y2, $X1, $Y1, ["Size" => 8]);
-			if ($Angle <= 180) {
+			if ($Settings["Angle"] <= 180) {
 				$this->myPicture->drawLine($X2, $Y2, $X3, $Y2);
-				$this->myPicture->drawText($X3 + 2, $Y2, $Label, ["Align" => TEXT_ALIGN_MIDDLELEFT]);
+				$this->myPicture->drawText($X3 + 2, $Y2, $Settings["Label"], ["Align" => TEXT_ALIGN_MIDDLELEFT]);
 			} else {
 				$this->myPicture->drawLine($X2, $Y2, $X3, $Y2);
-				$this->myPicture->drawText($X3 - 2, $Y2, $Label, ["Align" => TEXT_ALIGN_MIDDLERIGHT]);
+				$this->myPicture->drawText($X3 - 2, $Y2, $Settings["Label"], ["Align" => TEXT_ALIGN_MIDDLERIGHT]);
 			}
 		}
 	}
@@ -1066,7 +1037,7 @@ class pPie
 					$Palette[$ID] = $Color;
 					$this->myPicture->myData->savePalette($ID, $Color);
 				}
-				$Settings = ["R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"]];
+				$Settings = $Palette[$ID];
 				$BorderColor = ($Border) ? ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha] : $Settings;
 			}
 
@@ -1197,11 +1168,11 @@ class pPie
 				}
 
 				if ($WriteValues == PIE_VALUE_PERCENTAGE) {
-					$Display = round((100 / $SerieSum) * $Value, $Precision) . "%";
+					$Display = strval(round((100 / $SerieSum) * $Value, $Precision)) . "%";
 				} elseif ($WriteValues == PIE_VALUE_NATURAL) {
 					$Display = strval($Value) . $ValueSuffix;
 				} else {
-					$Label = "";
+					$Display = ""; # Momchil: Makes no sense $Label = "";
 				}
 
 				$this->myPicture->drawText($Xc, $Yc, $Display, ["Align" => $Align,"R" => $ValueR,"G" => $ValueG,"B" => $ValueB]);
@@ -1295,7 +1266,6 @@ class pPie
 		$Slice = 0;
 		$Slices = [];
 		$SliceColors = [];
-		$Visible = []; 
 		
 		foreach($Values as $Key => $Value) {
 			
@@ -1305,13 +1275,9 @@ class pPie
 				$this->myPicture->myData->savePalette($ID, $Color);
 			}
 
-			$Settings = ["R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"]];
-			$SliceColors[$Slice] = $Settings;
-			$StartAngle = $Offset;
+			$SliceColors[$Slice] = $Palette[$ID];
 			$EndAngle = $Offset - ($Value * $ScaleFactor);
 			($EndAngle < 0) AND $EndAngle = 0;
-			$Visible[$Slice]["Start"] = ($StartAngle > 180) ? TRUE : TRUE; # MOMCHIL TODO
-			$Visible[$Slice]["End"] = ($EndAngle < 180) ? FALSE : TRUE;
 			$Step = (360 / (2 * PI * $OuterRadius)) / 2;
 			$OutX1 = VOID;
 			$OutY1 = VOID;
@@ -1325,7 +1291,7 @@ class pPie
 				$Slices[$Slice]["AA"][] = [$Xc,$Yc];
 				$Xc = cos(($i - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) + $X;
 				$Yc = sin(($i - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) * $SkewFactor + $Y;
-				$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Settings);
+				$this->myPicture->drawAntialiasPixel($Xc, $Yc, $SliceColors[$Slice]);
 				if ($OutX1 == VOID) {
 					$OutX1 = $Xc;
 					$OutY1 = $Yc;
@@ -1588,9 +1554,9 @@ class pPie
 				$Xc = cos(($Angle - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) + $X;
 				$Yc = sin(($Angle - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) * $SkewFactor + $Y;
 				if ($WriteValues == PIE_VALUE_PERCENTAGE) {
-					$Label = $Display = round((100 / $SerieSum) * $Value, $Precision) . "%";
+					$Label = strval(round((100 / $SerieSum) * $Value, $Precision)) . "%";
 				} elseif ($WriteValues == PIE_VALUE_NATURAL) {
-					$Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
+					$Label = strval($Data["Series"][$Data["Abscissa"]]["Data"][$Key]);
 				} else {
 					$Label = "";
 				}
