@@ -5922,7 +5922,7 @@ class pDraw
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]], TRUE);
-				$YZero = $this->scaleComputeY([1], ["AxisID" => $Serie["Axis"]]); // MOMCHIL FIX FOR THE INCIDENTS BY TYPE
+				$YZero = $this->scaleComputeY([0], ["AxisID" => $Serie["Axis"]]);
 				$this->DataSet->Data["Series"][$SerieName]["XOffset"] = 0;
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					($YZero < $this->GraphAreaY1 + 1) AND $YZero = $this->GraphAreaY1 + 1;
