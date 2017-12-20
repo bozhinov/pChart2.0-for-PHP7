@@ -144,9 +144,9 @@ class pCharts {
 				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($XDivs == 0) {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
+						$XStep = $this->myPicture->GraphAreaXdiff / 4;
 					} else {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+						$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 					}
 
 					if ($Picture != NULL) {
@@ -182,9 +182,9 @@ class pCharts {
 					
 				} else {
 					if ($XDivs == 0) {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 4;
+						$YStep = $this->myPicture->GraphAreaYdiff / 4;
 					} else {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+						$YStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 					}
 
 					if ($Picture != NULL) {
@@ -281,9 +281,9 @@ class pCharts {
 					
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($XDivs == 0) {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
+						$XStep = $this->myPicture->GraphAreaXdiff / 4;
 					} else {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+						$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
@@ -334,9 +334,9 @@ class pCharts {
 					
 				} else {
 					if ($XDivs == 0) {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 4;
+						$YStep = $this->myPicture->GraphAreaYdiff / 4;
 					} else {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+						$YStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
@@ -427,9 +427,9 @@ class pCharts {
 				$this->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($XDivs == 0) {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
+						$XStep = $this->myPicture->GraphAreaXdiff / 4;
 					} else {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+						$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
@@ -495,9 +495,9 @@ class pCharts {
 
 				} else {
 					if ($XDivs == 0) {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 4;
+						$YStep = $this->myPicture->GraphAreaYdiff / 4;
 					} else {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+						$YStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
@@ -642,9 +642,9 @@ class pCharts {
 				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($XDivs == 0) {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
+						$XStep = $this->myPicture->GraphAreaXdiff / 4;
 					} else {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+						$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
@@ -691,9 +691,9 @@ class pCharts {
 					
 				} else {
 					if ($XDivs == 0) {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 4;
+						$YStep = $this->myPicture->GraphAreaYdiff / 4;
 					} else {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+						$YStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
@@ -772,9 +772,9 @@ class pCharts {
 
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 			if ($XDivs == 0) {
-				$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
+				$XStep = $this->myPicture->GraphAreaXdiff / 4;
 			} else {
-				$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+				$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 			}
 
 			$X = $this->myPicture->GraphAreaX1 + $XMargin;
@@ -799,9 +799,9 @@ class pCharts {
 			}
 		} else {
 			if ($XDivs == 0) {
-				$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 4;
+				$YStep = $this->myPicture->GraphAreaYdiff / 4;
 			} else {
-				$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+				$YStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 			}
 
 			$Y = $this->myPicture->GraphAreaY1 + $XMargin;
@@ -889,9 +889,9 @@ class pCharts {
 				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($XDivs == 0) {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
+						$XStep = $this->myPicture->GraphAreaXdiff / 4;
 					} else {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+						$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
@@ -979,9 +979,9 @@ class pCharts {
 					
 				} else {
 					if ($XDivs == 0) {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 4;
+						$YStep = $this->myPicture->GraphAreaYdiff / 4;
 					} else {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+						$YStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
@@ -1118,9 +1118,9 @@ class pCharts {
 					}
 
 					if ($XDivs == 0) {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
+						$XStep = $this->myPicture->GraphAreaXdiff / 4;
 					} else {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+						$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
@@ -1199,9 +1199,9 @@ class pCharts {
 					}
 
 					if ($XDivs == 0) {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 4;
+						$YStep = $this->myPicture->GraphAreaYdiff / 4;
 					} else {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+						$YStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
@@ -1321,9 +1321,9 @@ class pCharts {
 	
 
 					if ($XDivs == 0) {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
+						$XStep = $this->myPicture->GraphAreaXdiff / 4;
 					} else {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+						$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
@@ -1401,9 +1401,9 @@ class pCharts {
 					$Areas[$AreaID][] = $this->myPicture->GraphAreaY1 + $XMargin;
 					
 					if ($XDivs == 0) {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 4;
+						$YStep = $this->myPicture->GraphAreaYdiff / 4;
 					} else {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+						$YStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
@@ -1566,12 +1566,12 @@ class pCharts {
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
 					($YZero < $this->myPicture->GraphAreaY1 + 1) AND $YZero = $this->myPicture->GraphAreaY1 + 1;
-					$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+					$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
 					$Y1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
 
 					if ($XDivs == 0) {
-						$XSize = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / ($SeriesCount + $Interleave);
+						$XSize = $this->myPicture->GraphAreaXdiff / ($SeriesCount + $Interleave);
 					} else {
 						$XSize = ($XStep / ($SeriesCount + $Interleave));
 					}
@@ -1685,12 +1685,12 @@ class pCharts {
 					
 					($YZero < $this->myPicture->GraphAreaX1 + 1) AND $YZero = $this->myPicture->GraphAreaX1 + 1;
 					($YZero > $this->myPicture->GraphAreaX2 - 1) AND $YZero = $this->myPicture->GraphAreaX2 - 1;
-					$YStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+					$YStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
 					$X1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
 
 					if ($XDivs == 0) {
-						$YSize = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / ($SeriesCount + $Interleave);
+						$YSize = $this->myPicture->GraphAreaYdiff / ($SeriesCount + $Interleave);
 					} else {
 						$YSize = ($YStep / ($SeriesCount + $Interleave));
 					}
@@ -1891,9 +1891,9 @@ class pCharts {
 					($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
 					
 					if ($XDivs == 0) {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
+						$XStep = $this->myPicture->GraphAreaXdiff / 4;
 					} else {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+						$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
@@ -1979,9 +1979,9 @@ class pCharts {
 					($YZero > $this->myPicture->GraphAreaX2 - 1) AND $YZero = $this->myPicture->GraphAreaX2 - 1;
 
 					if ($XDivs == 0) {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 4;
+						$YStep = $this->myPicture->GraphAreaYdiff / 4;
 					} else {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+						$YStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
@@ -2146,9 +2146,9 @@ class pCharts {
 					($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
 
 					if ($XDivs == 0) {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
+						$XStep = $this->myPicture->GraphAreaXdiff / 4;
 					} else {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+						$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
@@ -2191,9 +2191,9 @@ class pCharts {
 					($YZero > $this->myPicture->GraphAreaX2 - 1) AND $YZero = $this->myPicture->GraphAreaX2 - 1;
 
 					if ($XDivs == 0) {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 4;
+						$YStep = $this->myPicture->GraphAreaYdiff / 4;
 					} else {
-						$YStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+						$YStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
@@ -2628,9 +2628,9 @@ class pCharts {
 					}
 
 					if ($XDivs == 0) {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 4;
+						$XStep = $this->myPicture->GraphAreaXdiff / 4;
 					} else {
-						$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+						$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
@@ -2727,9 +2727,9 @@ class pCharts {
 					}
 
 					if ($XDivs == 0) {
-						$XStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 4;
+						$XStep = $this->myPicture->GraphAreaYdiff / 4;
 					} else {
-						$XStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+						$XStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 					}
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;

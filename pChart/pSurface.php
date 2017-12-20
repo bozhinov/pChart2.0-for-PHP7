@@ -93,7 +93,7 @@ class pSurface
 		extract($Format);
 		
 		$X0 = $this->myPicture->GraphAreaX1;
-		$XSize = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / ($this->GridSizeX + 1);
+		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
 		$Settings = ["Angle" => $Angle,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
 		if ($Position == LABEL_POSITION_TOP) {
 			$YPos = $this->myPicture->GraphAreaY1 - $Padding;
@@ -129,7 +129,7 @@ class pSurface
 		extract($Format);
 		
 		$Y0 = $this->myPicture->GraphAreaY1;
-		$YSize = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / ($this->GridSizeY + 1);
+		$YSize = $this->myPicture->GraphAreaYdiff / ($this->GridSizeY + 1);
 		$Settings = ["Angle" => $Angle,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
 		
 		if ($Position == LABEL_POSITION_LEFT) {
@@ -164,8 +164,8 @@ class pSurface
 		
 		$X0 = $this->myPicture->GraphAreaX1;
 		$Y0 = $this->myPicture->GraphAreaY1;
-		$XSize = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / ($this->GridSizeX + 1);
-		$YSize = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / ($this->GridSizeY + 1);
+		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
+		$YSize = $this->myPicture->GraphAreaYdiff / ($this->GridSizeY + 1);
 		$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks];
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
 			for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {
@@ -216,8 +216,8 @@ class pSurface
 		
 		$X0 = $this->myPicture->GraphAreaX1;
 		$Y0 = $this->myPicture->GraphAreaY1;
-		$XSize = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / ($this->GridSizeX + 1);
-		$YSize = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / ($this->GridSizeY + 1);
+		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
+		$YSize = $this->myPicture->GraphAreaYdiff / ($this->GridSizeY + 1);
 		
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
 			for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {

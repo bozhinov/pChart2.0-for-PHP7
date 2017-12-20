@@ -109,9 +109,9 @@ class pScatter
 		$Data = $this->myPicture->myData->Data;
 		foreach($Data["Axis"] as $AxisID => $AxisSettings) {
 			if ($AxisSettings["Identity"] == AXIS_X) {
-				$Width = $this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2;
+				$Width = $this->myPicture->GraphAreaXdiff - $XMargin * 2;
 			} else {
-				$Width = $this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $YMargin * 2;
+				$Width = $this->myPicture->GraphAreaYdiff - $YMargin * 2;
 			}
 
 			$AxisMin = ABSOLUTE_MAX;
@@ -220,7 +220,7 @@ class pScatter
 						$this->myPicture->drawArrow($this->myPicture->GraphAreaX2 - $AxisSettings["Margin"], $AxisPos["B"], $this->myPicture->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["B"], ["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize]);
 					}
 
-					$Width = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) - $AxisSettings["Margin"] * 2;
+					$Width = $this->myPicture->GraphAreaXdiff - $AxisSettings["Margin"] * 2;
 					$Step = $Width / $AxisSettings["Rows"];
 					$SubTicksSize = $Step / 2;
 					$MaxBottom = $AxisPos["B"];
@@ -252,7 +252,7 @@ class pScatter
 
 					if (isset($AxisSettings["Name"])) {
 						$YPos = $MaxBottom + 2;
-						$XPos = $this->myPicture->GraphAreaX1 + ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 2;
+						$XPos = $this->myPicture->GraphAreaX1 + ($this->myPicture->GraphAreaXdiff) / 2;
 						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"], ["Align" => TEXT_ALIGN_TOPMIDDLE]);
 						$MaxBottom = $Bounds[0]["Y"];
 					}
@@ -293,7 +293,7 @@ class pScatter
 						$this->myPicture->drawArrow($this->myPicture->GraphAreaX2 - $AxisSettings["Margin"], $AxisPos["T"], $this->myPicture->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["T"], ["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize]);
 					}
 
-					$Width = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) - $AxisSettings["Margin"] * 2;
+					$Width = $this->myPicture->GraphAreaXdiff - $AxisSettings["Margin"] * 2;
 					$Step = $Width / $AxisSettings["Rows"];
 					$SubTicksSize = $Step / 2;
 					$MinTop = $AxisPos["T"];
@@ -325,7 +325,7 @@ class pScatter
 
 					if (isset($AxisSettings["Name"])) {
 						$YPos = $MinTop - 2;
-						$XPos = $this->myPicture->GraphAreaX1 + ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) / 2;
+						$XPos = $this->myPicture->GraphAreaX1 + ($this->myPicture->GraphAreaXdiff) / 2;
 						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
 						$MinTop = $Bounds[2]["Y"];
 					}
@@ -347,7 +347,7 @@ class pScatter
 						$this->myPicture->drawArrow($AxisPos["L"], $this->myPicture->GraphAreaY1 + $AxisSettings["Margin"], $AxisPos["L"], $this->myPicture->GraphAreaY1 - ($ArrowSize * 2), ["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize]);
 					}
 
-					$Height = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) - $AxisSettings["Margin"] * 2;
+					$Height = $this->myPicture->GraphAreaYdiff - $AxisSettings["Margin"] * 2;
 					$Step = $Height / $AxisSettings["Rows"];
 					$SubTicksSize = $Step / 2;
 					$MinLeft = $AxisPos["L"];
@@ -379,7 +379,7 @@ class pScatter
 
 					if (isset($AxisSettings["Name"])) {
 						$XPos = $MinLeft - 2;
-						$YPos = $this->myPicture->GraphAreaY1 + ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 2;
+						$YPos = $this->myPicture->GraphAreaY1 + ($this->myPicture->GraphAreaYdiff) / 2;
 						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"],["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 90]);
 						$MinLeft = $Bounds[2]["X"];
 					}
@@ -398,7 +398,7 @@ class pScatter
 						$this->myPicture->drawArrow($AxisPos["R"], $this->myPicture->GraphAreaY1 + $AxisSettings["Margin"], $AxisPos["R"], $this->myPicture->GraphAreaY1 - ($ArrowSize * 2), ["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize]);
 					}
 
-					$Height = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) - $AxisSettings["Margin"] * 2;
+					$Height = $this->myPicture->GraphAreaYdiff - $AxisSettings["Margin"] * 2;
 					$Step = $Height / $AxisSettings["Rows"];
 					$SubTicksSize = $Step / 2;
 					$MaxLeft = $AxisPos["R"];
@@ -430,7 +430,7 @@ class pScatter
 
 					if (isset($AxisSettings["Name"])) {
 						$XPos = $MaxLeft + 6;
-						$YPos = $this->myPicture->GraphAreaY1 + ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) / 2;
+						$YPos = $this->myPicture->GraphAreaY1 + ($this->myPicture->GraphAreaYdiff) / 2;
 						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 270]);
 						$MaxLeft = $Bounds[2]["X"];
 					}
@@ -626,7 +626,7 @@ class pScatter
 		$Result = [];
 
 		if ($Data["Axis"][$AxisID]["Identity"] == AXIS_X) {
-			$Height = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) - $Data["Axis"][$AxisID]["Margin"] * 2;
+			$Height = $this->myPicture->GraphAreaXdiff - $Data["Axis"][$AxisID]["Margin"] * 2;
 			$Step = $Height / $ScaleHeight;
 
 			foreach($Values as $Key => $Value) {
@@ -634,7 +634,7 @@ class pScatter
 			}
 			
 		} else {
-			$Height = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) - $Data["Axis"][$AxisID]["Margin"] * 2;
+			$Height = $this->myPicture->GraphAreaYdiff - $Data["Axis"][$AxisID]["Margin"] * 2;
 			$Step = $Height / $ScaleHeight;
 
 			foreach($Values as $Key => $Value) {
@@ -657,12 +657,12 @@ class pScatter
 		$Result = 0;
 
 		if ($Data["Axis"][$AxisID]["Identity"] == AXIS_X) {
-			$Height = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1) - $Data["Axis"][$AxisID]["Margin"] * 2;
+			$Height = $this->myPicture->GraphAreaXdiff - $Data["Axis"][$AxisID]["Margin"] * 2;
 			$Step = $Height / $ScaleHeight;
 			$Result = $this->myPicture->GraphAreaX1 + $Data["Axis"][$AxisID]["Margin"] + ($Step * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));
 			
 		} else {
-			$Height = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1) - $Data["Axis"][$AxisID]["Margin"] * 2;
+			$Height = $this->myPicture->GraphAreaYdiff - $Data["Axis"][$AxisID]["Margin"] * 2;
 			$Step = $Height / $ScaleHeight;
 			$Result = $this->myPicture->GraphAreaY2 - $Data["Axis"][$AxisID]["Margin"] - ($Step * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));
 		}

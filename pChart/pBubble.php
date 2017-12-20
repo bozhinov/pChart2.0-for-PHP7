@@ -115,29 +115,35 @@ class pBubble
 		/* Override defaults */
 		extract($Format);
 				
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->Data["Series"];
+		$Orientation = $this->myPicture->myData->Data["Orientation"];
 		
-		if (isset($Data["Series"]["BubbleFakePositiveSerie"])) {
+		if (isset($Data["BubbleFakePositiveSerie"])) {
 			$this->myPicture->myData->setSerieDrawable("BubbleFakePositiveSerie", FALSE);
 		}
 
-		if (isset($Data["Series"]["BubbleFakeNegativeSerie"])) {
+		if (isset($Data["BubbleFakeNegativeSerie"])) {
 			$this->myPicture->myData->setSerieDrawable("BubbleFakeNegativeSerie", FALSE);
 		}
 
 		$this->myPicture->myData->resetSeriesColors();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		
-		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-			$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;		
-		} elseif ($Data["Orientation"] == SCALE_POS_TOPBOTTOM) {
-			$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
-		}		
+		if ($XDivs == 0) {
+			$XStep = 0;
+		} else {
+			if ($Orientation == SCALE_POS_LEFTRIGHT) {
+				$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;		
+			} elseif ($Orientation == SCALE_POS_TOPBOTTOM) {
+				$XStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
+			}
+		}
 
 		foreach($DataSeries as $Key => $SerieName) {
-			$SerieDescription = (isset($Data["Series"][$SerieName]["Description"])) ? $Data["Series"][$SerieName]["Description"] : $SerieName;
+			
 			$X = $this->myPicture->GraphAreaX1 + $XMargin;
 			$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+			
 			$Color = $this->myPicture->myData->Palette[$Key];
 			if ($ForceAlpha != VOID) {
 				$Color["Alpha"] = $ForceAlpha;
@@ -172,39 +178,43 @@ class pBubble
 					}
 				}
 			}
+			
+			if ($RecordImageMap) {
+				$SerieDescription = (isset($Data[$SerieName]["Description"])) ? $Data[$SerieName]["Description"] : $SerieName;
+				$ImageMapColor = $this->myPicture->toHTMLColor($Color["R"], $Color["G"], $Color["B"]);
+			}
 
-			foreach($Data["Series"][$SerieName]["Data"] as $iKey => $Point) {
+			foreach($Data[$SerieName]["Data"] as $iKey => $Point) {
 				
-				$DataWeightSeries = $Data["Series"][$WeightSeries[$Key]]["Data"][$iKey];
-				$Weight = $Point + $DataWeightSeries;
-				$Weight = $this->myPicture->scaleComputeYSingle($Weight, ["AxisID" => $Data["Series"][$SerieName]["Axis"]]);
-				$Pos = $this->myPicture->scaleComputeYSingle($Point, ["AxisID" => $Data["Series"][$SerieName]["Axis"]]);
+				$DataWeightSeries = $Data[$WeightSeries[$Key]]["Data"][$iKey];
+				$Weight = $this->myPicture->scaleComputeYSingle($Point + $DataWeightSeries, ["AxisID" => $Data[$SerieName]["Axis"]]);
+				$Pos = $this->myPicture->scaleComputeYSingle($Point, ["AxisID" => $Data[$SerieName]["Axis"]]);
 				$Radius = floor(abs($Pos - $Weight) / 2);
 				
-				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
+				if ($Orientation == SCALE_POS_LEFTRIGHT) {
 
 					$Y = floor($Pos);
 					if ($Shape == BUBBLE_SHAPE_SQUARE) {
-						($RecordImageMap) AND $this->myPicture->addToImageMap("RECT", floor($X - $Radius).",".floor($Y - $Radius).",".floor($X + $Radius).",".floor($Y + $Radius), $this->myPicture->toHTMLColor($Color["R"], $Color["G"], $Color["B"]), $SerieDescription, $DataWeightSeries);
+						($RecordImageMap) AND $this->myPicture->addToImageMap("RECT", floor($X - $Radius).",".floor($Y - $Radius).",".floor($X + $Radius).",".floor($Y + $Radius), $ImageMapColor, $SerieDescription, $DataWeightSeries);
 						($BorderWidth != 1) AND	$this->myPicture->drawFilledRectangle($X - $Radius - $BorderWidth, $Y - $Radius - $BorderWidth, $X + $Radius + $BorderWidth, $Y + $Radius + $BorderWidth, $BorderColor);
 						$this->myPicture->drawFilledRectangle($X - $Radius, $Y - $Radius, $X + $Radius, $Y + $Radius, $Color);
 					} elseif ($Shape == BUBBLE_SHAPE_ROUND) {
-						($RecordImageMap) AND $this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".floor($Radius), $this->myPicture->toHTMLColor($Color["R"], $Color["G"], $Color["B"]), $SerieDescription, $DataWeightSeries);
+						($RecordImageMap) AND $this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".floor($Radius), $ImageMapColor, $SerieDescription, $DataWeightSeries);
 						($BorderWidth != 1) AND	$this->myPicture->drawFilledCircle($X, $Y, $Radius + $BorderWidth, $BorderColor);
 						$this->myPicture->drawFilledCircle($X, $Y, $Radius, $Color);
 					}
 
 					$X = $X + $XStep;
 					
-				} elseif ($Data["Orientation"] == SCALE_POS_TOPBOTTOM) {
+				} elseif ($Orientation == SCALE_POS_TOPBOTTOM) {
 
 					$X = floor($Pos);
 					if ($Shape == BUBBLE_SHAPE_SQUARE) {
-						($RecordImageMap) AND $this->myPicture->addToImageMap("RECT", floor($X - $Radius).",".floor($Y - $Radius).",".floor($X + $Radius).",".floor($Y + $Radius), $this->myPicture->toHTMLColor($Color["R"], $Color["G"], $Color["B"]), $SerieDescription, $DataWeightSeries);
+						($RecordImageMap) AND $this->myPicture->addToImageMap("RECT", floor($X - $Radius).",".floor($Y - $Radius).",".floor($X + $Radius).",".floor($Y + $Radius), $ImageMapColor, $SerieDescription, $DataWeightSeries);
 						($BorderWidth != 1) AND	$this->myPicture->drawFilledRectangle($X - $Radius - $BorderWidth, $Y - $Radius - $BorderWidth, $X + $Radius + $BorderWidth, $Y + $Radius + $BorderWidth, $BorderColor);
 						$this->myPicture->drawFilledRectangle($X - $Radius, $Y - $Radius, $X + $Radius, $Y + $Radius, $Color);
 					} elseif ($Shape == BUBBLE_SHAPE_ROUND) {
-						($RecordImageMap) AND $this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".floor($Radius), $this->myPicture->toHTMLColor($Color["R"], $Color["G"], $Color["B"]), $SerieDescription, $DataWeightSeries);
+						($RecordImageMap) AND $this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".floor($Radius), $ImageMapColor, $SerieDescription, $DataWeightSeries);
 						($BorderWidth != 1) AND	$this->myPicture->drawFilledCircle($X, $Y, $Radius + $BorderWidth, $BorderColor);
 						$this->myPicture->drawFilledCircle($X, $Y, $Radius, $Color);
 					}
@@ -237,11 +247,11 @@ class pBubble
 		$Y = $this->myPicture->GraphAreaY1 + $XMargin;
 		
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-			$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+			$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 			$X = floor($X + $Point * $XStep);
 			$Y = floor($Pos);
 		} else {
-			$YStep = ($XDivs == 0) ? 0 :($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+			$YStep = ($XDivs == 0) ? 0 :($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 			$X = floor($Pos);
 			$Y = floor($Y + $Point * $YStep);
 		}

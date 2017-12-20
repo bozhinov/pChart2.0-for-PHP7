@@ -122,9 +122,9 @@ class pStock
 			$XStep = 0;
 		} else {
 			if ($Orientation == SCALE_POS_LEFTRIGHT) {
-				$XStep = ($this->myPicture->GraphAreaX2 - $this->myPicture->GraphAreaX1 - $XMargin * 2) / $XDivs;
+				$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 			} else {
-				$XStep = ($this->myPicture->GraphAreaY2 - $this->myPicture->GraphAreaY1 - $XMargin * 2) / $XDivs;
+				$XStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 			}
 		}
 
