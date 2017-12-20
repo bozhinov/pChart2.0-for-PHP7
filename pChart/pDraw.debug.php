@@ -12,7 +12,7 @@ do not result in a different image, so I compare the GD "instructions"
 The debug routines result it 15 - 30% performance degradation 
 I advise against using this code in production.
 
-Version     : 2.2.2-dev
+Version     : 2.2.3-dev
 Made by     : Momchil Bozhinov
 Last Update : 01/01/2018
 
