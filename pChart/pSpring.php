@@ -454,7 +454,7 @@ class pSpring
 						if (isset($this->Data[$NodeID])) {
 							$X2 = $this->Data[$NodeID]["X"];
 							$Y2 = $this->Data[$NodeID]["Y"];
-							$FreeZone = $this->Data[$Key2]["FreeZone"];
+							$FreeZone = $this->Data[$NodeID]["FreeZone"]; # Momchil: $key2 does not exist here
 							$Distance = sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1)); # GetDistance
 							$Angle = $this->myPicture->getAngle($X1, $Y1, $X2, $Y2);
 							if ($Distance > $FreeZone) {
