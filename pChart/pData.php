@@ -88,7 +88,7 @@ class pData
 			$this->initialise($SerieName);
 		}
 
-		foreach($Values as $Key => $Value) {
+		foreach($Values as $Value) {
 			$this->Data["Series"][$SerieName]["Data"][] = $Value;
 		}
 		
@@ -262,7 +262,7 @@ class pData
 	/* Return the abscissa margin */
 	function getAbscissaMargin()
 	{
-		foreach($this->Data["Axis"] as $AxisID => $Values) {
+		foreach($this->Data["Axis"] as $Values) {
 			if ($Values["Identity"] == AXIS_X) {
 				return ($Values["Margin"]);
 			}
@@ -410,7 +410,7 @@ class pData
 		if (isset($this->Data["Series"][$Serie])) {
 			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
 			$Seriesum = 1;
-			foreach($SerieData as $Key => $Value) {
+			foreach($SerieData as $Value) {
 				$Seriesum = $Seriesum * $Value;
 			}
 
@@ -426,7 +426,7 @@ class pData
 		if (isset($this->Data["Series"][$Serie])) {
 			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
 			$Seriesum = 0;
-			foreach($SerieData as $Key => $Value) {
+			foreach($SerieData as $Value) {
 				$Seriesum = $Seriesum + 1 / $Value;
 			}
 
@@ -443,7 +443,7 @@ class pData
 			$Average = $this->getSerieAverage($Serie);
 			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
 			$DeviationSum = 0;
-			foreach($SerieData as $Key => $Value) {
+			foreach($SerieData as $Value) {
 				$DeviationSum = $DeviationSum + ($Value - $Average) * ($Value - $Average);
 			}
 
@@ -768,14 +768,14 @@ class pData
 
 		for ($i = 0; $i <= $MaxVal - 1; $i++) {
 			$Factor = 0;
-			foreach($SelectedSeries as $Key => $SerieName) {
+			foreach($SelectedSeries as $SerieName) {
 				$Value = $this->Data["Series"][$SerieName]["Data"][$i];
 				($Value != VOID) AND $Factor = $Factor + abs($Value);
 			}
 
 			if ($Factor != 0) {
 				$Factor = $NormalizationFactor / $Factor;
-				foreach($SelectedSeries as $Key => $SerieName) {
+				foreach($SelectedSeries as $SerieName) {
 					$Value = $this->Data["Series"][$SerieName]["Data"][$i];
 					if ($Value != VOID && $Factor != $NormalizationFactor) {
 						$this->Data["Series"][$SerieName]["Data"][$i] = round(abs($Value) * $Factor, $Round);
@@ -788,7 +788,7 @@ class pData
 			}
 		}
 
-		foreach($SelectedSeries as $Key => $SerieName) {
+		foreach($SelectedSeries as $SerieName) {
 			$data = array_diff($this->Data["Series"][$SerieName]["Data"],[VOID]);
 			$this->Data["Series"][$SerieName]["Max"] = max($data);
 			$this->Data["Series"][$SerieName]["Min"] = min($data);
@@ -897,10 +897,10 @@ class pData
 
 	function negateValues(array $Series)
 	{
-		foreach($Series as $Key => $SerieName) {
+		foreach($Series as $SerieName) {
 			if (isset($this->Data["Series"][$SerieName])) {
 				$Data = [];
-				foreach($this->Data["Series"][$SerieName]["Data"] as $Key => $Value) {
+				foreach($this->Data["Series"][$SerieName]["Data"] as $Value) {
 					$Data[] = ($Value == VOID) ? VOID : - $Value;
 				}
 
@@ -914,7 +914,7 @@ class pData
 
 	function scaleGetXSettings()
 	{
-		foreach($this->Data["Axis"] as $AxisID => $Settings) {
+		foreach($this->Data["Axis"] as $Settings) {
 			if ($Settings["Identity"] == AXIS_X) {
 				return [$Settings["Margin"],$Settings["Rows"]];
 			}

@@ -458,8 +458,8 @@ class pCharts {
 						if ($Y == VOID) {
 							$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"PathOnly" => TRUE]);
 
-							foreach($Area as $key => $Points) {
-								$Corners = [$Area[$key][0]["X"], $YZero];
+							foreach($Area as $Key2 => $Points) {
+								$Corners = [$Area[$Key2][0]["X"], $YZero];
 								foreach($Points as $subKey => $Point) {
 									$Corners[] = ($subKey == count($Points) - 1) ? $Point["X"] - 1 : $Point["X"];
 									$Corners[] = $Point["Y"] + 1;
@@ -526,8 +526,8 @@ class pCharts {
 						if ($X == VOID) {
 							$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"PathOnly" => TRUE]);
 
-							foreach($Area as $key => $Points) {
-								$Corners = [$YZero,$Area[$key][0]["Y"]];
+							foreach($Area as $Key2 => $Points) {
+								$Corners = [$YZero, $Area[$Key2][0]["Y"]];
 								
 								foreach($Points as $subKey => $Point) {
 									$Corners[] = ($subKey == count($Points) - 1) ? $Point["X"] - 1 : $Point["X"];

@@ -38,7 +38,7 @@ class pScatter
 		/* Check if we have at least both one X and Y axis */
 		$GotXAxis = FALSE;
 		$GotYAxis = FALSE;
-		foreach($this->myPicture->myData->Data["Axis"] as $AxisID => $AxisSettings) {
+		foreach($this->myPicture->myData->Data["Axis"] as $AxisSettings) {
 			($AxisSettings["Identity"] == AXIS_X) AND $GotXAxis = TRUE;
 			($AxisSettings["Identity"] == AXIS_Y) AND $GotYAxis = TRUE;
 		}
@@ -462,8 +462,8 @@ class pScatter
 		$Data = $this->myPicture->myData->Data;
 		$Palette = $this->myPicture->myData->Palette;
 		$BorderColor =["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha];
-		foreach($Data["ScatterSeries"] as $Key => $Series) {
-			if ($Series["isDrawable"] == TRUE) {
+		foreach($Data["ScatterSeries"] as $Series) {
+			if ($Series["isDrawable"]) {
 				$SerieX = $Series["X"];
 				$SerieValuesX = $Data["Series"][$SerieX]["Data"];
 				$SerieXAxis = $Data["Series"][$SerieX]["Axis"];
@@ -521,8 +521,8 @@ class pScatter
 		$ImageMapPlotSize = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 10;
 		$ImageMapPrecision = isset($Format["ImageMapPrecision"]) ? $Format["ImageMapPrecision"] : 2;
 		/* Parse all the series to draw */
-		foreach($Data["ScatterSeries"] as $Key => $Series) {
-			if ($Series["isDrawable"] == TRUE) {
+		foreach($Data["ScatterSeries"] as $Series) {
+			if ($Series["isDrawable"]) {
 				$SerieX = $Series["X"];
 				$SerieValuesX = $Data["Series"][$SerieX]["Data"];
 				$SerieXAxis = $Data["Series"][$SerieX]["Axis"];
@@ -571,7 +571,7 @@ class pScatter
 		$ImageMapTitle = isset($Format["ImageMapTitle"]) ? $Format["ImageMapTitle"] : NULL;
 		$ImageMapPlotSize = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 10;
 		$ImageMapPrecision = isset($Format["ImageMapPrecision"]) ? $Format["ImageMapPrecision"] : 2;
-		foreach($Data["ScatterSeries"] as $Key => $Series) {
+		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 				$SerieX = $Series["X"];
 				$SerieY = $Series["Y"];
@@ -685,8 +685,8 @@ class pScatter
 		}
 
 		$Data = $this->myPicture->myData->Data;
-		foreach($Data["ScatterSeries"] as $Key => $Series) {
-			if ($Series["isDrawable"] == TRUE && isset($Series["Picture"])) {
+		foreach($Data["ScatterSeries"] as $Series) {
+			if ($Series["isDrawable"] && isset($Series["Picture"])) {
 				list($PicWidth, $PicHeight) = $this->myPicture->getPicInfo($Series["Picture"]);
 				($IconAreaWidth < $PicWidth) AND $IconAreaWidth = $PicWidth;
 				($IconAreaHeight < $PicHeight) AND $IconAreaHeight = $PicHeight;
@@ -699,8 +699,8 @@ class pScatter
 		$Boundaries = ["L" => $X, "T" => $Y, "R" => 0, "B" => 0];
 		$vY = $Y;
 		$vX = $X;
-		foreach($Data["ScatterSeries"] as $Key => $Series) {
-			if ($Series["isDrawable"] == TRUE) {
+		foreach($Data["ScatterSeries"] as $Series) {
+			if ($Series["isDrawable"]) {
 				if ($Mode == LEGEND_VERTICAL) {
 					$BoxArray = $this->myPicture->getTextBox($vX + $IconAreaWidth + 4, $vY + $IconAreaHeight / 2, $FontName, $FontSize, 0, $Series["Description"]);
 					($Boundaries["T"] > $BoxArray[2]["Y"] + $IconAreaHeight / 2) AND $Boundaries["T"] = $BoxArray[2]["Y"] + $IconAreaHeight / 2;
@@ -805,8 +805,8 @@ class pScatter
 		$Y = 100;
 		$Data = $this->myPicture->myData->Data;
 		
-		foreach($Data["ScatterSeries"] as $Key => $Series) {
-			if ($Series["isDrawable"] == TRUE && isset($Series["Picture"])) {
+		foreach($Data["ScatterSeries"] as $Series) {
+			if ($Series["isDrawable"] && isset($Series["Picture"])) {
 				list($PicWidth, $PicHeight) = $this->myPicture->getPicInfo($Series["Picture"]);
 				($IconAreaWidth < $PicWidth) AND $IconAreaWidth = $PicWidth;
 				($IconAreaHeight < $PicHeight) AND $IconAreaHeight = $PicHeight;
@@ -819,8 +819,8 @@ class pScatter
 		$Boundaries = ["L" => $X, "T" => $Y, "R" => 0, "B" => 0];
 		$vY = $Y;
 		$vX = $X;
-		foreach($Data["ScatterSeries"] as $Key => $Series) {
-			if ($Series["isDrawable"] == TRUE) {
+		foreach($Data["ScatterSeries"] as $Series) {
+			if ($Series["isDrawable"]) {
 				if ($Mode == LEGEND_VERTICAL) {
 					$BoxArray = $this->myPicture->getTextBox($vX + $IconAreaWidth + 4, $vY + $IconAreaHeight / 2, $FontName, $FontSize, 0, $Series["Description"]);
 					($Boundaries["T"] > $BoxArray[2]["Y"] + $IconAreaHeight / 2) AND $Boundaries["T"] = $BoxArray[2]["Y"] + $IconAreaHeight / 2;
@@ -863,8 +863,8 @@ class pScatter
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : 0;
 		$Data = $this->myPicture->myData->Data;
 		
-		foreach($Data["ScatterSeries"] as $Key => $Series) {
-			if ($Series["isDrawable"] == TRUE) {
+		foreach($Data["ScatterSeries"] as $Series) {
+			if ($Series["isDrawable"]) {
 				$SerieX = $Series["X"];
 				$SerieValuesX = $Data["Series"][$SerieX]["Data"];
 				$SerieXAxis = $Data["Series"][$SerieX]["Axis"];

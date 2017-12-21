@@ -756,7 +756,7 @@ class pDraw
 		$Mode = NULL;
 		$ArrowS = [];
 		$ArrowE = [];
-		foreach($Q as $Key => $Point) {
+		foreach($Q as $Point) {
 			$X = $Point["X"];
 			$Y = $Point["Y"];
 			/* Get the first segment */
@@ -865,7 +865,7 @@ class pDraw
 				$X = $i * $XStep + $X1;
 				$Y = $i * $YStep + $Y1;
 				
-				foreach($Threshold as $Key => $Parameters) {
+				foreach($Threshold as $Parameters) {
 					if ($Y <= $Parameters["MinX"] && $Y >= $Parameters["MaxX"]) {
 						$Color = [
 							(isset($Parameters["R"])) ? $Parameters["R"] : 0,
@@ -1703,7 +1703,7 @@ class pDraw
 				} elseif ($Mode == LEGEND_HORIZONTAL) {
 					$Lines = preg_split("/\n/", $Serie["Description"]);
 					$Width = [];
-					foreach($Lines as $Key => $Value) {
+					foreach($Lines as $Value) {
 						$BoxArray = $this->getTextBox($vX + $IconAreaWidth + 6, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key), $FontName, $FontSize, 0, $Value);
 						($Boundaries["T"] > $BoxArray[2]["Y"] + $IconAreaHeight / 2) AND $Boundaries["T"] = $BoxArray[2]["Y"] + $IconAreaHeight / 2;
 						($Boundaries["R"] < $BoxArray[1]["X"] + 2) AND $Boundaries["R"] = $BoxArray[1]["X"] + 2;
@@ -2781,7 +2781,7 @@ class pDraw
 		$GoodScaleFactors = [];
 		
 		/* Compute each factors */
-		foreach($Factors as $Key => $Factor) {
+		foreach($Factors as $Factor) {
 			$Results[$Factor] = $this->processScale($XMin, $XMax, $MaxDivs, [$Factor], $AxisID);
 		}
 		
@@ -2800,7 +2800,7 @@ class pDraw
 		/* Find the factor that cause the maximum number of Rows */
 		$MaxRows = 0;
 		$BestFactor = 0;
-		foreach($GoodScaleFactors as $Key => $Factor) {
+		foreach($GoodScaleFactors as $Factor) {
 			if ($Results[$Factor]["Rows"] > $MaxRows) {
 				$MaxRows = $Results[$Factor]["Rows"];
 				$BestFactor = $Factor;
@@ -2825,7 +2825,7 @@ class pDraw
 			$Scaled10Factor = .0001;
 			$Result = 0;
 			while (!$Found) {
-				foreach($Factors as $Key => $Factor) {
+				foreach($Factors as $Factor) {
 					if (!$Found) {
 						$R = $Factor * $Scaled10Factor;
 						if ($Factor == 0 || floor($Factor) == 0){ # Momchil: avoid division by 9
@@ -3742,7 +3742,7 @@ class pDraw
 					$Sy = 0;
 					$Sxx = 0;
 					
-					foreach($PosArray as $Key => $Y) {
+					foreach($PosArray as $Y) {
 						if ($Y != VOID) {
 							$Sxy = $Sxy + $X * $Y;
 							$Sx = $Sx + $X;
@@ -3794,7 +3794,7 @@ class pDraw
 					$Sx = 0;
 					$Sy = 0;
 					$Sxx = 0;
-					foreach($PosArray as $Key => $X) {
+					foreach($PosArray as $X) {
 						if ($X != VOID) {
 							$Sxy = $Sxy + $X * $Y;
 							$Sx = $Sx + $Y;
@@ -3970,7 +3970,7 @@ class pDraw
 				}
 
 				$MinX = $this->GraphAreaX2;
-				foreach($SeriesName as $Key => $SerieName) {
+				foreach($SeriesName as $Key => $SerieName) { # Momchil: TODO Key again ?!
 					if (isset($Data["Series"][$SerieName]["Data"][$Index])) {
 						$AxisID = $Data["Series"][$SerieName]["Axis"];
 						$XAxisMode = $Data["XAxisDisplay"];
@@ -4243,7 +4243,7 @@ class pDraw
 			$this->drawText($XPos, $YPos, $Captions["Caption"], ["Align" => TEXT_ALIGN_BOTTOMLEFT]);
 			$YPos = $YPos - $CaptionHeight - $HorizontalMargin;			
 		} else {
-			foreach($Captions as $Key => $Caption) {
+			foreach($Captions as $Caption) {
 				$TxtPos = $this->getTextBox($XPos, $YPos, $FontName, $FontSize, 0, $Caption["Caption"]);
 				$CaptionHeight = ($TxtPos[0]["Y"] - $TxtPos[2]["Y"]);
 				/* Write the serie color if needed */

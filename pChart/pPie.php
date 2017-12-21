@@ -288,7 +288,7 @@ class pPie
 				$Radius = $Radius / 2;
 			}
 			
-			foreach($Values as $Key => $Value) {
+			foreach($Values as $Value) {
 				$EndAngle = ($Value * $ScaleFactor) + $Offset;
 			    ((int)$EndAngle > 360) AND $EndAngle = 0;
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
@@ -403,7 +403,7 @@ class pPie
 		$SliceColors = [];
 		$Visible = [];
 		$SliceAngle = [];
-		foreach($Values as $Key => $Value) {
+		foreach($Values as $Value) {
 			if (!isset($Palette[$ID]["R"])) {
 				$Color = $this->myPicture->getRandomColor();
 				$Palette[$ID] = $Color;
@@ -463,7 +463,7 @@ class pPie
 		# All use cases check if both X & Y are !=0
 		# I will leave this here, but it can hit the break at pDraw->setShadow()
 		if ($RestoreShadow && ($this->myPicture->ShadowX != 0 || $this->myPicture->ShadowY != 0)) {
-			foreach($Slices as $SliceID => $Plots) {
+			foreach($Slices as $Plots) {
 				$ShadowPie = [];
 				for ($i = 0; $i < count($Plots); $i = $i + 2) {
 					$ShadowPie[] = $Plots[$i] + $this->myPicture->ShadowX;
@@ -624,7 +624,7 @@ class pPie
 			$Step = 360 / (2 * PI * $Radius);
 			$Offset = 360;
 			$ID = count($Values) - 1;
-			foreach($Values as $Key => $Value) {
+			foreach($Values as $Value) {
 				$FirstPoint = TRUE;
 				if ($Shadow) {
 					$Settings = ["R" => $this->myPicture->ShadowR,"G" => $this->myPicture->ShadowG,"B" => $this->myPicture->ShadowB,"Alpha" => $this->myPicture->Shadowa];
@@ -675,7 +675,7 @@ class pPie
 			$Offset = 360;
 			$Settings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"R" => $ValueR,"G" => $ValueG,"B" => $ValueB,"Alpha" => $ValueAlpha];
 			
-			foreach($Values as $Key => $Value) {
+			foreach($Values as $Value) {
 				
 				$EndAngle = $Offset - ($Value * $ScaleFactor);
 				($EndAngle < 0) AND $EndAngle = 0;
@@ -704,7 +704,7 @@ class pPie
 		if ($DrawLabels) {
 			$Offset = 360;
 			$ID = count($Values) - 1;
-			foreach($Values as $Key => $Value) {
+			foreach($Values as $Value) {
 				if ($LabelColor == PIE_LABEL_COLOR_AUTO) {
 					$Settings = ["FillR" => $Palette[$ID]["R"],"FillG" => $Palette[$ID]["G"],"FillB" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"]];
 				} else {
@@ -781,7 +781,7 @@ class pPie
 		$vY = $Y;
 		$vX = $X;
 		
-		foreach($Data["Series"][$Data["Abscissa"]]["Data"] as $Key => $Value) {
+		foreach($Data["Series"][$Data["Abscissa"]]["Data"] as $Value) {
 			$BoxArray = $this->myPicture->getTextBox($vX + $BoxSize + 4, $vY + $BoxSize / 2, $FontName, $FontSize, 0, $Value);
 			if ($Mode == LEGEND_VERTICAL) {
 				($Boundaries["T"] > $BoxArray[2]["Y"] + $BoxSize / 2) 		AND $Boundaries["T"] = $BoxArray[2]["Y"] + $BoxSize / 2;
@@ -860,7 +860,7 @@ class pPie
 			$YBottom = $Y2 + $Height / 2 + 2;
 			if (!empty($this->LabelPos)) {
 				$Done = FALSE;
-				foreach($this->LabelPos as $Key => $Settings) {
+				foreach($this->LabelPos as $Settings) {
 					if (!$Done) {						
 						if (($YTop >= $Settings["YTop"] && $YTop <= $Settings["YBottom"]) || ($YBottom >= $Settings["YTop"] && $YBottom <= $Settings["YBottom"])){
 							
@@ -922,7 +922,7 @@ class pPie
 			return; # Momchil: example.draw2DPie.labels
 		}
 
-		foreach($this->LabelPos as $Key => $Settings) {
+		foreach($this->LabelPos as $Settings) {
 			$X1 = $Settings["X1"];
 			$Y1 = $Settings["Y1"];
 			$X2 = $Settings["X2"];
@@ -1003,7 +1003,7 @@ class pPie
 
 		/* Dump the real number of data to draw */
 		$Values = [];
-		foreach($Data["Series"][$DataSerie]["Data"] as $Key => $Value) {
+		foreach($Data["Series"][$DataSerie]["Data"] as $Value) {
 			if ($Value != 0) {
 				$Values[] = $Value;
 			}
@@ -1113,7 +1113,7 @@ class pPie
 			}
 
 			/* Smooth the edges using AA */
-			foreach($AAPixels as $iKey => $Pos) {
+			foreach($AAPixels as $Pos) {
 				$this->myPicture->drawAntialiasPixel($Pos[0], $Pos[1], $BorderColor);
 			}
 
@@ -1148,7 +1148,7 @@ class pPie
 		if ($WriteValues && !$Shadow) {
 			$Step = 360 / (2 * PI * $OuterRadius);
 			$Offset = 0;
-			foreach($Values as $Key => $Value) {
+			foreach($Values as $Value) {
 				
 				$EndAngle = $Offset + ($Value * $ScaleFactor);
 				($EndAngle > 360) AND $EndAngle = 360;
