@@ -2828,7 +2828,7 @@ class pDraw
 				foreach($Factors as $Factor) {
 					if (!$Found) {
 						$R = $Factor * $Scaled10Factor;
-						if ($Factor == 0 || floor($Factor) == 0){ # Momchil: avoid division by 9
+						if ($Factor == 0 || floor($Factor) == 0){ # Momchil: avoid division by 0
 							throw pException::InvalidInput("Scale factor must be > 1.00");
 						} else {
 							if (floor($R) != 0){
@@ -3857,38 +3857,43 @@ class pDraw
 		$Data = $this->myData->Data;
 		list($XMargin, $XDivs) = $this->myData->scaleGetXSettings();
 		
+		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
+			if ($XDivs == 0) {
+				$XStep = $this->GraphAreaXdiff / 4;
+			} else {
+				$XStep = ($this->GraphAreaXdiff - $XMargin * 2) / $XDivs;
+			}
+		} else {
+			if ($XDivs == 0) {
+				$XStep = $this->GraphAreaYdiff / 4;
+			} else {
+				$XStep = ($this->GraphAreaYdiff - $XMargin * 2) / $XDivs;
+			}	
+		}
+
 		foreach($Indexes as $Key => $Index) {
 			$Series = [];
 			$Index = intval($Index);
+			$AbscissaDataSet = isset($Data["Series"][$Data["Abscissa"]]["Data"][$Index]);
+			
 			if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-				if ($XDivs == 0) {
-					$XStep = $this->GraphAreaXdiff / 4;
-				} else {
-					$XStep = ($this->GraphAreaXdiff - $XMargin * 2) / $XDivs;
-				}
 
 				$X = $this->GraphAreaX1 + $XMargin + $Index * $XStep;
 				if ($DrawVerticalLine) {
 					$this->drawLine($X, $this->GraphAreaY1 + $Data["YMargin"], $X, $this->GraphAreaY2 - $Data["YMargin"], ["R" => $VerticalLineR,"G" => $VerticalLineG,"B" => $VerticalLineB,"Alpha" => $VerticalLineAlpha,"Ticks" => $VerticalLineTicks]);
 				}
-
+				
 				$MinY = $this->GraphAreaY2;
 				
-				foreach($SeriesName as $iKey => $SerieName) {
+				foreach($SeriesName as $SerieName) {
 					
 					$SerieName = strval($SerieName);
 					
 					if (isset($Data["Series"][$SerieName]["Data"][$Index])) {
 						$AxisID = $Data["Series"][$SerieName]["Axis"];
-						$XAxisMode = $Data["XAxisDisplay"];
-						$XAxisFormat = $Data["XAxisFormat"];
-						$XAxisUnit = $Data["XAxisUnit"];
-						$AxisMode = $Data["Axis"][$AxisID]["Display"];
-						$AxisFormat = $Data["Axis"][$AxisID]["Format"];
-						$AxisUnit = $Data["Axis"][$AxisID]["Unit"];
 						
-						if (isset($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Index])) {
-							$XLabel = $this->scaleFormat($Data["Series"][$Data["Abscissa"]]["Data"][$Index], $XAxisMode, $XAxisFormat, $XAxisUnit);
+						if (isset($Data["Abscissa"]) && $AbscissaDataSet) {
+							$XLabel = $this->scaleFormat($Data["Series"][$Data["Abscissa"]]["Data"][$Index], $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
 						} else {
 							$XLabel = "";
 						}
@@ -3897,16 +3902,10 @@ class pDraw
 							$Description = $OverrideTitle;
 						} elseif (count($SeriesName) == 1) {
 							$Description = $Data["Series"][$SerieName]["Description"] . " - " . $XLabel;
-						} elseif (isset($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Index])) {
+						} elseif (isset($Data["Abscissa"]) && $AbscissaDataSet) {
 							$Description = $XLabel;
 						}
 
-						$Serie = [
-							"R" => $Data["Series"][$SerieName]["Color"]["R"],
-							"G" => $Data["Series"][$SerieName]["Color"]["G"],
-							"B" => $Data["Series"][$SerieName]["Color"]["B"],
-							"Alpha" => $Data["Series"][$SerieName]["Color"]["Alpha"]
-						];
 						$SerieOffset = (count($SeriesName) == 1 && isset($Data["Series"][$SerieName]["XOffset"])) ? $Data["Series"][$SerieName]["XOffset"] : 0;
 						$Value = $Data["Series"][$SerieName]["Data"][$Index];
 						($Value == VOID) AND $Value = "NaN";
@@ -3914,21 +3913,21 @@ class pDraw
 						if (!empty($ForceLabels)) {
 							$Caption = isset($ForceLabels[$Key]) ? $ForceLabels[$Key] : "Not set";
 						} else {
-							$Caption = $this->scaleFormat($Value, $AxisMode, $AxisFormat, $AxisUnit);
+							$Caption = $this->scaleFormat($Value, $Data["Axis"][$AxisID]["Display"], $Data["Axis"][$AxisID]["Format"], $Data["Axis"][$AxisID]["Unit"]);
 						}
 
-						if ($this->isChartLayoutStacked == TRUE) {
+						if ($this->isChartLayoutStacked) {
 							$LookFor = ($Value >= 0) ? "+" : "-";
 							$Value = 0;
 							foreach($Data["Series"] as $Name => $SerieLookup) {
-								if ($SerieLookup["isDrawable"] == TRUE && $Name != $Data["Abscissa"]) {
-									if (isset($Data["Series"][$Name]["Data"][$Index]) && $Data["Series"][$Name]["Data"][$Index] != VOID) {
-										if ($Data["Series"][$Name]["Data"][$Index] >= 0 && $LookFor == "+") {
-											$Value = $Value + $Data["Series"][$Name]["Data"][$Index];
+								if ($SerieLookup["isDrawable"] && $Name != $Data["Abscissa"]) {
+									if (isset($SerieLookup["Data"][$Index]) && $SerieLookup["Data"][$Index] != VOID) {
+										if ($SerieLookup["Data"][$Index] >= 0 && $LookFor == "+") {
+											$Value = $Value + $SerieLookup["Data"][$Index];
 										}
 
-										if ($Data["Series"][$Name]["Data"][$Index] < 0 && $LookFor == "-") {
-											$Value = $Value - $Data["Series"][$Name]["Data"][$Index];
+										if ($SerieLookup["Data"][$Index] < 0 && $LookFor == "-") {
+											$Value = $Value - $SerieLookup["Data"][$Index];
 										}
 
 										if ($Name == $SerieName) {
@@ -3951,18 +3950,13 @@ class pDraw
 							$this->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["R" => 255,"G" => 255,"B" => 255,"BorderR" => 0,"BorderG" => 0,"BorderB" => 0]);
 						}
 
-						$Series[] = ["Format" => $Serie,"Caption" => $Caption];
+						$Series[] = ["Format" => $Data["Series"][$SerieName]["Color"],"Caption" => $Caption];
 					}
 				}
 
 				$this->drawLabelBox($X, $MinY - 3, $Description, $Series, $Format);
 				
 			} else {
-				if ($XDivs == 0) {
-					$XStep = $this->GraphAreaYdiff / 4;
-				} else {
-					$XStep = ($this->GraphAreaYdiff - $XMargin * 2) / $XDivs;
-				}
 
 				$Y = $this->GraphAreaY1 + $XMargin + $Index * $XStep;
 				if ($DrawVerticalLine) {
@@ -3970,17 +3964,12 @@ class pDraw
 				}
 
 				$MinX = $this->GraphAreaX2;
-				foreach($SeriesName as $Key => $SerieName) { # Momchil: TODO Key again ?!
+				foreach($SeriesName as $SerieName) {
 					if (isset($Data["Series"][$SerieName]["Data"][$Index])) {
 						$AxisID = $Data["Series"][$SerieName]["Axis"];
-						$XAxisMode = $Data["XAxisDisplay"];
-						$XAxisFormat = $Data["XAxisFormat"];
-						$XAxisUnit = $Data["XAxisUnit"];
-						$AxisMode = $Data["Axis"][$AxisID]["Display"];
-						$AxisFormat = $Data["Axis"][$AxisID]["Format"];
-						$AxisUnit = $Data["Axis"][$AxisID]["Unit"];
-						if (isset($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Index])) {
-							$XLabel = $this->scaleFormat($Data["Series"][$Data["Abscissa"]]["Data"][$Index], $XAxisMode, $XAxisFormat, $XAxisUnit);
+
+						if (isset($Data["Abscissa"]) && $AbscissaDataSet) {
+							$XLabel = $this->scaleFormat($Data["Series"][$Data["Abscissa"]]["Data"][$Index], $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
 						} else {
 							$XLabel = "";
 						}
@@ -3988,54 +3977,41 @@ class pDraw
 						if ($OverrideTitle != NULL) {
 							$Description = $OverrideTitle;
 						} elseif (count($SeriesName) == 1) {
-							if (isset($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Index])) $Description = $Data["Series"][$SerieName]["Description"] . " - " . $XLabel;
-						} elseif (isset($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Index])) {
+							if (isset($Data["Abscissa"]) && $AbscissaDataSet){
+								$Description = $Data["Series"][$SerieName]["Description"] . " - " . $XLabel;
+							}
+						} elseif (isset($Data["Abscissa"]) && $AbscissaDataSet) {
 							$Description = $XLabel;
 						}
 
-						$Serie = [];
 						if (isset($Data["Extended"]["Palette"][$Index])) {
-							$Serie["R"] = $Data["Extended"]["Palette"][$Index]["R"];
-							$Serie["G"] = $Data["Extended"]["Palette"][$Index]["G"];
-							$Serie["B"] = $Data["Extended"]["Palette"][$Index]["B"];
-							$Serie["Alpha"] = $Data["Extended"]["Palette"][$Index]["Alpha"];
+							$Serie = $Data["Extended"]["Palette"][$Index];
 						} else {
-							$Serie["R"] = $Data["Series"][$SerieName]["Color"]["R"];
-							$Serie["G"] = $Data["Series"][$SerieName]["Color"]["G"];
-							$Serie["B"] = $Data["Series"][$SerieName]["Color"]["B"];
-							$Serie["Alpha"] = $Data["Series"][$SerieName]["Color"]["Alpha"];
+							$Serie = $Data["Series"][$SerieName]["Color"];
 						}
 
-						if (count($SeriesName) == 1 && isset($Data["Series"][$SerieName]["XOffset"])) {
-							$SerieOffset = $Data["Series"][$SerieName]["XOffset"];
-						} else {
-							$SerieOffset = 0;
-						}
-
+						$SerieOffset = (count($SeriesName) == 1 && isset($Data["Series"][$SerieName]["XOffset"])) ? $Data["Series"][$SerieName]["XOffset"] : 0;
 						$Value = $Data["Series"][$SerieName]["Data"][$Index];
-						if (!empty($ForceLabels)) {
+						($Value == VOID) AND $Value = "NaN";
+						
+						if (!empty($ForceLabels)) { # Momchil: example.drawLabel.caption.php shows these correspond to Index and not Serie
 							$Caption = isset($ForceLabels[$Key]) ? $ForceLabels[$Key] : "Not set";
 						} else {
-							$Caption = $this->scaleFormat($Value, $AxisMode, $AxisFormat, $AxisUnit);
+							$Caption = $this->scaleFormat($Value, $Data["Axis"][$AxisID]["Display"],  $Data["Axis"][$AxisID]["Format"], $Data["Axis"][$AxisID]["Unit"]);
 						}
 
-						if ($Value == VOID) {
-							$Value = "NaN";
-						}
-
-						if ($this->isChartLayoutStacked == TRUE) {
+						if ($this->isChartLayoutStacked) {
 							$LookFor = ($Value >= 0) ? "+" : "-";
 							$Value = 0;
-
 							foreach($Data["Series"] as $Name => $SerieLookup) {
-								if ($SerieLookup["isDrawable"] == TRUE && $Name != $Data["Abscissa"]) {
-									if (isset($Data["Series"][$Name]["Data"][$Index]) && $Data["Series"][$Name]["Data"][$Index] != VOID) {
-										if ($Data["Series"][$Name]["Data"][$Index] >= 0 && $LookFor == "+") {
-											$Value = $Value + $Data["Series"][$Name]["Data"][$Index];
+								if ($SerieLookup["isDrawable"] && $Name != $Data["Abscissa"]) {
+									if (isset($SerieLookup["Data"][$Index]) && $SerieLookup["Data"][$Index] != VOID) {
+										if ($SerieLookup["Data"][$Index] >= 0 && $LookFor == "+") {
+											$Value = $Value + $SerieLookup["Data"][$Index];
 										}
 
-										if ($Data["Series"][$Name]["Data"][$Index] < 0 && $LookFor == "-") {
-											$Value = $Value - $Data["Series"][$Name]["Data"][$Index];
+										if ($SerieLookup["Data"][$Index] < 0 && $LookFor == "-") {
+											$Value = $Value - $SerieLookup["Data"][$Index];
 										}
 
 										if ($Name == $SerieName) {
