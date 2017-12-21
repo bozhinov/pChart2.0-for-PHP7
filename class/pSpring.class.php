@@ -447,7 +447,7 @@ class pSpring
 						if (isset($this->Data[$NodeID])) {
 							$X2 = $this->Data[$NodeID]["X"];
 							$Y2 = $this->Data[$NodeID]["Y"];
-							$FreeZone = $this->Data[$Key2]["FreeZone"];
+							$FreeZone = $this->Data[$NodeID]["FreeZone"];
 							$Distance = $this->getDistance($X1, $Y1, $X2, $Y2);
 							$Angle = $this->getAngle($X1, $Y1, $X2, $Y2);
 							if ($Distance > $FreeZone) {
