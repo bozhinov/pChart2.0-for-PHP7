@@ -1107,7 +1107,7 @@ class pCharts {
 					}
 					$Init = FALSE;
 					
-					foreach($PosArray as $Key => $Y) {
+					foreach($PosArray as $Y) {
 
 						if ($Y == VOID && $LastX != NULL && $LastY != NULL && (!empty($Points))) {
 							$Points[] = $LastX;
@@ -1177,7 +1177,7 @@ class pCharts {
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
 
-					foreach($PosArray as $Key => $X) {
+					foreach($PosArray as $X) {
 
 						if ($X == VOID && $LastX != NULL && $LastY != NULL && (!empty($Points))) {
 							$Points[] = $LastX;
@@ -1341,7 +1341,7 @@ class pCharts {
 							}
 						}
 
-						foreach($ShadowArea as $Key => $Points) {
+						foreach($ShadowArea as $Points) {
 							$this->drawPolygonChart($Points, ["R" => $this->myPicture->ShadowR,"G" => $this->myPicture->ShadowG,"B" => $this->myPicture->ShadowB,"Alpha" => $this->myPicture->Shadowa]);
 						}
 					}
@@ -1349,7 +1349,7 @@ class pCharts {
 					$Alpha = $ForceTransparency != NULL ? $ForceTransparency : $Alpha;
 					$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Threshold" => $Threshold];
 					
-					foreach($Areas as $Key => $Points){
+					foreach($Areas as $Points){
 						$this->drawPolygonChart($Points, $Color);
 					}
 					
@@ -1423,7 +1423,7 @@ class pCharts {
 
 					$Alpha = $ForceTransparency != NULL ? $ForceTransparency : $Alpha;
 					$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Threshold" => $Threshold];
-					foreach($Areas as $Key => $Points) {
+					foreach($Areas as $Points) {
 						$this->drawPolygonChart($Points, $Color);
 					}
 				}
@@ -2067,7 +2067,7 @@ class pCharts {
 
 		$SerieOrder = array_reverse($SerieOrder);
 
-		foreach($SerieOrder as $Key => $SerieName) {
+		foreach($SerieOrder as $SerieName) {
 			$Serie = $Data["Series"][$SerieName];
 			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
 				
@@ -2107,7 +2107,7 @@ class pCharts {
 					
 					$Plots = [$X, $YZero];
 
-					foreach($PosArray as $Key => $Height) {
+					foreach($PosArray as $Height) {
 						if ($Height != VOID) {
 							$Plots[] = $X;
 							$Plots[] = $YZero - $Height;
@@ -2145,7 +2145,7 @@ class pCharts {
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
 					
 					$Plots = [$YZero, $Y];
-					foreach($PosArray as $Key => $Height) {
+					foreach($PosArray as $Height) {
 						if ($Height != VOID) {
 							$Plots[] = $YZero + $Height;
 							$Plots[] = $Y;
@@ -2225,7 +2225,7 @@ class pCharts {
 		$Result = [];
 		$inHorizon = FALSE;
 		$LastX = VOID;
-		foreach($Segments as $Key => $Pos) {
+		foreach($Segments as $Pos) {
 			if ($Pos["Y1"] != $Pos["Y2"]) {
 				if ($inHorizon) {
 					$inHorizon = FALSE;
@@ -2250,7 +2250,7 @@ class pCharts {
 		/* Find out the min & max Y boundaries */
 		$MinY = OUT_OF_SIGHT;
 		$MaxY = OUT_OF_SIGHT;
-		foreach($Segments as $Key => $Coords) {
+		foreach($Segments as $Coords) {
 			if ($MinY == OUT_OF_SIGHT || $MinY > min($Coords["Y1"], $Coords["Y2"])) {
 				$MinY = min($Coords["Y1"], $Coords["Y2"]);
 			}
@@ -2273,7 +2273,7 @@ class pCharts {
 			for ($Y = $MinY; $Y <= $MaxY; $Y = $Y + $YStep) {
 				$Intersections = [];
 				$LastSlope = NULL;
-				foreach($Segments as $Key => $Coords) {
+				foreach($Segments as $Coords) {
 					$X1 = $Coords["X1"];
 					$X2 = $Coords["X2"];
 					$Y1 = $Coords["Y1"];
@@ -2338,7 +2338,7 @@ class pCharts {
 				}
 
 				$LastX = OUT_OF_SIGHT;
-				foreach($Result as $Key => $X) {
+				foreach($Result as $X) {
 					if ($LastX == OUT_OF_SIGHT) {
 						$LastX = $X;
 					} else {
@@ -2348,7 +2348,7 @@ class pCharts {
 
 						$Color = $DefaultColor;
 
-						foreach($Threshold as $Key => $Parameters) {
+						foreach($Threshold as $Parameters) {
 							if ($Y <= $Parameters["MinX"] && $Y >= $Parameters["MaxX"]) {
 								$Color = $this->myPicture->allocateColor(
 									(isset($Parameters["R"])) ? $Parameters["R"] : 0,
@@ -2370,7 +2370,7 @@ class pCharts {
 
 		/* Draw the polygon border, if required */
 		if (!$NoBorder) {
-			foreach($Segments as $Key => $Coords) {
+			foreach($Segments as $Coords) {
 				$this->myPicture->drawLine($Coords["X1"], $Coords["Y1"], $Coords["X2"], $Coords["Y2"], ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha,"Threshold" => $Threshold]);
 			}
 		}
@@ -2455,7 +2455,7 @@ class pCharts {
 			$VectorX2 = cos(deg2rad($Angle - 90)) * $Force + ($X2 - $X1) / 2 + $X1;
 			$VectorY2 = sin(deg2rad($Angle - 90)) * $Force + ($RightY1 - $LeftY1) / 2 + $LeftY1;
 			$Points = $this->myPicture->drawBezier($X1, $LeftY1, $X2, $RightY1, $VectorX1, $VectorY1, $VectorX2, $VectorY2, $Settings);
-			foreach($Points as $Key => $Pos) {
+			foreach($Points as $Pos) {
 				$PolyGon[] = $Pos["X"];
 				$PolyGon[] = $Pos["Y"];
 			}
@@ -2467,7 +2467,7 @@ class pCharts {
 			$VectorY2 = sin(deg2rad($Angle - 90)) * $Force + ($RightY2 - $LeftY2) / 2 + $LeftY2;
 			$Points = $this->myPicture->drawBezier($X1, $LeftY2, $X2, $RightY2, $VectorX1, $VectorY1, $VectorX2, $VectorY2, $Settings);
 			$Points = array_reverse($Points);
-			foreach($Points as $Key => $Pos) {
+			foreach($Points as $Pos) {
 				$PolyGon[] = $Pos["X"];
 				$PolyGon[] = $Pos["Y"];
 			}
@@ -2593,7 +2593,7 @@ class pCharts {
 					$this->myPicture->Shadow = FALSE;
 					/* Determine the Max slope index */
 
-					foreach($PosArray as $Key => $Y) {
+					foreach($PosArray as $Y) {
 						if ($Y != VOID && $LastX != NULL) {
 							$Slope = ($LastY - $Y);
 							($Slope > $MaxSlope) AND $MaxSlope = $Slope;
@@ -2612,7 +2612,7 @@ class pCharts {
 					$LastX = NULL;
 					$LastY = NULL;
 					
-					foreach($PosArray as $Key => $Y) {
+					foreach($PosArray as $Y) {
 						if ($Y != VOID && $LastY != NULL) {
 							$Slope = ($LastY - $Y);
 							if ($Slope >= 0) {
@@ -2685,7 +2685,7 @@ class pCharts {
 					$this->myPicture->Shadow = FALSE;
 					/* Determine the Max slope index */
 
-					foreach($PosArray as $Key => $X) {
+					foreach($PosArray as $X) {
 						if ($X != VOID && $LastX != NULL) {
 							$Slope = ($X - $LastX);
 							($Slope > $MaxSlope) AND $MaxSlope = $Slope;
@@ -2698,7 +2698,7 @@ class pCharts {
 					$LastX = NULL;
 					$LastY = NULL;
 
-					foreach($PosArray as $Key => $X) {
+					foreach($PosArray as $X) {
 						if ($X != VOID && $LastX != NULL) {
 							$Slope = ($X - $LastX);
 							if ($Slope >= 0) {

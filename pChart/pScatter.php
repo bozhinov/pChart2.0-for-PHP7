@@ -741,8 +741,8 @@ class pScatter
 
 		$RestoreShadow = $this->myPicture->Shadow;
 		$this->Shadow = FALSE;
-		foreach($Data["ScatterSeries"] as $Key => $Series) {
-			if ($Series["isDrawable"] == TRUE) {
+		foreach($Data["ScatterSeries"] as $Series) {
+			if ($Series["isDrawable"]) {
 				$R = $Series["Color"]["R"];
 				$G = $Series["Color"]["G"];
 				$B = $Series["Color"]["B"];
@@ -766,14 +766,16 @@ class pScatter
 						$this->myPicture->drawFilledCircle($X + 1 + $IconAreaWidth / 2, $Y + 1 + $IconAreaHeight / 2, min($IconAreaHeight / 2, $IconAreaWidth / 2), ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 20]);
 						$this->myPicture->drawFilledCircle($X + $IconAreaWidth / 2, $Y + $IconAreaHeight / 2, min($IconAreaHeight / 2, $IconAreaWidth / 2), ["R" => $R,"G" => $G,"B" => $B,"Surrounding" => 20]);
 					} elseif ($Family == LEGEND_FAMILY_LINE) {
-						$this->myPicture->drawLine($X + 1, $Y + 1 + $IconAreaHeight / 2, $X + 1 + $IconAreaWidth, $Y + 1 + $IconAreaHeight / 2, ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 20,"Ticks" => $Ticks,	"Weight" => $Weight]);
+						$this->myPicture->drawLine($X + 1, $Y + 1 + $IconAreaHeight / 2, $X + 1 + $IconAreaWidth, $Y + 1 + $IconAreaHeight / 2, ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 20,"Ticks" => $Ticks, "Weight" => $Weight]);
 						$this->myPicture->drawLine($X, $Y + $IconAreaHeight / 2, $X + $IconAreaWidth, $Y + $IconAreaHeight / 2, ["R" => $R,"G" => $G,"B" => $B,"Ticks" => $Ticks,"Weight" => $Weight]);
 					}
 				}
 
 				if ($Mode == LEGEND_VERTICAL) {
 					$Lines = preg_split("/\n/", $Series["Description"]);
-					foreach($Lines as $Key => $Value) $this->myPicture->drawText($X + $IconAreaWidth + 4, $Y + $IconAreaHeight / 2 + (($this->myPicture->FontSize + 3) * $Key), $Value, ["R" => $FontR,"G" => $FontG,"B" => $FontB,"Align" => TEXT_ALIGN_MIDDLELEFT]);
+					foreach($Lines as $Key => $Value) {
+						$this->myPicture->drawText($X + $IconAreaWidth + 4, $Y + $IconAreaHeight / 2 + (($this->myPicture->FontSize + 3) * $Key), $Value, ["R" => $FontR,"G" => $FontG,"B" => $FontB,"Align" => TEXT_ALIGN_MIDDLELEFT]);
+					}
 					$Y = $Y + max($this->myPicture->FontSize * count($Lines), $IconAreaHeight) + 5;
 				} elseif ($Mode == LEGEND_HORIZONTAL) {
 					$Lines = preg_split("/\n/", $Series["Description"]);

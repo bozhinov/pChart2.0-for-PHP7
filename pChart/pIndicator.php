@@ -77,7 +77,7 @@ class pIndicator
 		/* Determine indicator visual configuration */
 		$OverallMin = $IndicatorSections[0]["End"];
 		$OverallMax = $IndicatorSections[0]["Start"];
-		foreach($IndicatorSections as $Key => $Settings) {
+		foreach($IndicatorSections as $Settings) {
 			($Settings["End"] > $OverallMax) AND $OverallMax = $Settings["End"];
 			($Settings["Start"] < $OverallMin) AND $OverallMin = $Settings["Start"];
 		}
@@ -203,9 +203,9 @@ class pIndicator
 			$X1 = $X2 + $SectionsMargin;
 		}
 
-		foreach($Values as $Key => $Value) {
+		foreach($Values as $Value) {
 			if ($Value >= $OverallMin && $Value <= $OverallMax) {
-				foreach($IndicatorSections as $Key => $Settings) {
+				foreach($IndicatorSections as $Settings) {
 					if ($Value >= $Settings["Start"] && $Value <= $Settings["End"]) {
 						$X1 = $ValuesPos[$Value]; //$X + $Key*$SectionsMargin + ($Value - $OverallMin) * $XScale;
 						if ($ValueDisplay == INDICATOR_VALUE_BUBBLE) {
