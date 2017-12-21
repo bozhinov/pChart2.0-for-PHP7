@@ -3562,13 +3562,13 @@ class pDraw
 		if ($this->myData->Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 			$Height = $this->GraphAreaYdiff - $Margin * 2;
 			foreach($Values as $Value) {
-				$Result[] = ($Value == VOID) ? VOID : $this->GraphAreaY2 - $Margin - (($Height / $Scale) * ($Value - $this->myData->Data["Axis"][$AxisID]["ScaleMin"]));
+				$Result[] = ($Value == VOID) ? VOID : ($this->GraphAreaY2 - $Margin - (($Height / $Scale) * ($Value - $this->myData->Data["Axis"][$AxisID]["ScaleMin"])));
 			}
 			
 		} else {
 			$Width = $this->GraphAreaXdiff - $Margin * 2;
 			foreach($Values as $Value) {
-				$Result[] = ($Value == VOID) ? VOID : $this->GraphAreaX1 +$ Margin + (($Width / $Scale) * ($Value - $this->myData->Data["Axis"][$AxisID]["ScaleMin"]));
+				$Result[] = ($Value == VOID) ? VOID : ($this->GraphAreaX1 + $Margin + (($Width / $Scale) * ($Value - $this->myData->Data["Axis"][$AxisID]["ScaleMin"])));
 			}
 		}
 
