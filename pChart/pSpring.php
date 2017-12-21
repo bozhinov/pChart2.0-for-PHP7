@@ -129,18 +129,9 @@ class pSpring
 		
 		extract($Settings);
 		
-		$this->Links[$FromNode][$ToNode]["R"] = $R;
-		$this->Links[$ToNode][$FromNode]["R"] = $R;
-		$this->Links[$FromNode][$ToNode]["G"] = $G;
-		$this->Links[$ToNode][$FromNode]["G"] = $G;
-		$this->Links[$FromNode][$ToNode]["B"] = $B;
-		$this->Links[$ToNode][$FromNode]["B"] = $B;
-		$this->Links[$FromNode][$ToNode]["Alpha"] = $Alpha;
-		$this->Links[$ToNode][$FromNode]["Alpha"] = $Alpha;
-		$this->Links[$FromNode][$ToNode]["Name"] = $Name;
-		$this->Links[$ToNode][$FromNode]["Name"] = $Name;
-		$this->Links[$FromNode][$ToNode]["Ticks"] = $Ticks;
-		$this->Links[$ToNode][$FromNode]["Ticks"] = $Ticks;
+		$this->Links[$FromNode][$ToNode] = ["R" => $R, "G" => $G, "B" => $B, "Alpha" => $Alpha, "Name" => $Name, "Ticks" => $Ticks];
+		$this->Links[$ToNode][$FromNode] = $this->Links[$FromNode][$ToNode];
+
 	}
 
 	function setNodeDefaults(array $Settings = [])
@@ -214,7 +205,7 @@ class pSpring
 			throw pException::SpringIvalidConnectionsException();
 		}
 		
-		foreach($Connections as $Key => $Value){
+		foreach($Connections as $Value){
 			$this->Data[$NodeID]["Connections"][] = $Value;
 		}
 	}
@@ -222,7 +213,8 @@ class pSpring
 	/* Set color attribute for a list of nodes */
 	function setNodesColor(array $Nodes, array $Settings = [])
 	{
-		foreach($Nodes as $Key => $NodeID) {
+
+		foreach($Nodes as $NodeID) {
 			if (isset($this->Data[$NodeID])) {
 				
 				(isset($Settings["R"])) AND $this->Data[$NodeID]["R"] = $Settings["R"];
@@ -239,22 +231,11 @@ class pSpring
 					$this->Data[$NodeID]["BorderG"] = $this->Data[$NodeID]["G"] + $Settings["Surrounding"];
 					$this->Data[$NodeID]["BorderB"] = $this->Data[$NodeID]["B"] + $Settings["Surrounding"];
 				}
+			} else {
+				throw pException::SpringInvalidInputException($NodeID." is invalid node");
 			}
 		}
-	}
-
-	/* Check if a connection exists and create it if required */
-	function checkConnection($SourceID, $TargetID)
-	{
-		if (isset($this->Data[$SourceID]["Connections"])) {
-			foreach($this->Data[$SourceID]["Connections"] as $Key => $ConnectionID) {
-				if ($TargetID == $ConnectionID) {
-					return TRUE;
-				}
-			}
-		}
-
-		$this->Data[$SourceID]["Connections"][] = $TargetID;
+		
 	}
 
 	/* Get the median linked nodes position */
@@ -262,7 +243,7 @@ class pSpring
 	{
 		$Cpt = 1;
 		if (isset($this->Data[$Key]["Connections"])) {
-			foreach($this->Data[$Key]["Connections"] as $ID => $NodeID) {
+			foreach($this->Data[$Key]["Connections"] as $NodeID) {
 				if (isset($this->Data[$NodeID]["X"]) && isset($this->Data[$NodeID]["Y"])) {
 					$X = $X + $this->Data[$NodeID]["X"];
 					$Y = $Y + $this->Data[$NodeID]["Y"];
@@ -283,7 +264,7 @@ class pSpring
 
 		$MaxWeight = 0;
 		$Result = "";
-		foreach($this->Data[$Key]["Connections"] as $Key => $PeerID) {
+		foreach($this->Data[$Key]["Connections"] as $PeerID) {
 			if ($this->Data[$PeerID]["Weight"] > $MaxWeight) {
 				$MaxWeight = $this->Data[$PeerID]["Weight"];
 				$Result = $PeerID;
@@ -301,8 +282,16 @@ class pSpring
 		/* Check connections reciprocity */
 		foreach($this->Data as $Key => $Settings) {
 			if (isset($Settings["Connections"])) {
-				foreach($Settings["Connections"] as $ID => $ConnectionID) {
-					$this->checkConnection($ConnectionID, $Key);
+				foreach($Settings["Connections"] as $ConnectionID) {
+					
+					/* Check connections reciprocity */
+					if (isset($this->Data[$ConnectionID]["Connections"])) {
+						if(!in_array($Key, $this->Data[$ConnectionID]["Connections"])) {
+							$this->Data[$ConnectionID]["Connections"][] = $Key;
+						}
+					} else {
+						$this->Data[$ConnectionID]["Connections"] = [$Key];
+					}
 				}
 			}
 		}
@@ -313,37 +302,16 @@ class pSpring
 
 		/* Get the max number of connections */
 		$MaxConnections = 0;
-		foreach($this->Data as $Key => $Settings) {
+		foreach($this->Data as $Settings) {
 			if (isset($Settings["Connections"])) {
 				if ($MaxConnections < count($Settings["Connections"])) {
 					$MaxConnections = count($Settings["Connections"]);
 				}
 			}
 		}
-
-		if ($Algorithm == ALGORITHM_WEIGHTED) {
-			foreach($this->Data as $Key => $Settings) {
-				if ($Settings["Type"] == NODE_TYPE_CENTRAL) {
-					$this->Data[$Key]["X"] = $CenterX;
-					$this->Data[$Key]["Y"] = $CenterY;
-				}
-
-				if ($Settings["Type"] == NODE_TYPE_FREE) {
-					$Connections = (isset($Settings["Connections"])) ? count($Settings["Connections"]) : 0;
-					$Ring = $MaxConnections - $Connections;
-					$Angle = rand(0, 360);
-					$this->Data[$Key]["X"] = cos(deg2rad($Angle)) * ($Ring * $this->RingSize) + $CenterX;
-					$this->Data[$Key]["Y"] = sin(deg2rad($Angle)) * ($Ring * $this->RingSize) + $CenterY;
-				}
-			}
-		} elseif ($Algorithm == ALGORITHM_CENTRAL) {
-			/* Put a weight on each nodes */
-			foreach($this->Data as $Key => $Settings) {
-				$this->Data[$Key]["Weight"] = (isset($Settings["Connections"])) ? count($Settings["Connections"]) : 0;
-			}
-
-			$MaxConnections = $MaxConnections + 1;
-			for ($i = $MaxConnections; $i >= 0; $i--) {
+		
+		switch ($Algorithm) {
+			case ALGORITHM_WEIGHTED:
 				foreach($this->Data as $Key => $Settings) {
 					if ($Settings["Type"] == NODE_TYPE_CENTRAL) {
 						$this->Data[$Key]["X"] = $CenterX;
@@ -352,72 +320,98 @@ class pSpring
 
 					if ($Settings["Type"] == NODE_TYPE_FREE) {
 						$Connections = (isset($Settings["Connections"])) ? count($Settings["Connections"]) : 0;
-						if ($Connections == $i) {
-							$BiggestPartner = $this->getBiggestPartner($Key);
-							if ($BiggestPartner != "") {
-								$Ring = $this->Data[$BiggestPartner]["FreeZone"];
-								$Weight = $this->Data[$BiggestPartner]["Weight"];
-								$AngleDivision = 360 / $this->Data[$BiggestPartner]["Weight"];
-								$Done = FALSE;
-								$Tries = 0;
-								while (!$Done && $Tries <= $Weight * 2) {
-									$Tries++;
-									$Angle = floor(rand(0, $Weight) * $AngleDivision);
-									if (!isset($this->Data[$BiggestPartner]["Angular"][$Angle]) || !isset($this->Data[$BiggestPartner]["Angular"])) {
-										$this->Data[$BiggestPartner]["Angular"][$Angle] = $Angle;
-										$Done = TRUE;
+						$Ring = $MaxConnections - $Connections;
+						$Angle = rand(0, 360);
+						$this->Data[$Key]["X"] = cos(deg2rad($Angle)) * ($Ring * $this->RingSize) + $CenterX;
+						$this->Data[$Key]["Y"] = sin(deg2rad($Angle)) * ($Ring * $this->RingSize) + $CenterY;
+					}
+				}
+				break;
+			case ALGORITHM_CENTRAL:
+				/* Put a weight on each nodes */
+				foreach($this->Data as $Key => $Settings) {
+					$this->Data[$Key]["Weight"] = (isset($Settings["Connections"])) ? count($Settings["Connections"]) : 0;
+				}
+
+				$MaxConnections++;
+				for ($i = $MaxConnections; $i >= 0; $i--) {
+					foreach($this->Data as $Key => $Settings) {
+						if ($Settings["Type"] == NODE_TYPE_CENTRAL) {
+							$this->Data[$Key]["X"] = $CenterX;
+							$this->Data[$Key]["Y"] = $CenterY;
+						}
+
+						if ($Settings["Type"] == NODE_TYPE_FREE) {
+							$Connections = (isset($Settings["Connections"])) ? count($Settings["Connections"]) : 0;
+							if ($Connections == $i) {
+								$BiggestPartner = $this->getBiggestPartner($Key);
+								if ($BiggestPartner != "") {
+									$Ring = $this->Data[$BiggestPartner]["FreeZone"];
+									$Weight = $this->Data[$BiggestPartner]["Weight"];
+									$AngleDivision = 360 / $this->Data[$BiggestPartner]["Weight"];
+									$Done = FALSE;
+									$Tries = 0;
+									while (!$Done && $Tries <= $Weight * 2) {
+										$Tries++;
+										$Angle = floor(rand(0, $Weight) * $AngleDivision);
+										if (!isset($this->Data[$BiggestPartner]["Angular"][$Angle]) || !isset($this->Data[$BiggestPartner]["Angular"])) {
+											$this->Data[$BiggestPartner]["Angular"][$Angle] = $Angle;
+											$Done = TRUE;
+										}
 									}
-								}
 
-								if (!$Done) {
-									$Angle = rand(0, 360);
-									$this->Data[$BiggestPartner]["Angular"][$Angle] = $Angle;
-								}
+									if (!$Done) {
+										$Angle = rand(0, 360);
+										$this->Data[$BiggestPartner]["Angular"][$Angle] = $Angle;
+									}
 
-								$X = cos(deg2rad($Angle)) * ($Ring) + $this->Data[$BiggestPartner]["X"];
-								$Y = sin(deg2rad($Angle)) * ($Ring) + $this->Data[$BiggestPartner]["Y"];
-								$this->Data[$Key]["X"] = $X;
-								$this->Data[$Key]["Y"] = $Y;
+									$X = cos(deg2rad($Angle)) * $Ring + $this->Data[$BiggestPartner]["X"];
+									$Y = sin(deg2rad($Angle)) * $Ring + $this->Data[$BiggestPartner]["Y"];
+									$this->Data[$Key]["X"] = $X;
+									$this->Data[$Key]["Y"] = $Y;
+								}
 							}
 						}
 					}
 				}
-			}
-		} elseif ($Algorithm == ALGORITHM_CIRCULAR) {
-			$MaxConnections = $MaxConnections + 1;
-			for ($i = $MaxConnections; $i >= 0; $i--) {
+				break;
+			case ALGORITHM_CIRCULAR:
+				$MaxConnections++;
+				for ($i = $MaxConnections; $i >= 0; $i--) {
+					foreach($this->Data as $Key => $Settings) {
+						if ($Settings["Type"] == NODE_TYPE_CENTRAL) {
+							$this->Data[$Key]["X"] = $CenterX;
+							$this->Data[$Key]["Y"] = $CenterY;
+						}
+
+						if ($Settings["Type"] == NODE_TYPE_FREE) {
+							$Connections = (isset($Settings["Connections"])) ? count($Settings["Connections"]) : 0;
+							if ($Connections == $i) {
+								$Ring = $MaxConnections - $Connections;
+								$Angle = rand(0, 360);
+								$X = cos(deg2rad($Angle)) * ($Ring * $this->RingSize) + $CenterX;
+								$Y = sin(deg2rad($Angle)) * ($Ring * $this->RingSize) + $CenterY;
+								$MedianOffset = $this->getMedianOffset($Key, $X, $Y);
+								$this->Data[$Key]["X"] = $MedianOffset["X"];
+								$this->Data[$Key]["Y"] = $MedianOffset["Y"];
+							}
+						}
+					}
+				}
+				break;
+			case ALGORITHM_RANDOM:
 				foreach($this->Data as $Key => $Settings) {
+					if ($Settings["Type"] == NODE_TYPE_FREE) {
+						$this->Data[$Key]["X"] = $CenterX + rand(-20, 20);
+						$this->Data[$Key]["Y"] = $CenterY + rand(-20, 20);
+					}
+
 					if ($Settings["Type"] == NODE_TYPE_CENTRAL) {
 						$this->Data[$Key]["X"] = $CenterX;
 						$this->Data[$Key]["Y"] = $CenterY;
 					}
-
-					if ($Settings["Type"] == NODE_TYPE_FREE) {
-						$Connections = (isset($Settings["Connections"])) ? count($Settings["Connections"]) : 0;
-						if ($Connections == $i) {
-							$Ring = $MaxConnections - $Connections;
-							$Angle = rand(0, 360);
-							$X = cos(deg2rad($Angle)) * ($Ring * $this->RingSize) + $CenterX;
-							$Y = sin(deg2rad($Angle)) * ($Ring * $this->RingSize) + $CenterY;
-							$MedianOffset = $this->getMedianOffset($Key, $X, $Y);
-							$this->Data[$Key]["X"] = $MedianOffset["X"];
-							$this->Data[$Key]["Y"] = $MedianOffset["Y"];
-						}
-					}
 				}
-			}
-		} elseif ($Algorithm == ALGORITHM_RANDOM) {
-			foreach($this->Data as $Key => $Settings) {
-				if ($Settings["Type"] == NODE_TYPE_FREE) {
-					$this->Data[$Key]["X"] = $CenterX + rand(-20, 20);
-					$this->Data[$Key]["Y"] = $CenterY + rand(-20, 20);
-				}
-
-				if ($Settings["Type"] == NODE_TYPE_CENTRAL) {
-					$this->Data[$Key]["X"] = $CenterX;
-					$this->Data[$Key]["Y"] = $CenterY;
-				}
-			}
+				break;
 		}
 	}
 
@@ -437,7 +431,7 @@ class pSpring
 						$Y2 = $this->Data[$Key2]["Y"];
 						$FreeZone = $this->Data[$Key2]["FreeZone"];
 						$Distance = sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1)); # GetDistance
-						$Angle = $this->myPicture->getAngle($X1, $Y1, $X2, $Y2) + 180;
+						$Angle = $this->getAngle($X1, $Y1, $X2, $Y2) + 180;
 						/* Nodes too close, repulsion occurs */
 						if ($Distance < $FreeZone) {
 							$Force = log(pow(2, $FreeZone - $Distance));
@@ -445,18 +439,19 @@ class pSpring
 								$this->Data[$Key]["Vectors"][] = ["Type" => "R","Angle" => $Angle % 360,"Force" => $Force];
 							}
 						}
+						$lastKey = $Key2; # Momchil: No clue to why I need this here
 					}
 				}
 
 				/* Attraction vectors */
 				if (isset($Settings["Connections"])) {
-					foreach($Settings["Connections"] as $ID => $NodeID) {
+					foreach($Settings["Connections"] as $NodeID) {
 						if (isset($this->Data[$NodeID])) {
 							$X2 = $this->Data[$NodeID]["X"];
 							$Y2 = $this->Data[$NodeID]["Y"];
-							$FreeZone = $this->Data[$NodeID]["FreeZone"]; # Momchil: $key2 does not exist here
+							$FreeZone = $this->Data[$lastKey]["FreeZone"];
 							$Distance = sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1)); # GetDistance
-							$Angle = $this->myPicture->getAngle($X1, $Y1, $X2, $Y2);
+							$Angle = $this->getAngle($X1, $Y1, $X2, $Y2);
 							if ($Distance > $FreeZone) {
 								$Force = log(($Distance - $FreeZone) + 1);
 							} else {
@@ -478,7 +473,7 @@ class pSpring
 			$X = $Settings["X"];
 			$Y = $Settings["Y"];
 			if (isset($Settings["Vectors"]) && $Settings["Type"] != NODE_TYPE_CENTRAL) {
-				foreach($Settings["Vectors"] as $ID => $Vector) {
+				foreach($Settings["Vectors"] as $Vector) {
 					$Type = $Vector["Type"];
 					$Force = $Vector["Force"];
 					$Angle = $Vector["Angle"];
@@ -509,15 +504,18 @@ class pSpring
 
 		/* Dump all links */
 		$Links = [];
-		foreach($this->Data as $Key => $Settings) {
-			$X1 = $Settings["X"];
-			$Y1 = $Settings["Y"];
+		foreach($this->Data as $Settings) {
 			if (isset($Settings["Connections"])) {
-				foreach($Settings["Connections"] as $ID => $NodeID) {
+				foreach($Settings["Connections"] as $NodeID) {
 					if (isset($this->Data[$NodeID])) {
-						$X2 = $this->Data[$NodeID]["X"];
-						$Y2 = $this->Data[$NodeID]["Y"];
-						$Links[] = ["X1" => $X1,"Y1" => $Y1,"X2" => $X2,"Y2" => $Y2,"Source" => $Settings["Name"],"Destination" => $this->Data[$NodeID]["Name"]];
+						$Links[] = [
+							"X1" => $Settings["X"],
+							"Y1" => $Settings["Y"],
+							"X2" => $this->Data[$NodeID]["X"],
+							"Y2" => $this->Data[$NodeID]["Y"],
+							"Source" => $Settings["Name"],
+							"Destination" => $this->Data[$NodeID]["Name"]
+						];
 					}
 				}
 			}
@@ -529,7 +527,7 @@ class pSpring
 			$X1 = $Settings["X"];
 			$Y1 = $Settings["Y"];
 			if (isset($Settings["Connections"])) {
-				foreach($Settings["Connections"] as $ID => $NodeID) {
+				foreach($Settings["Connections"] as $NodeID) {
 					if (isset($this->Data[$NodeID])) {
 						$X2 = $this->Data[$NodeID]["X"];
 						$Y2 = $this->Data[$NodeID]["Y"];
@@ -565,7 +563,7 @@ class pSpring
 		$XMax = $this->X1;
 		$YMin = $this->Y2;
 		$YMax = $this->Y1;
-		foreach($this->Data as $Key => $Settings) {
+		foreach($this->Data as $Settings) {
 			$X = $Settings["X"];
 			$Y = $Settings["Y"];
 			($X < $XMin) AND $XMin = $X;
@@ -633,11 +631,12 @@ class pSpring
 
 		/* Draw the connections */
 		$Drawn = [];
+		$defaultColor = ["R" => $this->Default["LinkR"],"G" => $this->Default["LinkG"],"B" => $this->Default["LinkB"],"Alpha" => $this->Default["Alpha"]];
 		foreach($this->Data as $Key => $Settings) {
 			$X = $Settings["X"];
 			$Y = $Settings["Y"];
 			if (isset($Settings["Connections"])) {
-				foreach($Settings["Connections"] as $ID => $NodeID) {
+				foreach($Settings["Connections"] as $NodeID) {
 					if (!isset($Drawn[$Key])) {
 						$Drawn[$Key] = [];
 					}
@@ -647,15 +646,11 @@ class pSpring
 					}
 
 					if (isset($this->Data[$NodeID]) && !isset($Drawn[$Key][$NodeID]) && !isset($Drawn[$NodeID][$Key])) {
-						$Color = ["R" => $this->Default["LinkR"],"G" => $this->Default["LinkG"],"B" => $this->Default["LinkB"],"Alpha" => $this->Default["Alpha"]];
-						#if ($this->Links != "") {
+						$Color = $defaultColor;
 						if (!empty($this->Links)) {	
 							if (isset($this->Links[$Key][$NodeID]["R"])) {
-								$Color = ["R" => $this->Links[$Key][$NodeID]["R"],"G" => $this->Links[$Key][$NodeID]["G"],"B" => $this->Links[$Key][$NodeID]["B"],"Alpha" => $this->Links[$Key][$NodeID]["Alpha"]];
-							}
-
-							if (isset($this->Links[$Key][$NodeID]["Ticks"])) {
-								$Color["Ticks"] = $this->Links[$Key][$NodeID]["Ticks"];
+								$Color = $this->Links[$Key][$NodeID];
+								unset($Color['name']); # ticks is already there
 							}
 						}
 
@@ -688,13 +683,13 @@ class pSpring
 
 		/* Draw the quiet zones */
 		if ($DrawQuietZone) {
-			foreach($this->Data as $Key => $Settings) {
+			foreach($this->Data as $Settings) {
 				$this->myPicture->drawFilledCircle($Settings["X"], $Settings["Y"],$Settings["FreeZone"], ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 2]);
 			}
 		}
 
 		/* Draw the nodes */
-		foreach($this->Data as $Key => $Settings) {
+		foreach($this->Data as $Settings) {
 			$X = $Settings["X"];
 			$Y = $Settings["Y"];
 			$Name = $Settings["Name"];
@@ -711,19 +706,28 @@ class pSpring
 				"BorderB" => $Settings["BorderB"],
 				"BorderApha" => $Settings["BorderAlpha"]
 			];
-			if ($Shape == NODE_SHAPE_CIRCLE) {
-				$this->myPicture->drawFilledCircle($X, $Y, $Size, $Color);
-			} elseif ($Shape == NODE_SHAPE_TRIANGLE) {
-				$Points = [cos(deg2rad(270)) * $Size + $X, sin(deg2rad(270)) * $Size + $Y, cos(deg2rad(45)) * $Size + $X, sin(deg2rad(45)) * $Size + $Y, cos(deg2rad(135)) * $Size + $X, sin(deg2rad(135)) * $Size + $Y, ];
-				$this->myPicture->drawPolygon($Points, $Color);
-			} elseif ($Shape == NODE_SHAPE_SQUARE) {
-				$Offset = $Size / 2;
-				$Size = $Size / 2;
-				$this->myPicture->drawFilledRectangle($X - $Offset, $Y - $Offset, $X + $Offset, $Y + $Offset, $Color);
+			
+			switch ($Shape){
+				case NODE_SHAPE_CIRCLE:
+					$this->myPicture->drawFilledCircle($X, $Y, $Size, $Color);
+					break;
+				case NODE_SHAPE_TRIANGLE:
+					$Points = [
+						cos(deg2rad(270)) * $Size + $X,	sin(deg2rad(270)) * $Size + $Y,
+						cos(deg2rad(45)) * $Size + $X,	sin(deg2rad(45)) * $Size + $Y,
+						cos(deg2rad(135)) * $Size + $X, sin(deg2rad(135)) * $Size + $Y
+					];
+					$this->myPicture->drawPolygon($Points, $Color);
+					break;
+				case NODE_SHAPE_SQUARE:
+					#$Offset = $Size / 2;
+					$Size = $Size / 2;
+					$this->myPicture->drawFilledRectangle($X - $Size, $Y - $Size, $X + $Size, $Y + $Size, $Color);
+					break;
 			}
 
 			if ($Name != "") {
-				$LabelOptions = ["R" => $this->Labels["R"],"G" => $this->Labels["G"],"B" => $this->Labels["B"],"Alpha" => $this->Labels["Alpha"]];
+				$LabelOptions = $this->Labels; # Momchil: Labels contains Type but it is not accepted by drawText
 				if ($this->Labels["Type"] == LABEL_LIGHT) {
 					$LabelOptions["Align"] = TEXT_ALIGN_BOTTOMLEFT;
 					$this->myPicture->drawText($X, $Y, $Name, $LabelOptions);
@@ -742,25 +746,31 @@ class pSpring
 
 		/* Draw the vectors */
 		if ($DrawVectors) {
-			foreach($this->Data as $Key => $Settings) {
-				$X1 = $Settings["X"];
-				$Y1 = $Settings["Y"];
+			foreach($this->Data as $Settings) {
 				if (isset($Settings["Vectors"]) && $Settings["Type"] != NODE_TYPE_CENTRAL) {
-					foreach($Settings["Vectors"] as $ID => $Vector) {
-						$Type = $Vector["Type"];
-						$Force = $Vector["Force"];
-						$Angle = $Vector["Angle"];
-						$Factor = $Type == "A" ? $this->MagneticForceA : $this->MagneticForceR;
-						$Color = $Type == "A" ? ["FillR" => 255,"FillG" => 0,"FillB" => 0] : ["FillR" => 0,"FillG" => 255,"FillB" => 0];
-						$X2 = cos(deg2rad($Angle)) * $Force * $Factor + $X1;
-						$Y2 = sin(deg2rad($Angle)) * $Force * $Factor + $Y1;
-						$this->myPicture->drawArrow($X1, $Y1, $X2, $Y2, $Color);
+					foreach($Settings["Vectors"] as $Vector) {
+						$Factor = ($Vector["Type"] == "A") ? $this->MagneticForceA : $this->MagneticForceR;
+						$Color = ($Vector["Type"] == "A") ? ["FillR" => 255,"FillG" => 0,"FillB" => 0] : ["FillR" => 0,"FillG" => 255,"FillB" => 0];
+						$X2 = cos(deg2rad($Vector["Angle"])) * $Vector["Force"] * $Factor + $Settings["X"];
+						$Y2 = sin(deg2rad($Vector["Angle"])) * $Vector["Force"] * $Factor + $Settings["Y"];
+						$this->myPicture->drawArrow( $Settings["X"], $Settings["Y"], $X2, $Y2, $Color);
 					}
 				}
 			}
 		}
 
 		return ["Pass" => $Jobs,"Conflicts" => $Conflicts];
+	}
+
+	/* Return the angle made by a line and the X axis */
+	function getAngle($X1, $Y1, $X2, $Y2)
+	{
+		#$Opposite = $Y2 - $Y1;
+		#$Adjacent = $X2 - $X1;
+		$Angle = rad2deg(atan2(($Y2 - $Y1), ($X2 - $X1)));
+
+		return ($Angle > 0) ? $Angle : (360 + $Angle);
+
 	}
 
 	function intersect($X1, $Y1, $X2, $Y2, $X3, $Y3, $X4, $Y4)
