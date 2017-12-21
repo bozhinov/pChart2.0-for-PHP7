@@ -438,6 +438,7 @@ class pSpring
 								$this->Data[$Key]["Vectors"][] = ["Type" => "R","Angle" => $Angle % 360,"Force" => $Force];
 							}
 						}
+						$LastKey = $Key2;
 					}
 				}
 
@@ -447,7 +448,7 @@ class pSpring
 						if (isset($this->Data[$NodeID])) {
 							$X2 = $this->Data[$NodeID]["X"];
 							$Y2 = $this->Data[$NodeID]["Y"];
-							$FreeZone = $this->Data[$NodeID]["FreeZone"];
+							$FreeZone = $this->Data[$LastKey]["FreeZone"];
 							$Distance = $this->getDistance($X1, $Y1, $X2, $Y2);
 							$Angle = $this->getAngle($X1, $Y1, $X2, $Y2);
 							if ($Distance > $FreeZone) {
