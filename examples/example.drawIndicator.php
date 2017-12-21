@@ -49,7 +49,7 @@ $IndicatorSections = [
 	array("Start"=>240,"End"=>300,"Caption"=>"High","R"=>157,"G"=>140,"B"=>49)
 ];
 /* Draw the 1st indicator */
-$IndicatorSettings = array("Values"=>[20,230],"ValueFontName"=>"pChart/fonts/Forgotte.ttf","ValueFontSize"=>15,"IndicatorSections"=>$IndicatorSections,"SubCaptionColorFactor"=>-40);
+$IndicatorSettings = array("Values"=>[20,230],"FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>15,"IndicatorSections"=>$IndicatorSections,"SubCaptionColorFactor"=>-40);
 $Indicator->draw(80,50,550,50,$IndicatorSettings);
 
 /* Define the indicator sections */
