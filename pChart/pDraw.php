@@ -130,6 +130,7 @@ class pDraw
 	var $ShadowG = 0; // G component of the shadow
 	var $ShadowB = 0; // B component of the shadow
 	var $Shadowa = 0; // Alpha level of the shadow
+	var $ShadowColor = NULL;
 
 	/* Data Set */
 	var $myData = []; // Attached myData
@@ -167,6 +168,8 @@ class pDraw
 		} else {
 			imagefilledrectangle($this->Picture, 0, 0, $XSize, $YSize, $this->AllocateColor(255, 255, 255));
 		}
+		
+		$this->ShadowColor = $this->allocateColor($this->ShadowR, $this->ShadowG, $this->ShadowB, $this->Shadowa);
 		
 		# TODO if PHP 7.2 consider imageantialias
 		#imageantialias($this->Picture, TRUE);
@@ -741,11 +744,9 @@ class pDraw
 			$Xv2 = floor($Xv2);
 			$Yv2 = floor($Yv2);
 			$this->drawLine($X1, $Y1, $X2, $Y2, ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 30]);
-			$MyMarkerSettings = ["R" => 255,"G" => 0,"B" => 0,"BorderR" => 255,"BorderB" => 255,"BorderG" => 255,"Size" => 4];
-			$this->drawRectangleMarker($Xv1, $Yv1, $MyMarkerSettings);
+			$this->drawRectangleMarker($Xv1, $Yv1, ["R" => 255,"G" => 0,"B" => 0,"BorderR" => 255,"BorderB" => 255,"BorderG" => 255,"Size" => 4]);
 			$this->drawText($Xv1 + 4, $Yv1, "v1");
-			$MyMarkerSettings = ["R" => 0,"G" => 0,"B" => 255,"BorderR" => 255,"BorderB" => 255,"BorderG" => 255,"Size" => 4];
-			$this->drawRectangleMarker($Xv2, $Yv2, $MyMarkerSettings);
+			$this->drawRectangleMarker($Xv2, $Yv2, ["R" => 0,"G" => 0,"B" => 255,"BorderR" => 255,"BorderB" => 255,"BorderG" => 255,"Size" => 4]);
 			$this->drawText($Xv2 + 4, $Yv2, "v2");
 		}
 
@@ -761,29 +762,21 @@ class pDraw
 			$Y = $Point["Y"];
 			/* Get the first segment */
 			if (empty($ArrowS) && $LastX != NULL && $LastY != NULL) {
-				$ArrowS["X2"] = $LastX;
-				$ArrowS["Y2"] = $LastY;
-				$ArrowS["X1"] = $X;
-				$ArrowS["Y1"] = $Y;
+				$ArrowS = ["X2" => $LastX, "Y2" => $LastY, "X1" => $X, "Y1" => $Y];
 			}
 
 			if ($LastX != NULL && $LastY != NULL && !$PathOnly) {
 				list($Cpt, $Mode) = $this->drawLine($LastX, $LastY, $X, $Y, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Cpt" => $Cpt,"Mode" => $Mode,"Weight" => $Weight]);
 			}
 			/* Get the last segment */
-			$ArrowE["X1"] = $LastX;
-			$ArrowE["Y1"] = $LastY;
-			$ArrowE["X2"] = $X;
-			$ArrowE["Y2"] = $Y;
+			$ArrowE = ["X1" => $LastX, "Y1" => $LastY, "X2" => $X, "Y2" => $Y];
 			$LastX = $X;
 			$LastY = $Y;
 		}
 
 		if ($DrawArrow && !$PathOnly) {
 			$ArrowSettings = ["FillR" => $R,"FillG" => $G,"FillB" => $B,"Alpha" => $Alpha,"Size" => $ArrowSize,"Ratio" => $ArrowRatio];
-			if ($ArrowTwoHeads) {
-				$this->drawArrow($ArrowS["X1"], $ArrowS["Y1"], $ArrowS["X2"], $ArrowS["Y2"], $ArrowSettings);
-			}
+			($ArrowTwoHeads) AND $this->drawArrow($ArrowS["X1"], $ArrowS["Y1"], $ArrowS["X2"], $ArrowS["Y2"], $ArrowSettings);
 			$this->drawArrow($ArrowE["X1"], $ArrowE["Y1"], $ArrowE["X2"], $ArrowE["Y2"], $ArrowSettings);
 		}
 
@@ -805,8 +798,7 @@ class pDraw
 				
 		if ($this->Antialias == FALSE && $Ticks == NULL) {
 			if ($this->Shadow) {
-				$ShadowColor = $this->allocateColor($this->ShadowR, $this->ShadowG, $this->ShadowB, $this->Shadowa);
-				imageline($this->Picture, $X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, $ShadowColor);
+				imageline($this->Picture, $X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, $this->ShadowColor);
 			}
 
 			$Color = $this->allocateColor($R, $G, $B, $Alpha);
@@ -1086,8 +1078,7 @@ class pDraw
 		$X = $X - $TxtPos[$Align]["X"] + $X;
 		$Y = $Y - $TxtPos[$Align]["Y"] + $Y;
 		if ($this->Shadow) {
-			$C_ShadowColor = $this->allocateColor($this->ShadowR, $this->ShadowG, $this->ShadowB, $this->Shadowa);
-			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $C_ShadowColor, realpath($FontName), $Text);
+			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowColor, realpath($FontName), $Text);
 		}
 
 		$C_TextColor = $this->AllocateColor($R, $G, $B, $Alpha);
@@ -1217,7 +1208,7 @@ class pDraw
 	
 		if (!$this->Antialias) {
 			if ($this->Shadow) {
-				imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($this->ShadowR, $this->ShadowG, $this->ShadowB, $this->Shadowa));
+				imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowColor);
 			}
 
 			imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($R, $G, $B, $Alpha));
@@ -4115,6 +4106,14 @@ class pDraw
 	/* Enable / Disable and set shadow properties */
 	function setShadow(bool $Enabled = TRUE, array $Format = [])
 	{
+
+		$this->Shadow = $Enabled;
+		
+		/* Disable the shadow and exit */
+		if (!$Enabled){
+			return;
+		}
+		
 		$X = 2;
 		$Y = 2;
 		$R = 0;
@@ -4124,14 +4123,15 @@ class pDraw
 		
 		/* Override defaults */
 		extract($Format);
-				
-		$this->Shadow = $Enabled;
+		
 		$this->ShadowX = $X;
 		$this->ShadowY = $Y;
 		$this->ShadowR = $R;
 		$this->ShadowG = $G;
 		$this->ShadowB = $B;
 		$this->Shadowa = $Alpha;
+		
+		$this->ShadowColor = $this->allocateColor($this->ShadowR, $this->ShadowG, $this->ShadowB, $this->Shadowa);
 		
 		if ($this->ShadowX == 0 || $this->ShadowY == 0){
 			throw pException::InvalidInput("Invalid shadow specs");
