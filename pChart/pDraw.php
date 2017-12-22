@@ -1592,9 +1592,7 @@ class pDraw
 			$this->Shadow = FALSE;
 			if ($RFade != - 1 && $GFade != - 1 && $BFade != - 1) {
 				$this->drawGradientArea($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, DIRECTION_VERTICAL, ["StartR" => $RFade,"StartG" => $GFade,"StartB" => $BFade,"EndR" => $R,"EndG" => $G,"EndB" => $B]);
-				if ($Surrounding) { # != NULL, [] && ""
-					$this->drawRectangle($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, ["R" => 255,"G" => 255,"B" => 255,"Alpha" => $Surrounding]);
-				}
+				($Surrounding != NULL) AND $this->drawRectangle($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, ["R" => 255,"G" => 255,"B" => 255,"Alpha" => $Surrounding]);
 			} else {
 				$this->drawFilledRectangle($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, ["R" => $R,"G" => $G,"B" => $B,"BorderR" => $BorderR,"BorderG" => $BorderG,"BorderB" => $BorderB]);
 			}
@@ -1617,20 +1615,17 @@ class pDraw
 
 		} else {
 			$InnerWidth = ($Percent == 100) ? $Width - 1 : (($Width - 2) / 100) * $Percent;
-
 			$this->drawFilledRectangle($X, $Y, $X + $Width, $Y + $Height, ["R" => $BoxBackR,"G" => $BoxBackG,"B" => $BoxBackB,"BorderR" => $BoxBorderR,"BorderG" => $BoxBorderG,"BorderB" => $BoxBorderB,"NoAngle" => $NoAngle]);
 			$RestoreShadow = $this->Shadow;
 			$this->Shadow = FALSE;
 			if ($RFade != - 1 && $GFade != - 1 && $BFade != - 1) {
 				$this->drawGradientArea($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, DIRECTION_HORIZONTAL, ["StartR" => $R,"StartG" => $G,"StartB" => $B,"EndR" => $RFade,"EndG" => $GFade,"EndB" => $BFade]);
-				if ($Surrounding) { # != NULL, [] && ""
-					$this->drawRectangle($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, ["R" => 255,"G" => 255,"B" => 255,"Alpha" => $Surrounding]);
-				}
+				($Surrounding != NULL) AND $this->drawRectangle($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, ["R" => 255,"G" => 255,"B" => 255,"Alpha" => $Surrounding]);
 			} else {
 				$this->drawFilledRectangle($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, ["R" => $R,"G" => $G,"B" => $B,"BorderR" => $BorderR,"BorderG" => $BorderG,"BorderB" => $BorderB]);
 			}
-
 			$this->Shadow = $RestoreShadow;
+			
 			switch (TRUE) {
 				case ($ShowLabel && $LabelPos == LABEL_POS_LEFT):
 					$this->drawText($X - $Margin, $Y + ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLERIGHT]);
@@ -1667,7 +1662,7 @@ class pDraw
 		extract($Format);
 				
 		foreach($this->myData->Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $this->myData->Data["Abscissa"] && isset($Serie["Picture"])) {
+			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"] && isset($Serie["Picture"])) {
 				list($PicWidth, $PicHeight) = $this->getPicInfo($Serie["Picture"]);
 				($IconAreaWidth < $PicWidth) AND $IconAreaWidth = $PicWidth;
 				($IconAreaHeight < $PicHeight) AND $IconAreaHeight = $PicHeight;
@@ -1675,45 +1670,42 @@ class pDraw
 		}
 
 		$YStep = max($this->FontSize, $IconAreaHeight) + 5;
-		$XStep = $IconAreaWidth + 5;
+		#$XStep = $IconAreaWidth + 5;
 		$XStep = $XSpacing;
 		$X = 100;
-		$Y = 100;
-		$Boundaries = ["L" => $X, "T" => $Y, "R" => 0, "B" => 0];
-		$vY = $Y;
-		$vX = $X;
+		$Boundaries = ["L" => $X, "T" => 100, "R" => 0, "B" => 0];
+		$vY = 100; 
 		foreach($this->myData->Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $this->myData->Data["Abscissa"]) {
+			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"]) {
+				$Lines = preg_split("/\n/", $Serie["Description"]);
 				if ($Mode == LEGEND_VERTICAL) {
-					$BoxArray = $this->getTextBox($vX + $IconAreaWidth + 4, $vY + $IconAreaHeight / 2, $FontName, $FontSize, 0, $Serie["Description"]);
+					$BoxArray = $this->getTextBox($X + $IconAreaWidth + 4, $vY + $IconAreaHeight / 2, $FontName, $FontSize, 0, $Serie["Description"]);
 					($Boundaries["T"] > $BoxArray[2]["Y"] + $IconAreaHeight / 2) AND $Boundaries["T"] = $BoxArray[2]["Y"] + $IconAreaHeight / 2;
 					($Boundaries["R"] < $BoxArray[1]["X"] + 2) AND $Boundaries["R"] = $BoxArray[1]["X"] + 2;
 					($Boundaries["B"] < $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2) AND $Boundaries["B"] = $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2;
-					$Lines = preg_split("/\n/", $Serie["Description"]);
 					$vY = $vY + max($this->FontSize * count($Lines), $IconAreaHeight) + 5;
 				} elseif ($Mode == LEGEND_HORIZONTAL) {
-					$Lines = preg_split("/\n/", $Serie["Description"]);
 					$Width = [];
 					foreach($Lines as $Value) {
-						$BoxArray = $this->getTextBox($vX + $IconAreaWidth + 6, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key), $FontName, $FontSize, 0, $Value);
+						$BoxArray = $this->getTextBox($X + $IconAreaWidth + 6, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key), $FontName, $FontSize, 0, $Value);
 						($Boundaries["T"] > $BoxArray[2]["Y"] + $IconAreaHeight / 2) AND $Boundaries["T"] = $BoxArray[2]["Y"] + $IconAreaHeight / 2;
 						($Boundaries["R"] < $BoxArray[1]["X"] + 2) AND $Boundaries["R"] = $BoxArray[1]["X"] + 2;
 						($Boundaries["B"] < $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2) AND $Boundaries["B"] = $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2;
 						$Width[] = $BoxArray[1]["X"];
 					}
-					$vX = max($Width) + $XStep;
+					$X = max($Width) + $XStep;
 				}
 			}
 		}
 
 		$vY = $vY - $YStep;
-		$vX = $vX - $XStep;
-		$TopOffset = $Y - $Boundaries["T"];
+		$TopOffset = 100 - $Boundaries["T"];
 		($Boundaries["B"] - ($vY + $IconAreaHeight) < $TopOffset) AND $Boundaries["B"] = $vY + $IconAreaHeight + $TopOffset;
-		$Width = ($Boundaries["R"] + $Margin) - ($Boundaries["L"] - $Margin);
-		$Height = ($Boundaries["B"] + $Margin) - ($Boundaries["T"] - $Margin);
 		
-		return ["Width" => $Width,"Height" => $Height];
+		return [
+			"Width" => ($Boundaries["R"] + $Margin) - ($Boundaries["L"] - $Margin),
+			"Height" => ($Boundaries["B"] + $Margin) - ($Boundaries["T"] - $Margin)
+		];
 	}
 
 	/* Draw the legend of the active series */
@@ -1752,7 +1744,7 @@ class pDraw
 		}
 
 		foreach($this->myData->Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $this->myData->Data["Abscissa"] && isset($Serie["Picture"])) {
+			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"] && isset($Serie["Picture"])) {
 				list($PicWidth, $PicHeight) = $this->getPicInfo($Serie["Picture"]);
 				($IconAreaWidth < $PicWidth) AND $IconAreaWidth = $PicWidth;
 				($IconAreaHeight < $PicHeight) AND $IconAreaHeight = $PicHeight;
@@ -1760,22 +1752,21 @@ class pDraw
 		}
 
 		$YStep = max($this->FontSize, $IconAreaHeight) + 5;
-		$XStep = $IconAreaWidth + 5;
+		#$XStep = $IconAreaWidth + 5;
 		$XStep = $XSpacing;
 		$Boundaries = ["L" => $X, "T" => $Y, "R" => 0, "B" => 0];
 		$vY = $Y;
 		$vX = $X;
 		foreach($this->myData->Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $this->myData->Data["Abscissa"]) {
+			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"]) {
+				$Lines = preg_split("/\n/", $Serie["Description"]);
 				if ($Mode == LEGEND_VERTICAL) {
 					$BoxArray = $this->getTextBox($vX + $IconAreaWidth + 4, $vY + $IconAreaHeight / 2, $FontName, $FontSize, 0, $Serie["Description"]);
 					($Boundaries["T"] > $BoxArray[2]["Y"] + $IconAreaHeight / 2) AND $Boundaries["T"] = $BoxArray[2]["Y"] + $IconAreaHeight / 2;
 					($Boundaries["R"] < $BoxArray[1]["X"] + 2) AND $Boundaries["R"] = $BoxArray[1]["X"] + 2;
 					($Boundaries["B"] < $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2) AND $Boundaries["B"] = $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2;
-					$Lines = preg_split("/\n/", $Serie["Description"]);
 					$vY = $vY + max($this->FontSize * count($Lines), $IconAreaHeight) + 5;
 				} elseif ($Mode == LEGEND_HORIZONTAL) {
-					$Lines = preg_split("/\n/", $Serie["Description"]);
 					$Width = [];
 					foreach($Lines as $Key => $Value) {
 						$BoxArray = $this->getTextBox($vX + $IconAreaWidth + 6, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key), $FontName, $FontSize, 0, $Value);
@@ -1804,7 +1795,7 @@ class pDraw
 		$this->Shadow = FALSE;
 		foreach($this->myData->Data["Series"] as $SerieName => $Serie) {
 			
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $this->myData->Data["Abscissa"]) {
+			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"]) {
 				
 				$R = $Serie["Color"]["R"];
 				$G = $Serie["Color"]["G"];
@@ -1836,15 +1827,14 @@ class pDraw
 					}
 				}
 
+				$Lines = preg_split("/\n/", $Serie["Description"]);
 				if ($Mode == LEGEND_VERTICAL) {
-					$Lines = preg_split("/\n/", $Serie["Description"]);
 					foreach($Lines as $Key => $Value) {
 						$this->drawText($X + $IconAreaWidth + 4, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key), $Value, ["R" => $FontR,"G" => $FontG,"B" => $FontB,"Align" => TEXT_ALIGN_MIDDLELEFT,"FontSize" => $FontSize,"FontName" => $FontName]);
 					}
 					$Y = $Y + max($this->FontSize * count($Lines), $IconAreaHeight) + 5;
 					
 				} elseif ($Mode == LEGEND_HORIZONTAL) {
-					$Lines = preg_split("/\n/", $Serie["Description"]);
 					$Width = [];
 					foreach($Lines as $Key => $Value) {
 						$BoxArray = $this->drawText($X + $IconAreaWidth + 4, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key), $Value, ["R" => $FontR,"G" => $FontG,"B" => $FontB,"Align" => TEXT_ALIGN_MIDDLELEFT,"FontSize" => $FontSize,"FontName" => $FontName]);
@@ -1933,9 +1923,14 @@ class pDraw
 		/* Skip a NOTICE event in case of an empty array */
 		($DrawYLines == NONE || $DrawYLines == FALSE) AND $DrawYLines = ["zarma" => "31"];
 	
-		/* Define the color for the skipped elements */
-		$SkippedAxisColor = ["R" => $SkippedAxisR,"G" => $SkippedAxisG,"B" => $SkippedAxisB,"Alpha" => $SkippedAxisAlpha,"Ticks" => $SkippedAxisTicks];
-		$SkippedTickColor = ["R" => $SkippedTickR,"G" => $SkippedTickG,"B" => $SkippedTickB,"Alpha" => $SkippedTickAlpha];
+		/* Define the colors */
+		$ColorSkippedAxis = ["R" => $SkippedAxisR,"G" => $SkippedAxisG,"B" => $SkippedAxisB,"Alpha" => $SkippedAxisAlpha,"Ticks" => $SkippedAxisTicks];
+		$ColorSkippedTick = ["R" => $SkippedTickR,"G" => $SkippedTickG,"B" => $SkippedTickB,"Alpha" => $SkippedTickAlpha];
+		$ColorBG1 = ["R" => $BackgroundR1,"G" => $BackgroundG1,"B" => $BackgroundB1,"Alpha" => $BackgroundAlpha1];
+		$ColorBG2 = ["R" => $BackgroundR2,"G" => $BackgroundG2,"B" => $BackgroundB2,"Alpha" => $BackgroundAlpha2];
+		$ColorGrid = ["R" => $GridR,"G" => $GridG,"B" => $GridB,"Alpha" => $GridAlpha,"Ticks" => $GridTicks];
+		$ColorSubTick = ["R" => $SubTickR,"G" => $SubTickG,"B" => $SubTickB,"Alpha" => $SubTickAlpha];
+			
 		$Data = $this->myData->Data;
 		$Abscissa = (isset($Data["Abscissa"])) ? $Data["Abscissa"] : null;
 
@@ -1978,7 +1973,6 @@ class pDraw
 					}
 				}
 
-				(!is_numeric($AxisMin)) AND $AxisMin = 1; // $Data["Series"][$SerieID]["Min"] = Bulgium # MOMCHIL
 				$AutoMargin = (($AxisMax - $AxisMin) / 100) * $XReleasePercent;
 				$Data["Axis"][$AxisID]["Min"] = $AxisMin - $AutoMargin;
 				$Data["Axis"][$AxisID]["Max"] = $AxisMax + $AutoMargin;
@@ -1992,8 +1986,7 @@ class pDraw
 					$Data["Axis"][$AxisID]["Min"] = $ManualScale[$AxisID]["Min"];
 					$Data["Axis"][$AxisID]["Max"] = $ManualScale[$AxisID]["Max"];
 				} else {
-					echo "Manual scale boundaries not set.";
-					exit();
+					throw pException::InvalidInput("Manual scale boundaries not set.");
 				}
 				
 			} elseif ($Mode == SCALE_MODE_ADDALL || $Mode == SCALE_MODE_ADDALL_START0) {
@@ -2012,9 +2005,9 @@ class pDraw
 						if (isset($Data["Series"][$SerieID]["Data"][$ID]) && $Data["Series"][$SerieID]["Data"][$ID] != NULL) {
 							$Value = $Data["Series"][$SerieID]["Data"][$ID];
 							if ($Value > 0) {
-								$PointMax = $PointMax + $Value; 
+								$PointMax += $Value; 
 							} else { 
-								$PointMin = $PointMin + $Value; 
+								$PointMin += $Value; 
 							}
 						}
 					}
@@ -2057,7 +2050,7 @@ class pDraw
 			} else {
 				$Points = 0;
 				$AxisName = isset($Data["XAxisName"]) ? $Data["XAxisName"] : NULL;
-				foreach($Data["Series"] as $SerieID => $SerieParameter) {
+				foreach($Data["Series"] as $SerieParameter) {
 					if ($SerieParameter["isDrawable"]) {
 						$Points = max($Points, count($SerieParameter["Data"]));
 					}
@@ -2106,7 +2099,7 @@ class pDraw
 				$TickR = $Parameters["Color"]["R"];
 				$TickG = $Parameters["Color"]["G"];
 				$TickB = $Parameters["Color"]["B"];
-				$this->setFontProperties(["R" => $Parameters["Color"]["R"],"G" => $Parameters["Color"]["G"],"B" => $Parameters["Color"]["B"]]);
+				$this->setFontProperties($Parameters["Color"]);
 			} else {
 				$AxisR = $AxisRo;
 				$AxisG = $AxisGo;
@@ -2116,7 +2109,11 @@ class pDraw
 				$TickB = $TickBo;
 				$this->setFontProperties(["R" => $FontColorRo,"G" => $FontColorGo,"B" => $FontColorBo]);
 			}
-
+			
+			$ColorAxis = ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha];
+			$ColorAxisArror = ["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize];
+			$ColorTick = ["R" => $TickR,"G" => $TickG,"B" => $TickB,"Alpha" => $TickAlpha];
+		
 			$LastValue = "w00t";
 			$ID = 1;
 			if ($Parameters["Identity"] == AXIS_X) {
@@ -2145,14 +2142,14 @@ class pDraw
 						if (!$RemoveXAxis) {
 							if ($Floating) {
 								$FloatingOffset = $YMargin;
-								$this->drawLine($this->GraphAreaX1 + $Parameters["Margin"], $AxisPos["B"], $this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["B"], ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+								$this->drawLine($this->GraphAreaX1 + $Parameters["Margin"], $AxisPos["B"], $this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["B"], $ColorAxis);
 							} else {
 								$FloatingOffset = 0;
-								$this->drawLine($this->GraphAreaX1, $AxisPos["B"], $this->GraphAreaX2, $AxisPos["B"], ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+								$this->drawLine($this->GraphAreaX1, $AxisPos["B"], $this->GraphAreaX2, $AxisPos["B"], $ColorAxis);
 							}
 
 							if ($DrawArrows) {
-								$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["B"], $this->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["B"], ["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize]);
+								$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["B"], $this->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["B"], $ColorAxisArror);
 							}
 						}
 
@@ -2191,19 +2188,19 @@ class pDraw
 							
 							if ($Skipped) {
 								if ($DrawXLines && !$RemoveSkippedAxis) {
-									$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $SkippedAxisColor);
+									$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $ColorSkippedAxis);
 								}
 
 								if (($SkippedInnerTickWidth != 0 || $SkippedOuterTickWidth != 0) && !$RemoveXAxis && !$RemoveSkippedAxis) {
-									$this->drawLine($XPos, $YPos - $SkippedInnerTickWidth, $XPos, $YPos + $SkippedOuterTickWidth, $SkippedTickColor);
+									$this->drawLine($XPos, $YPos - $SkippedInnerTickWidth, $XPos, $YPos + $SkippedOuterTickWidth, $ColorSkippedTick);
 								}
 							} else {
 								if ($DrawXLines && ($XPos != $this->GraphAreaX1 && $XPos != $this->GraphAreaX2)) {
-									$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, ["R" => $GridR,"G" => $GridG,"B" => $GridB,"Alpha" => $GridAlpha,"Ticks" => $GridTicks]);
+									$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $ColorGrid);
 								}
 
 								if (($InnerTickWidth != 0 || $OuterTickWidth != 0) && !$RemoveXAxis) {
-									$this->drawLine($XPos, $YPos - $InnerTickWidth, $XPos, $YPos + $OuterTickWidth, ["R" => $TickR,"G" => $TickG,"B" => $TickB,"Alpha" => $TickAlpha]);
+									$this->drawLine($XPos, $YPos - $InnerTickWidth, $XPos, $YPos + $OuterTickWidth, $ColorTick);
 								}
 							}
 						}
@@ -2241,14 +2238,14 @@ class pDraw
 						if (!$RemoveXAxis) {
 							if ($Floating) {
 								$FloatingOffset = $YMargin;
-								$this->drawLine($this->GraphAreaX1 + $Parameters["Margin"], $AxisPos["T"], $this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["T"], ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+								$this->drawLine($this->GraphAreaX1 + $Parameters["Margin"], $AxisPos["T"], $this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["T"], $ColorAxis);
 							} else {
 								$FloatingOffset = 0;
-								$this->drawLine($this->GraphAreaX1, $AxisPos["T"], $this->GraphAreaX2, $AxisPos["T"], ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+								$this->drawLine($this->GraphAreaX1, $AxisPos["T"], $this->GraphAreaX2, $AxisPos["T"], $ColorAxis);
 							}
 
 							if ($DrawArrows) {
-								$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["T"], $this->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["T"],["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize]);
+								$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["T"], $this->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["T"], $ColorAxisArror);
 							}
 						}
 
@@ -2287,19 +2284,19 @@ class pDraw
 							
 							if ($Skipped) {
 								if ($DrawXLines && !$RemoveSkippedAxis) {
-									$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $SkippedAxisColor);
+									$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $ColorSkippedAxis);
 								}
 
 								if (($SkippedInnerTickWidth != 0 || $SkippedOuterTickWidth != 0) && !$RemoveXAxis && !$RemoveSkippedAxis) {
-									$this->drawLine($XPos, $YPos + $SkippedInnerTickWidth, $XPos, $YPos - $SkippedOuterTickWidth, $SkippedTickColor);
+									$this->drawLine($XPos, $YPos + $SkippedInnerTickWidth, $XPos, $YPos - $SkippedOuterTickWidth, $ColorSkippedTick);
 								}
 							} else {
 								if ($DrawXLines) {
-									$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, ["R" => $GridR,"G" => $GridG,"B" => $GridB,"Alpha" => $GridAlpha,"Ticks" => $GridTicks]);
+									$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $ColorGrid);
 								}
 
 								if (($InnerTickWidth != 0 || $OuterTickWidth != 0) && !$RemoveXAxis) {
-									$this->drawLine($XPos, $YPos + $InnerTickWidth, $XPos, $YPos - $OuterTickWidth, ["R" => $TickR,"G" => $TickG,"B" => $TickB,"Alpha" => $TickAlpha]);
+									$this->drawLine($XPos, $YPos + $InnerTickWidth, $XPos, $YPos - $OuterTickWidth, $ColorTick);
 								}
 							}
 						}
@@ -2340,14 +2337,14 @@ class pDraw
 						if (!$RemoveXAxis) {
 							if ($Floating) {
 								$FloatingOffset = $YMargin;
-								$this->drawLine($AxisPos["L"], $this->GraphAreaY1 + $Parameters["Margin"], $AxisPos["L"], $this->GraphAreaY2 - $Parameters["Margin"], ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+								$this->drawLine($AxisPos["L"], $this->GraphAreaY1 + $Parameters["Margin"], $AxisPos["L"], $this->GraphAreaY2 - $Parameters["Margin"], $ColorAxis);
 							} else {
 								$FloatingOffset = 0;
-								$this->drawLine($AxisPos["L"], $this->GraphAreaY1, $AxisPos["L"], $this->GraphAreaY2, ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+								$this->drawLine($AxisPos["L"], $this->GraphAreaY1, $AxisPos["L"], $this->GraphAreaY2, $ColorAxis);
 							}
 
 							if ($DrawArrows) {
-								$this->drawArrow($AxisPos["L"], $this->GraphAreaY2 - $Parameters["Margin"], $AxisPos["L"], $this->GraphAreaY2 + ($ArrowSize * 2), ["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize]);
+								$this->drawArrow($AxisPos["L"], $this->GraphAreaY2 - $Parameters["Margin"], $AxisPos["L"], $this->GraphAreaY2 + ($ArrowSize * 2), $ColorAxisArror);
 							}
 						}
 
@@ -2386,19 +2383,19 @@ class pDraw
 							
 							if ($Skipped) {
 								if ($DrawXLines && !$RemoveSkippedAxis) {
-									$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $SkippedAxisColor);
+									$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $ColorSkippedAxis);
 								}
 
 								if (($SkippedInnerTickWidth != 0 || $SkippedOuterTickWidth != 0) && !$RemoveXAxis && !$RemoveSkippedAxis) {
-									$this->drawLine($XPos - $SkippedOuterTickWidth, $YPos, $XPos + $SkippedInnerTickWidth, $YPos, $SkippedTickColor);
+									$this->drawLine($XPos - $SkippedOuterTickWidth, $YPos, $XPos + $SkippedInnerTickWidth, $YPos, $ColorSkippedTick);
 								}
 							} else {
 								if ($DrawXLines && ($YPos != $this->GraphAreaY1 && $YPos != $this->GraphAreaY2)) {
-									$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, ["R" => $GridR,"G" => $GridG,"B" => $GridB,"Alpha" => $GridAlpha,"Ticks" => $GridTicks]);
+									$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $ColorGrid);
 								}
 
 								if (($InnerTickWidth != 0 || $OuterTickWidth != 0) && !$RemoveXAxis) {
-									$this->drawLine($XPos - $OuterTickWidth, $YPos, $XPos + $InnerTickWidth, $YPos, ["R" => $TickR,"G" => $TickG,"B" => $TickB,"Alpha" => $TickAlpha]);
+									$this->drawLine($XPos - $OuterTickWidth, $YPos, $XPos + $InnerTickWidth, $YPos, $ColorTick);
 								}
 							}
 						}
@@ -2436,14 +2433,14 @@ class pDraw
 						if (!$RemoveXAxis) {
 							if ($Floating) {
 								$FloatingOffset = $YMargin;
-								$this->drawLine($AxisPos["R"], $this->GraphAreaY1 + $Parameters["Margin"], $AxisPos["R"], $this->GraphAreaY2 - $Parameters["Margin"], ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+								$this->drawLine($AxisPos["R"], $this->GraphAreaY1 + $Parameters["Margin"], $AxisPos["R"], $this->GraphAreaY2 - $Parameters["Margin"], $ColorAxis);
 							} else {
 								$FloatingOffset = 0;
-								$this->drawLine($AxisPos["R"], $this->GraphAreaY1, $AxisPos["R"], $this->GraphAreaY2, ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+								$this->drawLine($AxisPos["R"], $this->GraphAreaY1, $AxisPos["R"], $this->GraphAreaY2, $ColorAxis);
 							}
 
 							if ($DrawArrows) {
-								$this->drawArrow($AxisPos["R"], $this->GraphAreaY2 - $Parameters["Margin"], $AxisPos["R"], $this->GraphAreaY2 + ($ArrowSize * 2), ["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize]);
+								$this->drawArrow($AxisPos["R"], $this->GraphAreaY2 - $Parameters["Margin"], $AxisPos["R"], $this->GraphAreaY2 + ($ArrowSize * 2), $ColorAxisArror);
 							}
 						}
 
@@ -2482,19 +2479,19 @@ class pDraw
 							
 							if ($Skipped) {
 								if ($DrawXLines && !$RemoveSkippedAxis) {
-									$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $SkippedAxisColor);
+									$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $ColorSkippedAxis);
 								}
 
 								if (($SkippedInnerTickWidth != 0 || $SkippedOuterTickWidth != 0) && !$RemoveXAxis && !$RemoveSkippedAxis) {
-									$this->drawLine($XPos + $SkippedOuterTickWidth, $YPos, $XPos - $SkippedInnerTickWidth, $YPos, $SkippedTickColor);
+									$this->drawLine($XPos + $SkippedOuterTickWidth, $YPos, $XPos - $SkippedInnerTickWidth, $YPos, $ColorSkippedTick);
 								}
 							} else {
 								if ($DrawXLines) {
-									$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, ["R" => $GridR,"G" => $GridG,"B" => $GridB,"Alpha" => $GridAlpha,"Ticks" => $GridTicks]);
+									$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $ColorGrid);
 								}
 
 								if (($InnerTickWidth != 0 || $OuterTickWidth != 0) && !$RemoveXAxis) {
-									$this->drawLine($XPos + $OuterTickWidth, $YPos, $XPos - $InnerTickWidth, $YPos, ["R" => $TickR,"G" => $TickG,"B" => $TickB,"Alpha" => $TickAlpha]);
+									$this->drawLine($XPos + $OuterTickWidth, $YPos, $XPos - $InnerTickWidth, $YPos, $ColorTick);
 								}
 							}
 						}
@@ -2516,14 +2513,14 @@ class pDraw
 					if ($Parameters["Position"] == AXIS_POSITION_LEFT) {
 						if ($Floating) {
 							$FloatingOffset = $XMargin;
-							$this->drawLine($AxisPos["L"], $this->GraphAreaY1 + $Parameters["Margin"], $AxisPos["L"], $this->GraphAreaY2 - $Parameters["Margin"], ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+							$this->drawLine($AxisPos["L"], $this->GraphAreaY1 + $Parameters["Margin"], $AxisPos["L"], $this->GraphAreaY2 - $Parameters["Margin"], $ColorAxis);
 						} else {
 							$FloatingOffset = 0;
-							$this->drawLine($AxisPos["L"], $this->GraphAreaY1, $AxisPos["L"], $this->GraphAreaY2, ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+							$this->drawLine($AxisPos["L"], $this->GraphAreaY1, $AxisPos["L"], $this->GraphAreaY2, $ColorAxis);
 						}
 
 						if ($DrawArrows) {
-							$this->drawArrow($AxisPos["L"], $this->GraphAreaY1 + $Parameters["Margin"], $AxisPos["L"], $this->GraphAreaY1 - ($ArrowSize * 2), ["FillR" => $AxisR,"FillG" => $AxisG,"FillB" => $AxisB,"Size" => $ArrowSize]);
+							$this->drawArrow($AxisPos["L"], $this->GraphAreaY1 + $Parameters["Margin"], $AxisPos["L"], $this->GraphAreaY1 - ($ArrowSize * 2), $ColorAxisArror);
 						}
 
 						$Height = $this->GraphAreaYdiff - $Parameters["Margin"] * 2;
@@ -2535,25 +2532,21 @@ class pDraw
 							$YPos = $this->GraphAreaY2 - $Parameters["Margin"] - $Step * $i;
 							$XPos = $AxisPos["L"];
 							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters["Display"], $Parameters["Format"], $Parameters["Unit"]);
-							if ($i % 2 == 1) {
-								$BGColor = ["R" => $BackgroundR1,"G" => $BackgroundG1,"B" => $BackgroundB1,"Alpha" => $BackgroundAlpha1];
-							} else {
-								$BGColor = ["R" => $BackgroundR2,"G" => $BackgroundG2,"B" => $BackgroundB2,"Alpha" => $BackgroundAlpha2];
-							}
+							$BGColor = ($i % 2 == 1) ? $ColorBG1 : $ColorBG2;
 
 							if ($LastY != NULL && $CycleBackground && ($DrawYLines == ALL || in_array($AxisID, $DrawYLines))) {
 								$this->drawFilledRectangle($this->GraphAreaX1 + $FloatingOffset, $LastY, $this->GraphAreaX2 - $FloatingOffset, $YPos, $BGColor);
 							}
 
 							if ($DrawYLines == ALL || in_array($AxisID, $DrawYLines)) {
-								$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, ["R" => $GridR,"G" => $GridG,"B" => $GridB,"Alpha" => $GridAlpha,"Ticks" => $GridTicks]);
+								$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $ColorGrid);
 							}
 
 							if ($DrawSubTicks && $i != $Parameters["Rows"]) {
-								$this->drawLine($XPos - $OuterSubTickWidth, $YPos - $SubTicksSize, $XPos + $InnerSubTickWidth, $YPos - $SubTicksSize, ["R" => $SubTickR,"G" => $SubTickG,"B" => $SubTickB,"Alpha" => $SubTickAlpha]);
+								$this->drawLine($XPos - $OuterSubTickWidth, $YPos - $SubTicksSize, $XPos + $InnerSubTickWidth, $YPos - $SubTicksSize, $ColorSubTick);
 							}
 							
-							$this->drawLine($XPos - $OuterTickWidth, $YPos, $XPos + $InnerTickWidth, $YPos, ["R" => $TickR,"G" => $TickG,"B" => $TickB,"Alpha" => $TickAlpha]);
+							$this->drawLine($XPos - $OuterTickWidth, $YPos, $XPos + $InnerTickWidth, $YPos, $ColorTick);
 							$Bounds = $this->drawText($XPos - $OuterTickWidth - 2, $YPos, $Value, ["Align" => TEXT_ALIGN_MIDDLERIGHT]);
 							$TxtLeft = $XPos - $OuterTickWidth - 2 - ($Bounds[1]["X"] - $Bounds[0]["X"]);
 							$MinLeft = min($MinLeft, $TxtLeft);
@@ -2573,14 +2566,14 @@ class pDraw
 						
 						if ($Floating) {
 							$FloatingOffset = $XMargin;
-							$this->drawLine($AxisPos["R"], $this->GraphAreaY1 + $Parameters["Margin"], $AxisPos["R"], $this->GraphAreaY2 - $Parameters["Margin"], ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+							$this->drawLine($AxisPos["R"], $this->GraphAreaY1 + $Parameters["Margin"], $AxisPos["R"], $this->GraphAreaY2 - $Parameters["Margin"], $ColorAxis);
 						} else {
 							$FloatingOffset = 0;
-							$this->drawLine($AxisPos["R"], $this->GraphAreaY1, $AxisPos["R"], $this->GraphAreaY2, ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+							$this->drawLine($AxisPos["R"], $this->GraphAreaY1, $AxisPos["R"], $this->GraphAreaY2, $ColorAxis);
 						}
 
 						if ($DrawArrows) {
-							$this->drawArrow($AxisPos["R"], $this->GraphAreaY1 + $Parameters["Margin"], $AxisPos["R"], $this->GraphAreaY1 - ($ArrowSize * 2), ["FillR" => $AxisR,"FillG" => $AxisG, "FillB" => $AxisB,"Size" => $ArrowSize]);
+							$this->drawArrow($AxisPos["R"], $this->GraphAreaY1 + $Parameters["Margin"], $AxisPos["R"], $this->GraphAreaY1 - ($ArrowSize * 2), $ColorAxisArror);
 						}
 
 						$Height = $this->GraphAreaYdiff - $Parameters["Margin"] * 2;
@@ -2592,24 +2585,20 @@ class pDraw
 							$YPos = $this->GraphAreaY2 - $Parameters["Margin"] - $Step * $i;
 							$XPos = $AxisPos["R"];
 							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters["Display"], $Parameters["Format"], $Parameters["Unit"]);
-							if ($i % 2 == 1) {
-								$BGColor = ["R" => $BackgroundR1,"G" => $BackgroundG1,"B" => $BackgroundB1,"Alpha" => $BackgroundAlpha1];
-							} else {
-								$BGColor = ["R" => $BackgroundR2,"G" => $BackgroundG2,"B" => $BackgroundB2,"Alpha" => $BackgroundAlpha2];
-							}
+							$BGColor = ($i % 2 == 1) ? $ColorBG1 : $ColorBG2;
 
 							if ($LastY != NULL && $CycleBackground && ($DrawYLines == ALL || in_array($AxisID, $DrawYLines))) {
 								$this->drawFilledRectangle($this->GraphAreaX1 + $FloatingOffset, $LastY, $this->GraphAreaX2 - $FloatingOffset, $YPos, $BGColor);
 							}
 
 							if ($DrawYLines == ALL || in_array($AxisID, $DrawYLines)) {
-								$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, ["R" => $GridR,"G" => $GridG,"B" => $GridB,"Alpha" => $GridAlpha,"Ticks" => $GridTicks]);
+								$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $ColorGrid);
 							}
 
 							if ($DrawSubTicks && $i != $Parameters["Rows"]) {
-								$this->drawLine($XPos - $OuterSubTickWidth, $YPos - $SubTicksSize, $XPos + $InnerSubTickWidth, $YPos - $SubTicksSize, ["R" => $SubTickR,"G" => $SubTickG,"B" => $SubTickB,"Alpha" => $SubTickAlpha]);
+								$this->drawLine($XPos - $OuterSubTickWidth, $YPos - $SubTicksSize, $XPos + $InnerSubTickWidth, $YPos - $SubTicksSize, $ColorSubTick);
 							}
-							$this->drawLine($XPos - $InnerTickWidth, $YPos, $XPos + $OuterTickWidth, $YPos, ["R" => $TickR,"G" => $TickG,"B" => $TickB,"Alpha" => $TickAlpha]);
+							$this->drawLine($XPos - $InnerTickWidth, $YPos, $XPos + $OuterTickWidth, $YPos, $ColorTick);
 							$Bounds = $this->drawText($XPos + $OuterTickWidth + 2, $YPos, $Value, ["Align" => TEXT_ALIGN_MIDDLELEFT]);
 							$TxtLeft = $XPos + $OuterTickWidth + 2 + ($Bounds[1]["X"] - $Bounds[0]["X"]);
 							$MaxLeft = max($MaxLeft, $TxtLeft);
@@ -2631,14 +2620,14 @@ class pDraw
 					if ($Parameters["Position"] == AXIS_POSITION_TOP) {
 						if ($Floating) {
 							$FloatingOffset = $XMargin;
-							$this->drawLine($this->GraphAreaX1 + $Parameters["Margin"], $AxisPos["T"], $this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["T"], ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+							$this->drawLine($this->GraphAreaX1 + $Parameters["Margin"], $AxisPos["T"], $this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["T"], $ColorAxis);
 						} else {
 							$FloatingOffset = 0;
-							$this->drawLine($this->GraphAreaX1, $AxisPos["T"], $this->GraphAreaX2, $AxisPos["T"], ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+							$this->drawLine($this->GraphAreaX1, $AxisPos["T"], $this->GraphAreaX2, $AxisPos["T"], $ColorAxis);
 						}
 
 						if ($DrawArrows) {
-							$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["T"], $this->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["T"], ["FillR" => $AxisR,"FillG" => $AxisG, "FillB" => $AxisB,"Size" => $ArrowSize]);
+							$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["T"], $this->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["T"], $ColorAxisArror);
 						}
 
 						$Width = $this->GraphAreaXdiff - $Parameters["Margin"] * 2;
@@ -2650,25 +2639,21 @@ class pDraw
 							$XPos = $this->GraphAreaX1 + $Parameters["Margin"] + $Step * $i;
 							$YPos = $AxisPos["T"];
 							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters["Display"], $Parameters["Format"], $Parameters["Unit"]);
-							if ($i % 2 == 1) {
-								$BGColor = $BGColor = ["R" => $BackgroundR1,"G" => $BackgroundG1,"B" => $BackgroundB1,"Alpha" => $BackgroundAlpha1];
-							} else {
-								$BGColor = ["R" => $BackgroundR2,"G" => $BackgroundG2,"B" => $BackgroundB2,"Alpha" => $BackgroundAlpha2];
-							}
+							$BGColor = ($i % 2 == 1) ? $ColorBG1 : $ColorBG2;
 
 							if ($LastX != NULL && $CycleBackground && ($DrawYLines == ALL || in_array($AxisID, $DrawYLines))) {
 								$this->drawFilledRectangle($LastX, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $BGColor);
 							}
 
 							if ($DrawYLines == ALL || in_array($AxisID, $DrawYLines)) {
-								$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, ["R" => $GridR,"G" => $GridG,"B" => $GridB,"Alpha" => $GridAlpha,"Ticks" => $GridTicks]);
+								$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $ColorGrid);
 							}
 
 							if ($DrawSubTicks && $i != $Parameters["Rows"]) {
-								$this->drawLine($XPos + $SubTicksSize, $YPos - $OuterSubTickWidth, $XPos + $SubTicksSize, $YPos + $InnerSubTickWidth, ["R" => $SubTickR,"G" => $SubTickG,"B" => $SubTickB,"Alpha" => $SubTickAlpha]);
+								$this->drawLine($XPos + $SubTicksSize, $YPos - $OuterSubTickWidth, $XPos + $SubTicksSize, $YPos + $InnerSubTickWidth, $ColorSubTick);
 							}
 							
-							$this->drawLine($XPos, $YPos - $OuterTickWidth, $XPos, $YPos + $InnerTickWidth, ["R" => $TickR,"G" => $TickG,"B" => $TickB,"Alpha" => $TickAlpha]);
+							$this->drawLine($XPos, $YPos - $OuterTickWidth, $XPos, $YPos + $InnerTickWidth, $ColorTick);
 							$Bounds = $this->drawText($XPos, $YPos - $OuterTickWidth - 2, $Value, ["Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
 							$TxtHeight = $YPos - $OuterTickWidth - 2 - ($Bounds[1]["Y"] - $Bounds[2]["Y"]);
 							$MinTop = min($MinTop, $TxtHeight);
@@ -2687,14 +2672,14 @@ class pDraw
 					} elseif ($Parameters["Position"] == AXIS_POSITION_BOTTOM) {
 						if ($Floating) {
 							$FloatingOffset = $XMargin;
-							$this->drawLine($this->GraphAreaX1 + $Parameters["Margin"], $AxisPos["B"], $this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["B"], ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+							$this->drawLine($this->GraphAreaX1 + $Parameters["Margin"], $AxisPos["B"], $this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["B"], $ColorAxis);
 						} else {
 							$FloatingOffset = 0;
-							$this->drawLine($this->GraphAreaX1, $AxisPos["B"], $this->GraphAreaX2, $AxisPos["B"], ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha]);
+							$this->drawLine($this->GraphAreaX1, $AxisPos["B"], $this->GraphAreaX2, $AxisPos["B"] ,$ColorAxis);
 						}
 
 						if ($DrawArrows) {
-							$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["B"], $this->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["B"], ["FillR" => $AxisR,"FillG" => $AxisG, "FillB" => $AxisB,"Size" => $ArrowSize]);
+							$this->drawArrow($this->GraphAreaX2 - $Parameters["Margin"], $AxisPos["B"], $this->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["B"], $ColorAxisArror);
 						}
 
 						$Width = $this->GraphAreaXdiff - $Parameters["Margin"] * 2;
@@ -2706,25 +2691,21 @@ class pDraw
 							$XPos = $this->GraphAreaX1 + $Parameters["Margin"] + $Step * $i;
 							$YPos = $AxisPos["B"];
 							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters["Display"], $Parameters["Format"], $Parameters["Unit"]);
-							if ($i % 2 == 1) {
-								$BGColor = ["R" => $BackgroundR1,"G" => $BackgroundG1,"B" => $BackgroundB1,"Alpha" => $BackgroundAlpha1];
-							} else {
-								$BGColor = ["R" => $BackgroundR2,"G" => $BackgroundG2,"B" => $BackgroundB2,"Alpha" => $BackgroundAlpha2];
-							}
+							$BGColor = ($i % 2 == 1) ? $ColorBG1 : $ColorBG2;
 
 							if ($LastX != NULL && $CycleBackground && ($DrawYLines == ALL || in_array($AxisID, $DrawYLines))) {
 								$this->drawFilledRectangle($LastX, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $BGColor);
 							}
 
 							if ($DrawYLines == ALL || in_array($AxisID, $DrawYLines)) {
-								$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, ["R" => $GridR,"G" => $GridG,"B" => $GridB,"Alpha" => $GridAlpha,"Ticks" => $GridTicks]);
+								$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $ColorGrid);
 							}
 
 							if ($DrawSubTicks && $i != $Parameters["Rows"]) {
-								$this->drawLine($XPos + $SubTicksSize, $YPos - $OuterSubTickWidth, $XPos + $SubTicksSize, $YPos + $InnerSubTickWidth, ["R" => $SubTickR,"G" => $SubTickG,"B" => $SubTickB,"Alpha" => $SubTickAlpha]);
+								$this->drawLine($XPos + $SubTicksSize, $YPos - $OuterSubTickWidth, $XPos + $SubTicksSize, $YPos + $InnerSubTickWidth, $ColorSubTick);
 							}
 							
-							$this->drawLine($XPos, $YPos - $OuterTickWidth, $XPos, $YPos + $InnerTickWidth, ["R" => $TickR,"G" => $TickG,"B" => $TickB,"Alpha" => $TickAlpha]);
+							$this->drawLine($XPos, $YPos - $OuterTickWidth, $XPos, $YPos + $InnerTickWidth, $ColorTick);
 							$Bounds = $this->drawText($XPos, $YPos + $OuterTickWidth + 2, $Value, ["Align" => TEXT_ALIGN_TOPMIDDLE]);
 							$TxtHeight = $YPos + $OuterTickWidth + 2 + ($Bounds[1]["Y"] - $Bounds[2]["Y"]);
 							$MaxBottom = max($MaxBottom, $TxtHeight);
