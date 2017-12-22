@@ -3725,19 +3725,14 @@ class pDraw
 			
 			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"]) {
 				if ($OverrideR != VOID && $OverrideG != VOID && $OverrideB != VOID) {
-					$R = $OverrideR;
-					$G = $OverrideG;
-					$B = $OverrideB;
+					$Color = ["R" => $OverrideR,"G" => $OverrideG,"B" => $OverrideB];
 				} else {
-					$R = $Serie["Color"]["R"];
-					$G = $Serie["Color"]["G"];
-					$B = $Serie["Color"]["B"];
+					$Color = $Serie["Color"];
 				}
 
-				$Ticks = ($OverrideTicks == NULL) ? $Serie["Ticks"] : $OverrideTicks;
-				$Alpha = ($OverrideAlpha == VOID) ? $Serie["Color"]["Alpha"] : $OverrideAlpha;
-				$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks];
-				#$AxisID = $Serie["Axis"]; # UNUSED
+				$Color["Alpha"] = ($OverrideAlpha == VOID) ? $Serie["Color"]["Alpha"] : $OverrideAlpha;
+				$Color["Ticks"] = ($OverrideTicks == NULL) ? $Serie["Ticks"] : $OverrideTicks;
+
 				$PosArray = $this->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				
 				if ($this->myData->Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
