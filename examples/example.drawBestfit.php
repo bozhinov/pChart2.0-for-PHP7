@@ -47,17 +47,19 @@ $myPicture->drawScale($scaleSettings);
 /* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
 
+$myCharts = new pCharts($myPicture);
+
 /* Draw the line of best fit */
-$myPicture->drawBestFit();
+$myCharts->drawBestFit();
 
 /* Turn on shadows */
-$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+$myCharts->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
 
 /* Draw the line chart */
-(new pCharts($myPicture))->drawPlotChart();
+$myCharts->drawPlotChart();
 
 /* Write the chart legend */
-$myPicture->drawLegend(580,20,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+$myPicture->drawLegend(580,20,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawBestFit.png");

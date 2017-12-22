@@ -51,11 +51,12 @@ $myPicture->drawScale($scaleSettings);
 /* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
 
+$myCharts = new pCharts($myPicture);
+
 /* Draw the line of best fit */
-$myPicture->drawBestFit(["Ticks"=>4,"Alpha"=>50,"R"=>0,"G"=>0,"B"=>0]);
+$myCharts->drawBestFit(["Ticks"=>4,"Alpha"=>50,"R"=>0,"G"=>0,"B"=>0]);
 
 /* Draw the line chart */
-$myCharts = new pCharts($myPicture);
 $myCharts->drawLineChart();
 
 /* Draw the series derivative graph */

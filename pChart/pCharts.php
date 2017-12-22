@@ -3,9 +3,9 @@
 /*
 pCharts - class with charts
 
-Version     : 0.2
+Version     : 0.3
 Made by     : Forked by Momchil Bozhinov from the original pDraw class from Jean-Damien POGOLOTTI
-Last Update : 11/12/2017
+Last Update : 23/12/2017
 
 Contains functions:
 	validatePalette
@@ -23,6 +23,7 @@ Contains functions:
 	drawPlotChart
 	drawSplitPath
 	drawDerivative
+	drawBestFit
 
 This file can be distributed under the license you can find at:
 http://www.pchart.net/license
@@ -2742,6 +2743,132 @@ class pCharts {
 			}
 		}
 	} 
+	
+	/* Draw the line of best fit */
+	function drawBestFit(array $Format = [])
+	{
+		$OverrideTicks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
+		$OverrideR = isset($Format["R"]) ? $Format["R"] : VOID;
+		$OverrideG = isset($Format["G"]) ? $Format["G"] : VOID;
+		$OverrideB = isset($Format["B"]) ? $Format["B"] : VOID;
+		$OverrideAlpha = isset($Format["Alpha"]) ? $Format["Alpha"] : VOID;
+
+		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
+		
+		$XStep = $this->getXstep($this->myPicture->myData->Data["Orientation"], $XDivs, $XMargin);
+					
+		foreach($this->myPicture->myData->Data["Series"] as $SerieName => $Serie) {
+			
+			if ($Serie["isDrawable"] && $SerieName != $this->myPicture->myData->Data["Abscissa"]) {
+				if ($OverrideR != VOID && $OverrideG != VOID && $OverrideB != VOID) {
+					$Color = ["R" => $OverrideR,"G" => $OverrideG,"B" => $OverrideB];
+				} else {
+					$Color = $Serie["Color"];
+				}
+
+				$Color["Alpha"] = ($OverrideAlpha == VOID) ? $Serie["Color"]["Alpha"] : $OverrideAlpha;
+				$Color["Ticks"] = ($OverrideTicks == NULL) ? $Serie["Ticks"] : $OverrideTicks;
+
+				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
+				
+				if ($this->myPicture->myData->Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
+
+					$X = $this->myPicture->GraphAreaX1 + $XMargin;					
+					$Sxy = 0;
+					$Sx = 0;
+					$Sy = 0;
+					$Sxx = 0;
+					
+					foreach($PosArray as $Y) {
+						if ($Y != VOID) {
+							$Sxy = $Sxy + $X * $Y;
+							$Sx = $Sx + $X;
+							$Sy = $Sy + $Y;
+							$Sxx = $Sxx + $X * $X;
+						}
+
+						$X = $X + $XStep;
+					}
+
+					$n = count(array_diff($PosArray, [VOID])); //$n = count($PosArray);
+					$M = (($n * $Sxy) - ($Sx * $Sy)) / (($n * $Sxx) - ($Sx * $Sx));
+					$B = (($Sy) - ($M * $Sx)) / ($n);
+					$X1 = $this->myPicture->GraphAreaX1 + $XMargin;
+					$Y1 = $M * $X1 + $B;
+					$X2 = $this->myPicture->GraphAreaX2 - $XMargin;
+					$Y2 = $M * $X2 + $B;
+					if ($Y1 < $this->myPicture->GraphAreaY1) {
+						$X1 = $X1 + ($this->myPicture->GraphAreaY1 - $Y1);
+						$Y1 = $this->myPicture->GraphAreaY1;
+					}
+
+					if ($Y1 > $this->myPicture->GraphAreaY2) {
+						$X1 = $X1 + ($Y1 - $this->myPicture->GraphAreaY2);
+						$Y1 = $this->myPicture->GraphAreaY2;
+					}
+
+					if ($Y2 < $this->myPicture->GraphAreaY1) {
+						$X2 = $X2 - ($this->myPicture->GraphAreaY1 - $Y2);
+						$Y2 = $this->myPicture->GraphAreaY1;
+					}
+
+					if ($Y2 > $this->myPicture->GraphAreaY2) {
+						$X2 = $X2 - ($Y2 - $this->myPicture->GraphAreaY2);
+						$Y2 = $this->myPicture->GraphAreaY2;
+					}
+
+					$this->myPicture->drawLine($X1, $Y1, $X2, $Y2, $Color);
+					
+				} else {
+
+					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Sxy = 0;
+					$Sx = 0;
+					$Sy = 0;
+					$Sxx = 0;
+					foreach($PosArray as $X) {
+						if ($X != VOID) {
+							$Sxy = $Sxy + $X * $Y;
+							$Sx = $Sx + $Y;
+							$Sy = $Sy + $X;
+							$Sxx = $Sxx + $Y * $Y;
+						}
+
+						$Y = $Y + $XStep;
+					}
+
+					$n = count(array_diff($PosArray, [VOID])); //$n = count($PosArray);
+					$M = (($n * $Sxy) - ($Sx * $Sy)) / (($n * $Sxx) - ($Sx * $Sx));
+					$B = (($Sy) - ($M * $Sx)) / $n;
+					$Y1 = $this->myPicture->GraphAreaY1 + $XMargin;
+					$X1 = $M * $Y1 + $B;
+					$Y2 = $this->myPicture->GraphAreaY2 - $XMargin;
+					$X2 = $M * $Y2 + $B;
+					if ($X1 < $this->myPicture->GraphAreaX1) {
+						$Y1 = $Y1 + ($this->myPicture->GraphAreaX1 - $X1);
+						$X1 = $this->myPicture->GraphAreaX1;
+					}
+
+					if ($X1 > $this->myPicture->GraphAreaX2) {
+						$Y1 = $Y1 + ($X1 - $this->myPicture->GraphAreaX2);
+						$X1 = $this->myPicture->GraphAreaX2;
+					}
+
+					if ($X2 < $this->myPicture->GraphAreaX1) {
+						$Y2 = $Y2 - ($this->myPicture->GraphAreaY1 - $X2);
+						$X2 = $this->myPicture->GraphAreaX1;
+					}
+
+					if ($X2 > $this->myPicture->GraphAreaX2) {
+						$Y2 = $Y2 - ($X2 - $this->myPicture->GraphAreaX2);
+						$X2 = $this->myPicture->GraphAreaX2;
+					}
+
+					$this->myPicture->drawLine($X1, $Y1, $X2, $Y2, $Color);
+				}
+			}
+		}
+	}
 	
 }
 
