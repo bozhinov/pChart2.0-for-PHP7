@@ -1930,7 +1930,8 @@ class pDraw
 		$ColorBG2 = ["R" => $BackgroundR2,"G" => $BackgroundG2,"B" => $BackgroundB2,"Alpha" => $BackgroundAlpha2];
 		$ColorGrid = ["R" => $GridR,"G" => $GridG,"B" => $GridB,"Alpha" => $GridAlpha,"Ticks" => $GridTicks];
 		$ColorSubTick = ["R" => $SubTickR,"G" => $SubTickG,"B" => $SubTickB,"Alpha" => $SubTickAlpha];
-			
+		$ColorFont = ["R" => $this->FontColorR,"G" => $this->FontColorG,"B" => $this->FontColorB];
+		
 		$Data = $this->myData->Data;
 		$Abscissa = (isset($Data["Abscissa"])) ? $Data["Abscissa"] : null;
 
@@ -2084,9 +2085,7 @@ class pDraw
 		$this->myData->saveOrientation($Pos);
 		$this->myData->saveAxisConfig($Data["Axis"]);
 		$this->myData->saveYMargin($YMargin);
-		$FontColorRo = $this->FontColorR;
-		$FontColorGo = $this->FontColorG;
-		$FontColorBo = $this->FontColorB;
+
 		$AxisPos["L"] = $this->GraphAreaX1;
 		$AxisPos["R"] = $this->GraphAreaX2;
 		$AxisPos["T"] = $this->GraphAreaY1;
@@ -2107,7 +2106,7 @@ class pDraw
 				$TickR = $TickRo;
 				$TickG = $TickGo;
 				$TickB = $TickBo;
-				$this->setFontProperties(["R" => $FontColorRo,"G" => $FontColorGo,"B" => $FontColorBo]);
+				$this->setFontProperties($ColorFont);
 			}
 			
 			$ColorAxis = ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha];
@@ -2153,7 +2152,7 @@ class pDraw
 							}
 						}
 
-						$Width = ($this->GraphAreaX2 - $this->GraphAreaX1) - $Parameters["Margin"] * 2;
+						$Width = $this->GraphAreaXdiff - $Parameters["Margin"] * 2;
 						$Step = ($Parameters["Rows"] == 0) ? $Width : $Width / ($Parameters["Rows"]);
 						$MaxBottom = $AxisPos["B"];
 						
