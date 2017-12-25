@@ -2086,10 +2086,8 @@ class pDraw
 		$this->myData->saveAxisConfig($Data["Axis"]);
 		$this->myData->saveYMargin($YMargin);
 
-		$AxisPos["L"] = $this->GraphAreaX1;
-		$AxisPos["R"] = $this->GraphAreaX2;
-		$AxisPos["T"] = $this->GraphAreaY1;
-		$AxisPos["B"] = $this->GraphAreaY2;
+		$AxisPos = ["L" => $this->GraphAreaX1, "R" => $this->GraphAreaX2, "T" => $this->GraphAreaY1, "B" => $this->GraphAreaY2];
+
 		foreach($Data["Axis"] as $AxisID => $Parameters) {
 			if (isset($Parameters["Color"])) {
 				$AxisR = $Parameters["Color"]["R"];
@@ -2939,6 +2937,9 @@ class pDraw
 			"Alpha" => $CaptionAlpha
 		];
 		
+		$LineSettings1 = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight];
+		$LineSettings2 = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / $WideFactor,"Ticks" => $Ticks];
+		
 		foreach($Values as $Value){
 
 			if ($ValueIsLabel) {
@@ -2965,10 +2966,10 @@ class pDraw
 				$YPos1 = $this->GraphAreaY1 + $Data["YMargin"];
 				$YPos2 = $this->GraphAreaY2 - $Data["YMargin"];
 				if ($XPos >= $this->GraphAreaX1 + $AbscissaMargin && $XPos <= $this->GraphAreaX2 - $AbscissaMargin) {
-					$this->drawLine($XPos, $YPos1, $XPos, $YPos2, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight]);
+					$this->drawLine($XPos, $YPos1, $XPos, $YPos2, $LineSettings1);
 					if ($Wide) {
-						$this->drawLine($XPos - 1, $YPos1, $XPos - 1, $YPos2, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / $WideFactor,"Ticks" => $Ticks]);
-						$this->drawLine($XPos + 1, $YPos1, $XPos + 1, $YPos2, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / $WideFactor,"Ticks" => $Ticks]);
+						$this->drawLine($XPos - 1, $YPos1, $XPos - 1, $YPos2, $LineSettings2);
+						$this->drawLine($XPos + 1, $YPos1, $XPos + 1, $YPos2, $LineSettings2);
 					}
 
 					if ($WriteCaption) {
@@ -2990,10 +2991,10 @@ class pDraw
 				$YPos1 = $this->GraphAreaX1 + $Data["YMargin"];
 				$YPos2 = $this->GraphAreaX2 - $Data["YMargin"];
 				if ($XPos >= $this->GraphAreaY1 + $AbscissaMargin && $XPos <= $this->GraphAreaY2 - $AbscissaMargin) {
-					$this->drawLine($YPos1, $XPos, $YPos2, $XPos, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight]);
+					$this->drawLine($YPos1, $XPos, $YPos2, $XPos,$LineSettings1);
 					if ($Wide) {
-						$this->drawLine($YPos1, $XPos - 1, $YPos2, $XPos - 1, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / $WideFactor,"Ticks" => $Ticks]);
-						$this->drawLine($YPos1, $XPos + 1, $YPos2, $XPos + 1, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / $WideFactor,"Ticks" => $Ticks]);
+						$this->drawLine($YPos1, $XPos - 1, $YPos2, $XPos - 1, $LineSettings2);
+						$this->drawLine($YPos1, $XPos + 1, $YPos2, $XPos + 1, $LineSettings2);
 					}
 
 					if ($WriteCaption) {
@@ -3042,6 +3043,8 @@ class pDraw
 		($BorderAlpha > 100) AND $BorderAlpha = 100;
 		$XScale = $this->myData->scaleGetXSettings();
 		#$AbscissaMargin =  $this->myData->getAbscissaMargin(); # UNUSED
+		$lineSettgins2 = ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha,"Ticks" => $BorderTicks];
+		$lineSettgins1 = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
 		
 		if ($this->myData->Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 			$XStep = ($this->GraphAreaXdiff - $XScale[0] * 2) / $XScale[1];
@@ -3054,10 +3057,10 @@ class pDraw
 			($XPos2 < $this->GraphAreaX1 + $XScale[0]) AND $XPos2 = $this->GraphAreaX1 + $XScale[0];
 			($XPos2 > $this->GraphAreaX2 - $XScale[0]) AND $XPos2 = $this->GraphAreaX2 - $XScale[0];
 
-			$this->drawFilledRectangle($XPos1, $YPos1, $XPos2, $YPos2, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha]);
+			$this->drawFilledRectangle($XPos1, $YPos1, $XPos2, $YPos2, $lineSettgins1);
 			if ($Border) {
-				$this->drawLine($XPos1, $YPos1, $XPos1, $YPos2, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha,"Ticks" => $BorderTicks]);
-				$this->drawLine($XPos2, $YPos1, $XPos2, $YPos2, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha,"Ticks" => $BorderTicks]);
+				$this->drawLine($XPos1, $YPos1, $XPos1, $YPos2, $lineSettgins2);
+				$this->drawLine($XPos2, $YPos1, $XPos2, $YPos2, $lineSettgins2);
 			}
 
 			if ($AreaName != NULL) {
@@ -3087,10 +3090,10 @@ class pDraw
 			($XPos2 < $this->GraphAreaY1 + $XScale[0]) AND $XPos2 = $this->GraphAreaY1 + $XScale[0];
 			($XPos2 > $this->GraphAreaY2 - $XScale[0]) AND $XPos2 = $this->GraphAreaY2 - $XScale[0];
 
-			$this->drawFilledRectangle($YPos1, $XPos1, $YPos2, $XPos2, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha]);
+			$this->drawFilledRectangle($YPos1, $XPos1, $YPos2, $XPos2, $lineSettgins1);
 			if ($Border) {
-				$this->drawLine($YPos1, $XPos1, $YPos2, $XPos1, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha,"Ticks" => $BorderTicks]);
-				$this->drawLine($YPos1, $XPos2, $YPos2, $XPos2, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha,"Ticks" => $BorderTicks]);
+				$this->drawLine($YPos1, $XPos1, $YPos2, $XPos1, $lineSettgins2);
+				$this->drawLine($YPos1, $XPos2, $YPos2, $XPos2, $lineSettgins2);
 			}
 
 			if ($AreaName != NULL) {
@@ -3175,6 +3178,9 @@ class pDraw
 		$AbscissaMargin =  $this->myData->getAbscissaMargin();
 		($NoMargin) AND $AbscissaMargin = 0;
 		
+		$LineSettings1 = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight];
+		$LineSettings2 = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / $WideFactor,"Ticks" => $Ticks];
+		
 		foreach ($Values as $Value){
 			($Caption == NULL) AND $Caption = $Value;
 
@@ -3183,10 +3189,10 @@ class pDraw
 				if ($YPos >= $this->GraphAreaY1 + $this->myData->Data["Axis"][$AxisID]["Margin"] && $YPos <= $this->GraphAreaY2 - $this->myData->Data["Axis"][$AxisID]["Margin"]) {
 					$X1 = $this->GraphAreaX1 + $AbscissaMargin;
 					$X2 = $this->GraphAreaX2 - $AbscissaMargin;
-					$this->drawLine($X1, $YPos, $X2, $YPos, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight]);
+					$this->drawLine($X1, $YPos, $X2, $YPos, $LineSettings1);
 					if ($Wide) {
-						$this->drawLine($X1, $YPos - 1, $X2, $YPos - 1, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / $WideFactor,"Ticks" => $Ticks]);
-						$this->drawLine($X1, $YPos + 1, $X2, $YPos + 1, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / $WideFactor,"Ticks" => $Ticks]);
+						$this->drawLine($X1, $YPos - 1, $X2, $YPos - 1, $LineSettings2);
+						$this->drawLine($X1, $YPos + 1, $X2, $YPos + 1, $LineSettings2);
 					}
 
 					if ($WriteCaption) {
@@ -3208,10 +3214,10 @@ class pDraw
 				if ($XPos >= $this->GraphAreaX1 + $this->myData->Data["Axis"][$AxisID]["Margin"] && $XPos <= $this->GraphAreaX2 - $this->myData->Data["Axis"][$AxisID]["Margin"]) {
 					$Y1 = $this->GraphAreaY1 + $AbscissaMargin;
 					$Y2 = $this->GraphAreaY2 - $AbscissaMargin;
-					$this->drawLine($XPos, $Y1, $XPos, $Y2,["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight]);
+					$this->drawLine($XPos, $Y1, $XPos, $Y2, $LineSettings1);
 					if ($Wide) {
-						$this->drawLine($XPos - 1, $Y1, $XPos - 1, $Y2, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / $WideFactor,"Ticks" => $Ticks]);
-						$this->drawLine($XPos + 1, $Y1, $XPos + 1, $Y2, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / $WideFactor,"Ticks" => $Ticks]);
+						$this->drawLine($XPos - 1, $Y1, $XPos - 1, $Y2, $LineSettings2);
+						$this->drawLine($XPos + 1, $Y1, $XPos + 1, $Y2, $LineSettings2);
 					}
 
 					if ($WriteCaption) {
@@ -3273,6 +3279,9 @@ class pDraw
 			
 		$AbscissaMargin = $this->myData->getAbscissaMargin();
 		($NoMargin) AND $AbscissaMargin = 0;
+		
+		$lineSettgins2 = ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha,"Ticks" => $BorderTicks];
+		$lineSettgins1 = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
 	
 		if ($this->myData->Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 			$XPos1 = $this->GraphAreaX1 + $AbscissaMargin;
@@ -3285,10 +3294,10 @@ class pDraw
 			($YPos2 < $this->GraphAreaY1 + $margin) AND $YPos2 = $this->GraphAreaY1 + $margin;
 			($YPos2 > $this->GraphAreaY2 - $margin) AND $YPos2 = $this->GraphAreaY2 - $margin;
 			
-			$this->drawFilledRectangle($XPos1, $YPos1, $XPos2, $YPos2, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha]);
+			$this->drawFilledRectangle($XPos1, $YPos1, $XPos2, $YPos2, $lineSettgins1);
 			if ($Border) {
-				$this->drawLine($XPos1, $YPos1, $XPos2, $YPos1, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha,"Ticks" => $BorderTicks]);
-				$this->drawLine($XPos1, $YPos2, $XPos2, $YPos2, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha,"Ticks" => $BorderTicks]);
+				$this->drawLine($XPos1, $YPos1, $XPos2, $YPos1, $lineSettgins2);
+				$this->drawLine($XPos1, $YPos2, $XPos2, $YPos2, $lineSettgins2);
 			}
 
 			if ($AreaName != NULL) {
@@ -3313,10 +3322,10 @@ class pDraw
 			($XPos2 < $this->GraphAreaX1 + $margin) AND $XPos2 = $this->GraphAreaX1 + $margin;
 			($XPos2 > $this->GraphAreaX2 - $margin) AND $XPos2 = $this->GraphAreaX2 - $margin;
 			
-			$this->drawFilledRectangle($XPos1, $YPos1, $XPos2, $YPos2, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha]);
+			$this->drawFilledRectangle($XPos1, $YPos1, $XPos2, $YPos2, $lineSettgins1);
 			if ($Border) {
-				$this->drawLine($XPos1, $YPos1, $XPos1, $YPos2, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha,"Ticks" => $BorderTicks]);
-				$this->drawLine($XPos2, $YPos1, $XPos2, $YPos2, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha,"Ticks" => $BorderTicks]);
+				$this->drawLine($XPos1, $YPos1, $XPos1, $YPos2, $lineSettgins2);
+				$this->drawLine($XPos2, $YPos1, $XPos2, $YPos2, $lineSettgins2);
 			}
 
 			if ($AreaName != NULL) {
