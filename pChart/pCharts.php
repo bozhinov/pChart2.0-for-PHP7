@@ -320,7 +320,7 @@ class pCharts {
 						}
 
 						if ($Y != VOID && $LastY == NULL && $LastGoodY != NULL && !$BreakVoid) {
-							$this->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
+							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
 						}
 
 						if ($Y != VOID) {
