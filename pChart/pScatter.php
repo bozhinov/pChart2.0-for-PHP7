@@ -276,7 +276,7 @@ class pScatter
 						$LabelOffset = 5;
 					}
 
-					if ($XLabelsRotation > 180 && $SLabelxRotation < 360) {
+					if ($XLabelsRotation > 180 && $XLabelsRotation < 360) {
 						$LabelAlign = TEXT_ALIGN_MIDDLERIGHT;
 						$LabelOffset = 5;
 					}
