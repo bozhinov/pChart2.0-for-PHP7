@@ -5244,7 +5244,7 @@ class pDraw
 		$DisplayOrientation = ORIENTATION_HORIZONTAL;
 		$DisplayOffset = 2;
 		$DisplayColor = DISPLAY_MANUAL;
-		$DisplayFont = isset($Format["DisplaySize"]) ? $Format["DisplaySize"] : $this->FontName; # Momchil: Probably a bug
+		$DisplayFont = $this->FontName;
 		$DisplaySize = $this->FontSize;
 		$DisplayPos = LABEL_POS_OUTSIDE;
 		$DisplayShadow = TRUE;
