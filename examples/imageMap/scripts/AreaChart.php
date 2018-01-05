@@ -4,6 +4,7 @@
 chdir("../../");
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 use pChart\pCharts;
 use pChart\pImageMap;
@@ -31,15 +32,13 @@ $myPicture->myData->setAbscissa("Labels");
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */ 
-$Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);
-$myPicture->drawFilledRectangle(0,0,700,230,$Settings); 
+$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]); 
 
 /* Overlay with a gradient */ 
-$Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings); 
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50), "EndColor"=>new pColor(1,138,68,50)]); 
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
@@ -52,7 +51,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $myPicture->setGraphArea(60,40,650,200);
 
 /* Draw the scale */
-$scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>255,"GridG"=>255,"GridB"=>255,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
+$scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridColor"=>new pColor(255,255,255),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
 $myPicture->drawScale($scaleSettings);
 
 /* Write the chart legend */
@@ -64,7 +63,7 @@ $myPicture->Antialias = TRUE;
 $myCharts = new pCharts($myPicture);
 
 /* Draw the area chart */
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 $myCharts->drawAreaChart();
 
 /* Draw a line and a plot chart on top */

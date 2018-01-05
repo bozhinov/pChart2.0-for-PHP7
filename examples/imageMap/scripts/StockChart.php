@@ -4,6 +4,7 @@
 chdir("../../");
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 use pChart\pImageMap;
 use pChart\pStock;
@@ -33,7 +34,7 @@ $myPicture->myData->setAbscissaName("Time");
 $myPicture->Antialias = FALSE;
 
 /* Draw the border */
-$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
 
@@ -41,14 +42,14 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $myPicture->setGraphArea(60,30,650,190);
 
 /* Draw the scale */
-$scaleSettings = array("GridR"=>200,"GridG"=>200,"GridB"=>200,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
+$scaleSettings = array("GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
 $myPicture->drawScale($scaleSettings);
 
 /* Create the pStock object */
 $mystockChart = new pStock($myPicture);
 
 /* Draw the stock chart */
-$stockSettings = array("RecordImageMap"=>TRUE,"BoxUpR"=>255,"BoxUpG"=>255,"BoxUpB"=>255,"BoxDownR"=>0,"BoxDownG"=>0,"BoxDownB"=>0,"SerieMedian"=>"Median");
+$stockSettings = array("RecordImageMap"=>TRUE,"BoxUpColor"=>new pColor(255,255,255),"BoxDownColor"=>new pColor(0,0,0),"SerieMedian"=>"Median");
 $mystockChart->drawStockChart($stockSettings);
 
 /* Render the picture (choose the best way) */

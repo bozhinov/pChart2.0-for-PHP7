@@ -872,7 +872,7 @@ class pCharts {
 					if ($ReCenter) {
 						$this->myPicture->drawLine($LastX, $LastY, $this->myPicture->GraphAreaX2 - $XMargin, $LastY, $LineSettings);
 						if ($RecordImageMap) {
-							$this->myPicture->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($this->myPicture->GraphAreaX2 - $XMargin + $ImageMapPlotSize) . "," . floor($LastY + $ImageMapPlotSize), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							$this->myPicture->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($this->myPicture->GraphAreaX2 - $XMargin + $ImageMapPlotSize) . "," . floor($LastY + $ImageMapPlotSize), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
 					}
 					
@@ -897,19 +897,19 @@ class pCharts {
 							$this->myPicture->drawLine($LastX, $LastY, $LastX, $Y, $LineSettings);
 							$this->myPicture->drawLine($LastX, $Y, $X, $Y, $LineSettings);
 							if ($RecordImageMap) {
-								$this->myPicture->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($LastX + $XStep + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->myPicture->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($LastX + $XStep + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 						}
 
 						if ($X != VOID && is_null($LastX) && !is_null($LastGoodY) && !$BreakVoid) {
 							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $LastGoodX, $LastGoodY + $XStep, $LineSettings);
 							if ($RecordImageMap) {
-								$this->myPicture->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($LastGoodX + $ImageMapPlotSize) . "," . floor($LastGoodY + $XStep + $ImageMapPlotSize), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->myPicture->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($LastGoodX + $ImageMapPlotSize) . "," . floor($LastGoodY + $XStep + $ImageMapPlotSize), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 
 							$this->myPicture->drawLine($LastGoodX, $LastGoodY + $XStep, $LastGoodX, $Y, $BreakSettings);
 							if ($RecordImageMap) {
-								$this->myPicture->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY + $XStep - $ImageMapPlotSize) . "," . floor($LastGoodX + $ImageMapPlotSize) . "," . floor($XStep + $ImageMapPlotSize), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->myPicture->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY + $XStep - $ImageMapPlotSize) . "," . floor($LastGoodX + $ImageMapPlotSize) . "," . floor($XStep + $ImageMapPlotSize), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 
 							$this->myPicture->drawLine($LastGoodX, $Y, $X, $Y, $BreakSettings);
@@ -917,7 +917,7 @@ class pCharts {
 						} elseif ($X != VOID && is_null($LastGoodY) && !$BreakVoid) {
 							$this->myPicture->drawLine($X, $this->myPicture->GraphAreaY1 + $XMargin, $X, $Y, $BreakSettings);
 							if ($RecordImageMap) {
-								$this->myPicture->addToImageMap("RECT", floor($X - $ImageMapPlotSize) . "," . floor($this->myPicture->GraphAreaY1 + $XMargin - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->myPicture->addToImageMap("RECT", floor($X - $ImageMapPlotSize) . "," . floor($this->myPicture->GraphAreaY1 + $XMargin - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 						}
 
@@ -945,7 +945,7 @@ class pCharts {
 					if ($ReCenter) {
 						$this->myPicture->drawLine($LastX, $LastY, $LastX, $this->myPicture->GraphAreaY2 - $XMargin, $LineSettings);
 						if ($RecordImageMap) {
-							$this->myPicture->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($LastX + $ImageMapPlotSize) . "," . floor($this->myPicture->GraphAreaY2 - $XMargin + $ImageMapPlotSize), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							$this->myPicture->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($LastX + $ImageMapPlotSize) . "," . floor($this->myPicture->GraphAreaY2 - $XMargin + $ImageMapPlotSize), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
 					}
 				}
@@ -1717,7 +1717,7 @@ class pCharts {
 				
 				if ($RecordImageMap) {
 					$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
-					$ImageMapColor = $Color->toHTMLColor();			
+					$ImageMapColor = $Color["Color"]->toHTMLColor();			
 				}
 				
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);

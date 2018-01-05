@@ -4,6 +4,7 @@
 chdir("../../");
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 use pChart\pScatter;
 use pChart\pImageMap;
@@ -44,7 +45,7 @@ $myPicture->myData->setAxisPosition(1,AXIS_POSITION_RIGHT);
 /* Create the 1st scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 1","Probe 3",0);
 $myPicture->myData->setScatterSerieDescription(0,"This year");
-$myPicture->myData->setScatterSerieColor(0,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->myData->setScatterSerieColor(0,new pColor(0,0,0));
 
 /* Create the 2nd scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 2","Probe 3",1);
@@ -54,15 +55,13 @@ $myPicture->myData->setScatterSerieDescription(1,"Last Year");
 $myPicture->Antialias = FALSE;
 
 /* Draw the background */
-$Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);
-$myPicture->drawFilledRectangle(0,0,400,400,$Settings);
+$myPicture->drawFilledRectangle(0,0,400,400,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
-$myPicture->drawGradientArea(0,0,400,400,DIRECTION_VERTICAL,$Settings);
+$myPicture->drawGradientArea(0,0,400,400,DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50), "EndColor"=>new pColor(1,138,68,50)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,399,399,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0,0,0)]);
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
@@ -77,7 +76,7 @@ $myScatter = new pScatter($myPicture);
 $myScatter->drawScatterScale();
 
 /* Turn on shadow computing */
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Turn off Anti-aliasing */
 $myPicture->Antialias = TRUE;

@@ -4,6 +4,7 @@
 chdir("../../");
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 use pChart\pRadar;
 use pChart\pImageMap;
@@ -28,16 +29,16 @@ $myPicture->myData->addPoints([40,80,120,160,200,240,280,320,360],"Coord");
 $myPicture->myData->setAbscissa("Coord");
 
 /* Draw the background */
-$myPicture->drawGradientArea(0,0,300,300,DIRECTION_VERTICAL,["StartR"=>200,"StartG"=>200,"StartB"=>200,"EndR"=>240,"EndG"=>240,"EndB"=>240,"Alpha"=>100]);
+$myPicture->drawGradientArea(0,0,300,300,DIRECTION_VERTICAL,["StartColor"=>new pColor(200,200,200,100), "EndColor"=>new pColor(240,240,240,100)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,299,299,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->drawRectangle(0,0,299,299,["Color"=>new pColor(0,0,0)]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"R"=>80,"G"=>80,"B"=>80));
+$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80,80,80)));
 
 /* Enable shadow computing */ 
-$myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
+$myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
 
 /* Create the pRadar object */ 
 $SplitChart = new pRadar($myPicture);
@@ -47,7 +48,7 @@ $SplitChart->myPicture->setGraphArea(10,10,290,290);
 $Options = array(
 	"RecordImageMap"=>TRUE,
 	"LabelPos"=>RADAR_LABELS_HORIZONTAL,
-	"BackgroundGradient"=>["StartR"=>255,"StartG"=>255,"StartB"=>255,"StartAlpha"=>50,"EndR"=>32,"EndG"=>109,"EndB"=>174,"EndAlpha"=>30],
+	"BackgroundGradient"=>["StartColor"=>new pColor(255,255,255,50),"EndColor"=>new pColor(32,109,174,30)],
 	"AxisRotation"=>0,
 	"DrawPoly"=>TRUE,
 	"PolyAlpha"=>50,
