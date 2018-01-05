@@ -1499,8 +1499,9 @@ class pDraw
 		#$XStep = $IconAreaWidth + 5;
 		$XStep = $XSpacing;
 		$X = 100;
+		$Y = 100;
 		$Boundaries = ["L" => $X, "T" => 100, "R" => 0, "B" => 0];
-		$vY = 100; 
+		$vY = $Y; 
 		foreach($this->myData->Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"]) {
 				$Lines = preg_split("/\n/", $Serie["Description"]);
@@ -1512,8 +1513,8 @@ class pDraw
 					$vY = $vY + max($this->FontSize * count($Lines), $IconAreaHeight) + 5;
 				} elseif ($Mode == LEGEND_HORIZONTAL) {
 					$Width = [];
-					foreach($Lines as $Value) {
-						$BoxArray = $this->getTextBox($X + $IconAreaWidth + 6, $Y + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key), $FontName, $FontSize, 0, $Value);
+					foreach($Lines as $Key => $Value) {
+						$BoxArray = $this->getTextBox($X + $IconAreaWidth + 6, $vY + $IconAreaHeight / 2 + (($this->FontSize + 3) * $Key), $FontName, $FontSize, 0, $Value);
 						($Boundaries["T"] > $BoxArray[2]["Y"] + $IconAreaHeight / 2) AND $Boundaries["T"] = $BoxArray[2]["Y"] + $IconAreaHeight / 2;
 						($Boundaries["R"] < $BoxArray[1]["X"] + 2) AND $Boundaries["R"] = $BoxArray[1]["X"] + 2;
 						($Boundaries["B"] < $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2) AND $Boundaries["B"] = $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2;
@@ -1555,7 +1556,7 @@ class pDraw
 		
 		/* Override defaults */
 		extract($Format);
-		
+				
 		(is_null($Color)) AND $Color = new pColor(200,200,200,100);		
 		(is_null($BorderColor)) AND $BorderColor = new pColor(255,255,255);
 		(!is_null($Surrounding)) AND $BorderColor->RGBChange($Surrounding);

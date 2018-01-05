@@ -190,9 +190,12 @@ $p_template	= $_SESSION["p_template"];
 
 
 /* pChart library inclusions */
+require_once("../examples/functions.inc.php");
+require_once("../examples/myColors.php");
 require_once("../examples/bootstrap.php");
 
 use pChart\{
+	pColor,
 	pDraw,
 	pCharts
 };
@@ -207,8 +210,10 @@ if ($Mode == "Render"){
 	$myPicture = new pDraw($g_width,$g_height);
 	echo "&lt;?php\r\n\r\n";
 	if ($Mode == "Source"){
+		echo 'require_once("examples/functions.inc.php");'."\r\n";
+		echo 'require_once("examples/myColors.php");'."\r\n";
 		echo 'require_once("examples/bootstrap.php");'."\r\n";
-		echo 'use pChart\{pDraw,pCharts};'."\r\n";
+		echo 'use pChart\{pDraw,pCharts,pColor};'."\r\n";
 		echo "\r\n";
 	}
 	if ($g_transparent == "true"){
@@ -425,13 +430,13 @@ if ($g_aa == "false"){
 if ($g_solid_enabled == "true"){
 	
 	list($R,$G,$B) = extractColors($g_solid_color);
-	$Settings = ["R"=>$R,"G"=>$G,"B"=>$B];
+	$Settings = ["Color"=>new pColor($R,$G,$B)];
 
 	if ($g_solid_dashed == "true"){
 		$Settings["Dash"] = TRUE;
-		$Settings["DashR"]=$R+20;
-		$Settings["DashG"]=$G+20;
-		$Settings["DashB"]=$B+20; 
+		$Settings["DashR"]=$Settings["Color"]->R+20;
+		$Settings["DashG"]=$Settings["Color"]->G+20;
+		$Settings["DashB"]=$Settings["Color"]->B+20; 
 	}
 
 	if ($Mode == "Render"){
@@ -447,7 +452,7 @@ if ($g_gradient_enabled == "true"){
 	list($StartR,$StartG,$StartB) = extractColors($g_gradient_start);
 	list($EndR,$EndG,$EndB)       = extractColors($g_gradient_end);
 
-	$Settings = array("StartR"=>$StartR,"StartG"=>$StartG,"StartB"=>$StartB,"EndR"=>$EndR,"EndG"=>$EndG,"EndB"=>$EndB,"Alpha"=>$g_gradient_alpha);
+	$Settings = array("StartColor"=>new pColor($StartR,$StartG,$StartB,$g_gradient_alpha),"EndColor"=>new pColor($EndR,$EndG,$EndB,$g_gradient_alpha));
 
 	if ($Mode == "Render"){
 		if ($g_gradient_direction == "vertical"){
@@ -467,14 +472,14 @@ if ($g_gradient_enabled == "true"){
 }
 
 if ($Mode == "Render"){
-	($g_border == "true") AND $myPicture->drawRectangle(0,0,$g_width-1,$g_height-1,["R"=>0,"G"=>0,"B"=>0]);
-	($g_shadow == "true") AND $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>50,"G"=>50,"B"=>50,"Alpha"=>20]);
+	($g_border == "true") AND $myPicture->drawRectangle(0,0,$g_width-1,$g_height-1,["Color"=>new pColor(0,0,0)]);
+	($g_shadow == "true") AND $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,20)]);
 } else {
 	if($g_border == "true"){
-		echo '$myPicture->drawRectangle(0,0,'.($g_width-1).','.($g_height-1).',array("R"=>0,"G"=>0,"B"=>0));'."\r\n\r\n";
+		echo '$myPicture->drawRectangle(0,0,'.($g_width-1).','.($g_height-1).',array("Color"=>new pColor(0,0,0)));'."\r\n\r\n";
 	}
 	if($g_shadow == "true"){
-		echo '$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>50,"G"=>50,"B"=>50,"Alpha"=>20));'."\r\n\r\n"; 
+		echo '$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,20)));'."\r\n\r\n"; 
 	}
 }
 
@@ -488,7 +493,7 @@ if ($g_title_enabled == "true"){
 	
 	list($R,$G,$B) = extractColors($g_title_color);
 
-	$TextSettings = array("Align"=>getTextAlignCode($g_title_align),"R"=>$R,"G"=>$G,"B"=>$B);
+	$TextSettings = array("Align"=>getTextAlignCode($g_title_align),"Color"=>new pColor($R,$G,$B));
 	if ($g_title_box == "true"){ 
 		$TextSettings["DrawBox"] = TRUE; 
 		$TextSettings["BoxAlpha"] = 30; 
@@ -519,9 +524,9 @@ if ($Mode == "Render"){
 
 list($R,$G,$B) = extractColors($s_font_color);
 if ($Mode == "Render"){
-	$myPicture->setFontProperties(array("R"=>$R,"G"=>$G,"B"=>$B,"FontName"=>"pChart/fonts/".$s_font,"FontSize"=>$s_font_size));
+	$myPicture->setFontProperties(array("Color"=>new pColor($R,$G,$B),"FontName"=>"pChart/fonts/".$s_font,"FontSize"=>$s_font_size));
 } else {
-	echo '$myPicture->setFontProperties(array("R"=>'.$R.',"G"=>'.$G.',"B"=>'.$B.',"FontName"=>"pChart/fonts/'.$s_font.'","FontSize"=>'.$s_font_size.'));'."\r\n\r\n";
+	echo '$myPicture->setFontProperties(array("Color"=>new pColor('.$R,$G,$B.'),"FontName"=>"pChart/fonts/'.$s_font.'","FontSize"=>'.$s_font_size.'));'."\r\n\r\n";
 }
 
 /* Scale specific parameters -------------------------------------------------------------------------------- */
@@ -539,7 +544,7 @@ switch ($s_mode){
 	case "SCALE_MODE_ADDALL_START0": $iMode = 690204; break;
 }
 
-$Settings = array("Pos"=>$Pos,"Mode"=>$iMode,"LabelingMethod"=>$Labeling,"GridR"=>$GridR,"GridG"=>$GridG,"GridB"=>$GridB,"GridAlpha"=>$s_grid_alpha,"TickR"=>$TickR,"TickG"=>$TickG,"TickB"=>$TickB,"TickAlpha"=>$s_ticks_alpha,"LabelRotation"=>$s_x_label_rotation);
+$Settings = array("Pos"=>$Pos,"Mode"=>$iMode,"LabelingMethod"=>$Labeling,"GridColor"=>new pColor($GridR,$GridG,$GridB,$s_grid_alpha),"TickColor"=>new pColor($TickR,$TickG,$TickB,$s_ticks_alpha),"LabelRotation"=>$s_x_label_rotation);
 
 ($s_x_skip != 0) AND $Settings["LabelSkip"] = $s_x_skip;
 ($s_cycle_enabled == "true") AND $Settings["CycleBackground"] = TRUE;
@@ -548,10 +553,7 @@ $Settings["DrawXLines"] = ($s_grid_x_enabled == "true")? TRUE : 0;
 
 if ($s_subticks_enabled == "true"){
 	$Settings["DrawSubTicks"] = TRUE;
-	$Settings["SubTickR"] = $SubTickR;
-	$Settings["SubTickG"] = $SubTickG;
-	$Settings["SubTickB"] = $SubTickB;
-	$Settings["SubTickAlpha"] = $s_subticks_alpha;
+	$Settings["SubTickColor"] = new pColor($SubTickR,$SubTickG,$SubTickB,$s_subticks_alpha);
 }
 
 if ($s_automargin_enabled == "false"){
@@ -571,9 +573,9 @@ if ($Mode == "Render"){
 
 if ($g_shadow == "true"){
 	if ($Mode == "Render"){ 
-		$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>50,"G"=>50,"B"=>50,"Alpha"=>10]); 
+		$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,10)]); 
 	} else { 
-		echo '$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>50,"G"=>50,"B"=>50,"Alpha"=>10]);'."\r\n\r\n"; 
+		echo '$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,10)]);'."\r\n\r\n"; 
 	}
 }
 
@@ -601,9 +603,7 @@ if ($c_family == "line"){
 		list($BreakR,$BreakG,$BreakB) = extractColors($c_break_color);
 
 		$Config["BreakVoid"] = 0;
-		$Config["BreakR"] = $BreakR;
-		$Config["BreakG"] = $BreakG;
-		$Config["BreakB"] = $BreakB;
+		$Config["BreakColor"] = new pColor($BreakR,$BreakG,$BreakB);
 	}
 
 	if ($Mode == "Render"){
@@ -620,9 +620,7 @@ if ($c_family == "step"){
 		list($BreakR,$BreakG,$BreakB) = extractColors($c_break_color);
 
 		$Config["BreakVoid"] = 0;
-		$Config["BreakR"] = $BreakR;
-		$Config["BreakG"] = $BreakG;
-		$Config["BreakB"] = $BreakB;
+		$Config["BreakColor"] = new pColor($BreakR,$BreakG,$BreakB);
 	}
 
 	if ($Mode == "Render"){
@@ -639,9 +637,7 @@ if ($c_family == "spline"){
 		list($BreakR,$BreakG,$BreakB) = extractColors($c_break_color);
 
 		$Config["BreakVoid"] = 0;
-		$Config["BreakR"] = $BreakR;
-		$Config["BreakG"] = $BreakG;
-		$Config["BreakB"] = $BreakB;
+		$Config["BreakColor"] = new pColor($BreakR,$BreakG,$BreakB);
 	}
 
 	if ($Mode == "Render"){
@@ -749,7 +745,7 @@ if ($t_enabled == "true"){
 	
 	list($R,$G,$B) = extractColors($t_color);
 
-	$Config = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $t_alpha];
+	$Config = ["Color" => new pColor($R,$G,$B,$t_alpha)];
 
 	if (isset($myData->Data["Axis"][$t_axis])){
 		$Config["AxisID"] = $t_axis; 
@@ -781,13 +777,10 @@ if ($l_enabled == "true"){
 	list($R,$G,$B) = extractColors($l_font_color);
 
 	$Config = [
-		"FontR" => $R,
-		"FontG" => $G,
-		"FontB" => $B,
+		"FontColor" => new pColor($R,$G,$B,$l_alpha),
 		"FontName" => "pChart/fonts/".$l_font,
 		"FontSize" => $l_font_size,
 		"Margin" => $l_margin,
-		"Alpha" => $l_alpha,
 		"BoxSize" => $l_box_size
 	];
 
@@ -883,7 +876,11 @@ function dumpArray($Name,$Values)
 
 	$Result = '$'.$Name.' = array(';
 	foreach ($Values as $Key => $Value){
-		$Result .= chr(39).$Key.chr(39).'=>'.translate($Value).', '; 
+		if (is_array($Value)){
+			$Result .= dumpArray($Value);
+		} else {
+			$Result .= chr(39).$Key.chr(39).'=>'.translate($Value).', '; 
+		}
 	}
 	
 	return substr($Result, 0, -2).");\r\n";
@@ -892,8 +889,11 @@ function dumpArray($Name,$Values)
 function translate($Value)
 {
 	global $Constants;
-
-	return (isset($Constants[$Value])) ? $Constants[$Value] : $Value;
+	if (!$Value instanceof pColor){
+		return (isset($Constants[$Value])) ? $Constants[$Value] : $Value;
+	} else {
+		return "new pColor(".$Value->R.",".$Value->G.",".$Value->B.",".$Value->Alpha.")";
+	}
 }
 
 
