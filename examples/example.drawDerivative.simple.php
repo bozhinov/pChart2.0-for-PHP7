@@ -4,6 +4,7 @@
 /* pChart library inclusions */
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 use pChart\pCharts;
 
@@ -13,7 +14,7 @@ $myPicture = new pDraw(700,230);
 /* Populate the pData object */
 $myPicture->myData->addPoints([3,12,15,8,5,-5,5,-5,-3,4,5,10],"Probe");
 $myPicture->myData->setAxisName(0,"Temperatures");
-$myPicture->myData->addPoints(array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"),"Labels");
+$myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 $myPicture->myData->setAbscissaName("Months");
@@ -22,14 +23,13 @@ $myPicture->myData->setAbscissaName("Months");
 $myPicture->Antialias = FALSE;
 
 /* Set the default font */ 
-$myPicture->setFontProperties(array("R"=>0,"G"=>0,"B"=>0,"FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["Color"=>new pColor(0,0,0),"FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 
 /* Define the chart area */
 $myPicture->setGraphArea(50,40,680,170);
 
 /* Draw the scale */
-$scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSubTicks"=>TRUE,"GridR"=>100,"GridG"=>100,"GridB"=>100,"GridAlpha"=>15);
-$myPicture->drawScale($scaleSettings);
+$myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSubTicks"=>TRUE,"GridColor"=>new pColor(100,100,100,15)]);
 
 /* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
@@ -37,7 +37,7 @@ $pCharts = new pCharts($myPicture);
 /* Draw the chart */
 $pCharts->myPicture->Antialias = TRUE;
 $pCharts->drawSplineChart();
-$pCharts->myPicture->Antialias = FALSE; # Momchil: required ?
+$pCharts->myPicture->Antialias = FALSE;
 
 /* Draw the series derivative graph */
 $pCharts->drawDerivative(["Caption"=>FALSE]);

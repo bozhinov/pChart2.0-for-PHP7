@@ -5,6 +5,7 @@
 require_once("bootstrap.php");
 
 use pChart\{
+	pColor,
 	pDraw,
 	pStock
 };
@@ -23,15 +24,13 @@ $myPicture->myData->addPoints(["8h","10h","12h","14h","16h","18h"],"Time");
 $myPicture->myData->setAbscissa("Time");
 
 /* Draw the background */
-$Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);
-$myPicture->drawFilledRectangle(0,0,700,230,$Settings);
+$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
 
-/* Draw the border */
-$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
+/* Add a border to the picture */
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Write the title */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
@@ -39,12 +38,12 @@ $myPicture->drawText(60,45,"Stock price",["FontSize"=>28,"Align"=>TEXT_ALIGN_BOT
 
 /* Draw the 1st scale */
 $myPicture->setGraphArea(60,60,450,190);
-$myPicture->drawFilledRectangle(60,60,450,190,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10]);
-$myPicture->drawScale(array("DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE));
+$myPicture->drawFilledRectangle(60,60,450,190,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200]);
+$myPicture->drawScale(["DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Draw the 1st stock chart */
 $mystockChart = new pStock($myPicture);
-$mystockChart->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30]);
+$mystockChart->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,30)]);
 $mystockChart->drawStockChart();
 
 /* Reset the display mode because of the graph small size */
@@ -53,12 +52,12 @@ $myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_DEFAULT);
 /* Draw the 2nd scale */
 $myPicture->setShadow(FALSE);
 $myPicture->setGraphArea(500,60,670,190);
-$myPicture->drawFilledRectangle(500,60,670,190,array("R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10));
-$myPicture->drawScale(array("Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE));
+$myPicture->drawFilledRectangle(500,60,670,190,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200]);
+$myPicture->drawScale(["Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE]);
 
 /* Draw the 2nd stock chart */
 $mystockChart = new pStock($myPicture);
-$mystockChart->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30]);
+$mystockChart->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,30)]);
 $mystockChart->drawStockChart();
 
 /* Render the picture (choose the best way) */

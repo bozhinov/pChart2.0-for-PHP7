@@ -5,6 +5,7 @@
 require_once("bootstrap.php");
 
 use pChart\{
+	pColor,
 	pDraw,	
 	pBubble
 };
@@ -25,24 +26,22 @@ $myPicture->myData->addPoints(["Apple","Banana","Orange","Lemon","Peach","Strawb
 $myPicture->myData->setAbscissa("Product");
 
 /* Draw the background */
-$Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);
-$myPicture->drawFilledRectangle(0,0,700,230,$Settings);
+$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
-$myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,["StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>80]);
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
+$myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawBubbleChart() - draw a linear bubble chart",["R"=>255,"G"=>255,"B"=>255]);
+$myPicture->drawText(10,13,"drawBubbleChart() - draw a linear bubble chart",["Color"=>new pColor(255,255,255)]);
 
 /* Write the title */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
-$myPicture->drawText(40,55,"Current Stock / Needs chart",array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMLEFT));
+$myPicture->drawText(40,55,"Current Stock / Needs chart",["FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMLEFT]);
 
 /* Change the default font */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
@@ -57,25 +56,25 @@ $myBubbleChart->bubbleScale($bubbleDataSeries,$bubbleWeightSeries);
 
 /* Draw the 1st chart */
 $myPicture->setGraphArea(40,60,430,190);
-$myPicture->drawFilledRectangle(40,60,430,190,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-50,"Alpha"=>10]);
+$myPicture->drawFilledRectangle(40,60,430,190,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-50]);
 $myPicture->drawScale(["DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,30)]);
 $myBubbleChart->drawBubbleChart($bubbleDataSeries,$bubbleWeightSeries);
 
 /* Write a label over the chart */
-$LabelSettings = array("TitleMode"=>LABEL_TITLE_BACKGROUND,"VerticalMargin"=>4,"HorizontalMargin"=>6,"DrawSerieColor"=>FALSE,"TitleR"=>255,"TitleG"=>255,"TitleB"=>255);
+$LabelSettings = ["TitleMode"=>LABEL_TITLE_BACKGROUND,"VerticalMargin"=>4,"HorizontalMargin"=>6,"DrawSerieColor"=>FALSE,"TitleColor"=>new pColor(255,255,255)];
 $myBubbleChart->writeBubbleLabel("Probe1","Probe1Weight",3,$LabelSettings);
 $myBubbleChart->writeBubbleLabel("Probe2","Probe2Weight",4,$LabelSettings);
 
 /* Draw the 2nd scale */
 $myPicture->setShadow(FALSE);
 $myPicture->setGraphArea(500,60,670,190);
-$myPicture->drawFilledRectangle(500,60,670,190,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10]);
-$myPicture->drawScale(array("Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE));
+$myPicture->drawFilledRectangle(500,60,670,190,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200]);
+$myPicture->drawScale(["Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE]);
 
 /* Draw the 2nd bubble chart */
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>30]);
-$myBubbleChart->drawBubbleChart($bubbleDataSeries,$bubbleWeightSeries,["DrawBorder"=>TRUE,"Surrounding"=>60,"BorderAlpha"=>100]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,30)]);
+$myBubbleChart->drawBubbleChart($bubbleDataSeries,$bubbleWeightSeries,["DrawBorder"=>TRUE,"Surrounding"=>60,"BorderColor"=>new pColor(255,255,255,50)]);
 
 /* Write a label over the chart */
 $myBubbleChart->writeBubbleLabel("Probe1","Probe1Weight",4,$LabelSettings);

@@ -2,7 +2,7 @@
 /*
 pSurface - class to draw surface charts
 
-Version     : 2.2.2-dev
+Version     : 2.2.3-dev
 Made by     : Jean-Damien POGOLOTTI
 Maintainedby: Momchil Bozhinov
 Last Update : 01/01/2018
@@ -79,10 +79,7 @@ class pSurface
 	/* Write the X labels */
 	function writeXLabels(array $Format = [])
 	{
-		$R = $this->myPicture->FontColorR;
-		$G = $this->myPicture->FontColorG;
-		$B = $this->myPicture->FontColorB;
-		$Alpha = $this->myPicture->FontColorA;
+		$Color = $this->myPicture->FontColor;
 		$Angle = 0;
 		$Padding = 5;
 		$Position = LABEL_POSITION_TOP;
@@ -94,7 +91,7 @@ class pSurface
 		
 		$X0 = $this->myPicture->GraphAreaX1;
 		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
-		$Settings = ["Angle" => $Angle,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
+		$Settings = ["Angle" => $Angle,"Color" => $Color];
 		if ($Position == LABEL_POSITION_TOP) {
 			$YPos = $this->myPicture->GraphAreaY1 - $Padding;
 			$Settings["Align"] = ($Angle == 0) ? TEXT_ALIGN_BOTTOMMIDDLE : TEXT_ALIGN_MIDDLELEFT;
@@ -115,22 +112,16 @@ class pSurface
 	/* Write the Y labels */
 	function writeYLabels(array $Format = [])
 	{
-		$R = $this->myPicture->FontColorR;
-		$G = $this->myPicture->FontColorG;
-		$B = $this->myPicture->FontColorB;
-		$Alpha = $this->myPicture->FontColorA;
-		$Angle = 0;
-		$Padding = 5;
-		$Position = LABEL_POSITION_LEFT;
-		$Labels = [];
-		$CountOffset = 0;
-		
-		/* Override defaults */
-		extract($Format);
-		
+		$Color = isset($Format["Color"]) ? $Format["Color"] : $this->myPicture->FontColor;
+		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 0;
+		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 5;
+		$Position = isset($Format["Position"]) ? $Format["Position"] : LABEL_POSITION_LEFT;
+		$Labels = isset($Format["Labels"]) ? $Format["Labels"] : [];
+		$CountOffset = isset($Format["CountOffset"]) ? $Format["CountOffset"] : 0;
+				
 		$Y0 = $this->myPicture->GraphAreaY1;
 		$YSize = $this->myPicture->GraphAreaYdiff / ($this->GridSizeY + 1);
-		$Settings = ["Angle" => $Angle,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
+		$Settings = ["Angle" => $Angle,"Color" => $Color];
 		
 		if ($Position == LABEL_POSITION_LEFT) {
 			$XPos = $this->myPicture->GraphAreaX1 - $Padding;
@@ -152,21 +143,15 @@ class pSurface
 	/* Draw the area around the specified Threshold */
 	function drawContour(int $Threshold, array $Format = [])
 	{
-		$R = 0;
-		$G = 0;
-		$B = 0;
-		$Alpha = 100;
-		$Ticks = 3;
-		$Padding = 0;
-		
-		/* Override defaults */
-		extract($Format);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : 3;
+		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 0;
 		
 		$X0 = $this->myPicture->GraphAreaX1;
 		$Y0 = $this->myPicture->GraphAreaY1;
 		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
 		$YSize = $this->myPicture->GraphAreaYdiff / ($this->GridSizeY + 1);
-		$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks];
+		$Settings = ["Color" => $Color,"Ticks" => $Ticks];
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
 			for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {
 				$Value = $this->Points[$X][$Y];
@@ -176,16 +161,16 @@ class pSurface
 					$X2 = floor($X0 + $X * $XSize + $XSize);
 					$Y2 = floor($Y0 + $Y * $YSize + $YSize);
 					if ($X > 0 && $this->Points[$X - 1][$Y] != UNKNOWN && $this->Points[$X - 1][$Y] != IGNORED && $this->Points[$X - 1][$Y] < $Threshold){
-						$this->myPicture->drawLine($X1, $Y1, $X1, $Y2, $Color);
+						$this->myPicture->drawLine($X1, $Y1, $X1, $Y2, $Settings);
 					}
 					if ($Y > 0 && $this->Points[$X][$Y - 1] != UNKNOWN && $this->Points[$X][$Y - 1] != IGNORED && $this->Points[$X][$Y - 1] < $Threshold){
-						$this->myPicture->drawLine($X1, $Y1, $X2, $Y1, $Color);
+						$this->myPicture->drawLine($X1, $Y1, $X2, $Y1, $Settings);
 					}
 					if ($X < $this->GridSizeX && $this->Points[$X + 1][$Y] != UNKNOWN && $this->Points[$X + 1][$Y] != IGNORED && $this->Points[$X + 1][$Y] < $Threshold){
-						$this->myPicture->drawLine($X2, $Y1, $X2, $Y2, $Color);
+						$this->myPicture->drawLine($X2, $Y1, $X2, $Y2, $Settings);
 					}
 					if ($Y < $this->GridSizeY && $this->Points[$X][$Y + 1] != UNKNOWN && $this->Points[$X][$Y + 1] != IGNORED && $this->Points[$X][$Y + 1] < $Threshold){
-						$this->myPicture->drawLine($X1, $Y2, $X2, $Y2, $Color);
+						$this->myPicture->drawLine($X1, $Y2, $X2, $Y2, $Settings);
 					}
 				}
 			}
@@ -195,25 +180,14 @@ class pSurface
 	/* Draw the surface chart */
 	function drawSurface(array $Format = [])
 	{
-		$Palette = [];
-		$ShadeR1 = 77;
-		$ShadeG1 = 205;
-		$ShadeB1 = 21;
-		$ShadeA1 = 40;
-		$ShadeR2 = 227;
-		$ShadeG2 = 135;
-		$ShadeB2 = 61;
-		$ShadeA2 = 100;
-		$Border = FALSE;
-		$BorderR = 0;
-		$BorderG = 0;
-		$BorderB = 0;
-		$Surrounding = -1;
-		$Padding = 1;
-		
-		/* Override defaults */
-		extract($Format);
-		
+		$Palette = isset($Format["Palette"]) ? $Format["Palette"] : [];
+		$ShadeColor1 = isset($Format["ShadeColor1"]) ? $Format["ShadeColor1"] : new pColor(77,205,21,40);
+		$ShadeColor2 = isset($Format["ShadeColor2"]) ? $Format["ShadeColor2"] : new pColor(227,135,61,100);
+		$Border = isset($Format["Border"]) ? $Format["Border"] : FALSE;
+		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : new pColor(0,0,0);
+		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
+		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 1;
+				
 		$X0 = $this->myPicture->GraphAreaX1;
 		$Y0 = $this->myPicture->GraphAreaY1;
 		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
@@ -225,27 +199,17 @@ class pSurface
 				if ($Value != UNKNOWN && $Value != IGNORED) {
 					
 					if (!empty($Palette)) {
-						$Settings = (isset($Palette[$Value])) ? $Palette[$Value] : ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 100];					
+						$Settings = (isset($Palette[$Value])) ? $Palette[$Value] :  new pColor(0,0,0,100);			
 					} else {
-						$Settings = [
-							"R" => (($ShadeR2 - $ShadeR1) / 100) * $Value + $ShadeR1,
-							"G" => (($ShadeG2 - $ShadeG1) / 100) * $Value + $ShadeG1,
-							"B" => (($ShadeB2 - $ShadeB1) / 100) * $Value + $ShadeB1,
-							"Alpha" => (($ShadeA2 - $ShadeA1) / 100) * $Value + $ShadeA1
-						];
+						$R = (($ShadeColor2->R - $ShadeColor1->R) / 100) * $Value + $ShadeColor1->R;
+						$G = (($ShadeColor2->G - $ShadeColor1->G) / 100) * $Value + $ShadeColor1->G;
+						$B = (($ShadeColor2->B - $ShadeColor1->B) / 100) * $Value + $ShadeColor1->B;
+						$Alpha = (($ShadeColor2->Alpha - $ShadeColor1->Alpha) / 100) * $Value + $ShadeColor1->Alpha;
+						$Settings = ["Color" => new pColor($R,$G,$B,$Alpha)];
 					}
 
-					if ($Border) {
-						$Settings["BorderR"] = $BorderR;
-						$Settings["BorderG"] = $BorderG;
-						$Settings["BorderB"] = $BorderB;
-					}
-
-					if ($Surrounding != - 1) {
-						$Settings["BorderR"] = $Settings["R"] + $Surrounding;
-						$Settings["BorderG"] = $Settings["G"] + $Surrounding;
-						$Settings["BorderB"] = $Settings["B"] + $Surrounding;
-					}
+					($Border) AND $Settings["BorderColor"] = $BorderColor;
+					(!is_null($Surrounding)) AND $Settings["BorderColor"] = $Settings["Color"]->newOne()->RGBChange($Surrounding);
 
 					$this->myPicture->drawFilledRectangle(
 						floor($X0 + $X * $XSize) + $Padding,

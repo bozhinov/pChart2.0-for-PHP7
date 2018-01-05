@@ -46,24 +46,16 @@ class pPie
 		$Precision = 0;
 		$SecondPass = TRUE;
 		$Border = FALSE;
-		$BorderR = 255;
-		$BorderG = 255;
-		$BorderB = 255;
+		$BorderColor = new pColor(255,255,255);
 		$Shadow = FALSE;
 		$DrawLabels = FALSE;
 		$LabelStacked = FALSE;
-		$LabelColor = PIE_LABEL_COLOR_MANUAL;
-		$LabelR = 0;
-		$LabelG = 0;
-		$LabelB = 0;
-		$LabelAlpha = 100;
+		$LabelColorType = PIE_LABEL_COLOR_MANUAL;
+		$LabelColor = new pColor(0,0,0,100);
 		$WriteValues = NULL;
 		$ValuePosition = PIE_VALUE_OUTSIDE;
 		$ValueSuffix = "";
-		$ValueR = 255;
-		$ValueG = 255;
-		$ValueB = 255;
-		$ValueAlpha = 100;
+		$ValueColor = new pColor(255,255,255,100);
 		$RecordImageMap = FALSE;		
 		$Radius = 60;
 		$DataGapAngle = 0;
@@ -76,6 +68,7 @@ class pPie
 		/* Data Processing */
 		$Data = $this->myPicture->myData->Data;
 		$Palette = $this->myPicture->myData->Palette;
+		
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "") {
 			throw pException::PieNoAbscissaException();
@@ -96,6 +89,7 @@ class pPie
 
 		/* Remove unused data */
 		list($Data, $Palette) = $this->clean0Values($Data, $Palette, $DataSerie, $Data["Abscissa"]);
+
 		/* Compute the pie sum */
 		$SerieSum = $this->myPicture->myData->getSum($DataSerie);
 		/* Do we have data to draw? */
@@ -116,34 +110,34 @@ class pPie
 			$this->myPicture->Shadow = FALSE;
 			$ShadowFormat = $Format;
 			$ShadowFormat["Shadow"] = TRUE;
-			$this->draw2DPie($X + $this->myPicture->ShadowX, $Y + $this->myPicture->ShadowY, $ShadowFormat);
+			#$this->draw2DPie($X + $this->myPicture->ShadowX, $Y + $this->myPicture->ShadowY, $ShadowFormat);
 		}
 
 		/* Draw the polygon pie elements */
 		$Step = 360 / (2 * PI * $Radius);
 		$Offset = 0;
 		$ID = 0;
-		
+
 		foreach($Values as $Key => $Value) {
+
 			if ($Shadow) {
-				$Settings = ["R" => $this->myPicture->ShadowR,"G" => $this->myPicture->ShadowG,"B" => $this->myPicture->ShadowB,"Alpha" => $this->myPicture->Shadowa];
+				$Settings = ["Color" => $this->myPicture->ShadowColor];
 			} else {
-				if (!isset($Palette[$ID]["R"])) {
-					$Color = $this->myPicture->getRandomColor();
+				if (!isset($Palette[$ID])) {
+					$Color = $this->myPicture->myData->getRandomColor();
 					$Palette[$ID] = $Color;
 					$this->myPicture->myData->savePalette($ID, $Color);
+					
 				}
-
-				$Settings = $Palette[$ID];
+	
+				$Settings = ["Color" => $Palette[$ID]];
 			}
 
 			if (!$SecondPass && !$Shadow) {
 				if (!$Border) {
 					$Settings["Surrounding"] = 10;
 				} else {
-					$Settings["BorderR"] = $BorderR;
-					$Settings["BorderG"] = $BorderG;
-					$Settings["BorderB"] = $BorderB;
+					$Settings["BorderColor"] = $BorderColor;
 				}
 			}
 
@@ -184,14 +178,14 @@ class pPie
 
 			$this->myPicture->drawPolygon($Plots, $Settings);
 			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $this->myPicture->toHTMLColor($Palette[$ID]["R"], $Palette[$ID]["G"], $Palette[$ID]["B"]), $Data["Series"][$Data["Abscissa"]]["Data"][$Key], $Value);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$ID]->toHTMLColor(), $Data["Series"][$Data["Abscissa"]]["Data"][$Key], $Value);
 			}
 
 			if ($DrawLabels && !$Shadow && !$SecondPass) {
-				if ($LabelColor == PIE_LABEL_COLOR_AUTO) {
-					$Settings = ["FillR" => $Palette[$ID]["R"],"FillG" => $Palette[$ID]["G"],"FillB" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"]];
+				if ($LabelColorType == PIE_LABEL_COLOR_AUTO) {
+					$Settings = ["FillColor" => $Palette[$ID]];
 				} else {
-					$Settings = ["FillR" => $LabelR,"FillG" => $LabelG,"FillB" => $LabelB,"Alpha" => $LabelAlpha];
+					$Settings = ["FillColor" => $LabelColor];
 				}
 
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
@@ -205,7 +199,7 @@ class pPie
 					$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, FALSE);
 				}
 			}
-
+	
 			$Offset = $i + $DataGapAngle;
 			$ID++;
 		}
@@ -218,12 +212,12 @@ class pPie
 			foreach($Values as $Key => $Value) {
 				$FirstPoint = TRUE;
 				if ($Shadow) {
-					$Settings = ["R" => $this->myPicture->ShadowR,"G" => $this->myPicture->ShadowG,"B" => $this->myPicture->ShadowB,"Alpha" => $this->myPicture->Shadowa];
+					$Settings = ["Color" => $this->myPicture->ShadowColor];
 				} else {
 					if ($Border) {
-						$Settings = ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB];
+						$Settings = ["Color" => $BorderColor];
 					} else {
-						$Settings = ["R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"]];
+						$Settings = ["Color" => $Palette[$ID]];
 					}
 				}
 
@@ -248,16 +242,16 @@ class pPie
 						$this->myPicture->drawLine($Xc, $Yc, $X0, $Y0, $Settings);
 					} 
 					$FirstPoint = FALSE;
-					$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Settings);
+					$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Settings["Color"]);
 				}
 
 				$this->myPicture->drawLine($Xc, $Yc, $X0, $Y0, $Settings);
 				if ($DrawLabels && !$Shadow) {
 					
-					if ($LabelColor == PIE_LABEL_COLOR_AUTO) {
-						$Settings = ["FillR" => $Palette[$ID]["R"],"FillG" => $Palette[$ID]["G"],"FillB" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"]];
+					if ($LabelColorType == PIE_LABEL_COLOR_AUTO) {
+						$Settings = ["FillColor" => $Palette[$ID]];
 					} else {
-						$Settings = ["FillR" => $LabelR,"FillG" => $LabelG,"FillB" => $LabelB,"Alpha" => $LabelAlpha];
+						$Settings = ["FillColor" => $LabelColor];
 					}
 
 					$Angle = ($EndAngle - $Offset) / 2 + $Offset;
@@ -276,11 +270,11 @@ class pPie
 				$ID++;
 			}
 		}
-
-		if ($WriteValues != NULL && !$Shadow) {
+	
+		if (!is_null($WriteValues) && !$Shadow) {
 
 			$Offset = 0;
-			$Settings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"R" => $ValueR,"G" => $ValueG,"B" => $ValueB,"Alpha" => $ValueAlpha];
+			$Settings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"Color" => $ValueColor];
 			
 			if ($ValuePosition == PIE_VALUE_OUTSIDE) {
 				$Radius = $Radius + $ValuePadding;
@@ -307,12 +301,13 @@ class pPie
 				$Offset = $EndAngle + $DataGapAngle;
 			}
 		}
-
+		
 		if ($DrawLabels && $LabelStacked) {
 			$this->writeShiftedLabels();
 		}
 
 		$this->myPicture->Shadow = $RestoreShadow;
+
 	}
 
 	/* Draw a 3D pie chart */
@@ -324,17 +319,11 @@ class pPie
 		$Shadow = FALSE;
 		$DrawLabels = FALSE;
 		$LabelStacked = FALSE;
-		$LabelColor = PIE_LABEL_COLOR_MANUAL;
-		$LabelR = 0;
-		$LabelG = 0;
-		$LabelB = 0;
-		$LabelAlpha = 100;
+		$LabelColorType = PIE_LABEL_COLOR_MANUAL;
+		$LabelColor = new pColor(0,0,0,100);
 		$WriteValues = NULL;
 		$ValueSuffix = "";
-		$ValueR = 255;
-		$ValueG = 255;
-		$ValueB = 255;
-		$ValueAlpha = 100;
+		$ValueColor = new pColor(255,255,255,100);
 		$RecordImageMap = FALSE;			
 		$Radius = 80;
 		$SkewFactor = .5;
@@ -404,23 +393,22 @@ class pPie
 		$Visible = [];
 		$SliceAngle = [];
 		foreach($Values as $Value) {
-			if (!isset($Palette[$ID]["R"])) {
-				$Color = $this->myPicture->getRandomColor();
+			if (!isset($Palette[$ID])) {
+				$Color = $this->myPicture->myData->getRandomColor();
 				$Palette[$ID] = $Color;
 				$this->myPicture->myData->savePalette($ID, $Color);
 			}
 
-			$Settings = ["R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"]];
-			$SliceColors[$Slice] = $Settings;
+			$SliceColors[$Slice] = ["Color" => $Palette[$ID]];
 			$StartAngle = $Offset;
 			$EndAngle = $Offset - ($Value * $ScaleFactor);
 			($EndAngle < 0) AND $EndAngle = 0;
 
-			if ($StartAngle > 180) {
+			#if ($StartAngle > 180) {
 				$Visible[$Slice]["Start"] = TRUE;
-			}	else {
-				$Visible[$Slice]["Start"] = TRUE; # TODO
-			}
+			#} else {
+			#	$Visible[$Slice]["Start"] = TRUE; # TODO
+			#}
 
 			$Visible[$Slice]["End"] = ($EndAngle < 180) ? FALSE : TRUE;
 
@@ -470,7 +458,7 @@ class pPie
 					$ShadowPie[] = $Plots[$i + 1] + $this->myPicture->ShadowY;
 				}
 
-				$Settings = ["R" => $this->myPicture->ShadowR,"G" => $this->myPicture->ShadowG,"B" => $this->myPicture->ShadowB,"Alpha" => $this->myPicture->Shadowa,"NoBorder" => TRUE];
+				$Settings = ["Color" => $this->myPicture->ShadowColor,"NoBorder" => TRUE];
 				$this->myPicture->drawPolygon($ShadowPie, $Settings);
 			}
 
@@ -485,7 +473,7 @@ class pPie
 				for ($i = $Offset; $i >= $EndAngle; $i = $i - $Step) {
 					$Xc = cos(($i - 90) * PI / 180) * $Radius + $X + $this->myPicture->ShadowX;
 					$Yc = sin(($i - 90) * PI / 180) * $Radius * $SkewFactor + $Y + $this->myPicture->ShadowY;
-					$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Settings);
+					$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Settings["Color"]);
 				}
 
 				$Offset = $i - $DataGapAngle;
@@ -495,15 +483,11 @@ class pPie
 
 		/* Draw the bottom pie splice */
 		foreach($Slices as $SliceID => $Plots) {
-			$Settings = $SliceColors[$SliceID];
-			$Settings["NoBorder"] = TRUE;
-			$this->myPicture->drawPolygon($Plots, $Settings);
+			$this->myPicture->drawPolygon($Plots, ["Color" => $SliceColors[$SliceID]["Color"]->newOne(), "NoBorder"=>TRUE]);
 			if ($SecondPass) {
-				$Settings = $SliceColors[$SliceID];
+				$Settings = ["Color" => $SliceColors[$SliceID]["Color"]->newOne()];
 				if ($Border) {
-					$Settings["R"]+= 30;
-					$Settings["G"]+= 30;
-					$Settings["B"]+= 30;
+					$Settings["Color"]->RGBChange(30);
 				}
 
 				if (isset($SliceAngle[$SliceID][1])) /* Empty error handling */ {
@@ -523,11 +507,7 @@ class pPie
 		$SlicesR = array_reverse($Slices);
 		$SliceColorsR = array_reverse($SliceColors);
 		foreach($SlicesR as $SliceID => $Plots) {
-			$Settings = $SliceColorsR[$SliceID];
-			$Settings["R"]+= 10;
-			$Settings["G"]+= 10;
-			$Settings["B"]+= 10;
-			$Settings["NoBorder"] = TRUE;
+			$Settings = ["Color" => $SliceColorsR[$SliceID]["Color"]->newOne()->RGBChange(10), "NoBorder"=>TRUE];
 			if ($Visible[$SliceID]["Start"] && isset($Plots[2])) /* Empty error handling */ {
 				$this->myPicture->drawLine($Plots[2], $Plots[3], $Plots[2], $Plots[3] - $SliceHeight, $Settings);
 				$Border = [$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $Plots[2], $Plots[3] - $SliceHeight, $Plots[2], $Plots[3]];
@@ -536,11 +516,7 @@ class pPie
 		}
 
 		foreach($Slices as $SliceID => $Plots) {
-			$Settings = $SliceColors[$SliceID];
-			$Settings["R"]+= 10;
-			$Settings["G"]+= 10;
-			$Settings["B"]+= 10;
-			$Settings["NoBorder"] = TRUE;
+			$Settings = ["Color" => $SliceColors[$SliceID]["Color"]->newOne()->RGBChange(10), "NoBorder"=>TRUE];
 			if ($Visible[$SliceID]["End"]) {
 				$this->myPicture->drawLine($Plots[count($Plots) - 2], $Plots[count($Plots) - 1], $Plots[count($Plots) - 2], $Plots[count($Plots) - 1] - $SliceHeight, $Settings);
 				$Border = [$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $Plots[count($Plots) - 2], $Plots[count($Plots) - 1] - $SliceHeight, $Plots[count($Plots) - 2], $Plots[count($Plots) - 1]];
@@ -550,11 +526,7 @@ class pPie
 
 		/* Draw the rounded edges */
 		foreach($Slices as $SliceID => $Plots) {
-			$Settings = $SliceColors[$SliceID];
-			$Settings["R"]+= 10;
-			$Settings["G"]+= 10;
-			$Settings["B"]+= 10;
-			$Settings["NoBorder"] = TRUE;
+			$Settings = ["Color" => $SliceColors[$SliceID]["Color"]->newOne()->RGBChange(10), "NoBorder" => TRUE];
 			for ($j = 2; $j < count($Plots) - 2; $j = $j + 2) {
 				$Angle = $SliceAngle[$SliceID][$j / 2];
 				if ($Angle < 270 && $Angle > 90) {
@@ -564,11 +536,9 @@ class pPie
 			}
 
 			if ($SecondPass) {
-				$Settings = $SliceColors[$SliceID];
+				$Settings = ["Color" => $SliceColors[$SliceID]["Color"]->newOne()];
 				if ($Border) {
-					$Settings["R"]+= 30;
-					$Settings["G"]+= 30;
-					$Settings["B"]+= 30;
+					$Settings["Color"]->RGBChange(30);
 				}
 
 				if (isset($SliceAngle[$SliceID][1])) /* Empty error handling */ {
@@ -603,19 +573,15 @@ class pPie
 
 		/* Draw the top splice */
 		foreach($Slices as $SliceID => $Plots) {
-			$Settings = $SliceColors[$SliceID];
-			$Settings["R"]+= 20;
-			$Settings["G"]+= 20;
-			$Settings["B"]+= 20;
+			$Settings = ["Color" => $SliceColors[$SliceID]["Color"]->newOne()->RGBChange(20)];
 			$Top = [];
 			for ($j = 0; $j < count($Plots); $j = $j + 2) {
 				$Top[] = $Plots[$j];
 				$Top[] = $Plots[$j + 1] - $SliceHeight;
 			}
-
 			$this->myPicture->drawPolygon($Top, $Settings);
 			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Top), $this->myPicture->toHTMLColor($Settings["R"], $Settings["G"], $Settings["B"]), $Data["Series"][$Data["Abscissa"]]["Data"][count($Slices) - $SliceID - 1], $Values[$SliceID]);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Top), $Settings["Color"]->toHTMLColor(), $Data["Series"][$Data["Abscissa"]]["Data"][count($Slices) - $SliceID - 1], $Values[$SliceID]);
 			}
 		}
 
@@ -626,11 +592,12 @@ class pPie
 			$ID = count($Values) - 1;
 			foreach($Values as $Value) {
 				$FirstPoint = TRUE;
+				$Settings = [];
 				if ($Shadow) {
-					$Settings = ["R" => $this->myPicture->ShadowR,"G" => $this->myPicture->ShadowG,"B" => $this->myPicture->ShadowB,"Alpha" => $this->myPicture->Shadowa];
+					$Settings = ["Color" => $this->myPicture->ShadowColor];
 				} else {
 					if ($Border) {
-						$Settings = ["R" => $Palette[$ID]["R"] + 30,"G" => $Palette[$ID]["G"] + 30,"B" => $Palette[$ID]["B"] + 30,"Alpha" => $Palette[$ID]["Alpha"]];
+						$Settings["Color"] = $Palette[$ID]->newOne()->RGBChange(30);
 					} else {
 						$Settings = $Palette[$ID];
 					}
@@ -658,9 +625,9 @@ class pPie
 					} 
 					$FirstPoint = FALSE;
 
-					$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Settings);
+					$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Settings["Color"]);
 					if ($i < 270 && $i > 90) {
-						$this->myPicture->drawAntialiasPixel($Xc, $Yc + $SliceHeight, $Settings);
+						$this->myPicture->drawAntialiasPixel($Xc, $Yc + $SliceHeight, $Settings["Color"]);
 					}
 				}
 
@@ -670,10 +637,10 @@ class pPie
 			}
 		}
 
-		if ($WriteValues != NULL) {
+		if (!is_null($WriteValues)) {
 			
 			$Offset = 360;
-			$Settings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"R" => $ValueR,"G" => $ValueG,"B" => $ValueB,"Alpha" => $ValueAlpha];
+			$Settings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"Color" => $ValueColor];
 			
 			foreach($Values as $Value) {
 				
@@ -705,15 +672,9 @@ class pPie
 			$Offset = 360;
 			$ID = count($Values) - 1;
 			foreach($Values as $Value) {
-				if ($LabelColor == PIE_LABEL_COLOR_AUTO) {
-					$Settings = ["FillR" => $Palette[$ID]["R"],"FillG" => $Palette[$ID]["G"],"FillB" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"]];
-				} else {
-					$Settings = ["FillR" => $LabelR,"FillG" => $LabelG,"FillB" => $LabelB,"Alpha" => $LabelAlpha];
-				}
-
+				$Settings = ["FillColor" => ($LabelColorType == PIE_LABEL_COLOR_AUTO) ? $Palette[$ID] : $LabelColor];
 				$EndAngle = $Offset - ($Value * $ScaleFactor);
 				($EndAngle < 0) AND $EndAngle = 0;
-			
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
 				$Xc = cos(($Angle - 90) * PI / 180) * $Radius + $X;
 				$Yc = sin(($Angle - 90) * PI / 180) * $Radius * $SkewFactor + $Y - $SliceHeight;
@@ -740,38 +701,32 @@ class pPie
 	
 	function drawPieLegend(int $X, int $Y, array $Format = [])
 	{
+
 		$FontName = $this->myPicture->FontName;
 		$FontSize = $this->myPicture->FontSize;
-		$FontR = $this->myPicture->FontColorR;
-		$FontG = $this->myPicture->FontColorG;
-		$FontB = $this->myPicture->FontColorB;
+		$FontColor = $this->myPicture->FontColor;
 		$BoxSize = 5;
 		$Margin = 5;
-		$R = 200;
-		$G = 200;
-		$B = 200;
-		$Alpha = 100;
-		$BorderR = 255;
-		$BorderG = 255;
-		$BorderB = 255;
+		$Color = new pColor(200,200,200,100);
+		$BorderColor = new pColor(255,255,255);
 		$Surrounding = NULL;
 		$Style = LEGEND_ROUND;
 		$Mode = LEGEND_VERTICAL;
 		
 		/* Override defaults */
 		extract($Format);
-		
-		if ($Surrounding != NULL) {
-			$BorderR = $R + $Surrounding;
-			$BorderG = $G + $Surrounding;
-			$BorderB = $B + $Surrounding;
+	
+		if (!is_null($Surrounding)) {
+			$BorderColor = $Color->newOne()->RGBChange($Surrounding);
 		}
+		$BorderColor->AlphaSet($Color->Alpha);
 
 		$YStep = max($this->myPicture->FontSize, $BoxSize) + 5;
 		$XStep = $BoxSize + 5;
 		/* Data Processing */
 		$Data = $this->myPicture->myData->Data;
 		$Palette = $this->myPicture->myData->Palette;
+		
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "") {
 			throw pException::PieNoAbscissaException();
@@ -804,25 +759,27 @@ class pPie
 			$Boundaries["B"] = $vY + $BoxSize + $TopOffset;
 		}
 
-		$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"BorderR" => $BorderR,"BorderG" => $BorderG,"BorderB" => $BorderB];
+		$Settings = ["Color" => $Color,"BorderColor" => $BorderColor];
+
 		if ($Style == LEGEND_ROUND) {
-			$this->myPicture->drawRoundedFilledRectangle($Boundaries["L"] - $Margin, $Boundaries["T"] - $Margin, $Boundaries["R"] + $Margin, $Boundaries["B"] + $Margin, $Margin, $Color);
+			$this->myPicture->drawRoundedFilledRectangle($Boundaries["L"] - $Margin, $Boundaries["T"] - $Margin, $Boundaries["R"] + $Margin, $Boundaries["B"] + $Margin, $Margin, $Settings);
 		} elseif ($Style == LEGEND_BOX) {
-			$this->myPicture->drawFilledRectangle($Boundaries["L"] - $Margin, $Boundaries["T"] - $Margin, $Boundaries["R"] + $Margin, $Boundaries["B"] + $Margin, $Color);
+			$this->myPicture->drawFilledRectangle($Boundaries["L"] - $Margin, $Boundaries["T"] - $Margin, $Boundaries["R"] + $Margin, $Boundaries["B"] + $Margin, $Settings);
 		}
 
 		$RestoreShadow = $this->myPicture->Shadow;
 		$this->myPicture->Shadow = FALSE;
+
 		foreach($Data["Series"][$Data["Abscissa"]]["Data"] as $Key => $Value) {
-			$Color = $Palette[$Key];
-			$Color["Surrounding"] = 20;
-			$this->myPicture->drawFilledRectangle($X + 1, $Y + 1, $X + $BoxSize + 1, $Y + $BoxSize + 1, ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 20]);
-			$this->myPicture->drawFilledRectangle($X, $Y, $X + $BoxSize, $Y + $BoxSize, $Color);
+			$Settings = ["Color" => $Palette[$Key]];
+			$Settings["Surrounding"] = 20;
+			$this->myPicture->drawFilledRectangle($X + 1, $Y + 1, $X + $BoxSize + 1, $Y + $BoxSize + 1, ["Color" => new pColor(0,0,0,20)]);
+			$this->myPicture->drawFilledRectangle($X, $Y, $X + $BoxSize, $Y + $BoxSize, $Settings);
 			if ($Mode == LEGEND_VERTICAL) {
-				$this->myPicture->drawText($X + $BoxSize + 4, $Y + $BoxSize / 2, $Value, ["R" => $FontR,"G" => $FontG,"B" => $FontB,"Align" => TEXT_ALIGN_MIDDLELEFT,"FontName" => $FontName,"FontSize" => $FontSize]);
+				$this->myPicture->drawText($X + $BoxSize + 4, $Y + $BoxSize / 2, $Value, ["Color" => $FontColor,"Align" => TEXT_ALIGN_MIDDLELEFT,"FontName" => $FontName,"FontSize" => $FontSize]);
 				$Y = $Y + $YStep;
 			} elseif ($Mode == LEGEND_HORIZONTAL) {
-				$BoxArray = $this->myPicture->drawText($X + $BoxSize + 4, $Y + $BoxSize / 2, $Value, ["R" => $FontR,"G" => $FontG,"B" => $FontB,"Align" => TEXT_ALIGN_MIDDLELEFT,"FontName" => $FontName,"FontSize" => $FontSize]);
+				$BoxArray = $this->myPicture->drawText($X + $BoxSize + 4, $Y + 2 + $BoxSize / 2, $Value, ["Color" => $FontColor,"Align" => TEXT_ALIGN_MIDDLELEFT,"FontName" => $FontName,"FontSize" => $FontSize]);
 				$X = $BoxArray[1]["X"] + 2 + $XStep;
 			}
 		}
@@ -831,14 +788,9 @@ class pPie
 	}
 
 	/* Set the color of the specified slice */
-	function setSliceColor(int $SliceID, array $Format = [])
+	function setSliceColor(int $SliceID, pColor $Color)
 	{
-		$this->myPicture->myData->Palette[$SliceID] = [
-			"R" => isset($Format["R"]) ? $Format["R"] : 0,
-			"G" => isset($Format["G"]) ? $Format["G"] : 0,
-			"B" => isset($Format["B"]) ? $Format["B"] : 0,
-			"Alpha" => isset($Format["Alpha"]) ? $Format["Alpha"] : 100
-		];
+		$this->myPicture->myData->Palette[$SliceID] = $Color;
 	}
 
 	/* Internally used compute the label positions */
@@ -944,28 +896,19 @@ class pPie
 	{	
 		$Precision = 0;
 		$Border = FALSE;
-		$BorderR = 255;
-		$BorderG = 255;
-		$BorderB = 255;
+		$BorderColor = new pColor(255,255,255,100);
 		$Shadow = FALSE;
 		$DrawLabels = FALSE;
 		$LabelStacked = FALSE;
-		$LabelColor = PIE_LABEL_COLOR_MANUAL;
-		$LabelR = 0;
-		$LabelG = 0;
-		$LabelB = 0;
-		$LabelAlpha = 100;
+		$LabelColorType = PIE_LABEL_COLOR_MANUAL;
+		$LabelColor = new pColor(0,0,0,100);
 		$WriteValues = NULL;
 		$ValuePosition = PIE_VALUE_OUTSIDE;
 		$ValueSuffix = "";
-		$ValueR = 255;
-		$ValueG = 255;
-		$ValueB = 255;
-		$ValueAlpha = 100;
+		$ValueColor = new pColor(255,255,255,100);
 		$RecordImageMap = FALSE;
 		$OuterRadius = 60;
 		$InnerRadius = 30;
-		$BorderAlpha = 100;
 		$ValuePadding = 5;
 		
 		/* Override defaults */
@@ -979,8 +922,8 @@ class pPie
 			throw pException::PieNoAbscissaException();
 		}
 
-		/* Try to find the data serie */
-		$DataSerie = "";
+		/* Try to find the data serie */ 
+		$DataSerie = ""; # TODO Optimize this
 		foreach($Data["Series"] as $SerieName => $SerieData) {
 			if ($SerieName != $Data["Abscissa"]) {
 				$DataSerie = $SerieName;
@@ -1029,16 +972,16 @@ class pPie
 		foreach($Values as $Key => $Value) {
 			
 			if ($Shadow) {
-				$Settings = ["R" => $this->myPicture->ShadowR,"G" => $this->myPicture->ShadowG,"B" => $this->myPicture->ShadowB,"Alpha" => $this->myPicture->Shadowa];
-				$BorderColor = $Settings;
+				$Settings = ["Color" => $this->myPicture->ShadowColor];
+				$BorderSettings = $Settings;
 			} else {
-				if (!isset($Palette[$ID]["R"])) {
-					$Color = $this->myPicture->getRandomColor();
+				if (!isset($Palette[$ID])) {
+					$Color = $this->myPicture->myData->getRandomColor();
 					$Palette[$ID] = $Color;
 					$this->myPicture->myData->savePalette($ID, $Color);
 				}
-				$Settings = $Palette[$ID];
-				$BorderColor = ($Border) ? ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha] : $Settings;
+				$Settings = ["Color" => $Palette[$ID]];
+				$BorderSettings = ($Border) ? ["Color" => $BorderColor] : $Settings;
 			}
 
 			$Plots = [];
@@ -1109,23 +1052,18 @@ class pPie
 			/* Draw the polygon */
 			$this->myPicture->drawPolygon($Plots, $Settings);
 			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $this->myPicture->toHTMLColor($Palette[$ID]["R"], $Palette[$ID]["G"], $Palette[$ID]["B"]), $Data["Series"][$Data["Abscissa"]]["Data"][$Key], $Value);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$ID]->toHTMLColor(), $Data["Series"][$Data["Abscissa"]]["Data"][$Key], $Value);
 			}
 
 			/* Smooth the edges using AA */
 			foreach($AAPixels as $Pos) {
-				$this->myPicture->drawAntialiasPixel($Pos[0], $Pos[1], $BorderColor);
+				$this->myPicture->drawAntialiasPixel($Pos[0], $Pos[1], $BorderSettings["Color"]);
 			}
 
-			$this->myPicture->drawLine($Boundaries[0]["X1"], $Boundaries[0]["Y1"], $Boundaries[0]["X2"], $Boundaries[0]["Y2"], $BorderColor);
-			$this->myPicture->drawLine($Boundaries[1]["X1"], $Boundaries[1]["Y1"], $Boundaries[1]["X2"], $Boundaries[1]["Y2"], $BorderColor);
+			$this->myPicture->drawLine($Boundaries[0]["X1"], $Boundaries[0]["Y1"], $Boundaries[0]["X2"], $Boundaries[0]["Y2"], $BorderSettings);
+			$this->myPicture->drawLine($Boundaries[1]["X1"], $Boundaries[1]["Y1"], $Boundaries[1]["X2"], $Boundaries[1]["Y2"], $BorderSettings);
 			if ($DrawLabels && !$Shadow) {
-				if ($LabelColor == PIE_LABEL_COLOR_AUTO) {
-					$Settings = ["FillR" => $Palette[$ID]["R"],"FillG" => $Palette[$ID]["G"],"FillB" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"]];
-				} else {
-					$Settings = ["FillR" => $LabelR,"FillG" => $LabelG,"FillB" => $LabelB,"Alpha" => $LabelAlpha];
-				}
-
+				$Settings = ["FillColor" => ($LabelColorType == PIE_LABEL_COLOR_AUTO) ? $Palette[$ID] : $LabelColor];
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
 				$Xc = cos(($Angle - 90) * PI / 180) * $OuterRadius + $X;
 				$Yc = sin(($Angle - 90) * PI / 180) * $OuterRadius + $Y;
@@ -1172,10 +1110,10 @@ class pPie
 				} elseif ($WriteValues == PIE_VALUE_NATURAL) {
 					$Display = strval($Value) . $ValueSuffix;
 				} else {
-					$Display = ""; # Momchil: Makes no sense $Label = "";
+					$Display = "";
 				}
 
-				$this->myPicture->drawText($Xc, $Yc, $Display, ["Align" => $Align,"R" => $ValueR,"G" => $ValueG,"B" => $ValueB]);
+				$this->myPicture->drawText($Xc, $Yc, $Display, ["Align" => $Align,"Color" => $ValueColor]);
 				$Offset = $EndAngle;
 			}
 		}
@@ -1189,11 +1127,8 @@ class pPie
 		$Shadow = FALSE;
 		$DrawLabels = FALSE;
 		$LabelStacked = FALSE;
-		$LabelColor = PIE_LABEL_COLOR_MANUAL;
-		$LabelR = 0;
-		$LabelG = 0;
-		$LabelB = 0;
-		$LabelAlpha = 100;
+		$LabelColorType = PIE_LABEL_COLOR_MANUAL;
+		$LabelColor = new pColor(0,0,0,100);
 		$WriteValues = NULL;
 		$RecordImageMap = FALSE;				
 		$OuterRadius = 100;
@@ -1269,8 +1204,8 @@ class pPie
 		
 		foreach($Values as $Key => $Value) {
 			
-			if (!isset($Palette[$ID]["R"])) {
-				$Color = $this->myPicture->getRandomColor();
+			if (!isset($Palette[$ID])) {
+				$Color = $this->myPicture->myData->getRandomColor();
 				$Palette[$ID] = $Color;
 				$this->myPicture->myData->savePalette($ID, $Color);
 			}
@@ -1366,11 +1301,10 @@ class pPie
 
 		/* Draw the bottom pie splice */
 		foreach($Slices as $SliceID => $Plots) {
-			$Settings = $SliceColors[$SliceID];
-			$Settings["NoBorder"] = TRUE;
+			$Settings = ["Color" => $SliceColors[$SliceID]->newOne(), "NoBorder" => TRUE];
 			$this->myPicture->drawPolygon($Plots["BottomPoly"], $Settings);
 			foreach($Plots["AA"] as $Key => $Pos){
-				$this->myPicture->drawAntialiasPixel($Pos[0], $Pos[1], $Settings);
+				$this->myPicture->drawAntialiasPixel($Pos[0], $Pos[1], $Settings["Color"]);
 			}
 			$this->myPicture->drawLine($Plots["InX1"], $Plots["InY1"], $Plots["OutX2"], $Plots["OutY2"], $Settings);
 			$this->myPicture->drawLine($Plots["InX2"], $Plots["InY2"], $Plots["OutX1"], $Plots["OutY1"], $Settings);
@@ -1380,11 +1314,7 @@ class pPie
 		$SliceColors = array_reverse($SliceColors);
 		/* Draw the vertical edges (semi-visible) */
 		foreach($Slices as $SliceID => $Plots) {
-			$Settings = $SliceColors[$SliceID];
-			$Settings["NoBorder"] = TRUE;
-			$Settings["R"] = $Settings["R"] + $Cf;
-			$Settings["G"] = $Settings["G"] + $Cf;
-			$Settings["B"] = $Settings["B"] + $Cf;
+			$Settings = ["Color" =>  $SliceColors[$SliceID]->newOne()->RGBChange($Cf), "NoBorder" => TRUE];
 			$StartAngle = $Plots["Angle"][0];
 			foreach($Plots["Angle"] as $Key => $Angle) {
 				if ($Angle == VOID) {
@@ -1407,11 +1337,7 @@ class pPie
 		/* Draw the inner vertical slices */
 		foreach($Slices as $SliceID => $Plots) {
 			
-			$Settings = $SliceColors[$SliceID];
-			$Settings["NoBorder"] = TRUE;
-			$Settings["R"] = $Settings["R"] + $Cf;
-			$Settings["G"] = $Settings["G"] + $Cf;
-			$Settings["B"] = $Settings["B"] + $Cf;
+			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf), "NoBorder"=>TRUE];
 			$Outer = TRUE;
 			$Inner = FALSE;
 			$InnerPlotsA = [];
@@ -1437,11 +1363,7 @@ class pPie
 
 		/* Draw the splice top and left poly */
 		foreach($Slices as $SliceID => $Plots) {
-			$Settings = $SliceColors[$SliceID];
-			$Settings["NoBorder"] = TRUE;
-			$Settings["R"] = $Settings["R"] + $Cf * 1.5;
-			$Settings["G"] = $Settings["G"] + $Cf * 1.5;
-			$Settings["B"] = $Settings["B"] + $Cf * 1.5;
+			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf * 1.5), "NoBorder" => TRUE];
 			$StartAngle = $Plots["Angle"][0];
 			foreach($Plots["Angle"] as $Key => $Angle) {
 				if ($Angle == VOID) {
@@ -1462,11 +1384,7 @@ class pPie
 
 		/* Draw the vertical edges (visible) */
 		foreach($Slices as $SliceID => $Plots) {
-			$Settings = $SliceColors[$SliceID];
-			$Settings["NoBorder"] = TRUE;
-			$Settings["R"] = $Settings["R"] + $Cf;
-			$Settings["G"] = $Settings["G"] + $Cf;
-			$Settings["B"] = $Settings["B"] + $Cf;
+			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf), "NoBorder" => TRUE];
 			$StartAngle = $Plots["Angle"][0];
 			foreach($Plots["Angle"] as $Key => $Angle) {
 				if ($Angle == VOID) {
@@ -1486,11 +1404,7 @@ class pPie
 		/* Draw the outer vertical slices */
 		foreach($Slices as $SliceID => $Plots) {
 			
-			$Settings = $SliceColors[$SliceID];
-			$Settings["NoBorder"] = TRUE;
-			$Settings["R"] = $Settings["R"] + $Cf;
-			$Settings["G"] = $Settings["G"] + $Cf;
-			$Settings["B"] = $Settings["B"] + $Cf;
+			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf), "NoBorder"=>TRUE];
 			$Outer = TRUE;
 			$Inner = FALSE;
 			$OuterPlotsA = [];
@@ -1520,18 +1434,14 @@ class pPie
 		$SliceColors = array_reverse($SliceColors);
 		/* Draw the top pie splice */
 		foreach($Slices as $SliceID => $Plots) {
-			$Settings = $SliceColors[$SliceID];
-			$Settings["NoBorder"] = TRUE;
-			$Settings["R"] = $Settings["R"] + $Cf * 2;
-			$Settings["G"] = $Settings["G"] + $Cf * 2;
-			$Settings["B"] = $Settings["B"] + $Cf * 2;
+			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf * 2), "NoBorder" => TRUE];
 			$this->myPicture->drawPolygon($Plots["TopPoly"], $Settings);
 			if ($RecordImageMap) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots["TopPoly"]), $this->myPicture->toHTMLColor($Settings["R"], $Settings["G"], $Settings["B"]), $Data["Series"][$Data["Abscissa"]]["Data"][$SliceID], $Data["Series"][$DataSerie]["Data"][count($Slices) - $SliceID - 1]);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Plots["TopPoly"]), $Settings["Color"]->toHTMLColor(), $Data["Series"][$Data["Abscissa"]]["Data"][$SliceID], $Data["Series"][$DataSerie]["Data"][count($Slices) - $SliceID - 1]);
 			}
 
 			foreach($Plots["AA"] as $Key => $Pos) {
-				$this->myPicture->drawAntialiasPixel($Pos[0], $Pos[1] - $SliceHeight, $Settings);
+				$this->myPicture->drawAntialiasPixel($Pos[0], $Pos[1] - $SliceHeight, $Settings["Color"]);
 			}
 			$this->myPicture->drawLine($Plots["InX1"], $Plots["InY1"] - $SliceHeight, $Plots["OutX2"], $Plots["OutY2"] - $SliceHeight, $Settings);
 			$this->myPicture->drawLine($Plots["InX2"], $Plots["InY2"] - $SliceHeight, $Plots["OutX1"], $Plots["OutY1"] - $SliceHeight, $Settings);
@@ -1543,13 +1453,7 @@ class pPie
 
 				$EndAngle = $Offset - ($Value * $ScaleFactor);
 				($EndAngle < 0) AND $EndAngle = 0;
-			
-				if ($LabelColor == PIE_LABEL_COLOR_AUTO) {
-					$Settings = ["FillR" => $Palette[$ID]["R"],"FillG" => $Palette[$ID]["G"],"FillB" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"]];
-				} else {
-					$Settings = ["FillR" => $LabelR,"FillG" => $LabelG,"FillB" => $LabelB,"Alpha" => $LabelAlpha];
-				}
-
+				$Settings = ["FillColor" => ($LabelColorType == PIE_LABEL_COLOR_AUTO) ? $Palette[$ID] : $LabelColor];
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
 				$Xc = cos(($Angle - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) + $X;
 				$Yc = sin(($Angle - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) * $SkewFactor + $Y;

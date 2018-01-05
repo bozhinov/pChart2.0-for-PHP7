@@ -8,7 +8,6 @@ Made by     : Forked by Momchil Bozhinov from the original pDraw class from Jean
 Last Update : 23/12/2017
 
 Contains functions:
-	validatePalette
 	drawPolygonChart
 	drawStackedAreaChart
 	drawStackedBarChart
@@ -49,36 +48,7 @@ class pCharts {
 		
 		$this->myPicture = $pChartObject;
 	}
-	
-	/* Validate a palette */
-	function validatePalette(array $Colors, $Surrounding = NULL)
-	{
-		$Result = [];
 		
-		foreach($Colors as $Key => $Values) {
-			
-			$Result[$Key]["R"] = (isset($Values["R"])) ? $Values["R"] : rand(0, 255);
-			$Result[$Key]["G"] = (isset($Values["G"])) ? $Values["G"] : rand(0, 255);
-			$Result[$Key]["B"] = (isset($Values["B"])) ? $Values["B"] : rand(0, 255);
-			$Result[$Key]["Alpha"] = (isset($Values["Alpha"])) ? $Values["Alpha"] : 100;
-
-			if ($Surrounding != NULL) {
-				$Result[$Key]["BorderR"] = $Result[$Key]["R"] + $Surrounding;
-				$Result[$Key]["BorderG"] = $Result[$Key]["G"] + $Surrounding;
-				$Result[$Key]["BorderB"] = $Result[$Key]["B"] + $Surrounding;
-				
-			} else {
-				$Result[$Key]["BorderR"] = (isset($Values["BorderR"])) ? $Values["BorderR"] : $Result[$Key]["R"];
-				$Result[$Key]["BorderG"] = (isset($Values["BorderG"])) ? $Values["BorderG"] : $Result[$Key]["G"];
-				$Result[$Key]["BorderB"] = (isset($Values["BorderB"])) ? $Values["BorderB"] : $Result[$Key]["B"];
-				$Result[$Key]["BorderAlpha"] = (isset($Values["BorderAlpha"])) ? $Values["BorderAlpha"] : $Result[$Key]["Alpha"];
-
-			}
-		}
-
-		return ($Result);
-	}
-	
 	function getXstep($Orientation, $XDivs, $XMargin){
 			
 		if ($Orientation == SCALE_POS_LEFTRIGHT) {
@@ -103,41 +73,37 @@ class pCharts {
 	{
 		$PlotSize = NULL;
 		$PlotBorder = FALSE;
-		$BorderR = 50;
-		$BorderG = 50;
-		$BorderB = 50;
-		$BorderAlpha = 30;
+		$BorderColor = new pColor(50,50,50,30);
 		$BorderSize = 2;
 		$Surrounding = NULL;
 		$DisplayValues = FALSE;
 		$DisplayOffset = 4;
-		$DisplayColor = DISPLAY_MANUAL;
-		$DisplayR = 0;
-		$DisplayG = 0;
-		$DisplayB = 0;
+		$DisplayType = DISPLAY_MANUAL; # was display color
+		$DisplayColor = new pColor(0,0,0);
 		$RecordImageMap = FALSE;
 		
 		/* Override defaults */
 		extract($Format);
-		
+				
 		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
 				$SerieWeight = (isset($Serie["Weight"])) ? $Serie["Weight"] + 2 : 2;
-				($PlotSize != NULL) AND $SerieWeight = $PlotSize;
-				$R = $Serie["Color"]["R"];
-				$G = $Serie["Color"]["G"];
-				$B = $Serie["Color"]["B"];
-				$Alpha = $Serie["Color"]["Alpha"];
+				(!is_null($PlotSize)) AND $SerieWeight = $PlotSize;
+				$Color = $Serie["Color"]->newOne();
 				$Ticks = $Serie["Ticks"];
-				if ($Surrounding != NULL) {
-					$BorderR = $R + $Surrounding;
-					$BorderG = $G + $Surrounding;
-					$BorderB = $B + $Surrounding;
+				if (!is_null($Surrounding)) {
+					$Alpha = $BorderColor->Alpha; # Maintain Alpha
+					$BorderColor = $Color->newOne()->RGBChange($Surrounding);
+					$BorderColor->AlphaSet($Alpha);
 				}
-
+				
+				# Momchil: Force default Alpha as it is not set in the original code
+				# That is for the example.Combo.area.lines
+				$Color->AlphaSet(100); 
+				
 				if (isset($Serie["Picture"])) {
 					$Picture = $Serie["Picture"];
 					$PicInfo = $this->myPicture->getPicInfo($Picture);
@@ -147,10 +113,8 @@ class pCharts {
 					$PicOffset = 0;
 				}
 
-				if ($DisplayColor == DISPLAY_AUTO) {
-					$DisplayR = $R;
-					$DisplayG = $G;
-					$DisplayB = $B;
+				if ($DisplayType == DISPLAY_AUTO) {
+					$DisplayColor = $Color->newOne();
 				}
 
 				$AxisID = $Serie["Axis"];
@@ -163,12 +127,12 @@ class pCharts {
 				
 				if ($RecordImageMap) {
 					$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
-					$ImageMapColor = $this->myPicture->toHTMLColor($R, $G, $B);			
+					$ImageMapColor = $Color->toHTMLColor();			
 				}
 				
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
 				
-				if ($Picture != NULL) {
+				if (!is_null($Picture)) {
 					$PicOffset = $PicWidth / 2;
 					$SerieWeight = 0;
 				}
@@ -183,7 +147,7 @@ class pCharts {
 								$X,
 								$Y - $DisplayOffset - $SerieWeight - $BorderSize - $PicOffset,
 								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
-								array("R" => $DisplayR,	"G" => $DisplayG,"B" => $DisplayB,"Align" => TEXT_ALIGN_BOTTOMMIDDLE)
+								["Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 							);
 						}
 						if ($Y != VOID) {
@@ -191,10 +155,10 @@ class pCharts {
 								$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $SerieWeight, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 
-							if ($Picture != NULL) {
+							if (!is_null($Picture)) {
 								$this->myPicture->drawFromPicture($PicInfo, $Picture, $X - $PicWidth / 2, $Y - $PicHeight / 2);
 							} else {
-								$this->myPicture->drawShape($X, $Y, $Shape, $SerieWeight, $PlotBorder, $BorderSize, $R, $G, $B, $Alpha, $BorderR, $BorderG, $BorderB, $BorderAlpha);
+								$this->myPicture->drawShape($X, $Y, $Shape, $SerieWeight, $PlotBorder, $BorderSize, $Color, $BorderColor);
 							}
 						}
 
@@ -210,17 +174,17 @@ class pCharts {
 							$X + $DisplayOffset + $SerieWeight + $BorderSize + $PicOffset,
 							$Y,
 							$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
-							array("Angle" => 270,"R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => TEXT_ALIGN_BOTTOMMIDDLE)
+							["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 						);
 						if ($X != VOID) {
 							if ($RecordImageMap) {
 								$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $SerieWeight, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 
-							if ($Picture != NULL) {
+							if (!is_null($Picture)) {
 								$this->myPicture->drawFromPicture($PicInfo, $Picture, $X - $PicWidth / 2, $Y - $PicHeight / 2);
 							} else {
-								$this->myPicture->drawShape($X, $Y, $Shape, $SerieWeight, $PlotBorder, $BorderSize, $R, $G, $B, $Alpha, $BorderR, $BorderG, $BorderB, $BorderAlpha);
+								$this->myPicture->drawShape($X, $Y, $Shape, $SerieWeight, $PlotBorder, $BorderSize, $Color, $BorderColor);
 							}
 						}
 
@@ -237,15 +201,11 @@ class pCharts {
 		
 		$BreakVoid = TRUE;
 		$VoidTicks = 4;
-		$BreakR = NULL; // 234
-		$BreakG = NULL; // 55
-		$BreakB = NULL; // 26
+		$BreakColor = NULL; 
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
-		$DisplayColor = DISPLAY_MANUAL;
-		$DisplayR = 0;
-		$DisplayG = 0;
-		$DisplayB = 0;
+		$DisplayType = DISPLAY_MANUAL;
+		$DisplayColor = new pColor(0,0,0);
 		$RecordImageMap = FALSE;
 		$ImageMapPlotSize = 5;
 		
@@ -256,23 +216,18 @@ class pCharts {
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
-				$R = $Serie["Color"]["R"];
-				$G = $Serie["Color"]["G"];
-				$B = $Serie["Color"]["B"];
-				$Alpha = $Serie["Color"]["Alpha"];
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				$Ticks = $Serie["Ticks"];
 				$Weight = $Serie["Weight"];
-				if ($BreakR == NULL) {
-					$BreakSettings = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $VoidTicks];
+				if (is_null($BreakColor)) {
+					$BreakSettings = ["Color" => $Serie["Color"], "Ticks" => $VoidTicks];
 				} else {
-					$BreakSettings = ["R" => $BreakR,"G" => $BreakG,"B" => $BreakB,"Alpha" => $Alpha,"Ticks" => $VoidTicks,"Weight" => $Weight];
+					$BreakColor->Alpha = $Serie["Color"]["Alpha"];
+					$BreakSettings = ["Color" => $BreakColor, "Ticks" => $VoidTicks,"Weight" => $Weight];
 				}
 
-				if ($DisplayColor == DISPLAY_AUTO) {
-					$DisplayR = $R;
-					$DisplayG = $G;
-					$DisplayB = $B;
+				if ($DisplayType == DISPLAY_AUTO) {
+					$DisplayColor = $Serie["Color"];
 				}
 
 				$AxisID = $Serie["Axis"];
@@ -290,7 +245,7 @@ class pCharts {
 				
 				if ($RecordImageMap) {
 					$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
-					$ImageMapColor = $this->myPicture->toHTMLColor($R, $G, $B);			
+					$ImageMapColor = $Serie["Color"]->toHTMLColor();			
 				}
 				
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
@@ -306,7 +261,7 @@ class pCharts {
 								$X,
 								$Y - $DisplayOffset, 
 								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), 
-								array("R" => $DisplayR,	"G" => $DisplayG, "B" => $DisplayB,	"Align" => TEXT_ALIGN_BOTTOMMIDDLE)
+								["Color" => $DisplayColor, "Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 							);
 						}
 						
@@ -314,25 +269,20 @@ class pCharts {
 							$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
 
-						if ($Y == VOID && $LastY != NULL) {
-							$this->myPicture->drawSpline($WayPoints, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight]);
+						if ($Y == VOID && !is_null($LastY)) {
+							$this->myPicture->drawSpline($WayPoints, ["Color" => $Serie["Color"], "Ticks" => $Ticks,"Weight" => $Weight]);
 							$WayPoints = [];
 						}
 
-						if ($Y != VOID && $LastY == NULL && $LastGoodY != NULL && !$BreakVoid) {
+						if ($Y != VOID && is_null($LastY) && !is_null($LastGoodY) && !$BreakVoid) {
 							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
 						}
 
 						if ($Y != VOID) {
 							$WayPoints[] = [$X,$Y];
-						}
-						
-						if ($Y != VOID) {
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						}
-
-						if ($Y == VOID) {
+						} else {
 							$Y = NULL;
 						}
 
@@ -340,8 +290,8 @@ class pCharts {
 						$LastY = $Y;
 						$X = $X + $XStep;
 					}
-
-					$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight]);
+					
+					$this->myPicture->drawSpline($WayPoints, ["Force" => $Force, "Color" => $Serie["Color"], "Ticks" => $Ticks,"Weight" => $Weight]);
 					
 				} else {
 
@@ -350,19 +300,19 @@ class pCharts {
 
 					foreach($PosArray as $Key => $X) {
 						if ($DisplayValues) {
-							$this->myPicture->drawText($X + $DisplayOffset, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Angle" => 270,"R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
+							$this->myPicture->drawText($X + $DisplayOffset, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
 						}
 
 						if ($RecordImageMap && $X != VOID) {
 							$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
 
-						if ($X == VOID && $LastX != NULL) {
-							$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight]);
+						if ($X == VOID && !is_null($LastX)) {
+							$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"Color" => $Serie["Color"],"Ticks" => $Ticks,"Weight" => $Weight]);
 							$WayPoints = [];
 						}
 
-						if ($X != VOID && $LastX == NULL && $LastGoodX != NULL && !$BreakVoid) {
+						if ($X != VOID && is_null($LastX) && !is_null($LastGoodX) && !$BreakVoid) {
 							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
 						}
 
@@ -379,7 +329,7 @@ class pCharts {
 						$Y = $Y + $XStep;
 					}
 
-					$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight]);
+					$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"Color" => $Serie["Color"],"Ticks" => $Ticks,"Weight" => $Weight]);
 				}
 			}
 		}
@@ -390,10 +340,8 @@ class pCharts {
 	{
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
-		$DisplayColor = DISPLAY_MANUAL;
-		$DisplayR = 0;
-		$DisplayG = 0;
-		$DisplayB = 0;
+		$DisplayType = DISPLAY_MANUAL;
+		$DisplayColor = new pColor(0,0,0);
 		$AroundZero = TRUE;
 		$Threshold = [];
 		
@@ -405,15 +353,11 @@ class pCharts {
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
-				$R = $Serie["Color"]["R"];
-				$G = $Serie["Color"]["G"];
-				$B = $Serie["Color"]["B"];
-				$Alpha = $Serie["Color"]["Alpha"];
+				$Color = $Serie["Color"];
+				$ColorHalfAlfa = $Color->NewOne()->AlphaSlash(2);
 				$Ticks = $Serie["Ticks"];
-				if ($DisplayColor == DISPLAY_AUTO) {
-					$DisplayR = $R;
-					$DisplayG = $G;
-					$DisplayB = $B;
+				if ($DisplayType == DISPLAY_AUTO) {
+					$DisplayColor = $Color;
 				}
 
 				$AxisID = $Serie["Axis"];
@@ -453,7 +397,7 @@ class pCharts {
 				
 					foreach($PosArray as $Key => $Y) {
 						if ($DisplayValues) {
-							$this->myPicture->drawText($X, $Y - $DisplayOffset, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
+							$this->myPicture->drawText($X, $Y - $DisplayOffset, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
 						}
 
 						if ($Y == VOID) {
@@ -468,10 +412,10 @@ class pCharts {
 
 								$Corners[] = $Points[$subKey]["X"] - 1;
 								$Corners[] = $YZero;
-								$this->drawPolygonChart($Corners, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / 2,"NoBorder" => TRUE,"Threshold" => $Threshold]);
+								$this->drawPolygonChart($Corners, ["Color" => $ColorHalfAlfa,"NoBorder" => TRUE,"Threshold" => $Threshold]);
 							}
 
-							$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks]);
+							$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"Color" => $Color,"Ticks" => $Ticks]);
 
 							$WayPoints = [];
 						} else {
@@ -492,10 +436,10 @@ class pCharts {
 
 						$Corners[] = $Points[$subKey]["X"] - 1;
 						$Corners[] = $YZero;
-						$this->drawPolygonChart($Corners, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / 2,"NoBorder" => TRUE,"Threshold" => $Threshold]);
+						$this->drawPolygonChart($Corners, ["Color" => $ColorHalfAlfa,"NoBorder" => TRUE,"Threshold" => $Threshold]);
 					}
 
-					$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks]);
+					$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"Color" => $Color,"Ticks" => $Ticks]);
 
 				} else {
 
@@ -520,7 +464,7 @@ class pCharts {
 								$X + $DisplayOffset,
 								$Y,
 								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
-								array("Angle" => 270,"R" => $DisplayR,"G" => $DisplayG,	"B" => $DisplayB, "Align" => TEXT_ALIGN_BOTTOMMIDDLE)
+								["Angle" => 270,"Color" => $DisplayColor, "Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 							);
 						}
 
@@ -537,10 +481,10 @@ class pCharts {
 
 								$Corners[] = $YZero;
 								$Corners[] = $Points[$subKey]["Y"] - 1;
-								$this->drawPolygonChart($Corners, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / 2,"NoBorder" => TRUE,"Threshold" => $Threshold]);
+								$this->drawPolygonChart($Corners, ["Color" => $ColorHalfAlfa,"NoBorder" => TRUE,"Threshold" => $Threshold]);
 							}
 
-							$this->myPicture->drawSpline($WayPoints, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha / 2,"NoBorder" => TRUE,"Threshold" => $Threshold]);
+							$this->myPicture->drawSpline($WayPoints, ["Color" => $ColorHalfAlfa,"NoBorder" => TRUE,"Threshold" => $Threshold]);
 
 							$WayPoints = [];
 						} else {
@@ -562,10 +506,10 @@ class pCharts {
 
 						$Corners[] = $YZero;
 						$Corners[] = $Points[$subKey]["Y"] - 1;
-						$this->drawPolygonChart($Corners, ["Force" => $Force,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks]);
+						$this->drawPolygonChart($Corners, ["Force" => $Force,"Color" => $Color,"Ticks" => $Ticks]);
 					}
 
-					$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks]);
+					$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"Color" => $Color,"Ticks" => $Ticks]);
 				}
 			}
 		}
@@ -576,22 +520,15 @@ class pCharts {
 	{
 		$BreakVoid = TRUE;
 		$VoidTicks = 4;
-		$BreakR = NULL;
-		$BreakG = NULL;
-		$BreakB = NULL;
+		$BreakColor = NULL;
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
-		$DisplayColor = DISPLAY_MANUAL;
-		$DisplayR = 0;
-		$DisplayG = 0;
-		$DisplayB = 0;
+		$DisplayType = DISPLAY_MANUAL;
+		$DisplayColor = new pColor(0,0,0);
 		$RecordImageMap = FALSE;
 		$ImageMapPlotSize = 5;
-		$ForceColor = FALSE;
-		$ForceR = 0;
-		$ForceG = 0;
-		$ForceB = 0;
-		$ForceAlpha = 100;
+		$UseForcedColor = FALSE;
+		$ForceColor = new pColor(0,0,0,100);
 		
 		/* Override defaults */
 		extract($Format);
@@ -600,31 +537,27 @@ class pCharts {
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
-				$R = $Serie["Color"]["R"];
-				$G = $Serie["Color"]["G"];
-				$B = $Serie["Color"]["B"];
-				$Alpha = $Serie["Color"]["Alpha"];
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
+				$Color = $Serie["Color"];
 				$Ticks = $Serie["Ticks"];
 				$Weight = $Serie["Weight"];
-				if ($ForceColor) {
-					$R = $ForceR;
-					$G = $ForceG;
-					$B = $ForceB;
-					$Alpha = $ForceAlpha;
+				if ($UseForcedColor) {
+					$Color = $ForceColor;
 				}
 
-				if ($BreakR == NULL) {
-					$BreakSettings = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $VoidTicks,"Weight" => $Weight];
+				if (is_null($BreakColor)) {
+					$BreakSettings = ["Color" => $Color,"Ticks" => $VoidTicks,"Weight" => $Weight];
 				} else {
-					$BreakSettings = ["R" => $BreakR,"G" => $BreakG,"B" => $BreakB,"Alpha" => $Alpha,"Ticks" => $VoidTicks,"Weight" => $Weight];
+					$BreakSettings = ["Color" => $BreakColor,"Ticks" => $VoidTicks,"Weight" => $Weight];
 				}
 
-				if ($DisplayColor == DISPLAY_AUTO) {
-					$DisplayR = $R;
-					$DisplayG = $G;
-					$DisplayB = $B;
+				if ($DisplayType == DISPLAY_AUTO) {
+					$DisplayColor = $Color;
 				}
+				
+				# Momchil: Force default Alpha as it is not set in the original code
+				# That is for the example.Combo.area.lines
+				$BreakSettings["Color"]->AlphaSet(100);
 
 				$AxisID = $Serie["Axis"];
 				$Mode = $Data["Axis"][$AxisID]["Display"];
@@ -640,7 +573,7 @@ class pCharts {
 				
 				if ($RecordImageMap) {
 					$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
-					$ImageMapColor = $this->myPicture->toHTMLColor($R, $G, $B);			
+					$ImageMapColor = $Color->toHTMLColor();			
 				}
 				
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
@@ -659,18 +592,18 @@ class pCharts {
 								$Offset = - $DisplayOffset;
 							}
 
-							$this->myPicture->drawText($X, $Y - $Offset - $Weight, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => $Align]);
+							$this->myPicture->drawText($X, $Y - $Offset - $Weight, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => $Align]);
 						}
 
 						if ($RecordImageMap && $Y != VOID) {
 							$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
 
-						if ($Y != VOID && $LastX != NULL && $LastY != NULL){
-							$this->myPicture->drawLine($LastX, $LastY, $X, $Y, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,	"Weight" => $Weight]);
+						if ($Y != VOID && !is_null($LastX) && !is_null($LastY)){
+							$this->myPicture->drawLine($LastX, $LastY, $X, $Y, ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight]);
 						}
 						
-						if ($Y != VOID && $LastY == NULL && $LastGoodY != NULL && !$BreakVoid) {
+						if ($Y != VOID && is_null($LastY) && !is_null($LastGoodY) && !$BreakVoid) {
 							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
 							$LastGoodY = NULL;
 						}
@@ -678,9 +611,7 @@ class pCharts {
 						if ($Y != VOID) {
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						}
-
-						if ($Y == VOID) {
+						} else {
 							$Y = NULL;
 						}
 
@@ -695,15 +626,18 @@ class pCharts {
 					
 					foreach($PosArray as $Key => $X) {
 						if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
-							$this->myPicture->drawText($X + $DisplayOffset + $Weight, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Angle" => 270,"R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
+							$this->myPicture->drawText($X + $DisplayOffset + $Weight, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
 						}
 
 						if ($RecordImageMap && $X != VOID) {
 							$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
 
-						if ($X != VOID && $LastX != NULL && $LastY != NULL) $this->myPicture->drawLine($LastX, $LastY, $X, $Y, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight]);
-						if ($X != VOID && $LastX == NULL && $LastGoodY != NULL && !$BreakVoid) {
+						if ($X != VOID && !is_null($LastX) && !is_null($LastY)){
+							$this->myPicture->drawLine($LastX, $LastY, $X, $Y, ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight]);
+						}
+						
+						if ($X != VOID && is_null($LastX) && !is_null($LastGoodY) && !$BreakVoid) {
 							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
 							$LastGoodY = NULL;
 						}
@@ -711,9 +645,7 @@ class pCharts {
 						if ($X != VOID) {
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						}
-
-						if ($X == VOID) {
+						} else  {
 							$X = NULL;
 						}
 
@@ -729,20 +661,11 @@ class pCharts {
 	/* Draw a line chart */
 	function drawZoneChart(string $SerieA, string $SerieB, array $Format = [])
 	{
-		$AxisID = 0;
-		$LineR = 150;
-		$LineG = 150;
-		$LineB = 150;
-		$LineAlpha = 50;
-		$LineTicks = 1;
-		$AreaR = 150;
-		$AreaG = 150;
-		$AreaB = 150;
-		$AreaAlpha = 5;
-		
-		/* Override defaults */
-		extract($Format);
-		
+		$AxisID = isset($Format["AxisID"]) ? $Format["AxisID"] : 0;
+		$LineColor = isset($Format["LineColor"]) ? $Format["LineColor"] : new pColor(150,150,150,50);
+		$LineTicks = isset($Format["LineTicks"]) ? $Format["LineTicks"] : 1;
+		$AreaColor = isset($Format["AreaColor"]) ? $Format["AreaColor"] : new pColor(150,150,150,5);
+				
 		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		if (!isset($Data["Series"][$SerieA]["Data"]) || !isset($Data["Series"][$SerieB]["Data"])) {
@@ -782,10 +705,10 @@ class pCharts {
 			}
 
 			$Bounds = array_merge($BoundsA, $this->myPicture->reversePlots($BoundsB));
-			$this->drawPolygonChart($Bounds, ["R" => $AreaR,"G" => $AreaG,"B" => $AreaB,"Alpha" => $AreaAlpha]);
+			$this->drawPolygonChart($Bounds, ["Color" => $AreaColor]);
 			for ($i = 0; $i <= count($BoundsA) - 4; $i = $i + 2) {
-				$this->myPicture->drawLine($BoundsA[$i], $BoundsA[$i + 1], $BoundsA[$i + 2], $BoundsA[$i + 3], ["R" => $LineR,"G" => $LineG,"B" => $LineB,"Alpha" => $LineAlpha,"Ticks" => $LineTicks]);
-				$this->myPicture->drawLine($BoundsB[$i], $BoundsB[$i + 1], $BoundsB[$i + 2], $BoundsB[$i + 3], ["R" => $LineR,"G" => $LineG,"B" => $LineB,"Alpha" => $LineAlpha,"Ticks" => $LineTicks]);
+				$this->myPicture->drawLine($BoundsA[$i], $BoundsA[$i + 1], $BoundsA[$i + 2], $BoundsA[$i + 3], ["Color" => $LineColor,"Ticks" => $LineTicks]);
+				$this->myPicture->drawLine($BoundsB[$i], $BoundsB[$i + 1], $BoundsB[$i + 2], $BoundsB[$i + 3], ["Color" => $LineColor,"Ticks" => $LineTicks]);
 			}
 		} else {
 
@@ -804,10 +727,10 @@ class pCharts {
 			}
 
 			$Bounds = array_merge($BoundsA, $this->myPicture->reversePlots($BoundsB));
-			$this->drawPolygonChart($Bounds, ["R" => $AreaR,"G" => $AreaG,"B" => $AreaB,"Alpha" => $AreaAlpha]);
+			$this->drawPolygonChart($Bounds, ["Color" => $AreaColor]);
 			for ($i = 0; $i <= count($BoundsA) - 4; $i = $i + 2) {
-				$this->myPicture->drawLine($BoundsA[$i], $BoundsA[$i + 1], $BoundsA[$i + 2], $BoundsA[$i + 3], ["R" => $LineR,"G" => $LineG,"B" => $LineB,"Alpha" => $LineAlpha,"Ticks" => $LineTicks]);
-				$this->myPicture->drawLine($BoundsB[$i], $BoundsB[$i + 1], $BoundsB[$i + 2], $BoundsB[$i + 3], ["R" => $LineR,"G" => $LineG,"B" => $LineB,"Alpha" => $LineAlpha,"Ticks" => $LineTicks]);
+				$this->myPicture->drawLine($BoundsA[$i], $BoundsA[$i + 1], $BoundsA[$i + 2], $BoundsA[$i + 3], ["Color" => $LineColor,"Ticks" => $LineTicks]);
+				$this->myPicture->drawLine($BoundsB[$i], $BoundsB[$i + 1], $BoundsB[$i + 2], $BoundsB[$i + 3], ["Color" => $LineColor,"Ticks" => $LineTicks]);
 			}
 		}
 	}
@@ -818,15 +741,11 @@ class pCharts {
 		$BreakVoid = FALSE;
 		$ReCenter = TRUE;
 		$VoidTicks = 4;
-		$BreakR = NULL;
-		$BreakG = NULL;
-		$BreakB = NULL;
+		$BreakColor = NULL; # Same Alpha as $Color
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
-		$DisplayColor = DISPLAY_MANUAL;
-		$DisplayR = 0;
-		$DisplayG = 0;
-		$DisplayB = 0;
+		$DisplayType = DISPLAY_MANUAL;
+		$DisplayColor = new pColor(0,0,0);
 		$RecordImageMap = FALSE;
 		$ImageMapPlotSize = 5;
 		
@@ -838,31 +757,26 @@ class pCharts {
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		
 		foreach($Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
-				$R = $Serie["Color"]["R"];
-				$G = $Serie["Color"]["G"];
-				$B = $Serie["Color"]["B"];
-				$Alpha = $Serie["Color"]["Alpha"];
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
+				$Color = $Serie["Color"];
 				$Ticks = $Serie["Ticks"];
 				$Weight = $Serie["Weight"];
 
-				if ($BreakR == NULL) {
-					$BreakSettings = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $VoidTicks,"Weight" => $Weight];
+				if (is_null($BreakColor)) {
+					$BreakSettings = ["Color" => $Color,"Ticks" => $VoidTicks,"Weight" => $Weight];
 				} else {
-					$BreakSettings = ["R" => $BreakR,"G" => $BreakG,"B" => $BreakB,"Alpha" => $Alpha,"Ticks" => $VoidTicks,"Weight" => $Weight];
+					$BreakSettings = ["Color" => $BreakColor,"Ticks" => $VoidTicks,"Weight" => $Weight];
 				}
 
-				if ($DisplayColor == DISPLAY_AUTO) {
-					$DisplayR = $R;
-					$DisplayG = $G;
-					$DisplayB = $B;
+				if ($DisplayType == DISPLAY_AUTO) {
+					$DisplayColor = $Color;
 				}
 
 				$AxisID = $Serie["Axis"];
 				$Mode = $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
-				$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight];
+				$LineSettings = ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
@@ -874,7 +788,7 @@ class pCharts {
 				
 				if ($RecordImageMap) {
 					$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
-					$ImageMapColor = $this->myPicture->toHTMLColor($R, $G, $B);			
+					$ImageMapColor = $Color->toHTMLColor();			
 				}
 				
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
@@ -893,14 +807,14 @@ class pCharts {
 								$Offset = - $DisplayOffset;
 							}
 
-							$this->myPicture->drawText($X, $Y - $Offset - $Weight, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => $Align]);
+							$this->myPicture->drawText($X, $Y - $Offset - $Weight, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => $Align]);
 						}
 
-						if ($Y != VOID && $LastX != NULL && $LastY != NULL) {
-							$this->myPicture->drawLine($LastX, $LastY, $X, $LastY, $Color);
-							$this->myPicture->drawLine($X, $LastY, $X, $Y, $Color);
+						if ($Y != VOID && !is_null($LastX) && !is_null($LastY)) {
+							$this->myPicture->drawLine($LastX, $LastY, $X, $LastY, $LineSettings);
+							$this->myPicture->drawLine($X, $LastY, $X, $Y, $LineSettings);
 							if ($ReCenter && $X + $XStep < $this->myPicture->GraphAreaX2 - $XMargin) {
-								$this->myPicture->drawLine($X, $Y, $X + $XStep, $Y, $Color);
+								$this->myPicture->drawLine($X, $Y, $X + $XStep, $Y, $LineSettings);
 								if ($RecordImageMap) {
 									$this->myPicture->addToImageMap("RECT", floor($X - $ImageMapPlotSize) . "," . floor($Y - $ImageMapPlotSize) . "," . floor($X + $XStep + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 								}
@@ -911,7 +825,7 @@ class pCharts {
 							}
 						}
 
-						if ($Y != VOID && $LastY == NULL && $LastGoodY != NULL && !$BreakVoid) {
+						if ($Y != VOID && is_null($LastY) && !is_null($LastGoodY) && !$BreakVoid) {
 							if ($ReCenter) {
 								$this->myPicture->drawLine($LastGoodX + $XStep, $LastGoodY, $X, $LastGoodY, $BreakSettings);
 								if ($RecordImageMap) {
@@ -927,7 +841,7 @@ class pCharts {
 							$this->myPicture->drawLine($X, $LastGoodY, $X, $Y, $BreakSettings);
 							$LastGoodY = NULL;
 							
-						} elseif (!$BreakVoid && $LastGoodY == NULL && $Y != VOID) {
+						} elseif (!$BreakVoid && is_null($LastGoodY) && $Y != VOID) {
 							$this->myPicture->drawLine($this->myPicture->GraphAreaX1 + $XMargin, $Y, $X, $Y, $BreakSettings);
 							if ($RecordImageMap) {
 								$this->myPicture->addToImageMap("RECT", floor($this->myPicture->GraphAreaX1 + $XMargin - $ImageMapPlotSize) . "," . floor($Y - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
@@ -937,9 +851,7 @@ class pCharts {
 						if ($Y != VOID) {
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						}
-
-						if ($Y == VOID) {
+						} else {
 							$Y = NULL;
 						}
 
@@ -954,11 +866,11 @@ class pCharts {
 							$LastX = $this->myPicture->GraphAreaX1 + $XMargin;
 						}
 
-						$X = $X + $XStep;
+						$X += $XStep;
 					}
 
 					if ($ReCenter) {
-						$this->myPicture->drawLine($LastX, $LastY, $this->myPicture->GraphAreaX2 - $XMargin, $LastY, $Color);
+						$this->myPicture->drawLine($LastX, $LastY, $this->myPicture->GraphAreaX2 - $XMargin, $LastY, $LineSettings);
 						if ($RecordImageMap) {
 							$this->myPicture->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($this->myPicture->GraphAreaX2 - $XMargin + $ImageMapPlotSize) . "," . floor($LastY + $ImageMapPlotSize), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
@@ -978,19 +890,19 @@ class pCharts {
 								$Offset = - $DisplayOffset;
 							}
 
-							$this->myPicture->drawText($X + $Offset + $Weight, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => $Align]);
+							$this->myPicture->drawText($X + $Offset + $Weight, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => $Align]);
 						}
 
-						if ($X != VOID && $LastX != NULL && $LastY != NULL) {
-							$this->myPicture->drawLine($LastX, $LastY, $LastX, $Y, $Color);
-							$this->myPicture->drawLine($LastX, $Y, $X, $Y, $Color);
+						if ($X != VOID && !is_null($LastX) && !is_null($LastY)) {
+							$this->myPicture->drawLine($LastX, $LastY, $LastX, $Y, $LineSettings);
+							$this->myPicture->drawLine($LastX, $Y, $X, $Y, $LineSettings);
 							if ($RecordImageMap) {
 								$this->myPicture->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($LastX + $XStep + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 						}
 
-						if ($X != VOID && $LastX == NULL && $LastGoodY != NULL && !$BreakVoid) {
-							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $LastGoodX, $LastGoodY + $XStep, $Color);
+						if ($X != VOID && is_null($LastX) && !is_null($LastGoodY) && !$BreakVoid) {
+							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $LastGoodX, $LastGoodY + $XStep, $LineSettings);
 							if ($RecordImageMap) {
 								$this->myPicture->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($LastGoodX + $ImageMapPlotSize) . "," . floor($LastGoodY + $XStep + $ImageMapPlotSize), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
@@ -1002,7 +914,7 @@ class pCharts {
 
 							$this->myPicture->drawLine($LastGoodX, $Y, $X, $Y, $BreakSettings);
 							$LastGoodY = NULL;
-						} elseif ($X != VOID && $LastGoodY == NULL && !$BreakVoid) {
+						} elseif ($X != VOID && is_null($LastGoodY) && !$BreakVoid) {
 							$this->myPicture->drawLine($X, $this->myPicture->GraphAreaY1 + $XMargin, $X, $Y, $BreakSettings);
 							if ($RecordImageMap) {
 								$this->myPicture->addToImageMap("RECT", floor($X - $ImageMapPlotSize) . "," . floor($this->myPicture->GraphAreaY1 + $XMargin - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
@@ -1027,11 +939,11 @@ class pCharts {
 							$LastY = $this->myPicture->GraphAreaY1 + $XMargin;
 						}
 
-						$Y = $Y + $XStep;
+						$Y += $XStep;
 					}
 
 					if ($ReCenter) {
-						$this->myPicture->drawLine($LastX, $LastY, $LastX, $this->myPicture->GraphAreaY2 - $XMargin, $Color);
+						$this->myPicture->drawLine($LastX, $LastY, $LastX, $this->myPicture->GraphAreaY2 - $XMargin, $LineSettings);
 						if ($RecordImageMap) {
 							$this->myPicture->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($LastX + $ImageMapPlotSize) . "," . floor($this->myPicture->GraphAreaY2 - $XMargin + $ImageMapPlotSize), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
@@ -1047,11 +959,9 @@ class pCharts {
 		$ReCenter = TRUE;
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
-		$DisplayColor = DISPLAY_MANUAL;
+		$DisplayType = DISPLAY_MANUAL;
 		$ForceTransparency = NULL;
-		$DisplayR = 0;
-		$DisplayG = 0;
-		$DisplayB = 0;
+		$DisplayColor = new pColor(0,0,0);
 		$AroundZero = TRUE;
 		
 		/* Override defaults */
@@ -1061,25 +971,22 @@ class pCharts {
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
-				$R = $Serie["Color"]["R"];
-				$G = $Serie["Color"]["G"];
-				$B = $Serie["Color"]["B"];
-				$Alpha = $Serie["Color"]["Alpha"];
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
+				$Color = $Serie["Color"];
 				$Ticks = $Serie["Ticks"];
 				$Weight = $Serie["Weight"];
-				if ($DisplayColor == DISPLAY_AUTO) {
-					$DisplayR = $R;
-					$DisplayG = $G;
-					$DisplayB = $B;
+				if ($DisplayType == DISPLAY_AUTO) {
+					$DisplayColor = $Color;
 				}
 
 				$AxisID = $Serie["Axis"];
 				$Mode = $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
-				$Color = ["R" => $R,"G" => $G,"B" => $B];
-				$Color["Alpha"] = ($ForceTransparency != NULL) ? $ForceTransparency : $Alpha;
+				if (!is_null($ForceTransparency)) {
+					$Color->Alpha = $ForceTransparency;
+				}
+				$PolygonSettings = ["Color" => $Color];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
@@ -1110,18 +1017,18 @@ class pCharts {
 					
 					foreach($PosArray as $Y) {
 
-						if ($Y == VOID && $LastX != NULL && $LastY != NULL && (!empty($Points))) {
+						if ($Y == VOID && (!is_null($LastX)) && (!is_null($LastY)) && (!empty($Points))) {
 							$Points[] = $LastX;
 							$Points[] = $LastY;
 							$Points[] = $X;
 							$Points[] = $LastY;
 							$Points[] = $X;
 							$Points[] = $YZero;
-							$this->myPicture->drawPolygon($Points, $Color);
+							$this->myPicture->drawPolygon($Points, $PolygonSettings);
 							$Points = [];
 						}
 
-						if ($Y != VOID && $LastX != NULL && $LastY != NULL) {
+						if ($Y != VOID && (!is_null($LastX)) && (!is_null($LastY))) {
 
 							if (empty($Points)) {
 								$Points[] = $LastX;
@@ -1154,7 +1061,7 @@ class pCharts {
 							$LastX = $this->myPicture->GraphAreaX1 + $XMargin;
 						}
 
-						$X = $X + $XStep;
+						$X += $XStep;
 					}
 
 					if ($ReCenter) {
@@ -1165,7 +1072,7 @@ class pCharts {
 						$Points[] = $YZero;
 					}
 
-					$this->myPicture->drawPolygon($Points, $Color);
+					$this->myPicture->drawPolygon($Points, $PolygonSettings);
 					
 				} else {
 					if ($YZero < $this->myPicture->GraphAreaX1 + 1) {
@@ -1180,18 +1087,18 @@ class pCharts {
 
 					foreach($PosArray as $X) {
 
-						if ($X == VOID && $LastX != NULL && $LastY != NULL && (!empty($Points))) {
+						if ($X == VOID && (!is_null($LastX)) && (!is_null($LastY)) && (!empty($Points))) {
 							$Points[] = $LastX;
 							$Points[] = $LastY;
 							$Points[] = $LastX;
 							$Points[] = $Y;
 							$Points[] = $YZero;
 							$Points[] = $Y;
-							$this->myPicture->drawPolygon($Points, $Color);
+							$this->myPicture->drawPolygon($Points, $PolygonSettings);
 							$Points = [];
 						}
 
-						if ($X != VOID && $LastX != NULL && $LastY != NULL) {
+						if ($X != VOID && (!is_null($LastX)) && (!is_null($LastY))) {
 							(empty($Points)) AND $Points = [$YZero, $LastY];
 							$Points[] = $LastX; 
 							$Points[] = $LastY;
@@ -1208,7 +1115,7 @@ class pCharts {
 							$X = NULL;
 						}
 
-						if ($LastX == NULL && $ReCenter) {
+						if (is_null($LastX) && $ReCenter) {
 							$Y = $Y - $XStep / 2;
 						}
 
@@ -1218,7 +1125,7 @@ class pCharts {
 							$LastY = $this->myPicture->GraphAreaY1 + $XMargin;
 						}
 
-						$Y = $Y + $XStep;
+						$Y += $XStep;
 					}
 
 					if ($ReCenter) {
@@ -1231,7 +1138,7 @@ class pCharts {
 						$Points[] = $LastY;
 					}
 
-					$this->myPicture->drawPolygon($Points, $Color);
+					$this->myPicture->drawPolygon($Points, $PolygonSettings);
 				}
 			}
 		}
@@ -1242,10 +1149,8 @@ class pCharts {
 	{
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
-		$DisplayColor = DISPLAY_MANUAL;
-		$DisplayR = 0;
-		$DisplayG = 0;
-		$DisplayB = 0;
+		$DisplayType = DISPLAY_MANUAL;
+		$DisplayColor = new pColor(0,0,0);
 		$ForceTransparency = 25;
 		$AroundZero = TRUE;
 		$Threshold = [];
@@ -1257,16 +1162,11 @@ class pCharts {
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
-				$R = $Serie["Color"]["R"];
-				$G = $Serie["Color"]["G"];
-				$B = $Serie["Color"]["B"];
-				$Alpha = $Serie["Color"]["Alpha"];
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
+				$Color = $Serie["Color"];
 				$Ticks = $Serie["Ticks"];
-				if ($DisplayColor == DISPLAY_AUTO) {
-					$DisplayR = $R;
-					$DisplayG = $G;
-					$DisplayB = $B;
+				if ($DisplayType == DISPLAY_AUTO) {
+					$DisplayColor = $Color;
 				}
 
 				$AxisID = $Serie["Axis"];
@@ -1308,11 +1208,11 @@ class pCharts {
 								$Offset = - $DisplayOffset;
 							}
 
-							$this->myPicture->drawText($X, $Y - $Offset, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => $Align]);
+							$this->myPicture->drawText($X, $Y - $Offset, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => $Align]);
 						}
 
 						if ($Y == VOID && isset($Areas[$AreaID])) {
-							$Areas[$AreaID][] = ($LastX == NULL) ? $X : $LastX;
+							$Areas[$AreaID][] = (is_null($LastX)) ? $X : $LastX;
 							$Areas[$AreaID][] = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
 							$AreaID++;
 						} elseif ($Y != VOID) {
@@ -1343,15 +1243,14 @@ class pCharts {
 						}
 
 						foreach($ShadowArea as $Points) {
-							$this->drawPolygonChart($Points, ["R" => $this->myPicture->ShadowR,"G" => $this->myPicture->ShadowG,"B" => $this->myPicture->ShadowB,"Alpha" => $this->myPicture->Shadowa]);
+							$this->drawPolygonChart($Points, ["Color" => $this->myPicture->ShadowColor]);
 						}
 					}
 
-					$Alpha = $ForceTransparency != NULL ? $ForceTransparency : $Alpha;
-					$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Threshold" => $Threshold];
+					(!is_null($ForceTransparency)) AND $Color->AlphaSet($ForceTransparency);
 					
 					foreach($Areas as $Points){
-						$this->drawPolygonChart($Points, $Color);
+						$this->drawPolygonChart($Points, ["Color" => $Color,"Threshold" => $Threshold]);
 					}
 					
 				} else {
@@ -1382,12 +1281,12 @@ class pCharts {
 								$Offset = - $DisplayOffset;
 							}
 
-							$this->myPicture->drawText($X + $Offset, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),["Angle" => 270,"R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => $Align]);
+							$this->myPicture->drawText($X + $Offset, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),["Angle" => 270,"Color" => $DisplayColor,"Align" => $Align]);
 						}
 
 						if ($X == VOID && isset($Areas[$AreaID])) {
 							$Areas[$AreaID][] = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
-							$Areas[$AreaID][] = ($LastY == NULL) ? $Y : $LastY;
+							$Areas[$AreaID][] = (is_null($LastY)) ? $Y : $LastY;
 							$AreaID++;
 						} elseif ($X != VOID) {
 							if (!isset($Areas[$AreaID])) {
@@ -1418,14 +1317,13 @@ class pCharts {
 						}
 
 						foreach($ShadowArea as $Key => $Points) {
-							$this->drawPolygonChart($Points, ["R" => $this->myPicture->ShadowR,"G" => $this->myPicture->ShadowG,"B" => $this->myPicture->ShadowB,"Alpha" => $this->myPicture->Shadowa]);
+							$this->drawPolygonChart($Points, ["Color" => $this->myPicture->ShadowColor]);
 						}
 					}
 
-					$Alpha = $ForceTransparency != NULL ? $ForceTransparency : $Alpha;
-					$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Threshold" => $Threshold];
+					(!is_null($ForceTransparency)) AND $Color->AlphaSet($ForceTransparency);
 					foreach($Areas as $Points) {
-						$this->drawPolygonChart($Points, $Color);
+						$this->drawPolygonChart($Points, ["Color" => $Color,"Threshold" => $Threshold]);
 					}
 				}
 			}
@@ -1441,48 +1339,45 @@ class pCharts {
 		$DisplayValues = FALSE;
 		$DisplayOrientation = ORIENTATION_HORIZONTAL;
 		$DisplayOffset = 2;
-		$DisplayColor = DISPLAY_MANUAL;
-		$DisplayFont = isset($Format["DisplaySize"]) ? $Format["DisplaySize"] : $this->myPicture->FontName; # Momchil: Probably a bug
+		$DisplayType = DISPLAY_MANUAL;
+		$DisplayFont = $this->myPicture->FontName; 
 		$DisplaySize = $this->myPicture->FontSize;
 		$DisplayPos = LABEL_POS_OUTSIDE;
 		$DisplayShadow = TRUE;
-		$DisplayR = 0;
-		$DisplayG = 0;
-		$DisplayB = 0;
+		$DisplayColor = NULL;
 		$AroundZero = TRUE;
 		$Interleave = .5;
 		$Rounded = FALSE;
 		$RoundRadius = 4;
 		$Surrounding = NULL;
-		$BorderR = -1;
-		$BorderG = -1;
-		$BorderB = -1;
+		$BorderColor = NULL;
 		$Gradient = FALSE;
 		$GradientMode = GRADIENT_SIMPLE;
-		$GradientAlpha = 20;
-		$GradientStartR = 255;
-		$GradientStartG = 255;
-		$GradientStartB = 255;
-		$GradientEndR = 0;
-		$GradientEndG = 0;
-		$GradientEndB = 0;
+		$GradientStartColor = new pColor(255,255,255,20);
+		$GradientEndColor = new pColor(0,0,0,20);
 		$TxtMargin = 6;
 		$OverrideColors = [];
 		$OverrideSurrounding = 30;
 		$InnerSurrounding = NULL;
-		$InnerBorderR = -1;
-		$InnerBorderG = -1;
-		$InnerBorderB = -1;
+		$InnerBorderColor = NULL;
 		$RecordImageMap = FALSE;
 		
 		/* Override defaults */
 		extract($Format);
 		
+		if (is_null($DisplayColor)){
+			$DisplayColor = new pColor(0,0,0);
+		}
+		
 		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		if (!empty($OverrideColors)) {
-			$OverrideColors = $this->validatePalette($OverrideColors, $OverrideSurrounding);
+			if (!is_null($OverrideSurrounding)){
+				foreach($OverrideColors as $C){
+					$C->RGBChange($OverrideSurrounding);
+				}
+			}
 			$this->myPicture->myData->saveExtendedData("Palette", $OverrideColors);
 		}
 
@@ -1490,39 +1385,30 @@ class pCharts {
 		$SeriesCount = $this->myPicture->myData->countDrawableSeries();
 		$CurrentSerie = 0;
 		foreach($Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
-				$R = $Serie["Color"]["R"];
-				$G = $Serie["Color"]["G"];
-				$B = $Serie["Color"]["B"];
-				$Alpha = $Serie["Color"]["Alpha"];
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
+				$Color = $Serie["Color"];
 				$Ticks = $Serie["Ticks"];
-				if ($DisplayColor == DISPLAY_AUTO) {
-					$DisplayR = $R;
-					$DisplayG = $G;
-					$DisplayB = $B;
+				if ($DisplayType == DISPLAY_AUTO) {
+					$DisplayColor = $Color;
 				}
 
-				if ($Surrounding != NULL) {
-					$BorderR = $R + $Surrounding;
-					$BorderG = $G + $Surrounding;
-					$BorderB = $B + $Surrounding;
+				if (!is_null($Surrounding)) {
+					$BorderColor = $Color->newOne()->RGBChange($Surrounding);
 				}
 
-				if ($InnerSurrounding != NULL) {
-					$InnerBorderR = $R + $InnerSurrounding;
-					$InnerBorderG = $G + $InnerSurrounding;
-					$InnerBorderB = $B + $InnerSurrounding;
+				if (!is_null($InnerSurrounding)) {
+					$InnerBorderColor = $Color->newOne()->RGBChange($InnerSurrounding);
 				}
 
-				$InnerColor = ($InnerBorderR == - 1) ? NULL : ["R" => $InnerBorderR,"G" => $InnerBorderG,"B" => $InnerBorderB];
-				$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"BorderR" => $BorderR,"BorderG" => $BorderG,"BorderB" => $BorderB];
+				$InnerColor = (is_null($InnerBorderColor)) ? NULL : ["Color" => $InnerBorderColor];
+				$Settings = ["Color" => $Color,"BorderColor" => $BorderColor];
 				$AxisID = $Serie["Axis"];
 				$Mode = $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
-				$Floating0Value = ($Floating0Value != NULL) ? $Floating0Value : 0;
+				$Floating0Value = (!is_null($Floating0Value)) ? $Floating0Value : 0;
 				$YZero = $this->myPicture->scaleComputeYSingle($Floating0Value, $Serie["Axis"]);
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
@@ -1544,11 +1430,11 @@ class pCharts {
 					}
 
 					$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = $XOffset + $XSize / 2;
-					$XSpace = ($Rounded || $BorderR != - 1) ? 1 : 0;
+					$XSpace = ($Rounded || !is_null($BorderColor)) ? 1 : 0;
 					
 					$ID = 0;
 					foreach($PosArray as $Key => $Y2) {
-						if ($Floating0Serie != NULL) {
+						if (!is_null($Floating0Serie)) {
 							$Value = (isset($Data["Series"][$Floating0Serie]["Data"][$Key])) ? $Data["Series"][$Floating0Serie]["Data"][$Key] : 0;
 							$YZero = $this->myPicture->scaleComputeYSingle($Value, $Serie["Axis"]);
 							($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
@@ -1556,31 +1442,34 @@ class pCharts {
 							$Y1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
 						}
 
-						if ($OverrideColors != NULL) {
+						if (!empty($OverrideColors)) {
 							if (isset($OverrideColors[$ID])) {
-								$Color = ["R" => $OverrideColors[$ID]["R"],"G" => $OverrideColors[$ID]["G"],"B" => $OverrideColors[$ID]["B"],"Alpha" => $OverrideColors[$ID]["Alpha"],"BorderR" => $OverrideColors[$ID]["BorderR"],"BorderG" => $OverrideColors[$ID]["BorderG"],"BorderB" => $OverrideColors[$ID]["BorderB"]];
+								$Settings = ["Color" => $OverrideColors[$ID]];
+								if (isset($OverrideColor["BorderColor"])){ # No unit test
+									$Settings["BorderColor"] = $OverrideColor["BorderColor"];
+								}
 							} else {
-								$Color = $this->myPicture->getRandomColor();
+								$Settings = ["Color" => $this->myPicture->myData->getRandomColor()];
 							}
 						}
 
 						if ($Y2 != VOID) {
 							$BarHeight = $Y1 - $Y2;
 							if ($Serie["Data"][$Key] == 0) {
-								$this->myPicture->drawLine($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y1, $Color);
+								$this->myPicture->drawLine($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y1, $Settings);
 								if ($RecordImageMap) {
-									$this->myPicture->addToImageMap("RECT", floor($X + $XOffset + $XSpace) . "," . floor($Y1 - 1) . "," . floor($X + $XOffset + $XSize - $XSpace) . "," . floor($Y1 + 1), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+									$this->myPicture->addToImageMap("RECT", floor($X + $XOffset + $XSpace) . "," . floor($Y1 - 1) . "," . floor($X + $XOffset + $XSize - $XSpace) . "," . floor($Y1 + 1), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 								}
 							} else {
 								if ($RecordImageMap) {
-									$this->myPicture->addToImageMap("RECT", floor($X + $XOffset + $XSpace) . "," . floor($Y1) . "," . floor($X + $XOffset + $XSize - $XSpace) . "," . floor($Y2), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+									$this->myPicture->addToImageMap("RECT", floor($X + $XOffset + $XSpace) . "," . floor($Y1) . "," . floor($X + $XOffset + $XSize - $XSpace) . "," . floor($Y2), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 								}
 
 								if ($Rounded){
-									$this->myPicture->drawRoundedFilledRectangle($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y2, $RoundRadius, $Color);
+									$this->myPicture->drawRoundedFilledRectangle($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y2, $RoundRadius, $Settings);
 								} else {
-									$this->myPicture->drawFilledRectangle($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y2, $Color);
-									if ($InnerColor != NULL) {
+									$this->myPicture->drawFilledRectangle($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y2, $Settings);
+									if (!is_null($InnerColor)) {
 										$this->myPicture->drawRectangle($X + $XOffset + $XSpace + 1, min($Y1, $Y2) + 1, $X + $XOffset + $XSize - $XSpace - 1, max($Y1, $Y2) - 1, $InnerColor);
 									}
 
@@ -1588,17 +1477,15 @@ class pCharts {
 										$this->myPicture->Shadow = FALSE;
 										if ($GradientMode == GRADIENT_SIMPLE) {
 											if ($Serie["Data"][$Key] >= 0) {
-												$GradienColor = ["StartR" => $GradientStartR,"StartG" => $GradientStartG,"StartB" => $GradientStartB,"EndR" => $GradientEndR,"EndG" => $GradientEndG,"EndB" => $GradientEndB,"Alpha" => $GradientAlpha];
+												$GradienColor = ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor];
 											} else {
-												$GradienColor = ["StartR" => $GradientEndR,"StartG" => $GradientEndG,"StartB" => $GradientEndB,"EndR" => $GradientStartR,"EndG" => $GradientStartG,"EndB" => $GradientStartB,"Alpha" => $GradientAlpha];
+												$GradienColor = ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor];
 											}
 											$this->myPicture->drawGradientArea($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y2, DIRECTION_VERTICAL, $GradienColor);
 										} elseif ($GradientMode == GRADIENT_EFFECT_CAN) {
-											$GradienColor1 = ["StartR" => $GradientEndR,"StartG" => $GradientEndG,"StartB" => $GradientEndB,"EndR" => $GradientStartR,"EndG" => $GradientStartG,"EndB" => $GradientStartB,"Alpha" => $GradientAlpha];
-											$GradienColor2 = ["StartR" => $GradientStartR,"StartG" => $GradientStartG,"StartB" => $GradientStartB,"EndR" => $GradientEndR,"EndG" => $GradientEndG,"EndB" => $GradientEndB,"Alpha" => $GradientAlpha];
-											$XSpan = floor($XSize / 3);
-											$this->myPicture->drawGradientArea($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSpan - $XSpace, $Y2, DIRECTION_HORIZONTAL, $GradienColor1);
-											$this->myPicture->drawGradientArea($X + $XOffset + $XSpan + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y2, DIRECTION_HORIZONTAL, $GradienColor2);
+											$XSpan = floor($XSize / 3);	
+											$this->myPicture->drawGradientArea($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSpan - $XSpace, $Y2, DIRECTION_HORIZONTAL, ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor]);
+											$this->myPicture->drawGradientArea($X + $XOffset + $XSpan + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y2, DIRECTION_HORIZONTAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 										}
 
 										$this->myPicture->Shadow = $RestoreShadow;
@@ -1606,7 +1493,7 @@ class pCharts {
 								}
 
 								if ($Draw0Line) {
-									$Line0Color = ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 20];
+									$Line0Color = ["Color" => new pColor(0,0,0,20)];
 									$Line0Width = (abs($Y1 - $Y2) > 3) ? 3 : 1;
 									($Y1 - $Y2 < 0) AND $Line0Width = - $Line0Width;
 									$this->myPicture->drawFilledRectangle($X + $XOffset + $XSpace, floor($Y1), $X + $XOffset + $XSize - $XSpace, floor($Y1) - $Line0Width, $Line0Color);
@@ -1622,7 +1509,7 @@ class pCharts {
 								if ($DisplayPos == LABEL_POS_INSIDE && abs($TxtHeight) < abs($BarHeight)) {
 									$CenterX = (($X + $XOffset + $XSize - $XSpace) - ($X + $XOffset + $XSpace)) / 2 + $X + $XOffset + $XSpace;
 									$CenterY = ($Y2 - $Y1) / 2 + $Y1;
-									$this->myPicture->drawText($CenterX, $CenterY, $Caption, ["R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"Angle" => 90]);
+									$this->myPicture->drawText($CenterX, $CenterY, $Caption, ["Color" => $DisplayColor,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"Angle" => 90]);
 								} else {
 									if ($Serie["Data"][$Key] >= 0) {
 										$Align = TEXT_ALIGN_BOTTOMMIDDLE;
@@ -1631,8 +1518,7 @@ class pCharts {
 										$Align = TEXT_ALIGN_TOPMIDDLE;
 										$Offset = - $DisplayOffset;
 									}
-
-									$this->myPicture->drawText($X + $XOffset + $XSize / 2, $Y2 - $Offset, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => $Align,"FontSize" => $DisplaySize]);
+									$this->myPicture->drawText($X + $XOffset + $XSize / 2, $Y2 - $Offset, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => $Align,"FontSize" => $DisplaySize]);
 								}
 
 								$this->myPicture->Shadow = $RestoreShadow;
@@ -1663,11 +1549,11 @@ class pCharts {
 					}
 
 					$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = $YOffset + $YSize / 2;
-					$YSpace = ($Rounded || $BorderR != - 1) ? 1 : 0;
+					$YSpace = ($Rounded || !is_null($BorderColor)) ? 1 : 0;
 					
 					$ID = 0;
 					foreach($PosArray as $Key => $X2) {
-						if ($Floating0Serie != NULL) {
+						if (!is_null($Floating0Serie)) {
 							$Value = (isset($Data["Series"][$Floating0Serie]["Data"][$Key])) ? $Data["Series"][$Floating0Serie]["Data"][$Key] : 0;
 							$YZero = $this->myPicture->scaleComputeYSingle($Value, $Serie["Axis"]);
 							($YZero < $this->myPicture->GraphAreaX1 + 1) AND $YZero = $this->myPicture->GraphAreaX1 + 1;
@@ -1675,31 +1561,34 @@ class pCharts {
 							$X1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
 						}
 
-						if ($OverrideColors != NULL) {
+						if (!empty($OverrideColors)) {
 							if (isset($OverrideColors[$ID])) {
-								$Color = ["R" => $OverrideColors[$ID]["R"],"G" => $OverrideColors[$ID]["G"],"B" => $OverrideColors[$ID]["B"],"Alpha" => $OverrideColors[$ID]["Alpha"],"BorderR" => $OverrideColors[$ID]["BorderR"],"BorderG" => $OverrideColors[$ID]["BorderG"],"BorderB" => $OverrideColors[$ID]["BorderB"]];
+								$Settings = ["Color" => $OverrideColors[$ID]];
+								if (isset($OverrideColor["BorderColor"])){ # No unit test
+									$Settings["BorderColor"] = $OverrideColor["BorderColor"];
+								}
 							} else {
-								$Color = $this->myPicture->getRandomColor();
+								$Settings = ["Color" => $this->myPicture->myData->getRandomColor()];
 							}
 						}
 
 						if ($X2 != VOID) {
 							$BarWidth = $X2 - $X1;
 							if ($Serie["Data"][$Key] == 0) {
-								$this->myPicture->drawLine($X1, $Y + $YOffset + $YSpace, $X1, $Y + $YOffset + $YSize - $YSpace, $Color);
+								$this->myPicture->drawLine($X1, $Y + $YOffset + $YSpace, $X1, $Y + $YOffset + $YSize - $YSpace, $Settings);
 								if ($RecordImageMap) {
-									$this->myPicture->addToImageMap("RECT", floor($X1 - 1) . "," . floor($Y + $YOffset + $YSpace) . "," . floor($X1 + 1) . "," . floor($Y + $YOffset + $YSize - $YSpace), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+									$this->myPicture->addToImageMap("RECT", floor($X1 - 1) . "," . floor($Y + $YOffset + $YSpace) . "," . floor($X1 + 1) . "," . floor($Y + $YOffset + $YSize - $YSpace), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 								}
 							} else {
 								if ($RecordImageMap) {
-									$this->myPicture->addToImageMap("RECT", floor($X1) . "," . floor($Y + $YOffset + $YSpace) . "," . floor($X2) . "," . floor($Y + $YOffset + $YSize - $YSpace), $this->myPicture->toHTMLColor($R, $G, $B), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+									$this->myPicture->addToImageMap("RECT", floor($X1) . "," . floor($Y + $YOffset + $YSpace) . "," . floor($X2) . "," . floor($Y + $YOffset + $YSize - $YSpace), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 								}
 
 								if ($Rounded) {
-									$this->myPicture->drawRoundedFilledRectangle($X1 + 1, $Y + $YOffset + $YSpace, $X2, $Y + $YOffset + $YSize - $YSpace, $RoundRadius, $Color);
+									$this->myPicture->drawRoundedFilledRectangle($X1 + 1, $Y + $YOffset + $YSpace, $X2, $Y + $YOffset + $YSize - $YSpace, $RoundRadius, $Settings);
 								} else {
-									$this->myPicture->drawFilledRectangle($X1, $Y + $YOffset + $YSpace, $X2, $Y + $YOffset + $YSize - $YSpace, $Color);
-									if ($InnerColor != NULL) {
+									$this->myPicture->drawFilledRectangle($X1, $Y + $YOffset + $YSpace, $X2, $Y + $YOffset + $YSize - $YSpace, $Settings);
+									if (!is_null($InnerColor)) {
 										$this->myPicture->drawRectangle(min($X1, $X2) + 1, $Y + $YOffset + $YSpace + 1, max($X1, $X2) - 1, $Y + $YOffset + $YSize - $YSpace - 1, $InnerColor);
 									}
 
@@ -1707,18 +1596,16 @@ class pCharts {
 										$this->myPicture->Shadow = FALSE;
 										if ($GradientMode == GRADIENT_SIMPLE) {
 											if ($Serie["Data"][$Key] >= 0) {
-												$GradienColor = ["StartR" => $GradientStartR,"StartG" => $GradientStartG,"StartB" => $GradientStartB,"EndR" => $GradientEndR,"EndG" => $GradientEndG,"EndB" => $GradientEndB,"Alpha" => $GradientAlpha];
+												$GradienColor = ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor];
 											} else {
-												$GradienColor = ["StartR" => $GradientEndR,"StartG" => $GradientEndG,"StartB" => $GradientEndB,"EndR" => $GradientStartR,"EndG" => $GradientStartG,"EndB" => $GradientStartB,"Alpha" => $GradientAlpha];
+												$GradienColor = ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor];
 											}
 
 											$this->myPicture->drawGradientArea($X1, $Y + $YOffset + $YSpace, $X2, $Y + $YOffset + $YSize - $YSpace, DIRECTION_HORIZONTAL, $GradienColor);
 										} elseif ($GradientMode == GRADIENT_EFFECT_CAN) {
-											$GradienColor1 = ["StartR" => $GradientEndR,"StartG" => $GradientEndG,"StartB" => $GradientEndB,"EndR" => $GradientStartR,"EndG" => $GradientStartG,"EndB" => $GradientStartB,"Alpha" => $GradientAlpha];
-											$GradienColor2 = ["StartR" => $GradientStartR,"StartG" => $GradientStartG,"StartB" => $GradientStartB,"EndR" => $GradientEndR,"EndG" => $GradientEndG,"EndB" => $GradientEndB,"Alpha" => $GradientAlpha];
 											$YSpan = floor($YSize / 3);
-											$this->myPicture->drawGradientArea($X1, $Y + $YOffset + $YSpace, $X2, $Y + $YOffset + $YSpan - $YSpace, DIRECTION_VERTICAL, $GradienColor1);
-											$this->myPicture->drawGradientArea($X1, $Y + $YOffset + $YSpan, $X2, $Y + $YOffset + $YSize - $YSpace, DIRECTION_VERTICAL, $GradienColor2);
+											$this->myPicture->drawGradientArea($X1, $Y + $YOffset + $YSpace, $X2, $Y + $YOffset + $YSpan - $YSpace, DIRECTION_VERTICAL, ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor]);
+											$this->myPicture->drawGradientArea($X1, $Y + $YOffset + $YSpan, $X2, $Y + $YOffset + $YSize - $YSpace, DIRECTION_VERTICAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 										}
 
 										$this->myPicture->Shadow = $RestoreShadow;
@@ -1726,7 +1613,7 @@ class pCharts {
 								}
 
 								if ($Draw0Line) {
-									$Line0Color = ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 20];
+									$Line0Color = new pColor(0,0,0,20);
 									$Line0Width = (abs($X1 - $X2) > 3) ? 3 : 1;
 									($X2 - $X1 < 0) AND $Line0Width = - $Line0Width;
 									$this->myPicture->drawFilledRectangle(floor($X1), $Y + $YOffset + $YSpace, floor($X1) + $Line0Width, $Y + $YOffset + $YSize - $YSpace, $Line0Color);
@@ -1742,7 +1629,7 @@ class pCharts {
 								if ($DisplayPos == LABEL_POS_INSIDE && abs($TxtWidth) < abs($BarWidth)) {
 									$CenterX = ($X2 - $X1) / 2 + $X1;
 									$CenterY = (($Y + $YOffset + $YSize - $YSpace) - ($Y + $YOffset + $YSpace)) / 2 + ($Y + $YOffset + $YSpace);
-									$this->myPicture->drawText($CenterX, $CenterY, $Caption, ["R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize]);
+									$this->myPicture->drawText($CenterX, $CenterY, $Caption, ["Color" => $DisplayColor,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize]);
 								} else {
 									if ($Serie["Data"][$Key] >= 0) {
 										$Align = TEXT_ALIGN_MIDDLELEFT;
@@ -1752,14 +1639,14 @@ class pCharts {
 										$Offset = - $DisplayOffset;
 									}
 
-									$this->myPicture->drawText($X2 + $Offset, $Y + $YOffset + $YSize / 2, $Caption, ["R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => $Align,"FontSize" => $DisplaySize]);
+									$this->myPicture->drawText($X2 + $Offset, $Y + $YOffset + $YSize / 2, $Caption, ["Color" => $DisplayColor,"Align" => $Align,"FontSize" => $DisplaySize]);
 								}
 
 								$this->myPicture->Shadow = $RestoreShadow;
 							}
 						}
 
-						$Y = $Y + $YStep;
+						$Y += $YStep;
 						$ID++;
 					}
 				}
@@ -1775,32 +1662,21 @@ class pCharts {
 		$DisplayValues = FALSE;
 		$DisplayOrientation = ORIENTATION_AUTO;
 		$DisplayRound = 0;
-		$DisplayColor = DISPLAY_MANUAL;
+		$DisplayType = DISPLAY_MANUAL;
 		$DisplayFont = $this->myPicture->FontName;
 		$DisplaySize = $this->myPicture->FontSize;
-		$DisplayR = 0;
-		$DisplayG = 0;
-		$DisplayB = 0;
+		$DisplayColor = new pColor(0,0,0);
 		$Interleave = .5;
 		$Rounded = FALSE;
 		$RoundRadius = 4;
 		$Surrounding = NULL;
-		$BorderR = -1;
-		$BorderG = -1;
-		$BorderB = -1;
+		$BorderColor = NULL;
 		$Gradient = FALSE;
 		$GradientMode = GRADIENT_SIMPLE;
-		$GradientAlpha = 20;
-		$GradientStartR = 255;
-		$GradientStartG = 255;
-		$GradientStartB = 255;
-		$GradientEndR = 0;
-		$GradientEndG = 0;
-		$GradientEndB = 0;
+		$GradientStartColor = new pColor(255,255,255,20);
+		$GradientEndColor = new pColor(0,0,0,20);
 		$InnerSurrounding = NULL;
-		$InnerBorderR = -1;
-		$InnerBorderG = -1;
-		$InnerBorderB = -1;
+		$InnerBorderColor = NULL;
 		$RecordImageMap = FALSE;
 		$FontFactor = 8;
 		
@@ -1814,31 +1690,22 @@ class pCharts {
 		$LastX = [];
 		$LastY = [];
 		foreach($Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
-				$R = $Serie["Color"]["R"];
-				$G = $Serie["Color"]["G"];
-				$B = $Serie["Color"]["B"];
-				$Alpha = $Serie["Color"]["Alpha"];
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
+				$Color = $Serie["Color"];
 				$Ticks = $Serie["Ticks"];
-				if ($DisplayColor == DISPLAY_AUTO) {
-					$DisplayR = 255;
-					$DisplayG = 255;
-					$DisplayB = 255;
+				if ($DisplayType == DISPLAY_AUTO) {
+					$DisplayColor = new pColor(255,255,255);
 				}
 
-				if ($Surrounding != NULL) {
-					$BorderR = $R + $Surrounding;
-					$BorderG = $G + $Surrounding;
-					$BorderB = $B + $Surrounding;
+				if (!is_null($Surrounding)) {
+					$BorderColor = $Color->newOne()->RGBChange($Surrounding);
 				}
 
-				if ($InnerSurrounding != NULL) {
-					$InnerBorderR = $R + $InnerSurrounding;
-					$InnerBorderG = $G + $InnerSurrounding;
-					$InnerBorderB = $B + $InnerSurrounding;
+				if (!is_null($InnerSurrounding)) {
+					$InnerBorderColor = $Color->newOne()->RGBChange($InnerSurrounding);
 				}
 
-				$InnerColor = ($InnerBorderR == - 1) ? NULL : ["R" => $InnerBorderR,"G" => $InnerBorderG,"B" => $InnerBorderB];
+				$InnerColor = (is_null($InnerBorderColor)) ? NULL : ["Color" => $InnerBorderColor];
 				$AxisID = $Serie["Axis"];
 				$Mode = $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
@@ -1846,11 +1713,11 @@ class pCharts {
 				$PosArray = $this->myPicture->scaleComputeY0HeightOnly($Serie["Data"], $Serie["Axis"]);
 				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
-				$Color = ["TransCorner" => TRUE,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"BorderR" => $BorderR,"BorderG" => $BorderG,"BorderB" => $BorderB];
+				$Color = ["TransCorner" => TRUE,"Color" => $Color,"BorderColor" => $BorderColor];
 				
 				if ($RecordImageMap) {
 					$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
-					$ImageMapColor = $this->myPicture->toHTMLColor($R, $G, $B);			
+					$ImageMapColor = $Color->toHTMLColor();			
 				}
 				
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
@@ -1872,8 +1739,8 @@ class pCharts {
 							
 							$Y1 = $LastY[$Key][$Pos];
 							$Y2 = $Y1 - $Height;
-							$YSpaceUp = (($Rounded || $BorderR != - 1) && ($Pos == "+" && $Y1 != $YZero)) ? 1 : 0;
-							$YSpaceDown = (($Rounded || $BorderR != - 1) && ($Pos == "-" && $Y1 != $YZero)) ? 1 : 0;
+							$YSpaceUp = (($Rounded || !is_null($BorderColor)) && ($Pos == "+" && $Y1 != $YZero)) ? 1 : 0;
+							$YSpaceDown = (($Rounded || !is_null($BorderColor)) && ($Pos == "-" && $Y1 != $YZero)) ? 1 : 0;
 
 							if ($RecordImageMap) {
 								$this->myPicture->addToImageMap("RECT", floor($X + $XOffset) . "," . floor($Y1 - $YSpaceUp + $YSpaceDown) . "," . floor($X + $XOffset + $XSize) . "," . floor($Y2), $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
@@ -1883,7 +1750,7 @@ class pCharts {
 								$this->myPicture->drawRoundedFilledRectangle($X + $XOffset, $Y1 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2, $RoundRadius, $Color);
 							} else {
 								$this->myPicture->drawFilledRectangle($X + $XOffset, $Y1 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2, $Color);
-								if ($InnerColor != NULL) {
+								if (!is_null($InnerColor)) {
 									$RestoreShadow = $this->myPicture->Shadow;
 									$this->myPicture->Shadow = FALSE;
 									$this->myPicture->drawRectangle(min($X + $XOffset + 1, $X + $XOffset + $XSize), min($Y1 - $YSpaceUp + $YSpaceDown, $Y2) + 1, max($X + $XOffset + 1, $X + $XOffset + $XSize) - 1, max($Y1 - $YSpaceUp + $YSpaceDown, $Y2) - 1, $InnerColor);
@@ -1893,14 +1760,11 @@ class pCharts {
 								if ($Gradient) {
 									$this->myPicture->Shadow = FALSE;
 									if ($GradientMode == GRADIENT_SIMPLE) {
-										$GradientColor = ["StartR" => $GradientStartR,"StartG" => $GradientStartG,"StartB" => $GradientStartB,"EndR" => $GradientEndR,"EndG" => $GradientEndG,"EndB" => $GradientEndB,"Alpha" => $GradientAlpha];
-										$this->myPicture->drawGradientArea($X + $XOffset, $Y1 - 1 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2 + 1, DIRECTION_VERTICAL, $GradientColor);
+										$this->myPicture->drawGradientArea($X + $XOffset, $Y1 - 1 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2 + 1, DIRECTION_VERTICAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 									} elseif ($GradientMode == GRADIENT_EFFECT_CAN) {
-										$GradientColor1 = ["StartR" => $GradientEndR,"StartG" => $GradientEndG,"StartB" => $GradientEndB,"EndR" => $GradientStartR,"EndG" => $GradientStartG,"EndB" => $GradientStartB,"Alpha" => $GradientAlpha];
-										$GradientColor2 = ["StartR" => $GradientStartR,"StartG" => $GradientStartG,"StartB" => $GradientStartB,"EndR" => $GradientEndR,"EndG" => $GradientEndG,"EndB" => $GradientEndB,"Alpha" => $GradientAlpha];
 										$XSpan = floor($XSize / 3);
-										$this->myPicture->drawGradientArea($X + $XOffset - .5, $Y1 - .5 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSpan, $Y2 + .5, DIRECTION_HORIZONTAL, $GradientColor1);
-										$this->myPicture->drawGradientArea($X + $XSpan + $XOffset - .5, $Y1 - .5 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2 + .5, DIRECTION_HORIZONTAL, $GradientColor2);
+										$this->myPicture->drawGradientArea($X + $XOffset - .5, $Y1 - .5 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSpan, $Y2 + .5, DIRECTION_HORIZONTAL, ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor]);
+										$this->myPicture->drawGradientArea($X + $XSpan + $XOffset - .5, $Y1 - .5 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2 + .5, DIRECTION_HORIZONTAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 									}
 
 									$this->myPicture->Shadow = $RestoreShadow;
@@ -1919,14 +1783,14 @@ class pCharts {
 								$Done = FALSE;
 								if ($DisplayOrientation == ORIENTATION_HORIZONTAL || $DisplayOrientation == ORIENTATION_AUTO) {
 									if ($TxtHeight < $BarHeight && $TxtWidth < $BarWidth) {
-										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
+										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
 										$Done = TRUE;
 									}
 								}
 
 								if ($DisplayOrientation == ORIENTATION_VERTICAL || ($DisplayOrientation == ORIENTATION_AUTO && !$Done)) {
 									if ($TxtHeight < $BarWidth && $TxtWidth < $BarHeight) {
-										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Angle" => 90,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
+										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Angle" => 90,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
 									}
 								}
 							}
@@ -1934,7 +1798,7 @@ class pCharts {
 							$LastY[$Key][$Pos] = $Y2;
 						}
 
-						$X = $X + $XStep;
+						$X += $XStep;
 					}
 				} else { # SCALE_POS_LEFTRIGHT
 				
@@ -1952,8 +1816,8 @@ class pCharts {
 							(!isset($LastX[$Key][$Pos])) AND $LastX[$Key][$Pos] = $YZero;
 							$X1 = $LastX[$Key][$Pos];
 							$X2 = $X1 + $Width;
-							$XSpaceLeft = (($Rounded || $BorderR != - 1) && ($Pos == "+" && $X1 != $YZero)) ? 2 : 0;
-							$XSpaceRight = (($Rounded || $BorderR != - 1) && ($Pos == "-" && $X1 != $YZero)) ? 2 : 0;
+							$XSpaceLeft = (($Rounded || !is_null($BorderColor)) && ($Pos == "+" && $X1 != $YZero)) ? 2 : 0;
+							$XSpaceRight = (($Rounded || !is_null($BorderColor)) && ($Pos == "-" && $X1 != $YZero)) ? 2 : 0;
 							
 							if ($RecordImageMap) {
 								$this->myPicture->addToImageMap("RECT", floor($X1 + $XSpaceLeft) . "," . floor($Y + $YOffset) . "," . floor($X2 - $XSpaceRight) . "," . floor($Y + $YOffset + $YSize), $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
@@ -1963,7 +1827,7 @@ class pCharts {
 								$this->myPicture->drawRoundedFilledRectangle($X1 + $XSpaceLeft, $Y + $YOffset, $X2 - $XSpaceRight, $Y + $YOffset + $YSize, $RoundRadius, $Color);
 							} else {
 								$this->myPicture->drawFilledRectangle($X1 + $XSpaceLeft, $Y + $YOffset, $X2 - $XSpaceRight, $Y + $YOffset + $YSize, $Color);
-								if ($InnerColor != NULL) {
+								if (!is_null($InnerColor)) {
 									$RestoreShadow = $this->myPicture->Shadow;
 									$this->myPicture->Shadow = FALSE;
 									$this->myPicture->drawRectangle(min($X1 + $XSpaceLeft, $X2 - $XSpaceRight) + 1, min($Y + $YOffset, $Y + $YOffset + $YSize) + 1, max($X1 + $XSpaceLeft, $X2 - $XSpaceRight) - 1, max($Y + $YOffset, $Y + $YOffset + $YSize) - 1, $InnerColor);
@@ -1973,14 +1837,11 @@ class pCharts {
 								if ($Gradient) {
 									$this->myPicture->Shadow = FALSE;
 									if ($GradientMode == GRADIENT_SIMPLE) {
-										$GradientColor = ["StartR" => $GradientStartR,"StartG" => $GradientStartG,"StartB" => $GradientStartB,"EndR" => $GradientEndR,"EndG" => $GradientEndG,"EndB" => $GradientEndB,"Alpha" => $GradientAlpha];
-										$this->myPicture->drawGradientArea($X1 + $XSpaceLeft, $Y + $YOffset, $X2 - $XSpaceRight, $Y + $YOffset + $YSize, DIRECTION_HORIZONTAL, $GradientColor);
+										$this->myPicture->drawGradientArea($X1 + $XSpaceLeft, $Y + $YOffset, $X2 - $XSpaceRight, $Y + $YOffset + $YSize, DIRECTION_HORIZONTAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 									} elseif ($GradientMode == GRADIENT_EFFECT_CAN) {
-										$GradientColor1 = ["StartR" => $GradientEndR,"StartG" => $GradientEndG,"StartB" => $GradientEndB,"EndR" => $GradientStartR,"EndG" => $GradientStartG,"EndB" => $GradientStartB,"Alpha" => $GradientAlpha];
-										$GradientColor2 = ["StartR" => $GradientStartR,"StartG" => $GradientStartG,"StartB" => $GradientStartB,"EndR" => $GradientEndR,"EndG" => $GradientEndG,"EndB" => $GradientEndB,"Alpha" => $GradientAlpha];
 										$YSpan = floor($YSize / 3);
-										$this->myPicture->drawGradientArea($X1 + $XSpaceLeft, $Y + $YOffset, $X2 - $XSpaceRight, $Y + $YOffset + $YSpan, DIRECTION_VERTICAL, $GradientColor1);
-										$this->myPicture->drawGradientArea($X1 + $XSpaceLeft, $Y + $YOffset + $YSpan, $X2 - $XSpaceRight, $Y + $YOffset + $YSize, DIRECTION_VERTICAL, $GradientColor2);
+										$this->myPicture->drawGradientArea($X1 + $XSpaceLeft, $Y + $YOffset, $X2 - $XSpaceRight, $Y + $YOffset + $YSpan, DIRECTION_VERTICAL, ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor]);
+										$this->myPicture->drawGradientArea($X1 + $XSpaceLeft, $Y + $YOffset + $YSpan, $X2 - $XSpaceRight, $Y + $YOffset + $YSize, DIRECTION_VERTICAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 									}
 
 									$this->myPicture->Shadow = $RestoreShadow;
@@ -1999,14 +1860,14 @@ class pCharts {
 								$Done = FALSE;
 								if ($DisplayOrientation == ORIENTATION_HORIZONTAL || $DisplayOrientation == ORIENTATION_AUTO) {
 									if ($TxtHeight < $BarHeight && $TxtWidth < $BarWidth) {
-										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
+										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
 										$Done = TRUE;
 									}
 								}
 
 								if ($DisplayOrientation == ORIENTATION_VERTICAL || ($DisplayOrientation == ORIENTATION_AUTO && !$Done)) {
 									if ($TxtHeight < $BarWidth && $TxtWidth < $BarHeight) {
-										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Angle" => 90,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
+										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Angle" => 90,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
 									}
 								}
 							}
@@ -2014,7 +1875,7 @@ class pCharts {
 							$LastX[$Key][$Pos] = $X2;
 						}
 
-						$Y = $Y + $XStep;
+						$Y += $XStep;
 					}
 				}
 			}
@@ -2026,18 +1887,12 @@ class pCharts {
 	{
 		$DrawLine = FALSE;
 		$LineSurrounding = NULL;
-		$LineR = VOID;
-		$LineG = VOID;
-		$LineB = VOID;
-		$LineAlpha = 100;
+		$LineColor = NULL;
 		$DrawPlot = FALSE;
 		$PlotRadius = 2;
 		$PlotBorder = 1;
 		$PlotBorderSurrounding = NULL;
-		$PlotBorderR = 0;
-		$PlotBorderG = 0;
-		$PlotBorderB = 0;
-		$PlotBorderAlpha = 50;
+		$PlotBorderColor = new pColor(0,0,0,50);
 		$ForceTransparency = NULL;
 		
 		/* Override defaults */
@@ -2053,10 +1908,9 @@ class pCharts {
 		$OverallOffset = [];
 		$SerieOrder = [];
 		foreach($Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				$SerieOrder[] = $SerieName;
 				foreach($Serie["Data"] as $Key => $Value) {
-					
 					($Value == VOID) AND $Value = 0;
 					$Sign = ($Value >= 0) ? "+" : "-";
 					(!isset($OverallOffset[$Key]) || !isset($OverallOffset[$Key][$Sign])) AND $OverallOffset[$Key][$Sign] = 0;
@@ -2070,34 +1924,24 @@ class pCharts {
 
 		foreach($SerieOrder as $SerieName) {
 			$Serie = $Data["Series"][$SerieName];
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				
-				$R = $Serie["Color"]["R"];
-				$G = $Serie["Color"]["G"];
-				$B = $Serie["Color"]["B"];
-				$Alpha = $Serie["Color"]["Alpha"];
-				#$Ticks = $Serie["Ticks"]; # UNUSED
-				($ForceTransparency != NULL) AND $Alpha = $ForceTransparency;
-				$Color = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha];
+				$Color = $Serie["Color"];
+				(!is_null($ForceTransparency)) AND $Color->Alpha = $ForceTransparency;
+				$Settings = ["Color" => $Color];
 				
-				if ($LineSurrounding != NULL) {
-					$LineColor = ["R" => $R + $LineSurrounding,"G" => $G + $LineSurrounding,"B" => $B + $LineSurrounding,"Alpha" => $Alpha];
-				} elseif ($LineR != VOID) {
-					$LineColor = ["R" => $LineR,"G" => $LineG,"B" => $LineB,"Alpha" => $LineAlpha];
+				if (!is_null($LineSurrounding)) {
+					$LineSettings = ["Color" => $Color->newOne()->RGBChange($LineSurrounding)];
+				} elseif (!is_null($LineColor)) {
+					$LineSettings = ["Color" => $LineColor];
 				} else {
-					$LineColor = $Color;
+					$LineSettings = $Settings;
 				}
 
-				if ($PlotBorderSurrounding != NULL) {
-					$PlotBorderColor = ["R" => $R + $PlotBorderSurrounding,"G" => $G + $PlotBorderSurrounding,"B" => $B + $PlotBorderSurrounding,"Alpha" => $PlotBorderAlpha];
-				} else {
-					$PlotBorderColor = ["R" => $PlotBorderR,"G" => $PlotBorderG,"B" => $PlotBorderB,"Alpha" => $PlotBorderAlpha];
-				}
-
+				$PlotBorderSettings = ["Color" => (!is_null($PlotBorderSurrounding)) ? $Color->newOne()->RGBChange($PlotBorderSurrounding) : $PlotBorderColor];
 				$PosArray = $this->myPicture->scaleComputeY0HeightOnly($Serie["Data"], $Serie["Axis"]);
 				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
-				
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
 				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
@@ -2114,26 +1958,26 @@ class pCharts {
 							$Plots[] = $YZero - $Height;
 						}
 
-						$X = $X + $XStep;
+						$X += $XStep;
 					}
 
 					$Plots[] = $X - $XStep;
 					$Plots[] = $YZero;
-					$this->myPicture->drawPolygon($Plots, $Color);
+					$this->myPicture->drawPolygon($Plots, $Settings);
 					$this->myPicture->Shadow = $RestoreShadow;
 					if ($DrawLine) {
 						for ($i = 2; $i <= count($Plots) - 6; $i = $i + 2) {
-							$this->myPicture->drawLine($Plots[$i], $Plots[$i + 1], $Plots[$i + 2], $Plots[$i + 3], $LineColor);
+							$this->myPicture->drawLine($Plots[$i], $Plots[$i + 1], $Plots[$i + 2], $Plots[$i + 3], $LineSettings);
 						}
 					}
 
 					if ($DrawPlot) {
 						for ($i = 2; $i <= count($Plots) - 4; $i = $i + 2) {
 							if ($PlotBorder != 0) {
-								$this->myPicture->drawFilledCircle($Plots[$i], $Plots[$i + 1], $PlotRadius + $PlotBorder, $PlotBorderColor);
+								$this->myPicture->drawFilledCircle($Plots[$i], $Plots[$i + 1], $PlotRadius + $PlotBorder, $PlotBorderSettings);
 							}
 
-							$this->myPicture->drawFilledCircle($Plots[$i], $Plots[$i + 1], $PlotRadius, $Color);
+							$this->myPicture->drawFilledCircle($Plots[$i], $Plots[$i + 1], $PlotRadius, $Settings);
 						}
 					}
 
@@ -2152,26 +1996,26 @@ class pCharts {
 							$Plots[] = $Y;
 						}
 
-						$Y = $Y + $XStep;
+						$Y += $XStep;
 					}
 
 					$Plots[] = $YZero;
 					$Plots[] = $Y - $XStep;
-					$this->myPicture->drawPolygon($Plots, $Color);
+					$this->myPicture->drawPolygon($Plots, $Settings);
 					$this->myPicture->Shadow = $RestoreShadow;
 					if ($DrawLine) {
 						for ($i = 2; $i <= count($Plots) - 6; $i = $i + 2) {
-							$this->myPicture->drawLine($Plots[$i], $Plots[$i + 1], $Plots[$i + 2], $Plots[$i + 3], $LineColor);
+							$this->myPicture->drawLine($Plots[$i], $Plots[$i + 1], $Plots[$i + 2], $Plots[$i + 3], $LineSettings);
 						}
 					}
 
 					if ($DrawPlot) {
 						for ($i = 2; $i <= count($Plots) - 4; $i = $i + 2) {
 							if ($PlotBorder != 0) {
-								$this->myPicture->drawFilledCircle($Plots[$i], $Plots[$i + 1], $PlotRadius + $PlotBorder, $PlotBorderColor);
+								$this->myPicture->drawFilledCircle($Plots[$i], $Plots[$i + 1], $PlotRadius + $PlotBorder, $PlotBorderSettings);
 							}
 
-							$this->myPicture->drawFilledCircle($Plots[$i], $Plots[$i + 1], $PlotRadius, $Color);
+							$this->myPicture->drawFilledCircle($Plots[$i], $Plots[$i + 1], $PlotRadius, $Settings);
 						}
 					}
 
@@ -2185,25 +2029,15 @@ class pCharts {
 
 	function drawPolygonChart(array $Points, array $Format = [])
 	{
-		$R = isset($Format["R"]) ? $Format["R"] : 0;
-		$G = isset($Format["G"]) ? $Format["G"] : 0;
-		$B = isset($Format["B"]) ? $Format["B"] : 0;
-		$Alpha = isset($Format["Alpha"]) ? $Format["Alpha"] : 100;
-		$Threshold = [];
-		$NoFill = FALSE;
-		$NoBorder = FALSE;
-		$Surrounding = NULL;
-		$BorderR = $R;
-		$BorderG = $G;
-		$BorderB = $B;
-		$BorderAlpha = $Alpha / 2;
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Threshold = isset($Format["Threshold"]) ? $Format["Threshold"] : [];
+		$NoFill = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
+		$NoBorder = isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
+		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
+		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $Color->newOne()->AlphaSlash(2);
 		
-		extract($Format);
-		
-		if ($Surrounding != NULL) {
-			$BorderR = $R + $Surrounding;
-			$BorderG = $G + $Surrounding;
-			$BorderB = $B + $Surrounding;
+		if (!is_null($Surrounding)) {
+			$BorderColor = $Color ->newOne()->RGBChange($Surrounding);
 		}
 
 		$RestoreShadow = $this->myPicture->Shadow;
@@ -2265,7 +2099,7 @@ class pCharts {
 		$MinY = floor($MinY);
 		$MaxY = floor($MaxY);
 		/* Scan each Y lines */
-		$DefaultColor = $this->myPicture->allocateColor($R, $G, $B, $Alpha);
+		$DefaultColor = $this->myPicture->allocateColor($Color);
 		$MinY = floor($MinY);
 		$MaxY = floor($MaxY);
 		$YStep = 1;
@@ -2351,12 +2185,7 @@ class pCharts {
 
 						foreach($Threshold as $Parameters) {
 							if ($Y <= $Parameters["MinX"] && $Y >= $Parameters["MaxX"]) {
-								$Color = $this->myPicture->allocateColor(
-									(isset($Parameters["R"])) ? $Parameters["R"] : 0,
-									(isset($Parameters["G"])) ? $Parameters["G"] : 0,
-									(isset($Parameters["B"])) ? $Parameters["B"] : 0,
-									(isset($Parameters["Alpha"])) ? $Parameters["Alpha"] : 100
-								);
+								$Color = $this->myPicture->allocateColor($Parameters['Color']);
 							}
 						}
 
@@ -2372,7 +2201,7 @@ class pCharts {
 		/* Draw the polygon border, if required */
 		if (!$NoBorder) {
 			foreach($Segments as $Coords) {
-				$this->myPicture->drawLine($Coords["X1"], $Coords["Y1"], $Coords["X2"], $Coords["Y2"], ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha,"Threshold" => $Threshold]);
+				$this->myPicture->drawLine($Coords["X1"], $Coords["Y1"], $Coords["X2"], $Coords["Y2"], ["Color" => $BorderColor,"Threshold" => $Threshold]);
 			}
 		}
 
@@ -2441,10 +2270,7 @@ class pCharts {
 			$RightY1 = $RightY + $Spacing;
 			$RightY2 = $RightY + $Spacing + $Value * $YScale;;
 			$Settings = array(
-				"R" => $Palette[$Key]["R"],
-				"G" => $Palette[$Key]["G"],
-				"B" => $Palette[$Key]["B"],
-				"Alpha" => $Palette[$Key]["Alpha"],
+				"Color" => $Palette[$Key],
 				"NoDraw" => TRUE,
 				"Segments" => $Segments,
 				"Surrounding" => $Surrounding
@@ -2488,49 +2314,27 @@ class pCharts {
 	/* Draw the derivative chart associated to the data series */
 	function drawDerivative(array $Format = [])
 	{
-		$Offset = 10;
-		$SerieSpacing = 3;
-		$DerivativeHeight = 4;
-		$ShadedSlopeBox = FALSE;
-		$DrawBackground = TRUE;
-		$BackgroundR = 255;
-		$BackgroundG = 255;
-		$BackgroundB = 255;
-		$BackgroundAlpha = 20;
-		$DrawBorder = TRUE;
-		$BorderR = 0;
-		$BorderG = 0;
-		$BorderB = 0;
-		$BorderAlpha = 100;
-		$Caption = TRUE;
-		$CaptionHeight = 10;
-		$CaptionWidth = 20;
-		$CaptionMargin = 4;
-		$CaptionLine = FALSE;
-		$CaptionBox = FALSE;
-		$CaptionBorderR = 0;
-		$CaptionBorderG = 0;
-		$CaptionBorderB = 0;
-		$CaptionFillR = 255;
-		$CaptionFillG = 255;
-		$CaptionFillB = 255;
-		$CaptionFillAlpha = 80;
-		$PositiveSlopeStartR = 184;
-		$PositiveSlopeStartG = 234;
-		$PositiveSlopeStartB = 88;
-		$PositiveSlopeEndR = 239;
-		$PositiveSlopeEndG = 31;
-		$PositiveSlopeEndB = 36;
-		$NegativeSlopeStartR = 184;
-		$NegativeSlopeStartG = 234;
-		$NegativeSlopeStartB = 88;
-		$NegativeSlopeEndR = 67;
-		$NegativeSlopeEndG = 124;
-		$NegativeSlopeEndB = 227;
-		
-		/* Override defaults */
-		extract($Format);
-		
+		$Offset = isset($Format["Offset"]) ? $Format["Offset"] : 10;
+		$SerieSpacing = isset($Format["SerieSpacing"]) ? $Format["SerieSpacing"] : 3;
+		$DerivativeHeight = isset($Format["DerivativeHeight"]) ? $Format["DerivativeHeight"] : 4;
+		$ShadedSlopeBox = isset($Format["ShadedSlopeBox"]) ? $Format["ShadedSlopeBox"] : FALSE;
+		$DrawBackground = isset($Format["DrawBackground"]) ? $Format["DrawBackground"] : TRUE;
+		$BackgroundColor = isset($Format["BackgroundColor"]) ? $Format["BackgroundColor"] : new pColor(255,255,255,20);
+		$DrawBorder = isset($Format["DrawBorder"]) ? $Format["DrawBorder"] : TRUE;
+		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : new pColor(0,0,0,100);
+		$Caption = isset($Format["Caption"]) ? $Format["Caption"] : TRUE;
+		$CaptionHeight = isset($Format["CaptionHeight"]) ? $Format["CaptionHeight"] : 10;
+		$CaptionWidth = isset($Format["CaptionWidth"]) ? $Format["CaptionWidth"] : 20;
+		$CaptionMargin = isset($Format["CaptionMargin"]) ? $Format["CaptionMargin"] : 4;
+		$CaptionLine = isset($Format["CaptionLine"]) ? $Format["CaptionLine"] : FALSE;
+		$CaptionBox = isset($Format["CaptionBox"]) ? $Format["CaptionBox"] : FALSE;
+		$CaptionBorderColor = isset($Format["CaptionBorderColor"]) ? $Format["CaptionBorderColor"] : new pColor(0,0,0,80);
+		$CaptionFillColor = isset($Format["CaptionFillColor"]) ? $Format["CaptionFillColor"] : new pColor(255,255,255,80);
+		$PositiveSlopeStartColor = isset($Format["PositiveSlopeStartColor"]) ? $Format["PositiveSlopeStartColor"] : new pColor(184,234,88);
+		$PositiveSlopeEndColor = isset($Format["PositiveSlopeEndColor"]) ? $Format["PositiveSlopeEndColor"] : new pColor(239,31,36);
+		$NegativeSlopeStartColor = isset($Format["NegativeSlopeStartColor"]) ? $Format["NegativeSlopeStartColor"] : new pColor(184,234,88);
+		$NegativeSlopeEndColor = isset($Format["NegativeSlopeEndColor"]) ? $Format["NegativeSlopeEndColor"] : new pColor(67,124,227);
+
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
@@ -2538,41 +2342,36 @@ class pCharts {
 		} else {
 			$XPos = $this->myPicture->GraphAreaX2 + $Offset;
 		}
+		/* Momchil: This tweak is a result of poorly re-factored drawScale on my part */
+		/* Removal of $this->DataSet->Data["GraphArea"] to be specific */
+		$YPos += $this->myPicture->FontSize + 2; 
 
 		foreach($Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
-				
-				$R = $Serie["Color"]["R"];
-				$G = $Serie["Color"]["G"];
-				$B = $Serie["Color"]["B"];
-				$Alpha = $Serie["Color"]["Alpha"];
-				$Ticks = $Serie["Ticks"];
-				$Weight = $Serie["Weight"];
-				
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
+								
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
-				
+				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
+				$CaptionSettings = ["Color" => $Serie["Color"],"Ticks" => $Serie["Ticks"],"Weight" => $Serie["Weight"]];
 				$LastX = NULL;
 				$LastY = NULL;
 				$MinSlope = 0;
 				$MaxSlope = 1;
 				$LastColor = NULL;
-				
-				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
-				
+								
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($Caption) {
 						if ($CaptionLine) {
 							$StartX = floor($this->myPicture->GraphAreaX1 - $CaptionWidth + $XMargin - $CaptionMargin);
 							$EndX = floor($this->myPicture->GraphAreaX1 - $CaptionMargin + $XMargin);
-							$CaptionSettings = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight];
+							
 							if ($CaptionBox) {
-								$this->myPicture->drawFilledRectangle($StartX, $YPos, $EndX, $YPos + $CaptionHeight, ["R" => $CaptionFillR,"G" => $CaptionFillG,"B" => $CaptionFillB,"BorderR" => $CaptionBorderR,"BorderG" => $CaptionBorderG,"BorderB" => $CaptionBorderB,"Alpha" => $CaptionFillAlpha]);
+								$this->myPicture->drawFilledRectangle($StartX, $YPos, $EndX, $YPos + $CaptionHeight, ["Color" => $CaptionFillColor,"BorderColor" => $CaptionBorderColor]);
 							}
 
 							$this->myPicture->drawLine($StartX + 2, $YPos + ($CaptionHeight / 2), $EndX - 2, $YPos + ($CaptionHeight / 2), $CaptionSettings);
 						
 						} else {
-							$this->myPicture->drawFilledRectangle($this->myPicture->GraphAreaX1 - $CaptionWidth + $XMargin - $CaptionMargin, $YPos, $this->myPicture->GraphAreaX1 - $CaptionMargin + $XMargin, $YPos + $CaptionHeight, ["R" => $R,"G" => $G,"B" => $B,"BorderR" => $CaptionBorderR,"BorderG" => $CaptionBorderG,"BorderB" => $CaptionBorderB]);
+							$this->myPicture->drawFilledRectangle($this->myPicture->GraphAreaX1 - $CaptionWidth + $XMargin - $CaptionMargin, $YPos, $this->myPicture->GraphAreaX1 - $CaptionMargin + $XMargin, $YPos + $CaptionHeight, ["Color" => $Color,"BorderColor" => $CaptionBorderColor]);
 						}
 					}
 
@@ -2583,11 +2382,11 @@ class pCharts {
 					$EndX = floor($this->myPicture->GraphAreaX2 - $XMargin);
 					
 					if ($DrawBackground) {
-						$this->myPicture->drawFilledRectangle($StartX - 1, $TopY - 1, $EndX + 1, $BottomY + 1, ["R" => $BackgroundR,"G" => $BackgroundG,"B" => $BackgroundB,"Alpha" => $BackgroundAlpha]);
+						$this->myPicture->drawFilledRectangle($StartX - 1, $TopY - 1, $EndX + 1, $BottomY + 1, ["Color" => $BackgroundColor]);
 					}
 
 					if ($DrawBorder) {
-						$this->myPicture->drawRectangle($StartX - 1, $TopY - 1, $EndX + 1, $BottomY + 1, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha]);
+						$this->myPicture->drawRectangle($StartX - 1, $TopY - 1, $EndX + 1, $BottomY + 1, ["Color" => $BorderColor]);
 					}
 					
 					$RestoreShadow = $this->myPicture->Shadow;
@@ -2595,7 +2394,7 @@ class pCharts {
 					/* Determine the Max slope index */
 
 					foreach($PosArray as $Y) {
-						if ($Y != VOID && $LastX != NULL) {
+						if ($Y != VOID && !is_null($LastX)) {
 							$Slope = ($LastY - $Y);
 							($Slope > $MaxSlope) AND $MaxSlope = $Slope;
 							($Slope < $MinSlope) AND $MinSlope = $Slope;
@@ -2614,27 +2413,26 @@ class pCharts {
 					$LastY = NULL;
 					
 					foreach($PosArray as $Y) {
-						if ($Y != VOID && $LastY != NULL) {
+						if ($Y != VOID && !is_null($LastY)) {
 							$Slope = ($LastY - $Y);
 							if ($Slope >= 0) {
 								$SlopeIndex = (100 / $MaxSlope) * $Slope;
-								$R = (($PositiveSlopeEndR - $PositiveSlopeStartR) / 100) * $SlopeIndex + $PositiveSlopeStartR;
-								$G = (($PositiveSlopeEndG - $PositiveSlopeStartG) / 100) * $SlopeIndex + $PositiveSlopeStartG;
-								$B = (($PositiveSlopeEndB - $PositiveSlopeStartB) / 100) * $SlopeIndex + $PositiveSlopeStartB;
+								$R = (($PositiveSlopeEndColor->R - $PositiveSlopeStartColor->R) / 100) * $SlopeIndex + $PositiveSlopeStartColor->R;
+								$G = (($PositiveSlopeEndColor->G - $PositiveSlopeStartColor->G) / 100) * $SlopeIndex + $PositiveSlopeStartColor->G;
+								$B = (($PositiveSlopeEndColor->B - $PositiveSlopeStartColor->B) / 100) * $SlopeIndex + $PositiveSlopeStartColor->B;
 							} elseif ($Slope < 0) {
 								$SlopeIndex = (100 / abs($MinSlope)) * abs($Slope);
-								$R = (($NegativeSlopeEndR - $NegativeSlopeStartR) / 100) * $SlopeIndex + $NegativeSlopeStartR;
-								$G = (($NegativeSlopeEndG - $NegativeSlopeStartG) / 100) * $SlopeIndex + $NegativeSlopeStartG;
-								$B = (($NegativeSlopeEndB - $NegativeSlopeStartB) / 100) * $SlopeIndex + $NegativeSlopeStartB;
+								$R = (($NegativeSlopeEndColor->R - $NegativeSlopeStartColor->R) / 100) * $SlopeIndex + $NegativeSlopeStartColor->R;
+								$G = (($NegativeSlopeEndColor->G - $NegativeSlopeStartColor->G) / 100) * $SlopeIndex + $NegativeSlopeStartColor->G;
+								$B = (($NegativeSlopeEndColor->B - $NegativeSlopeStartColor->B) / 100) * $SlopeIndex + $NegativeSlopeStartColor->B;
 							}
 
-							$Color = ["R" => $R,"G" => $G,"B" => $B];
+							$Color = ["Color" => new pColor($R,$G,$B)];
 							
-							if ($ShadedSlopeBox && $LastColor != NULL) // && $Slope != 0
+							if ($ShadedSlopeBox && !is_null($LastColor)) // && $Slope != 0
 							{
-								$GradientSettings = ["StartR" => $LastColor["R"],"StartG" => $LastColor["G"],"StartB" => $LastColor["B"],"EndR" => $R,"EndG" => $G,"EndB" => $B];
-								$this->myPicture->drawGradientArea($LastX, $TopY, $X, $BottomY, DIRECTION_HORIZONTAL, $GradientSettings);
-							} elseif (!$ShadedSlopeBox || $LastColor == NULL) { // || $Slope == 0
+								$this->myPicture->drawGradientArea($LastX, $TopY, $X, $BottomY, DIRECTION_HORIZONTAL, ["StartColor"=>$LastColor["Color"],"EndColor"=>$Color["Color"]]);
+							} elseif (!$ShadedSlopeBox || is_null($LastColor)) { // || $Slope == 0
 								$this->myPicture->drawFilledRectangle(floor($LastX), $TopY, floor($X), $BottomY, $Color);
 							}
 							$LastColor = $Color;
@@ -2647,7 +2445,7 @@ class pCharts {
 							$LastY = $Y;
 						}
 
-						$X = $X + $XStep;
+						$X += $XStep;
 					}
 
 					$YPos = $YPos + $CaptionHeight + $SerieSpacing;
@@ -2658,14 +2456,13 @@ class pCharts {
 						$StartY = floor($this->myPicture->GraphAreaY1 - $CaptionWidth + $XMargin - $CaptionMargin);
 						$EndY = floor($this->myPicture->GraphAreaY1 - $CaptionMargin + $XMargin);
 						if ($CaptionLine) {
-							$CaptionSettings = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight];
 							if ($CaptionBox) {
-								$this->myPicture->drawFilledRectangle($XPos, $StartY, $XPos + $CaptionHeight, $EndY, ["R" => $CaptionFillR,"G" => $CaptionFillG,"B" => $CaptionFillB,"BorderR" => $CaptionBorderR,"BorderG" => $CaptionBorderG,"BorderB" => $CaptionBorderB,"Alpha" => $CaptionFillAlpha]);
+								$this->myPicture->drawFilledRectangle($XPos, $StartY, $XPos + $CaptionHeight, $EndY, ["Color" => $CaptionFillColor,"BorderColor" => $CaptionBorderColor]);
 							}
 
 							$this->myPicture->drawLine($XPos + ($CaptionHeight / 2), $StartY + 2, $XPos + ($CaptionHeight / 2), $EndY - 2, $CaptionSettings);
 						} else {
-							$this->myPicture->drawFilledRectangle($XPos, $StartY, $XPos + $CaptionHeight, $EndY, ["R" => $R,"G" => $G,"B" => $B,"BorderR" => $CaptionBorderR,"BorderG" => $CaptionBorderG,"BorderB" => $CaptionBorderB]);
+							$this->myPicture->drawFilledRectangle($XPos, $StartY, $XPos + $CaptionHeight, $EndY, ["Color" => $Serie["Color"],"BorderColor" => $CaptionBorderColor]);
 						}
 					}
 
@@ -2674,56 +2471,49 @@ class pCharts {
 					$BottomX = $XPos + ($CaptionHeight / 2) + ($DerivativeHeight / 2);
 					$StartY = floor($this->myPicture->GraphAreaY1 + $XMargin);
 					$EndY = floor($this->myPicture->GraphAreaY2 - $XMargin);
-					if ($DrawBackground) {
-						$this->myPicture->drawFilledRectangle($TopX - 1, $StartY - 1, $BottomX + 1, $EndY + 1, ["R" => $BackgroundR,"G" => $BackgroundG,"B" => $BackgroundB,"Alpha" => $BackgroundAlpha]);
-					}
-
-					if ($DrawBorder) {
-						$this->myPicture->drawRectangle($TopX - 1, $StartY - 1, $BottomX + 1, $EndY + 1, ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha]);
-					}
-
+					($DrawBackground) AND $this->myPicture->drawFilledRectangle($TopX - 1, $StartY - 1, $BottomX + 1, $EndY + 1, ["Color" => $BackgroundColor]);
+					($DrawBorder) AND $this->myPicture->drawRectangle($TopX - 1, $StartY - 1, $BottomX + 1, $EndY + 1, ["Color" => $BorderColor]);
 					$RestoreShadow = $this->myPicture->Shadow;
 					$this->myPicture->Shadow = FALSE;
 					/* Determine the Max slope index */
 
 					foreach($PosArray as $X) {
-						if ($X != VOID && $LastX != NULL) {
+						if ($X != VOID && !is_null($LastX)) {
 							$Slope = ($X - $LastX);
 							($Slope > $MaxSlope) AND $MaxSlope = $Slope;
 							($Slope < $MinSlope) AND $MinSlope = $Slope;
 						}
 
-						$LastX = ($X == VOID) ? NULL : $X;
+						$LastX = (is_null($X)) ? NULL : $X;
 					}
 
 					$LastX = NULL;
 					$LastY = NULL;
 
 					foreach($PosArray as $X) {
-						if ($X != VOID && $LastX != NULL) {
+						if ($X != VOID && !is_null($LastX)) {
 							$Slope = ($X - $LastX);
 							if ($Slope >= 0) {
 								$SlopeIndex = (100 / $MaxSlope) * $Slope;
-								$R = (($PositiveSlopeEndR - $PositiveSlopeStartR) / 100) * $SlopeIndex + $PositiveSlopeStartR;
-								$G = (($PositiveSlopeEndG - $PositiveSlopeStartG) / 100) * $SlopeIndex + $PositiveSlopeStartG;
-								$B = (($PositiveSlopeEndB - $PositiveSlopeStartB) / 100) * $SlopeIndex + $PositiveSlopeStartB;
+								$R = (($PositiveSlopeEndColor->R - $PositiveSlopeStartColor->R) / 100) * $SlopeIndex + $PositiveSlopeStartColor->R;
+								$G = (($PositiveSlopeEndColor->G - $PositiveSlopeStartColor->G) / 100) * $SlopeIndex + $PositiveSlopeStartColor->G;
+								$B = (($PositiveSlopeEndColor->B - $PositiveSlopeStartColor->B) / 100) * $SlopeIndex + $PositiveSlopeStartColor->B;
 							} elseif ($Slope < 0) {
 								$SlopeIndex = (100 / abs($MinSlope)) * abs($Slope);
-								$R = (($NegativeSlopeEndR - $NegativeSlopeStartR) / 100) * $SlopeIndex + $NegativeSlopeStartR;
-								$G = (($NegativeSlopeEndG - $NegativeSlopeStartG) / 100) * $SlopeIndex + $NegativeSlopeStartG;
-								$B = (($NegativeSlopeEndB - $NegativeSlopeStartB) / 100) * $SlopeIndex + $NegativeSlopeStartB;
+								$R = (($NegativeSlopeEndColor->R - $NegativeSlopeStartColor->R) / 100) * $SlopeIndex + $NegativeSlopeStartColor->R;
+								$G = (($NegativeSlopeEndColor->G - $NegativeSlopeStartColor->G) / 100) * $SlopeIndex + $NegativeSlopeStartColor->G;
+								$B = (($NegativeSlopeEndColor->B - $NegativeSlopeStartColor->B) / 100) * $SlopeIndex + $NegativeSlopeStartColor->B;
 							}
 
-							$Color = ["R" => $R,"G" => $G,"B" => $B];
+							$Settings = ["Color" => $Serie["Color"]];
 							
-							if ($ShadedSlopeBox && $LastColor != NULL) {
-								$GradientSettings = ["StartR" => $LastColor["R"],"StartG" => $LastColor["G"],"StartB" => $LastColor["B"],"EndR" => $R,"EndG" => $G,"EndB" => $B];
-								$this->myPicture->drawGradientArea($TopX, $LastY, $BottomX, $Y, DIRECTION_VERTICAL, $GradientSettings);
-							} elseif (!$ShadedSlopeBox || $LastColor == NULL) {
-								$this->myPicture->drawFilledRectangle($TopX, floor($LastY), $BottomX, floor($Y), $Color);
+							if ($ShadedSlopeBox && !is_null($LastColor)) {
+								$this->myPicture->drawGradientArea($TopX, $LastY, $BottomX, $Y, DIRECTION_VERTICAL, ["StartColor" => $LastColor,"EndColor" => $Serie["Color"]]);
+							} elseif (!$ShadedSlopeBox || is_null($LastColor)) {
+								$this->myPicture->drawFilledRectangle($TopX, floor($LastY), $BottomX, floor($Y), $Settings);
 							}
 
-							$LastColor = $Color;
+							$LastColor = $Settings;
 						}
 
 						if ($X == VOID) {
@@ -2733,7 +2523,7 @@ class pCharts {
 							$LastY = $Y;
 						}
 
-						$Y = $Y + $XStep;
+						$Y += $XStep;
 					}
 
 					$XPos = $XPos + $CaptionHeight + $SerieSpacing;
@@ -2748,10 +2538,7 @@ class pCharts {
 	function drawBestFit(array $Format = [])
 	{
 		$OverrideTicks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
-		$OverrideR = isset($Format["R"]) ? $Format["R"] : VOID;
-		$OverrideG = isset($Format["G"]) ? $Format["G"] : VOID;
-		$OverrideB = isset($Format["B"]) ? $Format["B"] : VOID;
-		$OverrideAlpha = isset($Format["Alpha"]) ? $Format["Alpha"] : VOID;
+		$OverrideColor = isset($Format["OverrideColor"]) ? $Format["OverrideColor"] : NULL;
 
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		
@@ -2760,14 +2547,9 @@ class pCharts {
 		foreach($this->myPicture->myData->Data["Series"] as $SerieName => $Serie) {
 			
 			if ($Serie["isDrawable"] && $SerieName != $this->myPicture->myData->Data["Abscissa"]) {
-				if ($OverrideR != VOID && $OverrideG != VOID && $OverrideB != VOID) {
-					$Color = ["R" => $OverrideR,"G" => $OverrideG,"B" => $OverrideB];
-				} else {
-					$Color = $Serie["Color"];
-				}
-
-				$Color["Alpha"] = ($OverrideAlpha == VOID) ? $Serie["Color"]["Alpha"] : $OverrideAlpha;
-				$Color["Ticks"] = ($OverrideTicks == NULL) ? $Serie["Ticks"] : $OverrideTicks;
+				
+				$Settings = (!is_null($OverrideColor)) ? ["Color" => $OverrideColor] : ["Color" => $Serie["Color"]];
+				$Settings["Ticks"] = (is_null($OverrideTicks)) ? $Serie["Ticks"] : $OverrideTicks;
 
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				
@@ -2781,13 +2563,13 @@ class pCharts {
 					
 					foreach($PosArray as $Y) {
 						if ($Y != VOID) {
-							$Sxy = $Sxy + $X * $Y;
-							$Sx = $Sx + $X;
-							$Sy = $Sy + $Y;
-							$Sxx = $Sxx + $X * $X;
+							$Sxy += $X * $Y;
+							$Sx  += $X;
+							$Sy  += $Y;
+							$Sxx += $X * $X;
 						}
 
-						$X = $X + $XStep;
+						$X += $XStep;
 					}
 
 					$n = count(array_diff($PosArray, [VOID])); //$n = count($PosArray);
@@ -2817,7 +2599,7 @@ class pCharts {
 						$Y2 = $this->myPicture->GraphAreaY2;
 					}
 
-					$this->myPicture->drawLine($X1, $Y1, $X2, $Y2, $Color);
+					$this->myPicture->drawLine($X1, $Y1, $X2, $Y2, $Settings);
 					
 				} else {
 
@@ -2864,7 +2646,7 @@ class pCharts {
 						$X2 = $this->myPicture->GraphAreaX2;
 					}
 
-					$this->myPicture->drawLine($X1, $Y1, $X2, $Y2, $Color);
+					$this->myPicture->drawLine($X1, $Y1, $X2, $Y2, $Settings);
 				}
 			}
 		}

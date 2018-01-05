@@ -23,7 +23,7 @@ class pBarcode128
 	var $myPicture;
 	
 	/* Class creator */
-	function __construct($pChartObject, string $dbFileName = "")
+	function __construct($pChartObject, string $dbFileName = "", $UseCache = FALSE)
 	{
 		
 		if (!($pChartObject instanceof pDraw)){
@@ -34,8 +34,22 @@ class pBarcode128
 		
 		$dbFileName = (strlen($dbFileName) > 0) ? $dbFileName : "pChart/data/128B.db";
 		
+		if ($UseCache != FALSE){
+			if (!file_exists($UseCache)){
+				throw pException::InvalidResourcePath("BarcodeDb cache path not found");
+			}
+			if (substr($UseCache, -1) == "/"){
+				$UseCache = substr($UseCache,0,-1);
+			}
+			$CachedDb = $UseCache."/barcode128-".basename($dbFileName).".php";
+			if (file_exists($CachedDb)){
+				require($CachedDb);
+				return;
+			} 
+		}
+				
 		if (!file_exists($dbFileName)){
-			throw pException::InvalidResourcePath("Cannot find barcode database (data/128B.db).");
+			throw pException::InvalidResourcePath("Cannot find barcode database (pChart/data/128B.db).");
 		}
 
 		$buffer = file_get_contents($dbFileName);
@@ -47,6 +61,10 @@ class pBarcode128
 			$this->Codes[$vals[1]]["Code"] = $vals[2];
 			$this->Reverse[$vals[0]]["Code"] = $vals[2];
 			$this->Reverse[$vals[0]]["Asc"] = $vals[1];
+		}
+		
+		if ($UseCache != FALSE){
+			file_put_contents($CachedDb,'<?php $this->Codes='.var_export($this->Codes,true).'; $this->Reverse='.var_export($this->Reverse,true).'; ?>');
 		}
 	
 	}
@@ -105,24 +123,14 @@ class pBarcode128
 	/* Create the encoded string */
 	function draw(string $Value, int $X, int $Y, array $Format = [])
 	{
-		$R = 0;
-		$G = 0;
-		$B = 0;
-		$Alpha = 100;
-		$Height = 30;
-		$Angle = 0;
-		$ShowLegend = FALSE;
-		$LegendOffset = 5;
-		$DrawArea = FALSE;
-		$AreaR = isset($Format["AreaR"]) ? $Format["AreaR"] : 255;
-		$AreaG = isset($Format["AreaG"]) ? $Format["AreaG"] : 255;
-		$AreaB = isset($Format["AreaB"]) ? $Format["AreaB"] : 255;
-		$AreaBorderR = $AreaR;
-		$AreaBorderG = $AreaG;
-		$AreaBorderB = $AreaB;
-		
-		/* Override defaults */
-		extract($Format);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Height = isset($Format["Height"]) ? $Format["Height"] : 30;
+		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 0;
+		$ShowLegend = isset($Format["ShowLegend"]) ? $Format["ShowLegend"] : FALSE;
+		$LegendOffset = isset($Format["LegendOffset"]) ? $Format["LegendOffset"] : 5;
+		$DrawArea = isset($Format["DrawArea"]) ? $Format["DrawArea"] : FALSE;
+		$AreaColor = isset($Format["AreaColor"]) ? $Format["AreaColor"] : new pColor(255,255,255,$Color->Alpha);
+		$AreaBorderColor = isset($Format["AreaBorderColor"]) ? $Format["AreaBorderColor"] : (clone $AreaColor);
 		
 		list($TextString, $Result) = $this->encode128($Value);
 		$BarcodeLength = strlen($Result);
@@ -142,7 +150,7 @@ class pBarcode128
 
 			$X4 = $X3 + cos(($Angle + 180) * PI / 180) * ($BarcodeLength + 20);
 			$Y4 = $Y3 + sin(($Angle + 180) * PI / 180) * ($BarcodeLength + 20);
-			$this->myPicture->drawPolygon([$X1,$Y1,$X2,$Y2,$X3,$Y3,$X4,$Y4], ["R" => $AreaR,"G" => $AreaG,"B" => $AreaB,"BorderR" => $AreaBorderR,"BorderG" => $AreaBorderG,"BorderB" => $AreaBorderB]);
+			$this->myPicture->drawPolygon([$X1,$Y1,$X2,$Y2,$X3,$Y3,$X4,$Y4], ["Color" => $AreaColor,"BorderColor" => $AreaBorderColor]);
 		}
 
 		for ($i = 1; $i <= $BarcodeLength; $i++) {
@@ -151,7 +159,7 @@ class pBarcode128
 				$Y1 = $Y + sin($Angle * PI / 180) * $i;
 				$X2 = $X1 + cos(($Angle + 90) * PI / 180) * $Height;
 				$Y2 = $Y1 + sin(($Angle + 90) * PI / 180) * $Height;
-				$this->myPicture->drawLine($X1, $Y1, $X2, $Y2, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha]);
+				$this->myPicture->drawLine($X1, $Y1, $X2, $Y2, ["Color" => $Color]);
 			}
 		}
 
@@ -160,7 +168,7 @@ class pBarcode128
 			$Y1 = $Y + sin($Angle * PI / 180) * ($BarcodeLength / 2);
 			$LegendX = $X1 + cos(($Angle + 90) * PI / 180) * ($Height + $LegendOffset);
 			$LegendY = $Y1 + sin(($Angle + 90) * PI / 180) * ($Height + $LegendOffset);
-			$this->myPicture->drawText($LegendX, $LegendY, $TextString, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Angle" => - $Angle,"Align" => TEXT_ALIGN_TOPMIDDLE]);
+			$this->myPicture->drawText($LegendX, $LegendY, $TextString, ["Color" => $Color,"Angle" => - $Angle,"Align" => TEXT_ALIGN_TOPMIDDLE]);
 		}
 	}
 

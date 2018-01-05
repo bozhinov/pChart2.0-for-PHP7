@@ -4,6 +4,7 @@
 /* pChart library inclusions */
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 use pChart\pCharts;
 
@@ -24,11 +25,11 @@ $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>100]);
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,["StartR"=>240,"StartG"=>240,"StartB"=>240,"EndR"=>180,"EndG"=>180,"EndB"=>180,"Alpha"=>20]);
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(240,240,240,100), "EndColor"=>new pColor(180,180,180,100)]);
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,["StartColor"=>new pColor(240,240,240,20), "EndColor"=>new pColor(180,180,180,20)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
@@ -41,8 +42,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $myPicture->setGraphArea(60,40,650,200);
 
 /* Draw the scale */
-$scaleSettings = array("XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridR"=>200,"GridG"=>200,"GridB"=>200,"GridAlpha"=>100,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
-$myPicture->drawScale($scaleSettings);
+$myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridColor"=>new pColor(200,200,200,100),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Write the chart legend */
 $myPicture->drawLegend(640,20,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
@@ -51,16 +51,16 @@ $myPicture->drawLegend(640,20,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTA
 $myPicture->Antialias = TRUE;
 
 /* Enable shadow computing */
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Draw the area chart */
 $Threshold = [
-	array("Min"=>0,"Max"=>5,"R"=>187,"G"=>220,"B"=>0,"Alpha"=>100),
-	array("Min"=>5,"Max"=>10,"R"=>240,"G"=>132,"B"=>20,"Alpha"=>100),
-	array("Min"=>10,"Max"=>20,"R"=>240,"G"=>91,"B"=>20,"Alpha"=>100)
+	array("Min"=>0,"Max"=>5,"Color"=>new pColor(187,220,0,100)),
+	array("Min"=>5,"Max"=>10,"Color"=>new pColor(240,132,20,100)),
+	array("Min"=>10,"Max"=>20,"Color"=>new pColor(240,91,20,100))
 ];
 
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>20]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
 
 /* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
@@ -68,14 +68,14 @@ $pCharts = new pCharts($myPicture);
 $pCharts->drawAreaChart(["Threshold"=>$Threshold]);
 
 /* Draw a line chart over */
-$pCharts->drawLineChart(["ForceColor"=>TRUE,"ForceR"=>0,"ForceG"=>0,"ForceB"=>0]);
+$pCharts->drawLineChart(["UseForcedColor"=>TRUE,"ForceColor"=>new pColor(0,0,0,100)]);
 
 /* Draw a plot chart over */
-$pCharts->drawPlotChart(["PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-255,"BorderAlpha"=>80]);
+$pCharts->drawPlotChart(["PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-255,"BorderColor"=>new pColor(50,50,50,80)]);
 
 /* Write the thresholds */
-$myPicture->drawThreshold([5],["WriteCaption"=>TRUE,"Caption"=>"Warn Zone","Alpha"=>70,"Ticks"=>2,"R"=>0,"G"=>0,"B"=>255]);
-$myPicture->drawThreshold([10],["WriteCaption"=>TRUE,"Caption"=>"Error Zone","Alpha"=>70,"Ticks"=>2,"R"=>0,"G"=>0,"B"=>255]);
+$myPicture->drawThreshold([5],["WriteCaption"=>TRUE,"Caption"=>"Warn Zone","Ticks"=>2,"Color"=>new pColor(0,0,255,70)]);
+$myPicture->drawThreshold([10],["WriteCaption"=>TRUE,"Caption"=>"Error Zone","Ticks"=>2,"Color"=>new pColor(0,0,255,70)]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawAreaChart.threshold.png");

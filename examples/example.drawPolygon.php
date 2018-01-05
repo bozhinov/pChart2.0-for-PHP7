@@ -4,39 +4,38 @@
 /* pChart library inclusions */
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
 
 /* Draw the background */
-$Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);
-$myPicture->drawFilledRectangle(0,0,700,230,$Settings);
+$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
-$myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>80));
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
+$myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawPolygon - Draw polygons",array("R"=>255,"G"=>255,"B"=>255));
+$myPicture->drawText(10,13,"drawPolygon - Draw polygons",["Color"=>new pColor(255,255,255)]);
 
 /* Enable shadow computing */
-$myPicture->setShadow(TRUE,array("X"=>2,"Y"=>2,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10));
+$myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
 
 /* Create some filling thresholds */
 $Threshold = [
-	array("MinX"=>100,"MaxX"=>60,"R"=>200,"G"=>200,"B"=>200,"Alpha"=>50), 
-	array("MinX"=>140,"MaxX"=>100,"R"=>220,"G"=>220,"B"=>220,"Alpha"=>50),
-	array("MinX"=>180,"MaxX"=>140,"R"=>240,"G"=>240,"B"=>240,"Alpha"=>50)
+	array("MinX"=>100,"MaxX"=>60, "Color"=>new pColor(200,200,200,50)), 
+	array("MinX"=>140,"MaxX"=>100,"Color"=>new pColor(220,220,220,50)),
+	array("MinX"=>180,"MaxX"=>140,"Color"=>new pColor(240,240,240,50))
 ];
 /* Draw some polygons */
 $Step  = 8;
-$White = array("Threshold"=>$Threshold,"R"=>255,"G"=>255,"B"=>255,"Alpha"=>100,"BorderR"=>0,"BorderG"=>0,"BorderB"=>0,"BorderAlpha"=>100);
+$White = ["Threshold"=>$Threshold,"Color"=>new pColor(255,255,255,100),"BorderColor"=>new pColor(0,0,0,100)];
 
 for($i=1;$i<=4;$i++)
 {

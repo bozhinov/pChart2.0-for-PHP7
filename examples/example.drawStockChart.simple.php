@@ -9,6 +9,8 @@ use pChart\{
 	pStock
 };
 
+require("myColors.php");
+
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
 
@@ -19,7 +21,7 @@ $myPicture->myData->addPoints([10,11,14,11,9,4,3,7,9,5],"Min");
 $myPicture->myData->addPoints([37,32,33,29,29,25,22,34,29,31],"Max");
 $myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CURRENCY,"$");
 
-$myPicture->myData->addPoints(array("Dec 13","Dec 14","Dec 15","Dec 16","Dec 17", "Dec 20","Dec 21","Dec 22","Dec 23","Dec 24"),"Time");
+$myPicture->myData->addPoints(["Dec 13","Dec 14","Dec 15","Dec 16","Dec 17", "Dec 20","Dec 21","Dec 22","Dec 23","Dec 24"],"Time");
 $myPicture->myData->setAbscissa("Time");
 $myPicture->myData->setAbscissaName("Time");
 
@@ -27,23 +29,21 @@ $myPicture->myData->setAbscissaName("Time");
 $myPicture->Antialias = FALSE;
 
 /* Draw the border */
-$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>myColors::Black()]);
 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 
 /* Define the chart area */
 $myPicture->setGraphArea(60,30,650,190);
 
 /* Draw the scale */
-$scaleSettings = array("GridR"=>200,"GridG"=>200,"GridB"=>200,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
-$myPicture->drawScale($scaleSettings);
+$myPicture->drawScale(["GridColor"=>myColors::LightGray(),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Create the pStock object */
 $mystockChart = new pStock($myPicture);
 
 /* Draw the stock chart */
-$stockSettings = array("BoxUpR"=>255,"BoxUpG"=>255,"BoxUpB"=>255,"BoxDownR"=>0,"BoxDownG"=>0,"BoxDownB"=>0);
-$mystockChart->drawStockChart($stockSettings);
+$mystockChart->drawStockChart(["BoxUpColor"=>myColors::White(),"BoxDownColor"=>myColors::Black()]);
 
 /* http://php.net/manual/en/function.imagefilter.php */
 $myPicture->setFilter(IMG_FILTER_GRAYSCALE);

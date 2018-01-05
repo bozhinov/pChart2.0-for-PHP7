@@ -118,7 +118,7 @@ class pCache implements pCacheInterface
 		$TS = time() - $Expiry;
 
 		/* Single file removal */
-		if ($ID != NULL) {
+		if (!is_null($ID)) {
 			/* If it's not in the cache DB, go away */
 			if (!$this->isInCache()) {
 				throw pException::CacheException(" ID ".$ID ." not in cache!");
@@ -150,9 +150,7 @@ class pCache implements pCacheInterface
 
 	function isInCache(bool $Verbose = FALSE, bool $UpdateHitsCount = FALSE)
 	{
-
 		$IndexContent = file($this->CacheIndex, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-		$UpdatedIndexContent = "";
 		$i = 0;
 		$ret = FALSE;
 		
@@ -172,19 +170,17 @@ class pCache implements pCacheInterface
 					}
 				}
 				/* Update Index if we have a hit */
-				/* A downside to this refactoring is that it will scroll all index entries even past the point of getting a hit */
-				/* I don't expect anyone to use it for a large volume of images
-					for such I will add caching to a proper data base or several of them */
-				$IndexContent[$i] = $PicID.",".$DBPos.",".$PicSize.",".$GeneratedTS.",".$Hits."\r\n";
+				$IndexContent[$i] = $PicID.",".$DBPos.",".$PicSize.",".$GeneratedTS.",".$Hits;
 				$ret = ($Verbose) ? ["DBPos" => $DBPos,"PicSize" => $PicSize,"GeneratedTS" => $GeneratedTS,"Hits" => $Hits] : TRUE;
+				break;
 			}
 			
-			$UpdatedIndexContent .= $IndexContent[$i];
 			$i++;
 		}
 		
 		/* Update Index file if we have a hit */
 		if ($ret != FALSE){
+			$UpdatedIndexContent = array_reduce($IndexContent, function($content, $l){$content .= strval($l)."\r\n"; return $content;});
 			file_put_contents($this->CacheIndex, $UpdatedIndexContent, LOCK_EX);
 		}
 		

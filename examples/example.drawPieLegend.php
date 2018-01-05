@@ -4,6 +4,7 @@
 /* pChart library inclusions */
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 use pChart\pPie;
 
@@ -19,26 +20,24 @@ $myPicture->myData->addPoints(["<10","10<>20","20<>40","40<>60","60<>80",">80"],
 $myPicture->myData->setAbscissa("Labels");
 
 /* Draw the background */
-$Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);
-$myPicture->drawFilledRectangle(0,0,700,230,$Settings);
+$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
-$myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,["StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>80]);
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
+$myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawPieLegend - Draw pie charts legend",["R"=>255,"G"=>255,"B"=>255]);
+$myPicture->drawText(10,13,"drawPieLegend - Draw pie charts legend",["Color"=>new pColor(255,255,255)]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"R"=>80,"G"=>80,"B"=>80));
+$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80,80,80)));
 
 /* Enable shadow computing */ 
-$myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"R"=>150,"G"=>150,"B"=>150,"Alpha"=>100]);
+$myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(150,150,150,100)]);
 
 /* Create the pPie object */ 
 $PieChart = new pPie($myPicture);
@@ -52,13 +51,14 @@ $PieChart->drawPieLegend(550,70);
 
 /* Write a legend box under the 1st chart */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
-$PieChart->drawPieLegend(90,176,array("Style"=>LEGEND_BOX,"Mode"=>LEGEND_HORIZONTAL));
+$PieChart->drawPieLegend(90,176,["Style"=>LEGEND_BOX,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Write the bottom legend box */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawGradientArea(1,200,698,228,DIRECTION_VERTICAL,["StartR"=>247,"StartG"=>247,"StartB"=>247,"EndR"=>217,"EndG"=>217,"EndB"=>217,"Alpha"=>20]);
-$myPicture->drawLine(1,199,698,199,["R"=>100,"G"=>100,"B"=>100,"Alpha"=>20]);
-$myPicture->drawLine(1,200,698,200,["R"=>255,"G"=>255,"B"=>255,"Alpha"=>20]);
+ 
+$myPicture->drawGradientArea(1,200,698,228,DIRECTION_VERTICAL,["StartColor"=>new pColor(247,247,247,20), "EndColor"=>new pColor(217,217,217,20)]);
+$myPicture->drawLine(1,199,698,199,["Color"=>new pColor(100,100,100,20)]);
+$myPicture->drawLine(1,200,698,200,["Color"=>new pColor(255,255,255,20)]);
 $PieChart->drawPieLegend(10,210,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Render the picture (choose the best way) */

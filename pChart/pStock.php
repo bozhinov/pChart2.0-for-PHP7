@@ -39,45 +39,29 @@ class pStock
 		$SerieMax = "Max";
 		$SerieMedian = NULL;
 		$LineWidth = 1;
-		$LineR = 0;
-		$LineG = 0;
-		$LineB = 0;
-		$LineAlpha = 100;
+		$LineColor = new pColor(0,0,0,100);
 		$ExtremityWidth = 1;
 		$ExtremityLength = 3;
-		$ExtremityR = 0;
-		$ExtremityG = 0;
-		$ExtremityB = 0;
-		$ExtremityAlpha = 100;
+		$ExtremityColor = new pColor(0,0,0,100);
 		$BoxWidth = 8;
-		$BoxUpR = isset($Format["BoxUpR"]) ? $Format["BoxUpR"] : 188;
-		$BoxUpG = isset($Format["BoxUpG"]) ? $Format["BoxUpG"] : 224;
-		$BoxUpB = isset($Format["BoxUpB"]) ? $Format["BoxUpB"] : 46;
-		$BoxUpAlpha = 100;
+		$BoxUpColor = new pColor(188,224,46,100);
 		$BoxUpSurrounding = NULL;
-		$BoxUpBorderR = $BoxUpR - 20;
-		$BoxUpBorderG = $BoxUpG - 20;
-		$BoxUpBorderB = $BoxUpB - 20;
-		$BoxUpBorderAlpha = 100;
-		$BoxDownR = isset($Format["BoxDownR"]) ? $Format["BoxDownR"] : 224;
-		$BoxDownG = isset($Format["BoxDownG"]) ? $Format["BoxDownG"] : 100;
-		$BoxDownB = isset($Format["BoxDownB"]) ? $Format["BoxDownB"] : 46;
-		$BoxDownAlpha = 100;
+		$BoxUpBorderColor = NULL;
+		$BoxDownColor = new pColor(224,100,46,100);
 		$BoxDownSurrounding = NULL;
-		$BoxDownBorderR = $BoxDownR - 20;
-		$BoxDownBorderG = $BoxDownG - 20;
-		$BoxDownBorderB = $BoxDownB - 20;
-		$BoxDownBorderAlpha = 100;
+		$BoxDownBorderColor = NULL;
 		$ShadowOnBoxesOnly = TRUE;
-		$MedianR = 255;
-		$MedianG = 0;
-		$MedianB = 0;
-		$MedianAlpha = 100;
+		$MedianColor = new pColor(255,0,0,100);
 		$RecordImageMap = FALSE;
 		$ImageMapTitle = "Stock Chart";
 		
 		/* Override defaults */
 		extract($Format);
+		
+		(is_null($BoxUpBorderColor)) AND $BoxUpBorderColor = $BoxUpColor->newOne()->RGBChange(-20);
+		(is_null($BoxDownBorderColor)) AND $BoxDownBorderColor = $BoxDownColor->newOne()->RGBChange(-20);
+		(!is_null($BoxUpSurrounding)) AND $BoxUpBorderColor = $BoxUpColor->newOne()->RGBChange($BoxUpSurrounding);
+		(!is_null($BoxDownSurrounding)) AND $BoxDownBorderColor = $BoxDownColor->newOne()->RGBChange($BoxDownSurrounding);
 		
 		/* Data Processing */
 		$Data = $this->myPicture->myData->Data["Series"];
@@ -87,18 +71,6 @@ class pStock
 			throw pException::StockMissingSerieException();
 		}
 		
-		if ($BoxUpSurrounding != NULL) {
-			$BoxUpBorderR = $BoxUpR + $BoxUpSurrounding;
-			$BoxUpBorderG = $BoxUpG + $BoxUpSurrounding;
-			$BoxUpBorderB = $BoxUpB + $BoxUpSurrounding;
-		}
-
-		if ($BoxDownSurrounding != NULL) {
-			$BoxDownBorderR = $BoxDownR + $BoxDownSurrounding;
-			$BoxDownBorderG = $BoxDownG + $BoxDownSurrounding;
-			$BoxDownBorderB = $BoxDownB + $BoxDownSurrounding;
-		}
-
 		($LineWidth != 1) AND $LineOffset = $LineWidth / 2;
 		$BoxOffset = $BoxWidth / 2;
 
@@ -111,7 +83,7 @@ class pStock
 				$Point = array($Value,$Data[$SerieClose]["Data"][$Key], $Data[$SerieMin]["Data"][$Key], $Data[$SerieMax]["Data"][$Key]);
 			}
 
-			if ($SerieMedian != NULL && isset($Data[$SerieMedian]["Data"][$Key])) {
+			if (!is_null($SerieMedian) && isset($Data[$SerieMedian]["Data"][$Key])) {
 				$Point[] = $Data[$SerieMedian]["Data"][$Key];
 			}
 
@@ -130,14 +102,15 @@ class pStock
 
 		$X = $this->myPicture->GraphAreaX1 + $XMargin;
 		$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-		$LineSettings = ["R" => $LineR,"G" => $LineG,"B" => $LineB,"Alpha" => $LineAlpha];
-		$ExtremitySettings = ["R" => $ExtremityR,"G" => $ExtremityG,"B" => $ExtremityB,	"Alpha" => $ExtremityAlpha];
-		$BoxUpSettings = ["R" => $BoxUpR,"G" => $BoxUpG,"B" => $BoxUpB,"Alpha" => $BoxUpAlpha,"BorderR" => $BoxUpBorderR,"BorderG" => $BoxUpBorderG,"BorderB" => $BoxUpBorderB,"BorderAlpha" => $BoxUpBorderAlpha];
-		$BoxDownSettings = ["R" => $BoxDownR,"G" => $BoxDownG,"B" => $BoxDownB,"Alpha" => $BoxDownAlpha,"BorderR" => $BoxDownBorderR,"BorderG" => $BoxDownBorderG,"BorderB" => $BoxDownBorderB,"BorderAlpha" => $BoxDownBorderAlpha];
-		$MedianSettings = ["R" => $MedianR,"G" => $MedianG,"B" => $MedianB,"Alpha" => $MedianAlpha];
 		
-		$ImageMapColor_1 = $this->myPicture->toHTMLColor($BoxUpR, $BoxUpG, $BoxUpB);
-		$ImageMapColor_2 = $this->myPicture->toHTMLColor($BoxDownR, $BoxDownG, $BoxDownB);
+		$LineSettings = ["Color" => $LineColor];
+		$ExtremitySettings = ["Color" => $ExtremityColor];
+		$BoxUpSettings = ["Color" => $BoxUpColor,"BorderColor" => $BoxUpBorderColor];
+		$BoxDownSettings = ["Color" => $BoxDownColor,"BorderColor" => $BoxDownBorderColor];
+		$MedianSettings = ["Color" => $MedianColor];
+		
+		$ImageMapColor_1 = $BoxUpColor->toHTMLColor();
+		$ImageMapColor_2 = $BoxDownColor->toHTMLColor();
 		
 		foreach($Plots as $Key => $Points) {
 			
@@ -146,7 +119,7 @@ class pStock
 			if ($RecordImageMap) {
 				$Values = "Open :".$Data[$SerieOpen]["Data"][$Key]."<br />Close : ".$Data[$SerieClose]["Data"][$Key]."<br />Min : ".$Data[$SerieMin]["Data"][$Key]."<br />Max : ".$Data[$SerieMax]["Data"][$Key]."<br />";
 				
-				if ($SerieMedian != NULL) {
+				if (!is_null($SerieMedian)) {
 					$Values = $Values."Median : ".$Data[$SerieMedian]["Data"][$Key]."<br />";
 				}
 

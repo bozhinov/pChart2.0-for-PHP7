@@ -4,6 +4,7 @@
 /* pChart library inclusions */
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 
 /* Create the pChart object */
@@ -17,48 +18,46 @@ $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 
 /* Draw the background */
-$Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);
-$myPicture->drawFilledRectangle(0,0,700,230,$Settings);
+$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
-$myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,["StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>80]);
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
+$myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawThreshold() - draw a threshold in the charting area",array("R"=>255,"G"=>255,"B"=>255));
+$myPicture->drawText(10,13,"drawThreshold() - draw a threshold in the charting area",["Color"=>new pColor(255,255,255)]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
-$myPicture->drawText(250,55,"My chart title",array("FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+$myPicture->drawText(250,55,"My chart title",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Draw the scale and do some cosmetics */ 
 $myPicture->setGraphArea(60,60,450,190);
-$myPicture->drawFilledRectangle(70,70,440,180,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10]);
+$myPicture->drawFilledRectangle(70,70,440,180,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200,]);
 $myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSubTicks"=>TRUE]);
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>20]); 
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]); 
 
 /* Draw static thresholds */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
-$myPicture->drawThreshold([5],["WriteCaption"=>TRUE,"Caption"=>"Step 1","BoxAlpha"=>100,"BoxR"=>255,"BoxG"=>40,"BoxB"=>70,"Alpha"=>70,"Ticks"=>1,"R"=>255,"G"=>40,"B"=>70]);
-$myPicture->drawThreshold([15],["WriteCaption"=>TRUE,"Caption"=>"Step 2","BoxAlpha"=>100,"BoxR"=>40,"BoxG"=>70,"BoxB"=>255,"Alpha"=>70,"Ticks"=>2,"R"=>40,"G"=>70,"B"=>255]);
+$myPicture->drawThreshold([5], ["WriteCaption"=>TRUE,"Caption"=>"Step 1","BoxColor"=>new pColor(255,40,40,100),"Ticks"=>1,"Color"=>new pColor(255,40,70,70)]);
+$myPicture->drawThreshold([15],["WriteCaption"=>TRUE,"Caption"=>"Step 2","BoxColor"=>new pColor(40,70,255,100),"Ticks"=>2,"Color"=>new pColor(40,70,255,70)]);
 
 /* Disable shadow computing */ 
 $myPicture->setShadow(FALSE);
 
 /* Draw the scale and do some cosmetics */ 
 $myPicture->setGraphArea(500,60,670,190);
-$myPicture->drawFilledRectangle(505,65,665,185,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10]);
-$myPicture->drawScale(array("XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE));
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>20]); 
+$myPicture->drawFilledRectangle(505,65,665,185,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200]);
+$myPicture->drawScale(["XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]); 
 
 /* Draw static thresholds */ 
-$myPicture->drawThreshold([5],["Alpha"=>70,"Ticks"=>1]);
-$myPicture->drawThreshold([10,12],["Alpha"=>70,"Ticks"=>2,"R"=>0,"G"=>0,"B"=>255]);
+$myPicture->drawThreshold([5],["Ticks"=>1,"Color"=>new pColor(255,0,0,70)]);
+$myPicture->drawThreshold([10,12],["Ticks"=>2,"Color"=>new pColor(0,0,255,70)]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawThreshold.png");

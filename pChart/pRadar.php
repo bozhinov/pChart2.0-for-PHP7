@@ -41,10 +41,7 @@ class pRadar
 	function drawRadar(array $Format = [])
 	{
 		$FixedMax = VOID;
-		$AxisR = 60;
-		$AxisG = 60;
-		$AxisB = 60;
-		$AxisAlpha = 50;
+		$AxisColor = new pColor(60,60,60,50);
 		$AxisRotation = 0;
 		$DrawTicks =  TRUE;
 		$TicksLength = 2;
@@ -58,20 +55,11 @@ class pRadar
 		$ValueFontSize = $this->myPicture->FontSize;
 		$ValuePadding = 4;
 		$OuterBubbleRadius = 2;
-		$OuterBubbleR = VOID;
-		$OuterBubbleG = VOID;
-		$OuterBubbleB = VOID;
-		$OuterBubbleAlpha = 100;
-		$InnerBubbleR = 255;
-		$InnerBubbleG = 255;
-		$InnerBubbleB = 255;
-		$InnerBubbleAlpha = 100;
+		$OuterBubbleColor = NULL;
+		$InnerBubbleColor = new pColor(255,255,255,100);
 		$DrawBackground = TRUE;
-		$BackgroundR = 255;
-		$BackgroundG = 255;
-		$BackgroundB = 255;
-		$BackgroundAlpha = 50;
-		$BackgroundGradient = [];
+		$BackgroundColor = new pColor(255,255,255,50);
+		$BackgroundGradient = NULL;
 		$Layout = RADAR_LAYOUT_STAR;
 		$SegmentHeight = SEGMENT_HEIGHT_AUTO;
 		$Segments = 4;
@@ -79,10 +67,7 @@ class pRadar
 		$SkipLabels = 1;
 		$LabelMiddle = FALSE;
 		$LabelsBackground = TRUE;
-		$LabelsBGR = 255;
-		$LabelsBGG = 255;
-		$LabelsBGB = 255;
-		$LabelsBGAlpha = 50;
+		$LabelsBackgroundColor = new pColor(255,255,255,50);
 		$LabelPos = RADAR_LABELS_ROTATED;
 		$LabelPadding = 4;
 		$DrawPoints = TRUE;
@@ -162,51 +147,40 @@ class pRadar
 		if ($DrawBackground) {
 			$RestoreShadow = $this->myPicture->Shadow;
 			$this->myPicture->Shadow = FALSE;
-			if (empty($BackgroundGradient)) {
+			if (!is_array($BackgroundGradient)) {
 				if ($Layout == RADAR_LAYOUT_STAR) {
 					
-					$Color = ["R" => $BackgroundR,	"G" => $BackgroundG, "B" => $BackgroundB, "Alpha" => $BackgroundAlpha];
 					$PointArray = [];
 					for ($i = 0; $i <= 360; $i = $i + (360 / $Points)) {
 						$PointArray[] = cos(deg2rad($i + $AxisRotation)) * $EdgeHeight + $CenterX;
 						$PointArray[] = sin(deg2rad($i + $AxisRotation)) * $EdgeHeight + $CenterY;
 					}
-					$this->myPicture->drawPolygon($PointArray, $Color);
+					$this->myPicture->drawPolygon($PointArray, ["Color" => $BackgroundColor]);
 					
-				} elseif ($Layout == RADAR_LAYOUT_CIRCLE) {
-					$Color =["R" => $BackgroundR,"G" => $BackgroundG,"B" => $BackgroundB,"Alpha" => $BackgroundAlpha];
-					$this->myPicture->drawFilledCircle($CenterX, $CenterY, $EdgeHeight, $Color);
+				} elseif ($Layout == RADAR_LAYOUT_CIRCLE) {;
+					$this->myPicture->drawFilledCircle($CenterX, $CenterY, $EdgeHeight, ["Color" => $BackgroundColor]);
 				}
 			} else {
-				$GradientROffset = ($BackgroundGradient["EndR"] - $BackgroundGradient["StartR"]) / $Segments;
-				$GradientGOffset = ($BackgroundGradient["EndG"] - $BackgroundGradient["StartG"]) / $Segments;
-				$GradientBOffset = ($BackgroundGradient["EndB"] - $BackgroundGradient["StartB"]) / $Segments;
-				$GradientAlphaOffset = ($BackgroundGradient["EndAlpha"] - $BackgroundGradient["StartAlpha"]) / $Segments;
+				
+				$GradientColor = new pColorGradient($BackgroundGradient["StartColor"], $BackgroundGradient["EndColor"], TRUE);
+				$GradientColor->SetSegments($Segments);
+
 				if ($Layout == RADAR_LAYOUT_STAR) {
 					for ($j = $Segments; $j >= 1; $j--) {
-						$Color = [
-							"R" => $BackgroundGradient["StartR"] + $GradientROffset * $j,
-							"G" => $BackgroundGradient["StartG"] + $GradientGOffset * $j,
-							"B" => $BackgroundGradient["StartB"] + $GradientBOffset * $j,
-							"Alpha" => $BackgroundGradient["StartAlpha"] + $GradientAlphaOffset * $j
-						];
 						$PointArray = [];
 						for ($i = 0; $i <= 360; $i = $i + (360 / $Points)) {
 							$PointArray[] = cos(deg2rad($i + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterX;
 							$PointArray[] = sin(deg2rad($i + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterY;
 						}
-
-						$this->myPicture->drawPolygon($PointArray, $Color);
+						$GradientColor->Next($j);
+						$this->myPicture->drawPolygon($PointArray, ["Color" => $GradientColor->getLatest()]);
+						$GradientColor->Reset();
 					}
 				} elseif ($Layout == RADAR_LAYOUT_CIRCLE) {
 					for ($j = $Segments; $j >= 1; $j--) {
-						$Color = [
-							"R" => $BackgroundGradient["StartR"] + $GradientROffset * $j,
-							"G" => $BackgroundGradient["StartG"] + $GradientGOffset * $j,
-							"B" => $BackgroundGradient["StartB"] + $GradientBOffset * $j,
-							"Alpha" => $BackgroundGradient["StartAlpha"] + $GradientAlphaOffset * $j
-						];
-						$this->myPicture->drawFilledCircle($CenterX, $CenterY, ($EdgeHeight / $Segments) * $j, $Color);
+						$GradientColor->Next($j);
+						$this->myPicture->drawFilledCircle($CenterX, $CenterY, ($EdgeHeight / $Segments) * $j, ["Color" => $GradientColor->getLatest()]);
+						$GradientColor->Reset();
 					}
 				}
 			}
@@ -215,8 +189,8 @@ class pRadar
 		}
 
 		/* Axis to axis lines */
-		$Color = ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha];
-		$ColorDotted = ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha * .8,"Ticks" => 2];
+		$Color = ["Color" => $AxisColor];
+		$ColorDotted = ["Color" => $AxisColor->newOne()->AlphaMultiply(.8),"Ticks" => 2];
 		
 		if ($Layout == RADAR_LAYOUT_STAR) {
 			for ($j = 1; $j <= $Segments; $j++) {
@@ -237,7 +211,7 @@ class pRadar
 
 		if ($DrawAxisValues) {
 			if ($LabelsBackground) {
-				$Options = ["DrawBox" => TRUE,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"BoxR" => $LabelsBGR,"BoxG" => $LabelsBGG,"BoxB" => $LabelsBGB,"BoxAlpha" => $LabelsBGAlpha];
+				$Options = ["DrawBox" => TRUE,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"BoxColor" => $LabelsBackgroundColor];
 			} else {
 				$Options = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE];
 			}
@@ -332,9 +306,7 @@ class pRadar
 		$Plot = [];
 		foreach($Data["Series"] as $SerieName => $DataS) {
 			if ($SerieName != $LabelSerie) {
-				
-				$Color = ["R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"],"Surrounding" => $PointSurrounding];
-				
+								
 				foreach($DataS["Data"] as $Key => $Value) {
 					$Angle = (360 / $Points) * $Key;
 					$Length = ($EdgeHeight / ($Segments * $SegmentHeight)) * $Value;
@@ -342,7 +314,7 @@ class pRadar
 					$Y = sin(deg2rad($Angle + $AxisRotation)) * $Length + $CenterY;
 					$Plot[$ID][] = [$X,$Y,$Value];
 					if ($RecordImageMap) {
-						$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . floor($PointRadius), $this->myPicture->toHTMLColor($Palette[$ID]["R"], $Palette[$ID]["G"], $Palette[$ID]["B"]), $DataS["Description"], $Data["Series"][$LabelSerie]["Data"][$Key] . " = " . $Value);
+						$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . floor($PointRadius), $Palette[$ID]->toHTMLColor(), $DataS["Description"], $Data["Series"][$LabelSerie]["Data"][$Key] . " = " . $Value);
 					}
 				}
 
@@ -352,11 +324,11 @@ class pRadar
 
 		/* Draw all that stuff! */
 		foreach($Plot as $ID => $Points) {
-			$Color = ["R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"],"Surrounding" => $PointSurrounding];
+			$Color = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
 			/* Draw the polygons */
 			if ($DrawPoly) {
-				if ($PolyAlpha != NULL) {
-					$Color = ["R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $PolyAlpha,"Surrounding" => $PointSurrounding];
+				if (!is_null($PolyAlpha)) {
+					$Color = ["Color" => $Palette[$ID]->newOne()->AlphaSet($PolyAlpha),"Surrounding" => $PointSurrounding];
 				}
 
 				$PointsArray = [];
@@ -367,17 +339,13 @@ class pRadar
 
 				$this->myPicture->drawPolygon($PointsArray, $Color);
 			}
-
-			$Color = ["R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"],"Surrounding" => $PointSurrounding];
-			/* Bubble and labels settings */
-			$TextSettings = array("Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"]);
-			$InnerColor = ["R" => $InnerBubbleR,"G" => $InnerBubbleG,"B" => $InnerBubbleB,"Alpha" => $InnerBubbleAlpha];
 			
-			if ($OuterBubbleR != VOID) {
-				$OuterColor = ["R" => $OuterBubbleR,"G" => $OuterBubbleG,"B" => $OuterBubbleB,"Alpha" => $OuterBubbleAlpha];
-			} else {
-				$OuterColor = ["R" => $Palette[$ID]["R"] + 20,"G" => $Palette[$ID]["G"] + 20,"B" => $Palette[$ID]["B"] + 20,"Alpha" => $Palette[$ID]["Alpha"]];
-			}
+			/* Bubble and labels settings */
+			$TextSettings = array("Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"Color" => $Palette[$ID]);
+
+			$Color = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
+			$InnerColor = ["Color" => $InnerBubbleColor];
+			$OuterColor = ["Color" => (!is_null($OuterBubbleColor)) ? $OuterBubbleColor : $Palette[$ID]->newOne()->RGBChange(20)];
 
 			/* Loop to the starting points if asked */
 			if ($LineLoopStart && $DrawLines) $this->myPicture->drawLine($Points[count($Points) - 1][0], $Points[count($Points) - 1][1], $Points[0][0], $Points[0][1], $Color);
@@ -409,10 +377,7 @@ class pRadar
 	function drawPolar(array $Format = [])
 	{
 		$FixedMax = VOID;
-		$AxisR = 60;
-		$AxisG = 60;
-		$AxisB = 60;
-		$AxisAlpha = 50;
+		$AxisColor = new pColor(60,60,60,50);
 		$AxisRotation = -90;
 		$DrawTicks = TRUE;
 		$TicksLength = 2;
@@ -426,29 +391,17 @@ class pRadar
 		$ValueFontSize = $this->myPicture->FontSize;
 		$ValuePadding = 4;
 		$OuterBubbleRadius = 2;
-		$OuterBubbleR = VOID;
-		$OuterBubbleG = VOID;
-		$OuterBubbleB = VOID;
-		$OuterBubbleAlpha = 100;
-		$InnerBubbleR = 255;
-		$InnerBubbleG = 255;
-		$InnerBubbleB = 255;
-		$InnerBubbleAlpha = 100;
+		$OuterBubbleColor = NULL;
+		$InnerBubbleColor = new pColor(255,255,255,100);
 		$DrawBackground = TRUE;
-		$BackgroundR = 255;
-		$BackgroundG = 255;
-		$BackgroundB = 255;
-		$BackgroundAlpha = 50;
-		$BackgroundGradient = [];
+		$BackgroundColor = new pColor(255,255,255,50);
+		$BackgroundGradient = NULL;
 		$AxisSteps = 20;
 		$SegmentHeight = SEGMENT_HEIGHT_AUTO;
 		$Segments = 4;
 		$WriteLabels = TRUE;
 		$LabelsBackground = TRUE;
-		$LabelsBGR = 255;
-		$LabelsBGG = 255;
-		$LabelsBGB = 255;
-		$LabelsBGAlpha = 50;
+		$LabelsBackgroundColor = new pColor(255,255,255,50);
 		$LabelPos = RADAR_LABELS_ROTATED;
 		$LabelPadding = 4;
 		$DrawPoints = TRUE;
@@ -520,22 +473,15 @@ class pRadar
 		if ($DrawBackground) {
 			$RestoreShadow = $this->myPicture->Shadow;
 			$this->myPicture->Shadow = FALSE;
-			if (empty($BackgroundGradient)) {
-				$Color = ["R" => $BackgroundR,"G" => $BackgroundG,"B" => $BackgroundB,"Alpha" => $BackgroundAlpha];
-				$this->myPicture->drawFilledCircle($CenterX, $CenterY, $EdgeHeight, $Color);
+			if (!is_array($BackgroundGradient)) {
+				$this->myPicture->drawFilledCircle($CenterX, $CenterY, $EdgeHeight, ["Color" => $BackgroundColor]);
 			} else {
-				$GradientROffset = ($BackgroundGradient["EndR"] - $BackgroundGradient["StartR"]) / $Segments;
-				$GradientGOffset = ($BackgroundGradient["EndG"] - $BackgroundGradient["StartG"]) / $Segments;
-				$GradientBOffset = ($BackgroundGradient["EndB"] - $BackgroundGradient["StartB"]) / $Segments;
-				$GradientAlphaOffset = ($BackgroundGradient["EndAlpha"] - $BackgroundGradient["StartAlpha"]) / $Segments;
+				$GradientColor = new pColorGradient($BackgroundGradient["StartColor"], $BackgroundGradient["EndColor"], TRUE);
+				$GradientColor->SetSegments($Segments);
 				for ($j = $Segments; $j >= 1; $j--) {
-					$Color = [
-						"R" => $BackgroundGradient["StartR"] + $GradientROffset * $j,
-						"G" => $BackgroundGradient["StartG"] + $GradientGOffset * $j,
-						"B" => $BackgroundGradient["StartB"] + $GradientBOffset * $j,
-						"Alpha" => $BackgroundGradient["StartAlpha"] + $GradientAlphaOffset * $j
-					];
-					$this->myPicture->drawFilledCircle($CenterX, $CenterY, ($EdgeHeight / $Segments) * $j, $Color);
+					$GradientColor->Next($j);
+					$this->myPicture->drawFilledCircle($CenterX, $CenterY, ($EdgeHeight / $Segments) * $j, ["Color" => $GradientColor->getLatest()]);
+					$GradientColor->Reset();
 				}
 			}
 
@@ -543,7 +489,7 @@ class pRadar
 		}
 
 		/* Axis to axis lines */
-		$Color = ["R" => $AxisR,"G" => $AxisG,"B" => $AxisB,"Alpha" => $AxisAlpha];
+		$Color = ["Color" => $AxisColor];
 		for ($j = 1; $j <= $Segments; $j++) {
 			$Radius = ($EdgeHeight / $Segments) * $j;
 			$this->myPicture->drawCircle($CenterX, $CenterY, $Radius, $Radius, $Color);
@@ -551,7 +497,7 @@ class pRadar
 
 		if ($DrawAxisValues) {
 			if ($LabelsBackground) {
-				$Options = ["DrawBox" => TRUE,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"BoxR" => $LabelsBGR,"BoxG" => $LabelsBGG,"BoxB" => $LabelsBGB,"BoxAlpha" => $LabelsBGAlpha];
+				$Options = ["DrawBox" => TRUE,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"BoxColor" => $LabelsBackgroundColor];
 			} else {
 				$Options = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE];
 			}
@@ -622,16 +568,14 @@ class pRadar
 		$Plot = [];
 		foreach($Data["Series"] as $SerieName => $DataSet) {
 			if ($SerieName != $LabelSerie) {
-				
-				$Color = array("R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"],"Surrounding" => $PointSurrounding);
-				
+								
 				foreach($DataSet["Data"] as $Key => $Value) {
 					$Angle = $Data["Series"][$LabelSerie]["Data"][$Key];
 					$Length = ($EdgeHeight / ($Segments * $SegmentHeight)) * $Value;
 					$X = cos(deg2rad($Angle + $AxisRotation)) * $Length + $CenterX;
 					$Y = sin(deg2rad($Angle + $AxisRotation)) * $Length + $CenterY;
 					if ($RecordImageMap) {
-						$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . floor($PointRadius), $this->myPicture->toHTMLColor($Palette[$ID]["R"], $Palette[$ID]["G"], $Palette[$ID]["B"]), $DataSet["Description"], $Data["Series"][$LabelSerie]["Data"][$Key] . "&deg = " . $Value);
+						$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . floor($PointRadius), $Palette[$ID]->toHTMLColor(), $DataSet["Description"], $Data["Series"][$LabelSerie]["Data"][$Key] . "&deg = " . $Value);
 					}
 
 					$Plot[$ID][] = [$X,$Y,$Value];
@@ -643,11 +587,11 @@ class pRadar
 
 		/* Draw all that stuff! */
 		foreach($Plot as $ID => $Points) {
-			$Color = array("R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"],"Surrounding" => $PointSurrounding);
+			$Color = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
 			/* Draw the polygons */
 			if ($DrawPoly) {
-				if ($PolyAlpha != NULL) {
-					$Color = array("R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $PolyAlpha,"Surrounding" => $PointSurrounding);
+				if (!is_null($PolyAlpha)) {
+					$Color = ["Color" => $Palette[$ID]->newOne()->AlphaSet($PolyAlpha),"Surrounding" => $PointSurrounding];
 				}
 
 				$PointsArray = [];
@@ -658,16 +602,12 @@ class pRadar
 
 				$this->myPicture->drawPolygon($PointsArray, $Color);
 			}
-
-			$Color = array("R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"],"Alpha" => $Palette[$ID]["Alpha"],"Surrounding" => $PointSurrounding);
+			
 			/* Bubble and labels settings */
-			$TextSettings = array("Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"R" => $Palette[$ID]["R"],"G" => $Palette[$ID]["G"],"B" => $Palette[$ID]["B"]);
-			$InnerColor = array("R" => $InnerBubbleR,"G" => $InnerBubbleG,"B" => $InnerBubbleB,"Alpha" => $InnerBubbleAlpha);
-			if ($OuterBubbleR != VOID) {
-				$OuterColor = array("R" => $OuterBubbleR,"G" => $OuterBubbleG,"B" => $OuterBubbleB,"Alpha" => $OuterBubbleAlpha);
-			} else {
-				$OuterColor = array("R" => $Palette[$ID]["R"] + 20,"G" => $Palette[$ID]["G"] + 20,"B" => $Palette[$ID]["B"] + 20,"Alpha" => $Palette[$ID]["Alpha"]);
-			}
+			$Color = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
+			$TextSettings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"Color" => $Palette[$ID]];
+			$InnerColor = ["Color" => $InnerBubbleColor];
+			$OuterColor = ["Color" => (!is_null($OuterBubbleColor)) ? $OuterBubbleColor : $Palette[$ID]->newOne()->RGBChange(20)];
 
 			/* Loop to the starting points if asked */
 			if ($LineLoopStart && $DrawLines) {

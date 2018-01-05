@@ -4,6 +4,7 @@
 /* pChart library inclusions */
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 use pChart\pCharts;
 
@@ -14,13 +15,14 @@ $myPicture = new pDraw(700,230);
 $myPicture->myData->addPoints([2,7,5,18,19,22,23,25,22,12,10,10],"DEFCA");
 $myPicture->myData->setAxisName(0,"$ Incomes");
 $myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CURRENCY);
-$myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun","Jul","Aou","Sep","Oct","Nov","Dec"],"Labels");
+$myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
-$myPicture->myData->setPalette("DEFCA",["R"=>55,"G"=>91,"B"=>127]);
+$myPicture->myData->setPalette("DEFCA",new pColor(55,91,127));
 
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartR"=>220,"StartG"=>220,"StartB"=>220,"EndR"=>255,"EndG"=>255,"EndB"=>255,"Alpha"=>100]);
-$myPicture->drawRectangle(0,0,699,229,["R"=>200,"G"=>200,"B"=>200]);
+
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(220,220,220,100), "EndColor"=>new pColor(255,255,255,100)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(220,220,220)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11]);
@@ -28,8 +30,8 @@ $myPicture->drawText(60,35,"2k9 Average Incomes",["FontSize"=>20,"Align"=>TEXT_A
 
 /* Do some cosmetic and draw the chart */
 $myPicture->setGraphArea(60,40,670,190);
-$myPicture->drawFilledRectangle(60,40,670,190,["R"=>255,"G"=>255,"B"=>255,"Surrounding"=>-200,"Alpha"=>10]);
-$myPicture->drawScale(["GridR"=>180,"GridG"=>180,"GridB"=>180]);
+$myPicture->drawFilledRectangle(60,40,670,190,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200]);
+$myPicture->drawScale(["GridColor"=>new pColor(180,180,180,50)]);
 
 /* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
@@ -38,7 +40,7 @@ $pCharts = new pCharts($myPicture);
 $pCharts->myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 $pCharts->drawFilledSplineChart();
 
-$pCharts->myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
+$pCharts->myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
 $pCharts->drawSplineChart();
 $myPicture->setShadow(FALSE);
 

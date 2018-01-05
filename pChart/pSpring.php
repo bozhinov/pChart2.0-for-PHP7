@@ -49,30 +49,18 @@ class pSpring
 		$this->Links = [];
 		/* Set nodes defaults */
 		$this->Default = [
-			"R" => 255,
-			"G" => 255,
-			"B" => 255,
-			"Alpha" => 100,
-			"BorderR" => 0,
-			"BorderG" => 0,
-			"BorderB" => 0,
-			"BorderAlpha" => 100,
+			"Color" => new pColor(255,255,255,100),
+			"BorderColor" => new pColor(0,0,0,100),
 			"Surrounding" => NULL,
-			"BackgroundR" => 255,
-			"BackgroundG" => 255,
-			"BackgroundB" => 255,
-			"BackgroundAlpha" => 0,
+			"BackgroundColor" => new pColor(255,255,255,100),
 			"Force" => 1,
 			"NodeType" => NODE_TYPE_FREE,
 			"Size" => 5,
 			"Shape" => NODE_SHAPE_CIRCLE,
 			"FreeZone" => 40,
-			"LinkR" => 0,
-			"LinkG" => 0,
-			"LinkB" => 0, 
-			"LinkAlpha" => 0
+			"LinkColor" => new pColor(0,0,0,0)
 		];
-		$this->Labels = ["Type" => LABEL_CLASSIC, "R" => 0, "G" => 0, "B" => 0, "Alpha" => 100];
+		$this->Labels = ["Type" => LABEL_CLASSIC, "Color" => new pColor(0,0,0,100)];
 		$this->AutoComputeFreeZone = FALSE;
 		
 		if (!($pChartObject instanceof pDraw)){
@@ -120,16 +108,13 @@ class pSpring
 			throw pException::SpringInvalidInputException("No data ToNode!");
 		}
 
-		$R = 0;
-		$G = 0;
-		$B = 0;
-		$Alpha = 100;
+		$Color = new pColor(0,0,0,100);
 		$Name = NULL;
 		$Ticks = NULL;
 		
 		extract($Settings);
 		
-		$this->Links[$FromNode][$ToNode] = ["R" => $R, "G" => $G, "B" => $B, "Alpha" => $Alpha, "Name" => $Name, "Ticks" => $Ticks];
+		$this->Links[$FromNode][$ToNode] = ["Color" => $Color, "Name" => $Name, "Ticks" => $Ticks];
 		$this->Links[$ToNode][$FromNode] = $this->Links[$FromNode][$ToNode];
 
 	}
@@ -152,19 +137,10 @@ class pSpring
 
 		$Name = "Node " . strval($NodeID);
 		$Connections = [];
-		$R = $this->Default["R"];
-		$G = $this->Default["G"];
-		$B = $this->Default["B"];
-		$Alpha = $this->Default["Alpha"];
-		$BorderR = $this->Default["BorderR"];
-		$BorderG = $this->Default["BorderG"];
-		$BorderB = $this->Default["BorderB"];
-		$BorderAlpha = $this->Default["BorderAlpha"];
+		$Color = $this->Default["Color"];
+		$BorderColor = $this->Default["BorderColor"];
+		$BackgroundColor = $this->Default["BackgroundColor"];
 		$Surrounding = $this->Default["Surrounding"];
-		$BackgroundR = $this->Default["BackgroundR"];
-		$BackgroundG = $this->Default["BackgroundG"];
-		$BackgroundB = $this->Default["BackgroundB"];
-		$BackgroundAlpha = $this->Default["BackgroundAlpha"];
 		$Force = $this->Default["Force"];
 		$NodeType = $this->Default["NodeType"];
 		$Size = $this->Default["Size"];
@@ -174,25 +150,14 @@ class pSpring
 		/* Override defaults */
 		extract($Settings);
 		
-		if ($Surrounding != NULL) {
-			$BorderR = $R + $Surrounding;
-			$BorderG = $G + $Surrounding;
-			$BorderB = $B + $Surrounding;
+		if (!is_null($Surrounding)) {
+			$BorderColor = $Color->newOne()->RGBChange($Surrounding);
 		}
 
 		$this->Data[$NodeID] = [
-			"R" => $R,
-			"G" => $G,
-			"B" => $B,
-			"Alpha" => $Alpha,
-			"BorderR" => $BorderR,
-			"BorderG" => $BorderG,
-			"BorderB" => $BorderB,
-			"BorderAlpha" => $BorderAlpha,
-			"BackgroundR" => $BackgroundR,
-			"BackgroundG" => $BackgroundG,
-			"BackgroundB" => $BackgroundB,
-			"BackgroundAlpha" => $BackgroundAlpha,
+			"Color" => $Color,
+			"BorderColor" => $BorderColor,
+			"BackgroundColor" => $BackgroundColor,
 			"Name" => $Name,
 			"Force" => $Force,
 			"Type" => $NodeType,
@@ -217,19 +182,11 @@ class pSpring
 		foreach($Nodes as $NodeID) {
 			if (isset($this->Data[$NodeID])) {
 				
-				(isset($Settings["R"])) AND $this->Data[$NodeID]["R"] = $Settings["R"];
-				(isset($Settings["G"])) AND $this->Data[$NodeID]["G"] = $Settings["G"];
-				(isset($Settings["B"])) AND $this->Data[$NodeID]["B"] = $Settings["B"];
-				(isset($Settings["Alpha"])) AND $this->Data[$NodeID]["Alpha"] = $Settings["Alpha"];
-				(isset($Settings["BorderR"])) AND $this->Data[$NodeID]["BorderR"] = $Settings["BorderR"];
-				(isset($Settings["BorderG"])) AND $this->Data[$NodeID]["BorderG"] = $Settings["BorderG"];
-				(isset($Settings["BorderB"])) AND $this->Data[$NodeID]["BorderB"] = $Settings["BorderB"];
-				(isset($Settings["BorderAlpha"])) AND $this->Data[$NodeID]["BorderAlpha"] = $Settings["BorderAlpha"];
+				(isset($Settings["Color"])) AND $this->Data[$NodeID]["Color"] = $Settings["Color"];
+				(isset($Settings["BorderColor"])) AND $this->Data[$NodeID]["BorderColor"] = $Settings["BorderColor"];
 
 				if (isset($Settings["Surrounding"])) {
-					$this->Data[$NodeID]["BorderR"] = $this->Data[$NodeID]["R"] + $Settings["Surrounding"];
-					$this->Data[$NodeID]["BorderG"] = $this->Data[$NodeID]["G"] + $Settings["Surrounding"];
-					$this->Data[$NodeID]["BorderB"] = $this->Data[$NodeID]["B"] + $Settings["Surrounding"];
+					$this->Data[$NodeID]["BorderColor"] = $this->Data[$NodeID]["Color"]->newOne()->RGBChange($Settings["Surrounding"]);
 				}
 			} else {
 				throw pException::SpringInvalidInputException($NodeID." is invalid node");
@@ -597,7 +554,7 @@ class pSpring
 		$CenterGraph = isset($Settings["CenterGraph"]) ? $Settings["CenterGraph"] : TRUE;
 		$TextPadding = isset($Settings["TextPadding"]) ? $Settings["TextPadding"] : 4;
 		$Algorithm = isset($Settings["Algorithm"]) ? $Settings["Algorithm"] : ALGORITHM_WEIGHTED;
-		$FontSize = $this->myPicture->FontSize;
+		#$FontSize = $this->myPicture->FontSize; # UNUSED here but passed to DrawText
 		$this->X1 = $this->myPicture->GraphAreaX1;
 		$this->Y1 = $this->myPicture->GraphAreaY1;
 		$this->X2 = $this->myPicture->GraphAreaX2;
@@ -631,7 +588,7 @@ class pSpring
 
 		/* Draw the connections */
 		$Drawn = [];
-		$defaultColor = ["R" => $this->Default["LinkR"],"G" => $this->Default["LinkG"],"B" => $this->Default["LinkB"],"Alpha" => $this->Default["Alpha"]];
+		$defaultColor = ["Color" => $this->Default["LinkColor"]->newOne()];
 		foreach($this->Data as $Key => $Settings) {
 			$X = $Settings["X"];
 			$Y = $Settings["Y"];
@@ -648,7 +605,7 @@ class pSpring
 					if (isset($this->Data[$NodeID]) && !isset($Drawn[$Key][$NodeID]) && !isset($Drawn[$NodeID][$Key])) {
 						$Color = $defaultColor;
 						if (!empty($this->Links)) {	
-							if (isset($this->Links[$Key][$NodeID]["R"])) {
+							if (isset($this->Links[$Key][$NodeID])) {
 								$Color = $this->Links[$Key][$NodeID];
 								unset($Color['name']); # ticks is already there
 							}
@@ -684,7 +641,7 @@ class pSpring
 		/* Draw the quiet zones */
 		if ($DrawQuietZone) {
 			foreach($this->Data as $Settings) {
-				$this->myPicture->drawFilledCircle($Settings["X"], $Settings["Y"],$Settings["FreeZone"], ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 2]);
+				$this->myPicture->drawFilledCircle($Settings["X"], $Settings["Y"],$Settings["FreeZone"], ["Color" => new pColor(0,0,0,2)]);
 			}
 		}
 
@@ -696,20 +653,11 @@ class pSpring
 			#$FreeZone = $Settings["FreeZone"]; # UNUSED
 			$Shape = $Settings["Shape"];
 			$Size = $Settings["Size"];
-			$Color = [
-				"R" => $Settings["R"],
-				"G" => $Settings["G"],
-				"B" => $Settings["B"],
-				"Alpha" => $Settings["Alpha"],
-				"BorderR" => $Settings["BorderR"],
-				"BorderG" => $Settings["BorderG"],
-				"BorderB" => $Settings["BorderB"],
-				"BorderApha" => $Settings["BorderAlpha"]
-			];
+			$ShapeSettings = ["Color" => $Settings["Color"],"BorderColor" => $Settings["BorderColor"]];
 			
 			switch ($Shape){
 				case NODE_SHAPE_CIRCLE:
-					$this->myPicture->drawFilledCircle($X, $Y, $Size, $Color);
+					$this->myPicture->drawFilledCircle($X, $Y, $Size, $ShapeSettings);
 					break;
 				case NODE_SHAPE_TRIANGLE:
 					$Points = [
@@ -717,12 +665,12 @@ class pSpring
 						cos(deg2rad(45)) * $Size + $X,	sin(deg2rad(45)) * $Size + $Y,
 						cos(deg2rad(135)) * $Size + $X, sin(deg2rad(135)) * $Size + $Y
 					];
-					$this->myPicture->drawPolygon($Points, $Color);
+					$this->myPicture->drawPolygon($Points, $ShapeSettings);
 					break;
 				case NODE_SHAPE_SQUARE:
 					#$Offset = $Size / 2;
 					$Size = $Size / 2;
-					$this->myPicture->drawFilledRectangle($X - $Size, $Y - $Size, $X + $Size, $Y + $Size, $Color);
+					$this->myPicture->drawFilledRectangle($X - $Size, $Y - $Size, $X + $Size, $Y + $Size, $ShapeSettings);
 					break;
 			}
 
@@ -750,10 +698,10 @@ class pSpring
 				if (isset($Settings["Vectors"]) && $Settings["Type"] != NODE_TYPE_CENTRAL) {
 					foreach($Settings["Vectors"] as $Vector) {
 						$Factor = ($Vector["Type"] == "A") ? $this->MagneticForceA : $this->MagneticForceR;
-						$Color = ($Vector["Type"] == "A") ? ["FillR" => 255,"FillG" => 0,"FillB" => 0] : ["FillR" => 0,"FillG" => 255,"FillB" => 0];
+						$FillColor = ($Vector["Type"] == "A") ? ["FillColor" => new pColor(255,0,0)] : ["FillColor" => new pColor(0,255,0)];
 						$X2 = cos(deg2rad($Vector["Angle"])) * $Vector["Force"] * $Factor + $Settings["X"];
 						$Y2 = sin(deg2rad($Vector["Angle"])) * $Vector["Force"] * $Factor + $Settings["Y"];
-						$this->myPicture->drawArrow( $Settings["X"], $Settings["Y"], $X2, $Y2, $Color);
+						$this->myPicture->drawArrow( $Settings["X"], $Settings["Y"], $X2, $Y2, $FillColor);
 					}
 				}
 			}

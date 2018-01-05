@@ -4,6 +4,7 @@
 /* pChart library inclusions */
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 use pChart\pCharts;
 
@@ -20,18 +21,16 @@ $myPicture->myData->addPoints($Points_1,"Probe 1");
 $myPicture->myData->setAxisName(0,"Temperatures");
 
 /* Draw the background */
-$Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);
-$myPicture->drawFilledRectangle(0,0,700,230,$Settings);
+$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
 
 /* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11]);
@@ -45,12 +44,12 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $myPicture->setGraphArea(60,50,670,200);
 
 /* Draw the scale */
-$scaleSettings = array("LabelSkip"=>9,"GridR"=>200,"GridG"=>200,"GridB"=>200,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
+$scaleSettings = array("LabelSkip"=>9,"GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
 $myPicture->drawScale($scaleSettings);
 
 /* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Draw the line chart */
 (new pCharts($myPicture))->drawPlotChart(["PlotSize"=>2]);
@@ -63,21 +62,21 @@ $StandardDeviation = $myPicture->myData->getStandardDeviation("Probe 1");
 
 /* Draw a threshold area */
 $myPicture->setShadow(FALSE);
-$myPicture->drawThresholdArea($Average - $StandardDeviation, $Average + $StandardDeviation, ["R"=>100,"G"=>100,"B"=>200,"Alpha"=>10]);
+$myPicture->drawThresholdArea($Average - $StandardDeviation, $Average + $StandardDeviation, ["Color"=>new pColor(100,100,200,10)]);
 $myPicture->setShadow(TRUE);
 
 /* Draw the serie average */
 $myPicture->drawThreshold([$Average],["WriteCaption"=>TRUE,"Caption"=>"Average value","AxisID"=>0]);
 
 /* Draw the standard deviation boundaries */
-$ThresholdSettings = array("WriteCaption"=>TRUE,"CaptionAlign"=>CAPTION_RIGHT_BOTTOM ,"Caption"=>"SD","AxisID"=>0,"R"=>0,"G"=>0,"B"=>0);
+$ThresholdSettings = ["WriteCaption"=>TRUE,"CaptionAlign"=>CAPTION_RIGHT_BOTTOM ,"Caption"=>"SD","AxisID"=>0,"Color"=>new pColor(0,0,0)];
 $myPicture->drawThreshold([$Average+$StandardDeviation],$ThresholdSettings);
 $myPicture->drawThreshold([$Average-$StandardDeviation],$ThresholdSettings);
 
 /* Write the coefficient of variation */
 $CoefficientOfVariation = round($myPicture->myData->getCoefficientOfVariation("Probe 1"),1);
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
-$myPicture->drawText(610,46,"coefficient of variation : ".$CoefficientOfVariation,array("Align"=>TEXT_ALIGN_BOTTOMMIDDLE));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$myPicture->drawText(610,46,"coefficient of variation : ".$CoefficientOfVariation,["Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawStandardDeviation.png");

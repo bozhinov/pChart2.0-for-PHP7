@@ -5,6 +5,7 @@
 require_once("bootstrap.php");
 
 use pChart\{
+	pColor,
 	pDraw,
 	pCharts,
 	pCache
@@ -42,9 +43,9 @@ if ($myCache->isInCache()){
 	(new pCharts($myPicture))->drawSplineChart();
 
 	/* Do some cosmetics */
-	$myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,["StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>100]);
+	$myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,100),"EndColor"=>new pColor(50,50,50,100)]);
 	$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
-	$myPicture->drawText(10,13,"Test of the pCache class",["R"=>255,"G"=>255,"B"=>255]);
+	$myPicture->drawText(10,13,"Test of the pCache class",["Color"=> new pColor(255,255,255)]);
 
 	/* Push the rendered picture to the cache */
 	$myCache->writeToCache($myPicture);

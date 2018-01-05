@@ -52,19 +52,23 @@ define("EURO_SYMBOL", utf8_encode("&#8364;"));
 class pData
 {
 	var $Data;
-	var $Palette = [
-		"0" => ["R" => 188,"G" => 224,"B" => 46,"Alpha" => 100],
-		"1" => ["R" => 224,"G" => 100,"B" => 46,"Alpha" => 100],
-		"2" => ["R" => 224,"G" => 214,"B" => 46,"Alpha" => 100],
-		"3" => ["R" => 46,"G" => 151,"B" => 224,"Alpha" => 100],
-		"4" => ["R" => 176,"G" => 46,"B" => 224,"Alpha" => 100],
-		"5" => ["R" => 224,"G" => 46,"B" => 117,"Alpha" => 100],
-		"6" => ["R" => 92,"G" => 224,"B" => 46,	"Alpha" => 100],
-		"7" => ["R" => 224,"G" => 176,"B" => 46,"Alpha" => 100]
-	];
+	var $Palette = [];
+
 	/* Class creator */
 	function __construct()
 	{
+		
+		$this->Palette = [
+			"0" => new pColor(188,224,46,100),
+			"1" => new pColor(224,100,46,100),
+			"2" => new pColor(224,214,46,100),
+			"3" => new pColor(46,151,224,100),
+			"4" => new pColor(176,46,224,100),
+			"5" => new pColor(224,46,117,100),
+			"6" => new pColor(92,224,46,100),
+			"7" => new pColor(224,176,46,100)
+		];
+		
 		$this->Data = [
 			"XAxisDisplay" => AXIS_FORMAT_DEFAULT,
 			"XAxisFormat" => NULL,
@@ -327,17 +331,17 @@ class pData
 	}
 
 	/* Define if a scatter serie should be draw with ticks */
-	function setScatterSerieTicks(int $ID, int $Width = 0)
+	function setScatterSerieTicks(int $ID, int $Ticks = NULL)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
-			$this->Data["ScatterSeries"][$ID]["Ticks"] = $Width;
+			$this->Data["ScatterSeries"][$ID]["Ticks"] = $Ticks;
 		} else {
 			throw pException::InvalidInput("Invalid serie ID");
 		}
 	}
 
 	/* Define if a scatter serie should be draw with a special weight */
-	function setScatterSerieWeight(int $ID, int $Weight = 0)
+	function setScatterSerieWeight(int $ID, int $Weight = NULL)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
 			$this->Data["ScatterSeries"][$ID]["Weight"] = $Weight;
@@ -347,15 +351,10 @@ class pData
 	}
 
 	/* Associate a color to a scatter serie */
-	function setScatterSerieColor(int $ID, array $Format)
+	function setScatterSerieColor(int $ID, pColor $Color)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
-			$this->Data["ScatterSeries"][$ID]["Color"] = [
-				"R" => isset($Format["R"]) ? $Format["R"] : 0,
-				"G" => isset($Format["G"]) ? $Format["G"] : 0,
-				"B" => isset($Format["B"]) ? $Format["B"] : 0,
-				"Alpha" => isset($Format["Alpha"]) ? $Format["Alpha"] : 100
-			];
+			$this->Data["ScatterSeries"][$ID]["Color"] = $Color;
 		} else {
 			throw pException::InvalidInput("Invalid serie ID");
 		}
@@ -479,7 +478,7 @@ class pData
 	}
 
 	/* Return the x th percentile of the given serie */
-	function getSeriePercentile(string $Serie = "Serie1", int $Percentil = 95) # UNUSED
+	function getSeriePercentile(string $Serie = "Serie1", float $Percentil = 95) # UNUSED
 	{
 		if (!isset($this->Data["Series"][$Serie]["Data"])) {
 			throw pException::InvalidInput("Invalid serie name");
@@ -568,15 +567,10 @@ class pData
 	}
 
 	/* Associate a color to an axis */
-	function setAxisColor(int $AxisID, array $Format)
+	function setAxisColor(int $AxisID, pColor $Color)
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
-			$this->Data["Axis"][$AxisID]["Color"] = [
-				"R" => isset($Format["R"]) ? $Format["R"] : 0,
-				"G" => isset($Format["G"]) ? $Format["G"] : 0,
-				"B" => isset($Format["B"]) ? $Format["B"] : 0,
-				"Alpha" => isset($Format["Alpha"]) ? $Format["Alpha"] : 100
-			];
+			$this->Data["Axis"][$AxisID]["Color"] = $Color;
 		} else {
 			throw pException::InvalidInput("Invalid serie ID");
 		}
@@ -617,17 +611,17 @@ class pData
 	}
 
 	/* Define if a serie should be draw with ticks */
-	function setSerieTicks(string $Serie, int $Width = 0)
+	function setSerieTicks(string $Serie, int $Ticks = NULL)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
-			$this->Data["Series"][$Serie]["Ticks"] = $Width;
+			$this->Data["Series"][$Serie]["Ticks"] = $Ticks;
 		} else {
 			throw pException::InvalidInput("Invalid serie name");
 		}
 	}
 
 	/* Define if a serie should be draw with a special weight */
-	function setSerieWeight(string $Serie, int $Weight = 0)
+	function setSerieWeight(string $Serie, int $Weight = NULL)
 	{	
 		if (isset($this->Data["Series"][$Serie])) {
 			$this->Data["Series"][$Serie]["Weight"] = $Weight;
@@ -648,23 +642,16 @@ class pData
 	}
 
 	/* Set the color of one serie */
-	function setPalette(string $Serie, array $Format = [])
+	function setPalette(string $Serie, pColor $Color)
 	{
-		$New = [
-			"R" => isset($Format["R"]) ? $Format["R"] : 0,
-			"G" => isset($Format["G"]) ? $Format["G"] : 0,
-			"B" => isset($Format["B"]) ? $Format["B"] : 0,
-			"Alpha" => isset($Format["Alpha"]) ? $Format["Alpha"] : 100
-		];
-
 		if (isset($this->Data["Series"][$Serie])) {
 			
 			$Old = $this->Data["Series"][$Serie]["Color"];
-			$this->Data["Series"][$Serie]["Color"] = $New;
+			$this->Data["Series"][$Serie]["Color"] = $Color;
 			/* Do reverse processing on the internal palette array */
 			foreach($this->Palette as $Key => $Value) {
 				if ($Value == $Old) {
-					$this->Palette[$Key] = $New;
+					$this->Palette[$Key] = $Color;
 				}
 			}
 		} else {
@@ -673,7 +660,7 @@ class pData
 	}
 
 	/* Load a palette file */
-	function loadPalette($FileName, bool $Overwrite = FALSE)
+	function loadPalette($FileName, bool $Overwrite = FALSE, $UseCache = FALSE)
 	{
 		if (!file_exists($FileName)) {
 			throw pException::InvalidResourcePath("Palette not found");
@@ -687,7 +674,29 @@ class pData
 		if ($Overwrite) {
 			$this->Palette = [];
 		}
-
+		
+		if ($UseCache != FALSE){
+			if (!file_exists($UseCache)){
+				throw pException::InvalidResourcePath("Palette cache path not found");
+			}
+			if (substr($UseCache, -1) == "/"){
+				$UseCache = substr($UseCache,0,-1);
+			}
+			$CachedPalette = $UseCache."/".basename($FileName).".php";
+			if (file_exists($CachedPalette)){
+				require($CachedPalette);
+				/* Apply changes to current series */
+				$ID = 0;
+				if (isset($this->Data["Series"])) {
+					foreach($this->Data["Series"] as $Key => $Value) {
+						$this->Data["Series"][$Key]["Color"] = (!isset($this->Palette[$ID])) ? new pColor(0,0,0,0) : $this->Palette[$ID];
+						$ID++;
+					}
+				}
+				return;
+			} 
+		}
+		
 		$lines = explode(PHP_EOL, $buffer);
 		$ID = 0;
 
@@ -695,21 +704,32 @@ class pData
 			$pal = explode(",", $line);
 			if (count($pal) == 4) {
 				list($R, $G, $B, $Alpha) = $pal;
-				$this->Palette[$ID] = ["R" => intval($R),"G" => intval($G),"B" => intval($B),"Alpha" => intval($Alpha)];
+				$this->Palette[$ID] = new pColor(intval($R),intval($G),intval($B),intval($Alpha));
 				$ID++;
 			}
 		}
+
+		if ($UseCache != FALSE){
+			file_put_contents($CachedPalette,'<?php $this->Palette='.var_export($this->Palette,true).' ?>');
+		}			
 
 		/* Apply changes to current series */
 		$ID = 0;
 		if (isset($this->Data["Series"])) {
 			foreach($this->Data["Series"] as $Key => $Value) {
-				$this->Data["Series"][$Key]["Color"] = (!isset($this->Palette[$ID])) ? ["R" => 0,"G" => 0,"B" => 0,"Alpha" => 0] : $this->Palette[$ID];
+				$this->Data["Series"][$Key]["Color"] = (!isset($this->Palette[$ID])) ? new pColor(0,0,0,0) : $this->Palette[$ID];
 				$ID++;
 			}
 		}
-
+		
 	}
+	
+	/* Returns a random color */
+	function getRandomColor($Alpha = 100)
+	{
+		return (new pColor(rand(0, 255), rand(0, 255), rand(0, 255), $Alpha));
+	}
+
 
 	/* Initialize a given scatter serie */
 	function initScatterSerie(int $ID)
@@ -722,9 +742,9 @@ class pData
 			"Description" => "Scatter " . $ID,
 			"isDrawable" => TRUE,
 			"Picture" => NULL,
-			"Ticks" => 0,
-			"Weight" => 0,
-			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : ["R" => rand(0, 255), "B" => rand(0, 255), "G" => rand(0, 255), "Alpha" => 100]
+			"Ticks" => NULL,
+			"Weight" => NULL,
+			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : $this->getRandomColor(100)
 		];
 	}
 
@@ -740,10 +760,10 @@ class pData
 			"Max" => NULL,
 			"Min" => NULL,
 			"Axis" => 0,
-			"Ticks" => 0,
-			"Weight" => 0,
+			"Ticks" => NULL,
+			"Weight" => NULL,
 			"Shape" => SERIE_SHAPE_FILLEDCIRCLE,
-			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : ["R" => rand(0, 255), "B" => rand(0, 255), "G" => rand(0, 255), "Alpha" => 100]
+			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : $this->getRandomColor(100)
 		];
 	}
 
@@ -845,13 +865,8 @@ class pData
 	}
 
 	/* Create a dataset based on a formula */
-	function createFunctionSerie(string $SerieName, string $Formula = "", array $Options = [])
+	function createFunctionSerie(string $SerieName, \Closure $Function, string $Formula, array $Options = [])
 	{
-		
-		if ($Formula == "") {
-			throw pException::InvalidInput("Serie formula can not be empty");
-		}
-		
 		$MinX = isset($Options["MinX"]) ? $Options["MinX"] : -10;
 		$MaxX = isset($Options["MaxX"]) ? $Options["MaxX"] : 10;
 		$XStep = isset($Options["XStep"]) ? $Options["XStep"] : 1;
@@ -862,37 +877,16 @@ class pData
 		$Result = [];
 		$Abscissa = [];
 
-		for ($i = $MinX; $i <= $MaxX; $i = $i + $XStep) {
-							
-			$Expression = "\$return = '!'.(" . str_replace("z", $i, $Formula) . ");";
-
-			if (substr($Expression, -4, 4) == "/0);"){ # Division by zero in ..\pData.class.php(849) : eval()'d code on line 1
-				$return = VOID;
-			} else {
-				if (eval($Expression) === FALSE) {
-					$return = VOID;
-				}
-													
-				$return = ($return == "!") ? VOID : substr($return, 1); # substr will remove the !
-				
-				if (in_array($return, ["NAN", "INF", "-INF"])){
-					$return = VOID;
-				}
-			}
-				
+		for ($i = $MinX; $i <= $MaxX; $i = $i + $XStep) {				
 			$Abscissa[] = $i;
-			$Result[] = $return;
+			$ret = $Function($i);
+			$Result[] = (in_array("$ret", ["NAN", "INF", "-INF"])) ? VOID : $ret;
 		}
-
+		
 		$this->addPoints($Result, $SerieName);
-		if ($AutoDescription) {
-			$this->setSerieDescription($SerieName, $Formula);
-		}
-
-		if ($RecordAbscissa) {
-			$this->addPoints($Abscissa, $AbscissaSerie);
-		}
-
+				
+		($AutoDescription) AND $this->setSerieDescription($SerieName, $Formula);
+		($RecordAbscissa) AND $this->addPoints($Abscissa, $AbscissaSerie);
 	}
 
 	function negateValues(array $Series)
@@ -928,7 +922,7 @@ class pData
 	}
 
 	/* Save a palette element */
-	function savePalette(int $ID, array $Color)
+	function savePalette(int $ID, pColor $Color)
 	{
 		$this->Palette[$ID] = $Color;
 	}

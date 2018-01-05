@@ -101,15 +101,12 @@ class pBubble
 	/* Prepare the scale */
 	function drawBubbleChart(array $DataSeries, array $WeightSeries, array $Format = [])
 	{
-		$ForceAlpha = VOID;
+		$ForceAlpha = NULL;
 		$DrawBorder = TRUE;
 		$BorderWidth = 1;
 		$Shape = BUBBLE_SHAPE_ROUND;
 		$Surrounding = NULL;
-		$BorderR = 0;
-		$BorderG = 0;
-		$BorderB = 0;
-		$BorderAlpha = 30;
+		$BorderColor = new pColor(0,0,0,30);
 		$RecordImageMap = FALSE;
 		
 		/* Override defaults */
@@ -144,44 +141,37 @@ class pBubble
 			$X = $this->myPicture->GraphAreaX1 + $XMargin;
 			$Y = $this->myPicture->GraphAreaY1 + $XMargin;
 			
-			$Color = $this->myPicture->myData->Palette[$Key];
-			if ($ForceAlpha != VOID) {
-				$Color["Alpha"] = $ForceAlpha;
+			$ColorSettings = ["Color" => $this->myPicture->myData->Palette[$Key]];
+
+			if (!is_null($ForceAlpha)) {
+				$ColorSettings["Color"]->Alpha = $ForceAlpha;
 			}
 
 			if ($DrawBorder) {
 				if ($BorderWidth != 1) {
-					if ($Surrounding != NULL) {
-						$BorderR = $Color["R"] + $Surrounding;
-						$BorderG = $Color["G"] + $Surrounding;
-						$BorderB = $Color["B"] + $Surrounding;
+					if (!is_null($Surrounding)) {
+						$BorderColor = $ColorSettings["Color"]->newOne()->RGBChange($Surrounding);
 					} 
-					if ($ForceAlpha != VOID) {
-						$BorderAlpha = $ForceAlpha / 2;
+					if (!is_null($ForceAlpha)) {
+						$BorderColor->AlphaSet($ForceAlpha / 2);
 					}
+					$BorderColorSettings = ["Color" => $BorderColor];
 
-					$BorderColor = ["R" => $BorderR,"G" => $BorderG,"B" => $BorderB,"Alpha" => $BorderAlpha];
 				} else {
-					$Color["BorderAlpha"] = $BorderAlpha;
-					if ($Surrounding != NULL) {
-						$Color["BorderR"] = $Color["R"] + $Surrounding;
-						$Color["BorderG"] = $Color["G"] + $Surrounding;
-						$Color["BorderB"] = $Color["B"] + $Surrounding;
-					} else {
-						$Color["BorderR"] = $BorderR;
-						$Color["BorderG"] = $BorderG;
-						$Color["BorderB"] = $BorderB;
+					if (!is_null($Surrounding)) {
+						$BorderColor->RGBChange($Surrounding);
 					}
+					$ColorSettings["BorderColor"] = $BorderColor;
 
-					if ($ForceAlpha != VOID) {
-						$Color["BorderAlpha"] = $ForceAlpha / 2;
+					if (!is_null($ForceAlpha)) {
+						$ColorSettings["BorderColor"]->AlphaSet($ForceAlpha / 2);
 					}
 				}
 			}
-			
+						
 			if ($RecordImageMap) {
 				$SerieDescription = (isset($Data[$SerieName]["Description"])) ? $Data[$SerieName]["Description"] : $SerieName;
-				$ImageMapColor = $this->myPicture->toHTMLColor($Color["R"], $Color["G"], $Color["B"]);
+				$ImageMapColor = $ColorSettings["Color"]->toHTMLColor();
 			}
 
 			foreach($Data[$SerieName]["Data"] as $iKey => $Point) {
@@ -196,12 +186,12 @@ class pBubble
 					$Y = floor($Pos);
 					if ($Shape == BUBBLE_SHAPE_SQUARE) {
 						($RecordImageMap) AND $this->myPicture->addToImageMap("RECT", floor($X - $Radius).",".floor($Y - $Radius).",".floor($X + $Radius).",".floor($Y + $Radius), $ImageMapColor, $SerieDescription, $DataWeightSeries);
-						($BorderWidth != 1) AND	$this->myPicture->drawFilledRectangle($X - $Radius - $BorderWidth, $Y - $Radius - $BorderWidth, $X + $Radius + $BorderWidth, $Y + $Radius + $BorderWidth, $BorderColor);
-						$this->myPicture->drawFilledRectangle($X - $Radius, $Y - $Radius, $X + $Radius, $Y + $Radius, $Color);
+						($BorderWidth != 1) AND	$this->myPicture->drawFilledRectangle($X - $Radius - $BorderWidth, $Y - $Radius - $BorderWidth, $X + $Radius + $BorderWidth, $Y + $Radius + $BorderWidth, $BorderColorSettings);
+						$this->myPicture->drawFilledRectangle($X - $Radius, $Y - $Radius, $X + $Radius, $Y + $Radius, $ColorSettings);
 					} elseif ($Shape == BUBBLE_SHAPE_ROUND) {
 						($RecordImageMap) AND $this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".floor($Radius), $ImageMapColor, $SerieDescription, $DataWeightSeries);
-						($BorderWidth != 1) AND	$this->myPicture->drawFilledCircle($X, $Y, $Radius + $BorderWidth, $BorderColor);
-						$this->myPicture->drawFilledCircle($X, $Y, $Radius, $Color);
+						($BorderWidth != 1) AND	$this->myPicture->drawFilledCircle($X, $Y, $Radius + $BorderWidth, $BorderColorSettings);
+						$this->myPicture->drawFilledCircle($X, $Y, $Radius, $ColorSettings);
 					}
 
 					$X = $X + $XStep;
@@ -211,12 +201,12 @@ class pBubble
 					$X = floor($Pos);
 					if ($Shape == BUBBLE_SHAPE_SQUARE) {
 						($RecordImageMap) AND $this->myPicture->addToImageMap("RECT", floor($X - $Radius).",".floor($Y - $Radius).",".floor($X + $Radius).",".floor($Y + $Radius), $ImageMapColor, $SerieDescription, $DataWeightSeries);
-						($BorderWidth != 1) AND	$this->myPicture->drawFilledRectangle($X - $Radius - $BorderWidth, $Y - $Radius - $BorderWidth, $X + $Radius + $BorderWidth, $Y + $Radius + $BorderWidth, $BorderColor);
-						$this->myPicture->drawFilledRectangle($X - $Radius, $Y - $Radius, $X + $Radius, $Y + $Radius, $Color);
+						($BorderWidth != 1) AND	$this->myPicture->drawFilledRectangle($X - $Radius - $BorderWidth, $Y - $Radius - $BorderWidth, $X + $Radius + $BorderWidth, $Y + $Radius + $BorderWidth, $BorderColorSettings);
+						$this->myPicture->drawFilledRectangle($X - $Radius, $Y - $Radius, $X + $Radius, $Y + $Radius, $ColorSettings);
 					} elseif ($Shape == BUBBLE_SHAPE_ROUND) {
 						($RecordImageMap) AND $this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".floor($Radius), $ImageMapColor, $SerieDescription, $DataWeightSeries);
-						($BorderWidth != 1) AND	$this->myPicture->drawFilledCircle($X, $Y, $Radius + $BorderWidth, $BorderColor);
-						$this->myPicture->drawFilledCircle($X, $Y, $Radius, $Color);
+						($BorderWidth != 1) AND	$this->myPicture->drawFilledCircle($X, $Y, $Radius + $BorderWidth, $BorderColorSettings);
+						$this->myPicture->drawFilledCircle($X, $Y, $Radius, $ColorSettings);
 					}
 
 					$Y = $Y + $XStep;
@@ -258,9 +248,9 @@ class pBubble
 		
 		$DrawPoint = isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
 		if ($DrawPoint == LABEL_POINT_CIRCLE) {
-			$this->myPicture->drawFilledCircle($X, $Y, 3, ["R" => 255,"G" => 255,"B" => 255,"BorderR" => 0,"BorderG" => 0,"BorderB" => 0]);
+			$this->myPicture->drawFilledCircle($X, $Y, 3, ["Color" => new pColor(255,255,255), "BorderColor" => new pColor(0,0,0)]);
 		} elseif ($DrawPoint == LABEL_POINT_BOX) {
-			$this->myPicture->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["R" => 255,"G" => 255,"B" => 255,"BorderR" => 0,"BorderG" => 0,"BorderB" => 0]);
+			$this->myPicture->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["Color" => new pColor(255,255,255), "BorderColor" => new pColor(0,0,0)]);
 		}
 
 		$this->myPicture->drawLabelBox($X, $Y - 3, $Description, $Series, $Format);

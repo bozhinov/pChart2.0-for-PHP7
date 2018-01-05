@@ -4,6 +4,7 @@
 /* pChart library inclusions */
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 use pChart\pScatter;
 
@@ -44,20 +45,18 @@ $myPicture->myData->setScatterSerieDrawable(2,FALSE);
 $myPicture->myData->setScatterSerieDrawable(3,FALSE);
 
 /* Draw the background */
-$Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);
-$myPicture->drawFilledRectangle(0,0,800,582,$Settings);
+$myPicture->drawFilledRectangle(0,0,800,582,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
-$myPicture->drawGradientArea(0,0,800,582,DIRECTION_VERTICAL,$Settings);
+$myPicture->drawGradientArea(0,0,800,582,DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,799,581,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->drawRectangle(0,0,799,581,["Color"=>new pColor(0,0,0)]);
 
 /* Write the title */
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>23]);
-$myPicture->drawText(55,50,"Anscombe's Quartet drawing example",["R"=>255,"G"=>255,"B"=>255]);
-$myPicture->drawText(55,65,"This example demonstrate the importance of graphing data before analysing it. (The line of best fit is the same for all datasets)",["FontSize"=>12,"R"=>255,"G"=>255,"B"=>255]);
+$myPicture->drawText(55,50,"Anscombe's Quartet drawing example",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(55,65,"This example demonstrate the importance of graphing data before analyzing it. (The line of best fit is the same for all datasets)",["FontSize"=>12,"Color"=>new pColor(255,255,255)]);
 
 /* Set the default font */
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
@@ -66,11 +65,11 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","Font
 $myScatter = new pScatter($myPicture);
 
 /* Turn on shadow computing */
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>10]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Draw the 1st chart */
 $myPicture->setGraphArea(56,90,380,285);
-$myScatter->drawScatterScale(array("XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE));
+$myScatter->drawScatterScale(["XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE]);
 $myScatter->drawScatterPlotChart();
 $myScatter->drawScatterBestFit();
 
@@ -78,7 +77,7 @@ $myScatter->drawScatterBestFit();
 $myScatter->myPicture->myData->setScatterSerieDrawable(0,FALSE);
 $myScatter->myPicture->myData->setScatterSerieDrawable(1,TRUE);
 $myScatter->myPicture->setGraphArea(436,90,760,285);
-$myScatter->drawScatterScale(array("XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE));
+$myScatter->drawScatterScale(["XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE]);
 $myScatter->drawScatterPlotChart();
 $myScatter->drawScatterBestFit();
 
@@ -86,7 +85,7 @@ $myScatter->drawScatterBestFit();
 $myScatter->myPicture->myData->setScatterSerieDrawable(1,FALSE);
 $myScatter->myPicture->myData->setScatterSerieDrawable(2,TRUE);
 $myScatter->myPicture->setGraphArea(56,342,380,535);
-$myScatter->drawScatterScale(array("XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE));
+$myScatter->drawScatterScale(["XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE]);
 $myScatter->drawScatterPlotChart();
 $myScatter->drawScatterBestFit();
 
@@ -94,7 +93,7 @@ $myScatter->drawScatterBestFit();
 $myScatter->myPicture->myData->setScatterSerieDrawable(2,FALSE);
 $myScatter->myPicture->myData->setScatterSerieDrawable(3,TRUE);
 $myScatter->myPicture->setGraphArea(436,342,760,535);
-$myScatter->drawScatterScale(array("XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE));
+$myScatter->drawScatterScale(["XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE]);
 $myScatter->drawScatterPlotChart();
 $myScatter->drawScatterBestFit();
 

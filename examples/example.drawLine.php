@@ -4,41 +4,40 @@
 /* pChart library inclusions */
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
 
 /* Draw the background */
-$Settings = array("R"=>170, "G"=>183, "B"=>87, "Dash"=>1, "DashR"=>190, "DashG"=>203, "DashB"=>107);
-$myPicture->drawFilledRectangle(0,0,700,230,$Settings);
+$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$Settings = array("StartR"=>219, "StartG"=>231, "StartB"=>139, "EndR"=>1, "EndG"=>138, "EndB"=>68, "Alpha"=>50);
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
-$myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,array("StartR"=>0,"StartG"=>0,"StartB"=>0,"EndR"=>50,"EndG"=>50,"EndB"=>50,"Alpha"=>80));
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
+$myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
-/* Draw the picture border */ 
-$myPicture->drawRectangle(0,0,699,229,array("R"=>0,"G"=>0,"B"=>0));
+/* Add a border to the picture */
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawLine() - Basis",array("R"=>255,"G"=>255,"B"=>255));
+$myPicture->drawText(10,13,"drawLine() - Basis",["Color"=>new pColor(255,255,255)]);
 
 /* Turn on shadow computing */ 
-$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>20));
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
 
 /* Draw some lines */ 
 for($i=1;$i<=100;$i=$i+4)
 {
-	$myPicture->drawLine($i+5, 215, $i*7+5, 30, ["R"=>rand(0,255),"G"=>rand(0,255),"B"=>rand(0,255),"Ticks"=>rand(0,4)]);
+	$myPicture->drawLine($i+5, 215, $i*7+5, 30, ["Color"=>$myPicture->myData->getRandomColor(),"Ticks"=>rand(0,4)]);
 }
 
 /* Draw an horizontal dashed line with extra weight */
-$myPicture->drawLine(370,160,650,160,array("R"=>0,"G"=>0,"B"=>0,"Ticks"=>4,"Weight"=>3));
+$myPicture->drawLine(370,160,650,160,["Color"=>new pColor(0,0,0),"Ticks"=>4,"Weight"=>3]);
 
 /* Another example of extra weight */
-$myPicture->drawLine(370,180,650,200,array("R"=>255,"G"=>255,"B"=>255,"Ticks"=>15,"Weight"=>1));
+$myPicture->drawLine(370,180,650,200,["Color"=>new pColor(255,255,255),"Ticks"=>15,"Weight"=>1]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawLine.png");

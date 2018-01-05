@@ -4,34 +4,33 @@
 /* pChart library inclusions */
 require_once("bootstrap.php");
 
+use pChart\pColor;
 use pChart\pDraw;
 
 /* Create the pChart object */
 $myPicture = new pDraw(550,175);
 
 /* Create a solid background */
-$Settings = array("R"=>183, "G"=>161, "B"=>71, "Dash"=>1, "DashR"=>203, "DashG"=>181, "DashB"=>91);
-$myPicture->drawFilledRectangle(0,0,550,175,$Settings);
+$myPicture->drawFilledRectangle(0,0,550,175,["Color"=>new pColor(183,161,71), "Dash"=>TRUE, "DashColor"=>new pColor(203,181,91)]);
 
-/* Do a gradient overlay */
-$Settings = array("StartR"=>231, "StartG"=>228, "StartB"=>155, "EndR"=>138, "EndG"=>91, "EndB"=>10, "Alpha"=>50);
-$myPicture->drawGradientArea(0,0,550,175,DIRECTION_VERTICAL,$Settings);
+/* Do a gradient overlay */;
+$myPicture->drawGradientArea(0,0,550,175,DIRECTION_VERTICAL, ["StartColor"=>new pColor(231,228,155,50), "EndColor"=>new pColor(138,91,10,50)]);
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/calibri.ttf","FontSize"=>20));
 
 /* Draw the text box */
 $myPicture->setShadow(FALSE);
-$myPicture->drawFilledRectangle(141,77,393,126,["Alpha"=>20,"R"=>230,"G"=>230,"B"=>230]);
-$myPicture->drawRectangle(141,77,393,126,["R"=>50,"G"=>50,"B"=>50]);
+$myPicture->drawFilledRectangle(141,77,393,126,["Color"=>new pColor(230,230,230,20)]);
+$myPicture->drawRectangle(141,77,393,126,["Color"=>new pColor(50,50,50)]);
 
 /* Write the text */
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>20]);
-$myPicture->drawText(144,125,"My text box",["R"=>201,"G"=>230,"B"=>40,"FontSize"=>40]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
+$myPicture->drawText(144,125,"My text box",["Color"=>new pColor(201,230,40),"FontSize"=>40]);
 
 /* Prepare and draw the markers */
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"R"=>0,"G"=>0,"B"=>0,"Alpha"=>20]);
-$MyMarker = array("R"=>255,"G"=>0,"B"=>0,"BorderR"=>0,"BorderB"=>0,"BorderG"=>0,"Size"=>4);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
+$MyMarker = ["Color"=>new pColor(255,0,0),"BorderColor"=>new pColor(0,0,0),"Size"=>4];
 
 $myPicture->drawRectangleMarker(141,77,$MyMarker);
 $myPicture->drawRectangleMarker(141,101,$MyMarker);

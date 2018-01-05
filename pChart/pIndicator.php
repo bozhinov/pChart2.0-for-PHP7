@@ -56,15 +56,9 @@ class pIndicator
 		$CaptionLayout = INDICATOR_CAPTION_EXTENDED;
 		$CaptionPosition = INDICATOR_CAPTION_INSIDE;
 		$CaptionColorFactor = NULL;
-		$CaptionR = 255;
-		$CaptionG = 255;
-		$CaptionB = 255;
-		$CaptionAlpha = 100;
+		$CaptionColor = new pColor(255,255,255,100);
 		$SubCaptionColorFactor = NULL;
-		$SubCaptionR = 50;
-		$SubCaptionG = 50;
-		$SubCaptionB = 50;
-		$SubCaptionAlpha = 100;
+		$SubCaptionColor = new pColor(50,50,50,100);
 		$FontName = $this->myPicture->FontName;
 		$FontSize = $this->myPicture->FontSize;
 		$CaptionFontName = $this->myPicture->FontName;
@@ -90,7 +84,7 @@ class pIndicator
 		$this->myPicture->Shadow = FALSE;
 			
 		foreach($IndicatorSections as $Key => $Settings) {
-			$Color = ["R" => $Settings["R"],"G" => $Settings["G"],"B" => $Settings["B"]];
+			$Color = ["Color" => $Settings['Color']];
 			$Caption = $Settings["Caption"];
 			$SubCaption = $Settings["Start"] . " - " . $Settings["End"];
 			$X2 = $X1 + ($Settings["End"] - $Settings["Start"]) * $XScale;
@@ -179,25 +173,23 @@ class pIndicator
 				$XOffset = 0;
 			}
 
-			if ($CaptionColorFactor == NULL) {
-				$CaptionColor = ["Align" => TEXT_ALIGN_TOPLEFT,"FontName" => $CaptionFontName,"FontSize" => $CaptionFontSize,"R" => $CaptionR,"G" => $CaptionG,"B" => $CaptionB,"Alpha" => $CaptionAlpha];
-			} else {
-				$CaptionColor = ["Align" => TEXT_ALIGN_TOPLEFT,"FontName" => $CaptionFontName,"FontSize" => $CaptionFontSize,"R" => $Settings["R"] + $CaptionColorFactor,"G" => $Settings["G"] + $CaptionColorFactor,"B" => $Settings["B"] + $CaptionColorFactor];
+			if (!is_null($CaptionColorFactor)) {
+				$CaptionColor = $Settings['Color']->newOne()->RGBChange($CaptionColorFactor);
 			}
+			$CaptionSettings = ["Align" => TEXT_ALIGN_TOPLEFT,"FontName" => $CaptionFontName,"FontSize" => $CaptionFontSize,"Color" => $CaptionColor];
 
-			if ($SubCaptionColorFactor == NULL) {
-				$SubCaptionColor = ["Align" => TEXT_ALIGN_TOPLEFT,"FontName" => $CaptionFontName,"FontSize" => $CaptionFontSize,"R" => $SubCaptionR,"G" => $SubCaptionG,"B" => $SubCaptionB,"Alpha" => $SubCaptionAlpha];
-			} else {
-				$SubCaptionColor = ["Align" => TEXT_ALIGN_TOPLEFT,"FontName" => $CaptionFontName,"FontSize" => $CaptionFontSize,"R" => $Settings["R"] + $SubCaptionColorFactor,"G" => $Settings["G"] + $SubCaptionColorFactor,"B" => $Settings["B"] + $SubCaptionColorFactor];
+			if (!is_null($SubCaptionColorFactor)) {
+				$SubCaptionColor = $Settings['Color']->newOne()->RGBChange($SubCaptionColorFactor);
 			}
+			$SubCaptionSettgins = ["Align" => TEXT_ALIGN_TOPLEFT,"FontName" => $CaptionFontName,"FontSize" => $CaptionFontSize,"Color" => $SubCaptionColor];
 
 			if ($CaptionLayout == INDICATOR_CAPTION_DEFAULT) {
-				$this->myPicture->drawText($X1, $Y + $Height + $TextPadding, $Caption, $CaptionColor);
+				$this->myPicture->drawText($X1, $Y + $Height + $TextPadding, $Caption, $CaptionSettings);
 			} elseif ($CaptionLayout == INDICATOR_CAPTION_EXTENDED) {
 				$TxtPos = $this->myPicture->getTextBox($X1, $Y + $Height + $TextPadding, $CaptionFontName, $CaptionFontSize, 0, $Caption);
 				$CaptionHeight = $TxtPos[0]["Y"] - $TxtPos[2]["Y"];
-				$this->myPicture->drawText($X1 + $XOffset, $Y + $Height - $YOffset + $TextPadding, $Caption, $CaptionColor);
-				$this->myPicture->drawText($X1 + $XOffset, $Y + $Height - $YOffset + $CaptionHeight + $TextPadding * 2, $SubCaption, $SubCaptionColor);
+				$this->myPicture->drawText($X1 + $XOffset, $Y + $Height - $YOffset + $TextPadding, $Caption, $CaptionSettings);
+				$this->myPicture->drawText($X1 + $XOffset, $Y + $Height - $YOffset + $CaptionHeight + $TextPadding * 2, $SubCaption, $SubCaptionSettgins);
 			}
 
 			$X1 = $X2 + $SectionsMargin;
@@ -211,15 +203,11 @@ class pIndicator
 						if ($ValueDisplay == INDICATOR_VALUE_BUBBLE) {
 							$TxtPos = $this->myPicture->getTextBox($X1, $Y, $FontName, $FontSize, 0, strval($Value) . $Unit);
 							$Radius = floor(($TxtPos[1]["X"] - $TxtPos[0]["X"] + $TextPadding * 4) / 2);
-							$this->myPicture->drawFilledCircle($X1, $Y, $Radius + 4, ["R" => $Settings["R"] + 20,"G" => $Settings["G"] + 20,"B" => $Settings["B"] + 20]);
-							$this->myPicture->drawFilledCircle($X1, $Y, $Radius, ["R" => 255,"G" => 255,"B" => 255]);
+							$this->myPicture->drawFilledCircle($X1, $Y, $Radius + 4, ["Color" => $Settings["Color"]->newOne()->RGBChange(20)]);
+							$this->myPicture->drawFilledCircle($X1, $Y, $Radius, ["Color" => new pColor(255,255,255)]);
 							$this->myPicture->drawText($X1 - 1, $Y - 1, strval($Value) . $Unit, ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $FontName,"FontSize" => $FontSize]);
 						} elseif ($ValueDisplay == INDICATOR_VALUE_LABEL) {
-							$Caption = array(
-								"Format" => ["R" => $Settings["R"],"G" => $Settings["G"],"B" => $Settings["B"],"Alpha" => 100],
-								"Caption" => strval($Value) . $Unit
-							);
-							$this->myPicture->drawLabelBox(floor($X1), floor($Y) + 2, "Value - " . $Settings["Caption"], $Caption);
+							$this->myPicture->drawLabelBox(floor($X1), floor($Y) + 2, "Value - " . $Settings["Caption"], ["Format" => $Settings["Color"]->AlphaSet(100),"Caption" => strval($Value) . $Unit]);
 						}
 					}
 

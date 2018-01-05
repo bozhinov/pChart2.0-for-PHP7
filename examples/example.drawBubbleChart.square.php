@@ -5,6 +5,7 @@
 require_once("bootstrap.php");
 
 use pChart\{
+	pColor,
 	pDraw,
 	pBubble
 };
@@ -28,7 +29,7 @@ $myPicture->myData->setAbscissaName("Selected Products");
 $myPicture->Antialias = FALSE;
 
 /* Draw the border */
-$myPicture->drawRectangle(0,0,699,229,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
 
@@ -36,8 +37,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $myPicture->setGraphArea(60,30,650,190);
 
 /* Draw the scale */
-$scaleSettings = array("GridR"=>200,"GridG"=>200,"GridB"=>200,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
-$myPicture->drawScale($scaleSettings);
+$myPicture->drawScale(["GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Create the Bubble chart object and scale up */
 $myPicture->Antialias = TRUE;
@@ -49,7 +49,11 @@ $bubbleWeightSeries = ["Probe1Weight","Probe2Weight"];
 $myBubbleChart->bubbleScale($bubbleDataSeries,$bubbleWeightSeries);
 
 /* Draw the bubble chart */
-$myBubbleChart->drawBubbleChart($bubbleDataSeries,$bubbleWeightSeries,["Shape"=>BUBBLE_SHAPE_SQUARE,"ForceAlpha"=>50,"BorderWidth"=>4,"BorderAlpha"=>20,"Surrounding"=>20]);
+$myBubbleChart->drawBubbleChart(
+	$bubbleDataSeries,
+	$bubbleWeightSeries,
+	["Shape"=>BUBBLE_SHAPE_SQUARE,"ForceAlpha"=>50,"BorderWidth"=>4,"BorderColor"=>new pColor(0,0,0,20),"Surrounding"=>20]
+);
 
 /* Write the chart legend */
 $myPicture->drawLegend(570,13,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
