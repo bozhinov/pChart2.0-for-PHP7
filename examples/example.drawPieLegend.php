@@ -54,7 +54,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $PieChart->drawPieLegend(90,176,["Style"=>LEGEND_BOX,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Write the bottom legend box */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
+$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6,"Color"=>new pColor(0,0,0,60)));
  
 $myPicture->drawGradientArea(1,200,698,228,DIRECTION_VERTICAL,["StartColor"=>new pColor(247,247,247,20), "EndColor"=>new pColor(217,217,217,20)]);
 $myPicture->drawLine(1,199,698,199,["Color"=>new pColor(100,100,100,20)]);
