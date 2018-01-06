@@ -30,9 +30,3 @@ Major changes:
  Word of advice, keep it secure.
  - Set write permissions only to the "cache" folder if you are going to be using it
  - Make sure contents of the "cache" folder not is visible to the rest of the world
-	(example apache config)
-	
-	<Files ~ "\cache">
-		Order allow,deny
-		Deny from all
-	</Files> 
