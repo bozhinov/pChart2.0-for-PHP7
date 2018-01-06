@@ -44,7 +44,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $myPicture->setGraphArea(60,40,650,200);
 
 /* Draw the scale */
-$scaleSettings = ["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"LabelSkip"=>4,"GridColor"=>new pColor(220,220,220),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE];
+$scaleSettings = ["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"LabelSkip"=>4,"GridColor"=>new pColor(220,220,220,50),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE];
 $myPicture->drawScale($scaleSettings);
 
 /* Turn on Anti-aliasing */

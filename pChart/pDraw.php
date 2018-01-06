@@ -119,7 +119,7 @@ class pDraw
 	/* Font properties */
 	var $FontName = "pChart/fonts/GeosansLight.ttf"; // Default font file
 	var $FontSize = 12; // Default font size
-	var $FontBox = NULL; // Return the bounding box of the last written string
+	#var $FontBox = NULL; // Return the bounding box of the last written string
 	var $FontColor; // Default color settings
 	/* Shadow properties */
 	var $Shadow = FALSE; // Turn shadows on or off
@@ -753,7 +753,7 @@ class pDraw
 			return;
 		}
 
-		$Distance = sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1));
+		$Distance = hypot(($X2 - $X1), ($Y2 - $Y1));
 		if ($Distance == 0) {
 			# throw pException::InvalidDimentions("Line coordinates are not valid!");
 			# Momchil: that one revealed way to many bugs to fix now
@@ -3830,7 +3830,7 @@ class pDraw
 	/* Render the picture to a file */
 	function render(string $FileName, int $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
-		if ($this->TransparentBackground) { # Momchil: Not sure why that's required TODO
+		if ($this->TransparentBackground) {
 			imagealphablending($this->Picture, FALSE);
 		}
 
@@ -3873,7 +3873,7 @@ class pDraw
 	/* Return the distance between two points */ # UNUSED
 	function getDistance($X1, $Y1, $X2, $Y2)
 	{
-		return sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1));
+		return hypot(($X2 - $X1), ($Y2 - $Y1));
 	}
 
 	/* Return the orientation of a line */

@@ -554,7 +554,7 @@ class pScatter
 							$this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".$ImageMapPlotSize, $Series["Color"]->toHTMLColor(), $Description, $RealValue);
 						}
 						$WayPoints[] = [$X,$Y];
-						$SplineSettings["Forces"][] = sqrt(($X - $LastX) * ($X - $LastX) + ($Y - $LastY) * ($Y - $LastY)) / 5; # GetDistance
+						$SplineSettings["Forces"][] = hypot(($X - $LastX),($Y - $LastY)) / 5; # GetDistance
 					}
 
 					if ($Y == VOID || $X == VOID) {

@@ -144,7 +144,7 @@ class pBubble
 			$ColorSettings = ["Color" => $this->myPicture->myData->Palette[$Key]];
 
 			if (!is_null($ForceAlpha)) {
-				$ColorSettings["Color"]->Alpha = $ForceAlpha;
+				$ColorSettings["Color"]->AlphaSet($ForceAlpha);
 			}
 
 			if ($DrawBorder) {
