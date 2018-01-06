@@ -172,15 +172,11 @@ class pRadar
 							$PointArray[] = cos(deg2rad($i + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterX;
 							$PointArray[] = sin(deg2rad($i + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterY;
 						}
-						$GradientColor->Next($j);
-						$this->myPicture->drawPolygon($PointArray, ["Color" => $GradientColor->getLatest()]);
-						$GradientColor->Reset();
+						$this->myPicture->drawPolygon($PointArray, ["Color" => $GradientColor->Next($j, TRUE)]);
 					}
 				} elseif ($Layout == RADAR_LAYOUT_CIRCLE) {
 					for ($j = $Segments; $j >= 1; $j--) {
-						$GradientColor->Next($j);
-						$this->myPicture->drawFilledCircle($CenterX, $CenterY, ($EdgeHeight / $Segments) * $j, ["Color" => $GradientColor->getLatest()]);
-						$GradientColor->Reset();
+						$this->myPicture->drawFilledCircle($CenterX, $CenterY, ($EdgeHeight / $Segments) * $j, ["Color" => $GradientColor->Next($j, TRUE)]);
 					}
 				}
 			}
@@ -479,9 +475,7 @@ class pRadar
 				$GradientColor = new pColorGradient($BackgroundGradient["StartColor"], $BackgroundGradient["EndColor"], TRUE);
 				$GradientColor->SetSegments($Segments);
 				for ($j = $Segments; $j >= 1; $j--) {
-					$GradientColor->Next($j);
-					$this->myPicture->drawFilledCircle($CenterX, $CenterY, ($EdgeHeight / $Segments) * $j, ["Color" => $GradientColor->getLatest()]);
-					$GradientColor->Reset();
+					$this->myPicture->drawFilledCircle($CenterX, $CenterY, ($EdgeHeight / $Segments) * $j, ["Color" => $GradientColor->Next($j,TRUE)]);
 				}
 			}
 

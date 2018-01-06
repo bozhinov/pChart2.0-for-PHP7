@@ -192,20 +192,19 @@ class pSurface
 		$Y0 = $this->myPicture->GraphAreaY1;
 		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
 		$YSize = $this->myPicture->GraphAreaYdiff / ($this->GridSizeY + 1);
-		
+	
+		$Gradient = new pColorGradient($ShadeColor1->newOne(), $ShadeColor2->newOne());
+		$Gradient->SetSegments(100);
+						
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
 			for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {
 				$Value = $this->Points[$X][$Y];
 				if ($Value != UNKNOWN && $Value != IGNORED) {
 					
 					if (!empty($Palette)) {
-						$Settings = (isset($Palette[$Value])) ? $Palette[$Value] :  new pColor(0,0,0,100);			
+						$Settings = ["Color" => (isset($Palette[$Value])) ? $Palette[$Value] : new pColor(0,0,0,100)];			
 					} else {
-						$R = (($ShadeColor2->R - $ShadeColor1->R) / 100) * $Value + $ShadeColor1->R;
-						$G = (($ShadeColor2->G - $ShadeColor1->G) / 100) * $Value + $ShadeColor1->G;
-						$B = (($ShadeColor2->B - $ShadeColor1->B) / 100) * $Value + $ShadeColor1->B;
-						$Alpha = (($ShadeColor2->Alpha - $ShadeColor1->Alpha) / 100) * $Value + $ShadeColor1->Alpha;
-						$Settings = ["Color" => new pColor($R,$G,$B,$Alpha)];
+						$Settings = ["Color" => $Gradient->Next($Value, TRUE)];
 					}
 
 					($Border) AND $Settings["BorderColor"] = $BorderColor;

@@ -40,10 +40,10 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 
 /* Draw the surface chart */
 $Palette = [
-	"0" => ["Color"=>new pColor(0,0,0)],
-	"1" => ["Color"=>new pColor(29,243,119)],
-	"2" => ["Color"=>new pColor(238,216,78)],
-	"3" => ["Color"=>new pColor(246,45,53)]
+	"0" => new pColor(0,0,0),
+	"1" => new pColor(29,243,119),
+	"2" => new pColor(238,216,78),
+	"3" => new pColor(246,45,53)
 ];
 
 $myPicture->setGraphArea(40,40,380,80);

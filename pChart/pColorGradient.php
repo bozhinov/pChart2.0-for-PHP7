@@ -42,7 +42,7 @@ class pColorGradient {
 		
 	/* pDraw uses default for $j */
 	/* pRadar passes an actual value */
-	function Next(int $j = 1)
+	function Next(int $j = 1, bool $doNotAccumulate = FALSE)
 	{
 		$R = $this->StartColor->R + $this->OffsetR * $j;
 		$G = $this->StartColor->G + $this->OffsetG * $j;
@@ -58,14 +58,14 @@ class pColorGradient {
 		($Alpha < 0) AND $Alpha = 0;
 		($Alpha > 100) AND $Alpha = 100;
 		
-		$this->ReturnColor->R = $R;
-		$this->ReturnColor->G = $G;
-		$this->ReturnColor->B = $B;
-		$this->ReturnColor->Alpha = $Alpha;
-	}
-	
-	function Reset(){
-		$this->ReturnColor = $this->StartColor->newOne();	
+		if ($doNotAccumulate){
+			return new pColor($R,$G,$B,$Alpha);
+		} else {
+			$this->ReturnColor->R = $R;
+			$this->ReturnColor->G = $G;
+			$this->ReturnColor->B = $B;
+			$this->ReturnColor->Alpha = $Alpha;
+		}
 	}
 	
 	function getLatest(){
