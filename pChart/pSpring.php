@@ -58,7 +58,7 @@ class pSpring
 			"Size" => 5,
 			"Shape" => NODE_SHAPE_CIRCLE,
 			"FreeZone" => 40,
-			"LinkColor" => new pColor(0,0,0,0)
+			"LinkColor" => new pColor(0,0,0,100)
 		];
 		$this->Labels = ["Type" => LABEL_CLASSIC, "Color" => new pColor(0,0,0,100)];
 		$this->AutoComputeFreeZone = FALSE;
