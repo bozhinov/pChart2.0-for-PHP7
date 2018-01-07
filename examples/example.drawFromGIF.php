@@ -38,7 +38,7 @@ $myPicture->drawFromGIF(400,50,"examples/resources/computer.gif");
 
 /* Write the legend */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
-$TextSettings = ["Color"=>new pColor(255,255,255),"FontSize"=>10,"FontName"=>"pChart/fonts/calibri.ttf","Align"=>TEXT_ALIGN_BOTTOMMIDDLE];
+$TextSettings = ["Color"=>new pColor(255,255,255),"FontSize"=>10,"FontName"=>"pChart/fonts/MankSans.ttf","Align"=>TEXT_ALIGN_BOTTOMMIDDLE];
 $myPicture->drawText(240,200,"Without shadow",$TextSettings);
 $myPicture->drawText(460,200,"With enhanced shadow",$TextSettings);
 
