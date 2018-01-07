@@ -32,7 +32,7 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/advent_light.ttf","Font
 $myPicture->drawText(60,115,"10 degree text",["Angle"=>10]);
 
 /* Write some text */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/calibri.ttf","FontSize"=>20]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/MankSans.ttf","FontSize"=>20]);
 $myPicture->drawText(75,130,"10 degree text",["Angle"=>10]);
 
 /* Write some text */ 
