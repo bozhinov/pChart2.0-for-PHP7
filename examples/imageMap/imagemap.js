@@ -30,15 +30,7 @@ class ImageMapper {
 		this.SmoothMoveFactor = 5;
 		this.imageMapRandomSeed = true;
 		this.delimiter = String.fromCharCode(1);
-		 
-		 /* Attach the onMouseMove() event to the document body */
-		 var that = this;
-		$(document).mousemove(function(e){
-			that.cX = e.pageX; 
-			that.cY = e.pageY;
-			that.moveDiv(); 
-		});
-		
+		 		
 	}
 
 	 /* Show the tooltip */
@@ -131,6 +123,13 @@ class ImageMapper {
 		var that = this;
 		$.get(ImageMapURL).done(function(data) {
 			 that.parseZones(ImageMapID, data);
+		});
+		
+		 /* Attach the onMouseMove() event to picture frame */
+		$("#"+ImageMapID).mousemove(function(e){
+			that.cX = e.pageX; 
+			that.cY = e.pageY;
+			that.moveDiv(); 
 		});
 	}
 
