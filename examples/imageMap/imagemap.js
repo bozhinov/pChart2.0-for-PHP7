@@ -30,6 +30,7 @@ class ImageMapper {
 		this.SmoothMoveFactor = 5;
 		this.imageMapRandomSeed = true;
 		this.delimiter = String.fromCharCode(1);
+		this.tooltipDiv = "#testDiv";
 		 		
 	}
 
@@ -42,7 +43,7 @@ class ImageMapper {
 			HTML    += "<table style='border: 0px; padding: 0px; margin: 0px;'><tr valign='top'><td style='padding-top: 4px;'><table style='background-color: "+Color+"; border: 1px solid #000000; width: 9px; height: 9px;  padding: 0px; margin: 0px; margin-right: 2px;'><tr><td></td></tr></table></td><td>"+Message+"</td></tr></table>";
 			HTML    += "</div></div>";
 
-			$("#testDiv").html(HTML);
+			$(this.tooltipDiv).html(HTML);
 		} 
 
 		if (!this.initialized) { 
@@ -50,7 +51,7 @@ class ImageMapper {
 			this.initialized = true;
 		}
 
-		$("#testDiv").css({opacity: 1});
+		$(this.tooltipDiv).css({opacity: 1});
 
 		this.currentTitle   = Title;
 		this.currentMessage	= Message;
@@ -77,8 +78,8 @@ class ImageMapper {
 			this.cY = this.LastcY - (this.LastcY-this.cY)/this.SmoothMoveFactor;
 		}
 		
-		$("#testDiv")[0].style.left = (this.cX+10) + "px";
-		$("#testDiv")[0].style.top  = (this.cY+10) + "px";
+		$(this.tooltipDiv)[0].style.left = (this.cX+10) + "px";
+		$(this.tooltipDiv)[0].style.top  = (this.cY+10) + "px";
 
 		this.LastcX = this.cX;
 		this.LastcY = this.cY;
@@ -90,7 +91,7 @@ class ImageMapper {
 		
 		var element = document.createElement("DIV");
 
-		element.id             = 'testDiv';
+		element.id             = this.tooltipDiv.substring(1);
 		element.innerHTML      = "";
 		element.style.display  = "inline-block";
 		element.style.position = "absolute";
@@ -155,9 +156,8 @@ class ImageMapper {
 		element.shape  = shapeType;
 		element.coords = coordsList;
 		element.onmouseover = function() { eval(actionOver); };
-		element.onmouseout  = function() { $("#testDiv").css({opacity: 0}); };
+		element.onmouseout  = function() { $(that.tooltipDiv).css({opacity: 0}); };
 		maps.appendChild(element);
-		console.log(element);
 	}
 
 }
