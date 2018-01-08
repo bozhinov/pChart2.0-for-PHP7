@@ -27,7 +27,7 @@ if (isset($_GET["Action"])){
 checkPHPVersion();
 
  /* Files that we don't want to see in the tree */
-$Exclusion = array(".","..","index.php","resources","delayedLoader","sandbox","imageMap");
+$Exclusion = array(".","..","index.php","resources","sandbox","imageMap");
 
 /* Determine the current package version */
 $FileHandle  = fopen("../readme.txt", "r");
@@ -78,8 +78,6 @@ ksort($Tree);
  <td width=100>&nbsp;<b>Examples</b></td>
  <td width=16><img src='resources/application_view_list.png' width=16 height=16 alt=''/></td>
  <td width=100>&nbsp;<a class=smallLinkGrey href='sandbox/'>Sandbox</a></td>
- <td width=16><img src='resources/application_view_list.png' width=16 height=16 alt=''/></td>
- <td width=100>&nbsp;<a class=smallLinkGrey href='delayedLoader/'>Delayed loader</a></td>
  <td width=16><img src='resources/application_view_list.png' width=16 height=16 alt=''/></td>
  <td width=100>&nbsp;<a class=smallLinkGrey href='imageMap/'>Image Map</a></td>
 </tr></table>

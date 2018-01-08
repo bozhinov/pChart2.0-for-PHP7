@@ -103,8 +103,6 @@ $(document).ready(function() {
    <td width=16><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
    <td width=100>&nbsp;<a class=smallLinkGrey href='../sandbox/'>Sandbox</a></td>
    <td width=16><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
-   <td width=100>&nbsp;<a class=smallLinkGrey href='../delayedLoader/'>Delayed loader</a></td>
-   <td width=16><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
    <td width=100>&nbsp;<b>Image Map</b></td>
   </tr></table>
  </td></tr>
