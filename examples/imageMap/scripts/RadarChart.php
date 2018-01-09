@@ -10,8 +10,8 @@ use pChart\pRadar;
 use pChart\pImageMap\pImageMapFile;
 
 /* Create the pChart object */
-/* 							X, Y, TransparentBackground, ImageMapIndex, ImageMapStorageMode, UniqueID, StorageFolder*/
-$myPicture = new pImageMapFile(300,300,FALSE,"ImageMapRadarChart",IMAGE_MAP_STORAGE_FILE,"RadarChart","temp");
+/* 							X, Y, TransparentBackground, UniqueID, StorageFolder*/
+$myPicture = new pImageMapFile(300,300,FALSE,"RadarChart","temp");
 
 /* Retrieve the image map */
 if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){

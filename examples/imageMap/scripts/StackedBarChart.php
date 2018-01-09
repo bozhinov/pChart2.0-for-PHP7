@@ -10,8 +10,8 @@ use pChart\pCharts;
 use pChart\pImageMap\pImageMapFile;
 
 /* Create the pChart object */
-/* 							X, Y, TransparentBackground, ImageMapIndex, ImageMapStorageMode, UniqueID, StorageFolder*/
-$myPicture = new pImageMapFile(700,230,FALSE,"ImageMapStackedBarChart",IMAGE_MAP_STORAGE_FILE,"StackedBarChart","temp");
+/* 							X, Y, TransparentBackground, UniqueID, StorageFolder*/
+$myPicture = new pImageMapFile(700,230,FALSE,"StackedBarChart","temp");
 
 /* Retrieve the image map */
 if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){

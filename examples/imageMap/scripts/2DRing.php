@@ -10,8 +10,8 @@ use pChart\pImageMap\pImageMapFile;
 use pChart\pPie;
 
 /* Create the pChart object */
-/* 							X, Y, TransparentBackground, ImageMapIndex, ImageMapStorageMode, UniqueID, StorageFolder*/
-$myPicture = new pImageMapFile(300,260,FALSE,"ImageMap2DRingChart",IMAGE_MAP_STORAGE_FILE,"2DRingChart","temp");
+/* 							X, Y, TransparentBackground, UniqueID, StorageFolder*/
+$myPicture = new pImageMapFile(300,260,FALSE,"2DRingChart","temp");
 
 /* Retrieve the image map */
 if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){

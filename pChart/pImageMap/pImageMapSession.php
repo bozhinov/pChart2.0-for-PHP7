@@ -1,6 +1,6 @@
 <?php
 /*
-pImageMapFile - pChart core class
+pImageMapSession - pChart core class
 
 Version     : 0.2
 Made by     : Forked by Momchil Bozhinov from the original pImage class from Jean-Damien POGOLOTTI
@@ -13,27 +13,31 @@ http://www.pchart.net/license
 
 namespace pChart\pImageMap;
 
-class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
+class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 {
 	/* Image map */
-	var $ImageMapFileName = NULL;
+	var $ImageMapIndex = "pChart"; // Name of the session array
 	var $ImageMapBuffer = [];
+	var $UniqueID = "imageMap";
 	
 	/* Class constructor */
-	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE, string $UniqueID = "imageMap", string $StorageFolder = "temp")
-	{
+	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE, $Name = "pChart", string $UniqueID = "imageMap")
+	{		
+		if (session_status() !== PHP_SESSION_ACTIVE) {
+			throw pException::ImageMapSessionNotStarted();
+		}
+		
 		/* Initialize the image map methods */
-		$this->ImageMapFileName = $StorageFolder . "/" . $UniqueID . ".map";
-				
+		$this->ImageMapIndex = $Name;
+		$this->UniqueID = $UniqueID;
+						
 		/* Initialize the parent */
 		parent::__construct($XSize, $YSize, $TransparentBackground);
 	}
 	
 	function __destruct(){
 		
-		if (!empty($this->ImageMapBuffer)){
-			file_put_contents($this->ImageMapFileName, $this->formatOutput($this->ImageMapBuffer)); # truncates the file
-		}
+		$_SESSION[$this->ImageMapIndex][$this->UniqueID] = $this->ImageMapBuffer;
 
 		parent::__destruct();
 	}
@@ -51,7 +55,13 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 	
 	/* does the image map already exist */
 	function ImageMapExists(){
-		return file_exists($this->ImageMapFileName);
+		if (isset($_SESSION[$this->ImageMapIndex])){
+			if (isset($_SESSION[$this->ImageMapIndex][$this->UniqueID])){
+				return TRUE;
+			}
+		}
+		
+		return FALSE;
 	}
 	
 	/* Add a zone to the image map */
@@ -62,7 +72,7 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 		$Title = htmlentities($Title, ENT_QUOTES); #, "ISO-8859-15"); # As of PHP 5.6 The default value for the encoding parameter = the default_charset config option.
 		
 		($HTMLEncode) AND $Message = htmlentities($Message, ENT_QUOTES);
-		
+	
 		$this->ImageMapBuffer[] = [$Type,$Plots,$Color,$Title,$Message];
 	}
 
@@ -128,14 +138,14 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 	/* Momchil: this function relies on the fact that the ImageMap for the image already exists */
 	function dumpImageMap()
 	{
-		if (file_exists($this->ImageMapFileName)){
-	
-			echo file_get_contents($this->ImageMapFileName);
-
+		if (isset($_SESSION[$this->ImageMapIndex][$this->UniqueID])){
+			
+			echo $this->formatOutput($_SESSION[$this->ImageMapIndex][$this->UniqueID]);
+		
 		} else {
-			throw pException::ImageMapInvalidID("ImageMap index ".$this->ImageMapFileName. " does not exist in file storage!");
+			throw pException::ImageMapInvalidID("ImageMap index ".$this->ImageMapIndex. " does not exist in session storage!");
 		}
-
+		
 		/* When the image map is returned to the client, the script ends */
 		exit();
 	}

@@ -1,20 +1,23 @@
 <?php   
 
+session_start();
+
 /* pChart library inclusions */
 chdir("../../");
 require_once("bootstrap.php");
 
 use pChart\pColor;
 use pChart\pDraw;
-use pChart\pImageMap\pImageMapFile;
+use pChart\pImageMap\pImageMapSession;
 use pChart\pPie;
 
 /* Create the pChart object */
-/* 							X, Y, TransparentBackground, UniqueID, StorageFolder*/
-$myPicture = new pImageMapFile(300,260, FALSE, "2DPieChart", "temp");
+/* 							X, Y, TransparentBackground, SessionIndex, UniqueID*/
+$myPicture = new pImageMapSession(300,260, FALSE, "pChart", "2DPieChart");
 
 /* Retrieve the image map */
 if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){
+	print_r($_SESSION);
 	$myPicture->dumpImageMap();
 	/* once called the script ends after the dump */
 }

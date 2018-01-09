@@ -10,8 +10,8 @@ use pChart\pScatter;
 use pChart\pImageMap\pImageMapFile;
 
 /* Create the pChart object */
-/* 							X, Y, TransparentBackground, ImageMapIndex, ImageMapStorageMode, UniqueID, StorageFolder*/
-$myPicture = new pImageMapFile(400,400,FALSE,"ImageMapScatterSplineChart",IMAGE_MAP_STORAGE_FILE,"ScatterSplineChart","temp");
+/* 							X, Y, TransparentBackground, UniqueID, StorageFolder*/
+$myPicture = new pImageMapFile(400,400,FALSE,"ScatterSplineChart","temp");
 
 /* Retrieve the image map */
 if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){

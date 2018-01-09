@@ -10,8 +10,8 @@ use pChart\pImageMap\pImageMapFile;
 use pChart\pBubble;
 
 /* Create the pChart object */
-/* 							X, Y, TransparentBackground, ImageMapIndex, ImageMapStorageMode, UniqueID, StorageFolder*/
-$myPicture = new pImageMapFile(700,230,FALSE,"ImageMapBubbleChart",IMAGE_MAP_STORAGE_FILE,"BubbleChart","temp");
+/* 							X, Y, TransparentBackground, UniqueID, StorageFolder*/
+$myPicture = new pImageMapFile(700,230,FALSE,"BubbleChart","temp");
 
 /* Retrieve the image map */
 if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){
