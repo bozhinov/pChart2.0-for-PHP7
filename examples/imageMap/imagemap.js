@@ -97,6 +97,7 @@ function addImage(PictureID,ImageMapID,ImageMapURL)
 	var element = document.createElement("MAP");
 
 	element.id   = ImageMapID;
+	element.name = ImageMapID;
 	document.body.appendChild(element);
 	document.getElementById(PictureID).useMap = "#"+ImageMapID;
 	
