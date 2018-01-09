@@ -17,7 +17,7 @@ namespace pChart;
 define("IMAGE_MAP_STORAGE_FILE", 680001);
 define("IMAGE_MAP_STORAGE_SESSION", 680002);
 
-class pImageMap extends pDraw
+class pImageMap extends pDraw implements pImageMapInterface
 {
 	/* Image map */
 	var $ImageMapIndex = "pChart"; // Name of the session array
@@ -68,6 +68,11 @@ class pImageMap extends pDraw
 		}
 		
 		return $ret;
+	}
+	
+	/* does the image map already exist */
+	function ImageMapExists(){
+		return file_exists($this->ImageMapFileName);
 	}
 	
 	/* Add a zone to the image map */

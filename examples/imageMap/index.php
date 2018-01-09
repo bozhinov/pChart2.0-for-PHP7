@@ -87,7 +87,7 @@ $(document).ready(function() {
 		$Tree = [];
 		while (($FileName = readdir($DirectoryHandle)) !== false)
 		{
-			if ( !in_array($FileName,[".",".."])){
+			if ( !in_array($FileName,[".","..","2DPie.sqlite.example"])){
 				$Tree[] = substr($FileName, 0, -4);
 			}
 		}

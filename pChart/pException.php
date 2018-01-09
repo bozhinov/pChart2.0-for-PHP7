@@ -44,12 +44,17 @@ class pException extends \Exception
 
 	public static function ImageMapSessionNotStarted()
 	{
-		return new static('pChart: Yon need to start session before you can use the session storage');
+		return new static('ImageMapper: Yon need to start session before you can use the session storage');
 	}
 
 	public static function ImageMapInvalidSerieName($text)
 	{
-		return new static(sprintf('pChart: The serie name "%s" was not found in the dataset', $text));
+		return new static(sprintf('ImageMapper: The serie name "%s" was not found in the dataset', $text));
+	}
+
+	public static function ImageMapSQLiteException($text)
+	{
+		return new static(sprintf('ImageMapper: %s', $text));
 	}
 	
 	public static function SQLiteException($text)

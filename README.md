@@ -19,14 +19,16 @@ Major changes:
  - Exceptions
  - Introduced pColor & pColorGradient
  - Moved functions around
- - Extra options for caching
+ - Cache can use SQLite for storage
  - Code cleanup
  - Added support for compression and filters in PNG output
- - TODO: ImageMapper JavaScript re-write using jQuery
+ - ImageMapper JavaScript re-write using jQuery
+ - ImageMapper can use SQLite for storage
+ - Removed DelayedLoader
  
  The sandbox and all examples work as expected.<br />
  Code is being tested against PHP versions 7.0, 7.1 and 7.2
  
  Word of advice, keep it secure.
  - Set write permissions only to the "cache" folder if you are going to be using it
- - Make sure contents of the "cache" folder not is visible to the rest of the world
+ - Make sure content of the "cache" folder not is visible to the rest of the world
