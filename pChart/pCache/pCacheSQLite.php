@@ -14,7 +14,7 @@ http://www.pchart.net/license
 You can find the whole class documentation on the pChart web site.
 */
 
-namespace pChart;
+namespace pChart\pCache;
 
 class pCacheSQLite implements pCacheInterface
 {

@@ -11,13 +11,13 @@ http://www.pchart.net/license
 
 */
 
-namespace pChart;
+namespace pChart\pImageMap;
 
 /* Image map handling */
 define("IMAGE_MAP_STORAGE_FILE", 680001);
 define("IMAGE_MAP_STORAGE_SESSION", 680002);
 
-class pImageMap extends pDraw implements pImageMapInterface
+class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 {
 	/* Image map */
 	var $ImageMapIndex = "pChart"; // Name of the session array

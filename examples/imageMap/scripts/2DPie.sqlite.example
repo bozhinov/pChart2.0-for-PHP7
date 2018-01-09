@@ -6,7 +6,7 @@ require_once("bootstrap.php");
 
 use pChart\pColor;
 use pChart\pDraw;
-use pChart\pImageMapSQLite;
+use pChart\pImageMap\pImageMapSQLite;
 use pChart\pPie;
 
 /* Create the pChart object */

@@ -7,9 +7,9 @@ Made by     : Momchil Bozhinov
 Last Update : 10/01/2018
 */
 
-namespace pChart;
+namespace pChart\pImageMap;
 
-class pImageMapSQLite extends pDraw implements pImageMapInterface
+class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 {
 	/* Image map */
 	var $DbSQLite;

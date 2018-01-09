@@ -6,12 +6,12 @@ require_once("bootstrap.php");
 
 use pChart\pColor;
 use pChart\pDraw;
-use pChart\pImageMap;
+use pChart\pImageMap\pImageMapFile;
 use pChart\pPie;
 
 /* Create the pChart object */
 /* 							X, Y, TransparentBackground, ImageMapIndex, ImageMapStorageMode, UniqueID, StorageFolder*/
-$myPicture = new pImageMap(300,260, FALSE, "ImageMap2DPieChart", IMAGE_MAP_STORAGE_FILE, "2DPieChart", "temp");
+$myPicture = new pImageMapFile(300,260, FALSE, "ImageMap2DPieChart", IMAGE_MAP_STORAGE_FILE, "2DPieChart", "temp");
 
 /* Retrieve the image map */
 if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){

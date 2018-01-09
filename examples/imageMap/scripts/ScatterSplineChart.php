@@ -7,11 +7,11 @@ require_once("bootstrap.php");
 use pChart\pColor;
 use pChart\pDraw;
 use pChart\pScatter;
-use pChart\pImageMap;
+use pChart\pImageMap\pImageMapFile;
 
 /* Create the pChart object */
 /* 							X, Y, TransparentBackground, ImageMapIndex, ImageMapStorageMode, UniqueID, StorageFolder*/
-$myPicture = new pImageMap(400,400,FALSE,"ImageMapScatterSplineChart",IMAGE_MAP_STORAGE_FILE,"ScatterSplineChart","temp");
+$myPicture = new pImageMapFile(400,400,FALSE,"ImageMapScatterSplineChart",IMAGE_MAP_STORAGE_FILE,"ScatterSplineChart","temp");
 
 /* Retrieve the image map */
 if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){

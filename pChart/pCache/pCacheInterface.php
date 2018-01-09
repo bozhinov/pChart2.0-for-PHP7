@@ -12,11 +12,10 @@ http://www.pchart.net/license
 You can find the whole class documentation on the pChart web site.
 */
 
-namespace pChart;
+namespace pChart\pCache;
 
 Interface pCacheInterface
 {
-
 	function __construct(array $Settings = [], string $uniqueId);
 	
 	function changeID(string $uniqueId);

@@ -8,7 +8,7 @@ use pChart\{
 	pColor,
 	pDraw,
 	pCharts,
-	pCache
+	pCache\pCacheFile
 };
 
 /* Create a pChart object and associate your dataset */ 
@@ -21,7 +21,7 @@ $myPicture->myData->addPoints([1,3,4,3,5]);
 $uniqueId = serialize($myPicture->myData->Data);
 
 /* Create the cache object */
-$myCache = new pCache(["CacheFolder"=>"cache"], $uniqueId);
+$myCache = new pCacheFile(["CacheFolder"=>"cache"], $uniqueId);
 
 /* Test if we got this hash in our cache already */
 if ($myCache->isInCache()){

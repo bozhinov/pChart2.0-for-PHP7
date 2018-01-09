@@ -8,7 +8,7 @@ use pChart\{
 	pColor,
 	pDraw,
 	pCharts,
-	pCacheSQLite
+	pCache\pCacheSQLite
 };
 
 /* Create a pChart object and associate your dataset */ 

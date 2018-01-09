@@ -8,7 +8,7 @@ Last Update : 10/01/2018
 
 */
 
-namespace pChart;
+namespace pChart\pImageMap;
 
 interface pImageMapInterface
 {			

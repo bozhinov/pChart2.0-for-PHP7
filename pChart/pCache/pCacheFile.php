@@ -13,9 +13,9 @@ http://www.pchart.net/license
 You can find the whole class documentation on the pChart web site.
 */
 
-namespace pChart;
+namespace pChart\pCache;
 
-class pCache implements pCacheInterface
+class pCacheFile implements pCacheInterface
 {
 	var $CacheIndex;
 	var $CacheDB;
