@@ -562,8 +562,8 @@ class pDraw
 	}
 
 	/* Drawn a spline based on the bezier function */
-	function drawSpline(array $Coordinates, array $Format = []): array {
-
+	function drawSpline(array $Coordinates, array $Format = [])
+	{
 		$PathOnly = isset($Format["PathOnly"]) ? $Format["PathOnly"] : FALSE;	
 		$Force = isset($Format["Force"]) ? $Format["Force"] : 30;
 		$Forces = isset($Format["Forces"]) ? $Format["Forces"] : [];
@@ -1168,7 +1168,7 @@ class pDraw
 	}
 
 	/* Allocate a color with transparency */
-	function allocateColor(pColor $Color) # FAST
+	function allocateColor($Color) # FAST
 	{
 		$Id = $Color->getId();
 		if (!isset($this->aColorCache[$Id])){
@@ -3080,7 +3080,7 @@ class pDraw
 		return $Result;
 	}
 
-	function scaleComputeY(array $Values, int $AxisID): array
+	function scaleComputeY(array $Values, int $AxisID)
 	{
 		
 		if (!isset($this->myData->Data["Axis"][$AxisID])) {
@@ -3097,7 +3097,7 @@ class pDraw
 	
 		
 	/* Used in pCharts->drawStackedAreaChart() & pCharts->drawStackedBarChart() */
-	function scaleComputeY0HeightOnly(array $Values, int $AxisID): array
+	function scaleComputeY0HeightOnly(array $Values, int $AxisID)
 	{
 		$Scale = $this->myData->Data["Axis"][$AxisID]["ScaleMax"] - $this->myData->Data["Axis"][$AxisID]["ScaleMin"];
 		$Result = [];
