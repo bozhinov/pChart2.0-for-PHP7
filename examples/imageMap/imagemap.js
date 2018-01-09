@@ -21,9 +21,6 @@ class ImageMapper {
 		this.cY	= 0;
 		this.LastcX	= null;
 		this.LastcY	= null;
-		this.rX	= 0;
-		this.rY	= 0;
-		this.initialized = false;
 		this.currentTitle = "";
 		this.currentMessage = "";
 		this.SmoothMove = false;
@@ -46,11 +43,6 @@ class ImageMapper {
 			$(this.tooltipDiv).html(HTML);
 		} 
 
-		if (!this.initialized) { 
-			this.moveDiv(); 
-			this.initialized = true;
-		}
-
 		$(this.tooltipDiv).css({opacity: 1});
 
 		this.currentTitle   = Title;
@@ -60,18 +52,6 @@ class ImageMapper {
 	 /* Move the div to the mouse location */
 	moveDiv()
 	{
-		if(self.pageYOffset)
-		{
-			this.rX = self.pageXOffset;
-			this.rY = self.pageYOffset; 
-		} else if(document.documentElement && document.documentElement.scrollTop) {
-				this.rX = document.documentElement.scrollLeft; 
-				this.rY = document.documentElement.scrollTop; 
-		} else if(document.body) { 
-			this.rX = document.body.scrollLeft;
-			this.rY = document.body.scrollTop;
-		}
-		   
 		if (this.SmoothMove && this.LastcX != null)
 		{ 
 			this.cX = this.LastcX - (this.LastcX-this.cX)/4;
