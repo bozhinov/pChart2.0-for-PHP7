@@ -15,8 +15,17 @@ function goCheck($Script)
 	} else {
 		echo "Script source code cannot be fetched."; 
 	}
-	exit();
 }
+
+/* Determine the current package version */
+$FileHandle  = fopen("../../readme.txt", "r");
+for ($i=0; $i<=5; $i++) {
+	$buffer = fgets($FileHandle, 4096);
+}
+fclose($FileHandle);
+$Values  = preg_split("/:/",$buffer);
+$Values  = preg_split("/ /",$Values[1]);
+$Version = strip_tags($Values[1]);
 
 ?>
 <html>
@@ -68,30 +77,6 @@ $(document).ready(function() {
 </style>
 </head>
 <body>
-<?php
-	/* Determine the current package version */
-	$FileHandle  = fopen("../../readme.txt", "r");
-	for ($i=0; $i<=5; $i++) {
-		$buffer = fgets($FileHandle, 4096);
-	}
-	fclose($FileHandle);
-	$Values  = preg_split("/:/",$buffer);
-	$Values  = preg_split("/ /",$Values[1]);
-	$Version = strip_tags($Values[1]);
-
-	/* Build a list of the examples & categories */
-	$DirectoryHandle = opendir("scripts");
-	{
-		$Tree = [];
-		while (($FileName = readdir($DirectoryHandle)) !== false)
-		{
-			if ( !in_array($FileName,[".","..","2DPie.sqlite.example"])){
-				$Tree[] = substr($FileName, 0, -4);
-			}
-		}
-	}
-?>
-
 <table style='border: 2px solid #FFFFFF;'>
 	<tr>
 		<td>
@@ -124,6 +109,19 @@ $(document).ready(function() {
 						<table><tr><td><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td><td>&nbsp;Examples folder contents</td></tr></table>
 					</div>
 <?php
+
+	/* Build a list of the examples & categories */
+	$DirectoryHandle = opendir("scripts");
+	{
+		$Tree = [];
+		while (($FileName = readdir($DirectoryHandle)) !== false)
+		{
+			if (!in_array($FileName,[".","..","2DPie.sqlite.example"])){
+				$Tree[] = substr($FileName, 0, -4);
+			}
+		}
+	}
+
 	foreach($Tree as $Key => $Element)
 	{
 		$Icon = ($Key == count($Tree)-1) ? "../resources/dash-explorer-last.png" : "../resources/dash-explorer.png";
