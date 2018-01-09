@@ -33,7 +33,7 @@ $(document).ready(function() {
 	
 	function showExample(FileName)
 	{
-		$("#render").html("<img src='scripts/"+FileName+".php?Seed="+Math.random(100)+"' id='testPicture' alt='' class='pChartPicture'/>");
+		$("#render").html("<img src='scripts/"+FileName+".php' id='testPicture' alt='' class='pChartPicture'/>");
 		$.get("index.php?Action=ViewPHP&Script=scripts/"+FileName+".php").done(function(data) {
 				$("#source").html(data.replace("/\<BR\>/")); 
 			});
