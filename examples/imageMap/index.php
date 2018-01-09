@@ -19,8 +19,7 @@ function goCheck($Script)
 }
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html>
 <head>
 <meta http-equiv="cache-control" content="max-age=0" />
 <meta http-equiv="cache-control" content="no-cache" />
@@ -39,8 +38,7 @@ $(document).ready(function() {
 				$("#source").html(data.replace("/\<BR\>/")); 
 			});
 
-		var Mapper = new ImageMapper();
-		Mapper.addImage('testPicture','pictureMap','scripts/'+FileName+'.php?ImageMap=get');
+		addImage('testPicture','pictureMap','scripts/'+FileName+'.php?ImageMap=get');
 	}
 	
 	$('[id^="Hover-"]').click(function() {
@@ -53,7 +51,7 @@ $(document).ready(function() {
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 <style>
 	body       { background-color: #F0F0F0; font-family: tahoma; font-size: 14px;}
-	td  	     { font-family: tahoma; font-size: 11px; }
+	td  	   { font-family: tahoma; font-size: 11px; }
 	div.txt    { font-family: tahoma; font-size: 11px; width: 660px; padding: 15px; }
 	div.folder { cursor: hand; cursor: pointer; }
 	a.smallLink:link    { text-decoration: none; color: #6A6A6A; }
@@ -94,36 +92,37 @@ $(document).ready(function() {
 	}
 ?>
 
- <table style='border: 2px solid #FFFFFF;'>
- <tr><td>
-  <div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848;'>&nbsp;Navigation</div>
-  <table style='padding: 1px; background-color: #E0E0E0; border: 1px solid #D0D0D0; border-top: 1px solid #FFFFFF;'><tr>
-   <td width=16><img src='../resources/application_view_tile.png' width=16 height=16 alt=''/></td>
-   <td width=100>&nbsp;<a class=smallLinkGrey href='../'>Examples</a></td>
-   <td width=16><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
-   <td width=100>&nbsp;<a class=smallLinkGrey href='../sandbox/'>Sandbox</a></td>
-   <td width=16><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
-   <td width=100>&nbsp;<b>Image Map</b></td>
-  </tr></table>
- </td></tr>
- </table>
+<table style='border: 2px solid #FFFFFF;'>
+	<tr>
+		<td>
+			<div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848;'>&nbsp;Navigation</div>
+			<table style='padding: 1px; background-color: #E0E0E0; border: 1px solid #D0D0D0; border-top: 1px solid #FFFFFF;'>
+				<tr>
+					<td width=16><img src='../resources/application_view_tile.png' width=16 height=16 alt=''/></td>
+					<td width=100>&nbsp;<a class=smallLinkGrey href='../'>Examples</a></td>
+					<td width=16><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
+					<td width=100>&nbsp;<a class=smallLinkGrey href='../sandbox/'>Sandbox</a></td>
+					<td width=16><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
+					<td width=100>&nbsp;<b>Image Map</b></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
 
- <br/>
+<br/>
 
- <table>
- <tr><td valign='top'>
-  <table style='border: 2px solid #FFFFFF;'>
-  <tr><td>
-   <div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848; width: 222px;'>&nbsp;Release <?php echo $Version; ?></div>
-   <div style='border: 3px solid #D0D0D0; border-top: 1px solid #FFFFFF; background-color: #FAFAFA; width: 220px; overflow: auto'>
-   <div style='padding: 1px; padding-bottom: 3px; color: #000000; background-color:#D0D0D0;'>
-    <table>
+<table>
+	<tr>
+<td valign='top'>
+	<table style='border: 2px solid #FFFFFF;'>
 		<tr>
-		 <td><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
-		 <td>&nbsp;Examples folder contents</td>
-		</tr>
-	</table>
-   </div>
+			<td>
+				<div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848; width: 222px;'>&nbsp;Release <?php echo $Version; ?></div>
+				<div style='border: 3px solid #D0D0D0; border-top: 1px solid #FFFFFF; background-color: #FAFAFA; width: 220px; overflow: auto'>
+					<div style='padding: 1px; padding-bottom: 3px; color: #000000; background-color:#D0D0D0;'>
+						<table><tr><td><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td><td>&nbsp;Examples folder contents</td></tr></table>
+					</div>
 <?php
 	foreach($Tree as $Key => $Element)
 	{
@@ -138,75 +137,63 @@ $(document).ready(function() {
 		echo "</table>\r\n";
 	}
 ?>
-   </div>
-  </td></tr>
-  </table>
- </td><td width=20></td><td valign='top' style='padding-top: 5px; font-size: 12px;'>
-  <table>
-	  <tr>
-	   <td><img src='../resources/chart_bar.png' width=16 height=16 alt=''/></td>
-	   <td>&nbsp;Rendering area</td>
-	   </tr>
-   </table>
-
-   <div style='display:table-cell; padding: 10px; border: 2px solid #FFFFFF; vertical-align: middle; overflow: auto; background-image: url("../resources/dash.png");'>
-    <div style='font-size: 10px;' id=render>
-     <table>
-		<tr><td><img src='../resources/accept.png' width=16 height=16 alt=""/></td><td>Click on an example to render it!</td></tr>
-	 </table>
-    </div>
-   </div>
-
-   <br/>
-   <br/>
-
-   <table>
-	   <tr>
-		<td><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
-		<td>&nbsp;HTML Source area</td>
-	   </tr>
-   </table>
-
-   <div style='display:table-cell; padding: 10px;  border: 2px solid #FFFFFF; vertical-align: middle; overflow: auto; background-image: url("../resources/dash.png");'>
-    <div id=htmlsource style='width: 700px; font-size: 13px; font-family: Lucida Console'>
-
-     &lt;html&gt;<br/>
-     &lt;head&gt;<br/>
-     &nbsp;&nbsp; &lt;style&gt;<br/>
-     &nbsp;&nbsp;&nbsp;&nbsp;   div.pChartPicture { border: 0px; }<br/>
-     &nbsp;&nbsp; &lt;/style&gt;<br/>
-     &lt;/head&gt;<br/>
-     &lt;body&gt;<br/>
-	 &nbsp;&nbsp; &lt;script src="jquery-3.2.1.min.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
-	 &nbsp;&nbsp; &lt;script src="imagemap.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
-     &nbsp;&nbsp;  &lt;img src="draw.php" id="testPicture" alt="" class="pChartPicture"/&gt;<br/>
-     &lt;/body&gt;<br/>
-     &lt;script&gt;<br/>
-     &nbsp;&nbsp;  var Mapper = new ImageMapper();<br/>
-	 &nbsp;&nbsp;	Mapper.addImage("testPicture","pictureMap","draw.php?ImageMap=get");<br/>
-     &lt;/script&gt;<br/>
-
-    </div>
-   </div>
-
-   <br/>
-   <br/>
-
-	<table>
-		<tr>
-			<td><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
-			<td>&nbsp;PHP Source area</td>
+				</div>
+			</td>
 		</tr>
 	</table>
+	</td>
+	<td width=20></td>
+	<td valign='top' style='padding-top: 5px; font-size: 12px;'>
 
-   <div style='display:table-cell; padding: 10px;  border: 2px solid #FFFFFF; vertical-align: middle; overflow: auto; background-image: url("../resources/dash.png");'>
-    <div style='font-size: 10px;' id=source style='width: 700px;'>
-     <table><tr><td><img src='../resources/accept.png' width=16 height=16 alt=""/></td><td>Click on an example to get its source!</td></tr></table>
-    </div>
-   </div>
+		<table><tr><td><img src='../resources/chart_bar.png' width=16 height=16 alt=''/></td><td>&nbsp;Rendering area</td></tr></table>
 
-</td>
-</tr>
+		<div style='display:table-cell; padding: 10px; border: 2px solid #FFFFFF; vertical-align: middle; overflow: auto; background-image: url("../resources/dash.png");'>
+			<div style='font-size: 10px;' id=render>
+				<table><tr><td><img src='../resources/accept.png' width=16 height=16 alt=""/></td><td>Click on an example to render it!</td></tr></table>
+			</div>
+		</div>
+
+		<br/><br/>
+
+		<table><tr><td><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td><td>&nbsp;HTML Source area</td></tr></table>
+
+		<div style='display:table-cell; padding: 10px;  border: 2px solid #FFFFFF; vertical-align: middle; overflow: auto; background-image: url("../resources/dash.png");'>
+			<div id=htmlsource style='width: 700px; font-size: 13px; font-family: Lucida Console'>
+				&lt;html&gt;<br/>
+				&lt;head&gt;<br/>
+				&nbsp;&nbsp; &lt;style&gt;<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;   div.pChartPicture { border: 0px; }<br/>
+				&nbsp;&nbsp; &lt;/style&gt;<br/>
+				&lt;/head&gt;<br/>
+				&lt;body&gt;<br/>
+				&nbsp;&nbsp; &lt;script src="jquery-3.2.1.min.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
+				&nbsp;&nbsp; &lt;script src="imagemap.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
+				&nbsp;&nbsp;  &lt;img src="draw.php" id="testPicture" alt="" class="pChartPicture"/&gt;<br/>
+				&lt;/body&gt;<br/>
+				&lt;script&gt;<br/>
+				&nbsp;&nbsp;  var Mapper = new ImageMapper();<br/>
+				&nbsp;&nbsp;	Mapper.addImage("testPicture","pictureMap","draw.php?ImageMap=get");<br/>
+				&lt;/script&gt;<br/>
+			</div>
+		</div>
+
+	   <br/><br/>
+
+		<table>
+			<tr>
+				<td><img src='../resources/application_view_list.png' width=16 height=16 alt=''/></td>
+				<td>&nbsp;PHP Source area</td>
+			</tr>
+		</table>
+
+		<div style='display:table-cell; padding: 10px;  border: 2px solid #FFFFFF; vertical-align: middle; overflow: auto; background-image: url("../resources/dash.png");'>
+			<div style='font-size: 10px;' id=source style='width: 700px;'>
+				<table><tr><td><img src='../resources/accept.png' width=16 height=16 alt=""/></td><td>Click on an example to get its source!</td></tr></table>
+			</div>
+		</div>
+
+	</td>
+	</tr>
 </table>
 </body>
 </html>
