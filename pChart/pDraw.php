@@ -567,9 +567,11 @@ class pDraw
 		$PathOnly = isset($Format["PathOnly"]) ? $Format["PathOnly"] : FALSE;	
 		$Force = isset($Format["Force"]) ? $Format["Force"] : 30;
 		$Forces = isset($Format["Forces"]) ? $Format["Forces"] : [];
-		$Result = [];
+		$Result = [];		
+		
+		$count = count($Coordinates) - 1;
 
-		for ($i = 1; $i <= count($Coordinates) - 1; $i++) {
+		for ($i = 1; $i <= $count; $i++) {
 			$X1 = $Coordinates[$i - 1][0];
 			$Y1 = $Coordinates[$i - 1][1];
 			$X2 = $Coordinates[$i][0];
@@ -592,7 +594,7 @@ class pDraw
 			}
 
 			/* Last segment */
-			if ($i == count($Coordinates) - 1) {
+			if ($i == $count) {
 				$Xv2 = $X2;
 				$Yv2 = $Y2;
 			} else {
@@ -639,23 +641,23 @@ class pDraw
 		}
 		
 		if (is_null($Segments)) {
-			$Length = sqrt(($X2 - $X1) * ($X2 - $X1) + ($Y2 - $Y1) * ($Y2 - $Y1));
+			$Length = hypot(($X2 - $X1),($Y2 - $Y1));
 			$Precision = ($Length * 125) / 1000;
 		} else {
 			$Precision = $Segments;
 		}
 
 		$P = [
-			0 => ["X" => $X1, "Y" => $Y1],
+			0 => ["X" => $X1,  "Y" => $Y1],
 			1 => ["X" => $Xv1, "Y" => $Yv1],
 			2 => ["X" => $Xv2, "Y" => $Yv2],
-			3 => ["X" => $X2, "Y" => $Y2]
+			3 => ["X" => $X2,  "Y" => $Y2]
 		];
 
 		/* Compute the bezier points */
 		$Q = [];
 		$ID = 0;
-		for ($i = 0; $i <= $Precision; $i = $i + 1) {
+		for ($i = 0; $i <= $Precision; $i++) {
 			$u = $i / $Precision;
 			$C = [
 				0 => (1 - $u) * (1 - $u) * (1 - $u),
@@ -663,12 +665,12 @@ class pDraw
 				2 => 3 * $u * $u * (1 - $u),
 				3 => $u * $u * $u
 			];
+			
+			$Q[$ID] = ["X" => 0, "Y" => 0];
+			
 			for ($j = 0; $j <= 3; $j++) {
-				(!isset($Q[$ID])) AND $Q[$ID] = [];
-				(!isset($Q[$ID]["X"])) AND $Q[$ID]["X"] = 0;
-				(!isset($Q[$ID]["Y"])) AND $Q[$ID]["Y"] = 0;
-				$Q[$ID]["X"] = $Q[$ID]["X"] + $P[$j]["X"] * $C[$j];
-				$Q[$ID]["Y"] = $Q[$ID]["Y"] + $P[$j]["Y"] * $C[$j];
+				$Q[$ID]["X"] += ($P[$j]["X"] * $C[$j]);
+				$Q[$ID]["Y"] += ($P[$j]["Y"] * $C[$j]);
 			}
 
 			$ID++;
@@ -1142,7 +1144,7 @@ class pDraw
 	}
 
 	/* Draw a semi-transparent pixel */
-	function drawAlphaPixel($X, $Y, pColor $Color, $safe = FALSE) # FAST
+	function drawAlphaPixel($X, $Y, $Color, $safe = FALSE) # FAST
 	{
 
 		if (isset($this->Mask[$X])) {
@@ -1159,7 +1161,7 @@ class pDraw
 		if (!$safe){ # Momchil: Seems to be worth the micro optimization
 		
 			if ($X < 0 || $Y < 0 || $X >= $this->XSize || $Y >= $this->YSize) {
-				return -1;
+				return;
 			}
 
 		}
