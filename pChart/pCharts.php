@@ -1368,16 +1368,17 @@ class pCharts {
 			$DisplayColor = new pColor(0,0,0);
 		}
 		
+		$ColorOverride = [];
+		
 		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		if (!empty($OverrideColors)) {
-			if (!is_null($OverrideSurrounding)){
-				foreach($OverrideColors as $C){
-					$C->RGBChange($OverrideSurrounding);
+				foreach($OverrideColors as $key => $C){
+					$ColorOverride[$key]["Color"] = $C;
+					$ColorOverride[$key]["BorderColor"] = (!is_null($OverrideSurrounding)) ? $C->newOne()->RGBChange($OverrideSurrounding) : $C->newOne();
 				}
-			}
-			$this->myPicture->myData->saveExtendedData("Palette", $OverrideColors);
+			$this->myPicture->myData->saveExtendedData("Palette", $ColorOverride);
 		}
 
 		$RestoreShadow = $this->myPicture->Shadow;
@@ -1441,12 +1442,9 @@ class pCharts {
 							$Y1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
 						}
 
-						if (!empty($OverrideColors)) {
-							if (isset($OverrideColors[$ID])) {
-								$Settings = ["Color" => $OverrideColors[$ID]];
-								if (isset($OverrideColor["BorderColor"])){ # No unit test
-									$Settings["BorderColor"] = $OverrideColor["BorderColor"];
-								}
+						if (!empty($ColorOverride)) {
+							if (isset($ColorOverride[$ID])) {
+								$Settings = $ColorOverride[$ID];
 							} else {
 								$Settings = ["Color" => $this->myPicture->myData->getRandomColor()];
 							}
@@ -1560,12 +1558,9 @@ class pCharts {
 							$X1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
 						}
 
-						if (!empty($OverrideColors)) {
-							if (isset($OverrideColors[$ID])) {
-								$Settings = ["Color" => $OverrideColors[$ID]];
-								if (isset($OverrideColor["BorderColor"])){ # No unit test
-									$Settings["BorderColor"] = $OverrideColor["BorderColor"];
-								}
+						if (!empty($ColorOverride)) {
+							if (isset($ColorOverride[$ID])) {
+								$Settings = $ColorOverride[$ID];
 							} else {
 								$Settings = ["Color" => $this->myPicture->myData->getRandomColor()];
 							}

@@ -3503,7 +3503,7 @@ class pDraw
 						}
 
 						if (isset($Data["Extended"]["Palette"][$Index])) {
-							$Serie = $Data["Extended"]["Palette"][$Index];
+							$Serie = $Data["Extended"]["Palette"][$Index]["Color"];
 						} else {
 							$Serie = $Data["Series"][$SerieName]["Color"];
 						}
