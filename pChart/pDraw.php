@@ -3424,6 +3424,17 @@ class pDraw
 						} elseif (isset($Data["Abscissa"]) && $AbscissaDataSet) {
 							$Description = $XLabel;
 						}
+						
+						# Momchil: Was Extended Data
+						if (!empty($OverrideColors)) {
+							if (isset($OverrideColors[$Index])) {
+								$SerieFormat = $OverrideColors[$Index];
+							} else {
+								$SerieFormat = $this->myData->getRandomColor();
+							}
+						} else {
+							$SerieFormat = $Data["Series"][$SerieName]["Color"];
+						}
 
 						$SerieOffset = (count($SeriesName) == 1 && isset($Data["Series"][$SerieName]["XOffset"])) ? $Data["Series"][$SerieName]["XOffset"] : 0;
 						$Value = $Data["Series"][$SerieName]["Data"][$Index];
@@ -3469,7 +3480,7 @@ class pDraw
 							$this->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["Color" => new pColor(255,255,255),"BorderColor" => new pColor(0,0,0)]);
 						}
 
-						$Series[] = ["Format" => $Data["Series"][$SerieName]["Color"],"Caption" => $Caption];
+						$Series[] = ["Format" => $SerieFormat,"Caption" => $Caption];
 					}
 				}
 
