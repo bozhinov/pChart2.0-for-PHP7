@@ -3366,6 +3366,7 @@ class pDraw
 		$ForceLabels = [];
 		$DrawPoint = LABEL_POINT_BOX;
 		$DrawVerticalLine = FALSE;
+		$OverrideColors = [];
 		$VerticalLineColor = new pColor(0,0,0,40);
 		$VerticalLineTicks = 2;
 		
@@ -3502,12 +3503,17 @@ class pDraw
 							$Description = $XLabel;
 						}
 
-						if (isset($Data["Extended"]["Palette"][$Index])) {
-							$Serie = $Data["Extended"]["Palette"][$Index]["Color"];
+						# Momchil: Was Extended Data
+						if (!empty($OverrideColors)) {
+							if (isset($OverrideColors[$Index])) {
+								$SerieFormat = $OverrideColors[$Index];
+							} else {
+								$SerieFormat = $this->myData->getRandomColor();
+							}
 						} else {
-							$Serie = $Data["Series"][$SerieName]["Color"];
+							$SerieFormat = $Data["Series"][$SerieName]["Color"];
 						}
-
+	
 						$SerieOffset = (count($SeriesName) == 1 && isset($Data["Series"][$SerieName]["XOffset"])) ? $Data["Series"][$SerieName]["XOffset"] : 0;
 						$Value = $Data["Series"][$SerieName]["Data"][$Index];
 						($Value == VOID) AND $Value = "NaN";
@@ -3552,7 +3558,7 @@ class pDraw
 							$this->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["Color" => new pColor(255,255,255),"BorderColor" => new pColor(0,0,0)]);
 						}
 
-						$Series[] = ["Format" => $Serie,"Caption" => $Caption];
+						$Series[] = ["Format" => $SerieFormat,"Caption" => $Caption];
 					}
 				}
 

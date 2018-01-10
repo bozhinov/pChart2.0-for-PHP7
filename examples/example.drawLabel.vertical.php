@@ -20,7 +20,7 @@ $myPicture->myData->setAbscissa("Browsers");
 
 /* Draw the background */
 $myPicture->drawGradientArea(0,0,500,500,DIRECTION_VERTICAL,["StartColor"=>new pColor(240,240,240,100), "EndColor"=>new pColor(180,180,180,100)]);
-$myPicture->drawGradientArea(0,0,500,500,DIRECTION_HORIZONTAL,["StartColor"=>new pColor(240,240,240,20), "EndColor"=>new pColor(180,180,180,20)]);
+$myPicture->drawGradientArea(0,0,500,500,DIRECTION_HORIZONTAL,["StartColor"=>new pColor(240,240,240,20),"EndColor"=>new pColor(180,180,180,20)]);
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
 
 /* Draw the chart scale */ 
@@ -32,14 +32,14 @@ $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Create the per bar palette */
 $Palette = [
-	"0"=>new pColor(188,224,46,100),
-	"1"=>new pColor(224,100,46,100),
-	"2"=>new pColor(224,214,46,100),
-	"3"=>new pColor(46,151,224,100),
-	"4"=>new pColor(176,46,224,100),
-	"5"=>new pColor(224,46,117,100),
-	"6"=>new pColor(92,224,46,100),
-	"7"=>new pColor(224,176,46,100)
+	0=>new pColor(188,224,46,100),
+	1=>new pColor(224,100,46,100),
+	2=>new pColor(224,214,46,100),
+	3=>new pColor(46,151,224,100),
+	4=>new pColor(176,46,224,100),
+	5=>new pColor(224,46,117,100),
+	6=>new pColor(92,224,46,100),
+	7=>new pColor(224,176,46,100)
 ];
 
 /* Draw the chart */ 
@@ -49,7 +49,7 @@ $Palette = [
 $myPicture->drawLegend(570,215,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Write a label over the chart */
-$myPicture->writeLabel(["Hits"],[1,4]);
+$myPicture->writeLabel(["Hits"],[1,4],["OverrideColors"=>$Palette]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawBarChart.vertical.png");

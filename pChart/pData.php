@@ -945,12 +945,6 @@ class pData
 		$this->Data["YMargin"] = $Value;
 	}
 
-	/* Save extended configuration to the pData object */
-	function saveExtendedData(string $Tag, $Values)
-	{
-		$this->Data["Extended"][$Tag] = $Values;
-	}
-
 	/* Called by the scaling algorithm to save the orientation of the scale */
 	function saveOrientation(int $Orientation)
 	{

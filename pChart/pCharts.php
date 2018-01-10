@@ -1374,11 +1374,10 @@ class pCharts {
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		if (!empty($OverrideColors)) {
-				foreach($OverrideColors as $key => $C){
-					$ColorOverride[$key]["Color"] = $C;
-					$ColorOverride[$key]["BorderColor"] = (!is_null($OverrideSurrounding)) ? $C->newOne()->RGBChange($OverrideSurrounding) : $C->newOne();
-				}
-			$this->myPicture->myData->saveExtendedData("Palette", $ColorOverride);
+			foreach($OverrideColors as $key => $C){
+				$ColorOverride[$key]["Color"] = $C;
+				$ColorOverride[$key]["BorderColor"] = (!is_null($OverrideSurrounding)) ? $C->newOne()->RGBChange($OverrideSurrounding) : $C->newOne();
+			}
 		}
 
 		$RestoreShadow = $this->myPicture->Shadow;
