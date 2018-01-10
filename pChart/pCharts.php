@@ -89,7 +89,7 @@ class pCharts {
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
+			if ($Serie["isDrawable"]&& $SerieName != $Data["Abscissa"]) {
 				$SerieWeight = (isset($Serie["Weight"])) ? $Serie["Weight"] + 2 : 2;
 				(!is_null($PlotSize)) AND $SerieWeight = $PlotSize;
 				$Color = $Serie["Color"]->newOne();
@@ -222,8 +222,7 @@ class pCharts {
 				if (is_null($BreakColor)) {
 					$BreakSettings = ["Color" => $Serie["Color"], "Ticks" => $VoidTicks];
 				} else {
-					$BreakColor->Alpha = $Serie["Color"]["Alpha"];
-					$BreakSettings = ["Color" => $BreakColor, "Ticks" => $VoidTicks,"Weight" => $Weight];
+					$BreakSettings = ["Color" => $BreakColor->AlphaSet($Serie["Color"]->Alpha), "Ticks" => $VoidTicks,"Weight" => $Weight];
 				}
 
 				if ($DisplayType == DISPLAY_AUTO) {
@@ -352,7 +351,7 @@ class pCharts {
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				$Color = $Serie["Color"];
 				$ColorHalfAlfa = $Color->NewOne()->AlphaSlash(2);
 				$Ticks = $Serie["Ticks"];
@@ -972,7 +971,7 @@ class pCharts {
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
-				$Color = $Serie["Color"];
+				$Color = $Serie["Color"]->newOne();
 				$Ticks = $Serie["Ticks"];
 				$Weight = $Serie["Weight"];
 				if ($DisplayType == DISPLAY_AUTO) {
@@ -984,7 +983,7 @@ class pCharts {
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				if (!is_null($ForceTransparency)) {
-					$Color->Alpha = $ForceTransparency;
+					$Color->AlphaSet($ForceTransparency);
 				}
 				$PolygonSettings = ["Color" => $Color];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
@@ -1713,11 +1712,11 @@ class pCharts {
 				$PosArray = $this->myPicture->scaleComputeY0HeightOnly($Serie["Data"], $Serie["Axis"]);
 				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
-				$Color = ["TransCorner" => TRUE,"Color" => $Color,"BorderColor" => $BorderColor];
+				$RectangleSettings = ["TransCorner" => TRUE,"Color" => $Color,"BorderColor" => $BorderColor];
 				
 				if ($RecordImageMap) {
 					$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
-					$ImageMapColor = $Color["Color"]->toHTMLColor();			
+					$ImageMapColor = $RectangleSettings["Color"]->toHTMLColor();			
 				}
 				
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
@@ -1747,9 +1746,9 @@ class pCharts {
 							}
 
 							if ($Rounded) {
-								$this->myPicture->drawRoundedFilledRectangle($X + $XOffset, $Y1 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2, $RoundRadius, $Color);
+								$this->myPicture->drawRoundedFilledRectangle($X + $XOffset, $Y1 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2, $RoundRadius, $RectangleSettings);
 							} else {
-								$this->myPicture->drawFilledRectangle($X + $XOffset, $Y1 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2, $Color);
+								$this->myPicture->drawFilledRectangle($X + $XOffset, $Y1 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2, $RectangleSettings);
 								if (!is_null($InnerColor)) {
 									$RestoreShadow = $this->myPicture->Shadow;
 									$this->myPicture->Shadow = FALSE;
@@ -1824,9 +1823,9 @@ class pCharts {
 							}
 
 							if ($Rounded) {
-								$this->myPicture->drawRoundedFilledRectangle($X1 + $XSpaceLeft, $Y + $YOffset, $X2 - $XSpaceRight, $Y + $YOffset + $YSize, $RoundRadius, $Color);
+								$this->myPicture->drawRoundedFilledRectangle($X1 + $XSpaceLeft, $Y + $YOffset, $X2 - $XSpaceRight, $Y + $YOffset + $YSize, $RoundRadius, $RectangleSettings);
 							} else {
-								$this->myPicture->drawFilledRectangle($X1 + $XSpaceLeft, $Y + $YOffset, $X2 - $XSpaceRight, $Y + $YOffset + $YSize, $Color);
+								$this->myPicture->drawFilledRectangle($X1 + $XSpaceLeft, $Y + $YOffset, $X2 - $XSpaceRight, $Y + $YOffset + $YSize, $RectangleSettings);
 								if (!is_null($InnerColor)) {
 									$RestoreShadow = $this->myPicture->Shadow;
 									$this->myPicture->Shadow = FALSE;
