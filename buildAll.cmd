@@ -31,7 +31,7 @@ FOR %%f IN (examples\example*.*) DO (
    if !t:~-3! == php (
      SET /P Var=þ<NUL
      ECHO %%f >>temp\errors.log
-     php -q "%%f" 2>&1>>temp\errors.log
+     php -q "%%f" 2>>&1>>temp\errors.log
     )
 )
 
