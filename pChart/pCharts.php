@@ -43,7 +43,7 @@ class pCharts {
 	function __construct($pChartObject)
 	{
 		if (!($pChartObject instanceof pDraw)){
-			die("pBubble needs a pDraw object. Please check the examples.");
+			die("Charts needs a pDraw object. Please check the examples.");
 		}
 		
 		$this->myPicture = $pChartObject;
@@ -2364,7 +2364,7 @@ class pCharts {
 							$this->myPicture->drawLine($StartX + 2, $YPos + ($CaptionHeight / 2), $EndX - 2, $YPos + ($CaptionHeight / 2), $CaptionSettings);
 						
 						} else {
-							$this->myPicture->drawFilledRectangle($this->myPicture->GraphAreaX1 - $CaptionWidth + $XMargin - $CaptionMargin, $YPos, $this->myPicture->GraphAreaX1 - $CaptionMargin + $XMargin, $YPos + $CaptionHeight, ["Color" => $Color,"BorderColor" => $CaptionBorderColor]);
+							$this->myPicture->drawFilledRectangle($this->myPicture->GraphAreaX1 - $CaptionWidth + $XMargin - $CaptionMargin, $YPos, $this->myPicture->GraphAreaX1 - $CaptionMargin + $XMargin, $YPos + $CaptionHeight, ["Color" => $Serie["Color"],"BorderColor" => $CaptionBorderColor]);
 						}
 					}
 
@@ -2404,29 +2404,26 @@ class pCharts {
 
 					$LastX = NULL;
 					$LastY = NULL;
-					
+															
 					foreach($PosArray as $Y) {
 						if ($Y != VOID && !is_null($LastY)) {
-							$Slope = ($LastY - $Y);
+							$Slope = $LastY - $Y;
 							if ($Slope >= 0) {
+								$Gradient = new pColorGradient($PositiveSlopeStartColor, $PositiveSlopeEndColor);
 								$SlopeIndex = (100 / $MaxSlope) * $Slope;
-								$R = (($PositiveSlopeEndColor->R - $PositiveSlopeStartColor->R) / 100) * $SlopeIndex + $PositiveSlopeStartColor->R;
-								$G = (($PositiveSlopeEndColor->G - $PositiveSlopeStartColor->G) / 100) * $SlopeIndex + $PositiveSlopeStartColor->G;
-								$B = (($PositiveSlopeEndColor->B - $PositiveSlopeStartColor->B) / 100) * $SlopeIndex + $PositiveSlopeStartColor->B;
-							} elseif ($Slope < 0) {
+							} else {
+								$Gradient = new pColorGradient($NegativeSlopeStartColor, $NegativeSlopeEndColor);
 								$SlopeIndex = (100 / abs($MinSlope)) * abs($Slope);
-								$R = (($NegativeSlopeEndColor->R - $NegativeSlopeStartColor->R) / 100) * $SlopeIndex + $NegativeSlopeStartColor->R;
-								$G = (($NegativeSlopeEndColor->G - $NegativeSlopeStartColor->G) / 100) * $SlopeIndex + $NegativeSlopeStartColor->G;
-								$B = (($NegativeSlopeEndColor->B - $NegativeSlopeStartColor->B) / 100) * $SlopeIndex + $NegativeSlopeStartColor->B;
 							}
-
-							$Color = ["Color" => new pColor($R,$G,$B)];
+							
+							$Gradient->SetSegments(100);
+							$Color = $Gradient->Next($SlopeIndex, TRUE);
 							
 							if ($ShadedSlopeBox && !is_null($LastColor)) // && $Slope != 0
 							{
-								$this->myPicture->drawGradientArea($LastX, $TopY, $X, $BottomY, DIRECTION_HORIZONTAL, ["StartColor"=>$LastColor["Color"],"EndColor"=>$Color["Color"]]);
+								$this->myPicture->drawGradientArea($LastX, $TopY, $X, $BottomY, DIRECTION_HORIZONTAL, ["StartColor"=>$LastColor,"EndColor"=>$Color]);
 							} elseif (!$ShadedSlopeBox || is_null($LastColor)) { // || $Slope == 0
-								$this->myPicture->drawFilledRectangle(floor($LastX), $TopY, floor($X), $BottomY, $Color);
+								$this->myPicture->drawFilledRectangle(floor($LastX), $TopY, floor($X), $BottomY, ["Color" => $Color]);
 							}
 							$LastColor = $Color;
 						}
@@ -2485,28 +2482,25 @@ class pCharts {
 
 					foreach($PosArray as $X) {
 						if ($X != VOID && !is_null($LastX)) {
-							$Slope = ($X - $LastX);
+							$Slope = $X - $LastX;
 							if ($Slope >= 0) {
+								$Gradient = new pColorGradient($PositiveSlopeEndColor, $PositiveSlopeStartColor);
 								$SlopeIndex = (100 / $MaxSlope) * $Slope;
-								$R = (($PositiveSlopeEndColor->R - $PositiveSlopeStartColor->R) / 100) * $SlopeIndex + $PositiveSlopeStartColor->R;
-								$G = (($PositiveSlopeEndColor->G - $PositiveSlopeStartColor->G) / 100) * $SlopeIndex + $PositiveSlopeStartColor->G;
-								$B = (($PositiveSlopeEndColor->B - $PositiveSlopeStartColor->B) / 100) * $SlopeIndex + $PositiveSlopeStartColor->B;
-							} elseif ($Slope < 0) {
+							} else {
+								$Gradient = new pColorGradient($NegativeSlopeEndColor, $NegativeSlopeStartColor);
 								$SlopeIndex = (100 / abs($MinSlope)) * abs($Slope);
-								$R = (($NegativeSlopeEndColor->R - $NegativeSlopeStartColor->R) / 100) * $SlopeIndex + $NegativeSlopeStartColor->R;
-								$G = (($NegativeSlopeEndColor->G - $NegativeSlopeStartColor->G) / 100) * $SlopeIndex + $NegativeSlopeStartColor->G;
-								$B = (($NegativeSlopeEndColor->B - $NegativeSlopeStartColor->B) / 100) * $SlopeIndex + $NegativeSlopeStartColor->B;
 							}
-
-							$Settings = ["Color" => $Serie["Color"]];
+							
+							$Gradient->SetSegments(100);
+							$Color = $Gradient->Next($SlopeIndex, TRUE);
 							
 							if ($ShadedSlopeBox && !is_null($LastColor)) {
-								$this->myPicture->drawGradientArea($TopX, $LastY, $BottomX, $Y, DIRECTION_VERTICAL, ["StartColor" => $LastColor,"EndColor" => $Serie["Color"]]);
+								$this->myPicture->drawGradientArea($TopX, $LastY, $BottomX, $Y, DIRECTION_VERTICAL, ["StartColor" => $LastColor,"EndColor" => $Color]);
 							} elseif (!$ShadedSlopeBox || is_null($LastColor)) {
-								$this->myPicture->drawFilledRectangle($TopX, floor($LastY), $BottomX, floor($Y), $Settings);
+								$this->myPicture->drawFilledRectangle($TopX, floor($LastY), $BottomX, floor($Y), ["Color" => $Color]);
 							}
 
-							$LastColor = $Settings;
+							$LastColor = $Color;
 						}
 
 						if ($X == VOID) {
