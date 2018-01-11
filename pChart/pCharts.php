@@ -92,16 +92,13 @@ class pCharts {
 			if ($Serie["isDrawable"]&& $SerieName != $Data["Abscissa"]) {
 				$SerieWeight = (isset($Serie["Weight"])) ? $Serie["Weight"] + 2 : 2;
 				(!is_null($PlotSize)) AND $SerieWeight = $PlotSize;
-				$Color = $Serie["Color"]->newOne();
-				$Ticks = $Serie["Ticks"];
 				if (!is_null($Surrounding)) {
-					$Alpha = $BorderColor->Alpha; # Maintain Alpha
-					$BorderColor = $Color->newOne()->RGBChange($Surrounding);
-					$BorderColor->AlphaSet($Alpha);
+					$BorderColor = $Serie["Color"]->newOne()->RGBChange($Surrounding);
 				}
 				
 				# Momchil: Force default Alpha as it is not set in the original code
 				# That is for the example.Combo.area.lines
+				$Color = $Serie["Color"]->newOne();
 				$Color->AlphaSet(100); 
 				
 				if (isset($Serie["Picture"])) {
@@ -162,7 +159,7 @@ class pCharts {
 							}
 						}
 
-						$X = $X + $XStep;
+						$X += $XStep;
 					}
 					
 				} else {
@@ -188,7 +185,7 @@ class pCharts {
 							}
 						}
 
-						$Y = $Y + $XStep;
+						$Y += $XStep;
 					}
 				}
 			}
@@ -1162,8 +1159,7 @@ class pCharts {
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
-				$Color = $Serie["Color"];
-				$Ticks = $Serie["Ticks"];
+				$Color = $Serie["Color"]->newOne();
 				if ($DisplayType == DISPLAY_AUTO) {
 					$DisplayColor = $Color;
 				}
@@ -1189,9 +1185,10 @@ class pCharts {
 					}
 
 					$AreaID = 0;
-					$Areas = [];
-					$Areas[$AreaID][] = $this->myPicture->GraphAreaX1 + $XMargin;
-					$Areas[$AreaID][] = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
+					$Areas = [$AreaID => [
+						$this->myPicture->GraphAreaX1 + $XMargin,
+						($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1
+					]];
 	
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
 					$LastX = NULL;
@@ -1213,7 +1210,7 @@ class pCharts {
 						if ($Y == VOID && isset($Areas[$AreaID])) {
 							$Areas[$AreaID][] = (is_null($LastX)) ? $X : $LastX;
 							$Areas[$AreaID][] = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
-							$AreaID++;
+							$AreaID++; # Momchil: Never gets here
 						} elseif ($Y != VOID) {
 							if (!isset($Areas[$AreaID])) {
 								$Areas[$AreaID][] = $X;
@@ -1230,27 +1227,6 @@ class pCharts {
 
 					$Areas[$AreaID][] = $LastX;
 					$Areas[$AreaID][] = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
-
-					/* Handle shadows in the areas */
-					if ($this->myPicture->Shadow) {
-						$ShadowArea = [];
-						foreach($Areas as $Key => $Points) {
-							$ShadowArea[$Key] = [];
-							foreach($Points as $Key2 => $Value) {
-								$ShadowArea[$Key][] = ($Key2 % 2 == 0) ? $Value + $this->myPicture->ShadowX : $Value + $this->myPicture->ShadowY;
-							}
-						}
-
-						foreach($ShadowArea as $Points) {
-							$this->drawPolygonChart($Points, ["Color" => $this->myPicture->ShadowColor]);
-						}
-					}
-
-					(!is_null($ForceTransparency)) AND $Color->AlphaSet($ForceTransparency);
-					
-					foreach($Areas as $Points){
-						$this->drawPolygonChart($Points, ["Color" => $Color,"Threshold" => $Threshold]);
-					}
 					
 				} else {
 					if ($YZero < $this->myPicture->GraphAreaX1 + 1) {
@@ -1262,9 +1238,10 @@ class pCharts {
 					}
 
 					$AreaID = 0;
-					$Areas = [];
-					$Areas[$AreaID][] = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
-					$Areas[$AreaID][] = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Areas = [$AreaID => [
+						($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1,
+						$this->myPicture->GraphAreaY1 + $XMargin
+					]];
 					
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
 					$LastX = NULL;
@@ -1304,27 +1281,28 @@ class pCharts {
 
 					$Areas[$AreaID][] = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
 					$Areas[$AreaID][] = $LastY;
-					
-					/* Handle shadows in the areas */
-					if ($this->myPicture->Shadow) {
-						$ShadowArea = [];
-						foreach($Areas as $Key => $Points) {
-							$ShadowArea[$Key] = [];
-							foreach($Points as $Key2 => $Value) {
-								$ShadowArea[$Key][] = ($Key2 % 2 == 0) ? ($Value + $this->myPicture->ShadowX) : ($Value + $this->myPicture->ShadowY);
-							}
-						}
-
-						foreach($ShadowArea as $Key => $Points) {
-							$this->drawPolygonChart($Points, ["Color" => $this->myPicture->ShadowColor]);
+				}
+				
+				/* Handle shadows in the areas */
+				if ($this->myPicture->Shadow) {
+					$ShadowArea = [];
+					foreach($Areas as $Key => $Points) {
+						$ShadowArea[$Key] = [];
+						foreach($Points as $Key2 => $Value) {
+							$ShadowArea[$Key][] = ($Key2 % 2 == 0) ? ($Value + $this->myPicture->ShadowX) : ($Value + $this->myPicture->ShadowY);
 						}
 					}
 
-					(!is_null($ForceTransparency)) AND $Color->AlphaSet($ForceTransparency);
-					foreach($Areas as $Points) {
-						$this->drawPolygonChart($Points, ["Color" => $Color,"Threshold" => $Threshold]);
+					foreach($ShadowArea as $Points) {
+						$this->drawPolygonChart($Points, ["Color" => $this->myPicture->ShadowColor]);
 					}
 				}
+
+				(!is_null($ForceTransparency)) AND $Color->AlphaSet($ForceTransparency);
+				foreach($Areas as $Points) {
+					$this->drawPolygonChart($Points, ["Color" => $Color,"Threshold" => $Threshold]);
+				}
+				
 			}
 		}
 	}
@@ -1919,7 +1897,7 @@ class pCharts {
 			$Serie = $Data["Series"][$SerieName];
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				
-				$Color = $Serie["Color"];
+				$Color = $Serie["Color"]->newOne();
 				(!is_null($ForceTransparency)) AND $Color->Alpha = $ForceTransparency;
 				$Settings = ["Color" => $Color];
 				
