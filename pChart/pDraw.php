@@ -105,7 +105,6 @@ class pDraw
 	var $Picture; // GD picture object
 	var $Antialias = TRUE; // Turn anti alias on or off
 	var $AntialiasQuality = 0; // Quality of the anti aliasing implementation (0-1)
-	var $Mask = [];	// Already drawn pixels mask (Filled circle implementation) 
 	var $TransparentBackground = FALSE; // Just to know if we need to flush the alpha channels when rendering
 	/* Graph area settings */
 	var $GraphAreaX1 = 0; // Graph area X origin
@@ -162,7 +161,8 @@ class pDraw
 			imagealphablending($this->Picture, TRUE);
 			imagesavealpha($this->Picture, TRUE);
 		} else {
-			imagefilledrectangle($this->Picture, 0, 0, $XSize, $YSize, $this->AllocateColor(new pColor(255, 255, 255)));
+			# Momchil: $this->allocateColor(new pColor(255,255,255,100)); sets alpha at 1.27 which is not completely transparent
+			imagefilledrectangle($this->Picture, 0, 0, $XSize, $YSize, imagecolorallocatealpha($this->Picture, 255, 255, 255, 0));
 		}
 		
 		$this->ShadowAllocatedColor = $this->allocateColor(new pColor(0,0,0,0));
@@ -232,7 +232,7 @@ class pDraw
 			}
 
 			if (count($Points) >= 6) {
-				ImageFilledPolygon($this->Picture, $Points, count($Points) / 2, $this->allocateColor($Color));
+				imageFilledPolygon($this->Picture, $Points, count($Points) / 2, $this->allocateColor($Color));
 			}
 		}
 
@@ -327,7 +327,7 @@ class pDraw
 	/* Draw a rectangle with rounded corners */
 	function drawRoundedFilledRectangle($X1, $Y1, $X2, $Y2, $Radius, array $Format = [])
 	{		
-		$Color = isset($Format["Color"]) ? $Format["Color"] : (new pColor(0,0,0,100));
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
 		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $Color;
 		
@@ -426,7 +426,7 @@ class pDraw
 	/* Draw a rectangle */
 	function drawRectangle($X1, $Y1, $X2, $Y2, array $Format = [])
 	{		
-		$Color = isset($Format["Color"]) ? $Format["Color"] : (new pColor(0,0,0,100));
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;		
 		$NoAngle = isset($Format["NoAngle"]) ? $Format["NoAngle"] : FALSE;
 		
@@ -830,7 +830,8 @@ class pDraw
 	
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
-		
+		$Mask = isset($Format["Mask"]) ? $Format["Mask"] : [];
+
 		$Height = abs($Height);
 		$Width = abs($Width);
 		($Height == 0) AND $Height = 1;
@@ -847,7 +848,7 @@ class pDraw
 		$Step = 360 / (2 * PI * max($Width, $Height));
 		$Mode = TRUE;
 		$Cpt = 1;
-				
+		
 		for ($i = 0; $i <= 360; $i = $i + $Step) {
 			$X = cos($i * PI / 180) * $Height + $Xc;
 			$Y = sin($i * PI / 180) * $Width + $Yc;
@@ -858,12 +859,24 @@ class pDraw
 				}
 
 				if ($Mode) { 
-					$this->drawAntialiasPixel($X, $Y, $Color);
+					if (isset($Mask[$Xc])) {
+						if (!isset($Mask[$Xc][$Yc])) {
+							$this->drawAntialiasPixel($X, $Y, $Color);
+						} 
+					} else {
+						$this->drawAntialiasPixel($X, $Y, $Color);
+					}
 				}
 
 				$Cpt++;
 			} else {
-				$this->drawAntialiasPixel($X, $Y, $Color);
+				if (isset($Mask[$Xc])) {
+					if (!isset($Mask[$Xc][$Yc])) {
+						$this->drawAntialiasPixel($X, $Y, $Color);
+					} 
+				} else {
+					$this->drawAntialiasPixel($X, $Y, $Color);
+				}
 			}
 		}
 
@@ -893,23 +906,22 @@ class pDraw
 			$this->drawFilledCircle($X + $this->ShadowX, $Y + $this->ShadowY, $Radius, ["Color" => $this->ShadowColor,"Ticks" => $Ticks]);
 		}
 
-		$this->Mask = [];
+		$Mask = [];
 		$AllocatedColor = $this->allocateColor($Color);
 		for ($i = 0; $i <= $Radius * 2; $i++) {
 			$Slice = sqrt($Radius * $Radius - ($Radius - $i) * ($Radius - $i));
 			$XPos = floor($Slice);
 			$YPos = $Y + $i - $Radius;
 			#$AAlias = $Slice - floor($Slice); # Momchil: UNUSED
-			$this->Mask[$X - $XPos][$YPos] = TRUE;
-			$this->Mask[$X + $XPos][$YPos] = TRUE;
+			$Mask[$X - $XPos][$YPos] = TRUE;
+			$Mask[$X + $XPos][$YPos] = TRUE;
 			imageline($this->Picture, $X - $XPos, $YPos, $X + $XPos, $YPos, $AllocatedColor);
 		}
 
 		if ($this->Antialias) {
-			$this->drawCircle($X, $Y, $Radius, $Radius, ["Color" => $Color,"Ticks" => $Ticks]);
+			$this->drawCircle($X, $Y, $Radius, $Radius, ["Color" => $Color,"Ticks" => $Ticks, "Mask" => $Mask]);
 		}
-
-		$this->Mask = [];
+		
 		if (!is_null($BorderColor)) {
 			$this->drawCircle($X, $Y, $Radius, $Radius, ["Color" => $BorderColor,"Ticks" => $Ticks]);
 		}
@@ -1146,13 +1158,6 @@ class pDraw
 	/* Draw a semi-transparent pixel */
 	function drawAlphaPixel($X, $Y, $Color, $safe = FALSE) # FAST
 	{
-
-		if (isset($this->Mask[$X])) {
-			if (isset($this->Mask[$X][$Y])) {
-				return;
-			}
-		}
-		
 		if ($this->Shadow) {
 			$myShadow = $this->ShadowColor->newOne()->AlphaMultiply(floor($Color->Alpha / 100));
 			imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($myShadow));
@@ -1244,7 +1249,7 @@ class pDraw
 				$this->drawFilledRectangle($X + $this->ShadowX, $Y + $this->ShadowY, $X + $Width + $this->ShadowX, $Y + $Height + $this->ShadowY, ["Color" => $this->ShadowColor]);
 			} else {
 				$TranparentID = imagecolortransparent($Raster);
-				$customShadowColor = $this->ShadowColor;
+				$customShadowColor = $this->ShadowColor->newOne();
 				for ($Xc = 0; $Xc <= $Width - 1; $Xc++) {
 					for ($Yc = 0; $Yc <= $Height - 1; $Yc++) {
 						$RGBa = imagecolorat($Raster, $Xc, $Yc);
