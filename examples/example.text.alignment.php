@@ -36,9 +36,9 @@ $myPicture->drawRectangleMarker(141,72,$MyMarker);
 $myPicture->drawRectangleMarker(141,101,$MyMarker);
 $myPicture->drawRectangleMarker(141,126,$MyMarker);
 
-$myPicture->drawRectangleMarker(260,72,$MyMarker);
-$myPicture->drawRectangleMarker(260,101,$MyMarker);
-$myPicture->drawRectangleMarker(260,126,$MyMarker);
+$myPicture->drawRectangleMarker(274,72,$MyMarker);
+$myPicture->drawRectangleMarker(274,101,$MyMarker);
+$myPicture->drawRectangleMarker(274,126,$MyMarker);
 
 $myPicture->drawRectangleMarker(415,72,$MyMarker);
 $myPicture->drawRectangleMarker(415,101,$MyMarker);
@@ -53,9 +53,9 @@ $myPicture->drawArrowLabel(139,72,"TEXT_ALIGN_TOPLEFT",["Length"=>20,"Angle"=>45
 $myPicture->drawArrowLabel(139,101,"TEXT_ALIGN_MIDDLELEFT",["Length"=>20,"Angle"=>90,"RoundPos"=>TRUE]);
 $myPicture->drawArrowLabel(139,128,"TEXT_ALIGN_BOTTOMLEFT",["Length"=>20,"Angle"=>135,"RoundPos"=>TRUE]);
 
-$myPicture->drawArrowLabel(260,72,"TEXT_ALIGN_TOPMIDDLE",["Length"=>20,"Angle"=>45,"RoundPos"=>TRUE]);
-$myPicture->drawArrowLabel(260,101,"TEXT_ALIGN_MIDDLEMIDDLE",["Length"=>90,"Angle"=>315,"RoundPos"=>TRUE]);
-$myPicture->drawArrowLabel(260,128,"TEXT_ALIGN_BOTTOMMIDDLE",["Length"=>20,"Angle"=>225,"RoundPos"=>TRUE]);
+$myPicture->drawArrowLabel(274,72,"TEXT_ALIGN_TOPMIDDLE",["Length"=>20,"Angle"=>45,"RoundPos"=>TRUE]);
+$myPicture->drawArrowLabel(274,101,"TEXT_ALIGN_MIDDLEMIDDLE",["Length"=>90,"Angle"=>315,"RoundPos"=>TRUE]);
+$myPicture->drawArrowLabel(274,128,"TEXT_ALIGN_BOTTOMMIDDLE",["Length"=>20,"Angle"=>225,"RoundPos"=>TRUE]);
 
 $myPicture->drawArrowLabel(415,72,"TEXT_ALIGN_TOPRIGHT",["Length"=>20,"Angle"=>315,"RoundPos"=>TRUE]);
 $myPicture->drawArrowLabel(415,101,"TEXT_ALIGN_MIDDLERIGHT",["Length"=>20,"Angle"=>270,"RoundPos"=>TRUE]);
