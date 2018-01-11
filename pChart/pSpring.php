@@ -361,9 +361,7 @@ class pSpring
 					if ($Settings["Type"] == NODE_TYPE_FREE) {
 						$this->Data[$Key]["X"] = $CenterX + rand(-20, 20);
 						$this->Data[$Key]["Y"] = $CenterY + rand(-20, 20);
-					}
-
-					if ($Settings["Type"] == NODE_TYPE_CENTRAL) {
+					} elseif ($Settings["Type"] == NODE_TYPE_CENTRAL) {
 						$this->Data[$Key]["X"] = $CenterX;
 						$this->Data[$Key]["Y"] = $CenterY;
 					}
@@ -431,12 +429,9 @@ class pSpring
 			$Y = $Settings["Y"];
 			if (isset($Settings["Vectors"]) && $Settings["Type"] != NODE_TYPE_CENTRAL) {
 				foreach($Settings["Vectors"] as $Vector) {
-					$Type = $Vector["Type"];
-					$Force = $Vector["Force"];
-					$Angle = $Vector["Angle"];
-					$Factor = $Type == "A" ? $this->MagneticForceA : $this->MagneticForceR;
-					$X = cos(deg2rad($Angle)) * $Force * $Factor + $X;
-					$Y = sin(deg2rad($Angle)) * $Force * $Factor + $Y;
+					$Factor = ($Vector["Type"] == "A") ? $this->MagneticForceA : $this->MagneticForceR;
+					$X = cos(deg2rad($Vector["Angle"])) * $Vector["Force"] * $Factor + $X;
+					$Y = sin(deg2rad($Vector["Angle"])) * $Vector["Force"] * $Factor + $Y;
 				}
 			}
 
@@ -554,7 +549,6 @@ class pSpring
 		$CenterGraph = isset($Settings["CenterGraph"]) ? $Settings["CenterGraph"] : TRUE;
 		$TextPadding = isset($Settings["TextPadding"]) ? $Settings["TextPadding"] : 4;
 		$Algorithm = isset($Settings["Algorithm"]) ? $Settings["Algorithm"] : ALGORITHM_WEIGHTED;
-		#$FontSize = $this->myPicture->FontSize; # UNUSED here but passed to DrawText
 		$this->X1 = $this->myPicture->GraphAreaX1;
 		$this->Y1 = $this->myPicture->GraphAreaY1;
 		$this->X2 = $this->myPicture->GraphAreaX2;
@@ -650,7 +644,6 @@ class pSpring
 			$X = $Settings["X"];
 			$Y = $Settings["Y"];
 			$Name = $Settings["Name"];
-			#$FreeZone = $Settings["FreeZone"]; # UNUSED
 			$Shape = $Settings["Shape"];
 			$Size = $Settings["Size"];
 			$ShapeSettings = ["Color" => $Settings["Color"],"BorderColor" => $Settings["BorderColor"]];
@@ -668,7 +661,6 @@ class pSpring
 					$this->myPicture->drawPolygon($Points, $ShapeSettings);
 					break;
 				case NODE_SHAPE_SQUARE:
-					#$Offset = $Size / 2;
 					$Size = $Size / 2;
 					$this->myPicture->drawFilledRectangle($X - $Size, $Y - $Size, $X + $Size, $Y + $Size, $ShapeSettings);
 					break;
