@@ -573,7 +573,7 @@ class pScatter
 	}
 
 	/* Return the scaled plot position */
-	function getPosArray(array $Values, int $AxisID) : array
+	function getPosArray(array $Values, int $AxisID)
 	{
 		$Result = [];
 		
@@ -640,7 +640,6 @@ class pScatter
 		}
 
 		$YStep = max($this->myPicture->FontSize, $IconAreaHeight) + 5;
-		$XStep = $IconAreaWidth + 5;
 		$XStep = $XSpacing;
 		$Boundaries = ["L" => $X, "T" => $Y, "R" => 0, "B" => 0];
 		$vY = $Y;
@@ -673,7 +672,7 @@ class pScatter
 		}
 
 		$vY = $vY - $YStep;
-		$vX = $vX - $XStep;
+		#$vX = $vX - $XStep; # UNUSED
 		$TopOffset = $Y - $Boundaries["T"];
 		if ($Boundaries["B"] - ($vY + $IconAreaHeight) < $TopOffset) {
 			$Boundaries["B"] = $vY + $IconAreaHeight + $TopOffset;
@@ -737,7 +736,7 @@ class pScatter
 	} 
 
 	/* Get the legend box size */
-	function getScatterLegendSize(array $Format = [])
+	function getScatterLegendSize(array $Format = []) # UNUSED
 	{
 		$FontName = isset($Format["FontName"]) ? $Format["FontName"] : $this->myPicture->FontName;
 		$FontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : $this->myPicture->FontSize;
@@ -759,9 +758,6 @@ class pScatter
 			}
 		}
 
-		$YStep = max($this->myPicture->FontSize, $IconAreaHeight) + 5;
-		#$XStep = $IconAreaWidth + 5;
-		$XStep = $XSpacing;
 		$Boundaries = ["L" => $X, "T" => $Y, "R" => 0, "B" => 0];
 		$vY = $Y;
 		$vX = $X;
@@ -793,10 +789,9 @@ class pScatter
 			}
 		}
 
-		$vY = $vY - $YStep;
-		$vX = $vX - $XStep;
+		$vY = $vY - $YStep + $BoxSize;
 		$TopOffset = $Y - $Boundaries["T"];
-		($Boundaries["B"] - ($vY + $BoxSize) < $TopOffset) AND $Boundaries["B"] = $vY + $BoxSize + $TopOffset;
+		($Boundaries["B"] - $vY < $TopOffset) AND $Boundaries["B"] = $vY + $TopOffset;
 		$Width = ($Boundaries["R"] + $Margin) - ($Boundaries["L"] - $Margin);
 		$Height = ($Boundaries["B"] + $Margin) - ($Boundaries["T"] - $Margin);
 		
@@ -812,10 +807,8 @@ class pScatter
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 				$SerieX = $Series["X"];
-				$SerieValuesX = $Data["Series"][$SerieX]["Data"];
 				$SerieXAxis = $Data["Series"][$SerieX]["Axis"];
 				$SerieY = $Series["Y"];
-				$SerieValuesY = $Data["Series"][$SerieY]["Data"];
 				$SerieYAxis = $Data["Series"][$SerieY]["Axis"];
 				$Color = ["Color" => $Series["Color"], "Ticks" => $Ticks];
 				$PosArrayX = $Data["Series"][$Series["X"]]["Data"];
@@ -881,7 +874,6 @@ class pScatter
 			throw pException::ScatterInvalidInputException("Serie was not found!");
 		}
 		
-		#$OverrideTitle = isset($Format["OverrideTitle"]) ? $Format["OverrideTitle"] : NULL;
 		$DrawPoint = isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
 		$Decimals = isset($Format["Decimals"]) ? $Format["Decimals"] : NULL;
 
@@ -1020,7 +1012,7 @@ class pScatter
 		$Border = TRUE;
 		$BorderColor = NULL;
 		$BorderTicks = 2;
-		$AreaName = NULL; //;"La ouate de phoque"
+		$AreaName = NULL; 
 		$NameAngle = ZONE_NAME_ANGLE_AUTO;
 		$NameColor = new pColor(255,255,255,100);
 		$DisableShadowOnArea = TRUE;
