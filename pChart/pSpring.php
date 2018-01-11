@@ -64,7 +64,7 @@ class pSpring
 		$this->AutoComputeFreeZone = FALSE;
 		
 		if (!($pChartObject instanceof pDraw)){
-			die("pPie needs a pDraw object. Please check the examples.");
+			die("pSpring needs a pDraw object. Please check the examples.");
 		}
 		
 		$this->myPicture = $pChartObject;

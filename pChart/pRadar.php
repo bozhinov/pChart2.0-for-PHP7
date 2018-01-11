@@ -31,7 +31,7 @@ class pRadar
 	function __construct($pChartObject)
 	{
 		if (!($pChartObject instanceof pDraw)){
-			die("pPie needs a pDraw object. Please check the examples.");
+			die("pRadar needs a pDraw object. Please check the examples.");
 		}
 		
 		$this->myPicture = $pChartObject;

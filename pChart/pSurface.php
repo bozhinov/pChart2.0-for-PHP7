@@ -34,7 +34,7 @@ class pSurface
 	function __construct($pChartObject)
 	{
 		if (!($pChartObject instanceof pDraw)){
-			die("pPie needs a pDraw object. Please check the examples.");
+			die("pSurface needs a pDraw object. Please check the examples.");
 		}
 		
 		$this->myPicture = $pChartObject;

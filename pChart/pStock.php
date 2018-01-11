@@ -24,7 +24,7 @@ class pStock
 	function __construct($pChartObject)
 	{
 		if (!($pChartObject instanceof pDraw)){
-			die("pPie needs a pDraw object. Please check the examples.");
+			die("pStock needs a pDraw object. Please check the examples.");
 		}
 		
 		$this->myPicture = $pChartObject;

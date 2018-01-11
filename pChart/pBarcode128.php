@@ -27,7 +27,7 @@ class pBarcode128
 	{
 		
 		if (!($pChartObject instanceof pDraw)){
-			die("pBubble needs a pDraw object. Please check the examples.");
+			die("pBarcode needs a pDraw object. Please check the examples.");
 		}
 		
 		$this->myPicture = $pChartObject;

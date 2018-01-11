@@ -26,7 +26,7 @@ class pBarcode39
 	function __construct($pChartObject, bool $EnableMOD43 = FALSE, string $dbFileName = "", $UseCache = FALSE)
 	{
 		if (!($pChartObject instanceof pDraw)){
-			die("pBubble needs a pDraw object. Please check the examples.");
+			die("pBarcode needs a pDraw object. Please check the examples.");
 		}
 		
 		$this->myPicture = $pChartObject;
