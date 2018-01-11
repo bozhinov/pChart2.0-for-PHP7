@@ -57,11 +57,11 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize
 $myPicture->writeLabel(["Probe 1"],[0]);
 
 /* Write a label over the chart */
-$LabelSettings = array("TitleMode"=>LABEL_TITLE_BACKGROUND,"DrawSerieColor"=>FALSE,"TitleColor"=>new pColor(255,255,255,10));
+$LabelSettings = array("TitleMode"=>LABEL_TITLE_BACKGROUND,"DrawSerieColor"=>FALSE,"TitleColor"=>new pColor(255,255,255));
 $myPicture->writeLabel(["Probe 1"],[5],$LabelSettings);
 
 /* Write a label over the chart */
-$LabelSettings = array("OverrideTitle"=>"Multiple series","DrawVerticalLine"=>TRUE,"TitleMode"=>LABEL_TITLE_BACKGROUND,"TitleColor"=>new pColor(255,255,255,10));
+$LabelSettings = array("OverrideTitle"=>"Multiple series","DrawVerticalLine"=>TRUE,"TitleMode"=>LABEL_TITLE_BACKGROUND,"TitleColor"=>new pColor(255,255,255));
 $myPicture->writeLabel(["Probe 1","Probe 2"],[4],$LabelSettings);
 
 /* Render the picture (choose the best way) */
