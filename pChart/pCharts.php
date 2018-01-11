@@ -2484,10 +2484,10 @@ class pCharts {
 						if ($X != VOID && !is_null($LastX)) {
 							$Slope = $X - $LastX;
 							if ($Slope >= 0) {
-								$Gradient = new pColorGradient($PositiveSlopeEndColor, $PositiveSlopeStartColor);
+								$Gradient = new pColorGradient($PositiveSlopeStartColor, $PositiveSlopeEndColor);
 								$SlopeIndex = (100 / $MaxSlope) * $Slope;
 							} else {
-								$Gradient = new pColorGradient($NegativeSlopeEndColor, $NegativeSlopeStartColor);
+								$Gradient = new pColorGradient($NegativeSlopeStartColor, $NegativeSlopeEndColor);
 								$SlopeIndex = (100 / abs($MinSlope)) * abs($Slope);
 							}
 							
