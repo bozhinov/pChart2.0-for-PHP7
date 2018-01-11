@@ -71,8 +71,8 @@ class pCacheFile implements pCacheInterface
 	/* Write the generated picture to the cache */
 	function writeToCache($pChartObject)
 	{
-		if (!($pChartObject instanceof pDraw)){
-			die("pPie needs a pDraw object. Please check the examples.");
+		if (!($pChartObject instanceof \pChart\pDraw)){
+			die("pCache needs a pDraw object. Please check the examples.");
 		}
 
 		/* Create a temporary stream */

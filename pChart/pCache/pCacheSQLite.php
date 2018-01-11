@@ -86,8 +86,9 @@ class pCacheSQLite implements pCacheInterface
 	/* Write the generated picture to the cache */
 	function writeToCache($pChartObject)
 	{
-		if (!($pChartObject instanceof pDraw)){
-			die("pPie needs a pDraw object. Please check the examples.");
+		
+		if (!($pChartObject instanceof \pChart\pDraw)){
+			die("pCache needs a pDraw object. Please check the examples.");
 		}
 
 		/* Create a temporary stream */
@@ -170,8 +171,7 @@ class pCacheSQLite implements pCacheInterface
 			$q->bindParam(':Id', $this->Id, \PDO::PARAM_STR);
 			$q->execute();
 			$match = $q->fetch(\PDO::FETCH_ASSOC);
-
-			if (count($match) == 3){
+			if ($match != FALSE){
 				if ($UpdateHitsCount) {
 					$match["hits"]++;
 					$q = $this->DbSQLite->prepare("UPDATE cache SET hits= :hits WHERE Id= :Id;");
