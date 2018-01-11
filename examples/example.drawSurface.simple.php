@@ -14,11 +14,11 @@ use pChart\{
 $myPicture = new pDraw(210,100);
 
 /* Create a solid background */
-$myPicture->drawFilledRectangle(0,0,400,400,["Color"=>new pColor(179,217,91), "Dash"=>TRUE, "DashColor"=>new pColor(199,237,111)]);
+$myPicture->drawFilledRectangle(0,0,210,100,["Color"=>new pColor(179,217,91), "Dash"=>TRUE, "DashColor"=>new pColor(199,237,111)]);
 
 /* Do a gradient overlay */
-$myPicture->drawGradientArea(0,0,400,400,DIRECTION_VERTICAL,["StartColor"=>new pColor(194,231,44,50), "EndColor"=>new pColor(43,107,58,50)]);
-$myPicture->drawGradientArea(0,0,400,20, DIRECTION_VERTICAL,["StartColor"=>new pColor(0,0,0,100), "EndColor"=>new pColor(50,50,50,100)]);
+$myPicture->drawGradientArea(0,0,210,100,DIRECTION_VERTICAL,["StartColor"=>new pColor(194,231,44,50), "EndColor"=>new pColor(43,107,58,50)]);
+$myPicture->drawGradientArea(0,0,210,20, DIRECTION_VERTICAL,["StartColor"=>new pColor(0,0,0,100), "EndColor"=>new pColor(50,50,50,100)]);
 
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,209,99,["Color"=>new pColor(0,0,0)]);
