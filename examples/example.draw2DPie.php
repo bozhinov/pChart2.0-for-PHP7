@@ -55,7 +55,7 @@ $PieChart->draw2DPie(560,125,["WriteValues"=>PIE_VALUE_PERCENTAGE,"DataGapAngle"
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>ColorBlack($Alpha=20)]);
 $myPicture->drawText(120,200,"Single AA pass",["DrawBox"=>TRUE,"BoxRounded"=>TRUE,"Color"=>ColorBlack(),"Align"=>TEXT_ALIGN_TOPMIDDLE]);
-$myPicture->drawText(440,200,"Extended AA pass / Split",["DrawBox"=>TRUE,"BoxRounded"=>TRUE,"Color"=>ColorBlack(),"Align"=>TEXT_ALIGN_TOPMIDDLE]);
+$myPicture->drawText(440,200,"Extended AA pass / Split",["DrawBox"=>TRUE,"BoxRounded"=>TRUE,"Color"=>ColorBlack(),"Align"=>TEXT_ALIGN_TOPMIDDLE,"BoxBorderColor"=>new pColor(0,0,0)]);
 
 /* Write the legend box */ 
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6,"Color"=>ColorWhite()]);
