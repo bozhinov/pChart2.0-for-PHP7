@@ -1079,13 +1079,15 @@ class pDraw
 	/* Draw an aliased pixel */
 	function drawAntialiasPixel($X, $Y, pColor $Color) # FAST
 	{
-				
-		if ($X < 0 || $Y < 0 || $X >= $this->XSize || $Y >= $this->YSize){
-			return -1;
+		# Momchil: There is room for error here. The initial code does not allow for X if equals XSize
+		# Not a single imagesetpixel returns false though
+		if ($X < 0 || $Y < 0 || ceil($X) > $this->XSize || ceil($Y) > $this->YSize){
+			return;
 		}
 				
 		if (!$this->Antialias) {
 			if ($this->Shadow) {
+				# That can go out of range
 				imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowAllocatedColor);
 			}
 
@@ -1098,57 +1100,52 @@ class pDraw
 		
 		if ($Xi == $X && $Yi == $Y) {
 			
-			$this->drawAlphaPixel($X, $Y, $Color, true);
+			$this->drawAlphaPixel($X, $Y, $Color);
 			
 		} else {
 			
 			$Yleaf = $Y - $Yi;
 			$Xleaf = $X - $Xi;
-			
-			# Momchil: That allows to skip the check in drawAlphaPixel and reuse the safe param
-			if (($Xi + 1) >= $this->XSize || ($Yi + 1) >= $this->YSize){ 
-				return;
-			}
-						
+
 			# Momchil: Fast path: mostly zeros in my test cases
 			# AntialiasQuality does not seem to be in use and is always 0
 			# $Xleaf is always > 0 && $Yleaf > 0 => $AlphaX > 0
 			if ($this->AntialiasQuality == 0) {
 				switch(TRUE){
 					case ($Yleaf == 0):
-						$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaMultiply(1 - $Xleaf), true);
-						$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaMultiply($Xleaf), true);
+						$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaMultiply(1 - $Xleaf));
+						$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaMultiply($Xleaf));
 						break;
 					case ($Xleaf == 0):
-						$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaMultiply(1 - $Yleaf), true);
-						$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaMultiply($Yleaf), true);		
+						$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaMultiply(1 - $Yleaf));
+						$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaMultiply($Yleaf));		
 						break;						
 					default:
-						$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaMultiply((1 - $Xleaf) * (1 - $Yleaf)), true);
-						$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaMultiply($Xleaf * (1 - $Yleaf)), true);
-						$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaMultiply((1 - $Xleaf) * $Yleaf), true);
-						$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Color->newOne()->AlphaMultiply($Xleaf * $Yleaf), true);
+						$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaMultiply((1 - $Xleaf) * (1 - $Yleaf)));
+						$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaMultiply($Xleaf * (1 - $Yleaf)));
+						$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaMultiply((1 - $Xleaf) * $Yleaf));
+						$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Color->newOne()->AlphaMultiply($Xleaf * $Yleaf));
 				}					
 			} else { # Momchil: no changes here
 				$Alpha = $Color->Alpha;
 				$Alpha1 = (1 - $Xleaf) * (1 - $Yleaf) * $Alpha;
 				if ($Alpha1 > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaSet($Alpha1), $R, $G, $B, true);
+					$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaSet($Alpha1), $R, $G, $B);
 				}
 
 				$Alpha2 = $Xleaf * (1 - $Yleaf) * $Alpha;	
 				if ($Alpha2 > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaSet($Alpha2), $R, $G, $B, true);
+					$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaSet($Alpha2), $R, $G, $B);
 				}
 				
 				$Alpha3 = (1 - $Xleaf) * $Yleaf * $Alpha;
 				if ($Alpha3 > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaSet($Alpha3), $R, $G, $B, true);
+					$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaSet($Alpha3), $R, $G, $B);
 				}
 
 				$Alpha4 = $Xleaf * $Yleaf * $Alpha;
 				if ($Alpha4 > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Color->newOne()->AlphaSet($Alpha4), $R, $G, $B, true);
+					$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Color->newOne()->AlphaSet($Alpha4), $R, $G, $B);
 				}
 			}
 																			
@@ -1156,19 +1153,11 @@ class pDraw
 	}
 
 	/* Draw a semi-transparent pixel */
-	function drawAlphaPixel($X, $Y, $Color, $safe = FALSE) # FAST
+	function drawAlphaPixel($X, $Y, $Color) # FAST
 	{
 		if ($this->Shadow) {
 			$myShadow = $this->ShadowColor->newOne()->AlphaMultiply(floor($Color->Alpha / 100));
 			imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($myShadow));
-		}
-		
-		if (!$safe){ # Momchil: Seems to be worth the micro optimization
-		
-			if ($X < 0 || $Y < 0 || $X >= $this->XSize || $Y >= $this->YSize) {
-				return;
-			}
-
 		}
 
 		imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($Color));
@@ -1249,14 +1238,14 @@ class pDraw
 				$this->drawFilledRectangle($X + $this->ShadowX, $Y + $this->ShadowY, $X + $Width + $this->ShadowX, $Y + $Height + $this->ShadowY, ["Color" => $this->ShadowColor]);
 			} else {
 				$TranparentID = imagecolortransparent($Raster);
-				$customShadowColor = $this->ShadowColor->newOne();
+				$picShadowColor = $this->ShadowColor->newOne();
 				for ($Xc = 0; $Xc <= $Width - 1; $Xc++) {
 					for ($Yc = 0; $Yc <= $Height - 1; $Yc++) {
 						$RGBa = imagecolorat($Raster, $Xc, $Yc);
 						$Values = imagecolorsforindex($Raster, $RGBa);
 						if ($Values["alpha"] < 120) {
-							$customShadowColor->Alpha = floor(($this->ShadowColor->Alpha / 100) * ((100 / 127) * (127 - $Values["alpha"])));							
-							$this->drawAlphaPixel($X + $Xc + $this->ShadowX, $Y + $Yc + $this->ShadowY, $customShadowColor);
+							$picShadowColor->Alpha = floor(($this->ShadowColor->Alpha / 100) * ((100 / 127) * (127 - $Values["alpha"])));	
+							$this->drawAlphaPixel($X + $Xc + $this->ShadowX, $Y + $Yc + $this->ShadowY, $picShadowColor);
 						}
 					}
 				}
