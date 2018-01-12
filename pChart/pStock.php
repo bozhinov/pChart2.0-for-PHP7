@@ -108,10 +108,7 @@ class pStock
 		$BoxUpSettings = ["Color" => $BoxUpColor,"BorderColor" => $BoxUpBorderColor];
 		$BoxDownSettings = ["Color" => $BoxDownColor,"BorderColor" => $BoxDownBorderColor];
 		$MedianSettings = ["Color" => $MedianColor];
-		
-		$ImageMapColor_1 = $BoxUpColor->toHTMLColor();
-		$ImageMapColor_2 = $BoxDownColor->toHTMLColor();
-		
+				
 		foreach($Plots as $Key => $Points) {
 			
 			$PosArray = $this->myPicture->scaleComputeY($Points, $Data[$SerieOpen]["Axis"]);
@@ -123,7 +120,7 @@ class pStock
 					$Values = $Values."Median : ".$Data[$SerieMedian]["Data"][$Key]."<br />";
 				}
 
-				$ImageMapColor = ($PosArray[0] > $PosArray[1]) ? $ImageMapColor_1 : $ImageMapColor_2;
+				$ImageMapColor = ($PosArray[0] > $PosArray[1]) ? $BoxUpColor->toHTMLColor() : $BoxDownColor->toHTMLColor();
 			}
 				
 			if ($ShadowOnBoxesOnly) {

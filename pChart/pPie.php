@@ -110,7 +110,7 @@ class pPie
 			$this->myPicture->Shadow = FALSE;
 			$ShadowFormat = $Format;
 			$ShadowFormat["Shadow"] = TRUE;
-			#$this->draw2DPie($X + $this->myPicture->ShadowX, $Y + $this->myPicture->ShadowY, $ShadowFormat);
+			$this->draw2DPie($X + $this->myPicture->ShadowX, $Y + $this->myPicture->ShadowY, $ShadowFormat);
 		}
 
 		/* Draw the polygon pie elements */
@@ -447,10 +447,7 @@ class pPie
 		}
 
 		/* Draw the bottom shadow if needed */
-		# Momchil: this is the only place that uses this comparison
-		# All use cases check if both X & Y are !=0
-		# I will leave this here, but it can hit the break at pDraw->setShadow()
-		if ($RestoreShadow && ($this->myPicture->ShadowX != 0 || $this->myPicture->ShadowY != 0)) {
+		if ($RestoreShadow) {
 			foreach($Slices as $Plots) {
 				$ShadowPie = [];
 				for ($i = 0; $i < count($Plots); $i = $i + 2) {
