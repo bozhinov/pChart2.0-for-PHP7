@@ -29,7 +29,6 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 /* Draw the scale and the chart */
 $myPicture->setGraphArea(60,20,680,190);
 $myPicture->drawScale(["DrawSubTicks"=>TRUE,"Mode"=>SCALE_MODE_ADDALL]);
-$myPicture->setShadow(FALSE);
 
 (new pCharts($myPicture))->drawStackedBarChart(["DisplayValues"=>TRUE,"DisplayType"=>DISPLAY_AUTO,"Gradient"=>TRUE,"Surrounding"=>-20,"InnerSurrounding"=>20]);
 

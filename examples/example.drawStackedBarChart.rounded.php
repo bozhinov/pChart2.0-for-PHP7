@@ -33,11 +33,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $myPicture->setGraphArea(60,30,650,190);
 $myPicture->drawScale(["CycleBackground"=>TRUE,"DrawSubTicks"=>TRUE,"GridColor"=>new pColor(0,0,0,10),"Mode"=>SCALE_MODE_ADDALL]);
 
-/* Turn on shadow computing */
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
-
 /* Draw some thresholds */
-$myPicture->setShadow(FALSE);
 $myPicture->drawThreshold([-40],["WriteCaption"=>TRUE,"Color"=>new pColor(0,0,0),"Ticks"=>4]);
 $myPicture->drawThreshold([28],["WriteCaption"=>TRUE,"Color"=>new pColor(0,0,0),"Ticks"=>4]);
 

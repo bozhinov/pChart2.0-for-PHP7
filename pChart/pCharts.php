@@ -1754,7 +1754,8 @@ class pCharts {
 								$Done = FALSE;
 								if ($DisplayOrientation == ORIENTATION_HORIZONTAL || $DisplayOrientation == ORIENTATION_AUTO) {
 									if ($TxtHeight < $BarHeight && $TxtWidth < $BarWidth) {
-										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
+										# Momchil: +1 is a visual fix for example.drawStackedBarChart.rounded. Probably a bug introduced by refactoring
+										$this->myPicture->drawText($XCenter, $YCenter+1, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
 										$Done = TRUE;
 									}
 								}
