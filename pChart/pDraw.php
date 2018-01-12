@@ -1119,7 +1119,7 @@ class pDraw
 					case ($Xleaf == 0):
 						$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaMultiply(1 - $Yleaf));
 						$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaMultiply($Yleaf));		
-						break;						
+						break;
 					default:
 						$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaMultiply((1 - $Xleaf) * (1 - $Yleaf)));
 						$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaMultiply($Xleaf * (1 - $Yleaf)));
@@ -1130,25 +1130,25 @@ class pDraw
 				$Alpha = $Color->Alpha;
 				$Alpha1 = (1 - $Xleaf) * (1 - $Yleaf) * $Alpha;
 				if ($Alpha1 > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaSet($Alpha1), $R, $G, $B);
+					$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaSet($Alpha1));
 				}
 
 				$Alpha2 = $Xleaf * (1 - $Yleaf) * $Alpha;	
 				if ($Alpha2 > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaSet($Alpha2), $R, $G, $B);
+					$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaSet($Alpha2));
 				}
 				
 				$Alpha3 = (1 - $Xleaf) * $Yleaf * $Alpha;
 				if ($Alpha3 > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaSet($Alpha3), $R, $G, $B);
+					$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaSet($Alpha3));
 				}
 
 				$Alpha4 = $Xleaf * $Yleaf * $Alpha;
 				if ($Alpha4 > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Color->newOne()->AlphaSet($Alpha4), $R, $G, $B);
+					$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Color->newOne()->AlphaSet($Alpha4));
 				}
 			}
-																			
+
 		}
 	}
 
@@ -1241,8 +1241,7 @@ class pDraw
 				$picShadowColor = $this->ShadowColor->newOne();
 				for ($Xc = 0; $Xc <= $Width - 1; $Xc++) {
 					for ($Yc = 0; $Yc <= $Height - 1; $Yc++) {
-						$RGBa = imagecolorat($Raster, $Xc, $Yc);
-						$Values = imagecolorsforindex($Raster, $RGBa);
+						$Values = imagecolorsforindex($Raster, imagecolorat($Raster, $Xc, $Yc));
 						if ($Values["alpha"] < 120) {
 							$picShadowColor->Alpha = floor(($this->ShadowColor->Alpha / 100) * ((100 / 127) * (127 - $Values["alpha"])));	
 							$this->drawAlphaPixel($X + $Xc + $this->ShadowX, $Y + $Yc + $this->ShadowY, $picShadowColor);
@@ -1258,18 +1257,35 @@ class pDraw
 
 	} 
 
-		/* Draw an arrow */
+	/* Mirror Effect */
+	function drawAreaMirror($X, $Y, $Width, $Height, array $Format = [])
+	{
+		$StartAlpha = isset($Format["StartAlpha"]) ? $Format["StartAlpha"] : 80;
+		$EndAlpha = isset($Format["EndAlpha"]) ? $Format["EndAlpha"] : 0;
+		$AlphaStep = ($StartAlpha - $EndAlpha) / $Height;
+		$Picture = imagecreatetruecolor($this->XSize, $this->YSize);
+		imagecopy($Picture, $this->Picture, 0, 0, 0, 0, $this->XSize, $this->YSize);
+		for ($i = 1; $i <= $Height; $i++) {
+			if ($Y + ($i - 1) < $this->YSize && $Y - $i > 0) {
+				imagecopymerge($Picture, $this->Picture, $X, $Y + ($i - 1), $X, $Y - $i, $Width, 1, $StartAlpha - $AlphaStep * $i);
+			}
+		}
+
+		imagecopy($this->Picture, $Picture, 0, 0, 0, 0, $this->XSize, $this->YSize);
+		
+		imagedestroy($Picture);
+	}
+	
+	/* Draw an arrow */
 	function drawArrow($X1, $Y1, $X2, $Y2, array $Format = [])
 	{
-		$FillColor = isset($Format["FillColor"]) ? $Format["FillColor"] : (new pColor(0,0,0,100));
-		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $FillColor;
-		$Size =10;
-		$Ratio = .5;
-		$TwoHeads = FALSE;
-		$Ticks = NULL;
-		
-		extract($Format);
-		
+		$FillColor = isset($Format["FillColor"]) ? $Format["FillColor"] : new pColor(0,0,0,100);
+		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $FillColor->newOne();
+		$Size = isset($Format["Size"]) ? $Format["Size"] : 10;
+		$Ratio = isset($Format["Ratio"]) ? $Format["Ratio"] : .5;
+		$TwoHeads = isset($Format["TwoHeads"]) ? $Format["TwoHeads"] : FALSE;
+		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
+				
 		/* Calculate the line angle */
 		$Angle = $this->getAngle($X1, $Y1, $X2, $Y2);
 		$RGB = ["Color" => $BorderColor];
@@ -1290,7 +1306,7 @@ class pDraw
 		($Angle == 180 || $Angle == 360) AND $Points[4] = $Points[2];
 		($Angle == 90 || $Angle == 270) AND $Points[5] = $Points[3];
 
-		ImageFilledPolygon($this->Picture, $Points, 4, $this->allocateColor($FillColor));
+		imageFilledPolygon($this->Picture, $Points, 4, $this->allocateColor($FillColor));
 		$this->drawLine($Points[0], $Points[1], $Points[2], $Points[3], $RGB);
 		$this->drawLine($Points[2], $Points[3], $Points[4], $Points[5], $RGB);
 		$this->drawLine($Points[0], $Points[1], $Points[4], $Points[5], $RGB);
@@ -1304,7 +1320,7 @@ class pDraw
 			($Angle == 180 || $Angle == 360) AND $Points[4] = $Points[2];
 			($Angle == 90 || $Angle == 270) AND $Points[5] = $Points[3];
 			
-			ImageFilledPolygon($this->Picture, $Points, 4, $this->allocateColor($FillColor));
+			imageFilledPolygon($this->Picture, $Points, 4, $this->allocateColor($FillColor));
 			$this->drawLine($Points[0], $Points[1], $Points[2], $Points[3], $RGB);
 			$this->drawLine($Points[2], $Points[3], $Points[4], $Points[5], $RGB);
 			$this->drawLine($Points[0], $Points[1], $Points[4], $Points[5], $RGB);
@@ -1320,19 +1336,17 @@ class pDraw
 	/* Draw a label with associated arrow */
 	function drawArrowLabel($X1, $Y1, $Text, array $Format = [])
 	{
-		$FillColor = isset($Format["FillColor"]) ? $Format["FillColor"] : (new pColor(0,0,0,100));
-		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $FillColor;
-		$FontName = $this->FontName;
-		$FontSize = $this->FontSize;
-		$Length = 50;
-		$Angle = 315;
-		$Size = 10;
-		$Position = POSITION_TOP;
-		$RoundPos = FALSE;
-		$Ticks = NULL;
-		
-		extract($Format);
-		
+		$FillColor = isset($Format["FillColor"]) ? $Format["FillColor"] : new pColor(0,0,0,100);
+		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $FillColor->newOne();
+		$FontName = isset($Format["FontName"]) ? $Format["FontName"] : $this->FontName;
+		$FontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : $this->FontSize;
+		$Length = isset($Format["Length"]) ? $Format["Length"] : 50;
+		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 315;
+		$Size = isset($Format["Size"]) ? $Format["Size"] : 10;
+		$Position = isset($Format["Position"]) ? $Format["Position"] : POSITION_TOP;
+		$RoundPos = isset($Format["RoundPos"]) ? $Format["RoundPos"] : FALSE;
+		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
+				
 		$Angle = $Angle % 360;
 		$X2 = sin(($Angle + 180) * PI / 180) * $Length + $X1;
 		$Y2 = cos(($Angle + 180) * PI / 180) * $Length + $Y1;
@@ -1383,7 +1397,7 @@ class pDraw
 		$Margin = 10;
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(130,130,130);
 		$FadeColor = NULL;
-		$BorderColor = $Color;
+		$BorderColor = $Color->newOne();
 		$BoxBorderColor = isset($Format["BoxBorderColor"]) ? $Format["BoxBorderColor"] : new pColor(0,0,0);
 		$BoxBackColor = isset($Format["BoxBackColor"]) ? $Format["BoxBackColor"] : new pColor(255,255,255);
 		$Surrounding = NULL;
@@ -1393,12 +1407,6 @@ class pDraw
 		/* Override defaults */
 		extract($Format);		
 		
-		if (!is_null($FadeColor)) {
-			$FadeColor->R = (($FadeColor->R - $Color->R) / 100) * $Percent + $Color->R;
-			$FadeColor->G = (($FadeColor->G - $Color->G) / 100) * $Percent + $Color->G;
-			$FadeColor->B = (($FadeColor->B - $Color->B) / 100) * $Percent + $Color->B;
-		}
-
 		if (!is_null($Surrounding)) {
 			$BorderColor = $Color->newOne()->RGBChange($Surrounding);
 		}
@@ -1413,7 +1421,9 @@ class pDraw
 			$RestoreShadow = $this->Shadow;
 			$this->Shadow = FALSE;
 			if (!is_null($FadeColor)) {
-				$this->drawGradientArea($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, DIRECTION_VERTICAL, ["StartColor"=>$FadeColor,"EndColor"=>$Color]);
+				$Gradient = new pColorGradient($Color, $FadeColor);
+				$Gradient->SetSegments(100);
+				$this->drawGradientArea($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, DIRECTION_VERTICAL, ["StartColor"=>$Gradient->Next($Percent, TRUE),"EndColor"=>$Color]);
 				($Surrounding != NULL) AND $this->drawRectangle($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, ["Color" => new pColor(255,255,255,$Surrounding)]);
 			} else {
 				$this->drawFilledRectangle($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, ["Color" => $Color,"BorderColor" => $BorderColor]);
@@ -1441,7 +1451,9 @@ class pDraw
 			$RestoreShadow = $this->Shadow;
 			$this->Shadow = FALSE;
 			if (!is_null($FadeColor)) {
-				$this->drawGradientArea($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, DIRECTION_HORIZONTAL, ["StartColor"=>$Color,"EndColor"=>$FadeColor]);
+				$Gradient = new pColorGradient($Color, $FadeColor);
+				$Gradient->SetSegments(100);
+				$this->drawGradientArea($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, DIRECTION_HORIZONTAL, ["StartColor"=>$Color,"EndColor"=>$Gradient->Next($Percent, TRUE)]);
 				($Surrounding != NULL) AND $this->drawRectangle($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, ["Color" => new pColor(255,255,255,$Surrounding)]);
 			} else {
 				$this->drawFilledRectangle($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, ["Color" => $Color,"BorderColor" => $BorderColor]);
@@ -3091,7 +3103,6 @@ class pDraw
 		return $Result;
 	}
 	
-		
 	/* Used in pCharts->drawStackedAreaChart() & pCharts->drawStackedBarChart() */
 	function scaleComputeY0HeightOnly(array $Values, int $AxisID)
 	{
@@ -3770,11 +3781,7 @@ class pDraw
 				break;
 		}
 	}
-	
-	/*
-	 THIS IS THE CODE FROM THE ORIGINAL pImage class
-	 */
-	
+
 	/* Enable / Disable and set shadow properties */
 	function setShadow(bool $Enabled = TRUE, array $Format = [])
 	{
@@ -3816,77 +3823,6 @@ class pDraw
 		
 		$this->GraphAreaXdiff = $X2 - $X1;
 		$this->GraphAreaYdiff = $Y2 - $Y1;
-	}
-
-	/* Return the width of the picture */
-	function getWidth()
-	{
-		return $this->XSize;
-	}
-
-	/* Return the height of the picture */
-	function getHeight()
-	{
-		return $this->YSize;
-	}
-	
-	/* http://php.net/manual/en/function.imagefilter.php */
-	function setFilter(int $filtertype, int $arg1 = 0, int $arg2 = 0, int $arg3 = 0, int $arg4 = 0){
-	
-		$ret = imagefilter($this->Picture, $filtertype, $arg1, $arg2, $arg3, $arg4);
-		
-		if (!$ret){
-			throw pException::InvalidImageFilter("Could not apply image filter!");
-		}
-	}
-
-	/* Render the picture to a file */
-	function render(string $FileName, int $Compression = 6, $Filters = PNG_NO_FILTER)
-	{
-		if ($this->TransparentBackground) {
-			imagealphablending($this->Picture, FALSE);
-		}
-
-		imagepng($this->Picture, $FileName, $Compression, $Filters);
-	}
-
-	/* Render the picture to a web browser stream */
-	function stroke(bool $BrowserExpire = FALSE, int $Compression = 6, $Filters = PNG_NO_FILTER)
-	{
-		if ($this->TransparentBackground) {
-			imagealphablending($this->Picture, FALSE);
-		}
-
-		if ($BrowserExpire) {
-			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-			header("Cache-Control: no-cache, must-revalidate"); # HTTP/1.1
-			header("Pragma: no-cache");
-		}
-
-		header('Content-/type: image/png');
-		imagepng($this->Picture, NULL, $Compression, $Filters);
-	}
-
-	/*	Automatic output method based on the calling interface
-		Momchil: Added support for Compression & Filters
-		Compression must be between 0 and 9 -> http://php.net/manual/en/function.imagepng.php 
-		http://php.net/manual/en/image.constants.php
-		https://www.w3.org/TR/PNG-Filters.html
-		*/
-	
-	function autoOutput(string $FileName = "output.png", int $Compression = 6, $Filters = PNG_NO_FILTER)
-	{
-		if (php_sapi_name() == "cli") {
-			$this->Render($FileName, $Compression, $Filters);
-		} else {
-			$this->Stroke(TRUE, $Compression, $Filters);
-		}
-	}
-
-	/* Return the distance between two points */ # UNUSED
-	function getDistance($X1, $Y1, $X2, $Y2)
-	{
-		return hypot(($X2 - $X1), ($Y2 - $Y1));
 	}
 
 	/* Return the orientation of a line */
@@ -3965,24 +3901,69 @@ class pDraw
 
 		return $Result;
 	}
-
-	/* Mirror Effect */
-	function drawAreaMirror($X, $Y, $Width, $Height, array $Format = [])
+	
+	/* Return the width of the picture */
+	function getWidth()
 	{
-		$StartAlpha = isset($Format["StartAlpha"]) ? $Format["StartAlpha"] : 80;
-		$EndAlpha = isset($Format["EndAlpha"]) ? $Format["EndAlpha"] : 0;
-		$AlphaStep = ($StartAlpha - $EndAlpha) / $Height;
-		$Picture = imagecreatetruecolor($this->XSize, $this->YSize);
-		imagecopy($Picture, $this->Picture, 0, 0, 0, 0, $this->XSize, $this->YSize);
-		for ($i = 1; $i <= $Height; $i++) {
-			if ($Y + ($i - 1) < $this->YSize && $Y - $i > 0) {
-				imagecopymerge($Picture, $this->Picture, $X, $Y + ($i - 1), $X, $Y - $i, $Width, 1, $StartAlpha - $AlphaStep * $i);
-			}
+		return $this->XSize;
+	}
+
+	/* Return the height of the picture */
+	function getHeight()
+	{
+		return $this->YSize;
+	}
+	
+	/* http://php.net/manual/en/function.imagefilter.php */
+	function setFilter(int $filtertype, int $arg1 = 0, int $arg2 = 0, int $arg3 = 0, int $arg4 = 0){
+	
+		$ret = imagefilter($this->Picture, $filtertype, $arg1, $arg2, $arg3, $arg4);
+		
+		if (!$ret){
+			throw pException::InvalidImageFilter("Could not apply image filter!");
+		}
+	}
+
+	/* Render the picture to a file */
+	function render(string $FileName, int $Compression = 6, $Filters = PNG_NO_FILTER)
+	{
+		if ($this->TransparentBackground) {
+			imagealphablending($this->Picture, FALSE);
 		}
 
-		imagecopy($this->Picture, $Picture, 0, 0, 0, 0, $this->XSize, $this->YSize);
-		
-		imagedestroy($Picture);
+		imagepng($this->Picture, $FileName, $Compression, $Filters);
+	}
+
+	/* Render the picture to a web browser stream */
+	function stroke(bool $BrowserExpire = FALSE, int $Compression = 6, $Filters = PNG_NO_FILTER)
+	{
+		if ($this->TransparentBackground) {
+			imagealphablending($this->Picture, FALSE);
+		}
+
+		if ($BrowserExpire) {
+			header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+			header("Cache-Control: no-cache, must-revalidate"); # HTTP/1.1
+			header("Pragma: no-cache");
+		}
+
+		header('Content-/type: image/png');
+		imagepng($this->Picture, NULL, $Compression, $Filters);
+	}
+
+	/*	Automatic output method based on the calling interface
+		Momchil: Added support for Compression & Filters
+		Compression must be between 0 and 9 -> http://php.net/manual/en/function.imagepng.php 
+		http://php.net/manual/en/image.constants.php
+		https://www.w3.org/TR/PNG-Filters.html
+	*/
+	function autoOutput(string $FileName = "output.png", int $Compression = 6, $Filters = PNG_NO_FILTER)
+	{
+		if (php_sapi_name() == "cli") {
+			$this->Render($FileName, $Compression, $Filters);
+		} else {
+			$this->Stroke(TRUE, $Compression, $Filters);
+		}
 	}
 
 }
