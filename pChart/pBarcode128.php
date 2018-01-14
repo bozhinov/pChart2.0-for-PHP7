@@ -130,7 +130,7 @@ class pBarcode128
 		$LegendOffset = isset($Format["LegendOffset"]) ? $Format["LegendOffset"] : 5;
 		$DrawArea = isset($Format["DrawArea"]) ? $Format["DrawArea"] : FALSE;
 		$AreaColor = isset($Format["AreaColor"]) ? $Format["AreaColor"] : new pColor(255,255,255,$Color->Alpha);
-		$AreaBorderColor = isset($Format["AreaBorderColor"]) ? $Format["AreaBorderColor"] : (clone $AreaColor);
+		$AreaBorderColor = isset($Format["AreaBorderColor"]) ? $Format["AreaBorderColor"] : $AreaColor->newOne();
 		
 		list($TextString, $Result) = $this->encode128($Value);
 		$BarcodeLength = strlen($Result);

@@ -38,7 +38,6 @@ class pSurface
 		}
 		
 		$this->myPicture = $pChartObject;
-		#$this->GridSize = 10; # UNUSED
 	}
 
 	/* Define the grid size and initialize the 2D matrix */

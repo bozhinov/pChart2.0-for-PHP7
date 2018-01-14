@@ -143,29 +143,18 @@ class pBubble
 			
 			$ColorSettings = ["Color" => $this->myPicture->myData->Palette[$Key]];
 
-			if (!is_null($ForceAlpha)) {
-				$ColorSettings["Color"]->AlphaSet($ForceAlpha);
-			}
-
+			(!is_null($ForceAlpha)) AND $ColorSettings["Color"]->AlphaSet($ForceAlpha);
+			
 			if ($DrawBorder) {
 				if ($BorderWidth != 1) {
-					if (!is_null($Surrounding)) {
-						$BorderColor = $ColorSettings["Color"]->newOne()->RGBChange($Surrounding);
-					} 
-					if (!is_null($ForceAlpha)) {
-						$BorderColor->AlphaSet($ForceAlpha / 2);
-					}
+					(!is_null($Surrounding)) AND $BorderColor = $ColorSettings["Color"]->newOne()->RGBChange($Surrounding);
+					(!is_null($ForceAlpha))  AND $BorderColor->AlphaSet($ForceAlpha / 2);
 					$BorderColorSettings = ["Color" => $BorderColor];
 
 				} else {
-					if (!is_null($Surrounding)) {
-						$BorderColor->RGBChange($Surrounding);
-					}
-					$ColorSettings["BorderColor"] = $BorderColor;
-
-					if (!is_null($ForceAlpha)) {
-						$ColorSettings["BorderColor"]->AlphaSet($ForceAlpha / 2);
-					}
+					(!is_null($Surrounding)) AND $BorderColor->RGBChange($Surrounding);
+					(!is_null($ForceAlpha))  AND $BorderColor->AlphaSet($ForceAlpha / 2);
+					$ColorSettings["BorderColor"] = $BorderColor;					
 				}
 			}
 						
@@ -194,7 +183,7 @@ class pBubble
 						$this->myPicture->drawFilledCircle($X, $Y, $Radius, $ColorSettings);
 					}
 
-					$X = $X + $XStep;
+					$X += $XStep;
 					
 				} elseif ($Orientation == SCALE_POS_TOPBOTTOM) {
 
@@ -209,7 +198,7 @@ class pBubble
 						$this->myPicture->drawFilledCircle($X, $Y, $Radius, $ColorSettings);
 					}
 
-					$Y = $Y + $XStep;
+					$Y += $XStep;
 				}
 			}
 		}

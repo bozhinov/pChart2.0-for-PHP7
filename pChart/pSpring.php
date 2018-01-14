@@ -178,16 +178,13 @@ class pSpring
 	/* Set color attribute for a list of nodes */
 	function setNodesColor(array $Nodes, array $Settings = [])
 	{
-
 		foreach($Nodes as $NodeID) {
 			if (isset($this->Data[$NodeID])) {
 				
-				(isset($Settings["Color"])) AND $this->Data[$NodeID]["Color"] = $Settings["Color"];
+				(isset($Settings["Color"]))		  AND $this->Data[$NodeID]["Color"] = $Settings["Color"];
 				(isset($Settings["BorderColor"])) AND $this->Data[$NodeID]["BorderColor"] = $Settings["BorderColor"];
-
-				if (isset($Settings["Surrounding"])) {
-					$this->Data[$NodeID]["BorderColor"] = $this->Data[$NodeID]["Color"]->newOne()->RGBChange($Settings["Surrounding"]);
-				}
+				(isset($Settings["Surrounding"])) AND $this->Data[$NodeID]["BorderColor"] = $this->Data[$NodeID]["Color"]->newOne()->RGBChange($Settings["Surrounding"]);
+				
 			} else {
 				throw pException::SpringInvalidInputException($NodeID." is invalid node");
 			}
@@ -202,8 +199,8 @@ class pSpring
 		if (isset($this->Data[$Key]["Connections"])) {
 			foreach($this->Data[$Key]["Connections"] as $NodeID) {
 				if (isset($this->Data[$NodeID]["X"]) && isset($this->Data[$NodeID]["Y"])) {
-					$X = $X + $this->Data[$NodeID]["X"];
-					$Y = $Y + $this->Data[$NodeID]["Y"];
+					$X += $this->Data[$NodeID]["X"];
+					$Y += $this->Data[$NodeID]["Y"];
 					$Cpt++;
 				}
 			}
@@ -296,9 +293,7 @@ class pSpring
 						if ($Settings["Type"] == NODE_TYPE_CENTRAL) {
 							$this->Data[$Key]["X"] = $CenterX;
 							$this->Data[$Key]["Y"] = $CenterY;
-						}
-
-						if ($Settings["Type"] == NODE_TYPE_FREE) {
+						} elseif ($Settings["Type"] == NODE_TYPE_FREE) {
 							$Connections = (isset($Settings["Connections"])) ? count($Settings["Connections"]) : 0;
 							if ($Connections == $i) {
 								$BiggestPartner = $this->getBiggestPartner($Key);
@@ -339,9 +334,7 @@ class pSpring
 						if ($Settings["Type"] == NODE_TYPE_CENTRAL) {
 							$this->Data[$Key]["X"] = $CenterX;
 							$this->Data[$Key]["Y"] = $CenterY;
-						}
-
-						if ($Settings["Type"] == NODE_TYPE_FREE) {
+						} elseif ($Settings["Type"] == NODE_TYPE_FREE) {
 							$Connections = (isset($Settings["Connections"])) ? count($Settings["Connections"]) : 0;
 							if ($Connections == $i) {
 								$Ring = $MaxConnections - $Connections;
@@ -644,11 +637,10 @@ class pSpring
 			$X = $Settings["X"];
 			$Y = $Settings["Y"];
 			$Name = $Settings["Name"];
-			$Shape = $Settings["Shape"];
 			$Size = $Settings["Size"];
 			$ShapeSettings = ["Color" => $Settings["Color"],"BorderColor" => $Settings["BorderColor"]];
 			
-			switch ($Shape){
+			switch ($Settings["Shape"]){
 				case NODE_SHAPE_CIRCLE:
 					$this->myPicture->drawFilledCircle($X, $Y, $Size, $ShapeSettings);
 					break;

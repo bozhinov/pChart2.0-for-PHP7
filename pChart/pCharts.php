@@ -92,14 +92,11 @@ class pCharts {
 			if ($Serie["isDrawable"]&& $SerieName != $Data["Abscissa"]) {
 				$SerieWeight = (isset($Serie["Weight"])) ? $Serie["Weight"] + 2 : 2;
 				(!is_null($PlotSize)) AND $SerieWeight = $PlotSize;
-				if (!is_null($Surrounding)) {
-					$BorderColor = $Serie["Color"]->newOne()->RGBChange($Surrounding);
-				}
+				(!is_null($Surrounding)) AND $BorderColor = $Serie["Color"]->newOne()->RGBChange($Surrounding);
 				
 				# Momchil: Force default Alpha as it is not set in the original code
 				# That is for the example.Combo.area.lines
-				$Color = $Serie["Color"]->newOne();
-				$Color->AlphaSet(100); 
+				$Color = $Serie["Color"]->newOne()->AlphaSet(100); 
 				
 				if (isset($Serie["Picture"])) {
 					$Picture = $Serie["Picture"];
@@ -418,7 +415,7 @@ class pCharts {
 							$WayPoints[] = [$X,$Y - .5]; /* -.5 for AA visual fix */
 						}
 
-						$X = $X + $XStep;
+						$X += $XStep;
 					}
 
 					$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"PathOnly" => TRUE]);
@@ -487,7 +484,7 @@ class pCharts {
 							$WayPoints[] = [$X,$Y];
 						}
 
-						$Y = $Y + $XStep;
+						$Y += $XStep;
 					}
 
 					$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"PathOnly" => TRUE]);
@@ -534,7 +531,7 @@ class pCharts {
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
-				$Color = $Serie["Color"];
+				$Color = $Serie["Color"]->newOne();
 				$Ticks = $Serie["Ticks"];
 				$Weight = $Serie["Weight"];
 				if ($UseForcedColor) {
@@ -613,7 +610,7 @@ class pCharts {
 
 						$LastX = $X;
 						$LastY = $Y;
-						$X = $X + $XStep;
+						$X += $XStep;
 					}
 					
 				} else {
@@ -647,7 +644,7 @@ class pCharts {
 
 						$LastX = $X;
 						$LastY = $Y;
-						$Y = $Y + $XStep;
+						$Y += $XStep;
 					}
 				}
 			}
@@ -754,7 +751,7 @@ class pCharts {
 		
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
-				$Color = $Serie["Color"];
+				$Color = $Serie["Color"]->newOne();
 				$Ticks = $Serie["Ticks"];
 				$Weight = $Serie["Weight"];
 
@@ -1363,20 +1360,15 @@ class pCharts {
 		$CurrentSerie = 0;
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
-				$Color = $Serie["Color"];
+				$Color = $Serie["Color"]->newOne();
 				$Ticks = $Serie["Ticks"];
 				if ($DisplayType == DISPLAY_AUTO) {
 					$DisplayColor = $Color;
 				}
 
-				if (!is_null($Surrounding)) {
-					$BorderColor = $Color->newOne()->RGBChange($Surrounding);
-				}
-
-				if (!is_null($InnerSurrounding)) {
-					$InnerBorderColor = $Color->newOne()->RGBChange($InnerSurrounding);
-				}
-
+				(!is_null($Surrounding)) AND $BorderColor = $Color->newOne()->RGBChange($Surrounding);
+				(!is_null($InnerSurrounding)) AND $InnerBorderColor = $Color->newOne()->RGBChange($InnerSurrounding);
+				
 				$InnerColor = (is_null($InnerBorderColor)) ? NULL : ["Color" => $InnerBorderColor];
 				$Settings = ["Color" => $Color,"BorderColor" => $BorderColor];
 				$AxisID = $Serie["Axis"];
@@ -1499,7 +1491,7 @@ class pCharts {
 							}
 						}
 
-						$X = $X + $XStep;
+						$X += $XStep;
 						$ID++;
 					}
 					
@@ -1662,19 +1654,14 @@ class pCharts {
 		$LastY = [];
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
-				$Color = $Serie["Color"];
+				$Color = $Serie["Color"]->newOne();
 				$Ticks = $Serie["Ticks"];
 				if ($DisplayType == DISPLAY_AUTO) {
 					$DisplayColor = new pColor(255,255,255);
 				}
 
-				if (!is_null($Surrounding)) {
-					$BorderColor = $Color->newOne()->RGBChange($Surrounding);
-				}
-
-				if (!is_null($InnerSurrounding)) {
-					$InnerBorderColor = $Color->newOne()->RGBChange($InnerSurrounding);
-				}
+				(!is_null($Surrounding)) AND $BorderColor = $Color->newOne()->RGBChange($Surrounding);
+				(!is_null($InnerSurrounding)) AND $InnerBorderColor = $Color->newOne()->RGBChange($InnerSurrounding);
 
 				$InnerColor = (is_null($InnerBorderColor)) ? NULL : ["Color" => $InnerBorderColor];
 				$AxisID = $Serie["Axis"];
@@ -2008,10 +1995,8 @@ class pCharts {
 		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $Color->newOne()->AlphaSlash(2);
 		
-		if (!is_null($Surrounding)) {
-			$BorderColor = $Color ->newOne()->RGBChange($Surrounding);
-		}
-
+		(!is_null($Surrounding)) AND $BorderColor = $Color ->newOne()->RGBChange($Surrounding);
+		
 		$RestoreShadow = $this->myPicture->Shadow;
 		$this->myPicture->Shadow = FALSE;
 		$AllIntegers = TRUE;
@@ -2582,7 +2567,7 @@ class pCharts {
 							$Sxx = $Sxx + $Y * $Y;
 						}
 
-						$Y = $Y + $XStep;
+						$Y += $XStep;
 					}
 
 					$n = count(array_diff($PosArray, [VOID])); //$n = count($PosArray);

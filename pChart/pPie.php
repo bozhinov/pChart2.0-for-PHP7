@@ -713,9 +713,8 @@ class pPie
 		/* Override defaults */
 		extract($Format);
 	
-		if (!is_null($Surrounding)) {
-			$BorderColor = $Color->newOne()->RGBChange($Surrounding);
-		}
+		(!is_null($Surrounding)) AND $BorderColor = $Color->newOne()->RGBChange($Surrounding);
+
 		$BorderColor->AlphaSet($Color->Alpha);
 
 		$YStep = max($this->myPicture->FontSize, $BoxSize) + 5;
