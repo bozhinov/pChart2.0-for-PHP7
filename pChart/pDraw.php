@@ -932,26 +932,23 @@ class pDraw
 	/* Write text */
 	function drawText(int $X, int $Y, string $Text, array $Format = [])
 	{
-		$Color = $this->FontColor;
-		$Angle = 0;
-		$Align = TEXT_ALIGN_BOTTOMLEFT;
-		$FontName = $this->FontName;
-		$FontSize = $this->FontSize;
-		$ShowOrigine = FALSE;
-		$TOffset = 2;
-		$DrawBox = FALSE;
-		$DrawBoxBorder = TRUE;
-		$BorderOffset = 6;
-		$BoxRounded = FALSE;
-		$RoundedRadius = 6;
-		$BoxColor = new pColor (255,255,255,50);
-		$BoxSurrounding = 0;
+		$Color = isset($Format["Color"]) ? $Format["Color"] : $this->FontColor;
+		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 0;
+		$Align = isset($Format["Align"]) ? $Format["Align"] : TEXT_ALIGN_BOTTOMLEFT;
+		$FontName = isset($Format["FontName"]) ? $Format["FontName"] : $this->FontName;
+		$FontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : $this->FontSize;
+		$ShowOrigine = isset($Format["ShowOrigine"]) ? $Format["ShowOrigine"] : FALSE;
+		$TOffset = isset($Format["TOffset"]) ? $Format["TOffset"] : 2;
+		$DrawBox = isset($Format["DrawBox"]) ? $Format["DrawBox"] : FALSE;
+		$DrawBoxBorder = isset($Format["DrawBoxBorder"]) ? $Format["DrawBoxBorder"] : TRUE;
+		$BorderOffset = isset($Format["BorderOffset"]) ? $Format["BorderOffset"] : 6;
+		$BoxRounded = isset($Format["BoxRounded"]) ? $Format["BoxRounded"] : FALSE;
+		$RoundedRadius = isset($Format["RoundedRadius"]) ? $Format["RoundedRadius"] : 6;
+		$BoxColor = isset($Format["BoxColor"]) ? $Format["BoxColor"] : new pColor(255,255,255,50);
+		$BoxSurrounding = isset($Format["BoxSurrounding"]) ? $Format["BoxSurrounding"] : 0;
 		$BoxBorderColor = isset($Format["BoxBorderColor"]) ? $Format["BoxBorderColor"] : $BoxColor->newOne();
-		$NoShadow = FALSE;
-		
-		/* Override defaults */
-		extract($Format);
-				
+		$NoShadow = isset($Format["NoShadow"]) ? $Format["NoShadow"] : FALSE;
+						
 		$Shadow = $this->Shadow;
 		($NoShadow) AND $this->Shadow = FALSE;
 		
@@ -961,8 +958,7 @@ class pDraw
 		}
 
 		if ($ShowOrigine) {
-			$MyMarkerSettings = ["Color" => new pColor(255,0,0), "BorderColor" => new pColor(255,255,255), "Size" => 4];
-			$this->drawRectangleMarker($X, $Y, $MyMarkerSettings);
+			$this->drawRectangleMarker($X, $Y, ["Color" => new pColor(255,0,0), "BorderColor" => new pColor(255,255,255), "Size" => 4]);
 		}
 
 		$TxtPos = $this->getTextBox($X, $Y, $FontName, $FontSize, $Angle, $Text);
@@ -999,12 +995,10 @@ class pDraw
 	/* Draw a gradient within a defined area */
 	function drawGradientArea($X1, $Y1, $X2, $Y2, $Direction, array $GradientColor, $Levels = NULL)
 	{
-		#$StartColor = new pColor(90,90,90,100); # Defaults
-		#$EndColor = new pColor(0,0,0,100);
-		
+
 		$GradientColor = new pColorGradient($GradientColor["StartColor"]->newOne(), $GradientColor["EndColor"]->newOne());
-		
-		/* Draw a gradient within a defined area */		
+
+		/* Draw a gradient within a defined area */
 		$Shadow = $this->Shadow;
 		$this->Shadow = FALSE;
 		if ($GradientColor->StartColor->getId() == $GradientColor->EndColor->getId()) {
@@ -1012,33 +1006,32 @@ class pDraw
 			return;
 		}
 
-		if (!is_null($Levels)) {
-			$GradientColor->EndColor = $GradientColor->StartColor->newOne()->RGBChange($Levels);
-		}
-
+		(!is_null($Levels)) AND $GradientColor->EndColor = $GradientColor->StartColor->newOne()->RGBChange($Levels);
+		
 		($X1 > $X2) AND list($X1, $X2) = [$X2,$X1];
 		($Y1 > $Y2) AND list($Y1, $Y2) = [$Y2,$Y1];
-		($Direction == DIRECTION_VERTICAL) AND $Width = abs($Y2 - $Y1);
-		($Direction == DIRECTION_HORIZONTAL) AND $Width = abs($X2 - $X1);
-				
+
 		$Step = $GradientColor->FindStep();
-		$StepSize = $Width / $Step;
-		$GradientColor->SetSegments($Step);
-		
-		switch ($Direction) {
-			case DIRECTION_VERTICAL:
+
+		if ($Direction == DIRECTION_VERTICAL){
+
+				$StepSize = abs($Y2 - $Y1)/ $Step;
+				$GradientColor->SetSegments($Step);
 				$StartY = $Y1;
 				$EndY = floor($Y2) + 1;
 				$LastY2 = $StartY;
+
 				for ($i = 0; $i <= $Step; $i++) {
+
 					$Y2 = floor($StartY + ($i * $StepSize));
 					($Y2 > $EndY) AND $Y2 = $EndY;
+
 					if (($Y1 != $Y2 && $Y1 < $Y2) || $Y2 == $EndY) {
 						$this->drawFilledRectangle($X1, $Y1, $X2, $Y2, ["Color" => $GradientColor->getLatest()]);
 						$LastY2 = max($LastY2, $Y2);
 						$Y1 = $Y2 + 1;
 					}
-					
+
 					$GradientColor->Next();
 				}
 
@@ -1048,29 +1041,29 @@ class pDraw
 					}
 				}
 
-				break;
-			case DIRECTION_HORIZONTAL:
+		} elseif ($Direction == DIRECTION_HORIZONTAL) {
+
+				$StepSize = abs($X2 - $X1) / $Step;
+				$GradientColor->SetSegments($Step);
 				$StartX = $X1;
 				$EndX = $X2;
+				
 				for ($i = 0; $i <= $Step; $i++) {
 
 					$X2 = floor($StartX + ($i * $StepSize));
-					if ($X2 > $EndX) {
-						$X2 = $EndX;
-					}
-					
+					($X2 > $EndX) AND $X2 = $EndX;
+
 					if (($X1 != $X2 && $X1 < $X2) || $X2 == $EndX) {
 						$this->drawFilledRectangle($X1, $Y1, $X2, $Y2, ["Color" => $GradientColor->getLatest()]);
 						$X1 = $X2 + 1;
 					}
-					
+
 					$GradientColor->Next();
 				}
 
 				if ($X2 < $EndX) {
 					$this->drawFilledRectangle($X2, $Y1, $EndX, $Y2, ["Color" => $GradientColor->getLatest()]);
 				}
-				break;
 		}
 
 		$this->Shadow = $Shadow;

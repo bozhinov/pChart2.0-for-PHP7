@@ -39,7 +39,7 @@ class pColor {
 	}
 	
 	function getId(){
-		return $this->R.".".$this->G.".".$this->B.".".$this->Alpha;
+		return strval($this->R).".".strval($this->G).".".strval($this->B).".".strval($this->Alpha);
 	}
 		
 	function toHTMLColor()
