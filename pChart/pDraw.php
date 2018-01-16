@@ -3943,6 +3943,20 @@ class pDraw
 		header('Content-/type: image/png');
 		imagepng($this->Picture, NULL, $Compression, $Filters);
 	}
+	
+	function stroke2var(int $Compression = 6, $Filters = PNG_NO_FILTER)
+	{
+		if ($this->TransparentBackground) {
+			imagealphablending($this->Picture, FALSE);
+		}
+	
+		ob_start();
+		imagepng($this->Picture, NULL, $Compression, $Filters);
+		$image_data = ob_get_contents();
+		ob_end_clean();
+		
+		return $image_data;
+	}
 
 	/*	Automatic output method based on the calling interface
 		Momchil: Added support for Compression & Filters
