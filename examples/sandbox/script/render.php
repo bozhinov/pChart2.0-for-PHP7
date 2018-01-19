@@ -434,9 +434,7 @@ if ($g_solid_enabled == "true"){
 
 	if ($g_solid_dashed == "true"){
 		$Settings["Dash"] = TRUE;
-		$Settings["DashR"]=$Settings["Color"]->R+20;
-		$Settings["DashG"]=$Settings["Color"]->G+20;
-		$Settings["DashB"]=$Settings["Color"]->B+20; 
+		$Settings["DashColor"] = $Settings["Color"]->newOne()->RGBChange(20);
 	}
 
 	if ($Mode == "Render"){
@@ -496,7 +494,7 @@ if ($g_title_enabled == "true"){
 	$TextSettings = array("Align"=>getTextAlignCode($g_title_align),"Color"=>new pColor($R,$G,$B));
 	if ($g_title_box == "true"){ 
 		$TextSettings["DrawBox"] = TRUE; 
-		$TextSettings["BoxAlpha"] = 30; 
+		$TextSettings["BoxColor"] = new pColor(255,255,255,30); 
 	}
 
 	if ($Mode == "Render"){
