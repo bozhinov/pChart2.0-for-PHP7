@@ -22,7 +22,6 @@
  <meta name='keywords' content='pchart, php chart, charting library, php charting'/>
  <link rel='stylesheet' type='text/css' href='style.css'/>
  <link rel='shortcut icon' href='images/favicon.ico'/>
- <script type='text/javascript' src='includes/rounded_corners_lite.inc.js'></script>
  <script type='text/javascript' src='includes/jscolor.js'></script>
  <script type='text/javascript' src='includes/functions.js'></script>
 </head>
@@ -606,7 +605,6 @@
 
  /* Initial layout */
  toggleDIV(1);
- applyCorners();
  randomize();
  setDefaultAbsissa();
  checkEnabledAxis();

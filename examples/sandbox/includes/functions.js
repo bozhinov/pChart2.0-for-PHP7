@@ -31,14 +31,6 @@
    checkEnabledAxis();
   }
 
- /* Apply curvy corners */
- function applyCorners()
-  {
-   settings = {tl: { radius: 10 },tr: { radius: 10 },bl: { radius: 10 },br: { radius: 10 },antiAlias: true,autoPad: true,validTags: ["div"]}
-   var myBoxObject = new curvyCorners(settings, "roundedCorner");
-   myBoxObject.applyCornersToAll();
-  }
-
  /* Set or remove the focus */
  function setFocus(Object,Mode)
   {
