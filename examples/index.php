@@ -30,7 +30,7 @@ if (isset($_POST["View"]))
 	a.smallLinkBlack:visited { text-decoration: none; color: #000000; }
 	a.smallLinkBlack:hover   { text-decoration: underline; color: #000000; }
 </style>
-<script src='imageMap/jquery-3.2.1.min.js' type="text/javascript"></script>
+<script src='resources/jquery-3.2.1.min.js' type="text/javascript"></script>
 <script>
 
 	LastOpened = "";

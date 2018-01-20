@@ -35,7 +35,7 @@ $Version = strip_tags($Values[1]);
 <meta http-equiv="expires" content="0" />
 <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 <meta http-equiv="pragma" content="no-cache" />
-<script src='jquery-3.2.1.min.js' type="text/javascript"></script>
+<script src='../resources/jquery-3.2.1.min.js' type="text/javascript"></script>
 <script src='imagemap.js' type="text/javascript"></script>
 <script>
 $(document).ready(function() {
