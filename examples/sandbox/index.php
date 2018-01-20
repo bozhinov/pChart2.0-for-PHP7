@@ -1,29 +1,28 @@
 <?php
- /*
-     index.php - Sandbox web frontend
+/*
+index.php - Sandbox web front end
 
-     Version     : 1.1.0
-     Made by     : Jean-Damien POGOLOTTI
-     Last Update : 18/01/11
+Version     : 1.2.0
+Made by     : Jean-Damien POGOLOTTI
+MaintainedBy: Momchil Bozhinov
+Last Update : 01/02/18
 
-     This file can be distributed under the license you can find at :
+This file can be distributed under the license you can find at :
 
-                       http://www.pchart.net/license
+	http://www.pchart.net/license
 
-     You can find the whole class documentation on the pChart web site.
- */
+You can find the whole class documentation on the pChart web site.
+*/
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
- <title>Sandbox system</title>
- <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
- <meta name='description' content='pChart is an object oriented php charting library'/>
- <meta name='keywords' content='pchart, php chart, charting library, php charting'/>
- <link rel='stylesheet' type='text/css' href='style.css'/>
- <link rel='shortcut icon' href='images/favicon.ico'/>
- <script type='text/javascript' src='includes/jscolor.js'></script>
- <script type='text/javascript' src='includes/functions.js'></script>
+	<title>Sandbox system</title>
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+	<link rel='stylesheet' type='text/css' href='style.css'/>
+	<script src='../resources/jquery-3.2.1.min.js' type="text/javascript"></script>
+	<script type='text/javascript' src='includes/jscolor.js'></script>
+	<script type='text/javascript' src='includes/functions.js'></script>
 </head>
 <body>
  <table style=''><tr><td>
@@ -31,7 +30,7 @@
    <td class='topMenu'>
     <div class='topMenu' id='menu1' onmouseover='highlightDIV(1);' onmouseout='clearDIV(1);' onclick='toggleDIV(1);'>
      <table style='padding: 2px; border: 1px solid #D0D0D0;'><tr>
-      <td class='topMenu'><img src='graphix/tab.png' width='16' height='16' alt=''/></td>
+      <td class='topMenu'><img src='graphix/tab.png' /></td>
       <td class='topMenu'>&nbsp;General settings&nbsp;</td>
      </tr></table>
     </div>
@@ -40,7 +39,7 @@
    <td class='topMenu'>
     <div class='topMenu' id='menu2' onmouseover='highlightDIV(2);' onmouseout='clearDIV(2);' onclick='toggleDIV(2);'>
      <table style='padding: 2px; border: 1px solid #D0D0D0;'><tr>
-      <td class='topMenu'><img src='graphix/tab.png' width='16' height='16' alt=''/></td>
+      <td class='topMenu'><img src='graphix/tab.png' /></td>
       <td class='topMenu'>&nbsp;Data&nbsp;</td>
      </tr></table>
     </div>
@@ -49,7 +48,7 @@
    <td class='topMenu'>
     <div class='topMenu' id='menu3' onmouseover='highlightDIV(3);' onmouseout='clearDIV(3);' onclick='toggleDIV(3);'>
      <table style='padding: 2px; border: 1px solid #D0D0D0;'><tr>
-      <td class='topMenu'><img src='graphix/tab.png' width='16' height='16' alt=''/></td>
+      <td class='topMenu'><img src='graphix/tab.png' /></td>
       <td class='topMenu'>&nbsp;Scale&nbsp;</td>
      </tr></table>
     </div>
@@ -58,7 +57,7 @@
    <td class='topMenu'>
     <div class='topMenu' id='menu4' onmouseover='highlightDIV(4);' onmouseout='clearDIV(4);' onclick='toggleDIV(4);'>
      <table style='padding: 2px; border: 1px solid #D0D0D0;'><tr>
-      <td class='topMenu'><img src='graphix/tab.png' width='16' height='16' alt=''/></td>
+      <td class='topMenu'><img src='graphix/tab.png' /></td>
       <td class='topMenu'>&nbsp;Chart&nbsp;</td>
      </tr></table>
     </div>
@@ -67,7 +66,7 @@
    <td class='topMenu'>
     <div class='topMenu' id='menu5' onmouseover='highlightDIV(5);' onmouseout='clearDIV(5);' onclick='toggleDIV(5);'>
      <table style='padding: 2px; border: 1px solid #D0D0D0;'><tr>
-      <td class='topMenu'><img src='graphix/tab.png' width='16' height='16' alt=''/></td>
+      <td class='topMenu'><img src='graphix/tab.png' /></td>
       <td class='topMenu'>&nbsp;Legend, thresholds &amp; Misc&nbsp;</td>
      </tr></table>
     </div>
@@ -80,7 +79,7 @@
    <td class='topMenu'>
     <div class='topMenu' id='menu6' onmouseover='highlightDIV(6);' onmouseout='clearDIV(6);' onclick='code();'>
      <table style='padding: 2px; border: 1px solid #D0D0D0;'><tr>
-      <td class='topMenu'><img src='graphix/cog.png' width='16' height='16' alt=''/></td>
+      <td class='topMenu'><img src='graphix/cog.png' /></td>
       <td class='topMenu'>&nbsp;Show code&nbsp;</td>
      </tr></table>
     </div>
@@ -89,7 +88,7 @@
    <td class='topMenu'>
     <div class='topMenu' id='menu7' onmouseover='highlightDIV(7);' onmouseout='clearDIV(7);' onclick='render();'>
      <table style='padding: 2px; border: 1px solid #D0D0D0;'><tr>
-      <td class='topMenu'><img src='graphix/accept.png' width='16' height='16' alt=''/></td>
+      <td class='topMenu'><img src='graphix/accept.png' /></td>
       <td class='topMenu'>&nbsp;Render picture&nbsp;</td>
      </tr></table>
     </div>
@@ -101,7 +100,7 @@
 
  <div class="roundedCorner" id='tab1' style='margin-top: 30px; margin-left: 20px; width: 350px; height: 420px; background: #F0F0F0; padding: 10px; color: #667309; border: 1px solid #E0E0E0'>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/wrench.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/wrench.png' /></td>
    <td width='300'><b>General settings</b></td>
   </tr></table>
   <br/>
@@ -129,7 +128,7 @@
   <br/>
 
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/comment.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/comment.png' /></td>
    <td width='240'><b>Chart title</b></td>
    <td width='20'><input type='checkbox' id='g_title_enabled' checked='checked' /></td>
    <td width='38'>Enabled</td>
@@ -164,7 +163,7 @@
   <br/>
 
   <table style='background-color: #E8E8E8; padding:1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/paintcan.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/paintcan.png' /></td>
    <td width='240'><b>Solid background</b></td>
    <td width='20'><input type='checkbox' id='g_solid_enabled' checked='checked' /></td>
    <td width='38'>Enabled</td>
@@ -181,7 +180,7 @@
   <br/>
 
   <table style='background-color: #E8E8E8; padding:1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/paintcan.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/paintcan.png' /></td>
    <td width='240'><b>Gradient background</b></td>
    <td width='20'><input type='checkbox' id='g_gradient_enabled' checked='checked' /></td>
    <td width='38'>Enabled</td>
@@ -206,7 +205,7 @@
 
  <div class="roundedCorner" id='tab2' style='display: none; margin-top: 30px; margin-left: 20px; width: 350px; height: 455px; background: #F0F0F0; padding: 10px; color: #667309; border: 1px solid #E0E0E0'>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/database_table.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/database_table.png' /></td>
    <td width='300'><b>Dataset definition</b></td>
   </tr></table>
   <br/>
@@ -270,7 +269,7 @@
   </table>
   <br/>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/chart_bar_edit.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/chart_bar_edit.png' /></td>
    <td width='300'><b>Axis position and units</b></td>
   </tr></table>
   <br/>
@@ -310,7 +309,7 @@
 
  <div class="roundedCorner" id='tab3' style='display: none; margin-top: 30px; margin-left: 20px; width: 350px; height: 435px; background: #F0F0F0; padding: 10px; color: #667309; border: 1px solid #E0E0E0'>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/layout_edit.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/layout_edit.png' /></td>
    <td width='300'><b>Charting area definition</b></td>
   </tr></table>
   <br/>
@@ -355,7 +354,7 @@
   </tr></table>
   <br/>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/page_edit.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/page_edit.png' /></td>
    <td width='300'><b>X Axis configuration</b></td>
   </tr></table>
   <br/>
@@ -372,7 +371,7 @@
   </tr></table>
   <br/>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/page_edit.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/page_edit.png' /></td>
    <td width='300'><b>Grid</b></td>
   </tr></table>
   <br/>
@@ -393,7 +392,7 @@
 
   <br/>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/page_edit.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/page_edit.png' /></td>
    <td width='300'><b>Ticks</b></td>
   </tr></table>
   <br/>
@@ -417,7 +416,7 @@
 
  <div class="roundedCorner" id='tab4' style='display: none; margin-top: 30px; margin-left: 20px; width: 350px; height: 420px; background: #F0F0F0; padding: 10px; color: #667309; border: 1px solid #E0E0E0'>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/wrench.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/wrench.png' /></td>
    <td width='300'><b>Chart</b></td>
   </tr></table>
   <br/>
@@ -437,13 +436,13 @@
   </tr></table>
   <div style='background: #D2F5C1; padding: 4px; color: #667309; margin-top: 10px;'>
    <table><tr>
-    <td width='20'><img src='graphix/comment.png' width='16' height='16' alt=''/></td>
+    <td width='20'><img src='graphix/comment.png' /></td>
     <td>Selecting a chart layout will enable/disable chart specifics options.</td>
    </tr></table>
   </div>
   <br/>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/chart_line.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/chart_line.png' /></td>
    <td width='300'><b>Plot specifics</b></td>
   </tr></table>
   <br/>
@@ -457,7 +456,7 @@
   </tr></table>
   <br/>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/chart_bar.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/chart_bar.png' /></td>
    <td width='300'><b>Bar charts specifics</b></td>
   </tr></table>
   <br/>
@@ -473,7 +472,7 @@
   </tr></table>
   <br/>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/chart_curve.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/chart_curve.png' /></td>
    <td width='300'><b>Area charts specifics</b></td>
   </tr></table>
   <br/>
@@ -489,7 +488,7 @@
 
  <div class="roundedCorner" id='tab5' style='display: none; margin-top: 30px; margin-left: 20px; width: 350px; height: 420px; background: #F0F0F0; padding: 10px; color: #667309; border: 1px solid #E0E0E0'>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/application_form.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/application_form.png' /></td>
    <td width='240'><b>Legend</b></td>
    <td width='20'><input type='checkbox' id='l_enabled' checked='checked' /></td>
    <td width='38'>Enabled</td>
@@ -532,7 +531,7 @@
   </tr></table>
   <br/>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/vector.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/vector.png' /></td>
    <td width='240'><b>Threshold</b></td>
    <td width='20'><input type='checkbox' id='t_enabled' /></td>
    <td width='38'>Enabled</td>
@@ -567,7 +566,7 @@
   </tr></table>
   <br/>
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/shape_flip_vertical.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/shape_flip_vertical.png' /></td>
    <td width='240'><b>Slope chart</b></td>
    <td width='20'><input type='checkbox' id='sl_enabled' onclick='doLayout();' /></td>
    <td width='38'>Enabled</td>
@@ -583,7 +582,7 @@
   <br/>
 
   <table style='background-color: #E8E8E8; padding: 1px; border-top: 1px solid #F5F5F5; border-bottom: 1px solid #E0E0E0'><tr>
-   <td width='20'><img src='graphix/color_swatch.png' width='16' height='16' alt=''/></td>
+   <td width='20'><img src='graphix/color_swatch.png' /></td>
    <td width='300'><b>Palette</b></td>
   </tr></table>
   <br/>
@@ -637,71 +636,71 @@ function listfonts($Default="")
 
 function listaxis()
 {
-	echo "<option value='0' selected='selected'>Axis 0</option>";
-	echo "<option value='1'>Axis 1</option>";
-	echo "<option value='2'>Axis 2</option>";
+	echo "<option value='0' selected='selected'>Axis 0</option>
+<option value='1'>Axis 1</option>
+<option value='2'>Axis 2</option>";
 }
 
 function listaxispos()
 {
-	echo "<option value='left' selected='selected'>Left</option>";
-	echo "<option value='right'>Right</option>";
+	echo "<option value='left' selected='selected'>Left</option>
+<option value='right'>Right</option>";
 }
 
 function LegendFormat()
 {
-	echo "<option value='LEGEND_NOBORDER' selected='selected'>LEGEND_NOBORDER</option>";
-	echo "<option value='LEGEND_BOX'>LEGEND_BOX</option>";
-	echo "<option value='LEGEND_ROUND'>LEGEND_ROUND</option>";
+	echo "<option value='LEGEND_NOBORDER' selected='selected'>LEGEND_NOBORDER</option>
+<option value='LEGEND_BOX'>LEGEND_BOX</option>
+<option value='LEGEND_ROUND'>LEGEND_ROUND</option>";
 }
 
 function listCharts()
 {
-	echo "<option value='plot'>Plot chart</option>";
-	echo "<option value='line'>Line chart</option>";
-	echo "<option value='spline' selected='selected'>Spline chart</option>";
-	echo "<option value='step'>Step chart</option>";
-	echo "<option value='bar'>Bar chart</option>";
-	echo "<option value='area'>Area chart</option>";
-	echo "<option value='fspline'>Filled spline chart &nbsp;&nbsp;&nbsp;&nbsp;</option>";
-	echo "<option value='fstep'>Filled step chart</option>";
-	echo "<option value='sbar'>Stacked bar chart</option>";
-	echo "<option value='sarea'>Stacked area chart</option>";
+	echo "<option value='plot'>Plot chart</option>
+<option value='line'>Line chart</option>
+<option value='spline' selected='selected'>Spline chart</option>
+<option value='step'>Step chart</option>
+<option value='bar'>Bar chart</option>
+<option value='area'>Area chart</option>
+<option value='fspline'>Filled spline chart &nbsp;&nbsp;&nbsp;&nbsp;</option>
+<option value='fstep'>Filled step chart</option>
+<option value='sbar'>Stacked bar chart</option>
+<option value='sarea'>Stacked area chart</option>";
 }
 
 function listPalettes()
 {
-	echo "<option value='default'>Default</option>";
-	echo "<option value='autumn'>Autumn</option>";
-	echo "<option value='blind'>Blind</option>";
-	echo "<option value='evening'>Evening</option>";
-	echo "<option value='kitchen'>Kitchen</option>";
-	echo "<option value='light'>Light</option>";
-	echo "<option value='navy'>Navy</option>";
-	echo "<option value='shade'>Shade</option>";
-	echo "<option value='spring'>Spring</option>";
-	echo "<option value='shade'>Shade</option>";
-	echo "<option value='summer'>Summer</option>";
+	echo "<option value='default'>Default</option>
+<option value='autumn'>Autumn</option>
+<option value='blind'>Blind</option>
+<option value='evening'>Evening</option>
+<option value='kitchen'>Kitchen</option>
+<option value='light'>Light</option>
+<option value='navy'>Navy</option>
+<option value='shade'>Shade</option>
+<option value='spring'>Spring</option>
+<option value='shade'>Shade</option>
+<option value='summer'>Summer</option>";
 }
 
 function listalign()
 {
-	echo "<option value='TEXT_ALIGN_TOPLEFT'>TEXT_ALIGN_TOPLEFT</option>";
-	echo "<option value='TEXT_ALIGN_TOPMIDDLE'>TEXT_ALIGN_TOPMIDDLE</option>";
-	echo "<option value='TEXT_ALIGN_TOPRIGHT'>TEXT_ALIGN_TOPRIGHT</option>";
-	echo "<option value='TEXT_ALIGN_MIDDLELEFT'>TEXT_ALIGN_MIDDLELEFT</option>";
-	echo "<option selected='selected' value='TEXT_ALIGN_MIDDLEMIDDLE'>TEXT_ALIGN_MIDDLEMIDDLE</option>";
-	echo "<option value='TEXT_ALIGN_MIDDLERIGHT'>TEXT_ALIGN_MIDDLERIGHT</option>";
-	echo "<option value='TEXT_ALIGN_BOTTOMLEFT'>TEXT_ALIGN_BOTTOMLEFT</option>";
-	echo "<option value='TEXT_ALIGN_BOTTOMMIDDLE'>TEXT_ALIGN_BOTTOMMIDDLE</option>";
-	echo "<option value='TEXT_ALIGN_BOTTOMRIGHT'>TEXT_ALIGN_BOTTOMRIGHT</option>";
+	echo "<option value='TEXT_ALIGN_TOPLEFT'>TEXT_ALIGN_TOPLEFT</option>
+<option value='TEXT_ALIGN_TOPMIDDLE'>TEXT_ALIGN_TOPMIDDLE</option>
+<option value='TEXT_ALIGN_TOPRIGHT'>TEXT_ALIGN_TOPRIGHT</option>
+<option value='TEXT_ALIGN_MIDDLELEFT'>TEXT_ALIGN_MIDDLELEFT</option>
+<option selected='selected' value='TEXT_ALIGN_MIDDLEMIDDLE'>TEXT_ALIGN_MIDDLEMIDDLE</option>
+<option value='TEXT_ALIGN_MIDDLERIGHT'>TEXT_ALIGN_MIDDLERIGHT</option>
+<option value='TEXT_ALIGN_BOTTOMLEFT'>TEXT_ALIGN_BOTTOMLEFT</option>
+<option value='TEXT_ALIGN_BOTTOMMIDDLE'>TEXT_ALIGN_BOTTOMMIDDLE</option>
+<option value='TEXT_ALIGN_BOTTOMRIGHT'>TEXT_ALIGN_BOTTOMRIGHT</option>";
 }
 
 function listaxisformat()
 {
-	echo "<option selected='selected' value='AXIS_FORMAT_DEFAULT'>DEFAULT</option>";
-	echo "<option value='AXIS_FORMAT_METRIC'>METRIC</option>";
-	echo "<option value='AXIS_FORMAT_CURRENCY'>CURRENCY</option>";
+	echo "<option selected='selected' value='AXIS_FORMAT_DEFAULT'>DEFAULT</option>
+<option value='AXIS_FORMAT_METRIC'>METRIC</option>
+<option value='AXIS_FORMAT_CURRENCY'>CURRENCY</option>";
 }
 
 ?>

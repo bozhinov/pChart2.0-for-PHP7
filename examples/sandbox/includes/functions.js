@@ -1,27 +1,27 @@
- /*
-     functions.js - Sandbox JS
+/*
+functions.js - Sandbox JS
 
-     Version     : 1.1.0
-     Made by     : Jean-Damien POGOLOTTI
-     Last Update : 18/01/11
+Version     : 1.2.0
+Made by     : Jean-Damien POGOLOTTI
+Maintainedby: Momchil Bozhinov
+Last Update : 01/02/18
+This file can be distributed under the license you can find at :
 
-     This file can be distributed under the license you can find at :
+			http://www.pchart.net/license
 
-                       http://www.pchart.net/license
-
-     You can find the whole class documentation on the pChart web site.
- */
+You can find the whole class documentation on the pChart web site.
+*/
 
  Action = "Render";
 
  function toggleAuto()
   {
-   if ( document.getElementById("g_autopos").checked ) { Automatic  = true; } else { Automatic  = false; }
+	Automatic = (document.getElementById("g_autopos").checked ? true : false); 
   }
 
  function doLayout()
   {
-   if ( !Automatic ) { return(0); }
+   if ( !Automatic ) { return; }
 
    g_width   = document.getElementById("g_width").value;
    g_height  = document.getElementById("g_height").value;
@@ -34,31 +34,32 @@
  /* Set or remove the focus */
  function setFocus(Object,Mode)
   {
-   if (Mode == true)
-    { Object.style.borderColor = "#808080"; }
-   else
-    { Object.style.borderColor = "#D0D0D0"; }
+    Object.style.borderColor = (Mode == true ? "#808080" : "#D0D0D0");
   }
 
  function highlightDIV(ID)
   {
-   if ( ID == CurrentDiv ) { return(0); }
+   if ( ID == CurrentDiv ) { return; }
    document.getElementById("menu"+ID).style.backgroundColor = "#F4F4F4";
   }
 
  function clearDIV(ID)
   {
-   if ( ID == CurrentDiv ) { return(0); }
+   if ( ID == CurrentDiv ) { return; }
    document.getElementById("menu"+ID).style.backgroundColor = "#EAEAEA";
   }
 
  function toggleDIV(ID)
   {
    /* reset the tab styles */
-   for (i=1;i<=6;i++)
-    { if ( i != ID ) { document.getElementById("menu"+i).style.backgroundColor = "#EAEAEA"; document.getElementById("menu"+i).style.borderColor = "#FEFEFE"; } }
+   for (i=1;i<=6;i++){ 
+		if ( i != ID ) {
+			document.getElementById("menu"+i).style.backgroundColor = "#EAEAEA"; 
+			document.getElementById("menu"+i).style.borderColor = "#FEFEFE"; 
+		} 
+	}
 
-   /* hide the curently displayed tab */
+   /* hide the currently displayed tab */
    if ( CurrentDiv != ID ) { document.getElementById("tab"+CurrentDiv).style.display = "none"; }
 
    document.getElementById("tab"+ID).style.display = "block";
@@ -87,7 +88,7 @@
 
  function saveGeneral()
   {
-   document.getElementById("result_area").innerHTML = "<img src='graphix/wait.gif' width='24' height='24' alt=''><br/>Saving configuration (General)";
+   $("result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration (General)");
 
    g_width   = document.getElementById("g_width").value;
    g_height  = document.getElementById("g_height").value;
@@ -105,7 +106,7 @@
    g_title_color        = document.getElementById("g_title_color").value;
    g_title_font         = document.getElementById("g_title_font").options[document.getElementById("g_title_font").selectedIndex].value;
    g_title_font_size    = document.getElementById("g_title_font_size").value;
-   g_title_box		= document.getElementById("g_title_box").checked;
+   g_title_box			= document.getElementById("g_title_box").checked;
 
    g_solid_enabled      = document.getElementById("g_solid_enabled").checked;
    g_solid_color        = document.getElementById("g_solid_color").value;
@@ -136,12 +137,12 @@
 
  function saveData()
   {
-   document.getElementById("result_area").innerHTML = "<img src='graphix/wait.gif' width='24' height='24' alt=''><br/>Saving configuration (Data)";
+   $("result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration (Data)");
 
    d_serie1_enabled	= document.getElementById("d_serie1_enabled").checked;
    d_serie2_enabled	= document.getElementById("d_serie2_enabled").checked;
    d_serie3_enabled	= document.getElementById("d_serie3_enabled").checked;
-   d_absissa_enabled	= document.getElementById("d_absissa_enabled").checked;
+   d_absissa_enabled= document.getElementById("d_absissa_enabled").checked;
 
    d_serie1_name	= document.getElementById("d_serie1_name").value;
    d_serie2_name	= document.getElementById("d_serie2_name").value;
@@ -191,7 +192,7 @@
 
  function saveScale()
   {
-   document.getElementById("result_area").innerHTML = "<img src='graphix/wait.gif' width='24' height='24' alt=''><br/>Saving configuration (Scale)";
+   $("result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration (Scale)");
 
    s_x			= document.getElementById("s_x").value;
    s_y			= document.getElementById("s_y").value;
@@ -236,12 +237,12 @@
 
  function saveChart()
   {
-   document.getElementById("result_area").innerHTML = "<img src='graphix/wait.gif' width='24' height='24' alt=''><br/>Saving configuration (Chart)";
+   $("result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration (Chart)");
 
-   c_family			= document.getElementById("c_family").options[document.getElementById("c_family").selectedIndex].value;
+   c_family				= document.getElementById("c_family").options[document.getElementById("c_family").selectedIndex].value;
    c_display_values		= document.getElementById("c_display_values").checked;
    c_break_color		= document.getElementById("c_break_color").value;
-   c_break			= document.getElementById("c_break").checked;
+   c_break				= document.getElementById("c_break").checked;
 
    c_plot_size			= document.getElementById("c_plot_size").value;
    c_border_size		= document.getElementById("c_border_size").value;
@@ -266,28 +267,28 @@
 
  function saveLegend()
   {
-   document.getElementById("result_area").innerHTML = "<img src='graphix/wait.gif' width='24' height='24' alt=''><br/>Saving configuration (Legend and Thresholds)";
+   document.getElementById("result_area").innerHTML = "<img src='graphix/wait.gif' /><br />Saving configuration (Legend and Thresholds)";
 
-   l_enabled		= document.getElementById("l_enabled").checked;
+   l_enabled	= document.getElementById("l_enabled").checked;
 
    l_font		= document.getElementById("l_font").options[document.getElementById("l_font").selectedIndex].value;
-   l_font_size		= document.getElementById("l_font_size").value;
-   l_font_color		= document.getElementById("l_font_color").value;
+   l_font_size	= document.getElementById("l_font_size").value;
+   l_font_color	= document.getElementById("l_font_color").value;
 
    l_margin		= document.getElementById("l_margin").value;
    l_alpha		= document.getElementById("l_alpha").value;
    l_format		= document.getElementById("l_format").options[document.getElementById("l_format").selectedIndex].value;
 
-   l_orientation	= document.getElementById("l_orientation").options[document.getElementById("l_orientation").selectedIndex].value;
-   l_box_size		= document.getElementById("l_box_size").value;
+   l_orientation= document.getElementById("l_orientation").options[document.getElementById("l_orientation").selectedIndex].value;
+   l_box_size	= document.getElementById("l_box_size").value;
 
-   l_position		= document.getElementById("l_position").options[document.getElementById("l_position").selectedIndex].value;
+   l_position	= document.getElementById("l_position").options[document.getElementById("l_position").selectedIndex].value;
    l_x			= document.getElementById("l_x").value;
    l_y			= document.getElementById("l_y").value;
 
    l_family		= document.getElementById("l_family").options[document.getElementById("l_family").selectedIndex].value;
 
-   t_enabled		= document.getElementById("t_enabled").checked;
+   t_enabled	= document.getElementById("t_enabled").checked;
 
    t_value		= document.getElementById("t_value").value;
    t_axis0		= document.getElementById("t_axis0").checked;
@@ -298,7 +299,7 @@
    t_alpha		= document.getElementById("t_alpha").value;
    t_ticks		= document.getElementById("t_ticks").checked;
 
-   t_caption		= document.getElementById("t_caption").value;
+   t_caption	= document.getElementById("t_caption").value;
    t_box		= document.getElementById("t_box").checked;
    t_caption_enabled	= document.getElementById("t_caption_enabled").checked;
 
@@ -351,8 +352,7 @@
  function applyColor(SourceID,TargetID)
   {
    color = document.getElementById(SourceID).value;
-   color = color.replace("#","");
-   document.getElementById(TargetID).style.backgroundColor = "#"+color;
+   document.getElementById(TargetID).style.backgroundColor = "#"+color.replace("#","");
   }
 
  function checkChartSettings()
@@ -385,10 +385,13 @@
   {
    l_position = document.getElementById("l_position").options[document.getElementById("l_position").selectedIndex].value;
 
-   if ( l_position == "Manual" )
-    { enableItem("l_x"); enableItem("l_y"); }
-   else
-    { disableItem("l_x"); disableItem("l_y"); }
+   if ( l_position == "Manual" ) { 
+		enableItem("l_x");
+		enableItem("l_y");
+	} else { 
+		disableItem("l_x");
+		disableItem("l_y"); 
+	}
   }
 
  function checkPlotBorder()
@@ -405,18 +408,24 @@
 
  function toggleSubTicks()
   {
-   if ( !document.getElementById("s_subticks_enabled").checked )
-    { disableItem("s_subticks_color"); disableItem("s_subticks_alpha"); }
-   else
-    { enableItem("s_subticks_color"); enableItem("s_subticks_alpha"); }
+   if ( !document.getElementById("s_subticks_enabled").checked ) { 
+	disableItem("s_subticks_color");
+	disableItem("s_subticks_alpha"); 
+   } else { 
+	enableItem("s_subticks_color"); 
+	enableItem("s_subticks_alpha"); 
+   }
   }
 
  function toggleAutoMargins()
   {
-   if ( document.getElementById("s_automargin_enabled").checked )
-    { disableItem("s_x_margin"); disableItem("s_y_margin"); }
-   else
-    { enableItem("s_x_margin"); enableItem("s_y_margin"); }
+   if ( document.getElementById("s_automargin_enabled").checked ) {
+	disableItem("s_x_margin");
+	disableItem("s_y_margin");
+   } else { 
+	enableItem("s_x_margin"); 
+	enableItem("s_y_margin"); 
+   }
   }
 
  function checkEnabledAxis()
@@ -429,9 +438,9 @@
    Serie3Binding = document.getElementById("d_serie3_axis").options[document.getElementById("d_serie3_axis").selectedIndex].value;
 
    Series = 0;
-   if ( Serie1Enabled ) { Series++; }
-   if ( Serie2Enabled ) { Series++; }
-   if ( Serie3Enabled ) { Series++; }
+   if ( Serie1Enabled ) Series++;
+   if ( Serie2Enabled ) Series++;
+   if ( Serie3Enabled ) Series++;
 
    if ( (Serie1Binding != 0 || !Serie1Enabled) && (Serie2Binding != 0 || !Serie2Enabled) && (Serie3Binding != 0 || !Serie3Enabled) )
     { disableItem("d_axis0_name"); disableItem("d_axis0_unit"); disableItem("d_axis0_position"); disableItem("d_axis0_format"); }
@@ -466,183 +475,117 @@
 
      if ( s_direction == "SCALE_POS_LEFTRIGHT" )
       {
-       if ( leftSeries == 0 ) { leftOffset = 20; } else { leftOffset = 10; }
-       if ( rightSeries == 0 ) { rightOffset = 25; } else { rightOffset = 15; }
+		leftOffset = (leftSeries == 0 ? 20 : 10);
+		rightOffset = (rightSeries == 0 ? 25 : 15);
 
-       leftMargin = leftOffset + 40 * leftSeries;
-       width = g_width - leftMargin - 40 * rightSeries - rightOffset;
+		leftMargin = leftOffset + 40 * leftSeries;
+		width = g_width - leftMargin - 40 * rightSeries - rightOffset;
 
-       if ( sl_enabled ) { BottomOffset = Series*15; } else { BottomOffset = 0; }
+		BottomOffset = (sl_enabled ? Series*15 : 0);
 
-       document.getElementById("s_x").value = leftMargin;
-       document.getElementById("s_y").value = 50;
-       document.getElementById("s_width").value = width;
-       document.getElementById("s_height").value = g_height - 50 - 40 - BottomOffset;
+		document.getElementById("s_x").value = leftMargin;
+		document.getElementById("s_y").value = 50;
+		document.getElementById("s_width").value = width;
+		document.getElementById("s_height").value = g_height - 50 - 40 - BottomOffset;
       }
      else
       {
-       if ( leftSeries == 0 ) { topOffset = 40; } else { topOffset = 40; }
-       if ( rightSeries == 0 ) { bottomOffset = 25; } else { bottomOffset = 15; }
+		topOffset = (leftSeries == 0 ? 40 : 40);
+		bottomOffset = (rightSeries == 0 ? 25 : 15);
 
-       topMargin = topOffset + 30 * leftSeries;
-       height = g_height - topMargin - 30 * rightSeries - bottomOffset;
+		topMargin = topOffset + 30 * leftSeries;
+		height = g_height - topMargin - 30 * rightSeries - bottomOffset;
 
-       if ( sl_enabled ) { RightOffset = Series*15; } else { RightBottomOffset = 0; }
+		RightOffset = (sl_enabled ? Series*15 : 0);
 
-       document.getElementById("s_x").value = 70;
-       document.getElementById("s_y").value = topMargin;
-       document.getElementById("s_width").value = g_width - 70 - 40 - RightOffset;
-       document.getElementById("s_height").value = height;
+		document.getElementById("s_x").value = 70;
+		document.getElementById("s_y").value = topMargin;
+		document.getElementById("s_width").value = g_width - 70 - 40 - RightOffset;
+		document.getElementById("s_height").value = height;
       }
     }
   }
 
- function disableItem(ID)
-  {
-   document.getElementById(ID).style.backgroundColor = "#E0E0E0";
-   document.getElementById(ID).style.color = "#A0A0A0";
-   document.getElementById(ID).disabled = true;
-  }
+function disableItem(ID)
+{
+	document.getElementById(ID).style.backgroundColor = "#E0E0E0";
+	document.getElementById(ID).style.color = "#A0A0A0";
+	document.getElementById(ID).disabled = true;
+}
 
- function disableCheck(ID)
-  {
-   document.getElementById(ID).style.color = "#A0A0A0";
-   document.getElementById(ID).disabled = true;
-  }
+function disableCheck(ID)
+{
+	document.getElementById(ID).style.color = "#A0A0A0";
+	document.getElementById(ID).disabled = true;
+}
 
- function disableRadio(ID)
-  {
-   document.getElementById(ID).disabled = true;
-  }
+function disableRadio(ID)
+{
+	document.getElementById(ID).disabled = true;
+}
 
- function enableItem(ID)
-  {
-   document.getElementById(ID).style.backgroundColor = "#FFFFFF";
-   document.getElementById(ID).style.color = "#707070";
-   document.getElementById(ID).disabled = false;
-  }
+function enableItem(ID)
+{
+	document.getElementById(ID).style.backgroundColor = "#FFFFFF";
+	document.getElementById(ID).style.color = "#707070";
+	document.getElementById(ID).disabled = false;
+}
 
- function enableCheck(ID)
-  {
-   document.getElementById(ID).style.color = "#707070";
-   document.getElementById(ID).disabled = false;
-  }
+function enableCheck(ID)
+{
+	document.getElementById(ID).style.color = "#707070";
+	document.getElementById(ID).disabled = false;
+}
 
- function enableRadio(ID)
-  {
-   document.getElementById(ID).disabled = false;
-  }
+function enableRadio(ID)
+{
+	document.getElementById(ID).disabled = false;
+}
 
- function setDefaultAbsissa()
-  {
-   document.getElementById("d_absissa_data0").value = "January";
-   document.getElementById("d_absissa_data1").value = "February";
-   document.getElementById("d_absissa_data2").value = "March";
-   document.getElementById("d_absissa_data3").value = "April";
-   document.getElementById("d_absissa_data4").value = "May";
-   document.getElementById("d_absissa_data5").value = "June";
-   document.getElementById("d_absissa_data6").value = "July";
-   document.getElementById("d_absissa_data7").value = "August";
-  }
+function setDefaultAbsissa()
+{
+	document.getElementById("d_absissa_data0").value = "January";
+	document.getElementById("d_absissa_data1").value = "February";
+	document.getElementById("d_absissa_data2").value = "March";
+	document.getElementById("d_absissa_data3").value = "April";
+	document.getElementById("d_absissa_data4").value = "May";
+	document.getElementById("d_absissa_data5").value = "June";
+	document.getElementById("d_absissa_data6").value = "July";
+	document.getElementById("d_absissa_data7").value = "August";
+}
 
- function push(URL,nextStep)
-  {
-   var xmlhttp=false;   
-   /*@cc_on @*/  
-   /*@if (@_jscript_version >= 5)  
-    try { xmlhttp = new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) { try { xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); } catch (E) { xmlhttp = false; } }  
-   @end @*/  
-  
-   if (!xmlhttp && typeof XMLHttpRequest!='undefined')   
-    { try { xmlhttp = new XMLHttpRequest(); } catch (e) { xmlhttp=false; } }   
-  
-   if (!xmlhttp && window.createRequest)   
-    { try { xmlhttp = window.createRequest(); } catch (e) { xmlhttp=false; } }   
-  
-   xmlhttp.open("GET", URL,true);
-
-   xmlhttp.onreadystatechange=function() {   
-    if (xmlhttp.readyState==4)
-     {
-      if ( nextStep == 1 ) { saveData(); }
-      if ( nextStep == 2 ) { saveScale(); }
-      if ( nextStep == 3 ) { saveChart(); }
-      if ( nextStep == 4 ) { saveLegend(); }
-      if ( nextStep == 5 )
-       {
-        if ( Action == "Render" )
-         doRender();
-        else
-         push("script/render.php?Mode=Source&Seed="+Math.random(100),6);
-       }
-      if ( nextStep == 6 )
-       {
-        document.getElementById("result_area").innerHTML = "<pre name='code'>"+xmlhttp.responseText+"</pre>";
-       }
-     }
-    }   
-   xmlhttp.send(null)   
-  }
-
- function doRender()
-  {
-   document.getElementById("result_area").innerHTML = "<img src='graphix/wait.gif' width='24' height='24' alt=''><br/>Rendering";
-
-   RandomKey = Math.random(100);
-   URL       = "script/render.php?Seed=" + RandomKey;
- 
-   StartFade();
-  }
-
- function StartFade()
-  {
-   Loader     = new Image();   
-   Loader.src = URL;   
-   setTimeout("CheckLoadingStatus()", 200);   
-  }
-
- function CheckLoadingStatus()   
-  {   
-   if ( Loader.complete == true )   
-    {
-     changeOpac(0, "result_area");
-     HTMLResult = "<center><img src='" + URL + "' alt=''/></center>";
-     document.getElementById("result_area").innerHTML = HTMLResult;
-
-     opacity("result_area",0,100,500);
-    }
-   else  
-    setTimeout("CheckLoadingStatus()", 200);   
-  }   
-
- function changeOpac(opacity, id)   
-  {   
-   var object = document.getElementById(id).style;   
-   object.opacity = (opacity / 100);   
-   object.MozOpacity = (opacity / 100);   
-   object.KhtmlOpacity = (opacity / 100);   
-   object.filter = "alpha(opacity=" + opacity + ")";   
-  }   
-
- function opacity(id, opacStart, opacEnd, millisec)
-  {
-   var speed = Math.round(millisec / 100);
-   var timer = 0;
-
-   if(opacStart > opacEnd)
-    {
-     for(i = opacStart; i >= opacEnd; i--)
-      {
-       setTimeout("changeOpac(" + i + ",'" + id + "')",(timer * speed));
-       timer++;
-      }
-    }
-   else if(opacStart < opacEnd)
-    {
-     for(i = opacStart; i <= opacEnd; i++)
-      {
-       setTimeout("changeOpac(" + i + ",'" + id + "')",(timer * speed));
-       timer++;
-      }
-    }
-  }
+function push(URL,nextStep)
+{  
+	$.ajax({
+		type: "GET", 
+		url: URL,
+		beforeSend: function(){
+			$("#result_area").html("<img src='graphix/wait.gif'><br />Working");
+		},
+		success: function (result) {		
+			switch (nextStep) {
+				case 1:
+					saveData();
+					break;
+				case 2:
+					saveScale();
+					break;
+				case 3:
+					saveChart();
+					break;
+				case 4:
+					saveLegend();
+					break;
+				case 5:
+					if ( Action == "Render" ) {
+						$("#result_area").html("<center><img src='script/render.php?Seed=" + Math.random(100) + "' /></center>");
+					} else {
+						push("script/render.php?Mode=Source&Seed=" + Math.random(100),6);
+					}
+					break;
+				case 6:
+					$("#result_area").html("<pre name='code'>"+result+"</pre>");
+			}
+		}
+	});
+}
