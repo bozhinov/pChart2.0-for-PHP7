@@ -12,7 +12,6 @@ http://www.pchart.net/license
 
 You can find the whole class documentation on the pChart web site.
 */
-/* pData class definition */
 
 namespace pChart;
 
