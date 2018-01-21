@@ -18,7 +18,7 @@ if (isset($_GET["View"]))
 <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 <meta http-equiv="pragma" content="no-cache" />
 <script src='../resources/jquery-3.3.1.min.js' type="text/javascript"></script>
-<script src='imagemap.js' type="text/javascript"></script>
+<script src='jquery.imagemap.js' type="text/javascript"></script>
 <script>
 $(document).ready(function() {
 	
@@ -29,7 +29,7 @@ $(document).ready(function() {
 				$("#source").html(data); 
 			});
 
-		addImageMap('testPicture','pictureMap','scripts/'+FileName+'.php?ImageMap=get');
+		$('#testPicture').addImageMap('pictureMap','scripts/'+FileName+'.php?ImageMap=get');
 	}
 	
 	$('[id^="Hover-"]').on("click", function() {
@@ -38,7 +38,7 @@ $(document).ready(function() {
 		
 });
 </script>
-<title>pChart 2.x - Image map</title>
+<title>pChart 2.2.x - Image map</title>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 <style>
 	body       { background-color: #F0F0F0; font-family: tahoma; font-size: 14px;}
@@ -103,7 +103,7 @@ EOHTML;
 		$Tree = [];
 		while (($FileName = readdir($DirectoryHandle)) !== false)
 		{
-			if (!in_array($FileName,[".","..","2DPie.sqlite.example","2DPie.sesssion.example"])){
+			if (!in_array($FileName,[".","..","2DPie.sqlite.example","2DPie.session.example"])){
 				$Tree[] = substr($FileName, 0, -4);
 			}
 		}
@@ -114,10 +114,10 @@ EOHTML;
 		$Icon = ($Key == count($Tree)-1) ? "../resources/dash-explorer-last.png" : "../resources/dash-explorer.png";
 
 		echo "<table noborder cellpadding=0 cellspacing=0>\r\n";
-		echo " <tr valign=middle>\r\n";
+		echo " <tr valign='middle'>\r\n";
 		echo "  <td><img src='".$Icon."' /></td>\r\n";
 		echo "  <td><img src='../resources/application_view_tile.png' /></td>\r\n";
-		echo "  <td><div class=folder id=".chr(34)."Hover-".$Element.chr(34).">&nbsp;".$Element."</div></td>\r\n";
+		echo "  <td><div class='folder' id=".chr(34)."Hover-".$Element.chr(34).">&nbsp;".$Element."</div></td>\r\n";
 		echo " </tr>\r\n";
 		echo "</table>\r\n";
 	}
@@ -143,15 +143,19 @@ EOHTML;
 		<table><tr><td><img src='../resources/application_view_list.png' /></td><td>&nbsp;HTML Source area</td></tr></table>
 
 		<div style='display:table-cell; padding: 10px;  border: 2px solid #FFFFFF; vertical-align: middle; overflow: auto; background-image: url("../resources/dash.png");'>
-			<div id="htmlsource" style='width: 700px; font-size: 13px; font-family: Lucida Console'>
-				&lt;body&gt;<br/>
+			<div id="htmlsource" style='width: 800px; font-size: 13px; font-family: Lucida Console'>
+				&lt;head&gt;<br/>
 				&nbsp;&nbsp; &lt;script src="jquery-3.3.1.min.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
-				&nbsp;&nbsp; &lt;script src="imagemap.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
-				&nbsp;&nbsp;  &lt;img src="draw.php" id="testPicture" class="pChartPicture"/&gt;<br/>
+				&nbsp;&nbsp; &lt;script src="jquery.imagemap.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
+				&nbsp;&nbsp; &lt;script&gt;<br/>
+				&nbsp;&nbsp; $(document).ready(function() {<br/>
+				&nbsp;&nbsp; &nbsp;&nbsp;   $("#testPicture").addImageMap("pictureMap","scripts/draw.php?ImageMap=get",{SmoothMove:true});<br/>
+				&nbsp;&nbsp; });<br/>
+				&nbsp;&nbsp; &lt;/script&gt;<br/>
+				&lt;/head&gt;<br/>
+				&lt;body&gt;<br/>
+				&nbsp;&nbsp;  &lt;img src="draw.php" id="testPicture" /&gt;<br/>
 				&lt;/body&gt;<br/>
-				&lt;script&gt;<br/>
-				&nbsp;&nbsp;	addImageMap("testPicture","pictureMap","draw.php?ImageMap=get");<br/>
-				&lt;/script&gt;<br/>
 			</div>
 		</div>
 
