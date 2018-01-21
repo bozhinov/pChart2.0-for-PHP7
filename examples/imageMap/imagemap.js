@@ -15,15 +15,14 @@
  
 var cX	= 0;
 var cY	= 0;
-var LastcX	= null;
-var LastcY	= null;
+var LastcX	= 0;
+var LastcY	= 0;
 var currentTitle = "";
 var currentMessage = "";
 var SmoothMove = false;
 var SmoothMoveFactor = 5;
 var delimiter = String.fromCharCode(1);
 var tooltipDiv = "#testDiv";	
-var MapID = null;
 
  /* Show the tooltip */
 function showDiv(Color,Title,Message)
@@ -53,8 +52,6 @@ function showDiv(Color,Title,Message)
 		$(tooltipDiv).html(HTML);
 	} 
 
-	$(tooltipDiv).css({opacity: 1});
-
 	currentTitle   = Title;
 	currentMessage = Message;
 }
@@ -62,40 +59,36 @@ function showDiv(Color,Title,Message)
  /* Move the div to the mouse location */
 function moveDiv()
 {
-	if (SmoothMove && LastcX != null)
+	if (SmoothMove)
 	{ 
 		cX = LastcX - (LastcX-cX)/4;
 		cY = LastcY - (LastcY-cY)/SmoothMoveFactor;
 	}
 	
-	$(tooltipDiv)[0].style.left = (cX+10) + "px";
-	$(tooltipDiv)[0].style.top  = (cY+10) + "px";
+	var element = document.getElementById(tooltipDiv.substring(1));
+	element.style.left = (cX+10) + "px";
+	element.style.top  = (cY+10) + "px";
 
 	LastcX = cX;
 	LastcY = cY;
 }
 
  /* Add a picture element that need ImageMap parsing */
-function addImage(PictureID,ImageMapID,ImageMapURL)
+function addImageMap(PictureID,ImageMapID,ImageMapURL)
 {
-	MapID = ImageMapID;
+		
+	if ($("#".ImageMapID).length) {
+		$("#".ImageMapID).remove();
+	}
+	
 	var element = document.createElement("DIV");
-
 	element.id             = tooltipDiv.substring(1);
 	element.innerHTML      = "";
 	element.style.display  = "inline-block";
 	element.style.position = "absolute";
-	element.style.opacity  = 0;
-	element.style.filter   = "alpha(opacity=0)";
-
 	document.body.appendChild(element);
-	
-	if ($("#".ImageMapID).length) {
-		$("#".ImageMapID).remove();
-	}
 
 	var element = document.createElement("MAP");
-
 	element.id   = ImageMapID;
 	element.name = ImageMapID;
 	document.body.appendChild(element);
@@ -108,7 +101,7 @@ function addImage(PictureID,ImageMapID,ImageMapURL)
 
 		for(i=0;i<=Zones.length-2;i++)
 		{
-			addArea(Zones[i].split(delimiter));
+			addArea(Zones[i].split(delimiter), ImageMapID);
 		}
 	});
 	
@@ -121,7 +114,7 @@ function addImage(PictureID,ImageMapID,ImageMapURL)
 }
 
 /* Add an area to the specified image map */
-function addArea(Options)
+function addArea(Options, MapID)
 {
 	var maps    = document.getElementById(MapID);
 	var element = document.createElement("AREA");
@@ -129,8 +122,6 @@ function addArea(Options)
 	element.shape  = Options[0];
 	element.coords = Options[1];
 	element.onmouseover = function() { showDiv(Options[2],Options[3],Options[4].replace('"','')); };
-	element.onmouseout  = function() { $(tooltipDiv).css({opacity: 0}); };
+	element.onmouseout  = function() { $(tooltipDiv).html(""); };
 	maps.appendChild(element);
 }
-
-

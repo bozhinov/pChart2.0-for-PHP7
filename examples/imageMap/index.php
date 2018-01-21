@@ -29,13 +29,13 @@ $(document).ready(function() {
 				$("#source").html(data); 
 			});
 
-		addImage('testPicture','pictureMap','scripts/'+FileName+'.php?ImageMap=get');
+		addImageMap('testPicture','pictureMap','scripts/'+FileName+'.php?ImageMap=get');
 	}
 	
-	$('[id^="Hover-"]').click(function() {
-		showExample((this.id).substring(6));
+	$('[id^="Hover-"]').on("click", function() {
+		showExample(($(this).attr('id')).substring(6));
 	});
-	
+		
 });
 </script>
 <title>pChart 2.x - Image map</title>
@@ -48,12 +48,6 @@ $(document).ready(function() {
 	a.smallLink:link    { text-decoration: none; color: #6A6A6A; }
 	a.smallLink:visited { text-decoration: none; color: #6A6A6A; }
 	a.smallLink:hover   { text-decoration: underline; color: #6A6A6A; }
-	a.smallLinkGrey:link     { text-decoration: none; color: #6A6A6A; }
-	a.smallLinkGrey:visited  { text-decoration: none; color: #6A6A6A; }
-	a.smallLinkGrey:hover    { text-decoration: underline; color: #6A6A6A; }
-	a.smallLinkBlack:link    { text-decoration: none; color: #000000; }
-	a.smallLinkBlack:visited { text-decoration: none; color: #000000; }
-	a.smallLinkBlack:hover   { text-decoration: underline; color: #000000; }
 	a.pChart { text-decoration: none; color: #6A6A6A; }
 	a img, img { border: none; }
 </style>
@@ -66,9 +60,9 @@ $(document).ready(function() {
 			<table style='padding: 1px; background-color: #E0E0E0; border: 1px solid #D0D0D0; border-top: 1px solid #FFFFFF;'>
 				<tr>
 					<td width=16><img src='../resources/application_view_tile.png' /></td>
-					<td width=100>&nbsp;<a class=smallLinkGrey href='../'>Examples</a></td>
+					<td width=100>&nbsp;<a class='smallLink' href='../'>Examples</a></td>
 					<td width=16><img src='../resources/application_view_list.png' /></td>
-					<td width=100>&nbsp;<a class=smallLinkGrey href='../sandbox/'>Sandbox</a></td>
+					<td width=100>&nbsp;<a class='smallLink' href='../sandbox/'>Sandbox</a></td>
 					<td width=16><img src='../resources/application_view_list.png' /></td>
 					<td width=100>&nbsp;<b>Image Map</b></td>
 				</tr>
@@ -156,7 +150,7 @@ EOHTML;
 				&nbsp;&nbsp;  &lt;img src="draw.php" id="testPicture" class="pChartPicture"/&gt;<br/>
 				&lt;/body&gt;<br/>
 				&lt;script&gt;<br/>
-				&nbsp;&nbsp;	addImage("testPicture","pictureMap","draw.php?ImageMap=get");<br/>
+				&nbsp;&nbsp;	addImageMap("testPicture","pictureMap","draw.php?ImageMap=get");<br/>
 				&lt;/script&gt;<br/>
 			</div>
 		</div>
