@@ -1,31 +1,25 @@
 <?php 
 
-if (isset($_GET["Action"]) && $_GET["Action"] == "ViewPHP") {
-	goCheck($_GET["Script"]); 
-	exit();
-} 
-
-function goCheck($Script)
+if (isset($_GET["View"]))
 {
-	$Script = stripslashes($Script);
-	$Script = preg_replace(["/\//","/\:/","/scripts/"], ["","","scripts/"],$Script);
-
-	if (file_exists($Script)){
-		highlight_file($Script);
-	} else {
-		echo "Script source code cannot be fetched."; 
+	$result = preg_match("/^[a-z,A-Z,0-9,\.]{5,30}$/", $_GET["View"], $matches);
+   
+	if ($result){
+		if (file_exists("scripts/".$matches[0])){
+			highlight_file("scripts/".$matches[0]); 
+		}
 	}
+	exit();
 }
 
 /* Determine the current package version */
 $FileHandle  = fopen("../../readme.txt", "r");
 for ($i=0; $i<=5; $i++) {
-	$buffer = fgets($FileHandle, 4096);
+	$buffer = fgets($FileHandle); 
 }
 fclose($FileHandle);
-$Values  = preg_split("/:/",$buffer);
-$Values  = preg_split("/ /",$Values[1]);
-$Version = strip_tags($Values[1]);
+# Change if readme.txt no longer binary
+$Version = trim(substr($buffer, 39, 16));
 
 ?>
 <html>
@@ -43,7 +37,7 @@ $(document).ready(function() {
 	function showExample(FileName)
 	{
 		$("#render").html("<img src='scripts/"+FileName+".php' id='testPicture' alt='' class='pChartPicture'/>");
-		$.get("index.php?Action=ViewPHP&Script=scripts/"+FileName+".php").done(function(data) {
+		$.get("index.php?View="+FileName+".php").done(function(data) {
 				$("#source").html(data.replace("/\<BR\>/")); 
 			});
 
