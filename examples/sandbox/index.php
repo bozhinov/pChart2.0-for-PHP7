@@ -20,7 +20,7 @@ You can find the whole class documentation on the pChart web site.
 	<title>Sandbox system</title>
 	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 	<link rel='stylesheet' type='text/css' href='style.css'/>
-	<script src='../resources/jquery-3.2.1.min.js' type="text/javascript"></script>
+	<script src='../resources/jquery-3.3.1.min.js' type="text/javascript"></script>
 	<script type='text/javascript' src='includes/jscolor.js'></script>
 	<script type='text/javascript' src='includes/functions.js'></script>
 </head>
