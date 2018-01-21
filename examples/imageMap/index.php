@@ -1,26 +1,14 @@
 <?php 
-
 if (isset($_GET["View"]))
 {
-	$result = preg_match("/^[a-z,A-Z,0-9,\.]{5,30}$/", $_GET["View"], $matches);
-   
+	$result = preg_match("/^[a-z,A-Z,0-9,\.]{3,30}$/", $_GET["View"], $matches);
 	if ($result){
-		if (file_exists("scripts/".$matches[0])){
-			highlight_file("scripts/".$matches[0]); 
+		if (file_exists("scripts/".$matches[0].".php")){
+			highlight_file("scripts/".$matches[0].".php"); 
 		}
 	}
 	exit();
 }
-
-/* Determine the current package version */
-$FileHandle  = fopen("../../readme.txt", "r");
-for ($i=0; $i<=5; $i++) {
-	$buffer = fgets($FileHandle); 
-}
-fclose($FileHandle);
-# Change if readme.txt no longer binary
-$Version = trim(substr($buffer, 39, 16));
-
 ?>
 <html>
 <head>
@@ -36,9 +24,9 @@ $(document).ready(function() {
 	
 	function showExample(FileName)
 	{
-		$("#render").html("<img src='scripts/"+FileName+".php' id='testPicture' alt='' class='pChartPicture'/>");
-		$.get("index.php?View="+FileName+".php").done(function(data) {
-				$("#source").html(data.replace("/\<BR\>/")); 
+		$("#render").html("<img src='scripts/"+FileName+".php' id='testPicture' class='pChartPicture'/>");
+		$.get("index.php?View="+FileName).done(function(data) {
+				$("#source").html(data); 
 			});
 
 		addImage('testPicture','pictureMap','scripts/'+FileName+'.php?ImageMap=get');
@@ -93,16 +81,27 @@ $(document).ready(function() {
 
 <table>
 	<tr>
-<td valign='top'>
+	<td valign='top'>
 	<table style='border: 2px solid #FFFFFF;'>
 		<tr>
 			<td>
-				<div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848; width: 222px;'>&nbsp;Release <?php echo $Version; ?></div>
+<?php
+	/* Determine the current package version */
+	$FileHandle  = fopen("../../readme.txt", "r");
+	for ($i=0; $i<=5; $i++) {
+		$buffer = fgets($FileHandle); 
+	}
+	fclose($FileHandle);
+	# Change if readme.txt no longer binary
+	$Version = trim(substr($buffer, 39, 16));
+
+echo <<<EOHTML
+		<div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848; width: 222px;'>&nbsp;Release $Version</div>
 				<div style='border: 3px solid #D0D0D0; border-top: 1px solid #FFFFFF; background-color: #FAFAFA; width: 220px; overflow: auto'>
 					<div style='padding: 1px; padding-bottom: 3px; color: #000000; background-color:#D0D0D0;'>
 						<table><tr><td><img src='../resources/application_view_list.png' /></td><td>&nbsp;Examples folder contents</td></tr></table>
 					</div>
-<?php
+EOHTML;
 
 	/* Build a list of the examples & categories */
 	$DirectoryHandle = opendir("scripts");
@@ -151,20 +150,13 @@ $(document).ready(function() {
 
 		<div style='display:table-cell; padding: 10px;  border: 2px solid #FFFFFF; vertical-align: middle; overflow: auto; background-image: url("../resources/dash.png");'>
 			<div id="htmlsource" style='width: 700px; font-size: 13px; font-family: Lucida Console'>
-				&lt;html&gt;<br/>
-				&lt;head&gt;<br/>
-				&nbsp;&nbsp; &lt;style&gt;<br/>
-				&nbsp;&nbsp;&nbsp;&nbsp;   div.pChartPicture { border: 0px; }<br/>
-				&nbsp;&nbsp; &lt;/style&gt;<br/>
-				&lt;/head&gt;<br/>
 				&lt;body&gt;<br/>
 				&nbsp;&nbsp; &lt;script src="jquery-3.3.1.min.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
 				&nbsp;&nbsp; &lt;script src="imagemap.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
-				&nbsp;&nbsp;  &lt;img src="draw.php" id="testPicture" alt="" class="pChartPicture"/&gt;<br/>
+				&nbsp;&nbsp;  &lt;img src="draw.php" id="testPicture" class="pChartPicture"/&gt;<br/>
 				&lt;/body&gt;<br/>
 				&lt;script&gt;<br/>
-				&nbsp;&nbsp;  var Mapper = new ImageMapper();<br/>
-				&nbsp;&nbsp;	Mapper.addImage("testPicture","pictureMap","draw.php?ImageMap=get");<br/>
+				&nbsp;&nbsp;	addImage("testPicture","pictureMap","draw.php?ImageMap=get");<br/>
 				&lt;/script&gt;<br/>
 			</div>
 		</div>

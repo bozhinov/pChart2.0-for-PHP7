@@ -2,11 +2,12 @@
 
 if (isset($_POST["View"]))
 {
-	$result = preg_match("/^[a-z,A-Z,0-9,\.]{10,50}$/", $_POST["View"], $matches);
+	
+	$result = preg_match("/^[a-z,A-Z,0-9,\.]{6,40}$/", $_POST["View"], $matches);
    
 	if ($result){
-		if (file_exists($matches[0])){
-			highlight_file($matches[0]); 
+		if (file_exists("example.".$matches[0].".php")){
+			highlight_file("example.".$matches[0].".php"); 
 		}
 	}
 	exit();
@@ -76,7 +77,7 @@ if (isset($_POST["View"]))
 				$("#render").html("<center><img src='resources/wait.gif' /><br>Rendering</center>");
 			},
 			complete: function(){
-				$("#render").html("<center><img src='" + URL + "' /></center>");
+				$("#render").html("<center><img src='example." + URL + ".php' /></center>");
 				view(URL); 
 			}
 		});
@@ -144,10 +145,7 @@ while (($FileName = readdir($DirectoryHandle)) !== false)
 			$Categorie = substr($buffer, 7);
 			$Categorie = substr($Categorie, 0, -5);
 		
-			$Tree[$Categorie][] = [
-				"FileName" => $FileName,
-				"FileShortName" => str_replace(["example.",".php"], ["",""], $FileName)
-			];
+			$Tree[$Categorie][] = str_replace(["example.",".php"], ["",""], $FileName);
 		}
 	}
 }
@@ -200,7 +198,7 @@ foreach($Tree as $Key => $Elements){
 		$_TREE_HTML .= "	<td><img src='resources/".$SubIcon."' /></td>\r\n";
 		$_TREE_HTML .= "	<td><img src='resources/".$Icon."' /></td>\r\n";
 		$_TREE_HTML .= "	<td><img src='resources/application_view_tile.png' /></td>\r\n";
-		$_TREE_HTML .= "	<td><div id='".$Element["FileName"]."'>&nbsp;<a class=smallLinkGrey href='#' onclick='render(".chr(34).$Element["FileName"].chr(34).");'>".$Element["FileShortName"]."</a></div></td>\r\n";
+		$_TREE_HTML .= "	<td><div id='".$Element."'>&nbsp;<a class=smallLinkGrey href='#' onclick='render(".chr(34).$Element.chr(34).");'>".$Element."</a></div></td>\r\n";
 		$_TREE_HTML .= "</tr>\r\n";
 	}
 	
