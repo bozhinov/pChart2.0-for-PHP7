@@ -1,10 +1,7 @@
 <?php
-
 if (isset($_POST["View"]))
 {
-	
 	$result = preg_match("/^[a-z,A-Z,0-9,\.]{6,40}$/", $_POST["View"], $matches);
-   
 	if ($result){
 		if (file_exists("example.".$matches[0].".php")){
 			highlight_file("example.".$matches[0].".php"); 
@@ -12,7 +9,6 @@ if (isset($_POST["View"]))
 	}
 	exit();
 }
-
 ?>
 <html>
 <head>
@@ -24,42 +20,31 @@ if (isset($_POST["View"]))
 	tr         { margin: 0px; padding: 0px; border: 0px; }
 	td         { font-family: tahoma; font-size: 11px; margin: 0px; padding: 0px; border: 0px; }
 	div.folder { cursor: hand; cursor: pointer; }
-	a.smallLinkGrey:link     { text-decoration: none; color: #6A6A6A; }
-	a.smallLinkGrey:visited  { text-decoration: none; color: #6A6A6A; }
-	a.smallLinkGrey:hover    { text-decoration: underline; color: #6A6A6A; }
-	a.smallLinkBlack:link    { text-decoration: none; color: #000000; }
-	a.smallLinkBlack:visited { text-decoration: none; color: #000000; }
-	a.smallLinkBlack:hover   { text-decoration: underline; color: #000000; }
+	a.smallLink:link     { text-decoration: none; color: #6A6A6A; }
+	a.smallLink:visited  { text-decoration: none; color: #6A6A6A; }
+	a.smallLink:hover    { text-decoration: underline; color: #6A6A6A; }
 </style>
 <script src='resources/jquery-3.3.1.min.js' type="text/javascript"></script>
 <script>
 
-	LastOpened = "";
-	LastScript = "";
+	LastOpened = null;
+	LastScript = null;
 
-	function showHideMenu(Element)
+	function toggleMenu(Element)
 	{
-		if ( document.getElementById(Element).style.display == "none" )
-		{
-			if ( LastOpened != "" && LastOpened != Element ) { 
-				showHideMenu(LastOpened); 
-			}
+		if (LastOpened != null){
+			document.getElementById(LastOpened.slice(0, -5)).style.display = "none";
+			document.getElementById(LastOpened).style.fontWeight = "normal";
+		}
+		document.getElementById(Element.slice(0, -5)).style.display = "inline";
+		document.getElementById(Element).style.fontWeight = "bold";
 
-			document.getElementById(Element).style.display = "inline";
-			document.getElementById(Element+"_main").style.fontWeight = "bold";
-			LastOpened = Element;
-		}
-		else
-		{
-			document.getElementById(Element).style.display = "none";
-			document.getElementById(Element+"_main").style.fontWeight = "normal";
-			LastOpened = "";
-		}
+		LastOpened = Element;
 	}
 
 	function render(PictureName)
 	{
-		if ( LastScript != "" ) { 
+		if (LastScript != null) { 
 			document.getElementById(LastScript).style.fontWeight = "normal"; 
 		}
 		document.getElementById(PictureName).style.fontWeight = "bold";
@@ -94,6 +79,15 @@ if (isset($_POST["View"]))
 			}
 		});
 	}
+	
+	$(document).ready(function() {
+		$(".folder").on("click", function() {
+			toggleMenu($(this).attr('id'));
+		})
+		$(".example").on("click", function() {
+			render($(this).attr('id'));
+		})
+	});
 
 </script>
 </head>
@@ -107,9 +101,9 @@ if (isset($_POST["View"]))
 			 <td width=16><img src='resources/application_view_tile.png'/></td>
 			 <td width=100>&nbsp;<b>Examples</b></td>
 			 <td width=16><img src='resources/application_view_list.png'/></td>
-			 <td width=100>&nbsp;<a class=smallLinkGrey href='sandbox/'>Sandbox</a></td>
+			 <td width=100>&nbsp;<a class='smallLink' href='sandbox/'>Sandbox</a></td>
 			 <td width=16><img src='resources/application_view_list.png'/></td>
-			 <td width=100>&nbsp;<a class=smallLinkGrey href='imageMap/'>Image Map</a></td>
+			 <td width=100>&nbsp;<a class='smallLink' href='imageMap/'>Image Map</a></td>
 			</tr>
 		</table>
 	</td></tr>
@@ -181,10 +175,10 @@ foreach($Tree as $Key => $Elements){
 	}
 
 	$_TREE_HTML .= "<table noborder cellpadding=0 cellspacing=0>\r\n";
-	$_TREE_HTML .= "<tr valign=middle>\r\n";
+	$_TREE_HTML .= "<tr valign='middle'>\r\n";
 	$_TREE_HTML .= "	<td><img src='resources/".$Icon."' /></td>\r\n";
 	$_TREE_HTML .= "	<td><img src='resources/folder.png'/></td>\r\n";
-	$_TREE_HTML .= "	<td><div class=folder id='".$Key."_main' onclick='showHideMenu(".chr(34).$Key.chr(34).");'>&nbsp;".$Key."</div></td>\r\n";
+	$_TREE_HTML .= "	<td><div class='folder' id='".$Key."_main'>&nbsp;".$Key."</div></td>\r\n";
 	$_TREE_HTML .= "</tr>\r\n";
 	$_TREE_HTML .= "</table>\r\n";
 
@@ -194,11 +188,11 @@ foreach($Tree as $Key => $Elements){
 
 		$Icon = ($SubKey == count($Elements)-1) ? "dash-explorer-last.png" : "dash-explorer.png";
 
-		$_TREE_HTML .= "<tr valign=middle>\r\n";
+		$_TREE_HTML .= "<tr valign='middle'>\r\n";
 		$_TREE_HTML .= "	<td><img src='resources/".$SubIcon."' /></td>\r\n";
 		$_TREE_HTML .= "	<td><img src='resources/".$Icon."' /></td>\r\n";
 		$_TREE_HTML .= "	<td><img src='resources/application_view_tile.png' /></td>\r\n";
-		$_TREE_HTML .= "	<td><div id='".$Element."'>&nbsp;<a class=smallLinkGrey href='#' onclick='render(".chr(34).$Element.chr(34).");'>".$Element."</a></div></td>\r\n";
+		$_TREE_HTML .= "	<td><div class='example' id='".$Element."'>&nbsp;<a class='smallLink' href='#'>".$Element."</a></div></td>\r\n";
 		$_TREE_HTML .= "</tr>\r\n";
 	}
 	
