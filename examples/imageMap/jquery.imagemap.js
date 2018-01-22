@@ -20,40 +20,48 @@ You can find the whole class documentation on the pChart web site.
 	var tooltipDivElement;
 	
 	/* Add a picture element that need ImageMap parsing */
-	$.fn.addImageMap = function(ImageMapID,ImageMapURL, mySettings) 
+	$.fn.addImageMap = function(ImageMapID, ImageMapURL, mySettings) 
 	{
 		var Settings = $.extend({
             SmoothMove: false,
             SmoothMoveFactor: 5,
 			delimiter: String.fromCharCode(1),
-			tooltipDiv: "#ImageMapDiv"
+			tooltipDiv: "ImageMapDiv" // mind the #
         }, mySettings );
-		
-		if ($("#".ImageMapID).length) {
-			$("#".ImageMapID).remove();
+				
+		/* create ToolTipDiv if needed */
+		if ($("#"+Settings.tooltipDiv).length) {
+			document.getElementById(Settings.tooltipDiv).innerHTML = "";
+		} else {
+			var element = document.createElement("DIV");
+			element.id             = Settings.tooltipDiv;
+			element.innerHTML      = "";
+			element.style.display  = "inline-block";
+			element.style.position = "absolute";
+			document.body.appendChild(element);
 		}
-
-		var element = document.createElement("DIV");
-		element.id             = Settings.tooltipDiv.substring(1);
-		element.innerHTML      = "";
-		element.style.display  = "inline-block";
-		element.style.position = "absolute";
-		document.body.appendChild(element);
-
+		
+		tooltipDivElement = document.getElementById(Settings.tooltipDiv);
+		
+		/* re create ImageMap element */
+		if ($("#"+ImageMapID).length) {
+			$("#"+ImageMapID).remove();
+		}
 		var element  = document.createElement("MAP");
 		element.id   = ImageMapID;
 		element.name = ImageMapID;
 		document.body.appendChild(element);
 		document.getElementById(this.attr('id')).useMap = "#"+ImageMapID;
-
-		var map = document.getElementById(ImageMapID);
 				
 		/* get the image map */
+		var map = document.getElementById(ImageMapID);
+		
 		$.get(ImageMapURL).done(function(data) {
-			$.each(data.split("\r\n"), function( index, value ) {
+			$.each(data.split("\r\n"), function(index, value) {
 				/* Add an area to the specified image map */
 				var Options = value.split(Settings.delimiter);
-				if (Options.length == 5){
+				if (Options.length == 5)
+				{
 					var element = document.createElement("AREA");
 					element.shape  = Options[0];
 					element.coords = Options[1];
@@ -64,9 +72,7 @@ You can find the whole class documentation on the pChart web site.
 			});
 		});
 
-		
 		/* Attach the onMouseMove() event to picture frame */
-		tooltipDivElement = document.getElementById(Settings.tooltipDiv.substring(1));
 		$("#"+ImageMapID).mousemove(function(e){
 			cX = e.pageX; 
 			cY = e.pageY;
