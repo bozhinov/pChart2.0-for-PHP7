@@ -44,7 +44,7 @@ You can find the whole class documentation on the pChart web site.
 		element.id   = ImageMapID;
 		element.name = ImageMapID;
 		document.body.appendChild(element);
-		document.getElementById(ImageMapID).useMap = "#"+ImageMapID;
+		document.getElementById(this.attr('id')).useMap = "#"+ImageMapID;
 
 		/* get the image map */
 		$.get(ImageMapURL).done(function(data) {
