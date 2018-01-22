@@ -17,13 +17,12 @@ You can find the whole class documentation on the pChart web site.
 
 	var LastcX	= 0;
 	var LastcY	= 0;
-	var Settings;
 	var tooltipDivElement;
 	
 	/* Add a picture element that need ImageMap parsing */
 	$.fn.addImageMap = function(ImageMapID,ImageMapURL, mySettings) 
 	{
-		Settings = $.extend({
+		var Settings = $.extend({
             SmoothMove: false,
             SmoothMoveFactor: 5,
 			delimiter: String.fromCharCode(1),
