@@ -4,7 +4,7 @@ imageMap - jQuery plug-in to handle image maps over pChart graphics
 Version     : 2.2.3
 Made by     : Jean-Damien POGOLOTTI
 MaintainedBy: Momchil Bozhinov
-Last Update : 21/01/18
+Last Update : 22/01/18
 
 This file can be distributed under the license you can find at :
 
@@ -14,72 +14,82 @@ You can find the whole class documentation on the pChart web site.
 */
  
 (function( $ ) {
-	
-	var cX	= 0;
-	var cY	= 0;
+
 	var LastcX	= 0;
 	var LastcY	= 0;
-	var Settings;
+	var tooltipDivElement;
 	
 	/* Add a picture element that need ImageMap parsing */
-	$.fn.addImageMap = function(ImageMapID,ImageMapURL, Globals) 
+	$.fn.addImageMap = function(ImageMapID,ImageMapURL, mySettings) 
 	{
-		Settings = $.extend({
+		var Settings = $.extend({
             SmoothMove: false,
             SmoothMoveFactor: 5,
 			delimiter: String.fromCharCode(1),
 			tooltipDiv: "#ImageMapDiv"
-        }, Globals );
+        }, mySettings );
 		
 		if ($("#".ImageMapID).length) {
 			$("#".ImageMapID).remove();
 		}
 
 		var element = document.createElement("DIV");
-
 		element.id             = Settings.tooltipDiv.substring(1);
 		element.innerHTML      = "";
 		element.style.display  = "inline-block";
 		element.style.position = "absolute";
-
 		document.body.appendChild(element);
 
-		var element = document.createElement("MAP");
-
+		var element  = document.createElement("MAP");
 		element.id   = ImageMapID;
 		element.name = ImageMapID;
 		document.body.appendChild(element);
-		document.getElementById('testPicture').useMap = "#"+ImageMapID;
+		document.getElementById(this.attr('id')).useMap = "#"+ImageMapID;
 
+		var map = document.getElementById(ImageMapID);
+				
 		/* get the image map */
 		$.get(ImageMapURL).done(function(data) {
-			
-			var i, Zones = data.split("\r\n");
-
-			for(i=0;i<=Zones.length-2;i++)
-			{
-				addArea(Zones[i].split(Settings.delimiter), ImageMapID);
-			}
+			$.each(data.split("\r\n"), function( index, value ) {
+				/* Add an area to the specified image map */
+				var Options = value.split(Settings.delimiter);
+				if (Options.length == 5){
+					var element = document.createElement("AREA");
+					element.shape  = Options[0];
+					element.coords = Options[1];
+					element.onmouseover = function() { showDiv(Options[2], Options[3], Options[4].replace('"','')); };
+					element.onmouseout  = function() { tooltipDivElement.innerHTML = ""; };
+					map.appendChild(element);
+				}
+			});
 		});
 
-		 /* Attach the onMouseMove() event to picture frame */
+		
+		/* Attach the onMouseMove() event to picture frame */
+		tooltipDivElement = document.getElementById(Settings.tooltipDiv.substring(1));
 		$("#"+ImageMapID).mousemove(function(e){
 			cX = e.pageX; 
 			cY = e.pageY;
-			moveDiv(); 
+			if (Settings.SmoothMove)
+			{ 
+				cX = LastcX - (LastcX-cX)/4;
+				cY = LastcY - (LastcY-cY)/Settings.SmoothMoveFactor;
+			}
+			/* Move the div to the mouse location */
+			tooltipDivElement.style.left = (cX+10) + "px";
+			tooltipDivElement.style.top  = (cY+10) + "px";
+
+			LastcX = cX;
+			LastcY = cY;
 		});
 		
 		return this;
 	};
 	
 	/* Show the tooltip */
-	function showDiv(Options) 
+	function showDiv(Color, Title, Message) 
 	{
-		var Color = Options[2];
-		var Title = Options[3];
-		var Message = Options[4].replace('"','');
-		
-		$(Settings.tooltipDiv).html('<div style="border:2px solid #606060">\
+		tooltipDivElement.innerHTML = '<div style="border:2px solid #606060">\
 		 <div style="background-color: #000000; font-family: tahoma; font-size: 11px; color: #ffffff; padding: 4px;">\
 		  	<b>'+Title+' &nbsp;</b>\
 		    </div>\
@@ -97,38 +107,7 @@ You can find the whole class documentation on the pChart web site.
 		 		</tr>\
 		  	</table>\
 		  </div>\
-		  </div>');
-	}
-
-	/* Move the div to the mouse location */
-	function moveDiv()
-	{
-		if (Settings.SmoothMove)
-		{ 
-			cX = LastcX - (LastcX-cX)/4;
-			cY = LastcY - (LastcY-cY)/Settings.SmoothMoveFactor;
-		}
-		
-		var element = document.getElementById(Settings.tooltipDiv.substring(1));
-		element.style.left = (cX+10) + "px";
-		element.style.top  = (cY+10) + "px";
-
-		LastcX = cX;
-		LastcY = cY;
-
-	}
-
-	/* Add an area to the specified image map */
-	function addArea(Options, MapID)
-	{
-		var maps    = document.getElementById(MapID);
-		var element = document.createElement("AREA");
-
-		element.shape  = Options[0];
-		element.coords = Options[1];
-		element.onmouseover = function() { showDiv(Options); };
-		element.onmouseout  = function() { $(Settings.tooltipDiv).html(""); };
-		maps.appendChild(element);
+		  </div>';
 	}
 
 }( jQuery ));

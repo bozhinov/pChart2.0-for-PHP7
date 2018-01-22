@@ -146,7 +146,7 @@ EOHTML;
 			<div id="htmlsource" style='width: 800px; font-size: 13px; font-family: Lucida Console'>
 				&lt;head&gt;<br/>
 				&nbsp;&nbsp; &lt;script src="jquery-3.3.1.min.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
-				&nbsp;&nbsp; &lt;script src="jquery.imagemap.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
+				&nbsp;&nbsp; &lt;script src="jquery.imagemap.js" &nbsp;type="text/javascript"&gt;&lt;/script&gt;<br/>
 				&nbsp;&nbsp; &lt;script&gt;<br/>
 				&nbsp;&nbsp; $(document).ready(function() {<br/>
 				&nbsp;&nbsp; &nbsp;&nbsp;   $("#testPicture").addImageMap("pictureMap","scripts/draw.php?ImageMap=get",{SmoothMove:true});<br/>
