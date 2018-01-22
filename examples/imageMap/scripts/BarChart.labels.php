@@ -6,15 +6,15 @@ require_once("bootstrap.php");
 
 use pChart\pColor;
 use pChart\pDraw;
-use pChart\pImageMap\pImageMapFile;
 use pChart\pCharts;
+use pChart\pImageMap\pImageMapFile;
 
 /* Create the pChart object */
 /* 							X, Y, TransparentBackground, UniqueID, StorageFolder*/
 $myPicture = new pImageMapFile(700,230,FALSE,"BarChart.labels","temp");
 
 /* Retrieve the image map */
-if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){
+if (isset($_GET["ImageMap"])){
 	$myPicture->dumpImageMap();
 }
 
@@ -39,17 +39,16 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Set the default font */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 
 /* Define the chart area */
 $myPicture->setGraphArea(60,40,650,200);
 
 /* Draw the scale */
-$scaleSettings = array("GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
-$myPicture->drawScale($scaleSettings);
+$myPicture->drawScale(["GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Write the chart legend */
-$myPicture->drawLegend(580,12,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+$myPicture->drawLegend(580,12,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Turn on shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
@@ -60,11 +59,11 @@ $myCharts = new pCharts($myPicture);
 $myCharts->drawBarChart(["RecordImageMap"=>TRUE]);
 
 /* Replace the labels of the image map */
-$Labels = array("Jan: 140","Feb: 0","Mar: 340","Apr: 300","May: 320","Jun: 300","Jul: 200","Aug: 100","Sept: 50");
+$Labels = ["Jan: 140","Feb: 0","Mar: 340","Apr: 300","May: 320","Jun: 300","Jul: 200","Aug: 100","Sept: 50"];
 $myCharts->myPicture->replaceImageMapValues("Server B", $Labels);
 
 /* Replace the titles of the image map */
-$Titles = array("Jan 2k11","Feb 2k11","Mar 2k11","Apr 2k11","May 2k11","Jun 2k11","Jul 2k11","Aug 2k11","Sept 2k11");
+$Titles = ["Jan 2k11","Feb 2k11","Mar 2k11","Apr 2k11","May 2k11","Jun 2k11","Jul 2k11","Aug 2k11","Sept 2k11"];
 $myCharts->myPicture->replaceImageMapTitle("Server A", "Second server");
 $myCharts->myPicture->replaceImageMapTitle("Server B", $Titles);
 

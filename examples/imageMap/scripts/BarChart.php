@@ -6,15 +6,15 @@ require_once("bootstrap.php");
 
 use pChart\pColor;
 use pChart\pDraw;
-use pChart\pImageMap\pImageMapFile;
 use pChart\pCharts;
+use pChart\pImageMap\pImageMapFile;
 
 /* Create the pChart object */
 /* 							X, Y, TransparentBackground, UniqueID, StorageFolder*/
 $myPicture = new pImageMapFile(700,230,FALSE,"BarChart","temp");
 
 /* Retrieve the image map */
-if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){
+if (isset($_GET["ImageMap"])){
 	$myPicture->dumpImageMap();
 }
 
@@ -39,17 +39,16 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Set the default font */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 
 /* Define the chart area */
 $myPicture->setGraphArea(60,40,650,200);
 
 /* Draw the scale */
-$scaleSettings = array("GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
-$myPicture->drawScale($scaleSettings);
+$myPicture->drawScale(["GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Write the chart legend */
-$myPicture->drawLegend(580,12,array("Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL));
+$myPicture->drawLegend(580,12,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Turn on shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);

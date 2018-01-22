@@ -14,7 +14,7 @@ use pChart\pImageMap\pImageMapFile;
 $myPicture = new pImageMapFile(400,400,FALSE,"ScatterSplineChart","temp");
 
 /* Retrieve the image map */
-if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){
+if (isset($_GET["ImageMap"])){
 	$myPicture->dumpImageMap();
 }
 

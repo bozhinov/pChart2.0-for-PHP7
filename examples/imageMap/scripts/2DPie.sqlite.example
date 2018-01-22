@@ -6,8 +6,8 @@ require_once("bootstrap.php");
 
 use pChart\pColor;
 use pChart\pDraw;
-use pChart\pImageMap\pImageMapSQLite;
 use pChart\pPie;
+use pChart\pImageMap\pImageMapSQLite;
 
 /* Create the pChart object */
 /* 								  X, Y, TransparentBackground, UniqueID, StorageFile*/
@@ -18,7 +18,7 @@ $myPicture = new pImageMapSQLite(300,260, FALSE, "2DPieChart", "temp/Pies.db");
 #var_dump($myPicture->ImageMapExists());
 
 /* Retrieve the image map */
-if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){
+if (isset($_GET["ImageMap"])){
 	$myPicture->dumpImageMap();
 	/* once called the script ends after the dump */
 }

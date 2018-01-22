@@ -14,7 +14,7 @@ use pChart\pImageMap\pImageMapFile;
 $myPicture = new pImageMapFile(700,230,FALSE,"StackedBarChart","temp");
 
 /* Retrieve the image map */
-if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){
+if (isset($_GET["ImageMap"])){
 	$myPicture->dumpImageMap();
 }
 
@@ -45,8 +45,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $myPicture->setGraphArea(60,40,650,200);
 
 /* Draw the scale */
-$scaleSettings = array("Mode"=>SCALE_MODE_ADDALL,"GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
-$myPicture->drawScale($scaleSettings);
+$myPicture->drawScale(["Mode"=>SCALE_MODE_ADDALL,"GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Write the chart legend */
 $myPicture->drawLegend(580,12,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
