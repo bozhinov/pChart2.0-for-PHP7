@@ -34,10 +34,10 @@ $myPicture->drawFilledRectangle(0,0,300,300,["Color"=>new pColor(170,183,87), "D
 $myPicture->drawGradientArea(0,0,300,260,DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50), "EndColor"=>new pColor(1,138,68,50)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,299,259,["R"=>0,"G"=>0,"B"=>0]);
+$myPicture->drawRectangle(0,0,299,259,["Color"=>new pColor(0,0,0)]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"R"=>80,"G"=>80,"B"=>80));
+$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80,80,80)));
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
