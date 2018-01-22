@@ -25,7 +25,6 @@ You can find the whole class documentation on the pChart web site.
 		var Settings = $.extend({
             SmoothMove: false,
             SmoothMoveFactor: 5,
-			delimiter: String.fromCharCode(1),
 			tooltipDiv: "ImageMapDiv" // mind the #
         }, mySettings );
 				
@@ -56,16 +55,15 @@ You can find the whole class documentation on the pChart web site.
 		/* get the image map */
 		var map = document.getElementById(ImageMapID);
 		
-		$.get(ImageMapURL).done(function(data) {
-			$.each(data.split("\r\n"), function(index, value) {
+		$.getJSON(ImageMapURL).done(function(data) {
+			$.each(data, function(index, value) {
 				/* Add an area to the specified image map */
-				var Options = value.split(Settings.delimiter);
-				if (Options.length == 5)
+				if (value.length == 5)
 				{
 					var element = document.createElement("AREA");
-					element.shape  = Options[0];
-					element.coords = Options[1];
-					element.onmouseover = function() { showDiv(Options[2], Options[3], Options[4].replace('"','')); };
+					element.shape  = value[0];
+					element.coords = value[1];
+					element.onmouseover = function() { showDiv(value[2], value[3], value[4].replace('"','')); };
 					element.onmouseout  = function() { tooltipDivElement.innerHTML = ""; };
 					map.appendChild(element);
 				}

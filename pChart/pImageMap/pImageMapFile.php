@@ -2,9 +2,9 @@
 /*
 pImageMapFile - pChart core class
 
-Version     : 0.2
+Version     : 0.3
 Made by     : Forked by Momchil Bozhinov from the original pImage class from Jean-Damien POGOLOTTI
-Last Update : 09/01/2018
+Last Update : 22/01/2018
 
 This file can be distributed under the license you can find at:
 http://www.pchart.net/license
@@ -32,23 +32,12 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 	function __destruct(){
 		
 		if (!empty($this->ImageMapBuffer)){
-			file_put_contents($this->ImageMapFileName, $this->formatOutput($this->ImageMapBuffer)); # truncates the file
+			file_put_contents($this->ImageMapFileName, json_encode($this->ImageMapBuffer)); # truncates the file
 		}
 
 		parent::__destruct();
 	}
-	
-	private function formatOutput(array $buffer)
-	{
-		$ret = "";
 		
-		foreach($buffer as $array) {
-			$ret .= $array[0] . chr(1) . $array[1] . chr(1) . $array[2] . chr(1) . $array[3] . chr(1) . $array[4] . "\r\n";
-		}
-		
-		return $ret;
-	}
-	
 	/* does the image map already exist */
 	function ImageMapExists(){
 		return file_exists($this->ImageMapFileName);
