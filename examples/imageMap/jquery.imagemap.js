@@ -18,6 +18,7 @@ You can find the whole class documentation on the pChart web site.
 	var LastcX	= 0;
 	var LastcY	= 0;
 	var Settings;
+	var tooltipDivElement;
 	
 	/* Add a picture element that need ImageMap parsing */
 	$.fn.addImageMap = function(ImageMapID,ImageMapURL, mySettings) 
@@ -58,13 +59,15 @@ You can find the whole class documentation on the pChart web site.
 					element.shape  = Options[0];
 					element.coords = Options[1];
 					element.onmouseover = function() { showDiv(Options[2], Options[3], Options[4].replace('"','')); };
-					element.onmouseout  = function() { $(Settings.tooltipDiv).html(""); };
+					element.onmouseout  = function() { tooltipDivElement.innerHTML = ""; };
 					map.appendChild(element);
 				}
 			});
 		});
 
-		 /* Attach the onMouseMove() event to picture frame */
+		
+		/* Attach the onMouseMove() event to picture frame */
+		tooltipDivElement = document.getElementById(Settings.tooltipDiv.substring(1));
 		$("#"+ImageMapID).mousemove(function(e){
 			cX = e.pageX; 
 			cY = e.pageY;
@@ -74,9 +77,8 @@ You can find the whole class documentation on the pChart web site.
 				cY = LastcY - (LastcY-cY)/Settings.SmoothMoveFactor;
 			}
 			/* Move the div to the mouse location */
-			var element = document.getElementById(Settings.tooltipDiv.substring(1));
-			element.style.left = (cX+10) + "px";
-			element.style.top  = (cY+10) + "px";
+			tooltipDivElement.style.left = (cX+10) + "px";
+			tooltipDivElement.style.top  = (cY+10) + "px";
 
 			LastcX = cX;
 			LastcY = cY;
@@ -88,7 +90,7 @@ You can find the whole class documentation on the pChart web site.
 	/* Show the tooltip */
 	function showDiv(Color, Title, Message) 
 	{
-		$(Settings.tooltipDiv).html('<div style="border:2px solid #606060">\
+		tooltipDivElement.innerHTML = '<div style="border:2px solid #606060">\
 		 <div style="background-color: #000000; font-family: tahoma; font-size: 11px; color: #ffffff; padding: 4px;">\
 		  	<b>'+Title+' &nbsp;</b>\
 		    </div>\
@@ -106,7 +108,7 @@ You can find the whole class documentation on the pChart web site.
 		 		</tr>\
 		  	</table>\
 		  </div>\
-		  </div>');
+		  </div>';
 	}
 
 }( jQuery ));
