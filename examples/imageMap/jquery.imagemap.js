@@ -14,42 +14,37 @@ You can find the whole class documentation on the pChart web site.
 */
  
 (function( $ ) {
-	
-	var cX	= 0;
-	var cY	= 0;
+
 	var LastcX	= 0;
 	var LastcY	= 0;
 	var Settings;
 	
 	/* Add a picture element that need ImageMap parsing */
-	$.fn.addImageMap = function(ImageMapID,ImageMapURL, Globals) 
+	$.fn.addImageMap = function(ImageMapID,ImageMapURL, mySettings) 
 	{
 		Settings = $.extend({
             SmoothMove: false,
             SmoothMoveFactor: 5,
 			delimiter: String.fromCharCode(1),
 			tooltipDiv: "#ImageMapDiv"
-        }, Globals );
+        }, mySettings );
 		
 		if ($("#".ImageMapID).length) {
 			$("#".ImageMapID).remove();
 		}
 
 		var element = document.createElement("DIV");
-
 		element.id             = Settings.tooltipDiv.substring(1);
 		element.innerHTML      = "";
 		element.style.display  = "inline-block";
 		element.style.position = "absolute";
-
 		document.body.appendChild(element);
 
-		var element = document.createElement("MAP");
-
+		var element  = document.createElement("MAP");
 		element.id   = ImageMapID;
 		element.name = ImageMapID;
 		document.body.appendChild(element);
-		document.getElementById('testPicture').useMap = "#"+ImageMapID;
+		document.getElementById(ImageMapID).useMap = "#"+ImageMapID;
 
 		/* get the image map */
 		$.get(ImageMapURL).done(function(data) {
@@ -66,7 +61,18 @@ You can find the whole class documentation on the pChart web site.
 		$("#"+ImageMapID).mousemove(function(e){
 			cX = e.pageX; 
 			cY = e.pageY;
-			moveDiv(); 
+			if (Settings.SmoothMove)
+			{ 
+				cX = LastcX - (LastcX-cX)/4;
+				cY = LastcY - (LastcY-cY)/Settings.SmoothMoveFactor;
+			}
+			/* Move the div to the mouse location */
+			var element = document.getElementById(Settings.tooltipDiv.substring(1));
+			element.style.left = (cX+10) + "px";
+			element.style.top  = (cY+10) + "px";
+
+			LastcX = cX;
+			LastcY = cY;
 		});
 		
 		return this;
@@ -98,24 +104,6 @@ You can find the whole class documentation on the pChart web site.
 		  	</table>\
 		  </div>\
 		  </div>');
-	}
-
-	/* Move the div to the mouse location */
-	function moveDiv()
-	{
-		if (Settings.SmoothMove)
-		{ 
-			cX = LastcX - (LastcX-cX)/4;
-			cY = LastcY - (LastcY-cY)/Settings.SmoothMoveFactor;
-		}
-		
-		var element = document.getElementById(Settings.tooltipDiv.substring(1));
-		element.style.left = (cX+10) + "px";
-		element.style.top  = (cY+10) + "px";
-
-		LastcX = cX;
-		LastcY = cY;
-
 	}
 
 	/* Add an area to the specified image map */
