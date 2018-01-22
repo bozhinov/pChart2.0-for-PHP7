@@ -17,6 +17,7 @@ if (isset($_GET["View"]))
 <meta http-equiv="expires" content="0" />
 <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 <meta http-equiv="pragma" content="no-cache" />
+<link rel='stylesheet' type='text/css' href='imagemap.css'/>
 <script src='../resources/jquery-3.3.1.min.js' type="text/javascript"></script>
 <script src='jquery.imagemap.js' type="text/javascript"></script>
 <script>
@@ -38,7 +39,7 @@ $(document).ready(function() {
 		
 });
 </script>
-<title>pChart 2.2.x - Image map</title>
+<title>pChart 2.3.x - Image map</title>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 <style>
 	body       { background-color: #F0F0F0; font-family: tahoma; font-size: 14px;}

@@ -15,18 +15,18 @@ You can find the whole class documentation on the pChart web site.
  
 (function( $ ) {
 
-	var LastcX	= 0;
-	var LastcY	= 0;
+	var LastcX = 0;
+	var LastcY = 0;
 	var tooltipDivElement;
 	
 	/* Add a picture element that need ImageMap parsing */
 	$.fn.addImageMap = function(ImageMapID, ImageMapURL, mySettings) 
 	{
 		var Settings = $.extend({
-            SmoothMove: false,
-            SmoothMoveFactor: 5,
-			tooltipDiv: "ImageMapDiv" // mind the #
-        }, mySettings );
+				SmoothMove: false,
+				SmoothMoveFactor: 5,
+				tooltipDiv: "ImageMapDiv" // mind the #
+			}, mySettings );
 				
 		/* create ToolTipDiv if needed */
 		if ($("#"+Settings.tooltipDiv).length) {
@@ -93,25 +93,14 @@ You can find the whole class documentation on the pChart web site.
 	/* Show the tooltip */
 	function showDiv(Color, Title, Message) 
 	{
-		tooltipDivElement.innerHTML = '<div style="border:2px solid #606060">\
-		 <div style="background-color: #000000; font-family: tahoma; font-size: 11px; color: #ffffff; padding: 4px;">\
-		  	<b>'+Title+' &nbsp;</b>\
-		    </div>\
-		    <div style="background-color: #808080; border-top: 2px solid #606060; font-family: tahoma; font-size: 10px; color: #ffffff; padding: 2px;">\
-		  	<table style="border: 0px; padding: 0px; margin: 0px;">\
-		  		<tr valign="top">\
-		 			<td style="padding-top: 4px;">\
-		  				<table style="background-color: '+Color+'; border: 1px solid #000000; width: 9px; height: 9px;  padding: 0px; margin: 0px; margin-right: 2px;">\
-		  					<tr>\
-		  						<td></td>\
-		  					</tr>\
-		  				</table>\
-		  			</td>\
-		  			<td>'+Message+'</td>\
-		 		</tr>\
-		  	</table>\
-		  </div>\
-		  </div>';
+		tooltipDivElement.innerHTML = '\
+			<div id="ImageMapShell">\
+				<div id="ImageMapTitle">'+Title+'</div>\
+				<div id="ImageMapMain">\
+					<div id="ImageMapColorBox" style="background-color: '+Color+';"></div>\
+					<div id="ImageMapMessage">'+Message+'</div>\
+				</div>\
+			</div>';
 	}
 
 }( jQuery ));
