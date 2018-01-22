@@ -77,8 +77,8 @@ function moveDiv()
 function addImageMap(PictureID,ImageMapID,ImageMapURL)
 {
 		
-	if ($("#".ImageMapID).length) {
-		$("#".ImageMapID).remove();
+	if ($("#"+ImageMapID).length) {
+		$("#"+ImageMapID).remove();
 	}
 	
 	var element = document.createElement("DIV");
