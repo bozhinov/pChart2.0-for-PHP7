@@ -59,7 +59,7 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 	function stripFromSerie(string $SerieName, array $Values)
 	{
 		if (!isset($this->myData->Data["Series"][$SerieName])) {
-			throw pException::ImageMapInvalidSerieName($SerieName);
+			throw \pChart\pException::ImageMapInvalidSerieName($SerieName);
 		}
 
 		$Result = [];
@@ -122,7 +122,7 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 			echo file_get_contents($this->ImageMapFileName);
 
 		} else {
-			throw pException::ImageMapInvalidID("ImageMap index ".$this->ImageMapFileName. " does not exist in file storage!");
+			throw \pChart\pException::ImageMapInvalidID("ImageMap index ".$this->ImageMapFileName. " does not exist in file storage!");
 		}
 
 		/* When the image map is returned to the client, the script ends */

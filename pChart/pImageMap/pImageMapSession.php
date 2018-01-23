@@ -24,7 +24,7 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE, $Name = "pChart", string $UniqueID = "imageMap")
 	{		
 		if (session_status() !== PHP_SESSION_ACTIVE) {
-			throw pException::ImageMapSessionNotStarted();
+			throw \pChart\pException::ImageMapSessionNotStarted();
 		}
 		
 		/* Initialize the image map methods */
@@ -69,7 +69,7 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 	function stripFromSerie(string $SerieName, array $Values)
 	{
 		if (!isset($this->myData->Data["Series"][$SerieName])) {
-			throw pException::ImageMapInvalidSerieName($SerieName);
+			throw \pChart\pException::ImageMapInvalidSerieName($SerieName);
 		}
 
 		$Result = [];
@@ -132,7 +132,7 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 			echo json_encode($_SESSION[$this->ImageMapIndex][$this->UniqueID]);
 		
 		} else {
-			throw pException::ImageMapInvalidID("ImageMap index ".$this->ImageMapIndex. " does not exist in session storage!");
+			throw \pChart\pException::ImageMapInvalidID("ImageMap index ".$this->ImageMapIndex. " does not exist in session storage!");
 		}
 		
 		/* When the image map is returned to the client, the script ends */

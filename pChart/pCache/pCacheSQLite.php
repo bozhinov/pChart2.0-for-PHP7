@@ -64,7 +64,7 @@ class pCacheSQLite implements pCacheInterface
 			$q = $this->DbSQLite->prepare("CREATE TABLE cache (Id TEXT,time INTEGER,hits INTEGER,data BLOB,PRIMARY KEY(Id));");
 			$q->execute();
 		} catch(\PDOException $e) {
-			throw pException::SQLiteException($e->getMessage());
+			throw \pChart\pException::SQLiteException($e->getMessage());
 		}
 
 	}
@@ -115,7 +115,7 @@ class pCacheSQLite implements pCacheInterface
 			$q->bindParam(':data', 	$Raw, \PDO::PARAM_STR);
 			$q->execute();
 		} catch(\PDOException $e) {
-			throw pException::SQLiteException($e->getMessage());
+			throw \pChart\pException::SQLiteException($e->getMessage());
 		}
 
 	}
@@ -143,7 +143,7 @@ class pCacheSQLite implements pCacheInterface
 		if ($ID != "") {
 			/* If it's not in the cache DB, go away */
 			if (!$this->isInCache()) {
-				throw pException::SQLiteException(" ID ".$ID ." not in cache!");
+				throw \pChart\pException::SQLiteException(" ID ".$ID ." not in cache!");
 			}
 		}
 		
@@ -185,7 +185,7 @@ class pCacheSQLite implements pCacheInterface
 			}
 			
 		} catch(\PDOException $e) {
-			throw pException::SQLiteException($e->getMessage());
+			throw \pChart\pException::SQLiteException($e->getMessage());
 		}
 		
 	}

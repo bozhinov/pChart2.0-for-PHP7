@@ -37,7 +37,7 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 			$q = $this->DbSQLite->prepare("CREATE TABLE IF NOT EXISTS ".$this->DbSQLite->quote($this->DbTable)." (Type TEXT, Plots BLOB, Color TEXT, Title TEXT, Message TEXT);");
 			$q->execute();
 		} catch(\PDOException $e) {
-			throw pException::ImageMapSQLiteException($e->getMessage());
+			throw \pChart\pException::ImageMapSQLiteException($e->getMessage());
 		}
 	}
 	
@@ -65,7 +65,7 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 				
 				$this->DbSQLite->commit();
 			} catch(\PDOException $e) {
-				throw pException::ImageMapSQLiteException($e->getMessage());
+				throw \pChart\pException::ImageMapSQLiteException($e->getMessage());
 			}
 		}
 
@@ -82,7 +82,7 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 			return (empty($match)) ? FALSE : TRUE;
 			
 		} catch(\PDOException $e) {
-			throw pException::ImageMapSQLiteException($e->getMessage());
+			throw \pChart\pException::ImageMapSQLiteException($e->getMessage());
 		}	
 	}
 
@@ -105,7 +105,7 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 	function stripFromSerie(string $SerieName, array $Values)
 	{
 		if (!isset($this->myData->Data["Series"][$SerieName])) {
-			throw pException::ImageMapInvalidSerieName($SerieName);
+			throw \pChart\pException::ImageMapInvalidSerieName($SerieName);
 		}
 
 		$Result = [];
@@ -177,7 +177,7 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 			echo json_encode($this->formatOutput($match));
 			
 		} catch(\PDOException $e) {
-			throw pException::ImageMapSQLiteException($e->getMessage());
+			throw \pChart\pException::ImageMapSQLiteException($e->getMessage());
 		}
 	
 		/* When the image map is returned to the client, the script ends */
