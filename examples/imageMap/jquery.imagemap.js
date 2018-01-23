@@ -94,11 +94,11 @@ You can find the whole class documentation on the pChart web site.
 	function showDiv(Color, Title, Message) 
 	{
 		tooltipDivElement.innerHTML = '\
-			<div id="ImageMapShell">\
-				<div id="ImageMapTitle">'+Title+'</div>\
-				<div id="ImageMapMain">\
-					<div id="ImageMapColorBox" style="background-color: '+Color+';"></div>\
-					<div id="ImageMapMessage">'+Message+'</div>\
+			<div class="imageMapShell">\
+				<div class="imageMapTitle">'+Title+'</div>\
+				<div class="imageMapMain">\
+					<div class="imageMapColorBox" style="background-color: '+Color+';"></div>\
+					<div class="imageMapMessage">'+Message+'</div>\
 				</div>\
 			</div>';
 	}
