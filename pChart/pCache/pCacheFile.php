@@ -121,7 +121,7 @@ class pCacheFile implements pCacheInterface
 		if (!is_null($ID)) {
 			/* If it's not in the cache DB, go away */
 			if (!$this->isInCache()) {
-				throw pException::CacheException(" ID ".$ID ." not in cache!");
+				throw \pChart\pException::CacheException(" ID ".$ID ." not in cache!");
 			}
 		}
 
