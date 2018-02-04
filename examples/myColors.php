@@ -41,7 +41,7 @@ class myColors {
 	
 	public static function myGridColor(float $Alpha = 100)
 	{
-		return ["StartColor"=>new pChart\pColor(240,240,240,$Alpha), "EndColor"=>new pChart\pColor(180,180,180,$Alpha)];
+		return ["StartColor"=>new pChart\pColor(240,240,240,$Alpha), "EndColor"=>new pChart\pColor(80,80,80,$Alpha)];
 	}
 
 	public static function myGreenGradient(float $Alpha = 100)

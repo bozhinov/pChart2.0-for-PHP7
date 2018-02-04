@@ -20,11 +20,8 @@ $myPicture->myData->setSerieDescription("Months","Month");
 $myPicture->myData->setAbscissa("Months");
 $myPicture->myData->setAbsicssaPosition(AXIS_POSITION_TOP); 
 
-/* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
-
 /* Add a border to the picture */
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, myColors::myGridColor());
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,  myColors::myGridColor());
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,myColors::myGridColor(20));
 $myPicture->drawRectangle(0,0,699,229,["Color"=>myColors::Black()]);
 
