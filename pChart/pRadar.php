@@ -162,7 +162,7 @@ class pRadar
 				}
 			} else {
 				
-				$GradientColor = new pColorGradient($BackgroundGradient["StartColor"], $BackgroundGradient["EndColor"], TRUE);
+				$GradientColor = new pColorGradient($BackgroundGradient["StartColor"], $BackgroundGradient["EndColor"]);
 				$GradientColor->SetSegments($Segments);
 
 				if ($Layout == RADAR_LAYOUT_STAR) {
@@ -472,7 +472,7 @@ class pRadar
 			if (!is_array($BackgroundGradient)) {
 				$this->myPicture->drawFilledCircle($CenterX, $CenterY, $EdgeHeight, ["Color" => $BackgroundColor]);
 			} else {
-				$GradientColor = new pColorGradient($BackgroundGradient["StartColor"], $BackgroundGradient["EndColor"], TRUE);
+				$GradientColor = new pColorGradient($BackgroundGradient["StartColor"], $BackgroundGradient["EndColor"]);
 				$GradientColor->SetSegments($Segments);
 				for ($j = $Segments; $j >= 1; $j--) {
 					$this->myPicture->drawFilledCircle($CenterX, $CenterY, ($EdgeHeight / $Segments) * $j, ["Color" => $GradientColor->Next($j,TRUE)]);

@@ -192,7 +192,7 @@ class pSurface
 		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
 		$YSize = $this->myPicture->GraphAreaYdiff / ($this->GridSizeY + 1);
 	
-		$Gradient = new pColorGradient($ShadeColor1->newOne(), $ShadeColor2->newOne());
+		$Gradient = new pColorGradient($ShadeColor1, $ShadeColor2);
 		$Gradient->SetSegments(100);
 						
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {

@@ -21,11 +21,11 @@ class pColorGradient {
 	var $OffsetAlpha;
 	var $Step;
 	
-	function __construct(pColor $Start, pColor $End, $Radar = FALSE)
+	function __construct(pColor $Start, pColor $End)
 	{ 		
-		$this->StartColor = $Start;
-		$this->EndColor = $End;
-		$this->ReturnColor = ($Radar) ? $Start->newOne() : $Start;
+		$this->StartColor = $Start->newOne();
+		$this->EndColor = $End->newOne();
+		$this->ReturnColor = $this->StartColor;
 	}
 
 	function SetSegments(int $Segments = 0)

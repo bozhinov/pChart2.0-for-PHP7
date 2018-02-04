@@ -996,7 +996,7 @@ class pDraw
 	function drawGradientArea($X1, $Y1, $X2, $Y2, $Direction, array $GradientColor, $Levels = NULL)
 	{
 
-		$GradientColor = new pColorGradient($GradientColor["StartColor"]->newOne(), $GradientColor["EndColor"]->newOne());
+		$GradientColor = new pColorGradient($GradientColor["StartColor"], $GradientColor["EndColor"]);
 
 		/* Draw a gradient within a defined area */
 		$Shadow = $this->Shadow;
@@ -1012,11 +1012,12 @@ class pDraw
 		($Y1 > $Y2) AND list($Y1, $Y2) = [$Y2,$Y1];
 
 		$Step = $GradientColor->FindStep();
+		$GradientColor->SetSegments($Step);
 
 		if ($Direction == DIRECTION_VERTICAL){
 
 				$StepSize = abs($Y2 - $Y1)/ $Step;
-				$GradientColor->SetSegments($Step);
+				
 				$StartY = $Y1;
 				$EndY = floor($Y2) + 1;
 				$LastY2 = $StartY;
@@ -1044,7 +1045,6 @@ class pDraw
 		} elseif ($Direction == DIRECTION_HORIZONTAL) {
 
 				$StepSize = abs($X2 - $X1) / $Step;
-				$GradientColor->SetSegments($Step);
 				$StartX = $X1;
 				$EndX = $X2;
 				
