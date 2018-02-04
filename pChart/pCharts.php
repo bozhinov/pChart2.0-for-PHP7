@@ -1443,7 +1443,7 @@ class pCharts {
 										$this->myPicture->Shadow = FALSE;
 										if ($GradientMode == GRADIENT_SIMPLE) {
 											if ($Serie["Data"][$Key] >= 0) {
-												$GradienColor = ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor];
+												$GradienColor = ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor];
 											} else {
 												$GradienColor = ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor];
 											}
