@@ -2,9 +2,9 @@
 /*
 pImageMapSQLite - pChart core class
 
-Version     : 0.1
+Version     : 0.2
 Made by     : Momchil Bozhinov
-Last Update : 10/01/2018
+Last Update : 22/01/2018
 */
 
 namespace pChart\pImageMap;
@@ -157,15 +157,15 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 	
 	private function formatOutput(array $buffer)
 	{
-		$ret = "";
+		$ret = [];
 		
 		foreach($buffer as $array) {
-			$ret .= $array["Type"] . chr(1) . $array["Plots"] . chr(1) . $array["Color"] . chr(1) . $array["Title"] . chr(1) . $array["Message"] . "\r\n";
+			$ret[] = array_values($array);
 		}
 		
 		return $ret;
 	}
-
+	
 	/* Dump the image map */
 	/* Momchil: this function relies on the fact that the ImageMap for the image already exists */
 	function dumpImageMap()
@@ -174,7 +174,7 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 			$q = $this->DbSQLite->prepare("SELECT * FROM ".$this->DbSQLite->quote($this->DbTable).";");
 			$q->execute();
 			$match = $q->fetchAll(\PDO::FETCH_ASSOC);
-			echo $this->formatOutput($match);
+			echo json_encode($this->formatOutput($match));
 			
 		} catch(\PDOException $e) {
 			throw \pChart\pException::ImageMapSQLiteException($e->getMessage());

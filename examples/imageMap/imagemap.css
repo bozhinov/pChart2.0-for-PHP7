@@ -1,0 +1,6 @@
+.imageMapShell { border:2px solid #606060; }
+.imageMapTitle { background-color: #000000; font-family: tahoma; font-size: 11px; color: #ffffff; padding: 4px; font-weight: bold; }
+.imageMapMain  { background-color: #808080; border-top: 2px solid #606060; font-family: tahoma; font-size: 10px; color: #ffffff; padding: 2px; }
+.imageMapMain div { display: inline-block; }
+.imageMapColorBox { border: 1px solid #000000; width: 9px; height: 9px; padding: 0px; margin: 0px; margin-right: 2px; vertical-align: top; }
+.imageMapMessage {}

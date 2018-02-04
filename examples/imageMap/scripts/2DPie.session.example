@@ -8,16 +8,16 @@ require_once("bootstrap.php");
 
 use pChart\pColor;
 use pChart\pDraw;
-use pChart\pImageMap\pImageMapSession;
 use pChart\pPie;
+use pChart\pImageMap\pImageMapSession;
 
 /* Create the pChart object */
 /* 							X, Y, TransparentBackground, SessionIndex, UniqueID*/
 $myPicture = new pImageMapSession(300,260, FALSE, "pChart", "2DPieChart");
 
 /* Retrieve the image map */
-if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){
-	print_r($_SESSION);
+if (isset($_GET["ImageMap"])){
+	#print_r($_SESSION);
 	$myPicture->dumpImageMap();
 	/* once called the script ends after the dump */
 }

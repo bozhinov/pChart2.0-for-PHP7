@@ -17,6 +17,7 @@ if (isset($_GET["View"]))
 <meta http-equiv="expires" content="0" />
 <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 <meta http-equiv="pragma" content="no-cache" />
+<link rel='stylesheet' type='text/css' href='imagemap.css'/>
 <script src='../resources/jquery-3.3.1.min.js' type="text/javascript"></script>
 <script src='jquery.imagemap.js' type="text/javascript"></script>
 <script>
@@ -145,6 +146,7 @@ EOHTML;
 		<div style='display:table-cell; padding: 10px;  border: 2px solid #FFFFFF; vertical-align: middle; overflow: auto; background-image: url("../resources/dash.png");'>
 			<div id="htmlsource" style='width: 800px; font-size: 13px; font-family: Lucida Console'>
 				&lt;head&gt;<br/>
+				&nbsp;&nbsp; &lt;link href='imagemap.css' type='text/css' rel='stylesheet'&gt;&lt;/link&gt;<br/>
 				&nbsp;&nbsp; &lt;script src="jquery-3.3.1.min.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
 				&nbsp;&nbsp; &lt;script src="jquery.imagemap.js" &nbsp;type="text/javascript"&gt;&lt;/script&gt;<br/>
 				&nbsp;&nbsp; &lt;script&gt;<br/>

@@ -6,15 +6,15 @@ require_once("bootstrap.php");
 
 use pChart\pColor;
 use pChart\pDraw;
-use pChart\pImageMap\pImageMapFile;
 use pChart\pPie;
+use pChart\pImageMap\pImageMapFile;
 
 /* Create the pChart object */
 /* 							X, Y, TransparentBackground, UniqueID, StorageFolder*/
 $myPicture = new pImageMapFile(300,260, FALSE, "2DPieChart", "temp");
 
 /* Retrieve the image map */
-if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){
+if (isset($_GET["ImageMap"])){
 	$myPicture->dumpImageMap();
 	/* once called the script ends after the dump */
 }

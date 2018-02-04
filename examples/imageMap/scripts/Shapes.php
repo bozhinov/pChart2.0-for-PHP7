@@ -13,7 +13,7 @@ use pChart\pImageMap\pImageMapFile;
 $myPicture = new pImageMapFile(700,230,FALSE,"Shapes","temp");
 
 /* Retrieve the image map */
-if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){
+if (isset($_GET["ImageMap"])){
 	$myPicture->dumpImageMap();
 }
 

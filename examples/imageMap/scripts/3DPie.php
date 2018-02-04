@@ -6,15 +6,15 @@ require_once("bootstrap.php");
 
 use pChart\pColor;
 use pChart\pDraw;
-use pChart\pImageMap\pImageMapFile;
 use pChart\pPie;
+use pChart\pImageMap\pImageMapFile;
 
 /* Create the pChart object */
 /* 							X, Y, TransparentBackground, UniqueID, StorageFolder*/
 $myPicture = new pImageMapFile(300,260,FALSE,"3DPieChart","temp");
 
 /* Retrieve the image map */
-if (isset($_GET["ImageMap"]) || isset($_POST["ImageMap"])){
+if (isset($_GET["ImageMap"])){
 	$myPicture->dumpImageMap();
 }
 
@@ -23,7 +23,7 @@ $myPicture->myData->addPoints([40,60,15,10,6,4],"ScoreA");
 $myPicture->myData->setSerieDescription("ScoreA","Application A");
 
 /* Define the abscissa series */
-$myPicture->myData->addPoints(array("<10","10<>20","20<>40","40<>60","60<>80",">80"),"Labels");
+$myPicture->myData->addPoints(["<10","10<>20","20<>40","40<>60","60<>80",">80"],"Labels");
 $myPicture->myData->setAbscissa("Labels");
 
 /* Draw a solid background */
@@ -42,8 +42,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","Fon
 $PieChart = new pPie($myPicture);
 
 /* Draw an AA pie chart */ 
-$PieSettings = array("DrawLabels"=>TRUE,"LabelStacked"=>TRUE,"Border"=>TRUE,"RecordImageMap"=>TRUE);
-$PieChart->draw3DPie(160,150,$PieSettings);
+$PieChart->draw3DPie(160,150,["DrawLabels"=>TRUE,"LabelStacked"=>TRUE,"Border"=>TRUE,"RecordImageMap"=>TRUE]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/3DPieChart.png");
