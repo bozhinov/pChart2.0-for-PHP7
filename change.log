@@ -11,8 +11,7 @@
  +-----------------------------------------+
  
  2.3.0 -----------------------------------------------------------------------
-  o ImageMapper: uses JSON format
-  o ImageMapper: custom styling for the tooltip
+
   
  2.2.3 -----------------------------------------------------------------------
   o Cleaned up code
@@ -30,6 +29,8 @@
   o ImageMapper: Re-write JS using jQuery
   o ImageMapper: Split into Session and File storage
   o ImageMapper: PDO SQLite storage
+  o ImageMapper: uses JSON format
+  o ImageMapper: custom styling for the tooltip
 
  2.2.2 -----------------------------------------------------------------------
   o Cleaned up code
