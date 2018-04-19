@@ -3940,7 +3940,7 @@ class pDraw
 			header("Pragma: no-cache");
 		}
 
-		header('Content-/type: image/png');
+		header('Content-type: image/png');
 		imagepng($this->Picture, NULL, $Compression, $Filters);
 	}
 
