@@ -5,7 +5,8 @@ if (php_sapi_name() != "cli") {
 }
 	
 spl_autoload_register(function ($class_name) {
-	include $class_name . ".php";
+	$filename = str_replace('\\', DIRECTORY_SEPARATOR, $class_name) . '.php';
+	include $filename;
 });
 
 
