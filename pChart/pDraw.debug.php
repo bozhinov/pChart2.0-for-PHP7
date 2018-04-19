@@ -291,7 +291,7 @@ class pDraw
 		
 		if($FileName == NULL){ 
 			# Cache control should be done at a higher level
-			header('Content-/type: image/png');
+			header('Content-type: image/png');
 		}
 		imagepng($Picture, $FileName, $Compression, $Filters);		
 		imagedestroy($Picture);
