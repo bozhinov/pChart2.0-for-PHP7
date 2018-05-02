@@ -2529,6 +2529,7 @@ class pDraw
 	}
 
 	/* Compute the scale, check for the best visual factors */
+	/* $Factors is an array of only integers */
 	function computeScale($XMin, $XMax, $MaxDivs, array $Factors, $AxisID = 0)
 	{
 		$Results = [];
@@ -2546,14 +2547,10 @@ class pDraw
 			}
 		}
 
-		/* Found no correct scale, shame,... returns the 1st one as default */
-		if (empty($GoodScaleFactors)) {
-			return $Results[$Factors[0]];
-		}
-
 		/* Find the factor that cause the maximum number of Rows */
 		$MaxRows = 0;
 		$BestFactor = 0;
+		
 		foreach($GoodScaleFactors as $Factor) {
 			if ($Results[$Factor]["Rows"] > $MaxRows) {
 				$MaxRows = $Results[$Factor]["Rows"];
