@@ -169,6 +169,9 @@ class pDraw
 		
 		# TODO if PHP 7.2 consider imageantialias
 		#imageantialias($this->Picture, TRUE);
+		
+		/* default font color */
+		$this->FontColor = new pColor(255,255,255);
 
 	}
 	
