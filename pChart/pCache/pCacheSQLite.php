@@ -21,11 +21,11 @@ class pCacheSQLite implements pCacheInterface
 	var $DbSQLite;
 	var $DbPath;
 	var $Id;
-	
+
 	/* Class creator */
 	function __construct(array $Settings = [], string $uniqueId)
 	{
-		
+
 		$CacheFolder = isset($Settings["CacheFolder"]) ? $Settings["CacheFolder"] : "cache";
 		
 		#if (!is_dir($CacheFolder)){
@@ -33,7 +33,7 @@ class pCacheSQLite implements pCacheInterface
 		#}
 
 		$this->Id = md5($uniqueId);
-		
+
 		/* blocking the file access to the cache seems a good idea 
 		<Files ~ "\cache">
 			Order allow,deny
@@ -43,10 +43,10 @@ class pCacheSQLite implements pCacheInterface
 
 		$this->DbPath = isset($Settings["DbPath"]) ? $Settings["DbPath"] : "sql.cache.db";
 		$this->DbPath = $CacheFolder . "/" . $this->DbPath;
-		
+
 		$this->DbSQLite = new \PDO("sqlite:".$this->DbPath); 
 		$this->DbSQLite->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-		
+
 		/* Create the cache Db */
 		if (!file_exists($this->DbPath)){
 			$this->InitDb();
@@ -59,7 +59,7 @@ class pCacheSQLite implements pCacheInterface
 
 	/* Create Db schema */
 	function InitDb(){
-		
+
 		try{
 			$q = $this->DbSQLite->prepare("CREATE TABLE cache (Id TEXT,time INTEGER,hits INTEGER,data BLOB,PRIMARY KEY(Id));");
 			$q->execute();
@@ -86,7 +86,7 @@ class pCacheSQLite implements pCacheInterface
 	/* Write the generated picture to the cache */
 	function writeToCache($pChartObject)
 	{
-		
+
 		if (!($pChartObject instanceof \pChart\pDraw)){
 			die("pCache needs a pDraw object. Please check the examples.");
 		}
@@ -147,7 +147,7 @@ class pCacheSQLite implements pCacheInterface
 			}
 		}
 		
-		try{ 
+		try{
 			if ($ID != "") {
 				$statement = "DELETE FROM cache WHERE Id= :Id;";
 			} else {
@@ -160,13 +160,13 @@ class pCacheSQLite implements pCacheInterface
 
 		} catch(\PDOException $e) {
 			throw pException::SQLiteException($e->getMessage());
-		}		
+		}
 
 	}
 
 	function isInCache(bool $Verbose = FALSE, bool $UpdateHitsCount = FALSE)
 	{
-		try{ 
+		try{
 			$q = $this->DbSQLite->prepare("SELECT Id,hits,data FROM cache WHERE Id= :Id;");
 			$q->bindParam(':Id', $this->Id, \PDO::PARAM_STR);
 			$q->execute();
@@ -183,7 +183,7 @@ class pCacheSQLite implements pCacheInterface
 			} else {
 				return FALSE;
 			}
-			
+
 		} catch(\PDOException $e) {
 			throw \pChart\pException::SQLiteException($e->getMessage());
 		}

@@ -36,7 +36,7 @@ class pBubble
 
 	/* Prepare the scale */
 	function bubbleScale(array $DataSeries, array $WeightSeries)
-	{		
+	{
 		/* Parse each data series to find the new min & max boundaries to scale */
 		$NewPositiveSerie = [];
 		$NewNegativeSerie = [];
@@ -111,7 +111,7 @@ class pBubble
 		
 		/* Override defaults */
 		extract($Format);
-				
+
 		$Data = $this->myPicture->myData->Data["Series"];
 		$Orientation = $this->myPicture->myData->Data["Orientation"];
 		
@@ -157,7 +157,7 @@ class pBubble
 					$ColorSettings["BorderColor"] = $BorderColor;					
 				}
 			}
-						
+
 			if ($RecordImageMap) {
 				$SerieDescription = (isset($Data[$SerieName]["Description"])) ? $Data[$SerieName]["Description"] : $SerieName;
 				$ImageMapColor = $ColorSettings["Color"]->toHTMLColor();

@@ -17,7 +17,7 @@ namespace pChart\pCache;
 Interface pCacheInterface
 {
 	function __construct(array $Settings = [], string $uniqueId);
-	
+
 	function changeID(string $uniqueId);
 
 	function flush();

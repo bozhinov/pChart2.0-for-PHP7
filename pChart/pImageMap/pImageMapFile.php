@@ -24,20 +24,20 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 	{
 		/* Initialize the image map methods */
 		$this->ImageMapFileName = $StorageFolder . "/" . $UniqueID . ".map";
-				
+
 		/* Initialize the parent */
 		parent::__construct($XSize, $YSize, $TransparentBackground);
 	}
 	
 	function __destruct(){
-		
+
 		if (!empty($this->ImageMapBuffer)){
 			file_put_contents($this->ImageMapFileName, json_encode($this->ImageMapBuffer)); # truncates the file
 		}
 
 		parent::__destruct();
 	}
-		
+
 	/* does the image map already exist */
 	function ImageMapExists(){
 		return file_exists($this->ImageMapFileName);
@@ -75,7 +75,7 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 	/* Replace the title of one image map series */
 	function replaceImageMapTitle(string $OldTitle, $NewTitle)
 	{
-				
+
 		if (is_array($NewTitle)) {
 			$ID = 0;
 			$NewTitle = $this->stripFromSerie($OldTitle, $NewTitle);

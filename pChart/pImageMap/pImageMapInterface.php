@@ -11,7 +11,7 @@ Last Update : 10/01/2018
 namespace pChart\pImageMap;
 
 interface pImageMapInterface
-{			
+{
 	/* Add a zone to the image map */
 	function addToImageMap(string $Type, string $Plots, string $Color, string $Title, string $Message, bool $HTMLEncode );
 

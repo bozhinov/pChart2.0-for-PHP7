@@ -117,7 +117,7 @@ class pSurface
 		$Position = isset($Format["Position"]) ? $Format["Position"] : LABEL_POSITION_LEFT;
 		$Labels = isset($Format["Labels"]) ? $Format["Labels"] : [];
 		$CountOffset = isset($Format["CountOffset"]) ? $Format["CountOffset"] : 0;
-				
+
 		$Y0 = $this->myPicture->GraphAreaY1;
 		$YSize = $this->myPicture->GraphAreaYdiff / ($this->GridSizeY + 1);
 		$Settings = ["Angle" => $Angle,"Color" => $Color];
@@ -194,7 +194,7 @@ class pSurface
 	
 		$Gradient = new pColorGradient($ShadeColor1->newOne(), $ShadeColor2->newOne());
 		$Gradient->SetSegments(100);
-						
+
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
 			for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {
 				$Value = $this->Points[$X][$Y];

@@ -24,7 +24,7 @@ class pBarcode128
 	/* Class creator */
 	function __construct($pChartObject, string $dbFileName = "", $UseCache = FALSE)
 	{
-		
+
 		if (!($pChartObject instanceof pDraw)){
 			die("pBarcode needs a pDraw object. Please check the examples.");
 		}

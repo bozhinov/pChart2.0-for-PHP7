@@ -32,7 +32,7 @@ class pIndicator
 		if (!($pChartObject instanceof pDraw)){
 			die("pIndicator needs a pDraw object. Please check the examples.");
 		}
-		
+
 		$this->myPicture = $pChartObject;
 	}
 
@@ -82,7 +82,7 @@ class pIndicator
 		$ValuesPos = [];
 		$RestoreShadow = $this->myPicture->Shadow;
 		$this->myPicture->Shadow = FALSE;
-			
+
 		foreach($IndicatorSections as $Key => $Settings) {
 			$Color = ["Color" => $Settings['Color']];
 			$Caption = $Settings["Caption"];

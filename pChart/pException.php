@@ -56,17 +56,17 @@ class pException extends \Exception
 	{
 		return new static(sprintf('ImageMapper: %s', $text));
 	}
-	
+
 	public static function SQLiteException($text)
 	{
 		return new static(sprintf('pCache: %s', $text));
 	}
-	
+
 	public static function CacheException($text)
 	{
 		return new static(sprintf('pCache: %s', $text));
 	}
-	
+
 	public static function PieNoAbscissaException()
 	{
 		return new static('pPie: No Abscissa');
@@ -76,12 +76,12 @@ class pException extends \Exception
 	{
 		return new static('pPie: No DataSerie');
 	}
-	
+
 	public static function PieNoDataToDrawException()
 	{
 		return new static('pPie: No Data to draw');
 	}
-	
+
 	public static function StockMissingSerieException()
 	{
 		return new static('pStock: No DataSerie');
@@ -91,17 +91,17 @@ class pException extends \Exception
 	{
 		return new static('pSpring: Connections needs to be an array');
 	}
-	
+
 	public static function SpringInvalidInputException($text)
 	{
 		return new static(sprintf('pSprint: %s', $text));
 	}
-	
+
 	public static function ZoneChartInvalidInputException($text)
 	{
 		return new static(sprintf('pCharts: %s', $text));
 	}
-	
+
 	public static function ScatterInvalidInputException($text)
 	{
 		return new static(sprintf('pScatter: %s', $text));

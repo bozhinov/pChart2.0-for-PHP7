@@ -24,9 +24,9 @@ class pCacheFile implements pCacheInterface
 	/* Class creator */
 	function __construct(array $Settings = [], string $uniqueId)
 	{
-		
+
 		$CacheFolder = isset($Settings["CacheFolder"]) ? $Settings["CacheFolder"] : "cache";
-		
+
 		#if (!is_dir($CacheFolder)){
 		#	mkdir($CacheFolder, 0775);
 		#}
@@ -55,7 +55,7 @@ class pCacheFile implements pCacheInterface
 			touch($this->CacheDB);
 		}
 	}
-	
+
 	/* For when you need to work with multiple cached images */
 	function changeID(string $uniqueId){
 		$this->Id = md5($uniqueId);
@@ -128,21 +128,21 @@ class pCacheFile implements pCacheInterface
 		/* Open the file handles */
 		$TempIndex = "";
 		$TempDb = "";
-				
+
 		/* Remove the selected ID from the database */
 		$IndexContent = file($this->CacheIndex, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-		
+
 		foreach ($IndexContent as $line){
-			
+
 			list($PicID, $DbPos, $PicSize, $GeneratedTS, $Hits) = explode(",", $line);
-			
+
 			/* filter out the ID for removal and OlderThan X */
 			if ($PicID != $ID && $GeneratedTS > $TS) {
 				$TempIndex .= $PicID.",".strlen($TempDb).",".$PicSize.",".$GeneratedTS.",".$Hits."\r\n";
 				$TempDb .= file_get_contents($this->CacheDB, NULL, NULL, $DbPos, $PicSize);
 			}
 		}
-		
+
 		/* Swap the temp & prod DB */
 		file_put_contents($this->CacheDB, $TempDb, LOCK_EX);
 		file_put_contents($this->CacheIndex, $TempIndex, LOCK_EX);
@@ -153,11 +153,11 @@ class pCacheFile implements pCacheInterface
 		$IndexContent = file($this->CacheIndex, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 		$i = 0;
 		$ret = FALSE;
-		
+
 		foreach ($IndexContent as $line){
 
 			list($PicID, $DBPos, $PicSize, $GeneratedTS, $Hits) = explode(",", $line);
-			
+
 			if ($PicID == $this->Id) {
 				if ($UpdateHitsCount) {
 					/* increment hints as an INT and then convert back to STR */
@@ -177,13 +177,13 @@ class pCacheFile implements pCacheInterface
 			
 			$i++;
 		}
-		
+
 		/* Update Index file if we have a hit */
 		if ($ret != FALSE){
 			$UpdatedIndexContent = array_reduce($IndexContent, function($content, $l){$content .= strval($l)."\r\n"; return $content;});
 			file_put_contents($this->CacheIndex, $UpdatedIndexContent, LOCK_EX);
 		}
-		
+
 		return $ret;
 	}
 

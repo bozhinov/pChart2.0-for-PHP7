@@ -136,23 +136,23 @@ class pDraw
 
 	/* Data Set */
 	var $myData = []; // Attached myData
-	
+
 	/* MOMCHIL: DEBUG CODE */
 	var $Buff = [];
 	var $Compression = 6;
 	var $Filters = 0;
-	
+
 	/* Class constructor */
 	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE)
-	{		
+	{
 		$this->myData = new pData();
 		$this->XSize = $XSize;
 		$this->YSize = $YSize;
-				
+
 		if (!($XSize > 0 && $YSize > 0)){
 			throw pException::InvalidDimentions("Image dimensions (X * Y) must be > 0!");
 		}
-		
+
 		$memory_limit = ini_get("memory_limit");
 		if (intval($memory_limit) * 1024 * 1024 < $XSize * $YSize * 3 * 1.7){ # Momchil: for black & white gifs -> use 1 and not 3
 			echo "Memory limit: ".$memory_limit." Mb ".PHP_EOL;
@@ -173,13 +173,13 @@ class pDraw
 		#$this->DumpBuffer("dump.txt");
 		$this->Render((php_sapi_name() == "cli") ? $FileName : TRUE, $Compression, $Filters);
 	}
-	
+
 	/* Destroy the image and start over. Required for pBarcodes */
 	function resize(int $XSize, int $YSize)
 	{
 		$this->__construct($XSize, $YSize, $this->TransparentBackground);
 	}
-	
+
 	function DumpBuffer($FileName)
 	{
 		$dump = "";
@@ -187,35 +187,35 @@ class pDraw
 		foreach($this->Buff as $p){
 			$dump .= json_encode($p).PHP_EOL;
 		}
-		
+
 		$dump .= json_encode(['Meta' => [$this->XSize, $this->YSize, $this->TransparentBackground, $this->Filters, $this->Compression]]);
 
 		file_put_contents($FileName, $dump);
 
 	}
-	
+
 	function RenderFromDump($FileName)
 	{
-		
+
 		$dump = file_get_contents($FileName);
 		$Buff = explode(PHP_EOL, $dump);
-			
+
 		$Meta = array_pop($Buff);
 		$Meta = json_decode($Meta, TRUE);
 		$Compression = $Meta["Meta"][4];
 		$Filters = $Meta["Meta"][3];
 		$Picture = imagecreatetruecolor($Meta["Meta"][0], $Meta["Meta"][1]);
 		$cC = [];
-		
+
 		if ($Meta["Meta"][2]) {
 			imagealphablending($Picture, TRUE);
 			imagesavealpha($Picture, TRUE);
 		}
-			
+
 		foreach($Buff as $p){
-	
+
 			$p = json_decode($p, TRUE);
-			
+
 			$cId = $p[5][0].".".$p[5][1].".".$p[5][2].".".$p[5][3];
 			if (!isset($cC[$cId])){
 				$cC[$cId] = imagecolorallocatealpha($Picture, $p[5][0], $p[5][1], $p[5][2], $p[5][3]);
@@ -243,24 +243,24 @@ class pDraw
 			}
 
 		}
-	
-		imagepng($Picture, $FileName.".png", $Compression, $Filters);		
+
+		imagepng($Picture, $FileName.".png", $Compression, $Filters);
 		imagedestroy($Picture);
 	}
 
 	function Render($FileName, int $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
-		
+
 		$Picture = imagecreatetruecolor($this->XSize, $this->YSize);
 		$cC = [];
-			
+
 		if ($this->TransparentBackground) {
 			imagealphablending($Picture, TRUE);
 			imagesavealpha($Picture, TRUE);
 		}
-					
+
 		foreach($this->Buff as $p){
-	
+
 			$cId = $p[5][0].".".$p[5][1].".".$p[5][2].".".$p[5][3];
 			if (!isset($cC[$cId])){
 				$cC[$cId] = imagecolorallocatealpha($Picture, $p[5][0], $p[5][1], $p[5][2], $p[5][3]);
@@ -288,51 +288,51 @@ class pDraw
 			}
 
 		}
-		
-		if($FileName == NULL){ 
+
+		if($FileName == NULL){
 			# Cache control should be done at a higher level
 			header('Content-type: image/png');
 		}
-		imagepng($Picture, $FileName, $Compression, $Filters);		
+		imagepng($Picture, $FileName, $Compression, $Filters);
 		imagedestroy($Picture);
 	}
-		
+
 	/* http://php.net/manual/en/function.imagefilter.php */
 	function setFilter(int $filtertype, int $arg1 = 0, int $arg2 = 0, int $arg3 = 0, int $arg4 = 0)
 	{
 		#TODO
 	}
-	
+
 	function pImagesetpixel($X, $Y, $Color)
 	{
 		$this->Buff[] = [1, $X, $Y, 0, 0,$Color];
 	}
-	
+
 	function pImageline($X, $Y, $XMin, $YMin, pColor $OuterBorderColor)
 	{
 		$this->Buff[] = [2, $X, $Y, $XMin, $YMin, $OuterBorderColor];
 	}
-	
+
 	function pImageFilledPolygon($Points, $Num, pColor $Color)
 	{
 		$this->Buff[] = [3, $Points, $Num, 0, 0, $Color];
 	}
-		
+
 	function pImagefilledrectangle($X1, $Y1, $X2, $Y2, pColor $Color)
 	{
 		$this->Buff[] = [4, $X1, $Y1, $X2, $Y2, $Color];
 	}
-	
+
 	function pImagerectangle($X1, $Y1, $X2, $Y2, pColor $Color)
 	{
 		$this->Buff[] = [5, $X1, $Y1, $X2, $Y2, $Color];
 	}
-	
+
 	function pImagettftext($FontSize, $Angle, $X, $Y, pColor $Color, $FontName, $Text)
 	{
 		$this->Buff[] = [6, $FontSize, $Angle, $X, $Y, $Color, $FontName, $Text];
 	}
-	
+
 	/* Allocate a color with transparency */
 	function allocateColor(pColor $Color) # FAST
 	{

@@ -868,7 +868,7 @@ class pScatter
 	function writeScatterLabel(int $ScatterSerieID, int $Point, array $Format = [])
 	{
 		$Data = $this->myPicture->myData->Data;
-				
+
 		if (!isset($Data["ScatterSeries"][$ScatterSerieID])) {
 			throw pException::ScatterInvalidInputException("Serie was not found!");
 		}
@@ -911,7 +911,7 @@ class pScatter
 	/* Draw a Scatter threshold */
 	function drawScatterThreshold($Value, array $Format = [])
 	{
-				
+
 		$AxisID = 0;
 		$Color = new pColor(255,0,0,50);
 		$Weight = NULL;
@@ -952,7 +952,7 @@ class pScatter
 			"BoxBorderColor" => $BoxBorderColor,
 			"Color" => $CaptionColor
 		];
-				
+
 		if ($Data["Axis"][$AxisID]["Identity"] == AXIS_Y) {
 			$X1 = $this->myPicture->GraphAreaX1 + $Data["Axis"][$AxisID]["Margin"];
 			$X2 = $this->myPicture->GraphAreaX2 - $Data["Axis"][$AxisID]["Margin"];
@@ -975,7 +975,7 @@ class pScatter
 
 				$this->myPicture->drawText($X, $Y, $Caption, $CaptionSettings);
 			}
-			
+
 		} elseif ($Data["Axis"][$AxisID]["Identity"] == AXIS_X) {
 			$X = $this->getPosArraySingle($Value, $AxisID);
 			$Y1 = $this->myPicture->GraphAreaY1 + $Data["Axis"][$AxisID]["Margin"];
@@ -1005,7 +1005,7 @@ class pScatter
 
 	/* Draw a Scatter threshold area */
 	function drawScatterThresholdArea($Value1, $Value2, array $Format = [])
-	{		
+	{
 		$AxisID = 0;
 		$Color = new pColor(255,0,0,20);
 		$Border = TRUE;
@@ -1015,19 +1015,19 @@ class pScatter
 		$NameAngle = ZONE_NAME_ANGLE_AUTO;
 		$NameColor = new pColor(255,255,255,100);
 		$DisableShadowOnArea = TRUE;
-		
+
 		/* Override defaults */
 		extract($Format);
-		
+
 		if (is_null($BorderColor)){
 			$BorderColor = $Color->newOne()->RGBChange(20);
 		}
-		
+
 		$Data = $this->myPicture->myData->Data;
 		if (!isset($Data["Axis"][$AxisID])) {
 			throw pException::ScatterInvalidInputException("Serie was not found!");
 		}
-						
+
 		if ($Value1 > $Value2) {
 			list($Value1, $Value2) = [$Value2,$Value1];
 		}
@@ -1036,7 +1036,7 @@ class pScatter
 		if ($DisableShadowOnArea && $this->myPicture->Shadow) {
 			$this->myPicture->Shadow = FALSE;
 		}
-	
+
 		if ($Data["Axis"][$AxisID]["Identity"] == AXIS_X) {
 			$Y1 = $this->myPicture->GraphAreaY1 + $Data["Axis"][$AxisID]["Margin"];
 			$Y2 = $this->myPicture->GraphAreaY2 - $Data["Axis"][$AxisID]["Margin"];
@@ -1051,7 +1051,7 @@ class pScatter
 			}
 
 			$this->myPicture->drawFilledRectangle($X1, $Y1, $X2, $Y2, ["Color" => $Color]);
-			
+
 			if ($Border) {
 				$this->myPicture->drawLine($X1, $Y1, $X1, $Y2, ["Color" => $BorderColor,"Ticks" => $BorderTicks]);
 				$this->myPicture->drawLine($X2, $Y1, $X2, $Y2, ["Color" => $BorderColor,"Ticks" => $BorderTicks]);
@@ -1071,10 +1071,8 @@ class pScatter
 				($DisableShadowOnArea) AND $this->myPicture->Shadow = FALSE;
 			}
 
-			
-			
 		} elseif ($Data["Axis"][$AxisID]["Identity"] == AXIS_Y) {
-			
+
 			$X1 = $this->myPicture->GraphAreaX1 + $Data["Axis"][$AxisID]["Margin"];
 			$X2 = $this->myPicture->GraphAreaX2 - $Data["Axis"][$AxisID]["Margin"];
 			$Y1 = $this->getPosArraySingle($Value1, $AxisID);
@@ -1102,7 +1100,7 @@ class pScatter
 			}
 	
 		}
-		
+
 		$this->myPicture->Shadow = $RestoreShadow;
 	}
 }

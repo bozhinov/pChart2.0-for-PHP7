@@ -302,7 +302,7 @@ class pRadar
 		$Plot = [];
 		foreach($Data["Series"] as $SerieName => $DataS) {
 			if ($SerieName != $LabelSerie) {
-								
+
 				foreach($DataS["Data"] as $Key => $Value) {
 					$Angle = (360 / $Points) * $Key;
 					$Length = ($EdgeHeight / ($Segments * $SegmentHeight)) * $Value;
@@ -562,7 +562,7 @@ class pRadar
 		$Plot = [];
 		foreach($Data["Series"] as $SerieName => $DataSet) {
 			if ($SerieName != $LabelSerie) {
-								
+
 				foreach($DataSet["Data"] as $Key => $Value) {
 					$Angle = $Data["Series"][$LabelSerie]["Data"][$Key];
 					$Length = ($EdgeHeight / ($Segments * $SegmentHeight)) * $Value;

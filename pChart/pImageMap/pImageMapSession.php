@@ -36,7 +36,7 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 	}
 	
 	function __destruct(){
-		
+
 		$_SESSION[$this->ImageMapIndex][$this->UniqueID] = $this->ImageMapBuffer;
 
 		parent::__destruct();
@@ -85,7 +85,7 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 	/* Replace the title of one image map series */
 	function replaceImageMapTitle(string $OldTitle, $NewTitle)
 	{
-				
+
 		if (is_array($NewTitle)) {
 			$ID = 0;
 			$NewTitle = $this->stripFromSerie($OldTitle, $NewTitle);
@@ -120,7 +120,7 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 				$ID++;
 			}
 		}
-	
+
 	}
 
 	/* Dump the image map */
@@ -128,13 +128,13 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 	function dumpImageMap()
 	{
 		if (isset($_SESSION[$this->ImageMapIndex][$this->UniqueID])){
-			
+
 			echo json_encode($_SESSION[$this->ImageMapIndex][$this->UniqueID]);
-		
+
 		} else {
 			throw \pChart\pException::ImageMapInvalidID("ImageMap index ".$this->ImageMapIndex. " does not exist in session storage!");
 		}
-		
+
 		/* When the image map is returned to the client, the script ends */
 		exit();
 	}

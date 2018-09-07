@@ -89,7 +89,7 @@ class pStock
 
 			$Plots[] = $Point;
 		}
-		
+
 		if ($XDivs == 0){
 			$XStep = 0;
 		} else {
@@ -108,21 +108,21 @@ class pStock
 		$BoxUpSettings = ["Color" => $BoxUpColor,"BorderColor" => $BoxUpBorderColor];
 		$BoxDownSettings = ["Color" => $BoxDownColor,"BorderColor" => $BoxDownBorderColor];
 		$MedianSettings = ["Color" => $MedianColor];
-				
+
 		foreach($Plots as $Key => $Points) {
-			
+
 			$PosArray = $this->myPicture->scaleComputeY($Points, $Data[$SerieOpen]["Axis"]);
-			
+
 			if ($RecordImageMap) {
 				$Values = "Open :".$Data[$SerieOpen]["Data"][$Key]."<br />Close : ".$Data[$SerieClose]["Data"][$Key]."<br />Min : ".$Data[$SerieMin]["Data"][$Key]."<br />Max : ".$Data[$SerieMax]["Data"][$Key]."<br />";
-				
+
 				if (!is_null($SerieMedian)) {
 					$Values = $Values."Median : ".$Data[$SerieMedian]["Data"][$Key]."<br />";
 				}
 
 				$ImageMapColor = ($PosArray[0] > $PosArray[1]) ? $BoxUpColor->toHTMLColor() : $BoxDownColor->toHTMLColor();
 			}
-				
+
 			if ($ShadowOnBoxesOnly) {
 				$RestoreShadow = $this->myPicture->Shadow;
 				$this->myPicture->Shadow = FALSE;
@@ -151,7 +151,7 @@ class pStock
 				}
 
 				($ShadowOnBoxesOnly) AND $this->myPicture->Shadow = $RestoreShadow;
-				
+
 				$this->myPicture->drawFilledRectangle($X - $BoxOffset, $PosArray[0], $X + $BoxOffset, $PosArray[1], ($PosArray[0] > $PosArray[1]) ? $BoxUpSettings : $BoxDownSettings);
 
 				(isset($PosArray[4])) AND $this->myPicture->drawLine($X - $ExtremityLength, $PosArray[4], $X + $ExtremityLength, $PosArray[4], $MedianSettings);

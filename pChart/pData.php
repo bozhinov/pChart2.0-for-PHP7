@@ -57,7 +57,7 @@ class pData
 	/* Class creator */
 	function __construct()
 	{
-		
+
 		$this->Palette = [
 			"0" => new pColor(188,224,46,100),
 			"1" => new pColor(224,100,46,100),
@@ -503,7 +503,7 @@ class pData
 		$Points = [];
 		for ($i = 0; $i <= $Values; $i++) {
 			$Points[] = ($withFloat) ? (rand($Min * 100, $Max * 100) / 100) : rand($Min, $Max);
-			
+
 		}
 		
 		$this->addPoints($Points, $SerieName);
@@ -711,7 +711,7 @@ class pData
 
 		if ($UseCache != FALSE){
 			file_put_contents($CachedPalette,'<?php $this->Palette='.var_export($this->Palette,true).' ?>');
-		}			
+		}
 
 		/* Apply changes to current series */
 		$ID = 0;
@@ -773,9 +773,9 @@ class pData
 		$SelectedSeries = [];
 		$MaxVal = 0;
 		foreach($this->Data["Axis"] as $AxisID => $Axis) {
-			
+
 			($UnitChange != "") AND $this->Data["Axis"][$AxisID]["Unit"] = $UnitChange;
-		
+
 			foreach($this->Data["Series"] as $SerieName => $Serie) {
 				if ($Serie["Axis"] == $AxisID && $Serie["isDrawable"] == TRUE && $SerieName != $Abscissa) {
 					$SelectedSeries[$SerieName] = $SerieName;
@@ -877,7 +877,7 @@ class pData
 		$Result = [];
 		$Abscissa = [];
 
-		for ($i = $MinX; $i <= $MaxX; $i = $i + $XStep) {				
+		for ($i = $MinX; $i <= $MaxX; $i = $i + $XStep) {
 			$Abscissa[] = $i;
 			$ret = $Function($i);
 			$Result[] = (in_array("$ret", ["NAN", "INF", "-INF"])) ? VOID : $ret;
@@ -914,7 +914,7 @@ class pData
 			}
 		}
 	}
-		
+
 	/* Return the data & configuration of the series */
 	function getData()
 	{
