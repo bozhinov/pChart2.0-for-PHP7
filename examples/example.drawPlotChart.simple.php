@@ -14,14 +14,14 @@ $myPicture = new pDraw(700,230);
 /* Populate the pData object */
 $Points_1 = [];
 $Points_2 = [];
-for($i=0;$i<=20;$i++) 
-{ 
+for($i=0;$i<=20;$i++)
+{
 	$Points_1[] = rand(0,20)+$i;
 	$Points_2[] = rand(0,20)+$i;
 }
-$myPicture->myData->addPoints($Points_1,"Probe 1"); 
-$myPicture->myData->addPoints($Points_2,"Probe 2"); 
-$myPicture->myData->setSerieShape("Probe 1",SERIE_SHAPE_FILLEDTRIANGLE); 
+$myPicture->myData->addPoints($Points_1,"Probe 1");
+$myPicture->myData->addPoints($Points_2,"Probe 2");
+$myPicture->myData->setSerieShape("Probe 1",SERIE_SHAPE_FILLEDTRIANGLE);
 $myPicture->myData->setSerieWeight("Probe 1",2);
 $myPicture->myData->setSerieShape("Probe 2",SERIE_SHAPE_FILLEDSQUARE);
 $myPicture->myData->setAxisName(0,"Temperatures");

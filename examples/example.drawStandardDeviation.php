@@ -14,17 +14,17 @@ $myPicture = new pDraw(700,230);
 /* Populate the pData object */
 $Points_1 = [];
 for($i=0;$i<=100;$i++)
-{ 
+{
 	$Points_1[] = rand(0,20);
 }
-$myPicture->myData->addPoints($Points_1,"Probe 1"); 
+$myPicture->myData->addPoints($Points_1,"Probe 1");
 $myPicture->myData->setAxisName(0,"Temperatures");
 
 /* Draw the background */
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]);
 
 /* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;

@@ -19,8 +19,8 @@ for($i=0;$i<=20;$i++)
 	$Points_1[] = rand(10,30)+$i;
 	$Points_2[] = rand(0,10)+$i;
 }
-$myPicture->myData->addPoints($Points_1,"Probe 1"); 
-$myPicture->myData->addPoints($Points_2,"Probe 2"); 
+$myPicture->myData->addPoints($Points_1,"Probe 1");
+$myPicture->myData->addPoints($Points_2,"Probe 2");
 
 /* Give a name to the Y axis */
 $myPicture->myData->setAxisName(0,"Temperatures");

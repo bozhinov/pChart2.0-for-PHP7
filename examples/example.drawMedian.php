@@ -12,7 +12,7 @@ use pChart\pCharts;
 $myPicture = new pDraw(700,230);
 $Points = [];
 /* Populate the pData object */
-for($i=0;$i<=20;$i++) { 
+for($i=0;$i<=20;$i++) {
 	$Points[] = rand(10,30)+$i;
 }
 $myPicture->myData->addPoints($Points,"Probe 1");

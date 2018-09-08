@@ -15,15 +15,15 @@ $myPicture = new pDraw(400,400);
 $Points_1 = [];
 $Points_2 = [];
 $Points_3 = [];
-for($i=0;$i<=20;$i++) 
-{ 
+for($i=0;$i<=20;$i++)
+{
 	$Points_1[] = rand(1,20)+$i;
 	$Points_2[] = rand(1,20)+$i;
 	$Points_3[] = rand(0,20)+$i;
 }
-$myPicture->myData->addPoints($Points_1,"Probe 1"); 
-$myPicture->myData->addPoints($Points_2,"Probe 2"); 
-$myPicture->myData->addPoints($Points_3,"Probe 3"); 
+$myPicture->myData->addPoints($Points_1,"Probe 1");
+$myPicture->myData->addPoints($Points_2,"Probe 2");
+$myPicture->myData->addPoints($Points_3,"Probe 3");
 
 $myPicture->myData->setAxisName(0,"X-Index");
 $myPicture->myData->setAxisXY(0,AXIS_X);

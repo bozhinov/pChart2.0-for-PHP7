@@ -23,10 +23,10 @@ for($i=0; $i<=10;$i=$i+.2)
 	$Points_3[] = log($i+6)*10;
 	$Points_4[] = $i*10;
 }
-$myPicture->myData->addPoints($Points_1,"Bounds 1"); 
-$myPicture->myData->addPoints($Points_2,"Probe 1"); 
-$myPicture->myData->addPoints($Points_3,"Bounds 2"); 
-$myPicture->myData->addPoints($Points_4,"Labels"); 
+$myPicture->myData->addPoints($Points_1,"Bounds 1");
+$myPicture->myData->addPoints($Points_2,"Probe 1");
+$myPicture->myData->addPoints($Points_3,"Bounds 2");
+$myPicture->myData->addPoints($Points_4,"Labels");
 
 $myPicture->myData->setAxisName(0,"Size (cm)");
 $myPicture->myData->setSerieDescription("Labels","Months");

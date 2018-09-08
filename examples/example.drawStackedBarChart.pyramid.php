@@ -38,8 +38,8 @@ $myPicture->drawLegend(600,210,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONT
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawStackedBarChart.pyramid.png");
 
-function YAxisFormat($Value) { 
-	return abs($Value); 
-} 
+function YAxisFormat($Value) {
+	return abs($Value);
+}
 
 ?>

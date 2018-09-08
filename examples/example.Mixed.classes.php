@@ -19,7 +19,7 @@ $Points = [];
 for($i=0;$i<=80;$i++) {
 	$Points[] = ($i/10)*($i/10);
 }
-$myPicture->myData->addPoints($Points,"Statistical probability"); 
+$myPicture->myData->addPoints($Points,"Statistical probability");
 $myPicture->myData->setAxisName(0,"Probability");
 $myPicture->myData->setAxisUnit(0,"%");
 
@@ -31,7 +31,7 @@ $myPicture->Antialias = FALSE;
 $myPicture->drawFilledRectangle(0,0,700,350,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$myPicture->drawGradientArea(0,0,700,220, DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
+$myPicture->drawGradientArea(0,0,700,220, DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]);
 $myPicture->drawGradientArea(0,222,700,350, DIRECTION_VERTICAL,["StartColor"=>new pColor(1,138,68,50),"EndColor"=>new pColor(219,231,239,50)]);
 
 /* Add a border to the picture */

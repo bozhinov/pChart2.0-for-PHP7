@@ -26,9 +26,9 @@ $myPicture->myData->setAbscissa("Labels");
 /* Reverse the Y axis trick */
 $myPicture->myData->setAbsicssaPosition(AXIS_POSITION_TOP);
 $myPicture->myData->NegateValues(["Probe 1","Probe 2","Probe 3"]);
-$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"NegateValues"); 
+$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"NegateValues");
 
-function NegateValues($Value) { 
+function NegateValues($Value) {
 	return ($Value == VOID) ? VOID : -$Value;
 }
 
@@ -36,7 +36,7 @@ function NegateValues($Value) {
 $myPicture->Antialias = FALSE;
 
 /* Draw a background */
-$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(190,213,107), "Dash"=>TRUE, "DashColor"=>new pColor(210,223,127)]); 
+$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(190,213,107), "Dash"=>TRUE, "DashColor"=>new pColor(210,223,127)]);
 
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);

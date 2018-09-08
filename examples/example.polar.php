@@ -14,8 +14,8 @@ use pChart\{
 $myPicture = new pDraw(700,230);
 
 /* Create and populate the pData object */
-$myPicture->myData->addPoints([10,20,30,40,50,60,70,80,90],"ScoreA"); 
-$myPicture->myData->addPoints([20,40,50,12,10,30,40,50,60],"ScoreB"); 
+$myPicture->myData->addPoints([10,20,30,40,50,60,70,80,90],"ScoreA");
+$myPicture->myData->addPoints([20,40,50,12,10,30,40,50,60],"ScoreB");
 $myPicture->myData->setSerieDescription("ScoreA","Coverage A");
 $myPicture->myData->setSerieDescription("ScoreB","Coverage B");
 

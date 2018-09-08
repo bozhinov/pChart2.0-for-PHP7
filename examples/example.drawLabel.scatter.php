@@ -15,15 +15,15 @@ $myPicture = new pDraw(400,400);
 $Points_1 = [];
 $Points_2 = [];
 $Points_3 = [];
-for($i=0;$i<=360;$i=$i+10) 
+for($i=0;$i<=360;$i=$i+10)
 {
 	$Points_1[] = cos(deg2rad($i))*20;
 	$Points_2[] = sin(deg2rad($i))*20;
 	$Points_3[] = $i;
 }
-$myPicture->myData->addPoints($Points_1,"Probe 1"); 
-$myPicture->myData->addPoints($Points_2,"Probe 2"); 
-$myPicture->myData->addPoints($Points_3,"Probe 3"); 
+$myPicture->myData->addPoints($Points_1,"Probe 1");
+$myPicture->myData->addPoints($Points_2,"Probe 2");
+$myPicture->myData->addPoints($Points_3,"Probe 3");
 
 $myPicture->myData->setAxisName(0,"Index");
 $myPicture->myData->setAxisXY(0,AXIS_X);
@@ -50,7 +50,7 @@ $myPicture->myData->setScatterSerieDescription(1,"Last Year");
 $myPicture->drawFilledRectangle(0,0,400,400,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$myPicture->drawGradientArea(0,0,400,400,DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
+$myPicture->drawGradientArea(0,0,400,400,DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]);
 $myPicture->drawGradientArea(0,0,400,20,DIRECTION_VERTICAL,["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Write the picture title */ 

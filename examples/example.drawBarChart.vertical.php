@@ -26,7 +26,7 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","Font
 
 /* Draw the chart scale */ 
 $myPicture->setGraphArea(100,30,480,480);
-$myPicture->drawScale(["CycleBackground"=>TRUE,"DrawSubTicks"=>TRUE,"GridColor"=>myColors::Black(10),"Pos"=>SCALE_POS_TOPBOTTOM]); // 
+$myPicture->drawScale(["CycleBackground"=>TRUE,"DrawSubTicks"=>TRUE,"GridColor"=>myColors::Black(10),"Pos"=>SCALE_POS_TOPBOTTOM]);
 
 /* Turn on shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>myColors::Black(10)]);

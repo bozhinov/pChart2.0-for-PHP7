@@ -13,11 +13,11 @@ $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */ 
 $Points = [];
-for($i=0;$i<=20;$i++) 
-{ 
+for($i=0;$i<=20;$i++)
+{
 	$Points[] = rand(10,30)+$i;
 }
-$myPicture->myData->addPoints($Points,"Probe 1"); 
+$myPicture->myData->addPoints($Points,"Probe 1");
 $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->myData->setAbscissaName("Samples");
 

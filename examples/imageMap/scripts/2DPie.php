@@ -20,7 +20,7 @@ if (isset($_GET["ImageMap"])){
 }
 
 /* Populate the pData object */
-$myPicture->myData->addPoints([40,60,15,10,6,4],"ScoreA");  
+$myPicture->myData->addPoints([40,60,15,10,6,4],"ScoreA");
 $myPicture->myData->setSerieDescription("ScoreA","Application A");
 
 /* Define the abscissa series */

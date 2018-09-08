@@ -14,7 +14,7 @@ use pChart\{
 $myPicture = new pDraw(300,300);
 
 /* Populate the pData object */  
-$myPicture->myData->addPoints([1,5,6,1,5,7,3,6,5,4,1,0],"ScoreA");  
+$myPicture->myData->addPoints([1,5,6,1,5,7,3,6,5,4,1,0],"ScoreA");
 $myPicture->myData->setSerieDescription("ScoreA","Application A");
 $myPicture->myData->setPalette("ScoreA",new pColor(150,5,217));
 

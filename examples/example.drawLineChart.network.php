@@ -16,9 +16,9 @@ $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */
 $BaseTs = mktime(0,0,0,12,25,2011);
-$LastIn = 0; 
+$LastIn = 0;
 $LastOut = 0;
-$LastInArr = []; 
+$LastInArr = [];
 $LastOutArr = [];
 $BaseTsArr = [];
 
@@ -39,13 +39,13 @@ $myPicture->myData->setAxisName(0,"Bandwidth");
 $myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_TRAFFIC);
 $myPicture->myData->setSerieDescription("TimeStamp","time");
 $myPicture->myData->setAbscissa("TimeStamp");
-$myPicture->myData->setXAxisDisplay(AXIS_FORMAT_TIME,"H:00"); 
+$myPicture->myData->setXAxisDisplay(AXIS_FORMAT_TIME,"H:00");
 
 /* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
 
 /* Draw a background */
-$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(90,90,90), "Dash"=>TRUE, "DashColor"=>new pColor(120,120,120)]); 
+$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(90,90,90), "Dash"=>TRUE, "DashColor"=>new pColor(120,120,120)]);
 
 /* Overlay with a gradient */ 
 $Settings = ["StartColor"=>new pColor(200,200,200,50), "EndColor"=>new pColor(50,50,50,50)];

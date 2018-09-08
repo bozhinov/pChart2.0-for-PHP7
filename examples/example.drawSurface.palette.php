@@ -55,15 +55,15 @@ $mySurface->drawSurface(["Padding"=>0,"Palette"=>$Palette]);
 
 $myPicture->setGraphArea(40,100,380,140);
 $mySurface->writeYLabels(["Labels"=>"2nd Seq"]);
-for($i=0; $i<=200; $i++) { 
-	$mySurface->addPoint($i,0,rand(0,3)); 
+for($i=0; $i<=200; $i++) {
+	$mySurface->addPoint($i,0,rand(0,3));
 }
 $mySurface->drawSurface(["Padding"=>0,"Palette"=>$Palette]);
 
 $myPicture->setGraphArea(40,160,380,200);
 $mySurface->writeYLabels(["Labels"=>"3rd Seq"]);
-for($i=0; $i<=200; $i++) { 
-	$mySurface->addPoint($i,0,rand(0,3)); 
+for($i=0; $i<=200; $i++) {
+	$mySurface->addPoint($i,0,rand(0,3));
 }
 $mySurface->drawSurface(["Padding"=>0,"Palette"=>$Palette]);
 

@@ -17,8 +17,8 @@ $myPicture = new pDraw(600,600);
 $myPicture->drawFilledRectangle(0,0,600,600,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$myPicture->drawGradientArea(0,0,600,600, DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
-$myPicture->drawGradientArea(0,0,600,20, DIRECTION_VERTICAL,["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
+$myPicture->drawGradientArea(0,0,600,600, DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]);
+$myPicture->drawGradientArea(0,0,600,20,  DIRECTION_VERTICAL,["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,599,599,["Color"=>new pColor(0,0,0)]);
@@ -53,7 +53,7 @@ for($i=0;$i<=10;$i++)
 		$RandCx = rand(0,10);
 		if($RandCx != $j)
 		{
-			$Connections[] = $RandCx; 
+			$Connections[] = $RandCx;
 		}
 	}
 

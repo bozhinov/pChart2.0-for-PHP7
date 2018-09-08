@@ -14,7 +14,7 @@ $myPicture = new pDraw(700,230);
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]);
 $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
@@ -29,7 +29,7 @@ $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
 
 /* Create some filling thresholds */
 $Threshold = [
-	array("MinX"=>100,"MaxX"=>60, "Color"=>new pColor(200,200,200,50)), 
+	array("MinX"=>100,"MaxX"=>60, "Color"=>new pColor(200,200,200,50)),
 	array("MinX"=>140,"MaxX"=>100,"Color"=>new pColor(220,220,220,50)),
 	array("MinX"=>180,"MaxX"=>140,"Color"=>new pColor(240,240,240,50))
 ];

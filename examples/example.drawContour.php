@@ -43,9 +43,9 @@ $mySurface->writeXLabels(array("Position"=>LABEL_POSITION_BOTTOM));
 $mySurface->writeYLabels();
 
 /* Add random values */
-for($i=0; $i<=50; $i++) 
-{ 
-	$mySurface->addPoint(rand(0,20),rand(0,20),rand(0,100)); 
+for($i=0; $i<=50; $i++)
+{
+	$mySurface->addPoint(rand(0,20),rand(0,20),rand(0,100));
 }
 
 /* Compute the missing points */

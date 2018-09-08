@@ -3,7 +3,7 @@
 use pChart\pColor;
 
 class myColors {
-		
+
 	public static function White(float $Alpha = 100)
 	{
 		return new pChart\pColor(255,255,255,$Alpha);
@@ -48,7 +48,7 @@ class myColors {
 	{
 		return ["StartColor"=>new pChart\pColor(217,250,116,$Alpha), "EndColor"=>new pChart\pColor(181,209,27,$Alpha)];
 	}
-		
+
 }
 
 ?>

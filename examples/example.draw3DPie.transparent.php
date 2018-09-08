@@ -13,7 +13,7 @@ use pChart\pPie;
 $myPicture = new pDraw(240,180,TRUE);
 
 /* Populate the pData object */
-$myPicture->myData->addPoints([40,30,20],"ScoreA");  
+$myPicture->myData->addPoints([40,30,20],"ScoreA");
 $myPicture->myData->setSerieDescription("ScoreA","Application A");
 
 /* Define the abscissa serie */

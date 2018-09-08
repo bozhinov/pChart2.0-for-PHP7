@@ -46,7 +46,7 @@ $mySurface->writeYLabels(array("Labels"=>["Probe 1","Probe 2"]));
 
 /* Add random values */
 for($i=0; $i<=10; $i++) { 
-	$mySurface->addPoint($i,rand(0,1),rand(0,100)); 
+	$mySurface->addPoint($i,rand(0,1),rand(0,100));
 }
 
 /* Draw the surface chart */

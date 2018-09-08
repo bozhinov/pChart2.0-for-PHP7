@@ -18,7 +18,7 @@ $myPicture->myData->setAxisName(0,"Hits");
 $myPicture->myData->addPoints(["January","February","March","April","May","June","July","August","September"],"Months");
 $myPicture->myData->setSerieDescription("Months","Month");
 $myPicture->myData->setAbscissa("Months");
-$myPicture->myData->setAbsicssaPosition(AXIS_POSITION_TOP); 
+$myPicture->myData->setAbsicssaPosition(AXIS_POSITION_TOP);
 
 /* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;

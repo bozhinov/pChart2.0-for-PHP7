@@ -17,8 +17,8 @@ $myPicture = new pDraw(300,300);
 $myPicture->drawFilledRectangle(0,0,300,300,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$myPicture->drawGradientArea(0,0,300,300,DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
-$myPicture->drawGradientArea(0,0,300,20,DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(100,100,100,80)]);
+$myPicture->drawGradientArea(0,0,300,300,DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]);
+$myPicture->drawGradientArea(0,0,300,20, DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(100,100,100,80)]);
 
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,299,299,["Color"=>new pColor(0,0,0)]);

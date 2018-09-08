@@ -264,7 +264,7 @@ if ($d_serie2_enabled == "true"){
 	$data1  = stripTail($data1);
 	$Values = explode("!",substr($data1,1));
 	foreach($Values as $key => $Value){
-		($Value == "") AND $Value = "VOID"; 
+		($Value == "") AND $Value = "VOID";
 		$myPicture->myData->addPoints([$Value],"Serie2");
 	}
 
@@ -276,7 +276,7 @@ if ($d_serie2_enabled == "true"){
 		
 		$Data = "";
 		foreach($Values as $key => $Value){
-			($Value == "") AND $Value = "VOID"; 
+			($Value == "") AND $Value = "VOID";
 			$Data = $Data.",".toString($Value);
 		}
 		$Data = substr($Data,1);
@@ -294,8 +294,8 @@ if ($d_serie3_enabled == "true"){
 	$data2  = stripTail($data2);
 	$Values = explode("!",substr($data2,1));
 	foreach($Values as $key => $Value){
-		($Value == "") AND $Value = "VOID"; 
-		$myPicture->myData->addPoints([$Value],"Serie3"); 
+		($Value == "") AND $Value = "VOID";
+		$myPicture->myData->addPoints([$Value],"Serie3");
 	}
 
 	$myPicture->myData->setSerieDescription("Serie3",$d_serie3_name);
@@ -306,8 +306,8 @@ if ($d_serie3_enabled == "true"){
 		
 		$Data = "";
 		foreach($Values as $key => $Value){
-			($Value == "") AND $Value = "VOID"; 
-			$Data = $Data.",".toString($Value); 
+			($Value == "") AND $Value = "VOID";
+			$Data = $Data.",".toString($Value);
 		}
 		$Data = substr($Data,1);
 
@@ -325,7 +325,7 @@ if ($d_absissa_enabled == "true")
 	$Values  = explode("!",substr($absissa,1));
 	foreach($Values as $key => $Value){
 		($Value == "") AND $Value = VOID;
-		$myPicture->myData->addPoints([$Value],"Absissa"); 
+		$myPicture->myData->addPoints([$Value],"Absissa");
 	}
 
 	$myPicture->myData->setAbscissa("Absissa");
@@ -334,7 +334,7 @@ if ($d_absissa_enabled == "true")
 		$Data = "";
 		foreach($Values as $key => $Value){
 			($Value == "") AND $Value = "VOID";
-			$Data = $Data.",".toString($Value); 
+			$Data = $Data.",".toString($Value);
 		}
 		$Data = substr($Data,1);
 
@@ -345,7 +345,7 @@ if ($d_absissa_enabled == "true")
 
 if (isset($Axis[0]))
 {
-	if ($d_axis0_position == "left"){ 
+	if ($d_axis0_position == "left"){
 		$myPicture->myData->setAxisPosition(0,AXIS_POSITION_LEFT);
 	} else {
 		$myPicture->myData->setAxisPosition(0,AXIS_POSITION_RIGHT);
@@ -358,9 +358,9 @@ if (isset($Axis[0]))
 
 	if ($Mode == "Source"){
 		if ($d_axis0_position == "left"){
-			echo '$myPicture->myData->setAxisPosition(0,AXIS_POSITION_LEFT);'."\r\n"; 
-		} else { 
-			echo '$myPicture->myData->setAxisPosition(0,AXIS_POSITION_RIGHT);'."\r\n"; 
+			echo '$myPicture->myData->setAxisPosition(0,AXIS_POSITION_LEFT);'."\r\n";
+		} else {
+			echo '$myPicture->myData->setAxisPosition(0,AXIS_POSITION_RIGHT);'."\r\n";
 		}
 		echo '$myPicture->myData->setAxisName(0,"'.$d_axis0_name.'");'."\r\n";
 		echo '$myPicture->myData->setAxisUnit(0,"'.$d_axis0_unit.'");'."\r\n\r\n";
@@ -370,16 +370,16 @@ if (isset($Axis[0]))
 if (isset($Axis[1]))
 {
 	if ($d_axis1_position == "left"){
-		$myPicture->myData->setAxisPosition(1,AXIS_POSITION_LEFT); 
-	} else { 
-		$myPicture->myData->setAxisPosition(1,AXIS_POSITION_RIGHT); 
+		$myPicture->myData->setAxisPosition(1,AXIS_POSITION_LEFT);
+	} else {
+		$myPicture->myData->setAxisPosition(1,AXIS_POSITION_RIGHT);
 	}
 	$myPicture->myData->setAxisName(1,$d_axis1_name);
 	$myPicture->myData->setAxisUnit(1,$d_axis1_unit);
 
 	if ($Mode == "Source"){
-		if ($d_axis1_position == "left"){ 
-			echo '$myPicture->myData->setAxisPosition(1,AXIS_POSITION_LEFT);'."\r\n"; 
+		if ($d_axis1_position == "left"){
+			echo '$myPicture->myData->setAxisPosition(1,AXIS_POSITION_LEFT);'."\r\n";
 		} else {
 			echo '$myPicture->myData->setAxisPosition(1,AXIS_POSITION_RIGHT);'."\r\n";
 		}
@@ -389,20 +389,20 @@ if (isset($Axis[1]))
 }
 
 if (isset($Axis[2])){
-	
+
 	if ($d_axis2_position == "left"){
-		$myPicture->myData->setAxisPosition(2,AXIS_POSITION_LEFT); 
-	} else { 
-		$myPicture->myData->setAxisPosition(2,AXIS_POSITION_RIGHT); 
+		$myPicture->myData->setAxisPosition(2,AXIS_POSITION_LEFT);
+	} else {
+		$myPicture->myData->setAxisPosition(2,AXIS_POSITION_RIGHT);
 	}
 	$myPicture->myData->setAxisName(2,$d_axis2_name);
 	$myPicture->myData->setAxisUnit(2,$d_axis2_unit);
 
 	if ($Mode == "Source"){
 		if ($d_axis2_position == "left"){
-			echo '$myPicture->myData->setAxisPosition(2,AXIS_POSITION_LEFT);'."\r\n"; 
+			echo '$myPicture->myData->setAxisPosition(2,AXIS_POSITION_LEFT);'."\r\n";
 		} else {
-			echo '$myPicture->myData->setAxisPosition(2,AXIS_POSITION_RIGHT);'."\r\n"; 
+			echo '$myPicture->myData->setAxisPosition(2,AXIS_POSITION_RIGHT);'."\r\n";
 		}
 		echo '$myPicture->myData->setAxisName(2,"'.$d_axis2_name.'");'."\r\n";
 		echo '$myPicture->myData->setAxisUnit(2,"'.$d_axis2_unit.'");'."\r\n\r\n";
@@ -410,7 +410,7 @@ if (isset($Axis[2])){
 }
 
 if ($d_normalize_enabled == "true"){
-	
+
 	if ($Mode == "Render"){
 		$myPicture->myData->normalize(100);
 	} else {
@@ -419,7 +419,7 @@ if ($d_normalize_enabled == "true"){
 }
 
 if ($g_aa == "false"){
-	
+
 	if ($Mode == "Render"){
 		$myPicture->Antialias = FALSE;
 	} else {
@@ -428,7 +428,7 @@ if ($g_aa == "false"){
 }
 
 if ($g_solid_enabled == "true"){
-	
+
 	list($R,$G,$B) = extractColors($g_solid_color);
 	$Settings = ["Color"=>new pColor($R,$G,$B)];
 
@@ -446,7 +446,7 @@ if ($g_solid_enabled == "true"){
 }
 
 if ($g_gradient_enabled == "true"){
-	
+
 	list($StartR,$StartG,$StartB) = extractColors($g_gradient_start);
 	list($EndR,$EndG,$EndB)       = extractColors($g_gradient_end);
 
@@ -455,7 +455,7 @@ if ($g_gradient_enabled == "true"){
 	if ($Mode == "Render"){
 		if ($g_gradient_direction == "vertical"){
 			$myPicture->drawGradientArea(0,0,$g_width,$g_height,DIRECTION_VERTICAL,$Settings);
-		} else { 
+		} else {
 			$myPicture->drawGradientArea(0,0,$g_width,$g_height,DIRECTION_HORIZONTAL,$Settings);
 		}
 	} else {
@@ -477,24 +477,24 @@ if ($Mode == "Render"){
 		echo '$myPicture->drawRectangle(0,0,'.($g_width-1).','.($g_height-1).',array("Color"=>new pColor(0,0,0)));'."\r\n\r\n";
 	}
 	if($g_shadow == "true"){
-		echo '$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,20)));'."\r\n\r\n"; 
+		echo '$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,20)));'."\r\n\r\n";
 	}
 }
 
 if ($g_title_enabled == "true"){
-	
+
 	if ($Mode == "Render"){
 		$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/".$g_title_font,"FontSize"=>$g_title_font_size));
 	} else {
 		echo '$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/'.$g_title_font.'","FontSize"=>'.$g_title_font_size.'));'."\r\n";
 	}
-	
+
 	list($R,$G,$B) = extractColors($g_title_color);
 
 	$TextSettings = array("Align"=>getTextAlignCode($g_title_align),"Color"=>new pColor($R,$G,$B));
 	if ($g_title_box == "true"){ 
 		$TextSettings["DrawBox"] = TRUE; 
-		$TextSettings["BoxColor"] = new pColor(255,255,255,30); 
+		$TextSettings["BoxColor"] = new pColor(255,255,255,30);
 	}
 
 	if ($Mode == "Render"){
@@ -510,7 +510,7 @@ if ($g_shadow == "true"){
 	if ($Mode == "Render"){
 		$myPicture->setShadow(FALSE); 
 	} else {
-		echo '$myPicture->setShadow(FALSE);'."\r\n"; 
+		echo '$myPicture->setShadow(FALSE);'."\r\n";
 	}
 }
 
@@ -532,7 +532,7 @@ list($GridR,$GridG,$GridB) = extractColors($s_grid_color);
 list($TickR,$TickG,$TickB) = extractColors($s_ticks_color);
 list($SubTickR,$SubTickG,$SubTickB) = extractColors($s_subticks_color);
 
-$Pos = ($s_direction == "SCALE_POS_LEFTRIGHT") ? 690101 : 690102; 
+$Pos = ($s_direction == "SCALE_POS_LEFTRIGHT") ? 690101 : 690102;
 $Labeling = ($s_x_labeling == "LABELING_ALL") ? 691011 : 691012;
 
 switch ($s_mode){
@@ -556,7 +556,7 @@ if ($s_subticks_enabled == "true"){
 
 if ($s_automargin_enabled == "false"){
 	$Settings["XMargin"] = $s_x_margin;
-	$Settings["YMargin"] = $s_y_margin; 
+	$Settings["YMargin"] = $s_y_margin;
 }
 
 if ($Mode == "Render"){
@@ -570,9 +570,9 @@ if ($Mode == "Render"){
 /* ---------------------------------------------------------------------------------------------------------- */
 
 if ($g_shadow == "true"){
-	if ($Mode == "Render"){ 
+	if ($Mode == "Render"){
 		$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,10)]); 
-	} else { 
+	} else {
 		echo '$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,10)]);'."\r\n\r\n"; 
 	}
 }
@@ -584,7 +584,7 @@ if ($c_family == "plot"){
 	$Config["PlotSize"] = $c_plot_size;
 	if ($c_border_enabled == "true"){
 		$Config["PlotBorder"] = TRUE;
-		$Config["BorderSize"] = $c_border_size; 
+		$Config["BorderSize"] = $c_border_size;
 	}
 
 	if ($Mode == "Render"){
@@ -597,7 +597,7 @@ if ($c_family == "plot"){
 
 if ($c_family == "line"){
 	if ($c_break == "true"){
-		
+
 		list($BreakR,$BreakG,$BreakB) = extractColors($c_break_color);
 
 		$Config["BreakVoid"] = 0;
@@ -614,7 +614,7 @@ if ($c_family == "line"){
 
 if ($c_family == "step"){
 	if ($c_break == "true"){
-		
+
 		list($BreakR,$BreakG,$BreakB) = extractColors($c_break_color);
 
 		$Config["BreakVoid"] = 0;
@@ -631,7 +631,7 @@ if ($c_family == "step"){
 
 if ($c_family == "spline"){
 	if ($c_break == "true"){
-		
+
 		list($BreakR,$BreakG,$BreakB) = extractColors($c_break_color);
 
 		$Config["BreakVoid"] = 0;
@@ -660,11 +660,11 @@ if ($c_family == "bar"){
 }
 
 if ($c_family == "area"){
-	if ($c_forced_transparency == "true"){ 
-		$Config["ForceTransparency"] = $c_transparency; 
+	if ($c_forced_transparency == "true"){
+		$Config["ForceTransparency"] = $c_transparency;
 	}
 	if ($c_around_zero2 == "true"){
-		$Config["AroundZero"] = TRUE; 
+		$Config["AroundZero"] = TRUE;
 	}
 
 	if ($Mode == "Render"){
@@ -676,9 +676,9 @@ if ($c_family == "area"){
 }
 
 if ($c_family == "fstep"){
-	
+
 	if ($c_forced_transparency == "true"){
-		$Config["ForceTransparency"] = $c_transparency; 
+		$Config["ForceTransparency"] = $c_transparency;
 	}
 
 	$Config["AroundZero"] = ($c_around_zero2 == "true") ? TRUE : FALSE;
@@ -693,8 +693,8 @@ if ($c_family == "fstep"){
 
 if ($c_family == "fspline"){
 	
-	if ($c_forced_transparency == "true"){ 
-		$Config["ForceTransparency"] = $c_transparency; 
+	if ($c_forced_transparency == "true"){
+		$Config["ForceTransparency"] = $c_transparency;
 	}
 	if ($c_around_zero2 == "true"){ 
 		$Config["AroundZero"] = TRUE;
@@ -723,8 +723,8 @@ if ($c_family == "sbar")
 }
 
 if ($c_family == "sarea"){
-	
-	if ($c_forced_transparency == "true"){ 
+
+	if ($c_forced_transparency == "true"){
 		$Config["ForceTransparency"] = $c_transparency;
 	}
 	if ($c_around_zero2 == "true"){
@@ -740,7 +740,7 @@ if ($c_family == "sarea"){
 }
 
 if ($t_enabled == "true"){
-	
+
 	list($R,$G,$B) = extractColors($t_color);
 
 	$Config = ["Color" => new pColor($R,$G,$B,$t_alpha)];
@@ -771,7 +771,7 @@ if ($t_enabled == "true"){
 }
 
 if ($l_enabled == "true"){
-	
+
 	list($R,$G,$B) = extractColors($l_font_color);
 
 	$Config = [
@@ -793,12 +793,12 @@ if ($l_enabled == "true"){
 	($l_family == "LEGEND_FAMILY_LINE") AND $Config["Family"] = 691053;
 
 	$Size = $myPicture->getLegendSize($Config);
-	
-	if ($l_position == "CORNER_TOP_RIGHT"){ 
+
+	if ($l_position == "CORNER_TOP_RIGHT"){
 		$l_y = $l_margin + 10;
 		$l_x = $g_width - $Size["Width"] - 10 + $l_margin;
 	}
-	
+
 	if ($l_position == "CORNER_BOTTOM_RIGHT"){
 		$l_y = $g_height - $Size["Height"] - 10 + $l_margin;
 		$l_x = $g_width - $Size["Width"] - 10 + $l_margin;
@@ -816,7 +816,7 @@ if ($l_enabled == "true"){
 }
 
 if ($sl_enabled == "true"){
-	
+
 	$Config = ["CaptionMargin" => 10, "CaptionWidth" => 10];
 
 	($sl_shaded == "true") AND $Config["ShadedSlopeBox"] = TRUE;
@@ -877,10 +877,10 @@ function dumpArray($Name,$Values)
 		if (is_array($Value)){
 			$Result .= dumpArray($Value);
 		} else {
-			$Result .= chr(39).$Key.chr(39).'=>'.translate($Value).', '; 
+			$Result .= chr(39).$Key.chr(39).'=>'.translate($Value).', ';
 		}
 	}
-	
+
 	return substr($Result, 0, -2).");\r\n";
 }
 
@@ -908,7 +908,7 @@ function stripTail($Values)
 		} else {
 			if ($Temp != [] && $Result != []){ 
 				$Result = array_merge($Result,$Temp);
-			} elseif ($Temp != [] && $Result == []){ 
+			} elseif ($Temp != [] && $Result == []){
 				$Result = $Temp;
 			}
 
@@ -917,8 +917,8 @@ function stripTail($Values)
 		}
 	}
 
-	$Serialized = "!"; 
-	foreach($Result as $Key => $Value){ 
+	$Serialized = "!";
+	foreach($Result as $Key => $Value){
 		$Serialized .= $Value."!"; 
 	}
 	

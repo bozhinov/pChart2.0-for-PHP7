@@ -17,7 +17,7 @@ $myPicture = new pDraw(700,230);
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
 
 /* Overlay with a gradient */
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]); 
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]);
 $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL,["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
@@ -37,7 +37,7 @@ $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
 $SplitChart = new pCharts($myPicture);
 
 /* Populate the pData object */  
-$SplitChart->myPicture->myData->addPoints([30,20,15,10,8,4],"Score"); 
+$SplitChart->myPicture->myData->addPoints([30,20,15,10,8,4],"Score");
 $SplitChart->myPicture->myData->addPoints(["End of visit","Home Page","Product Page","Sales","Statistics","Prints"],"Labels");
 $SplitChart->myPicture->myData->setAbscissa("Labels");
 
@@ -49,7 +49,7 @@ $SplitChart->myPicture->myData->clearPoints("Score");
 $SplitChart->myPicture->myData->clearPoints("Labels");
 
 /* Populate the pData object again */
-$SplitChart->myPicture->myData->addPoints([30,20,15],"Score"); 
+$SplitChart->myPicture->myData->addPoints([30,20,15],"Score");
 $SplitChart->myPicture->myData->addPoints(["UK","FR","ES"],"Labels");
 $SplitChart->myPicture->myData->setAbscissa("Labels");
 

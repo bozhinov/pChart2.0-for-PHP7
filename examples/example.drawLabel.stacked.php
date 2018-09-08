@@ -37,7 +37,7 @@ $myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSubTick
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Write a label */
-$myPicture->writeLabel(["Frontend #1","Frontend #2","Frontend #3"],[1],["DrawVerticalLine"=>TRUE]); 
+$myPicture->writeLabel(["Frontend #1","Frontend #2","Frontend #3"],[1],["DrawVerticalLine"=>TRUE]);
 
 /* Write the chart legend */ 
 $myPicture->drawLegend(480,210,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
