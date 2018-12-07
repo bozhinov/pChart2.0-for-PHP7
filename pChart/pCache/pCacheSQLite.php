@@ -151,7 +151,7 @@ class pCacheSQLite implements pCacheInterface
 			if ($ID != "") {
 				$statement = "DELETE FROM cache WHERE Id= :Id;";
 			} else {
-				$statement = "DELETE FROM cache WHERE time > :from;";
+				$statement = "DELETE FROM cache WHERE time < :from;";
 			}
 			$q = $this->DbSQLite->prepare($statement);
 			$q->bindParam(':Id', $ID, \PDO::PARAM_STR);
