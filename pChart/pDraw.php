@@ -1704,7 +1704,7 @@ class pDraw
 		$BackgroundColor2 = isset($Format["BackgroundColor2"]) ? ["Color" => $Format["BackgroundColor2"]] : ["Color" => new pColor(230,230,230,20)];
 		$LabelingMethod = isset($Format["LabelingMethod"]) ? $Format["LabelingMethod"] : LABELING_ALL;
 		$LabelSkip = isset($Format["LabelSkip"]) ? $Format["LabelSkip"] : 0;
-		$LabelRotation = isset($Format["LabelRotation"]) ? $Format["LabelRotation"] : 0;
+		$LabelRotation = isset($Format["LabelRotation"]) ? (int)$Format["LabelRotation"] : 0;
 		$RemoveSkippedAxis = isset($Format["RemoveSkippedAxis"]) ? $Format["RemoveSkippedAxis"] : FALSE;
 		$SkippedAxisTicks = isset($Format["SkippedAxisTicks"]) ? $Format["SkippedAxisTicks"] : $GridTicks + 2;
 		$SkippedAxisColor = isset($Format["SkippedAxisColor"]) ? $Format["SkippedAxisColor"] : $GridColor["Color"]->newOne()->AlphaChange(-30);
@@ -1720,7 +1720,12 @@ class pDraw
 
 		/* Skip a NOTICE event in case of an empty array */
 		($DrawYLines == NONE || $DrawYLines == FALSE) AND $DrawYLines = ["zarma" => "31"];
-			
+		
+		/* Check LabelRotation range */
+		if (($LabelRotation < 0) || ($LabelRotation > 359)){
+			die("drawScale: LabelRotation must be between 0 and 359");
+		}
+
 		$Data = $this->myData->Data;
 		$Abscissa = (isset($Data["Abscissa"])) ? $Data["Abscissa"] : NULL;
 
