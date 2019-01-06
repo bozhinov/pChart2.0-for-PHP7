@@ -761,7 +761,7 @@ class pDraw
 		$Distance = hypot(($X2 - $X1), ($Y2 - $Y1));
 		if ($Distance == 0) {
 			# throw pException::InvalidDimentions("Line coordinates are not valid!");
-			# Momchil: that one revealed way to many bugs to fix now
+			# Momchil: that one revealed way too many bugs to fix now
 			return;
 		}
 		
@@ -772,9 +772,9 @@ class pDraw
 		if (!is_null($Weight)) {
 			$Angle = $this->getAngle($X1, $Y1, $X2, $Y2);
 			$PolySettings = ["Color" => $Color];
-			$AngleCosPlus90 = cos(deg2rad($Angle + 90)) * $Weight; // Momchil
+			$AngleCosPlus90 =  cos(deg2rad($Angle + 90)) * $Weight;
 			$AngleCosMinus90 = cos(deg2rad($Angle - 90)) * $Weight;
-			$AngleSinPlus90 = sin(deg2rad($Angle + 90)) * $Weight; // Momchil
+			$AngleSinPlus90 =  sin(deg2rad($Angle + 90)) * $Weight;
 			$AngleSinMinus90 = sin(deg2rad($Angle - 90)) * $Weight;
 			
 			if (is_null($Ticks)) {
