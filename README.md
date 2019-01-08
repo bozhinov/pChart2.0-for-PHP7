@@ -10,7 +10,7 @@ The good old pChart got an overhaul!
 
 pChart 2.2
 ===================
-This version that will NOT work with your existing code.<br />
+This version will NOT work with your existing code.<br />
 Please check the change log for the complete list of changes.<br />
 
 Major changes:
