@@ -84,6 +84,25 @@ class pData
 			]
 		];
 	}
+	
+	/* Initialize a given serie */
+	function initialise(string $Serie)
+	{
+		$ID = (isset($this->Data["Series"])) ? count($this->Data["Series"]) : 0;
+		
+		$this->Data["Series"][$Serie] = [
+			"Description" => $Serie,
+			"isDrawable" => TRUE,
+			"Picture" => NULL,
+			"Max" => NULL,
+			"Min" => NULL,
+			"Axis" => 0,
+			"Ticks" => NULL,
+			"Weight" => NULL,
+			"Shape" => SERIE_SHAPE_FILLEDCIRCLE,
+			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : $this->getRandomColor(100)
+		];
+	}
 
 	/* Add a single point or an array to the given serie */
 	function addPoints(array $Values, string $SerieName = "Serie1")
@@ -92,10 +111,8 @@ class pData
 			$this->initialise($SerieName);
 		}
 
-		foreach($Values as $Value) {
-			$this->Data["Series"][$SerieName]["Data"][] = $Value;
-		}
-		
+		$this->Data["Series"][$SerieName]["Data"] = $Values;
+
 		$StrippedData = array_diff($this->Data["Series"][$SerieName]["Data"], [VOID]);
 				
 		if (empty($StrippedData)) {
@@ -744,25 +761,6 @@ class pData
 			"Picture" => NULL,
 			"Ticks" => NULL,
 			"Weight" => NULL,
-			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : $this->getRandomColor(100)
-		];
-	}
-
-	/* Initialize a given serie */
-	function initialise(string $Serie)
-	{
-		$ID = (isset($this->Data["Series"])) ? count($this->Data["Series"]) : 0;
-		
-		$this->Data["Series"][$Serie] = [
-			"Description" => $Serie,
-			"isDrawable" => TRUE,
-			"Picture" => NULL,
-			"Max" => NULL,
-			"Min" => NULL,
-			"Axis" => 0,
-			"Ticks" => NULL,
-			"Weight" => NULL,
-			"Shape" => SERIE_SHAPE_FILLEDCIRCLE,
 			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : $this->getRandomColor(100)
 		];
 	}
