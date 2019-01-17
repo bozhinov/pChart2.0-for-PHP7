@@ -235,12 +235,16 @@ if ($Mode == "Render"){
 	}
 }
 
-if ($p_template != "default"){
-	$myPicture->myData->loadPalette($p_templates[$p_template],TRUE);
-}
-
 require_once("helper.class.php");
 $helper = new helper();
+
+if ($p_template != "default"){
+	$myPicture->myData->loadPalette($p_templates[$p_template],TRUE);
+	if ($Mode == "Source"){
+		echo $newLine.'$'.$p_template." = ".json_encode($p_templates[$p_template]).";".$doubleLine;
+		echo '$myPicture->myData->loadPalette("'.$p_template.'",TRUE);'.$newLine;
+	}
+}
 
 $Axis = [];
 
