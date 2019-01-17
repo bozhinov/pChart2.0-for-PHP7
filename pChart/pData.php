@@ -68,7 +68,7 @@ class pData
 			"6" => new pColor(92,224,46,100),
 			"7" => new pColor(224,176,46,100)
 		];
-		
+
 		$this->Data = [
 			"XAxisDisplay" => AXIS_FORMAT_DEFAULT,
 			"XAxisFormat" => NULL,
@@ -84,12 +84,12 @@ class pData
 			]
 		];
 	}
-	
+
 	/* Initialize a given serie */
 	function initialise(string $Serie)
 	{
 		$ID = (isset($this->Data["Series"])) ? count($this->Data["Series"]) : 0;
-		
+
 		$this->Data["Series"][$Serie] = [
 			"Description" => $Serie,
 			"isDrawable" => TRUE,
@@ -114,7 +114,7 @@ class pData
 		$this->Data["Series"][$SerieName]["Data"] = $Values;
 
 		$StrippedData = array_diff($this->Data["Series"][$SerieName]["Data"], [VOID]);
-				
+
 		if (empty($StrippedData)) {
 			$this->Data["Series"][$SerieName]["Max"] = 0;
 			$this->Data["Series"][$SerieName]["Min"] = 0;
@@ -123,7 +123,7 @@ class pData
 			$this->Data["Series"][$SerieName]["Min"] = min($StrippedData);
 		}
 	}
-	
+
 	/* In case you add points to the a serie with the same name - pSplit */
 	function clearPoints(string $SerieName = "Serie1")
 	{
@@ -145,7 +145,7 @@ class pData
 			throw pException::InvalidInput("Invalid serie name");
 		}
 	}
-	
+
 	function resetSeriesColors() # pBubble
 	{
 		$ID = 0;
@@ -279,13 +279,13 @@ class pData
 	{
 		$this->Data["AbscissaName"] = $Name;
 	}
-	
+
 	/* Return the abscissa margin */
 	function getAbscissaMargin()
 	{
 		foreach($this->Data["Axis"] as $Values) {
 			if ($Values["Identity"] == AXIS_X) {
-				return ($Values["Margin"]);
+				return $Values["Margin"];
 			}
 		}
 
@@ -460,10 +460,10 @@ class pData
 			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
 			$DeviationSum = 0;
 			foreach($SerieData as $Value) {
-				$DeviationSum = $DeviationSum + ($Value - $Average) * ($Value - $Average);
+				$DeviationSum += pow($Value - $Average, 2);
 			}
 
-			return sqrt($DeviationSum / count($SerieData));
+			return sqrt($DeviationSum / count($SerieData)); # $SerieData could be zero
 		} else {
 			throw pException::InvalidInput("Invalid serie name");
 		}
@@ -516,13 +516,12 @@ class pData
 		$Min = isset($Options["Min"]) ? $Options["Min"] : 0;
 		$Max = isset($Options["Max"]) ? $Options["Max"] : 100;
 		$withFloat = isset($Options["withFloat"]) ? $Options["withFloat"] : FALSE;
-		
+
 		$Points = [];
 		for ($i = 0; $i <= $Values; $i++) {
 			$Points[] = ($withFloat) ? (rand($Min * 100, $Max * 100) / 100) : rand($Min, $Max);
-
 		}
-		
+
 		$this->addPoints($Points, $SerieName);
 	}
 
@@ -639,7 +638,7 @@ class pData
 
 	/* Define if a serie should be draw with a special weight */
 	function setSerieWeight(string $Serie, int $Weight = NULL)
-	{	
+	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$this->Data["Series"][$Serie]["Weight"] = $Weight;
 		} else {
@@ -655,14 +654,12 @@ class pData
 		} else {
 			return $this->Data["Series"][$Serie]["Color"];
 		}
-		
 	}
 
 	/* Set the color of one serie */
 	function setPalette(string $Serie, pColor $Color)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
-			
 			$Old = $this->Data["Series"][$Serie]["Color"];
 			$this->Data["Series"][$Serie]["Color"] = $Color;
 			/* Do reverse processing on the internal palette array */
@@ -691,7 +688,7 @@ class pData
 		if ($Overwrite) {
 			$this->Palette = [];
 		}
-		
+
 		if ($UseCache != FALSE){
 			if (!file_exists($UseCache)){
 				throw pException::InvalidResourcePath("Palette cache path not found");
@@ -711,9 +708,9 @@ class pData
 					}
 				}
 				return;
-			} 
+			}
 		}
-		
+
 		$lines = explode(PHP_EOL, $buffer);
 		$ID = 0;
 
@@ -738,15 +735,14 @@ class pData
 				$ID++;
 			}
 		}
-		
+
 	}
-	
+
 	/* Returns a random color */
 	function getRandomColor($Alpha = 100)
 	{
 		return (new pColor(rand(0, 255), rand(0, 255), rand(0, 255), $Alpha));
 	}
-
 
 	/* Initialize a given scatter serie */
 	function initScatterSerie(int $ID)
@@ -788,7 +784,7 @@ class pData
 			$Factor = 0;
 			foreach($SelectedSeries as $SerieName) {
 				$Value = $this->Data["Series"][$SerieName]["Data"][$i];
-				($Value != VOID) AND $Factor = $Factor + abs($Value);
+				($Value != VOID) AND $Factor += abs($Value);
 			}
 
 			if ($Factor != 0) {
@@ -820,18 +816,18 @@ class pData
 		$GotHeader = isset($Options["GotHeader"]) ? $Options["GotHeader"] : FALSE;
 		$SkipColumns = isset($Options["SkipColumns"]) ? $Options["SkipColumns"] : [-1];
 		$DefaultSerieName = isset($Options["DefaultSerieName"]) ? $Options["DefaultSerieName"] : "Serie";
-		
+
 		if (strlen($Delimiter) > 1){
 			die("pChart: delimiter has to be a single char"); # No need to throw exception here
 		}
-		
+
 		if (!file_exists($FileName)){
 			die("pChart: could not find the CSV file"); # No need to throw exception here
 		}
-		
+
 		$CSVContent = file($FileName, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 		$SerieNames = [];
-		
+
 		if ($GotHeader) {
 			$line1 = explode($Delimiter, array_shift($CSVContent));
 			foreach($line1 as $Key => $Name) {
@@ -848,7 +844,7 @@ class pData
 			}
 		}
 	}
-	
+
 	/* Returns the number of drawable series */
 	function countDrawableSeries()
 	{
@@ -871,7 +867,7 @@ class pData
 		$AutoDescription = isset($Options["AutoDescription"]) ? $Options["AutoDescription"] : FALSE;
 		$RecordAbscissa = isset($Options["RecordAbscissa"]) ? $Options["RecordAbscissa"] : FALSE;
 		$AbscissaSerie = isset($Options["AbscissaSerie"]) ? $Options["AbscissaSerie"] : "Abscissa";
-		
+
 		$Result = [];
 		$Abscissa = [];
 
@@ -880,9 +876,9 @@ class pData
 			$ret = $Function($i);
 			$Result[] = (in_array("$ret", ["NAN", "INF", "-INF"])) ? VOID : $ret;
 		}
-		
+
 		$this->addPoints($Result, $SerieName);
-				
+
 		($AutoDescription) AND $this->setSerieDescription($SerieName, $Formula);
 		($RecordAbscissa) AND $this->addPoints($Abscissa, $AbscissaSerie);
 	}
