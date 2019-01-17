@@ -32,14 +32,14 @@ $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Create the per bar palette */
 $Palette = [
-	0=>new pColor(188,224,46,100),
-	1=>new pColor(224,100,46,100),
-	2=>new pColor(224,214,46,100),
-	3=>new pColor(46,151,224,100),
-	4=>new pColor(176,46,224,100),
-	5=>new pColor(224,46,117,100),
-	6=>new pColor(92,224,46,100),
-	7=>new pColor(224,176,46,100)
+	new pColor(188,224,46,100),
+	new pColor(224,100,46,100),
+	new pColor(224,214,46,100),
+	new pColor(46,151,224,100),
+	new pColor(176,46,224,100),
+	new pColor(224,46,117,100),
+	new pColor(92,224,46,100),
+	new pColor(224,176,46,100)
 ];
 
 /* Draw the chart */ 

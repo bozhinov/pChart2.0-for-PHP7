@@ -59,14 +59,14 @@ class pData
 	{
 
 		$this->Palette = [
-			"0" => new pColor(188,224,46,100),
-			"1" => new pColor(224,100,46,100),
-			"2" => new pColor(224,214,46,100),
-			"3" => new pColor(46,151,224,100),
-			"4" => new pColor(176,46,224,100),
-			"5" => new pColor(224,46,117,100),
-			"6" => new pColor(92,224,46,100),
-			"7" => new pColor(224,176,46,100)
+			new pColor(188,224,46,100),
+			new pColor(224,100,46,100),
+			new pColor(224,214,46,100),
+			new pColor(46,151,224,100),
+			new pColor(176,46,224,100),
+			new pColor(224,46,117,100),
+			new pColor(92,224,46,100),
+			new pColor(224,176,46,100)
 		];
 
 		$this->Data = [
@@ -100,7 +100,7 @@ class pData
 			"Ticks" => NULL,
 			"Weight" => NULL,
 			"Shape" => SERIE_SHAPE_FILLEDCIRCLE,
-			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : $this->getRandomColor(100)
+			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : $this->getRandomColor()
 		];
 	}
 
@@ -659,6 +659,7 @@ class pData
 	}
 
 	/* Set the color of one serie */
+	/* Momchil: tried to refactor. did not work */
 	function setPalette(string $Serie, pColor $Color)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
@@ -676,6 +677,9 @@ class pData
 	}
 
 	/* Load a palette file */
+	/* Momchil: Added the cache so it is possible to use the lib without touching the drive and work purely from memory
+				Assuming you are using the opcache */
+	/* Momchil: it will be removed in any future versions are it is much easier to pass on an array of colors */
 	function loadPalette($FileName, bool $Overwrite = FALSE, $UseCache = FALSE)
 	{
 		if (!file_exists($FileName)) {
@@ -702,11 +706,10 @@ class pData
 			if (file_exists($CachedPalette)){
 				require($CachedPalette);
 				/* Apply changes to current series */
-				$ID = 0;
 				if (isset($this->Data["Series"])) {
-					foreach($this->Data["Series"] as $Key => $Value) {
+					/* Momchil: no unit test gets here */
+					foreach(array_keys($this->Data["Series"]) as $ID => $Key) {
 						$this->Data["Series"][$Key]["Color"] = (!isset($this->Palette[$ID])) ? new pColor(0,0,0,0) : $this->Palette[$ID];
-						$ID++;
 					}
 				}
 				return;
@@ -714,14 +717,12 @@ class pData
 		}
 
 		$lines = explode(PHP_EOL, $buffer);
-		$ID = 0;
 
-		foreach($lines as $line){
+		foreach($lines as $ID => $line){
 			$pal = explode(",", $line);
 			if (count($pal) == 4) {
 				list($R, $G, $B, $Alpha) = $pal;
 				$this->Palette[$ID] = new pColor(intval($R),intval($G),intval($B),intval($Alpha));
-				$ID++;
 			}
 		}
 
@@ -730,11 +731,10 @@ class pData
 		}
 
 		/* Apply changes to current series */
-		$ID = 0;
 		if (isset($this->Data["Series"])) {
-			foreach($this->Data["Series"] as $Key => $Value) {
+			/* Momchil: no unit test gets here */
+			foreach(array_keys($this->Data["Series"]) as $ID => $Key) {
 				$this->Data["Series"][$Key]["Color"] = (!isset($this->Palette[$ID])) ? new pColor(0,0,0,0) : $this->Palette[$ID];
-				$ID++;
 			}
 		}
 
@@ -759,12 +759,12 @@ class pData
 			"Picture" => NULL,
 			"Ticks" => NULL,
 			"Weight" => NULL,
-			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : $this->getRandomColor(100)
+			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : $this->getRandomColor()
 		];
 	}
 
 	function normalize(int $NormalizationFactor = 100, string $UnitChange = "", int $Round = 1)
-	{
+	{		
 		$Abscissa = $this->Data["Abscissa"];
 		$SelectedSeries = [];
 		$MaxVal = 0;
@@ -782,7 +782,7 @@ class pData
 			}
 		}
 
-		for ($i = 0; $i <= $MaxVal - 1; $i++) {
+		for ($i = 0; $i < $MaxVal; $i++) {
 			$Factor = 0;
 			foreach($SelectedSeries as $SerieName) {
 				$Value = $this->Data["Series"][$SerieName]["Data"][$i];
