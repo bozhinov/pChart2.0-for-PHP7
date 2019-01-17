@@ -111,7 +111,9 @@ class pData
 			$this->initialise($SerieName);
 		}
 
-		$this->Data["Series"][$SerieName]["Data"] = $Values;
+		foreach($Values as $Value) {
+			$this->Data["Series"][$SerieName]["Data"][] = $Value;
+		}
 
 		$StrippedData = array_diff($this->Data["Series"][$SerieName]["Data"], [VOID]);
 
