@@ -182,7 +182,7 @@ class pDraw
 		imagedestroy($this->Picture);
 	}
 	
-	/* Destroy the image and start over. Required for pBarcodes */
+	/* Destroy the image and start over. UNUSED */
 	function resize(int $XSize, int $YSize)
 	{
 		imagedestroy($this->Picture);
