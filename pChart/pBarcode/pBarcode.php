@@ -1,11 +1,11 @@
 <?php
 /*
-pBarcode128 - class to create barcodes (128B)
+pBarcode - base class
 
 Version     : 2.3.0-dev
 Made by     : Jean-Damien POGOLOTTI
 Maintainedby: Momchil Bozhinov
-Last Update : 01/02/2018
+Last Update : 17/01/2019
 
 This file can be distributed under the license you can find at:
 http://www.pchart.net/license
@@ -13,63 +13,24 @@ http://www.pchart.net/license
 You can find the whole class documentation on the pChart web site.
 */
 
-namespace pChart;
+namespace pChart\pBarcode;
 
-class pBarcode128
+class pBarcode
 {
-	var $Codes = [];
-	var $Reverse = [];
 	var $myPicture;
 	
 	/* Class creator */
-	function __construct($pChartObject, string $dbFileName = "", $UseCache = FALSE)
+	function __construct($pChartObject)
 	{
-
-		if (!($pChartObject instanceof pDraw)){
+		if (!($pChartObject instanceof \pChart\pDraw)){
 			die("pBarcode needs a pDraw object. Please check the examples.");
 		}
-		
+
 		$this->myPicture = $pChartObject;
-		
-		$dbFileName = (strlen($dbFileName) > 0) ? $dbFileName : "pChart/data/128B.db";
-		
-		if ($UseCache != FALSE){
-			if (!file_exists($UseCache)){
-				throw pException::InvalidResourcePath("BarcodeDb cache path not found");
-			}
-			if (substr($UseCache, -1) == "/"){
-				$UseCache = substr($UseCache,0,-1);
-			}
-			$CachedDb = $UseCache."/barcode128-".basename($dbFileName).".php";
-			if (file_exists($CachedDb)){
-				require($CachedDb);
-				return;
-			} 
-		}
-				
-		if (!file_exists($dbFileName)){
-			throw pException::InvalidResourcePath("Cannot find barcode database (pChart/data/128B.db).");
-		}
-
-		$buffer = file_get_contents($dbFileName);
-		$lines = explode(PHP_EOL, $buffer);
-
-		foreach($lines as $line){
-			$vals = explode(";", $line);
-			$this->Codes[$vals[1]]["ID"] = $vals[0];
-			$this->Codes[$vals[1]]["Code"] = $vals[2];
-			$this->Reverse[$vals[0]]["Code"] = $vals[2];
-			$this->Reverse[$vals[0]]["Asc"] = $vals[1];
-		}
-		
-		if ($UseCache != FALSE){
-			file_put_contents($CachedDb,'<?php $this->Codes='.var_export($this->Codes,true).'; $this->Reverse='.var_export($this->Reverse,true).'; ?>');
-		}
-	
 	}
 
 	/* Return the projected size of a barcode */
-	function getProjection(string $TextString, array $Format = [])
+	static function getProjectionEx(float $BarcodeLength, array $Format = [])
 	{
 		$Angle = 0;
 		$ShowLegend = FALSE;
@@ -80,9 +41,6 @@ class pBarcode128
 		
 		/* Override defaults */
 		extract($Format);
-		
-		list($TextString, $Result) = $this->encode128($TextString); # Momchil: result could be cached
-		$BarcodeLength = strlen($Result);
 
 		$WOffset = ($DrawArea) ? 20 : 0;
 		$HOffset = ($ShowLegend) ? $FontSize + $LegendOffset + $WOffset : 0;
@@ -94,44 +52,23 @@ class pBarcode128
 			$Y1 = sin($Angle * PI / 180) * ($WOffset + $BarcodeLength);
 			$X2 = $X1 + cos(($Angle + 90) * PI / 180) * ($HOffset + $Height);
 			$Y2 = $Y1 + sin(($Angle + 90) * PI / 180) * ($HOffset + $Height);
-			
+
 			return [ceil(max(abs($X1), abs($X2))), ceil(max(abs($Y1), abs($Y2)))]; # "Width", "Height"
 		}
 	}
 
-	function encode128(string $Value)
-	{
-		$Result = "11010010000";
-		$CRC = 104;
-		$Arr = str_split($Value);
-
-		foreach($Arr as $i => $char) {
-			$CharCode = ord($char);
-			if (isset($this->Codes[$CharCode])) {
-				$Result .= $this->Codes[$CharCode]["Code"];
-				$CRC += ($i + 1) * $this->Codes[$CharCode]["ID"];
-			}
-		}
-
-		$CRC -= floor($CRC / 103) * 103;
-		$Result .= $this->Reverse[$CRC]["Code"]. "1100011101011";
-
-		return [$Value, $Result];
-	}
-
 	/* Create the encoded string */
-	function draw(string $Value, int $X, int $Y, array $Format = [])
+	function drawEx(string $TextString, string $Result, int $X, int $Y, array $Format = [])
 	{
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new \pChart\pColor(0,0,0,100);
 		$Height = isset($Format["Height"]) ? $Format["Height"] : 30;
 		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 0;
 		$ShowLegend = isset($Format["ShowLegend"]) ? $Format["ShowLegend"] : FALSE;
 		$LegendOffset = isset($Format["LegendOffset"]) ? $Format["LegendOffset"] : 5;
 		$DrawArea = isset($Format["DrawArea"]) ? $Format["DrawArea"] : FALSE;
-		$AreaColor = isset($Format["AreaColor"]) ? $Format["AreaColor"] : new pColor(255,255,255,$Color->Alpha);
+		$AreaColor = isset($Format["AreaColor"]) ? $Format["AreaColor"] : new \pChart\pColor(255,255,255,$Color->Alpha);
 		$AreaBorderColor = isset($Format["AreaBorderColor"]) ? $Format["AreaBorderColor"] : $AreaColor->newOne();
-		
-		list($TextString, $Result) = $this->encode128($Value);
+
 		$BarcodeLength = strlen($Result);
 		
 		if ($DrawArea) {

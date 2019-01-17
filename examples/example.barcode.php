@@ -5,8 +5,8 @@ require_once("bootstrap.php");
 use pChart\{
 	pDraw,
 	pColor,
-	pBarcode39,
-	pBarcode128
+	pBarcode\pBarcode39,
+	pBarcode\pBarcode128
 };
 
 /* CAT:Barcode */

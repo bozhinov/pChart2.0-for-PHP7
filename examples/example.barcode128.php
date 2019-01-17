@@ -6,7 +6,7 @@ require_once("bootstrap.php");
 use pChart\{
 	pColor,
 	pDraw,
-	pBarcode128
+	pBarcode\pBarcode128
 };
 
 /* Create the pChart object */
