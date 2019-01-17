@@ -1,10 +1,10 @@
 /*
 functions.js - Sandbox JS
 
-Version     : 1.2.0
+Version     : 1.2.1
 Made by     : Jean-Damien POGOLOTTI
 Maintainedby: Momchil Bozhinov
-Last Update : 01/02/18
+Last Update : 17/01/19
 This file can be distributed under the license you can find at :
 
 			http://www.pchart.net/license
@@ -152,14 +152,23 @@ You can find the whole class documentation on the pChart web site.
    d_serie2_axis	= document.getElementById("d_serie2_axis").options[document.getElementById("d_serie2_axis").selectedIndex].value;
    d_serie3_axis	= document.getElementById("d_serie3_axis").options[document.getElementById("d_serie3_axis").selectedIndex].value;
 
-   data0 = ""; data1 = ""; data2 = ""; absissa = "";
-   for(i=0;i<8;i++)
-    {
-     data0 = data0 + "!" + document.getElementById("d_serie1_data"+i).value;
-     data1 = data1 + "!" + document.getElementById("d_serie2_data"+i).value;
-     data2 = data2 + "!" + document.getElementById("d_serie3_data"+i).value;
-     absissa = absissa + "!" + document.getElementById("d_absissa_data"+i).value;
-    }
+	data0 = [];
+	data1 = [];
+	data2 = [];
+	absissa = [];
+   
+	for(i=0;i<8;i++)
+	{
+		data0.push(document.getElementById("d_serie1_data"+i).value);
+		data1.push(document.getElementById("d_serie2_data"+i).value);
+		data2.push(document.getElementById("d_serie3_data"+i).value);
+		absissa.push(document.getElementById("d_absissa_data"+i).value);
+	}
+	
+   data0 = JSON.stringify(data0);
+   data1 = JSON.stringify(data1);
+   data2 = JSON.stringify(data2);
+   absissa = JSON.stringify(absissa);
 
    d_normalize_enabled	= document.getElementById("d_normalize_enabled").checked;
 

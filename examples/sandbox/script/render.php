@@ -2,9 +2,10 @@
 /*
  render.php - Sandbox rendering engine
 
- Version     : 1.1.0
+ Version     : 2.0
  Made by     : Jean-Damien POGOLOTTI
- Last Update : 18/01/11
+ Maintained by : Momchil Bozhinov
+ Last Update : 17/01/19
 
  This file can be distributed under the license you can find at :
 
@@ -17,8 +18,6 @@ session_start();
 chdir("../../");
 
 $Mode = (!isset($_GET["Mode"])) ? "Render" : $_GET["Mode"];
-
-$Constants = readConstantFile();
 
 /* -- Retrieve General configuration items -------------------------------- */
 $g_width		= $_SESSION["g_width"];
@@ -188,6 +187,20 @@ $sl_caption_line	= $_SESSION["sl_caption_line"];
 $p_template	= $_SESSION["p_template"];
 /* ------------------------------------------------------------------------ */
 
+$p_templates = [
+	"autumn" => [[185,106,154,100],	[216,137,184,100],	[156,192,137,100],	[216,243,201,100],	[253,232,215,100],	[255,255,255,100]],
+	"blind" => 	[[109,152,171,100],	[0,39,94,100],		[254,183,41,100],	[168,177,184,100],	[255,255,255,100],	[0,0,0,100]],
+	"evening" =>[[242,245,237,100],	[255,194,0,100],	[255,91,0,100],		[184,0,40,100],		[132,0,46,100],		[74,192,242,100]],
+	"kitchen" =>[[155,225,251,100],	[197,239,253,100],	[189,32,49,100],	[35,31,32,100],		[255,255,255,100],	[0,98,149,100]],
+	"navy" => 	[[25,78,132,100],	[59,107,156,100],	[31,36,42,100],		[55,65,74,100],		[96,187,34,100],	[242,186,187,100]],
+	"shade" => 	[[117,113,22,100],	[174,188,33,100],	[217,219,86,100],	[0,71,127,100],		[76,136,190,100],	[141,195,233,100]],
+	"spring" => [[146,123,81,100],	[168,145,102,100],	[128,195,28,100],	[188,221,90,100],	[255,121,0,100],	[251,179,107,100]],
+	"summer" => [[253,184,19,100],	[246,139,31,100],	[241,112,34,100],	[98,194,204,100],	[228,246,248,100],	[238,246,108,100]],
+	"light" => 	[[239,210,121,100],	[149,203,233,100],	[2,71,105,100],		[175,215,117,100],	[44,87,0,100],		[222,157,127,100]]
+];
+
+$newLine = "\r\n";
+$doubleLine = "\r\n\r\n";
 
 /* pChart library inclusions */
 require_once("../examples/functions.inc.php");
@@ -208,52 +221,42 @@ if ($Mode == "Render"){
 	}
 } else {
 	$myPicture = new pDraw($g_width,$g_height);
-	echo "&lt;?php\r\n\r\n";
+	echo "&lt;?php".$doubleLine;
 	if ($Mode == "Source"){
-		echo 'require_once("examples/functions.inc.php");'."\r\n";
-		echo 'require_once("examples/myColors.php");'."\r\n";
-		echo 'require_once("examples/bootstrap.php");'."\r\n";
-		echo 'use pChart\{pDraw,pCharts,pColor};'."\r\n";
-		echo "\r\n";
+		echo 'require_once("examples/functions.inc.php");'.$newLine;
+		echo 'require_once("examples/myColors.php");'.$newLine;
+		echo 'require_once("examples/bootstrap.php");'.$newLine;
+		echo 'use pChart\{pDraw,pCharts,pColor};'.$newLine.$newLine;
 	}
 	if ($g_transparent == "true"){
-		echo '$myPicture = new pDraw('.$g_width.','.$g_height.',TRUE);'."\r\n";
+		echo '$myPicture = new pDraw('.$g_width.','.$g_height.',TRUE);'.$newLine;
 	} else {
-		echo '$myPicture = new pDraw('.$g_width.','.$g_height.');'."\r\n";
+		echo '$myPicture = new pDraw('.$g_width.','.$g_height.');'.$newLine;
 	}
 }
 
 if ($p_template != "default"){
-	$myPicture->myData->loadPalette("pChart/palettes/".$p_template.".color",TRUE);
+	$myPicture->myData->loadPalette($p_templates[$p_template],TRUE);
 }
+
+require_once("helper.class.php");
+$helper = new helper();
 
 $Axis = [];
 
 if ($d_serie1_enabled == "true"){
-	
-	$data0  = stripTail($data0);
-	$Values = explode("!",substr($data0,1));
-	foreach($Values as $key => $Value){
-		($Value == "") AND $Value = "VOID"; 
-		$myPicture->myData->addPoints([$Value],"Serie1");
-	}
 
+	$Values = json_decode($data0, true);
+	$myPicture->myData->addPoints($Values,"Serie1");
 	$myPicture->myData->setSerieDescription("Serie1",$d_serie1_name);
 	$myPicture->myData->setSerieOnAxis("Serie1",$d_serie1_axis);
 	$Axis[$d_serie1_axis] = TRUE;
 
 	if ($Mode == "Source"){
-		
-		$Data = "";
-		foreach($Values as $key => $Value){
-			($Value == "" || $Value == VOID) AND $Value = "VOID"; 
-			$Data = $Data.",".toString($Value); 
-		}
-		$Data = substr($Data,1);
 
-		echo '$myPicture->myData->addPoints(array('.$Data.'),"Serie1");'."\r\n";
-		echo '$myPicture->myData->setSerieDescription("Serie1","'.$d_serie1_name.'");'."\r\n";
-		echo '$myPicture->myData->setSerieOnAxis("Serie1",'.$d_serie1_axis.');'."\r\n\r\n";
+		echo '$myPicture->myData->addPoints(['.$helper->stringify($Values).'],"Serie1");'.$newLine;
+		echo '$myPicture->myData->setSerieDescription("Serie1","'.$d_serie1_name.'");'.$newLine;
+		echo '$myPicture->myData->setSerieOnAxis("Serie1",'.$d_serie1_axis.');'.$doubleLine;
 
 		$Axis[$d_serie1_axis] = TRUE;
 	}
@@ -261,59 +264,35 @@ if ($d_serie1_enabled == "true"){
 
 if ($d_serie2_enabled == "true"){
 	
-	$data1  = stripTail($data1);
-	$Values = explode("!",substr($data1,1));
-	foreach($Values as $key => $Value){
-		($Value == "") AND $Value = "VOID";
-		$myPicture->myData->addPoints([$Value],"Serie2");
-	}
-
+	$Values = json_decode($data1, true);
+	$myPicture->myData->addPoints($Values,"Serie2");
 	$myPicture->myData->setSerieDescription("Serie2",$d_serie2_name);
 	$myPicture->myData->setSerieOnAxis("Serie2",$d_serie2_axis);
 	$Axis[$d_serie2_axis] = TRUE;
 
 	if ($Mode == "Source"){
-		
-		$Data = "";
-		foreach($Values as $key => $Value){
-			($Value == "") AND $Value = "VOID";
-			$Data = $Data.",".toString($Value);
-		}
-		$Data = substr($Data,1);
 
-		echo '$myPicture->myData->addPoints(array('.$Data.'),"Serie2");'."\r\n";
-		echo '$myPicture->myData->setSerieDescription("Serie2","'.$d_serie2_name.'");'."\r\n";
-		echo '$myPicture->myData->setSerieOnAxis("Serie2",'.$d_serie2_axis.');'."\r\n\r\n";
+		echo '$myPicture->myData->addPoints(['.$helper->stringify($Values).'],"Serie2");'.$newLine;
+		echo '$myPicture->myData->setSerieDescription("Serie2","'.$d_serie2_name.'");'.$newLine;
+		echo '$myPicture->myData->setSerieOnAxis("Serie2",'.$d_serie2_axis.');'.$doubleLine;
 
 		$Axis[$d_serie2_axis] = TRUE;
 	}
 }
 
 if ($d_serie3_enabled == "true"){
-	
-	$data2  = stripTail($data2);
-	$Values = explode("!",substr($data2,1));
-	foreach($Values as $key => $Value){
-		($Value == "") AND $Value = "VOID";
-		$myPicture->myData->addPoints([$Value],"Serie3");
-	}
 
+	$Values = json_decode($data2, true);
+	$myPicture->myData->addPoints($Values,"Serie3");
 	$myPicture->myData->setSerieDescription("Serie3",$d_serie3_name);
 	$myPicture->myData->setSerieOnAxis("Serie3",$d_serie3_axis);
 	$Axis[$d_serie3_axis] = TRUE;
 
 	if ($Mode == "Source"){
-		
-		$Data = "";
-		foreach($Values as $key => $Value){
-			($Value == "") AND $Value = "VOID";
-			$Data = $Data.",".toString($Value);
-		}
-		$Data = substr($Data,1);
 
-		echo '$myPicture->myData->addPoints(array('.$Data.'),"Serie3");'."\r\n";
-		echo '$myPicture->myData->setSerieDescription("Serie3","'.$d_serie3_name.'");'."\r\n";
-		echo '$myPicture->myData->setSerieOnAxis("Serie3",'.$d_serie3_axis.');'."\r\n\r\n";
+		echo '$myPicture->myData->addPoints(['.$helper->stringify($Values).'],"Serie3");'.$newLine;
+		echo '$myPicture->myData->setSerieDescription("Serie3","'.$d_serie3_name.'");'.$newLine;
+		echo '$myPicture->myData->setSerieOnAxis("Serie3",'.$d_serie3_axis.');'.$doubleLine;
 
 		$Axis[$d_serie3_axis] = TRUE;
 	}
@@ -321,25 +300,14 @@ if ($d_serie3_enabled == "true"){
 
 if ($d_absissa_enabled == "true")
 {
-	$absissa = stripTail($absissa);
-	$Values  = explode("!",substr($absissa,1));
-	foreach($Values as $key => $Value){
-		($Value == "") AND $Value = VOID;
-		$myPicture->myData->addPoints([$Value],"Absissa");
-	}
-
+	$Values = json_decode($absissa, true);
+	$myPicture->myData->addPoints($Values,"Absissa");
 	$myPicture->myData->setAbscissa("Absissa");
 
 	if ($Mode == "Source"){
-		$Data = "";
-		foreach($Values as $key => $Value){
-			($Value == "") AND $Value = "VOID";
-			$Data = $Data.",".toString($Value);
-		}
-		$Data = substr($Data,1);
-
-		echo '$myPicture->myData->addPoints(array('.$Data.'),"Absissa");'."\r\n";
-		echo '$myPicture->myData->setAbscissa("Absissa");'."\r\n\r\n";
+		
+		echo '$myPicture->myData->addPoints(['.$helper->stringify($Values).'],"Absissa");'.$newLine;
+		echo '$myPicture->myData->setAbscissa("Absissa");'.$doubleLine;
 	}
 }
 
@@ -358,12 +326,12 @@ if (isset($Axis[0]))
 
 	if ($Mode == "Source"){
 		if ($d_axis0_position == "left"){
-			echo '$myPicture->myData->setAxisPosition(0,AXIS_POSITION_LEFT);'."\r\n";
+			echo '$myPicture->myData->setAxisPosition(0,AXIS_POSITION_LEFT);'.$newLine;
 		} else {
-			echo '$myPicture->myData->setAxisPosition(0,AXIS_POSITION_RIGHT);'."\r\n";
+			echo '$myPicture->myData->setAxisPosition(0,AXIS_POSITION_RIGHT);'.$newLine;
 		}
-		echo '$myPicture->myData->setAxisName(0,"'.$d_axis0_name.'");'."\r\n";
-		echo '$myPicture->myData->setAxisUnit(0,"'.$d_axis0_unit.'");'."\r\n\r\n";
+		echo '$myPicture->myData->setAxisName(0,"'.$d_axis0_name.'");'.$newLine;
+		echo '$myPicture->myData->setAxisUnit(0,"'.$d_axis0_unit.'");'.$doubleLine;
 	}
 }
 
@@ -379,12 +347,12 @@ if (isset($Axis[1]))
 
 	if ($Mode == "Source"){
 		if ($d_axis1_position == "left"){
-			echo '$myPicture->myData->setAxisPosition(1,AXIS_POSITION_LEFT);'."\r\n";
+			echo '$myPicture->myData->setAxisPosition(1,AXIS_POSITION_LEFT);'.$newLine;
 		} else {
-			echo '$myPicture->myData->setAxisPosition(1,AXIS_POSITION_RIGHT);'."\r\n";
+			echo '$myPicture->myData->setAxisPosition(1,AXIS_POSITION_RIGHT);'.$newLine;
 		}
-		echo '$myPicture->myData->setAxisName(1,"'.$d_axis1_name.'");'."\r\n";
-		echo '$myPicture->myData->setAxisUnit(1,"'.$d_axis1_unit.'");'."\r\n\r\n";
+		echo '$myPicture->myData->setAxisName(1,"'.$d_axis1_name.'");'.$newLine;
+		echo '$myPicture->myData->setAxisUnit(1,"'.$d_axis1_unit.'");'.$doubleLine;
 	}
 }
 
@@ -400,12 +368,12 @@ if (isset($Axis[2])){
 
 	if ($Mode == "Source"){
 		if ($d_axis2_position == "left"){
-			echo '$myPicture->myData->setAxisPosition(2,AXIS_POSITION_LEFT);'."\r\n";
+			echo '$myPicture->myData->setAxisPosition(2,AXIS_POSITION_LEFT);'.$newLine;
 		} else {
-			echo '$myPicture->myData->setAxisPosition(2,AXIS_POSITION_RIGHT);'."\r\n";
+			echo '$myPicture->myData->setAxisPosition(2,AXIS_POSITION_RIGHT);'.$newLine;
 		}
-		echo '$myPicture->myData->setAxisName(2,"'.$d_axis2_name.'");'."\r\n";
-		echo '$myPicture->myData->setAxisUnit(2,"'.$d_axis2_unit.'");'."\r\n\r\n";
+		echo '$myPicture->myData->setAxisName(2,"'.$d_axis2_name.'");'.$newLine;
+		echo '$myPicture->myData->setAxisUnit(2,"'.$d_axis2_unit.'");'.$doubleLine;
 	}
 }
 
@@ -414,7 +382,7 @@ if ($d_normalize_enabled == "true"){
 	if ($Mode == "Render"){
 		$myPicture->myData->normalize(100);
 	} else {
-		echo '$myPicture->myData->normalize(100);'."\r\n";
+		echo '$myPicture->myData->normalize(100);'.$newLine;
 	}
 }
 
@@ -423,13 +391,13 @@ if ($g_aa == "false"){
 	if ($Mode == "Render"){
 		$myPicture->Antialias = FALSE;
 	} else {
-		echo '$myPicture->Antialias = FALSE;'."\r\n";
+		echo '$myPicture->Antialias = FALSE;'.$newLine;
 	}
 }
 
 if ($g_solid_enabled == "true"){
 
-	list($R,$G,$B) = extractColors($g_solid_color);
+	list($R,$G,$B) = $helper->extractColors($g_solid_color);
 	$Settings = ["Color"=>new pColor($R,$G,$B)];
 
 	if ($g_solid_dashed == "true"){
@@ -440,15 +408,15 @@ if ($g_solid_enabled == "true"){
 	if ($Mode == "Render"){
 		$myPicture->drawFilledRectangle(0,0,$g_width,$g_height,$Settings);
 	} else {
-		 echo dumpArray("Settings",$Settings);
-		 echo '$myPicture->drawFilledRectangle(0,0,'.$g_width.','.$g_height.',$Settings);'."\r\n\r\n";
+		 echo $helper->dumpArray("Settings",$Settings);
+		 echo '$myPicture->drawFilledRectangle(0,0,'.$g_width.','.$g_height.',$Settings);'.$doubleLine;
 	}
 }
 
 if ($g_gradient_enabled == "true"){
 
-	list($StartR,$StartG,$StartB) = extractColors($g_gradient_start);
-	list($EndR,$EndG,$EndB)       = extractColors($g_gradient_end);
+	list($StartR,$StartG,$StartB) = $helper->extractColors($g_gradient_start);
+	list($EndR,$EndG,$EndB)       = $helper->extractColors($g_gradient_end);
 
 	$Settings = array("StartColor"=>new pColor($StartR,$StartG,$StartB,$g_gradient_alpha),"EndColor"=>new pColor($EndR,$EndG,$EndB,$g_gradient_alpha));
 
@@ -459,12 +427,12 @@ if ($g_gradient_enabled == "true"){
 			$myPicture->drawGradientArea(0,0,$g_width,$g_height,DIRECTION_HORIZONTAL,$Settings);
 		}
 	} else {
-		echo dumpArray("Settings",$Settings);
+		echo $helper->dumpArray("Settings",$Settings);
 
 		if ($g_gradient_direction == "vertical"){
-			echo '$myPicture->drawGradientArea(0,0,'.$g_width.','.$g_height.',DIRECTION_VERTICAL,$Settings);'."\r\n\r\n";
+			echo '$myPicture->drawGradientArea(0,0,'.$g_width.','.$g_height.',DIRECTION_VERTICAL,$Settings);'.$doubleLine;
 		} else {
-			echo '$myPicture->drawGradientArea(0,0,'.$g_width.','.$g_height.',DIRECTION_HORIZONTAL,$Settings);'."\r\n\r\n";
+			echo '$myPicture->drawGradientArea(0,0,'.$g_width.','.$g_height.',DIRECTION_HORIZONTAL,$Settings);'.$doubleLine;
 		}
 	}
 }
@@ -474,10 +442,10 @@ if ($Mode == "Render"){
 	($g_shadow == "true") AND $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,20)]);
 } else {
 	if($g_border == "true"){
-		echo '$myPicture->drawRectangle(0,0,'.($g_width-1).','.($g_height-1).',array("Color"=>new pColor(0,0,0)));'."\r\n\r\n";
+		echo '$myPicture->drawRectangle(0,0,'.($g_width-1).','.($g_height-1).',["Color"=>new pColor(0,0,0)]);'.$doubleLine;
 	}
 	if($g_shadow == "true"){
-		echo '$myPicture->setShadow(TRUE,array("X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,20)));'."\r\n\r\n";
+		echo '$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,20)]);'.$doubleLine;
 	}
 }
 
@@ -486,12 +454,12 @@ if ($g_title_enabled == "true"){
 	if ($Mode == "Render"){
 		$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/".$g_title_font,"FontSize"=>$g_title_font_size));
 	} else {
-		echo '$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/'.$g_title_font.'","FontSize"=>'.$g_title_font_size.'));'."\r\n";
+		echo '$myPicture->setFontProperties(["FontName"=>"pChart/fonts/'.$g_title_font.'","FontSize"=>'.$g_title_font_size.']);'.$newLine;
 	}
 
-	list($R,$G,$B) = extractColors($g_title_color);
+	list($R,$G,$B) = $helper->extractColors($g_title_color);
 
-	$TextSettings = array("Align"=>getTextAlignCode($g_title_align),"Color"=>new pColor($R,$G,$B));
+	$TextSettings = array("Align"=>$helper->getConstant($g_title_align),"Color"=>new pColor($R,$G,$B));
 	if ($g_title_box == "true"){ 
 		$TextSettings["DrawBox"] = TRUE; 
 		$TextSettings["BoxColor"] = new pColor(255,255,255,30);
@@ -500,8 +468,8 @@ if ($g_title_enabled == "true"){
 	if ($Mode == "Render"){
 		$myPicture->drawText($g_title_x,$g_title_y,$g_title,$TextSettings);
 	} else {
-		echo dumpArray("TextSettings",$TextSettings);
-		echo '$myPicture->drawText('.$g_title_x.','.$g_title_y.',"'.$g_title.'",$TextSettings);'."\r\n\r\n";
+		echo $helper->dumpArray("TextSettings",$TextSettings);
+		echo '$myPicture->drawText('.$g_title_x.','.$g_title_y.',"'.$g_title.'",$TextSettings);'.$doubleLine;
 	}
 }
 
@@ -510,27 +478,27 @@ if ($g_shadow == "true"){
 	if ($Mode == "Render"){
 		$myPicture->setShadow(FALSE); 
 	} else {
-		echo '$myPicture->setShadow(FALSE);'."\r\n";
+		echo '$myPicture->setShadow(FALSE);'.$newLine;
 	}
 }
 
 if ($Mode == "Render"){
 	$myPicture->setGraphArea($s_x,$s_y,$s_x+$s_width,$s_y+$s_height);
 } else {
-	echo '$myPicture->setGraphArea('.$s_x.','.$s_y.','.($s_x+$s_width).','.($s_y+$s_height).');'."\r\n";
+	echo '$myPicture->setGraphArea('.$s_x.','.$s_y.','.($s_x+$s_width).','.($s_y+$s_height).');'.$newLine;
 }
 
-list($R,$G,$B) = extractColors($s_font_color);
+list($R,$G,$B) = $helper->extractColors($s_font_color);
 if ($Mode == "Render"){
 	$myPicture->setFontProperties(array("Color"=>new pColor($R,$G,$B),"FontName"=>"pChart/fonts/".$s_font,"FontSize"=>$s_font_size));
 } else {
-	echo '$myPicture->setFontProperties(array("Color"=>new pColor('.$R,$G,$B.'),"FontName"=>"pChart/fonts/'.$s_font.'","FontSize"=>'.$s_font_size.'));'."\r\n\r\n";
+	echo '$myPicture->setFontProperties(["Color"=>new pColor('.$R.",".$G.",".$B.'),"FontName"=>"pChart/fonts/'.$s_font.'","FontSize"=>'.$s_font_size.']);'.$doubleLine;
 }
 
 /* Scale specific parameters -------------------------------------------------------------------------------- */
-list($GridR,$GridG,$GridB) = extractColors($s_grid_color);
-list($TickR,$TickG,$TickB) = extractColors($s_ticks_color);
-list($SubTickR,$SubTickG,$SubTickB) = extractColors($s_subticks_color);
+list($GridR,$GridG,$GridB) = $helper->extractColors($s_grid_color);
+list($TickR,$TickG,$TickB) = $helper->extractColors($s_ticks_color);
+list($SubTickR,$SubTickG,$SubTickB) = $helper->extractColors($s_subticks_color);
 
 $Pos = ($s_direction == "SCALE_POS_LEFTRIGHT") ? 690101 : 690102;
 $Labeling = ($s_x_labeling == "LABELING_ALL") ? 691011 : 691012;
@@ -564,8 +532,8 @@ if ($Mode == "Render"){
 	$myPicture->drawScale($Settings);
 } else {
 	$Settings["DrawYLines"] = ($s_grid_y_enabled == "true") ? "ALL" : "NONE";
-	echo dumpArray("Settings",$Settings);
-	echo '$myPicture->drawScale($Settings);'."\r\n\r\n";
+	echo $helper->dumpArray("Settings",$Settings);
+	echo '$myPicture->drawScale($Settings);'.$doubleLine;
 }
 /* ---------------------------------------------------------------------------------------------------------- */
 
@@ -573,7 +541,7 @@ if ($g_shadow == "true"){
 	if ($Mode == "Render"){
 		$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,10)]); 
 	} else {
-		echo '$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,10)]);'."\r\n\r\n"; 
+		echo '$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,10)]);'.$doubleLine;
 	}
 }
 
@@ -590,15 +558,15 @@ if ($c_family == "plot"){
 	if ($Mode == "Render"){
 		(new pCharts($myPicture))->drawPlotChart($Config);
 	} else {
-		 echo dumpArray("Config",$Config);
-		 echo '(new pCharts($myPicture))->drawPlotChart($Config);'."\r\n";
+		 echo $helper->dumpArray("Config",$Config);
+		 echo '(new pCharts($myPicture))->drawPlotChart($Config);'.$doubleLine;
 	}
 }
 
 if ($c_family == "line"){
 	if ($c_break == "true"){
 
-		list($BreakR,$BreakG,$BreakB) = extractColors($c_break_color);
+		list($BreakR,$BreakG,$BreakB) = $helper->extractColors($c_break_color);
 
 		$Config["BreakVoid"] = 0;
 		$Config["BreakColor"] = new pColor($BreakR,$BreakG,$BreakB);
@@ -607,15 +575,15 @@ if ($c_family == "line"){
 	if ($Mode == "Render"){
 		(new pCharts($myPicture))->drawLineChart($Config);
 	} else {
-		echo dumpArray("Config",$Config);
-		echo '(new pCharts($myPicture))->drawLineChart($Config);'."\r\n";
+		echo $helper->dumpArray("Config",$Config);
+		echo '(new pCharts($myPicture))->drawLineChart($Config);'.$newLine;
 	}
 }
 
 if ($c_family == "step"){
 	if ($c_break == "true"){
 
-		list($BreakR,$BreakG,$BreakB) = extractColors($c_break_color);
+		list($BreakR,$BreakG,$BreakB) = $helper->extractColors($c_break_color);
 
 		$Config["BreakVoid"] = 0;
 		$Config["BreakColor"] = new pColor($BreakR,$BreakG,$BreakB);
@@ -624,15 +592,15 @@ if ($c_family == "step"){
 	if ($Mode == "Render"){
 		(new pCharts($myPicture))->drawStepChart($Config);
 	} else {
-		echo dumpArray("Config",$Config);
-		echo '(new pCharts($myPicture))->drawStepChart($Config);'."\r\n";
+		echo $helper->dumpArray("Config",$Config);
+		echo '(new pCharts($myPicture))->drawStepChart($Config);'.$newLine;
 	}
 }
 
 if ($c_family == "spline"){
 	if ($c_break == "true"){
 
-		list($BreakR,$BreakG,$BreakB) = extractColors($c_break_color);
+		list($BreakR,$BreakG,$BreakB) = $helper->extractColors($c_break_color);
 
 		$Config["BreakVoid"] = 0;
 		$Config["BreakColor"] = new pColor($BreakR,$BreakG,$BreakB);
@@ -641,8 +609,8 @@ if ($c_family == "spline"){
 	if ($Mode == "Render"){
 		(new pCharts($myPicture))->drawSplineChart($Config);
 	} else {
-		echo dumpArray("Config",$Config);
-		echo '(new pCharts($myPicture))->drawSplineChart($Config);'."\r\n";
+		echo $helper->dumpArray("Config",$Config);
+		echo '(new pCharts($myPicture))->drawSplineChart($Config);'.$newLine;
 	}
 }
 
@@ -654,8 +622,8 @@ if ($c_family == "bar"){
 	if ($Mode == "Render"){
 		(new pCharts($myPicture))->drawBarChart($Config);
 	} else {
-		 echo dumpArray("Config",$Config);
-		 echo '(new pCharts($myPicture))->drawBarChart($Config);'."\r\n";
+		 echo $helper->dumpArray("Config",$Config);
+		 echo '(new pCharts($myPicture))->drawBarChart($Config);'.$newLine;
 	}
 }
 
@@ -670,8 +638,8 @@ if ($c_family == "area"){
 	if ($Mode == "Render"){
 		(new pCharts($myPicture))->drawAreaChart($Config);
 	} else {
-		echo dumpArray("Config",$Config);
-		echo '(new pCharts($myPicture))->drawAreaChart($Config);'."\r\n";
+		echo $helper->dumpArray("Config",$Config);
+		echo '(new pCharts($myPicture))->drawAreaChart($Config);'.$newLine;
 	}
 }
 
@@ -686,8 +654,8 @@ if ($c_family == "fstep"){
 	if ($Mode == "Render"){
 		(new pCharts($myPicture))->drawFilledStepChart($Config);
 	} else {
-		echo dumpArray("Config",$Config);
-		echo '(new pCharts($myPicture))->drawFilledStepChart($Config);'."\r\n";
+		echo $helper->dumpArray("Config",$Config);
+		echo '(new pCharts($myPicture))->drawFilledStepChart($Config);'.$newLine;
 	}
 }
 
@@ -703,8 +671,8 @@ if ($c_family == "fspline"){
 	if ($Mode == "Render"){
 		(new pCharts($myPicture))->drawFilledSplineChart($Config);
 	} else {
-		echo dumpArray("Config",$Config);
-		echo '(new pCharts($myPicture))->drawFilledSplineChart($Config);'."\r\n";
+		echo $helper->dumpArray("Config",$Config);
+		echo '(new pCharts($myPicture))->drawFilledSplineChart($Config);'.$newLine;
 	}
 }
 
@@ -717,8 +685,8 @@ if ($c_family == "sbar")
 	if ($Mode == "Render"){
 		(new pCharts($myPicture))->drawStackedBarChart($Config);
 	} else {
-		echo dumpArray("Config",$Config);
-		echo '(new pCharts($myPicture))->drawStackedBarChart($Config);'."\r\n";
+		echo $helper->dumpArray("Config",$Config);
+		echo '(new pCharts($myPicture))->drawStackedBarChart($Config);'.$newLine;
 	}
 }
 
@@ -734,14 +702,14 @@ if ($c_family == "sarea"){
 	if ($Mode == "Render"){
 		(new pCharts($myPicture))->drawStackedAreaChart($Config);
 	} else	{
-		echo dumpArray("Config",$Config);
-		echo '(new pCharts($myPicture))->drawStackedAreaChart($Config);'."\r\n";
+		echo $helper->dumpArray("Config",$Config);
+		echo '(new pCharts($myPicture))->drawStackedAreaChart($Config);'.$newLine;
 	}
 }
 
 if ($t_enabled == "true"){
 
-	list($R,$G,$B) = extractColors($t_color);
+	list($R,$G,$B) = $helper->extractColors($t_color);
 
 	$Config = ["Color" => new pColor($R,$G,$B,$t_alpha)];
 
@@ -764,15 +732,14 @@ if ($t_enabled == "true"){
 	} else {
 		$Config["Caption"] = chr(34).$t_caption.chr(34);
 
-		echo "\r\n";
-		echo dumpArray("Config",$Config);
-		echo '$myPicture->drawThreshold(['.$t_value.'],$Config);'."\r\n";
+		echo $newLine.$helper->dumpArray("Config",$Config);
+		echo '$myPicture->drawThreshold(['.$t_value.'],$Config);'.$newLine;
 	}
 }
 
 if ($l_enabled == "true"){
 
-	list($R,$G,$B) = extractColors($l_font_color);
+	list($R,$G,$B) = $helper->extractColors($l_font_color);
 
 	$Config = [
 		"FontColor" => new pColor($R,$G,$B,$l_alpha),
@@ -809,9 +776,8 @@ if ($l_enabled == "true"){
 	} else {
 		$Config["FontName"] = chr(34)."pChart/fonts/".$l_font.chr(34);
 
-		echo "\r\n";
-		echo dumpArray("Config",$Config);
-		echo '$myPicture->drawLegend('.$l_x.','.$l_y.',$Config);'."\r\n";
+		echo $newLine.$helper->dumpArray("Config",$Config);
+		echo '$myPicture->drawLegend('.$l_x.','.$l_y.',$Config);'.$newLine;
 	}
 }
 
@@ -826,122 +792,16 @@ if ($sl_enabled == "true"){
 	if ($Mode == "Render"){
 		(new pCharts($myPicture))->drawDerivative($Config);
 	} else {
-		echo "\r\n";
-		echo dumpArray("Config",$Config);
-		echo '(new pCharts($myPicture))->drawDerivative($Config);'."\r\n";
+		echo $newLine.$helper->dumpArray("Config",$Config);
+		echo '(new pCharts($myPicture))->drawDerivative($Config);'.$newLine;
 	}
 }
 
 if ($Mode == "Render"){
 	$myPicture->stroke();
 } else {
-	echo "\r\n".'$myPicture->stroke();'."\r\n\r\n?>";
+	echo $newLine.'$myPicture->stroke();'.$doubleLine;;
 }
 
-function extractColors($Hexa)
-{
-	if (strlen($Hexa) != 6){
-		return [0,0,0]; 
-	}
-
-	$R = hexdec($Hexa[0].$Hexa[1]);
-	$G = hexdec($Hexa[2].$Hexa[3]);
-	$B = hexdec($Hexa[4].$Hexa[5]);
-
-	return [$R,$G,$B];
-}
-
-function getTextAlignCode($Mode)
-{
-	switch($Mode){
-		case "TEXT_ALIGN_TOPLEFT": return 690401; break;
-		case "TEXT_ALIGN_TOPMIDDLE": return 690401; break;
-		case "TEXT_ALIGN_TOPRIGHT": return 690403; break;
-		case "TEXT_ALIGN_MIDDLELEFT": return 690404; break;
-		case "TEXT_ALIGN_MIDDLEMIDDLE": return 690405; break;
-		case "TEXT_ALIGN_MIDDLERIGHT": return 690406; break;
-		case "TEXT_ALIGN_BOTTOMLEFT": return 690407; break;
-		case "TEXT_ALIGN_BOTTOMMIDDLE": return 690408; break;
-		case "TEXT_ALIGN_BOTTOMRIGHT":  return 690409; break;
-	}
-}
-
-function dumpArray($Name,$Values)
-{
-	if ($Values == []){ 
-		return '$'.$Name.' = [];'."\r\n";
-	}
-
-	$Result = '$'.$Name.' = array(';
-	foreach ($Values as $Key => $Value){
-		if (is_array($Value)){
-			$Result .= dumpArray($Value);
-		} else {
-			$Result .= chr(39).$Key.chr(39).'=>'.translate($Value).', ';
-		}
-	}
-
-	return substr($Result, 0, -2).");\r\n";
-}
-
-function translate($Value)
-{
-	global $Constants;
-	if (!$Value instanceof pColor){
-		return (isset($Constants[$Value])) ? $Constants[$Value] : $Value;
-	} else {
-		return "new pColor(".$Value->R.",".$Value->G.",".$Value->B.",".$Value->Alpha.")";
-	}
-}
-
-
-function stripTail($Values)
-{
-	$Values = explode("!", substr($Values, 1));
-
-	$Temp = [];
-	$Result = [];
-	
-	foreach($Values as $Key => $Value){
-		if ($Value == ""){ 
-			$Temp[] = VOID;
-		} else {
-			if ($Temp != [] && $Result != []){ 
-				$Result = array_merge($Result,$Temp);
-			} elseif ($Temp != [] && $Result == []){
-				$Result = $Temp;
-			}
-
-			$Result[] = $Value;
-			$Temp = [];
-		}
-	}
-
-	$Serialized = "!";
-	foreach($Result as $Key => $Value){
-		$Serialized .= $Value."!"; 
-	}
-	
-	return substr($Serialized, 0, -1);
-}
-
-function readConstantFile()
-{
-	$Result = [];
-	$buffer = file_get_contents("../examples/sandbox/includes/constants.txt");
-	$buffer = explode("\n" , $buffer);
-	
-	foreach($buffer as $line){
-		$values = explode(",",$line);
-		$Result[$values[0]] = substr($values[1], 0, -1); # strip \r
-	}
-
-	return $Result;
-}
-
-function toString($Value)
-{
-	return (is_numeric($Value) || $Value == "VOID") ? $Value : chr(34).$Value.chr(34);
-}
 
 ?>
