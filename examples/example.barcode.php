@@ -61,7 +61,7 @@ $myPicture->drawText(410,236,"06/06/2010",$Settings);
 $myPicture->drawText(410,276,"12.340 Kg",$Settings);
 
 /* Create the barcode 39 object */ 
-$Barcode39 = new pBarcode39($myPicture, FALSE, "pChart/data/39.db", $UseCache="cache/");
+$Barcode39 = new pBarcode39($myPicture);
 
 $Barcode39->myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 $Barcode39->draw("12250000234502",30,220,["ShowLegend" => TRUE, "Height" => 55, "DrawArea" => FALSE]);
@@ -71,7 +71,7 @@ $Barcode39->draw("75 cans",260,220,$Settings);
 $Barcode39->draw("06062010",260,260,$Settings);
 
 /* Create the barcode 128 object */ 
-$Barcode128 = new pBarcode128($myPicture,"pChart/data/128B.db", $UseCache="cache/");
+$Barcode128 = new pBarcode128($myPicture);
 $Barcode128->draw("TLSE",450,25,["ShowLegend" => TRUE, "Height" => 65,"DrawArea" => FALSE]);
 
 /* Render the picture (choose the best way) */
