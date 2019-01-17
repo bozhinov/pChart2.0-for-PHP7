@@ -11,7 +11,10 @@
  +-----------------------------------------+
  
  2.3.0 -----------------------------------------------------------------------
-
+  o pBarcode moved to its own folder
+  o pBarcode no longer uses text file for codes Db
+  o pData->loadPalette no longer uses text file for palette
+  o Sandbox: code improvements
   
  2.2.3 -----------------------------------------------------------------------
   o Cleaned up code
