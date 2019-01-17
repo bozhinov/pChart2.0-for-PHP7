@@ -13,8 +13,17 @@ use pChart\{
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
 
+$palette_blind = [
+	[109,152,171,100],
+	[0,39,94,100],
+	[254,183,41,100],
+	[168,177,184,100],
+	[255,255,255,100],
+	[0,0,0,100]
+];
+
 /* Populate the pData object */
-$myPicture->myData->loadPalette("pChart/palettes/blind.color",TRUE);
+$myPicture->myData->loadPalette($palette_blind, $overwrite=TRUE);
 $myPicture->myData->addPoints([34,55,15,62,38,42],"Probe1");
 $myPicture->myData->addPoints([5,10,8,9,15,10],"Probe1Weight");
 $myPicture->myData->addPoints([5,10,-5,-1,0,-10],"Probe2");

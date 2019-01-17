@@ -13,8 +13,17 @@ use pChart\{
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
 
+$palette_summer = [
+	[253,184,19,100],
+	[246,139,31,100],
+	[241,112,34,100],
+	[98,194,204,100],
+	[228,246,248,100],
+	[238,246,108,100]
+];
+
 /* Populate the pData object */
-$myPicture->myData->loadPalette("pChart/palettes/summer.color",TRUE);
+$myPicture->myData->loadPalette($palette_summer, $overwrite=TRUE);
 $myPicture->myData->addPoints([34,55,15,62,38,42],"Probe1");
 $myPicture->myData->addPoints([5,10,8,9,15,10],"Probe1Weight");
 $myPicture->myData->addPoints([5,10,-5,-1,0,-10],"Probe2");

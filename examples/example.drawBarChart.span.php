@@ -11,8 +11,17 @@ use pChart\pCharts;
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
 
+$palette_blind = [
+	[109,152,171,100],
+	[0,39,94,100],
+	[254,183,41,100],
+	[168,177,184,100],
+	[255,255,255,100],
+	[0,0,0,100]
+];
+
 /* Populate the pData object */
-$myPicture->myData->loadPalette("pChart/palettes/blind.color",TRUE);
+$myPicture->myData->loadPalette($palette_blind, $overwrite=TRUE);
 $myPicture->myData->addPoints([150,220,300,250,420,200,300,200,110],"Server A");
 $myPicture->myData->addPoints(["January","February","March","April","May","June","July","August","September"],"Months");
 $myPicture->myData->setSerieDescription("Months","Month");

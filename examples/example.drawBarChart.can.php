@@ -11,8 +11,17 @@ use pChart\pCharts;
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
 
+$palette_light = [
+	[239,210,121,100],
+	[149,203,233,100],
+	[2,71,105,100],
+	[175,215,117,100],
+	[44,87,0,100],
+	[222,157,127,100]
+];
+
 /* Populate the pData object */ 
-$myPicture->myData->loadPalette($FileName="pChart/palettes/light.color",$Overwrite=TRUE,$UseCache="Cache/");
+$myPicture->myData->loadPalette($palette_light, $overwrite=TRUE);
 $myPicture->myData->addPoints([150,220,300,-250,-420,-200,300,200,100],"Server A");
 $myPicture->myData->addPoints([140,0,340,-300,-320,-300,200,100,50],"Server B");
 $myPicture->myData->setAxisName(0,"Hits");

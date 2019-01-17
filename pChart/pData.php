@@ -677,57 +677,19 @@ class pData
 	}
 
 	/* Load a palette file */
-	/* Momchil: Added the cache so it is possible to use the lib without touching the drive and work purely from memory
-				Assuming you are using the opcache */
-	/* Momchil: it will be removed in any future versions are it is much easier to pass on an array of colors */
-	function loadPalette($FileName, bool $Overwrite = FALSE, $UseCache = FALSE)
+	function loadPalette(array $MyPalette, bool $Overwrite = FALSE)
 	{
-		if (!file_exists($FileName)) {
-			throw pException::InvalidResourcePath("Palette not found");
-		}
-
-		$buffer = file_get_contents($FileName);
-		if ($buffer === FALSE) {
-			throw pException::InvalidInput("Invalid palette");
-		}
 
 		if ($Overwrite) {
 			$this->Palette = [];
 		}
 
-		if ($UseCache != FALSE){
-			if (!file_exists($UseCache)){
-				throw pException::InvalidResourcePath("Palette cache path not found");
+		foreach($MyPalette as $ID => $color){
+			if (is_array($color)) {
+				$this->Palette[$ID] = new pColor($color[0], $color[1], $color[2], $color[3]);
+			} else {
+				throw pException::InvalidInput("Invalid palette");
 			}
-			if (substr($UseCache, -1) == "/"){
-				$UseCache = substr($UseCache,0,-1);
-			}
-			$CachedPalette = $UseCache."/".basename($FileName).".php";
-			if (file_exists($CachedPalette)){
-				require($CachedPalette);
-				/* Apply changes to current series */
-				if (isset($this->Data["Series"])) {
-					/* Momchil: no unit test gets here */
-					foreach(array_keys($this->Data["Series"]) as $ID => $Key) {
-						$this->Data["Series"][$Key]["Color"] = (!isset($this->Palette[$ID])) ? new pColor(0,0,0,0) : $this->Palette[$ID];
-					}
-				}
-				return;
-			}
-		}
-
-		$lines = explode(PHP_EOL, $buffer);
-
-		foreach($lines as $ID => $line){
-			$pal = explode(",", $line);
-			if (count($pal) == 4) {
-				list($R, $G, $B, $Alpha) = $pal;
-				$this->Palette[$ID] = new pColor(intval($R),intval($G),intval($B),intval($Alpha));
-			}
-		}
-
-		if ($UseCache != FALSE){
-			file_put_contents($CachedPalette,'<?php $this->Palette='.var_export($this->Palette,true).' ?>');
 		}
 
 		/* Apply changes to current series */

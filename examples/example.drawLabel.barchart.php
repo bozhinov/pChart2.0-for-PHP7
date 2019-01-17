@@ -11,8 +11,17 @@ use pChart\pCharts;
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
 
+$palette_autumn = [
+	[185,106,154,100],
+	[216,137,184,100],
+	[156,192,137,100],
+	[216,243,201,100],
+	[253,232,215,100],
+	[255,255,255,100]
+];
+
 /* Populate the pData object */
-$myPicture->myData->loadPalette("pChart/palettes/autumn.color",TRUE);
+$myPicture->myData->loadPalette($palette_autumn, $overwrite=TRUE);
 $myPicture->myData->addPoints([4,12,15,8,5,-5],"Probe 1");
 $myPicture->myData->addPoints([7,2,4,14,8,3],"Probe 2");
 $myPicture->myData->setAxisName(0,"Temperatures");

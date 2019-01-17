@@ -11,8 +11,17 @@ use pChart\pCharts;
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
 
+$palette_blind = [
+	[109,152,171,100],
+	[0,39,94,100],
+	[254,183,41,100],
+	[168,177,184,100],
+	[255,255,255,100],
+	[0,0,0,100]
+];
+
 /* Populate the pData object */
-$myPicture->myData->loadPalette("pChart/palettes/blind.color",TRUE);
+$myPicture->myData->loadPalette($palette_blind, $overwrite=TRUE);
 $myPicture->myData->addPoints([150,220,300,250,420,200,300,200,100],"Server A");
 $myPicture->myData->addPoints([140,0,340,300,320,300,200,100,50],"Server B");
 $myPicture->myData->setAxisName(0,"Hits");
@@ -27,7 +36,7 @@ $myPicture->myData->setSerieDrawable("Floating 0",FALSE);
 /* Draw the background */
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,  ["StartColor"=>new pColor(240,240,240,100),"EndColor"=>new pColor(180,180,180,100)]);
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,["StartColor"=>new pColor(240,240,240,20), "EndColor"=>new pColor(180,180,180,20)]);
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 
 /* Draw the scale  */
 $myPicture->setGraphArea(50,30,680,200);
