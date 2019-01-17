@@ -524,7 +524,7 @@ list($R,$G,$B) = extractColors($s_font_color);
 if ($Mode == "Render"){
 	$myPicture->setFontProperties(array("Color"=>new pColor($R,$G,$B),"FontName"=>"pChart/fonts/".$s_font,"FontSize"=>$s_font_size));
 } else {
-	echo '$myPicture->setFontProperties(array("Color"=>new pColor('.$R,$G,$B.'),"FontName"=>"pChart/fonts/'.$s_font.'","FontSize"=>'.$s_font_size.'));'."\r\n\r\n";
+	echo '$myPicture->setFontProperties(array("Color"=>new pColor('.$R.','.$G.','.$B.'),"FontName"=>"pChart/fonts/'.$s_font.'","FontSize"=>'.$s_font_size.'));'."\r\n\r\n";
 }
 
 /* Scale specific parameters -------------------------------------------------------------------------------- */
