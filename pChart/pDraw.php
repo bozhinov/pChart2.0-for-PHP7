@@ -144,6 +144,7 @@ class pDraw
 			throw pException::InvalidDimentions("Image dimensions (X * Y) must be > 0!");
 		}
 
+		/* Momchil: I will leave it here in case someone needs it
 		$memory_limit = ini_get("memory_limit");
 		if (intval($memory_limit) * 1024 * 1024 < $XSize * $YSize * 3 * 1.7){ # Momchil: for black & white gifs -> use 1 and not 3
 			echo "Memory limit: ".$memory_limit." Mb ".PHP_EOL;
@@ -151,6 +152,7 @@ class pDraw
 			$this->Picture = imagecreatetruecolor(1, 1);
 			throw pException::InvalidDimentions("Can not allocate enough memory for an image that big! Check your PHP memory_limit configuration option.");
 		}
+		*/
 
 		$this->Picture = imagecreatetruecolor($XSize, $YSize);
 		
