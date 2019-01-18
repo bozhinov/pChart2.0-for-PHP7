@@ -201,7 +201,7 @@ class pDraw
 	}
 
 	/* Draw a polygon */
-	function drawPolygon($Points, array $Format = [])
+	function drawPolygon(array $Points, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
 		$NoFill = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
@@ -313,20 +313,28 @@ class pDraw
 		}
 
 		$Step = 360 / (2 * PI * $Radius);
+
 		for ($i = 0; $i <= 90; $i = $i + $Step) {
-			$X = cos(($i + 180) * PI / 180) * $Radius + $X1 + $Radius;
-			$Y = sin(($i + 180) * PI / 180) * $Radius + $Y1 + $Radius;
+
+			$cos1 = cos(deg2rad($i + 180)) * $Radius;
+			$sin1 = sin(deg2rad($i + 180)) * $Radius;
+			$cos2 = cos(deg2rad($i + 90)) * $Radius;
+			$sin2 = sin(deg2rad($i + 90)) * $Radius;
+
+			$X = $cos1 + $X1 + $Radius;
+			$Y = $sin1 + $Y1 + $Radius;
 			$this->drawAntialiasPixel($X, $Y, $Color);
-			$X = cos(($i + 90) * PI / 180) * $Radius + $X1 + $Radius;
-			$Y = sin(($i + 90) * PI / 180) * $Radius + $Y2 - $Radius;
+			$X = $cos2 + $X1 + $Radius;
+			$Y = $sin2 + $Y2 - $Radius;
 			$this->drawAntialiasPixel($X, $Y, $Color);
-			$X = cos($i * PI / 180) * $Radius + $X2 - $Radius;
-			$Y = sin($i * PI / 180) * $Radius + $Y2 - $Radius;
+			$X = ($cos1 * -1) + $X2 - $Radius;
+			$Y = ($sin1 * -1) + $Y2 - $Radius;
 			$this->drawAntialiasPixel($X, $Y, $Color);
-			$X = cos(($i + 270) * PI / 180) * $Radius + $X2 - $Radius;
-			$Y = sin(($i + 270) * PI / 180) * $Radius + $Y1 + $Radius;
+			$X = ($cos2 * -1) + $X2 - $Radius;
+			$Y = ($sin2 * -1) + $Y1 + $Radius;
 			$this->drawAntialiasPixel($X, $Y, $Color);
 		}
+
 	}
 
 	/* Draw a rectangle with rounded corners */
@@ -375,9 +383,10 @@ class pDraw
 		$MinY = 0;
 		$MaxY = 0;
 		for ($i = 0; $i <= 90; $i = $i + $Step) {
-			$Xp1 = cos(($i + 180) * PI / 180) * $Radius + $X1 + $Radius;
-			$Xp2 = cos(((90 - $i) + 270) * PI / 180) * $Radius + $X2 - $Radius;
-			$Yp = floor(sin(($i + 180) * PI / 180) * $Radius + $YTop);
+			$cos = cos(deg2rad($i + 180)) * $Radius;
+			$Xp1 = $cos + $X1 + $Radius;
+			$Xp2 = ($cos * -1) + $X2 - $Radius;
+			$Yp = floor(sin(deg2rad($i + 180)) * $Radius + $YTop);
 			($MinY == 0 || $Yp > $MinY) AND $MinY = $Yp;
 			($Xp1 <= floor($X1)) AND $Xp1++;
 			($Xp2 >= floor($X2)) AND $Xp2--;
@@ -389,10 +398,11 @@ class pDraw
 				$Positions[$Yp]["X1"] = ($Positions[$Yp]["X1"] + $Xp1) / 2;
 				$Positions[$Yp]["X2"] = ($Positions[$Yp]["X2"] + $Xp2) / 2;
 			}
-
-			$Xp1 = cos(($i + 90) * PI / 180) * $Radius + $X1 + $Radius;
-			$Xp2 = cos((90 - $i) * PI / 180) * $Radius + $X2 - $Radius;
-			$Yp = floor(sin(($i + 90) * PI / 180) * $Radius + $YBottom);
+			
+			$cos = cos(deg2rad($i + 90)) * $Radius;
+			$Xp1 = $cos + $X1 + $Radius;
+			$Xp2 = ($cos * -1) + $X2 - $Radius;
+			$Yp = floor(sin(deg2rad($i + 90)) * $Radius + $YBottom);
 			($MaxY == 0 || $Yp < $MaxY) AND $MaxY = $Yp;
 			($Xp1 <= floor($X1)) AND $Xp1++;
 			($Xp2 >= floor($X2)) AND $Xp2--;
@@ -432,7 +442,7 @@ class pDraw
 	function drawRectangle($X1, $Y1, $X2, $Y2, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
-		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;		
+		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$NoAngle = isset($Format["NoAngle"]) ? $Format["NoAngle"] : FALSE;
 		
 		($X1 > $X2) AND list($X1, $X2) = [$X2,$X1];
@@ -569,12 +579,12 @@ class pDraw
 	/* Drawn a spline based on the bezier function */
 	function drawSpline(array $Coordinates, array $Format = [])
 	{
-		$PathOnly = isset($Format["PathOnly"]) ? $Format["PathOnly"] : FALSE;	
+		$NoDraw = isset($Format["NoDraw"]) ? $Format["NoDraw"] : FALSE;
 		$Force = isset($Format["Force"]) ? $Format["Force"] : 30;
 		$Forces = isset($Format["Forces"]) ? $Format["Forces"] : [];
 		$Result = [];
 		
-		$count = count($Coordinates) - 1;
+		$count = count($Coordinates)-1;
 
 		for ($i = 1; $i <= $count; $i++) {
 			$X1 = $Coordinates[$i - 1][0];
@@ -592,10 +602,10 @@ class pDraw
 			} else {
 				$Angle1 = $this->getAngle($XLast, $YLast, $X1, $Y1);
 				$Angle2 = $this->getAngle($X1, $Y1, $X2, $Y2);
-				$XOff = cos($Angle2 * PI / 180) * $Force + $X1;
-				$YOff = sin($Angle2 * PI / 180) * $Force + $Y1;
-				$Xv1 = cos($Angle1 * PI / 180) * $Force + $XOff;
-				$Yv1 = sin($Angle1 * PI / 180) * $Force + $YOff;
+				$XOff = cos(deg2rad($Angle2)) * $Force + $X1;
+				$YOff = sin(deg2rad($Angle2)) * $Force + $Y1;
+				$Xv1 = cos(deg2rad($Angle1)) * $Force + $XOff;
+				$Yv1 = sin(deg2rad($Angle1)) * $Force + $YOff;
 			}
 
 			/* Last segment */
@@ -603,16 +613,20 @@ class pDraw
 				$Xv2 = $X2;
 				$Yv2 = $Y2;
 			} else {
+				# Momchil: it is possible to save some calcs here
+				# $Angle2 is already defined if not 0,1,Last member
+				# cos(($Angle2 + 180) * PI / 180) is negated cos($Angle2 * PI / 180) (or at least close enough)
+				# Not worth the code complexity as verfy few calls
 				$Angle1 = $this->getAngle($X2, $Y2, $Coordinates[$i + 1][0], $Coordinates[$i + 1][1]);
 				$Angle2 = $this->getAngle($X1, $Y1, $X2, $Y2);
-				$XOff = cos(($Angle2 + 180) * PI / 180) * $Force + $X2;
-				$YOff = sin(($Angle2 + 180) * PI / 180) * $Force + $Y2;
-				$Xv2 = cos(($Angle1 + 180) * PI / 180) * $Force + $XOff;
-				$Yv2 = sin(($Angle1 + 180) * PI / 180) * $Force + $YOff;
+				$XOff = cos(deg2rad($Angle2 + 180)) * $Force + $X2;
+				$YOff = sin(deg2rad($Angle2 + 180)) * $Force + $Y2;
+				$Xv2 = cos(deg2rad($Angle1 + 180)) * $Force + $XOff;
+				$Yv2 = sin(deg2rad($Angle1 + 180)) * $Force + $YOff;
 			}
 
 			$Path = $this->drawBezier($X1, $Y1, $X2, $Y2, $Xv1, $Yv1, $Xv2, $Yv2, $Format);
-			if ($PathOnly) {
+			if ($NoDraw) {
 				$Result[] = $Path;
 			}
 
@@ -626,37 +640,29 @@ class pDraw
 	/* Draw a bezier curve with two controls points */
 	function drawBezier($X1, $Y1, $X2, $Y2, $Xv1, $Yv1, $Xv2, $Yv2, array $Format = [])
 	{
-
-		$Color = NULL;
-		$Segments = NULL;
-		$Ticks = NULL;
-		$NoDraw = FALSE;
-		$PathOnly = FALSE;
-		$Weight = NULL;
-		$ShowControl = FALSE;
-		$DrawArrow = FALSE;
-		$ArrowSize = 10;
-		$ArrowRatio = .5;
-		$ArrowTwoHeads = FALSE;
-		
-		extract($Format);
-		
-		if (is_null($Color)){
-			$Color = new pColor(0,0,0,100);
-		}
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Segments = isset($Format["Segments"]) ? $Format["Segments"] : NULL;
+		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
+		$NoDraw = isset($Format["NoDraw"]) ? (bool)$Format["NoDraw"] : FALSE;
+		$Weight = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
+		$ShowControl = isset($Format["ShowControl"]) ? (bool)$Format["ShowControl"] : FALSE;
+		$DrawArrow = isset($Format["DrawArrow"]) ? (bool)$Format["DrawArrow"] : FALSE;
+		$ArrowSize = isset($Format["ArrowSize"]) ? $Format["ArrowSize"] : 10;
+		$ArrowRatio = isset($Format["ArrowRatio"]) ? $Format["ArrowRatio"] : .5;
+		$ArrowTwoHeads = isset($Format["ArrowTwoHeads"]) ? (bool)$Format["ArrowTwoHeads"] : FALSE;
 		
 		if (is_null($Segments)) {
 			$Length = hypot(($X2 - $X1),($Y2 - $Y1));
 			$Precision = ($Length * 125) / 1000;
 		} else {
-			$Precision = $Segments;
+			$Precision = $Segments; # used here: example.spring.complex.php
 		}
 
 		$P = [
-			0 => ["X" => $X1,  "Y" => $Y1],
-			1 => ["X" => $Xv1, "Y" => $Yv1],
-			2 => ["X" => $Xv2, "Y" => $Yv2],
-			3 => ["X" => $X2,  "Y" => $Y2]
+			["X" => $X1,  "Y" => $Y1],
+			["X" => $Xv1, "Y" => $Yv1],
+			["X" => $Xv2, "Y" => $Yv2],
+			["X" => $X2,  "Y" => $Y2]
 		];
 
 		/* Compute the bezier points */
@@ -688,8 +694,17 @@ class pDraw
 			return $Q;
 		}
 		
+		$Cpt = 1;
+		$Mode = TRUE;
+		$Qcount = count($Q);
+		
+		/* Draw the bezier */
+		for($i=1;$i<$Qcount;$i++){ # omits the first member on purpose
+			list($Cpt, $Mode) = $this->drawLine($Q[$i - 1]["X"], $Q[$i - 1]["Y"], $Q[$i]["X"], $Q[$i]["Y"], ["Color" => $Color,"Ticks" => $Ticks,"Cpt" => $Cpt,"Mode" => $Mode,"Weight" => $Weight]);
+		}
+		
 		/* Display the control points */
-		if ($ShowControl && !$PathOnly) {
+		if ($ShowControl) {
 			$Xv1 = floor($Xv1);
 			$Yv1 = floor($Yv1);
 			$Xv2 = floor($Xv2);
@@ -701,34 +716,16 @@ class pDraw
 			$this->drawText($Xv2 + 4, $Yv2, "v2");
 		}
 
-		/* Draw the bezier */
-		$LastX = NULL;
-		$LastY = NULL;
-		$Cpt = NULL;
-		$Mode = NULL;
-		$ArrowS = [];
-		$ArrowE = [];
-		foreach($Q as $Point) {
-			$X = $Point["X"];
-			$Y = $Point["Y"];
-			/* Get the first segment */
-			if (empty($ArrowS) && !is_null($LastX) && !is_null($LastY)) {
-				$ArrowS = ["X2" => $LastX, "Y2" => $LastY, "X1" => $X, "Y1" => $Y];
-			}
-
-			if (!is_null($LastX) && !is_null($LastY) && !$PathOnly) {
-				list($Cpt, $Mode) = $this->drawLine($LastX, $LastY, $X, $Y, ["Color" => $Color,"Ticks" => $Ticks,"Cpt" => $Cpt,"Mode" => $Mode,"Weight" => $Weight]);
+		if ($DrawArrow) {
+			$ArrowSettings = ["FillColor" => $Color,"Size" => $ArrowSize,"Ratio" => $ArrowRatio];
+			if ($ArrowTwoHeads){
+				/* Get the first segment */
+				$FirstTwo = array_slice($Q, 0, 2);
+				$this->drawArrow($FirstTwo[0]["X"], $FirstTwo[0]["Y"], $FirstTwo[1]["X"], $FirstTwo[1]["Y"], $ArrowSettings);
 			}
 			/* Get the last segment */
-			$ArrowE = ["X1" => $LastX, "Y1" => $LastY, "X2" => $X, "Y2" => $Y];
-			$LastX = $X;
-			$LastY = $Y;
-		}
-
-		if ($DrawArrow && !$PathOnly) {
-			$ArrowSettings = ["FillColor" => $Color,"Size" => $ArrowSize,"Ratio" => $ArrowRatio];
-			($ArrowTwoHeads) AND $this->drawArrow($ArrowS["X1"], $ArrowS["Y1"], $ArrowS["X2"], $ArrowS["Y2"], $ArrowSettings);
-			$this->drawArrow($ArrowE["X1"], $ArrowE["Y1"], $ArrowE["X2"], $ArrowE["Y2"], $ArrowSettings);
+			$LastTwo = array_slice($Q, -2, 2);
+			$this->drawArrow($LastTwo[0]["X"], $LastTwo[0]["Y"],$LastTwo[1]["X"], $LastTwo[1]["Y"], $ArrowSettings);
 		}
 
 		return $Q;
@@ -742,13 +739,11 @@ class pDraw
 		$Threshold = isset($Format["Threshold"]) ? $Format["Threshold"] : [];
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$Weight = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
-		$Mode = isset($Format["Mode"]) ? $Format["Mode"] : 1;
+		$Mode = isset($Format["Mode"]) ? (bool)$Format["Mode"] : 1;
 		
-		if (!is_null($Ticks)){
-			if ($Ticks == 0){
-				$Ticks = NULL;
-				#throw pException::InvalidInput("Ticks can not be zero!");
-			}
+		if ($Ticks == 0){
+			$Ticks = NULL;
+			#throw pException::InvalidInput("Ticks can not be zero!");
 		}
 
 		if ($this->Antialias == FALSE && is_null($Ticks)) {
@@ -773,11 +768,12 @@ class pDraw
 		/* Derivative algorithm for overweighted lines, re-route to polygons primitives */
 		if (!is_null($Weight)) {
 			$Angle = $this->getAngle($X1, $Y1, $X2, $Y2);
-			$PolySettings = ["Color" => $Color];
 			$AngleCosPlus90 =  cos(deg2rad($Angle + 90)) * $Weight;
-			$AngleCosMinus90 = cos(deg2rad($Angle - 90)) * $Weight;
+			$AngleCosMinus90 = ($AngleCosPlus90 * -1);
 			$AngleSinPlus90 =  sin(deg2rad($Angle + 90)) * $Weight;
-			$AngleSinMinus90 = sin(deg2rad($Angle - 90)) * $Weight;
+			$AngleSinMinus90 = ($AngleSinPlus90 * -1);
+			
+			$PolySettings = ["Color" => $Color];
 			
 			if (is_null($Ticks)) {
 				$Points = [$AngleCosMinus90 + $X1, $AngleSinMinus90 + $Y1, $AngleCosPlus90 + $X1, $AngleSinPlus90 + $Y1, $AngleCosPlus90 + $X2, $AngleSinPlus90 + $Y2, $AngleCosMinus90 + $X2, $AngleSinMinus90 + $Y2];
@@ -816,9 +812,9 @@ class pDraw
 				if (!is_null($Ticks)) {
 					if ($Cpt % $Ticks == 0) {
 						$Cpt = 0;
-						$Mode = ($Mode == 1) ? 0 : 1;
+						$Mode ^= 1;
 					}
-					($Mode == 1) AND $this->drawAntialiasPixel($X, $Y, $Color);
+					($Mode) AND $this->drawAntialiasPixel($X, $Y, $Color);
 					$Cpt++;
 				} else {
 					$this->drawAntialiasPixel($X, $Y, $Color);
@@ -855,8 +851,8 @@ class pDraw
 		$Cpt = 1;
 		
 		for ($i = 0; $i <= 360; $i = $i + $Step) {
-			$X = cos($i * PI / 180) * $Height + $Xc;
-			$Y = sin($i * PI / 180) * $Width + $Yc;
+			$X = cos(deg2rad($i)) * $Height + $Xc;
+			$Y = sin(deg2rad($i)) * $Width + $Yc;
 			if (!is_null($Ticks)) {
 				if ($Cpt % $Ticks == 0) {
 					$Cpt = 0;
@@ -935,7 +931,7 @@ class pDraw
 	}
 
 	/* Write text */
-	function drawText(int $X, int $Y, string $Text, array $Format = [])
+	function drawText($X, $Y, string $Text, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : $this->FontColor;
 		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 0;
@@ -1097,9 +1093,9 @@ class pDraw
 		$Yi = floor($Y);
 		
 		if ($Xi == $X && $Yi == $Y) {
-			
+
 			$this->drawAlphaPixel($X, $Y, $Color);
-			
+
 		} else {
 			
 			$Yleaf = $Y - $Yi;
@@ -1123,7 +1119,7 @@ class pDraw
 						$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaMultiply($Xleaf * (1 - $Yleaf)));
 						$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaMultiply((1 - $Xleaf) * $Yleaf));
 						$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Color->newOne()->AlphaMultiply($Xleaf * $Yleaf));
-				}					
+				}
 			} else { # Momchil: no changes here
 				$Alpha = $Color->Alpha;
 				$Alpha1 = (1 - $Xleaf) * (1 - $Yleaf) * $Alpha;
@@ -1131,7 +1127,7 @@ class pDraw
 					$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaSet($Alpha1));
 				}
 
-				$Alpha2 = $Xleaf * (1 - $Yleaf) * $Alpha;	
+				$Alpha2 = $Xleaf * (1 - $Yleaf) * $Alpha;
 				if ($Alpha2 > $this->AntialiasQuality) {
 					$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaSet($Alpha2));
 				}
@@ -1283,10 +1279,9 @@ class pDraw
 		$Ratio = isset($Format["Ratio"]) ? $Format["Ratio"] : .5;
 		$TwoHeads = isset($Format["TwoHeads"]) ? $Format["TwoHeads"] : FALSE;
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
-				
-		/* Calculate the line angle */
-		$Angle = $this->getAngle($X1, $Y1, $X2, $Y2);
+		
 		$RGB = ["Color" => $BorderColor];
+		
 		/* Override Shadow support, this will be managed internally */
 		$RestoreShadow = $this->Shadow;
 		if ($this->Shadow) {
@@ -1295,11 +1290,14 @@ class pDraw
 		}
 
 		/* Draw the 1st Head */
-		$TailX = cos(($Angle - 180) * PI / 180) * $Size + $X2;
-		$TailY = sin(($Angle - 180) * PI / 180) * $Size + $Y2;
+		$Angle = $this->getAngle($X1, $Y1, $X2, $Y2);
+		$TailX = cos(deg2rad($Angle - 180)) * $Size + $X2;
+		$TailY = sin(deg2rad($Angle - 180)) * $Size + $Y2;
 		$Scale = $Size * $Ratio;
+		$cos90 = cos(deg2rad($Angle - 90)) * $Scale;
+		$sin90 = sin(deg2rad($Angle - 90)) * $Scale;
 		
-		$Points = [$X2, $Y2, cos(($Angle - 90) * PI / 180) * $Scale + $TailX, sin(($Angle - 90) * PI / 180) * $Scale + $TailY, cos(($Angle - 270) * PI / 180) * $Scale + $TailX, sin(($Angle - 270) * PI / 180) * $Scale + $TailY, $X2, $Y2];
+		$Points = [$X2, $Y2, $cos90 + $TailX, $sin90 + $TailY, ($cos90 * -1) + $TailX, ($sin90 * -1) + $TailY, $X2, $Y2];
 		/* Visual correction */
 		($Angle == 180 || $Angle == 360) AND $Points[4] = $Points[2];
 		($Angle == 90 || $Angle == 270) AND $Points[5] = $Points[3];
@@ -1311,9 +1309,11 @@ class pDraw
 		/* Draw the second head */
 		if ($TwoHeads) {
 			$Angle = $this->getAngle($X2, $Y2, $X1, $Y1);
-			$TailX2 = cos(($Angle - 180) * PI / 180) * $Size + $X1;
-			$TailY2 = sin(($Angle - 180) * PI / 180) * $Size + $Y1;
-			$Points = [$X1, $Y1, cos(($Angle - 90) * PI / 180) * $Scale + $TailX2, sin(($Angle - 90) * PI / 180) * $Scale + $TailY2, cos(($Angle - 270) * PI / 180) * $Scale + $TailX2, sin(($Angle - 270) * PI / 180) * $Scale + $TailY2, $X1, $Y1];
+			$cos90 = cos(deg2rad($Angle - 90)) * $Scale;
+			$sin90 = sin(deg2rad($Angle - 90)) * $Scale;
+			$TailX2 = cos(deg2rad($Angle - 180)) * $Size + $X1;
+			$TailY2 = sin(deg2rad($Angle - 180)) * $Size + $Y1;
+			$Points = [$X1, $Y1, $cos90 + $TailX2, $sin90 + $TailY2, ($cos90 * -1) + $TailX2, ($sin90 * -1) + $TailY2, $X1, $Y1];
 			/* Visual correction */
 			($Angle == 180 || $Angle == 360) AND $Points[4] = $Points[2];
 			($Angle == 90 || $Angle == 270) AND $Points[5] = $Points[3];
@@ -1344,10 +1344,10 @@ class pDraw
 		$Position = isset($Format["Position"]) ? $Format["Position"] : POSITION_TOP;
 		$RoundPos = isset($Format["RoundPos"]) ? $Format["RoundPos"] : FALSE;
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
-				
+
 		$Angle = $Angle % 360;
-		$X2 = sin(($Angle + 180) * PI / 180) * $Length + $X1;
-		$Y2 = cos(($Angle + 180) * PI / 180) * $Length + $Y1;
+		$X2 = sin(deg2rad($Angle + 180)) * $Length + $X1;
+		$Y2 = cos(deg2rad($Angle + 180)) * $Length + $Y1;
 		($RoundPos && $Angle > 0 && $Angle < 180) AND $Y2 = ceil($Y2);
 		($RoundPos && $Angle > 180) AND $Y2 = floor($Y2);
 
@@ -1375,7 +1375,7 @@ class pDraw
 				$Y3 = $Y2 + 2;
 			}
 		}
-		
+
 		$this->drawLine($X2, $Y2, $TxtWidth, $Y2, ["Color" => $BorderColor,"Ticks" => $Ticks]);
 		$this->drawText($X2, $Y3, $Text, $RGB);
 
@@ -1559,11 +1559,11 @@ class pDraw
 		$Surrounding = NULL;
 		$Style = LEGEND_ROUND;
 		$Mode = LEGEND_VERTICAL;
-		
+
 		/* Override defaults */
 		extract($Format);
-				
-		(is_null($Color)) AND $Color = new pColor(200,200,200,100);		
+
+		(is_null($Color)) AND $Color = new pColor(200,200,200,100);
 		(is_null($BorderColor)) AND $BorderColor = new pColor(255,255,255);
 		(!is_null($Surrounding)) AND $BorderColor->RGBChange($Surrounding);
 
@@ -2573,7 +2573,7 @@ class pDraw
 	}
 
 	/* Compute the best matching scale based on size & factors */
-	function processScale($XMin, $XMax, $MaxDivs, $Factors, $AxisID)
+	function processScale($XMin, $XMax, $MaxDivs, array $Factors, $AxisID)
 	{
 		$ScaleHeight = abs(ceil($XMax) - floor($XMin));
 		$Format = (isset($this->myData->Data["Axis"][$AxisID]["Format"])) ?  $this->myData->Data["Axis"][$AxisID]["Format"] : NULL;
@@ -3082,7 +3082,7 @@ class pDraw
 		
 		if ($this->myData->Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 			$Height = $this->GraphAreaYdiff - $Margin * 2;	
-			$Result = $this->GraphAreaY2 - $Margin - (($Height / $Scale) * ($Value - $this->myData->Data["Axis"][$AxisID]["ScaleMin"]));				
+			$Result = $this->GraphAreaY2 - $Margin - (($Height / $Scale) * ($Value - $this->myData->Data["Axis"][$AxisID]["ScaleMin"]));
 		} else {
 			$Width = $this->GraphAreaXdiff - $Margin * 2;
 			$Result = $this->GraphAreaX1 + $Margin + (($Width / $Scale) * ($Value - $this->myData->Data["Axis"][$AxisID]["ScaleMin"]));
@@ -3136,7 +3136,7 @@ class pDraw
 
 		# Momchil: this is not the same as default for the switch
 		# $Value comes as an INT or FLOAT but is used as a STRING as well
-		$ret = strval($Value) . $Unit; 
+		$ret = strval($Value) . $Unit;
 		
 		switch ($Mode) {
 			case AXIS_FORMAT_TRAFFIC:
@@ -3161,10 +3161,10 @@ class pDraw
 				}
 				break;
 			case AXIS_FORMAT_DATE:
-				$ret = gmdate((is_null($Format)) ? "d/m/Y" : $Format, $Value);	
+				$ret = gmdate((is_null($Format)) ? "d/m/Y" : $Format, $Value);
 				break;
 			case AXIS_FORMAT_TIME:
-				$ret = gmdate((is_null($Format)) ? "H:i:s" : $Format, $Value);	
+				$ret = gmdate((is_null($Format)) ? "H:i:s" : $Format, $Value);
 				break;
 			case AXIS_FORMAT_CURRENCY:
 				$ret = $Format . number_format($Value, 2);
@@ -3218,7 +3218,7 @@ class pDraw
 			"BoxSurrounding" => $BoxSurrounding,
 			"BoxBorderColor" => $BoxBorderColor
 		];
-				
+
 		list($XMargin, $XDivs) = $this->myData->scaleGetXSettings();
 		
 		if ($this->myData->Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
@@ -3246,7 +3246,7 @@ class pDraw
 				$Unit = $this->myData->Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$SerieOffset = isset($Serie["XOffset"]) ? $Serie["XOffset"] : 0;
-										
+
 				if ($this->myData->Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
 					$X = $this->GraphAreaX1 + $XMargin;
@@ -3304,7 +3304,7 @@ class pDraw
 						$CaptionSettings["Align"] = $Align;
 						$this->drawText($XPos + $XOffset, $YPos - $DisplayOffset + $YOffset, $Label, $CaptionSettings);
 					}
-					
+
 				} else {
 
 					$X = $this->GraphAreaY1 + $XMargin;
@@ -3632,7 +3632,7 @@ class pDraw
 		} else {
 			$TxtPos = $this->getTextBox($X, $Y, $FontName, $FontSize, 0, $Title);
 			$TitleWidth = ($TxtPos[1]["X"] - $TxtPos[0]["X"]) + $VerticalMargin * 2;
-			$TitleHeight = ($TxtPos[0]["Y"] - $TxtPos[2]["Y"]);			
+			$TitleHeight = ($TxtPos[0]["Y"] - $TxtPos[2]["Y"]);
 		}
 		
 		$CaptionWidth = 0;
@@ -3748,7 +3748,7 @@ class pDraw
 				if ($PlotBorder) {
 					$this->drawFilledCircle($X, $Y, $PlotSize + $BorderSize, ["Color" => $BorderColor]);
 				}
-				$this->drawFilledCircle($X, $Y, $PlotSize,["Color" => $Color]);		
+				$this->drawFilledCircle($X, $Y, $PlotSize,["Color" => $Color]);
 				break;
 			case SERIE_SHAPE_FILLEDSQUARE:
 				if ($PlotBorder) {
@@ -3760,7 +3760,7 @@ class pDraw
 				if ($PlotBorder) {
 					$this->drawPolygon([$X, $Y - $PlotSize - $BorderSize, $X - $PlotSize - $BorderSize, $Y + $PlotSize + $BorderSize, $X + $PlotSize + $BorderSize, $Y + $PlotSize + $BorderSize], ["Color" => $BorderColor]);
 				}
-				$this->drawPolygon([$X, $Y - $PlotSize, $X - $PlotSize, $Y + $PlotSize, $X + $PlotSize, $Y + $PlotSize], ["Color" => $Color]);	
+				$this->drawPolygon([$X, $Y - $PlotSize, $X - $PlotSize, $Y + $PlotSize, $X + $PlotSize, $Y + $PlotSize], ["Color" => $Color]);
 				break;
 			case SERIE_SHAPE_TRIANGLE:
 				$this->drawLine($X, $Y - $PlotSize, $X - $PlotSize, $Y + $PlotSize, ["Color" => $Color]);
@@ -3774,13 +3774,13 @@ class pDraw
 				$this->drawCircle($X, $Y, $PlotSize, $PlotSize, ["Color" => $Color]);
 				break;
 			case SERIE_SHAPE_DIAMOND:
-				$this->drawPolygon([$X - $PlotSize, $Y, $X, $Y - $PlotSize, $X + $PlotSize, $Y, $X, $Y + $PlotSize], ["NoFill" => TRUE,"Color" => $BorderColor]);	
+				$this->drawPolygon([$X - $PlotSize, $Y, $X, $Y - $PlotSize, $X + $PlotSize, $Y, $X, $Y + $PlotSize], ["NoFill" => TRUE,"Color" => $BorderColor]);
 				break;
 			case SERIE_SHAPE_FILLEDDIAMOND:
 				if ($PlotBorder) {
 					$this->drawPolygon([$X - $PlotSize - $BorderSize, $Y, $X, $Y - $PlotSize - $BorderSize, $X + $PlotSize + $BorderSize, $Y, $X, $Y + $PlotSize + $BorderSize], ["Color" => $BorderColor]);
 				}
-				$this->drawPolygon([$X - $PlotSize, $Y, $X, $Y - $PlotSize, $X + $PlotSize, $Y, $X, $Y + $PlotSize], ["Color" => $Color]);		
+				$this->drawPolygon([$X - $PlotSize, $Y, $X, $Y - $PlotSize, $X + $PlotSize, $Y, $X, $Y + $PlotSize], ["Color" => $Color]);
 				break;
 		}
 	}
@@ -3813,7 +3813,7 @@ class pDraw
 	}
 
 	/* Set the graph area position */
-	function setGraphArea(int $X1, int $Y1, int $X2, int $Y2)
+	function setGraphArea($X1, $Y1, $X2, $Y2)
 	{
 		if ($X2 < $X1 || $X1 == $X2 || $Y2 < $Y1 || $Y1 == $Y2) {
 			throw pException::InvalidInput("Invalid graph specs");
@@ -3894,7 +3894,7 @@ class pDraw
 	}
 
 	/* Reverse an array of points */
-	function reversePlots($Plots)
+	function reversePlots(array $Plots)
 	{
 		$Result = [];
 		for ($i = count($Plots) - 2; $i >= 0; $i = $i - 2) {
