@@ -609,13 +609,13 @@ class pSpring
 								$TxtX = ($X2 - $X) / 2 + $X;
 								$TxtY = ($Y2 - $Y) / 2 + $Y;
 								if ($X <= $X2) {
-									$Angle = (360 - $this->myPicture->getAngle($X, $Y, $X2, $Y2)) % 360;
+									$Angle = $this->myPicture->getAngle($X, $Y, $X2, $Y2);
 								} else {
-									$Angle = (360 - $this->myPicture->getAngle($X2, $Y2, $X, $Y)) % 360;
+									$Angle = $this->myPicture->getAngle($X2, $Y2, $X, $Y);
 								}
 
 								$Settings = $Color;
-								$Settings["Angle"] = $Angle;
+								$Settings["Angle"] = floor(360 - $Angle);
 								$Settings["Align"] = TEXT_ALIGN_BOTTOMMIDDLE;
 								$this->myPicture->drawText($TxtX, $TxtY, $Name, $Settings);
 							}
@@ -645,10 +645,12 @@ class pSpring
 					$this->myPicture->drawFilledCircle($X, $Y, $Size, $ShapeSettings);
 					break;
 				case NODE_SHAPE_TRIANGLE:
+					# do not hardcode it as the result depends on the PHP precision config
+					$cos45 = cos(deg2rad(45)) * $Size;
 					$Points = [
-						cos(deg2rad(270)) * $Size + $X,	sin(deg2rad(270)) * $Size + $Y,
-						cos(deg2rad(45)) * $Size + $X,	sin(deg2rad(45)) * $Size + $Y,
-						cos(deg2rad(135)) * $Size + $X, sin(deg2rad(135)) * $Size + $Y
+						cos(deg2rad(270)) * $Size + $X,	-$Size + $Y,
+						$cos45 + $X, $cos45 + $Y,
+						($cos45 * -1) + $X, $cos45 + $Y
 					];
 					$this->myPicture->drawPolygon($Points, $ShapeSettings);
 					break;
