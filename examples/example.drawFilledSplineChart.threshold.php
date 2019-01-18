@@ -79,6 +79,6 @@ $myPicture->drawText(60,222,"Min : ".ceil($myPicture->myData->getMin("Probe 1"))
 $myPicture->drawText(110,222,"Avg : ".ceil($myPicture->myData->getSerieAverage("Probe 1")),$Settings);
 
 /* Render the picture (choose the best way) */
-$myPicture->autoOutput("temp/example.drawFilledSplineChart.png");
+$myPicture->autoOutput("temp/example.drawFilledSplineChart.Threshold.png");
 
 ?>
