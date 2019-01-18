@@ -396,15 +396,17 @@ class pCharts {
 						if ($Y == VOID) {
 							$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"NoDraw" => TRUE]);
 
-							foreach($Area as $Key2 => $Points) {
-								$Corners = [$Area[$Key2][0]["X"], $YZero];
-								foreach($Points as $subKey => $Point) {
-									$Corners[] = ($subKey == count($Points) - 1) ? $Point["X"] - 1 : $Point["X"];
+							foreach($Area as $Points) {
+								$Corners = [$Points[0]["X"], $YZero];
+								$PointCount = count($Points) - 1;
+								foreach($Points as $sKey => $Point) {
+									$Corners[] = ($sKey == $PointCount) ? $Point["X"] - 1 : $Point["X"];
 									$Corners[] = $Point["Y"] + 1;
 								}
 
-								$Corners[] = $Points[$subKey]["X"] - 1;
+								$Corners[] = $Points[$sKey]["X"] - 1;
 								$Corners[] = $YZero;
+
 								$this->drawPolygonChart($Corners, ["Color" => $ColorHalfAlfa,"NoBorder" => TRUE,"Threshold" => $Threshold]);
 							}
 
@@ -420,15 +422,17 @@ class pCharts {
 
 					$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"NoDraw" => TRUE]);
 
-					foreach($Area as $key => $Points) {
-						$Corners = [$Area[$key][0]["X"], $YZero];
-						foreach($Points as $subKey => $Point) {
-							$Corners[] = ($subKey == count($Points) - 1) ? $Point["X"] - 1 : $Point["X"];
+					foreach($Area as $Points) {
+						$Corners = [$Points[0]["X"], $YZero];
+						$PointCount = count($Points) - 1;
+						foreach($Points as $sKey => $Point) {
+							$Corners[] = ($sKey == $PointCount) ? $Point["X"] - 1 : $Point["X"];
 							$Corners[] = $Point["Y"] + 1;
 						}
-
-						$Corners[] = $Points[$subKey]["X"] - 1;
+						
+						$Corners[] = $Points[$sKey]["X"] - 1;
 						$Corners[] = $YZero;
+						
 						$this->drawPolygonChart($Corners, ["Color" => $ColorHalfAlfa,"NoBorder" => TRUE,"Threshold" => $Threshold]);
 					}
 
@@ -464,16 +468,16 @@ class pCharts {
 						if ($X == VOID) {
 							$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"NoDraw" => TRUE]);
 
-							foreach($Area as $Key2 => $Points) {
-								$Corners = [$YZero, $Area[$Key2][0]["Y"]];
-								
-								foreach($Points as $subKey => $Point) {
-									$Corners[] = ($subKey == count($Points) - 1) ? $Point["X"] - 1 : $Point["X"];
+							foreach($Area as $Points) {
+								$Corners = [$YZero, $Points[0]["Y"]];
+								$PointCount = count($Points) - 1;
+								foreach($Points as $sKey => $Point) {
+									$Corners[] = ($sKey == $PointCount) ? $Point["X"] - 1 : $Point["X"];
 									$Corners[] = $Point["Y"];
 								}
 
 								$Corners[] = $YZero;
-								$Corners[] = $Points[$subKey]["Y"] - 1;
+								$Corners[] = $Points[$sKey]["Y"] - 1;
 								$this->drawPolygonChart($Corners, ["Color" => $ColorHalfAlfa,"NoBorder" => TRUE,"Threshold" => $Threshold]);
 							}
 
@@ -489,16 +493,16 @@ class pCharts {
 
 					$Area = $this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"NoDraw" => TRUE]);
 
-					foreach($Area as $key => $Points) {
-						$Corners = [$YZero, $Area[$key][0]["Y"]];
-
-						foreach($Points as $subKey => $Point) {
-							$Corners[] = ($subKey == count($Points) - 1) ? $Point["X"] - 1 : $Point["X"];
+					foreach($Area as $Points) {
+						$Corners = [$YZero, $Points[0]["Y"]];
+						$PointCount = count($Points) - 1;
+						foreach($Points as $sKey => $Point) {
+							$Corners[] = ($sKey == $PointCount) ? $Point["X"] - 1 : $Point["X"];
 							$Corners[] = $Point["Y"];
 						}
 
 						$Corners[] = $YZero;
-						$Corners[] = $Points[$subKey]["Y"] - 1;
+						$Corners[] = $Points[$sKey]["Y"] - 1;
 						$this->drawPolygonChart($Corners, ["Force" => $Force,"Color" => $Color,"Ticks" => $Ticks]);
 					}
 
@@ -2234,10 +2238,17 @@ class pCharts {
 			);
 			$PolyGon = [];
 			$Angle = $this->myPicture->getAngle($X2, $RightY1, $X1, $LeftY1);
-			$VectorX1 = cos(deg2rad($Angle + 90)) * $Force + ($X2 - $X1) / 2 + $X1;
-			$VectorY1 = sin(deg2rad($Angle + 90)) * $Force + ($RightY1 - $LeftY1) / 2 + $LeftY1;
-			$VectorX2 = cos(deg2rad($Angle - 90)) * $Force + ($X2 - $X1) / 2 + $X1;
-			$VectorY2 = sin(deg2rad($Angle - 90)) * $Force + ($RightY1 - $LeftY1) / 2 + $LeftY1;
+			
+			$cos = cos(deg2rad($Angle + 90)) * $Force;
+			$Offset = ($X2 - $X1) / 2 + $X1;
+			$VectorX1 = $cos + $Offset;
+			$VectorX2 = -$cos + $Offset;
+			
+			$sin = sin(deg2rad($Angle + 90)) * $Force;
+			$Offset = ($RightY1 - $LeftY1) / 2 + $LeftY1;
+			$VectorY1 = $sin + $Offset;
+			$VectorY2 = -$sin + $Offset;
+			
 			$Points = $this->myPicture->drawBezier($X1, $LeftY1, $X2, $RightY1, $VectorX1, $VectorY1, $VectorX2, $VectorY2, $Settings);
 			foreach($Points as $Pos) {
 				$PolyGon[] = $Pos["X"];
@@ -2245,10 +2256,17 @@ class pCharts {
 			}
 
 			$Angle = $this->myPicture->getAngle($X2, $RightY2, $X1, $LeftY2);
-			$VectorX1 = cos(deg2rad($Angle + 90)) * $Force + ($X2 - $X1) / 2 + $X1;
-			$VectorY1 = sin(deg2rad($Angle + 90)) * $Force + ($RightY2 - $LeftY2) / 2 + $LeftY2;
-			$VectorX2 = cos(deg2rad($Angle - 90)) * $Force + ($X2 - $X1) / 2 + $X1;
-			$VectorY2 = sin(deg2rad($Angle - 90)) * $Force + ($RightY2 - $LeftY2) / 2 + $LeftY2;
+			
+			$cos = cos(deg2rad($Angle + 90)) * $Force;
+			$Offset = ($X2 - $X1) / 2 + $X1;
+			$VectorX1 = $cos + $Offset;
+			$VectorX2 = -$cos + $Offset;
+			
+			$sin = sin(deg2rad($Angle + 90)) * $Force;
+			$Offset = ($RightY2 - $LeftY2) / 2 + $LeftY2;
+			$VectorY1 = $sin + $Offset;
+			$VectorY2 = -$sin + $Offset;
+			
 			$Points = $this->myPicture->drawBezier($X1, $LeftY2, $X2, $RightY2, $VectorX1, $VectorY1, $VectorX2, $VectorY2, $Settings);
 			$Points = array_reverse($Points);
 			foreach($Points as $Pos) {

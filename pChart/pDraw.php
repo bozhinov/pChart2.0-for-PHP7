@@ -327,11 +327,11 @@ class pDraw
 			$X = $cos2 + $X1 + $Radius;
 			$Y = $sin2 + $Y2 - $Radius;
 			$this->drawAntialiasPixel($X, $Y, $Color);
-			$X = ($cos1 * -1) + $X2 - $Radius;
-			$Y = ($sin1 * -1) + $Y2 - $Radius;
+			$X = -$cos1 + $X2 - $Radius;
+			$Y = -$sin1 + $Y2 - $Radius;
 			$this->drawAntialiasPixel($X, $Y, $Color);
-			$X = ($cos2 * -1) + $X2 - $Radius;
-			$Y = ($sin2 * -1) + $Y1 + $Radius;
+			$X = -$cos2 + $X2 - $Radius;
+			$Y = -$sin2 + $Y1 + $Radius;
 			$this->drawAntialiasPixel($X, $Y, $Color);
 		}
 
@@ -377,15 +377,16 @@ class pDraw
 
 		$YTop = $Y1 + $Radius;
 		$YBottom = $Y2 - $Radius;
-		$Step = 360 / (2 * PI * $Radius);
+		#$Step = 360 / (2 * PI * $Radius);
+		$Step = rad2deg(1/$Radius);
 		$Positions = [];
 		$Radius--;
 		$MinY = 0;
 		$MaxY = 0;
-		for ($i = 0; $i <= 90; $i = $i + $Step) {
+		for ($i = 0; $i <= 90; $i += $Step) {
 			$cos = cos(deg2rad($i + 180)) * $Radius;
 			$Xp1 = $cos + $X1 + $Radius;
-			$Xp2 = ($cos * -1) + $X2 - $Radius;
+			$Xp2 = -$cos + $X2 - $Radius;
 			$Yp = floor(sin(deg2rad($i + 180)) * $Radius + $YTop);
 			($MinY == 0 || $Yp > $MinY) AND $MinY = $Yp;
 			($Xp1 <= floor($X1)) AND $Xp1++;
@@ -401,7 +402,7 @@ class pDraw
 			
 			$cos = cos(deg2rad($i + 90)) * $Radius;
 			$Xp1 = $cos + $X1 + $Radius;
-			$Xp2 = ($cos * -1) + $X2 - $Radius;
+			$Xp2 = -$cos + $X2 - $Radius;
 			$Yp = floor(sin(deg2rad($i + 90)) * $Radius + $YBottom);
 			($MaxY == 0 || $Yp < $MaxY) AND $MaxY = $Yp;
 			($Xp1 <= floor($X1)) AND $Xp1++;
@@ -671,10 +672,10 @@ class pDraw
 		for ($i = 0; $i <= $Precision; $i++) {
 			$u = $i / $Precision;
 			$C = [
-				0 => (1 - $u) * (1 - $u) * (1 - $u),
-				1 => ($u * 3) * (1 - $u) * (1 - $u),
-				2 => 3 * $u * $u * (1 - $u),
-				3 => $u * $u * $u
+				pow((1 - $u),3),
+				($u * 3) * (1 - $u) * (1 - $u),
+				3 * $u * $u * (1 - $u),
+				pow($u,3)
 			];
 			
 			$Q[$ID] = ["X" => 0, "Y" => 0];
@@ -769,14 +770,12 @@ class pDraw
 		if (!is_null($Weight)) {
 			$Angle = $this->getAngle($X1, $Y1, $X2, $Y2);
 			$AngleCosPlus90 =  cos(deg2rad($Angle + 90)) * $Weight;
-			$AngleCosMinus90 = ($AngleCosPlus90 * -1);
 			$AngleSinPlus90 =  sin(deg2rad($Angle + 90)) * $Weight;
-			$AngleSinMinus90 = ($AngleSinPlus90 * -1);
 			
 			$PolySettings = ["Color" => $Color];
 			
 			if (is_null($Ticks)) {
-				$Points = [$AngleCosMinus90 + $X1, $AngleSinMinus90 + $Y1, $AngleCosPlus90 + $X1, $AngleSinPlus90 + $Y1, $AngleCosPlus90 + $X2, $AngleSinPlus90 + $Y2, $AngleCosMinus90 + $X2, $AngleSinMinus90 + $Y2];
+				$Points = [-$AngleCosPlus90 + $X1, -$AngleSinPlus90 + $Y1, $AngleCosPlus90 + $X1, $AngleSinPlus90 + $Y1, $AngleCosPlus90 + $X2, $AngleSinPlus90 + $Y2, -$AngleCosPlus90+ $X2, -$AngleSinPlus90 + $Y2];
 				$this->drawPolygon($Points, $PolySettings);
 			} else {
 				for ($i = 0; $i <= $Distance; $i = $i + $Ticks * 2) {
@@ -784,7 +783,7 @@ class pDraw
 					$Ya = $YStep * $i + $Y1;
 					$Xb = $XStep * ($i + $Ticks) + $X1;
 					$Yb = $YStep * ($i + $Ticks) + $Y1;
-					$Points = [$AngleCosMinus90 + $Xa, $AngleSinMinus90 + $Ya, $AngleCosPlus90 + $Xa, $AngleSinPlus90 + $Ya, $AngleCosPlus90 + $Xb, $AngleSinPlus90 + $Yb, $AngleCosMinus90 + $Xb, $AngleSinMinus90 + $Yb];
+					$Points = [-$AngleCosPlus90 + $Xa, -$AngleSinPlus90 + $Ya, $AngleCosPlus90 + $Xa, $AngleSinPlus90 + $Ya, $AngleCosPlus90 + $Xb, $AngleSinPlus90 + $Yb, -$AngleCosPlus90 + $Xb, -$AngleSinPlus90 + $Yb];
 					$this->drawPolygon($Points, $PolySettings);
 				}
 			}
@@ -846,11 +845,12 @@ class pDraw
 			$this->drawCircle($Xc + $this->ShadowX, $Yc + $this->ShadowY, $Height, $Width, ["Color" => $this->ShadowColor,"Ticks" => $Ticks]);
 		}
 
-		$Step = 360 / (2 * PI * max($Width, $Height));
+		#$Step = 360 / (2 * PI * max($Width, $Height));
+		$Step = rad2deg(1/max($Width, $Height));
 		$Mode = TRUE;
 		$Cpt = 1;
 		
-		for ($i = 0; $i <= 360; $i = $i + $Step) {
+		for ($i = 0; $i <= 360; $i += $Step) {
 			$X = cos(deg2rad($i)) * $Height + $Xc;
 			$Y = sin(deg2rad($i)) * $Width + $Yc;
 			if (!is_null($Ticks)) {
@@ -1297,7 +1297,7 @@ class pDraw
 		$cos90 = cos(deg2rad($Angle - 90)) * $Scale;
 		$sin90 = sin(deg2rad($Angle - 90)) * $Scale;
 		
-		$Points = [$X2, $Y2, $cos90 + $TailX, $sin90 + $TailY, ($cos90 * -1) + $TailX, ($sin90 * -1) + $TailY, $X2, $Y2];
+		$Points = [$X2, $Y2, $cos90 + $TailX, $sin90 + $TailY, -$cos90 + $TailX, -$sin90 + $TailY, $X2, $Y2];
 		/* Visual correction */
 		($Angle == 180 || $Angle == 360) AND $Points[4] = $Points[2];
 		($Angle == 90 || $Angle == 270) AND $Points[5] = $Points[3];
@@ -1313,7 +1313,7 @@ class pDraw
 			$sin90 = sin(deg2rad($Angle - 90)) * $Scale;
 			$TailX2 = cos(deg2rad($Angle - 180)) * $Size + $X1;
 			$TailY2 = sin(deg2rad($Angle - 180)) * $Size + $Y1;
-			$Points = [$X1, $Y1, $cos90 + $TailX2, $sin90 + $TailY2, ($cos90 * -1) + $TailX2, ($sin90 * -1) + $TailY2, $X1, $Y1];
+			$Points = [$X1, $Y1, $cos90 + $TailX2, $sin90 + $TailY2, -$cos90 + $TailX2, -$sin90 + $TailY2, $X1, $Y1];
 			/* Visual correction */
 			($Angle == 180 || $Angle == 360) AND $Points[4] = $Points[2];
 			($Angle == 90 || $Angle == 270) AND $Points[5] = $Points[3];
