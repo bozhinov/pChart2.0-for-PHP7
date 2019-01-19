@@ -84,7 +84,7 @@ class pCharts {
 		
 		/* Override defaults */
 		extract($Format);
-				
+
 		$this->myPicture->isChartLayoutStacked = FALSE;
 		$Data = $this->myPicture->myData->Data;
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
@@ -96,7 +96,7 @@ class pCharts {
 				
 				# Momchil: Force default Alpha as it is not set in the original code
 				# That is for the example.Combo.area.lines
-				$Color = $Serie["Color"]->newOne()->AlphaSet(100); 
+				$Color = $Serie["Color"]->newOne()->AlphaSet(100);
 				
 				if (isset($Serie["Picture"])) {
 					$Picture = $Serie["Picture"];
@@ -121,7 +121,7 @@ class pCharts {
 				
 				if ($RecordImageMap) {
 					$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
-					$ImageMapColor = $Color->toHTMLColor();			
+					$ImageMapColor = $Color->toHTMLColor();
 				}
 
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
@@ -192,10 +192,9 @@ class pCharts {
 	/* Draw a spline chart */
 	function drawSplineChart(array $Format = [])
 	{
-
 		$BreakVoid = TRUE;
 		$VoidTicks = 4;
-		$BreakColor = NULL; 
+		$BreakColor = NULL;
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
 		$DisplayType = DISPLAY_MANUAL;
@@ -238,7 +237,7 @@ class pCharts {
 				
 				if ($RecordImageMap) {
 					$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
-					$ImageMapColor = $Serie["Color"]->toHTMLColor();			
+					$ImageMapColor = $Serie["Color"]->toHTMLColor();
 				}
 
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
@@ -246,9 +245,10 @@ class pCharts {
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
-					$Force = $XStep / 5;					
-
+					$Force = $XStep / 5;
+	
 					foreach($PosArray as $Key => $Y) {
+
 						if ($DisplayValues) {
 							$this->myPicture->drawText(
 								$X,
@@ -258,30 +258,28 @@ class pCharts {
 							);
 						}
 						
-						if ($RecordImageMap && $Y != VOID) {
-							$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
-						}
+						if ($Y != VOID){
+							if ($RecordImageMap) {
+								$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							}
+							
+							if (($LastY == VOID) && !is_null($LastGoodY) && !$BreakVoid) {
+								$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
+							}
 
-						if ($Y == VOID && !is_null($LastY)) {
-							$this->myPicture->drawSpline($WayPoints, ["Color" => $Serie["Color"], "Ticks" => $Ticks,"Weight" => $Weight]);
-							$WayPoints = [];
-						}
-
-						if ($Y != VOID && is_null($LastY) && !is_null($LastGoodY) && !$BreakVoid) {
-							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
-						}
-
-						if ($Y != VOID) {
 							$WayPoints[] = [$X,$Y];
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
+							
 						} else {
-							$Y = NULL;
+							if ($LastY != VOID) {
+								$this->myPicture->drawSpline($WayPoints, ["Color" => $Serie["Color"], "Ticks" => $Ticks,"Weight" => $Weight]);
+								$WayPoints = [];
+							}
 						}
 
-						$LastX = $X;
 						$LastY = $Y;
-						$X = $X + $XStep;
+						$X += $XStep;
 					}
 					
 					$this->myPicture->drawSpline($WayPoints, ["Force" => $Force, "Color" => $Serie["Color"], "Ticks" => $Ticks,"Weight" => $Weight]);
@@ -292,34 +290,37 @@ class pCharts {
 					$Force = $XStep / 5;
 
 					foreach($PosArray as $Key => $X) {
+												
 						if ($DisplayValues) {
-							$this->myPicture->drawText($X + $DisplayOffset, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
+							$this->myPicture->drawText(
+								$X + $DisplayOffset,
+								$Y, $this->myPicture->scaleFormat($Serie["Data"][$Key],$Mode, $Format, $Unit),
+								["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]
+							);
 						}
-
-						if ($RecordImageMap && $X != VOID) {
-							$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
-						}
-
-						if ($X == VOID && !is_null($LastX)) {
-							$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"Color" => $Serie["Color"],"Ticks" => $Ticks,"Weight" => $Weight]);
-							$WayPoints = [];
-						}
-
-						if ($X != VOID && is_null($LastX) && !is_null($LastGoodX) && !$BreakVoid) {
-							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
-						}
-
+				
 						if ($X != VOID) {
+							if ($RecordImageMap) {
+								$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							}
+							
+							if (($LastX == VOID) && !is_null($LastGoodX) && !$BreakVoid) {
+								$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
+							}
+							
 							$WayPoints[] = [$X,	$Y];
 							$LastGoodX = $X;
 							$LastGoodY = $Y;
+							
 						} else {
-							$X = NULL;
+							if ($LastX != VOID) {
+								$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"Color" => $Serie["Color"],"Ticks" => $Ticks,"Weight" => $Weight]);
+								$WayPoints = [];
+							}
 						}
 
 						$LastX = $X;
-						$LastY = $Y;
-						$Y = $Y + $XStep;
+						$Y += $XStep;
 					}
 
 					$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"Color" => $Serie["Color"],"Ticks" => $Ticks,"Weight" => $Weight]);
@@ -563,8 +564,8 @@ class pCharts {
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
-				$LastX = NULL;
-				$LastY = NULL;
+				$LastX = VOID;
+				$LastY = VOID;
 				$LastGoodY = NULL;
 				$LastGoodX = NULL;
 				
@@ -580,6 +581,7 @@ class pCharts {
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
 
 					foreach($PosArray as $Key => $Y) {
+						
 						if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
 							if ($Serie["Data"][$Key] > 0) {
 								$Align = TEXT_ALIGN_BOTTOMMIDDLE;
@@ -589,27 +591,31 @@ class pCharts {
 								$Offset = - $DisplayOffset;
 							}
 
-							$this->myPicture->drawText($X, $Y - $Offset - $Weight, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => $Align]);
+							$this->myPicture->drawText(
+								$X,
+								$Y - $Offset - $Weight,
+								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
+								["Color" => $DisplayColor,"Align" => $Align]
+							);
 						}
 
-						if ($RecordImageMap && $Y != VOID) {
-							$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
-						}
+						if ($Y != VOID){
+							
+							if ($RecordImageMap) {
+								$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							}
 
-						if ($Y != VOID && !is_null($LastX) && !is_null($LastY)){
-							$this->myPicture->drawLine($LastX, $LastY, $X, $Y, ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight]);
-						}
-						
-						if ($Y != VOID && is_null($LastY) && !is_null($LastGoodY) && !$BreakVoid) {
-							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
-							$LastGoodY = NULL;
-						}
+							if (($LastX != VOID) && ($LastY != VOID)){
+								$this->myPicture->drawLine($LastX, $LastY, $X, $Y, ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight]);
+							}
+							
+							if (($LastY == VOID) && !is_null($LastGoodY) && !$BreakVoid) {
+								$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
+								$LastGoodY = NULL;
+							}
 
-						if ($Y != VOID) {
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						} else {
-							$Y = NULL;
 						}
 
 						$LastX = $X;
@@ -622,34 +628,39 @@ class pCharts {
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
 					
 					foreach($PosArray as $Key => $X) {
-						if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
-							$this->myPicture->drawText($X + $DisplayOffset + $Weight, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
-						}
-
-						if ($RecordImageMap && $X != VOID) {
-							$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
-						}
-
-						if ($X != VOID && !is_null($LastX) && !is_null($LastY)){
-							$this->myPicture->drawLine($LastX, $LastY, $X, $Y, ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight]);
-						}
 						
-						if ($X != VOID && is_null($LastX) && !is_null($LastGoodY) && !$BreakVoid) {
-							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
-							$LastGoodY = NULL;
+						if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
+							$this->myPicture->drawText(
+								$X + $DisplayOffset + $Weight,
+								$Y,
+								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
+								["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]
+							);
 						}
 
-						if ($X != VOID) {
+						if ($X != VOID){
+							if ($RecordImageMap){
+								$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							}
+
+							if (($LastX != VOID) && !is_null($LastY)){
+								$this->myPicture->drawLine($LastX, $LastY, $X, $Y, ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight]);
+							}
+							
+							if (($LastX == VOID) && !is_null($LastGoodY) && !$BreakVoid) {
+								$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
+								$LastGoodY = NULL;
+							}
+							
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						} else  {
-							$X = NULL;
 						}
 
 						$LastX = $X;
 						$LastY = $Y;
 						$Y += $XStep;
 					}
+
 				}
 			}
 		}
@@ -675,11 +686,7 @@ class pCharts {
 		if (count($PosArrayA) != count($PosArrayB)) {
 			throw pException::ZoneChartInvalidInputException("Invalid data #2");
 		}
-		
-		$LastX = NULL;
-		$LastY = NULL;
-		$LastY1 = NULL;
-		$LastY2 = NULL;
+	
 		$BoundsA = [];
 		$BoundsB = [];
 
@@ -690,15 +697,11 @@ class pCharts {
 			$X = $this->myPicture->GraphAreaX1 + $XMargin;
 
 			foreach($PosArrayA as $Key => $Y1) {
-				$Y2 = $PosArrayB[$Key];
 				$BoundsA[] = $X;
 				$BoundsA[] = $Y1;
 				$BoundsB[] = $X;
-				$BoundsB[] = $Y2;
-				$LastX = $X;
-				$LastY1 = $Y1;
-				$LastY2 = $Y2;
-				$X = $X + $XStep;
+				$BoundsB[] = $PosArrayB[$Key]; #Y2
+				$X += $XStep;
 			}
 
 			$Bounds = array_merge($BoundsA, $this->myPicture->reversePlots($BoundsB));
@@ -712,15 +715,11 @@ class pCharts {
 			$Y = $this->myPicture->GraphAreaY1 + $XMargin;
 
 			foreach($PosArrayA as $Key => $X1) {
-				$X2 = $PosArrayB[$Key];
 				$BoundsA[] = $X1;
 				$BoundsA[] = $Y;
-				$BoundsB[] = $X2;
+				$BoundsB[] = $PosArrayB[$Key];#X2
 				$BoundsB[] = $Y;
-				$LastY = $Y;
-				$LastX1 = $X1;
-				$LastX2 = $X2;
-				$Y = $Y + $XStep;
+				$Y += $XStep;
 			}
 
 			$Bounds = array_merge($BoundsA, $this->myPicture->reversePlots($BoundsB));
@@ -777,8 +776,8 @@ class pCharts {
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
-				$LastX = NULL;
-				$LastY = NULL;
+				$LastX = VOID;
+				$LastY = VOID;
 				$LastGoodY = NULL;
 				$LastGoodX = NULL;
 				$Init = FALSE;
@@ -807,49 +806,39 @@ class pCharts {
 							$this->myPicture->drawText($X, $Y - $Offset - $Weight, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => $Align]);
 						}
 
-						if ($Y != VOID && !is_null($LastX) && !is_null($LastY)) {
-							$this->myPicture->drawLine($LastX, $LastY, $X, $LastY, $LineSettings);
-							$this->myPicture->drawLine($X, $LastY, $X, $Y, $LineSettings);
-							if ($ReCenter && $X + $XStep < $this->myPicture->GraphAreaX2 - $XMargin) {
-								$this->myPicture->drawLine($X, $Y, $X + $XStep, $Y, $LineSettings);
-								if ($RecordImageMap) {
-									$this->myPicture->addToImageMap("RECT", floor($X - $ImageMapPlotSize) . "," . floor($Y - $ImageMapPlotSize) . "," . floor($X + $XStep + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
-								}
-							} else {
-								if ($RecordImageMap) {
-									$this->myPicture->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($LastY + $ImageMapPlotSize), $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
-								}
-							}
-						}
-
-						if ($Y != VOID && is_null($LastY) && !is_null($LastGoodY) && !$BreakVoid) {
-							if ($ReCenter) {
-								$this->myPicture->drawLine($LastGoodX + $XStep, $LastGoodY, $X, $LastGoodY, $BreakSettings);
-								if ($RecordImageMap) {
-									$this->myPicture->addToImageMap("RECT", floor($LastGoodX + $XStep - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($LastGoodY + $ImageMapPlotSize), $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
-								}
-							} else {
-								$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $LastGoodY, $BreakSettings);
-								if ($RecordImageMap) {
-									$this->myPicture->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($LastGoodY + $ImageMapPlotSize), $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
-								}
-							}
-
-							$this->myPicture->drawLine($X, $LastGoodY, $X, $Y, $BreakSettings);
-							$LastGoodY = NULL;
+						if ($Y != VOID){
 							
-						} elseif (!$BreakVoid && is_null($LastGoodY) && $Y != VOID) {
-							$this->myPicture->drawLine($this->myPicture->GraphAreaX1 + $XMargin, $Y, $X, $Y, $BreakSettings);
-							if ($RecordImageMap) {
-								$this->myPicture->addToImageMap("RECT", floor($this->myPicture->GraphAreaX1 + $XMargin - $ImageMapPlotSize) . "," . floor($Y - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							if (($LastX != VOID) && ($LastY != VOID)) {
+								$this->myPicture->drawLine($LastX, $LastY, $X, $LastY, $LineSettings);
+								$this->myPicture->drawLine($X, $LastY, $X, $Y, $LineSettings);
+								if ($ReCenter && $X + $XStep < $this->myPicture->GraphAreaX2 - $XMargin) {
+									$this->myPicture->drawLine($X, $Y, $X + $XStep, $Y, $LineSettings);
+									$RecordImageMapStr = floor($X - $ImageMapPlotSize) . "," . floor($Y - $ImageMapPlotSize) . "," . floor($X + $XStep + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize);
+								} else {
+									$RecordImageMapStr = floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($LastY + $ImageMapPlotSize);
+								}
 							}
-						}
+							
+							if (($LastY == VOID) && !is_null($LastGoodY) && !$BreakVoid) {
+								
+								$LastGoodXPlusStep = ($ReCenter) ? $LastGoodX + $XStep : $LastGoodX;
+								$RecordImageMapStr = floor($LastGoodXPlusStep - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($LastGoodY + $ImageMapPlotSize);
+								
+								$this->myPicture->drawLine($LastGoodXPlusStep, $LastGoodY, $X, $LastGoodY, $BreakSettings);
+								$this->myPicture->drawLine($X, $LastGoodY, $X, $Y, $BreakSettings);
+								$LastGoodY = NULL;
+								
+							} elseif (!$BreakVoid && is_null($LastGoodY)) {
+								$this->myPicture->drawLine($this->myPicture->GraphAreaX1 + $XMargin, $Y, $X, $Y, $BreakSettings);
+								$RecordImageMapStr = floor($this->myPicture->GraphAreaX1 + $XMargin - $ImageMapPlotSize) . "," . floor($Y - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize);
+							}
 
-						if ($Y != VOID) {
+							if ($RecordImageMap) {
+								$this->myPicture->addToImageMap("RECT", $RecordImageMapStr, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+							}
+								
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						} else {
-							$Y = NULL;
 						}
 
 						if (!$Init && $ReCenter) {
@@ -890,39 +879,32 @@ class pCharts {
 							$this->myPicture->drawText($X + $Offset + $Weight, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => $Align]);
 						}
 
-						if ($X != VOID && !is_null($LastX) && !is_null($LastY)) {
-							$this->myPicture->drawLine($LastX, $LastY, $LastX, $Y, $LineSettings);
-							$this->myPicture->drawLine($LastX, $Y, $X, $Y, $LineSettings);
-							if ($RecordImageMap) {
-								$this->myPicture->addToImageMap("RECT", floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($LastX + $XStep + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
-							}
-						}
-
-						if ($X != VOID && is_null($LastX) && !is_null($LastGoodY) && !$BreakVoid) {
-							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $LastGoodX, $LastGoodY + $XStep, $LineSettings);
-							if ($RecordImageMap) {
-								$this->myPicture->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($LastGoodX + $ImageMapPlotSize) . "," . floor($LastGoodY + $XStep + $ImageMapPlotSize), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+						if ($X != VOID){
+							if (($LastX != VOID) && ($LastY != VOID)) {
+								$this->myPicture->drawLine($LastX, $LastY, $LastX, $Y, $LineSettings);
+								$this->myPicture->drawLine($LastX, $Y, $X, $Y, $LineSettings);
+								$RecordImageMapStr = floor($LastX - $ImageMapPlotSize) . "," . floor($LastY - $ImageMapPlotSize) . "," . floor($LastX + $XStep + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize);
 							}
 
-							$this->myPicture->drawLine($LastGoodX, $LastGoodY + $XStep, $LastGoodX, $Y, $BreakSettings);
+							if (($LastX == VOID) && !is_null($LastGoodY) && !$BreakVoid) {
+								$this->myPicture->drawLine($LastGoodX, $LastGoodY, $LastGoodX, $LastGoodY + $XStep, $LineSettings);
+								$RecordImageMapStr = floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY - $ImageMapPlotSize) . "," . floor($LastGoodX + $ImageMapPlotSize) . "," . floor($LastGoodY + $XStep + $ImageMapPlotSize);
+
+								$this->myPicture->drawLine($LastGoodX, $LastGoodY + $XStep, $LastGoodX, $Y, $BreakSettings);
+								$RecordImageMapStr = floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY + $XStep - $ImageMapPlotSize) . "," . floor($LastGoodX + $ImageMapPlotSize) . "," . floor($XStep + $ImageMapPlotSize);
+
+								$this->myPicture->drawLine($LastGoodX, $Y, $X, $Y, $BreakSettings);
+								$LastGoodY = NULL;
+							} elseif (is_null($LastGoodY) && !$BreakVoid) {
+								$this->myPicture->drawLine($X, $this->myPicture->GraphAreaY1 + $XMargin, $X, $Y, $BreakSettings);
+							}
+							
 							if ($RecordImageMap) {
-								$this->myPicture->addToImageMap("RECT", floor($LastGoodX - $ImageMapPlotSize) . "," . floor($LastGoodY + $XStep - $ImageMapPlotSize) . "," . floor($LastGoodX + $ImageMapPlotSize) . "," . floor($XStep + $ImageMapPlotSize), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
+								$this->myPicture->addToImageMap("RECT", $RecordImageMapStr, $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 
-							$this->myPicture->drawLine($LastGoodX, $Y, $X, $Y, $BreakSettings);
-							$LastGoodY = NULL;
-						} elseif ($X != VOID && is_null($LastGoodY) && !$BreakVoid) {
-							$this->myPicture->drawLine($X, $this->myPicture->GraphAreaY1 + $XMargin, $X, $Y, $BreakSettings);
-							if ($RecordImageMap) {
-								$this->myPicture->addToImageMap("RECT", floor($X - $ImageMapPlotSize) . "," . floor($this->myPicture->GraphAreaY1 + $XMargin - $ImageMapPlotSize) . "," . floor($X + $ImageMapPlotSize) . "," . floor($Y + $ImageMapPlotSize), $Color->toHTMLColor(), $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
-							}
-						}
-
-						if ($X != VOID) {
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						} else {
-							$X = NULL;
 						}
 
 						if (!$Init && $ReCenter) {
@@ -988,8 +970,8 @@ class pCharts {
 				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
 				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
 				
-				$LastX = NULL;
-				$LastY = NULL;
+				$LastX = VOID;
+				$LastY = VOID;
 				$LastGoodY = NULL;
 				$LastGoodX = NULL;
 				$Points = [];
@@ -1014,7 +996,7 @@ class pCharts {
 
 					foreach($PosArray as $Y) {
 
-						if ($Y == VOID && (!is_null($LastX)) && (!is_null($LastY)) && (!empty($Points))) {
+						if ($Y == VOID && ($LastX != VOID) && ($LastY != VOID) && (!empty($Points))) {
 							$Points[] = $LastX;
 							$Points[] = $LastY;
 							$Points[] = $X;
@@ -1025,13 +1007,8 @@ class pCharts {
 							$Points = [];
 						}
 
-						if ($Y != VOID && (!is_null($LastX)) && (!is_null($LastY))) {
-
-							if (empty($Points)) {
-								$Points[] = $LastX;
-								$Points[] = $YZero;
-							}
-
+						if ($Y != VOID && ($LastX != VOID) && $LastY != VOID) {
+							(empty($Points)) AND $Points = [$LastX, $YZero];
 							$Points[] = $LastX;
 							$Points[] = $LastY;
 							$Points[] = $X;
@@ -1043,10 +1020,8 @@ class pCharts {
 						if ($Y != VOID) {
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						} else {
-							$Y = NULL;
-						}
-
+						} 
+						
 						if (!$Init && $ReCenter) {
 							$X = $X - $XStep / 2;
 							$Init = TRUE;
@@ -1084,7 +1059,7 @@ class pCharts {
 
 					foreach($PosArray as $X) {
 
-						if ($X == VOID && (!is_null($LastX)) && (!is_null($LastY)) && (!empty($Points))) {
+						if ($X == VOID && ($LastX != VOID) && ($LastY != VOID) && (!empty($Points))) {
 							$Points[] = $LastX;
 							$Points[] = $LastY;
 							$Points[] = $LastX;
@@ -1095,7 +1070,7 @@ class pCharts {
 							$Points = [];
 						}
 
-						if ($X != VOID && (!is_null($LastX)) && (!is_null($LastY))) {
+						if ($X != VOID && ($LastX != VOID) && ($LastY != VOID)) {
 							(empty($Points)) AND $Points = [$YZero, $LastY];
 							$Points[] = $LastX; 
 							$Points[] = $LastY;
@@ -1108,11 +1083,9 @@ class pCharts {
 						if ($X != VOID) {
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						} else {
-							$X = NULL;
 						}
 
-						if (is_null($LastX) && $ReCenter) {
+						if (($LastX == VOID) && $ReCenter) {
 							$Y = $Y - $XStep / 2;
 						}
 
@@ -2327,8 +2300,8 @@ class pCharts {
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
 				$CaptionSettings = ["Color" => $Serie["Color"],"Ticks" => $Serie["Ticks"],"Weight" => $Serie["Weight"]];
-				$LastX = NULL;
-				$LastY = NULL;
+				$LastX = VOID;
+				$LastY = VOID;
 				$MinSlope = 0;
 				$MaxSlope = 1;
 				$LastColor = NULL;
@@ -2366,29 +2339,26 @@ class pCharts {
 					
 					$RestoreShadow = $this->myPicture->Shadow;
 					$this->myPicture->Shadow = FALSE;
+					
 					/* Determine the Max slope index */
-
 					foreach($PosArray as $Y) {
-						if ($Y != VOID && !is_null($LastX)) {
+						
+						if ($Y != VOID && $LastX != VOID) {
 							$Slope = ($LastY - $Y);
 							($Slope > $MaxSlope) AND $MaxSlope = $Slope;
 							($Slope < $MinSlope) AND $MinSlope = $Slope;
 						}
-
-						if ($Y == VOID) {
-							$LastX = NULL;
-							$LastY = NULL;
-						} else {
-							$LastX = $X;
-							$LastY = $Y;
-						}
+						
+						$LastX = $X;
+						$LastY = $Y;
 					}
 
-					$LastX = NULL;
-					$LastY = NULL;
+					$LastX = VOID;
+					$LastY = VOID;
 
 					foreach($PosArray as $Y) {
-						if ($Y != VOID && !is_null($LastY)) {
+						
+						if ($Y != VOID && $LastY != VOID) {
 							$Slope = $LastY - $Y;
 							if ($Slope >= 0) {
 								$Gradient = new pColorGradient($PositiveSlopeStartColor, $PositiveSlopeEndColor);
@@ -2410,12 +2380,8 @@ class pCharts {
 							$LastColor = $Color;
 						}
 
-						if ($Y == VOID) {
-							$LastY = NULL;
-						} else {
-							$LastX = $X;
-							$LastY = $Y;
-						}
+						$LastX = $X;
+						$LastY = $Y;
 
 						$X += $XStep;
 					}
@@ -2450,20 +2416,23 @@ class pCharts {
 					/* Determine the Max slope index */
 
 					foreach($PosArray as $X) {
-						if ($X != VOID && !is_null($LastX)) {
+						
+						if ($X != VOID && $LastX != VOID) {
+							
 							$Slope = ($X - $LastX);
 							($Slope > $MaxSlope) AND $MaxSlope = $Slope;
 							($Slope < $MinSlope) AND $MinSlope = $Slope;
 						}
 
-						$LastX = (is_null($X)) ? NULL : $X;
+						$LastX = $X;
 					}
 
-					$LastX = NULL;
-					$LastY = NULL;
+					$LastX = VOID;
+					$LastY = VOID;
 
 					foreach($PosArray as $X) {
-						if ($X != VOID && !is_null($LastX)) {
+												
+						if ($X != VOID && $LastX != VOID) {
 							$Slope = $X - $LastX;
 							if ($Slope >= 0) {
 								$Gradient = new pColorGradient($PositiveSlopeStartColor, $PositiveSlopeEndColor);
@@ -2484,13 +2453,9 @@ class pCharts {
 
 							$LastColor = $Color;
 						}
-
-						if ($X == VOID) {
-							$LastX = NULL;
-						} else {
-							$LastX = $X;
-							$LastY = $Y;
-						}
+						
+						$LastX = $X;
+						$LastY = $Y;
 
 						$Y += $XStep;
 					}
@@ -2522,14 +2487,15 @@ class pCharts {
 
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				
+				$Sxy = 0;
+				$Sx = 0;
+				$Sy = 0;
+				$Sxx = 0;
+				
 				if ($this->myPicture->myData->Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
-					$Sxy = 0;
-					$Sx = 0;
-					$Sy = 0;
-					$Sxx = 0;
-					
+
 					foreach($PosArray as $Y) {
 						if ($Y != VOID) {
 							$Sxy += $X * $Y;
@@ -2573,10 +2539,7 @@ class pCharts {
 				} else {
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-					$Sxy = 0;
-					$Sx = 0;
-					$Sy = 0;
-					$Sxx = 0;
+
 					foreach($PosArray as $X) {
 						if ($X != VOID) {
 							$Sxy = $Sxy + $X * $Y;
