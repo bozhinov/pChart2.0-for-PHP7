@@ -118,19 +118,12 @@ You can find the whole class documentation on the pChart web site.
    g_gradient_direction = document.getElementById("g_gradient_direction").options[document.getElementById("g_gradient_direction").selectedIndex].value;
    g_gradient_alpha     = document.getElementById("g_gradient_alpha").value;
 
-   var reg=new RegExp("(#)", "g");
-   g_title_color    = g_title_color.replace(reg,"");
-   g_solid_color    = g_solid_color.replace(reg,"");
-   g_gradient_start = g_gradient_start.replace(reg,"");
-   g_gradient_end   = g_gradient_end.replace(reg,"");
-
    URL = "script/session.php?g_width="+g_width+"&g_height="+g_height+"&g_border="+g_border+"&g_aa="+g_aa+"&g_shadow="+g_shadow+"&g_autopos="+g_autopos
     +"&g_title_enabled="+g_title_enabled+"&g_title="+g_title+"&g_title_align="+g_title_align+"&g_title_x="+g_title_x
     +"&g_title_y="+g_title_y+"&g_title_color="+g_title_color+"&g_title_font="+g_title_font+"&g_title_font_size="+g_title_font_size+"&g_title_box="+g_title_box
     +"&g_solid_enabled="+g_solid_enabled+"&g_solid_color="+g_solid_color+"&g_solid_dashed="+g_solid_dashed
     +"&g_gradient_enabled="+g_gradient_enabled+"&g_gradient_start="+g_gradient_start+"&g_gradient_end="+g_gradient_end
-    +"&g_gradient_direction="+g_gradient_direction+"&g_gradient_alpha="+g_gradient_alpha+"&g_transparent="+g_transparent
-    +"&Seed="+Math.random(100);
+    +"&g_gradient_direction="+g_gradient_direction+"&g_gradient_alpha="+g_gradient_alpha+"&g_transparent="+g_transparent;
 
    push(URL,1);
   }
@@ -239,7 +232,7 @@ You can find the whole class documentation on the pChart web site.
         +"&s_x_label_rotation="+s_x_label_rotation+"&s_grid_color="+s_grid_color+"&s_grid_alpha="+s_grid_alpha+"&s_grid_x_enabled="+s_grid_x_enabled
         +"&s_grid_y_enabled="+s_grid_y_enabled+"&s_ticks_color="+s_ticks_color+"&s_ticks_alpha="+s_ticks_alpha+"&s_subticks_color="+s_subticks_color
         +"&s_subticks_alpha="+s_subticks_alpha+"&s_subticks_enabled="+s_subticks_enabled+"&s_font="+s_font+"&s_font_size="+s_font_size
-        +"&s_font_color="+s_font_color+"&Seed="+Math.random(100);
+        +"&s_font_color="+s_font_color;
 
    push(URL,3);
   }
@@ -566,12 +559,12 @@ function setDefaultAbsissa()
 function push(URL,nextStep)
 {  
 	$.ajax({
-		type: "GET", 
+		type: "GET",
 		url: URL,
 		beforeSend: function(){
 			$("#result_area").html("<img src='graphix/wait.gif'><br />Working");
 		},
-		success: function (result) {		
+		success: function (result) {
 			switch (nextStep) {
 				case 1:
 					saveData();
@@ -587,9 +580,9 @@ function push(URL,nextStep)
 					break;
 				case 5:
 					if ( Action == "Render" ) {
-						$("#result_area").html("<center><img src='script/render.php?Seed=" + Math.random(100) + "' /></center>");
+						$("#result_area").html("<center><img src='script/render.php' /></center>");
 					} else {
-						push("script/render.php?Mode=Source&Seed=" + Math.random(100),6);
+						push("script/render.php?Mode=Source",6);
 					}
 					break;
 				case 6:
