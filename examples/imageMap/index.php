@@ -22,7 +22,7 @@ if (isset($_GET["View"]))
 <script src='jquery.imagemap.js' type="text/javascript"></script>
 <script>
 $(document).ready(function() {
-	
+
 	function showExample(FileName)
 	{
 		$("#render").html("<img src='scripts/"+FileName+".php' id='testPicture' class='pChartPicture'/>");
@@ -30,13 +30,15 @@ $(document).ready(function() {
 				$("#source").html(data); 
 			});
 
-		$('#testPicture').addImageMap('pictureMap','scripts/'+FileName+'.php?ImageMap=get');
+		$('#testPicture').ready(function(){
+               $('#testPicture').addImageMap('pictureMap','scripts/'+FileName+'.php?ImageMap=get');
+          });
 	}
-	
+
 	$('[id^="Hover-"]').on("click", function() {
 		showExample(($(this).attr('id')).substring(6));
 	});
-		
+
 });
 </script>
 <title>pChart 2.3.x - Image map</title>
