@@ -114,7 +114,8 @@ class pPie
 		}
 
 		/* Draw the polygon pie elements */
-		$Step = 360 / (2 * PI * $Radius);
+		#$Step = 360 / (2 * PI * $Radius);
+		$Step = rad2deg(1/$Radius);
 		$Offset = 0;
 		$ID = 0;
 
@@ -149,14 +150,14 @@ class pPie
 				$X0 = $X;
 				$Y0 = $Y;
 			} else {
-				$X0 = cos(($Angle - 90) * PI / 180) * $DataGapRadius + $X;
-				$Y0 = sin(($Angle - 90) * PI / 180) * $DataGapRadius + $Y;
+				$X0 = cos(deg2rad($Angle - 90)) * $DataGapRadius + $X;
+				$Y0 = sin(deg2rad($Angle - 90)) * $DataGapRadius + $Y;
 			}
 
 			$Plots = [$X0, $Y0];
-			for ($i = $Offset; $i <= $EndAngle; $i = $i + $Step) {
-				$Xc = cos(($i - 90) * PI / 180) * $Radius + $X;
-				$Yc = sin(($i - 90) * PI / 180) * $Radius + $Y;
+			for ($i = $Offset; $i <= $EndAngle; $i += $Step) {
+				$Xc = cos(deg2rad($i - 90)) * $Radius + $X;
+				$Yc = sin(deg2rad($i - 90)) * $Radius + $Y;
 				if ($SecondPass && ($i < 90)) {
 					$Yc++;
 				}
@@ -189,8 +190,8 @@ class pPie
 				}
 
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
-				$Xc = cos(($Angle - 90) * PI / 180) * $Radius + $X;
-				$Yc = sin(($Angle - 90) * PI / 180) * $Radius + $Y;
+				$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
+				$Yc = sin(deg2rad($Angle - 90)) * $Radius + $Y;
 				$Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
 				
 				if ($LabelStacked) {
@@ -206,7 +207,8 @@ class pPie
 
 		/* Second pass to smooth the angles */
 		if ($SecondPass) {
-			$Step = 360 / (2 * PI * $Radius);
+			#$Step = 360 / (2 * PI * $Radius);
+			$Step = rad2deg(1/$Radius);
 			$Offset = 0;
 			$ID = 0;
 			foreach($Values as $Key => $Value) {
@@ -229,15 +231,15 @@ class pPie
 					$Y0 = $Y;
 				} else {
 					$Angle = ($EndAngle - $Offset) / 2 + $Offset;
-					$X0 = cos(($Angle - 90) * PI / 180) * $DataGapRadius + $X;
-					$Y0 = sin(($Angle - 90) * PI / 180) * $DataGapRadius + $Y;
+					$X0 = cos(deg2rad($Angle - 90)) * $DataGapRadius + $X;
+					$Y0 = sin(deg2rad($Angle - 90)) * $DataGapRadius + $Y;
 				}
 
 				$Plots[] = $X0;
 				$Plots[] = $Y0;
-				for ($i = $Offset; $i <= $EndAngle; $i = $i + $Step) {
-					$Xc = cos(($i - 90) * PI / 180) * $Radius + $X;
-					$Yc = sin(($i - 90) * PI / 180) * $Radius + $Y;
+				for ($i = $Offset; $i <= $EndAngle; $i += $Step) {
+					$Xc = cos(deg2rad($i - 90)) * $Radius + $X;
+					$Yc = sin(deg2rad($i - 90)) * $Radius + $Y;
 					if ($FirstPoint) {
 						$this->myPicture->drawLine($Xc, $Yc, $X0, $Y0, $Settings);
 					} 
@@ -255,8 +257,8 @@ class pPie
 					}
 
 					$Angle = ($EndAngle - $Offset) / 2 + $Offset;
-					$Xc = cos(($Angle - 90) * PI / 180) * $Radius + $X;
-					$Yc = sin(($Angle - 90) * PI / 180) * $Radius + $Y;
+					$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
+					$Yc = sin(deg2rad($Angle - 90)) * $Radius + $Y;
 					$Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
 					
 					if ($LabelStacked) {
@@ -286,10 +288,8 @@ class pPie
 				$EndAngle = ($Value * $ScaleFactor) + $Offset;
 			    ((int)$EndAngle > 360) AND $EndAngle = 0;
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
-				$Angle = ($Angle - 90) * PI / 180;
-
-				$Xc = cos($Angle) * $Radius + $X;
-				$Yc = sin($Angle) * $Radius + $Y;
+				$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
+				$Yc = sin(deg2rad($Angle - 90)) * $Radius + $Y;
 
 				if ($WriteValues == PIE_VALUE_PERCENTAGE) {
 					$Display = round((100 / $SerieSum) * $Value, $Precision) . "%";
@@ -383,7 +383,8 @@ class pPie
 		}
 
 		/* Draw the polygon pie elements */
-		$Step = 360 / (2 * PI * $Radius);
+		#$Step = 360 / (2 * PI * $Radius);
+		$Step = rad2deg(1/$Radius);
 		$Offset = 360;
 		$ID = count($Values) - 1;
 		$Values = array_reverse($Values);
@@ -417,16 +418,16 @@ class pPie
 				$Y0 = $Y;
 			} else {
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
-				$X0 = cos(($Angle - 90) * PI / 180) * $DataGapRadius + $X;
-				$Y0 = sin(($Angle - 90) * PI / 180) * $DataGapRadius * $SkewFactor + $Y;
+				$X0 = cos(deg2rad($Angle - 90)) * $DataGapRadius + $X;
+				$Y0 = sin(deg2rad($Angle - 90)) * $DataGapRadius * $SkewFactor + $Y;
 			}
 
 			$Slices[$Slice][] = $X0;
 			$Slices[$Slice][] = $Y0;
 			$SliceAngle[$Slice][] = 0;
 			for ($i = $Offset; $i >= $EndAngle; $i = $i - $Step) {
-				$Xc = cos(($i - 90) * PI / 180) * $Radius + $X;
-				$Yc = sin(($i - 90) * PI / 180) * $Radius * $SkewFactor + $Y;
+				$Xc = cos(deg2rad($i - 90)) * $Radius + $X;
+				$Yc = sin(deg2rad($i - 90)) * $Radius * $SkewFactor + $Y;
 				(($SecondPass || $RestoreShadow) && ($i < 90)) AND $Yc++;
 				(($SecondPass || $RestoreShadow) && ($i > 90 && $i < 180)) AND $Xc++;
 				(($SecondPass || $RestoreShadow) && ($i > 180 && $i < 270)) AND $Xc++;
@@ -459,7 +460,8 @@ class pPie
 				$this->myPicture->drawPolygon($ShadowPie, $Settings);
 			}
 
-			$Step = 360 / (2 * PI * $Radius);
+			#$Step = 360 / (2 * PI * $Radius);
+			$Step = rad2deg(1/$Radius);
 			$Offset = 360;
 			foreach($Values as $Key => $Value) {
 				$EndAngle = $Offset - ($Value * $ScaleFactor);
@@ -468,8 +470,8 @@ class pPie
 				}
 
 				for ($i = $Offset; $i >= $EndAngle; $i = $i - $Step) {
-					$Xc = cos(($i - 90) * PI / 180) * $Radius + $X + $this->myPicture->ShadowX;
-					$Yc = sin(($i - 90) * PI / 180) * $Radius * $SkewFactor + $Y + $this->myPicture->ShadowY;
+					$Xc = cos(deg2rad($i - 90)) * $Radius + $X + $this->myPicture->ShadowX;
+					$Yc = sin(deg2rad($i - 90)) * $Radius * $SkewFactor + $Y + $this->myPicture->ShadowY;
 					$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Settings["Color"]);
 				}
 
@@ -489,12 +491,12 @@ class pPie
 
 				if (isset($SliceAngle[$SliceID][1])) /* Empty error handling */ {
 					$Angle = $SliceAngle[$SliceID][1];
-					$Xc = cos(($Angle - 90) * PI / 180) * $Radius + $X;
-					$Yc = sin(($Angle - 90) * PI / 180) * $Radius * $SkewFactor + $Y;
+					$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
+					$Yc = sin(deg2rad($Angle - 90)) * $Radius * $SkewFactor + $Y;
 					$this->myPicture->drawLine($Plots[0], $Plots[1], $Xc, $Yc, $Settings);
 					$Angle = $SliceAngle[$SliceID][count($SliceAngle[$SliceID]) - 1];
-					$Xc = cos(($Angle - 90) * PI / 180) * $Radius + $X;
-					$Yc = sin(($Angle - 90) * PI / 180) * $Radius * $SkewFactor + $Y;
+					$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
+					$Yc = sin(deg2rad($Angle - 90)) * $Radius * $SkewFactor + $Y;
 					$this->myPicture->drawLine($Plots[0], $Plots[1], $Xc, $Yc, $Settings);
 				}
 			}
@@ -541,28 +543,32 @@ class pPie
 				if (isset($SliceAngle[$SliceID][1])) /* Empty error handling */ {
 					$Angle = $SliceAngle[$SliceID][1];
 					if ($Angle < 270 && $Angle > 90) {
-						$Xc = cos(($Angle - 90) * PI / 180) * $Radius + $X;
-						$Yc = sin(($Angle - 90) * PI / 180) * $Radius * $SkewFactor + $Y;
+						$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
+						$Yc = sin(deg2rad($Angle - 90)) * $Radius * $SkewFactor + $Y;
 						$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $Settings);
 					}
 				}
 
 				$Angle = $SliceAngle[$SliceID][count($SliceAngle[$SliceID]) - 1];
 				if ($Angle < 270 && $Angle > 90) {
-					$Xc = cos(($Angle - 90) * PI / 180) * $Radius + $X;
-					$Yc = sin(($Angle - 90) * PI / 180) * $Radius * $SkewFactor + $Y;
+					$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
+					$Yc = sin(deg2rad($Angle - 90)) * $Radius * $SkewFactor + $Y;
 					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $Settings);
 				}
 
 				if (isset($SliceAngle[$SliceID][1]) && $SliceAngle[$SliceID][1] > 270 && $SliceAngle[$SliceID][count($SliceAngle[$SliceID]) - 1] < 270) {
-					$Xc = cos((270 - 90) * PI / 180) * $Radius + $X;
-					$Yc = sin((270 - 90) * PI / 180) * $Radius * $SkewFactor + $Y;
+					#$Xc = cos(deg2rad(270 - 90)) * $Radius + $X;
+					#$Yc = sin(deg2rad(270 - 90)) * $Radius * $SkewFactor + $Y;
+					$Xc = -$Radius + $X;
+					$Yc = sin(PI) * $Radius * $SkewFactor + $Y;
 					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $Settings);
 				}
 
 				if (isset($SliceAngle[$SliceID][1]) && $SliceAngle[$SliceID][1] > 90 && $SliceAngle[$SliceID][count($SliceAngle[$SliceID]) - 1] < 90) {
-					$Xc = cos((0) * PI / 180) * $Radius + $X;
-					$Yc = sin((0) * PI / 180) * $Radius * $SkewFactor + $Y;
+					#$Xc = cos(deg2rad(0)) * $Radius + $X;
+					#$Yc = sin(deg2rad(0)) * $Radius * $SkewFactor + $Y;
+					$Xc = $Radius + $X;
+					$Yc = $Y;					
 					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $Settings);
 				}
 			}
@@ -584,7 +590,8 @@ class pPie
 
 		/* Second pass to smooth the angles */
 		if ($SecondPass) {
-			$Step = 360 / (2 * PI * $Radius);
+			#$Step = 360 / (2 * PI * $Radius);
+			$Step = rad2deg(1/$Radius);
 			$Offset = 360;
 			$ID = count($Values) - 1;
 			foreach($Values as $Value) {
@@ -608,15 +615,15 @@ class pPie
 					$Y0 = $Y - $SliceHeight;
 				} else {
 					$Angle = ($EndAngle - $Offset) / 2 + $Offset;
-					$X0 = cos(($Angle - 90) * PI / 180) * $DataGapRadius + $X;
-					$Y0 = sin(($Angle - 90) * PI / 180) * $DataGapRadius * $SkewFactor + $Y - $SliceHeight;
+					$X0 = cos(deg2rad($Angle - 90)) * $DataGapRadius + $X;
+					$Y0 = sin(deg2rad($Angle - 90)) * $DataGapRadius * $SkewFactor + $Y - $SliceHeight;
 				}
 
 				$Plots[] = $X0;
 				$Plots[] = $Y0;
 				for ($i = $Offset; $i >= $EndAngle; $i = $i - $Step) {
-					$Xc = cos(($i - 90) * PI / 180) * $Radius + $X;
-					$Yc = sin(($i - 90) * PI / 180) * $Radius * $SkewFactor + $Y - $SliceHeight;
+					$Xc = cos(deg2rad($i - 90)) * $Radius + $X;
+					$Yc = sin(deg2rad($i - 90)) * $Radius * $SkewFactor + $Y - $SliceHeight;
 					if ($FirstPoint) {
 						$this->myPicture->drawLine($Xc, $Yc, $X0, $Y0, $Settings);
 					}
@@ -645,7 +652,7 @@ class pPie
 				($EndAngle < 0) AND $EndAngle = 0;
 
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
-				$Angle = ($Angle - 90) * PI / 180;
+				$Angle = deg2rad($Angle - 90);
 				if ($ValuePosition == PIE_VALUE_OUTSIDE) {
 					$Xc = cos($Angle) * ($Radius + $ValuePadding) + $X;
 					$Yc = sin($Angle) * (($Radius * $SkewFactor) + $ValuePadding) + $Y - $SliceHeight;
@@ -673,8 +680,8 @@ class pPie
 				$EndAngle = $Offset - ($Value * $ScaleFactor);
 				($EndAngle < 0) AND $EndAngle = 0;
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
-				$Xc = cos(($Angle - 90) * PI / 180) * $Radius + $X;
-				$Yc = sin(($Angle - 90) * PI / 180) * $Radius * $SkewFactor + $Y - $SliceHeight;
+				$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
+				$Yc = sin(deg2rad($Angle - 90)) * $Radius * $SkewFactor + $Y - $SliceHeight;
 				if (isset($Data["Series"][$Data["Abscissa"]]["Data"][$ID])) {
 					$Label = $Data["Series"][$Data["Abscissa"]]["Data"][$ID];
 					if ($LabelStacked) {
@@ -962,7 +969,8 @@ class pPie
 		}
 
 		/* Draw the polygon pie elements */
-		$Step = 360 / (2 * PI * $OuterRadius);
+		#$Step = 360 / (2 * PI * $OuterRadius);
+		$Step = rad2deg(1/$OuterRadius);
 		$Offset = 0;
 		$ID = 0;
 		foreach($Values as $Key => $Value) {
@@ -986,9 +994,9 @@ class pPie
 			$EndAngle = $Offset + ($Value * $ScaleFactor);
 			($EndAngle > 360) AND $EndAngle = 360;
 			
-			for ($i = $Offset; $i <= $EndAngle; $i = $i + $Step) {
-				$Xc = cos(($i - 90) * PI / 180) * $OuterRadius + $X;
-				$Yc = sin(($i - 90) * PI / 180) * $OuterRadius + $Y;
+			for ($i = $Offset; $i <= $EndAngle; $i += $Step) {
+				$Xc = cos(deg2rad($i - 90)) * $OuterRadius + $X;
+				$Yc = sin(deg2rad($i - 90)) * $OuterRadius + $Y;
 				if (!isset($Boundaries[0]["X1"])) {
 					$Boundaries[0]["X1"] = $Xc;
 					$Boundaries[0]["Y1"] = $Yc;
@@ -1016,16 +1024,16 @@ class pPie
 			$Boundaries[1]["Y1"] = $Yc;
 			$Lasti = $EndAngle;
 			for ($i = $EndAngle; $i >= $Offset; $i = $i - $Step) {
-				$Xc = cos(($i - 90) * PI / 180) * ($InnerRadius - 1) + $X;
-				$Yc = sin(($i - 90) * PI / 180) * ($InnerRadius - 1) + $Y;
+				$Xc = cos(deg2rad($i - 90)) * ($InnerRadius - 1) + $X;
+				$Yc = sin(deg2rad($i - 90)) * ($InnerRadius - 1) + $Y;
 				if (!isset($Boundaries[1]["X2"])) {
 					$Boundaries[1]["X2"] = $Xc;
 					$Boundaries[1]["Y2"] = $Yc;
 				}
 
 				$AAPixels[] = [$Xc,$Yc];
-				$Xc = cos(($i - 90) * PI / 180) * $InnerRadius + $X;
-				$Yc = sin(($i - 90) * PI / 180) * $InnerRadius + $Y;
+				$Xc = cos(deg2rad($i - 90)) * $InnerRadius + $X;
+				$Yc = sin(deg2rad($i - 90)) * $InnerRadius + $Y;
 				if ($i < 90) {
 					$Yc++;
 				}
@@ -1061,8 +1069,8 @@ class pPie
 			if ($DrawLabels && !$Shadow) {
 				$Settings = ["FillColor" => ($LabelColorType == PIE_LABEL_COLOR_AUTO) ? $Palette[$ID] : $LabelColor];
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
-				$Xc = cos(($Angle - 90) * PI / 180) * $OuterRadius + $X;
-				$Yc = sin(($Angle - 90) * PI / 180) * $OuterRadius + $Y;
+				$Xc = cos(deg2rad($Angle - 90)) * $OuterRadius + $X;
+				$Yc = sin(deg2rad($Angle - 90)) * $OuterRadius + $Y;
 				$Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
 				if ($LabelStacked) {
 					$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Y, $OuterRadius);
@@ -1080,7 +1088,8 @@ class pPie
 		}
 
 		if ($WriteValues && !$Shadow) {
-			$Step = 360 / (2 * PI * $OuterRadius);
+			#$Step = 360 / (2 * PI * $OuterRadius);
+			$Step = rad2deg(1/$OuterRadius);
 			$Offset = 0;
 			foreach($Values as $Value) {
 				
@@ -1089,15 +1098,15 @@ class pPie
 				$Angle = $Offset + ($Value * $ScaleFactor) / 2;
 				
 				if ($ValuePosition == PIE_VALUE_OUTSIDE) {
-					$Xc = cos(($Angle - 90) * PI / 180) * ($OuterRadius + $ValuePadding) + $X;
-					$Yc = sin(($Angle - 90) * PI / 180) * ($OuterRadius + $ValuePadding) + $Y;
+					$Xc = cos(deg2rad($Angle - 90)) * ($OuterRadius + $ValuePadding) + $X;
+					$Yc = sin(deg2rad($Angle - 90)) * ($OuterRadius + $ValuePadding) + $Y;
 					($Angle >= 0 && $Angle <= 90) AND $Align = TEXT_ALIGN_BOTTOMLEFT;
 					($Angle > 90 && $Angle <= 180) AND $Align = TEXT_ALIGN_TOPLEFT;
 					($Angle > 180 && $Angle <= 270) AND $Align = TEXT_ALIGN_TOPRIGHT;
 					($Angle > 270) AND $Align = TEXT_ALIGN_BOTTOMRIGHT;
 				} else {
-					$Xc = cos(($Angle - 90) * PI / 180) * (($OuterRadius - $InnerRadius) / 2 + $InnerRadius) + $X;
-					$Yc = sin(($Angle - 90) * PI / 180) * (($OuterRadius - $InnerRadius) / 2 + $InnerRadius) + $Y;
+					$Xc = cos(deg2rad($Angle - 90)) * (($OuterRadius - $InnerRadius) / 2 + $InnerRadius) + $X;
+					$Yc = sin(deg2rad($Angle - 90)) * (($OuterRadius - $InnerRadius) / 2 + $InnerRadius) + $Y;
 					$Align = TEXT_ALIGN_MIDDLEMIDDLE;
 				}
 
@@ -1209,20 +1218,27 @@ class pPie
 			$SliceColors[$Slice] = $Palette[$ID];
 			$EndAngle = $Offset - ($Value * $ScaleFactor);
 			($EndAngle < 0) AND $EndAngle = 0;
-			$Step = (360 / (2 * PI * $OuterRadius)) / 2;
+			#$Step = (360 / (2 * PI * $OuterRadius)) / 2;
+			$Step = (rad2deg(1/$OuterRadius)) / 2;
 			$OutX1 = VOID;
 			$OutY1 = VOID;
 			
 			for ($i = $Offset; $i >= $EndAngle; $i = $i - $Step) {
-				$Xc = cos(($i - 90) * PI / 180) * ($OuterRadius + $DataGapRadius - 2) + $X;
-				$Yc = sin(($i - 90) * PI / 180) * ($OuterRadius + $DataGapRadius - 2) * $SkewFactor + $Y;
+				
+				$cos = cos(deg2rad($i - 90));
+				$sin = sin(deg2rad($i - 90));
+				
+				$Xc = $cos * ($OuterRadius + $DataGapRadius - 2) + $X;
+				$Yc = $sin * ($OuterRadius + $DataGapRadius - 2) * $SkewFactor + $Y;
 				$Slices[$Slice]["AA"][] = [$Xc,$Yc];
-				$Xc = cos(($i - 90) * PI / 180) * ($OuterRadius + $DataGapRadius - 1) + $X;
-				$Yc = sin(($i - 90) * PI / 180) * ($OuterRadius + $DataGapRadius - 1) * $SkewFactor + $Y;
+				$Xc = $cos * ($OuterRadius + $DataGapRadius - 1) + $X;
+				$Yc = $sin * ($OuterRadius + $DataGapRadius - 1) * $SkewFactor + $Y;
 				$Slices[$Slice]["AA"][] = [$Xc,$Yc];
-				$Xc = cos(($i - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) + $X;
-				$Yc = sin(($i - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) * $SkewFactor + $Y;
+				$Xc = $cos * ($OuterRadius + $DataGapRadius) + $X;
+				$Yc = $sin * ($OuterRadius + $DataGapRadius) * $SkewFactor + $Y;
+				
 				$this->myPicture->drawAntialiasPixel($Xc, $Yc, $SliceColors[$Slice]);
+				
 				if ($OutX1 == VOID) {
 					$OutX1 = $Xc;
 					$OutY1 = $Yc;
@@ -1248,17 +1264,20 @@ class pPie
 			$OutY2 = $Yc;
 			$Slices[$Slice]["Angle"][] = VOID;
 			$Lasti = $i;
-			$Step = (360 / (2 * PI * $InnerRadius)) / 2;
+			#$Step = (360 / (2 * PI * $InnerRadius)) / 2;
+			$Step = (rad2deg(1/$InnerRadius)) / 2;
 			$InX1 = VOID;
 			$InY1 = VOID;
 			
-			for ($i = $EndAngle; $i <= $Offset; $i = $i + $Step) {
-				$Xc = cos(($i - 90) * PI / 180) * ($InnerRadius + $DataGapRadius - 1) + $X;
-				$Yc = sin(($i - 90) * PI / 180) * ($InnerRadius + $DataGapRadius - 1) * $SkewFactor + $Y;
+			for ($i = $EndAngle; $i <= $Offset; $i += $Step) {
+				
+				$Xc = cos(deg2rad($i - 90)) * ($InnerRadius + $DataGapRadius - 1) + $X;
+				$Yc = sin(deg2rad($i - 90)) * ($InnerRadius + $DataGapRadius - 1) * $SkewFactor + $Y;
 				$Slices[$Slice]["AA"][] = [$Xc,$Yc];
-				$Xc = cos(($i - 90) * PI / 180) * ($InnerRadius + $DataGapRadius) + $X;
-				$Yc = sin(($i - 90) * PI / 180) * ($InnerRadius + $DataGapRadius) * $SkewFactor + $Y;
+				$Xc = cos(deg2rad($i - 90)) * ($InnerRadius + $DataGapRadius) + $X;
+				$Yc = sin(deg2rad($i - 90)) * ($InnerRadius + $DataGapRadius) * $SkewFactor + $Y;
 				$Slices[$Slice]["AA"][] = [$Xc,$Yc];
+				
 				if ($InX1 == VOID) {
 					$InX1 = $Xc;
 					$InY1 = $Yc;
@@ -1451,8 +1470,8 @@ class pPie
 				($EndAngle < 0) AND $EndAngle = 0;
 				$Settings = ["FillColor" => ($LabelColorType == PIE_LABEL_COLOR_AUTO) ? $Palette[$ID] : $LabelColor];
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
-				$Xc = cos(($Angle - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) + $X;
-				$Yc = sin(($Angle - 90) * PI / 180) * ($OuterRadius + $DataGapRadius) * $SkewFactor + $Y;
+				$Xc = cos(deg2rad($Angle - 90)) * ($OuterRadius + $DataGapRadius) + $X;
+				$Yc = sin(deg2rad($Angle - 90)) * ($OuterRadius + $DataGapRadius) * $SkewFactor + $Y;
 				if ($WriteValues == PIE_VALUE_PERCENTAGE) {
 					$Label = strval(round((100 / $SerieSum) * $Value, $Precision)) . "%";
 				} elseif ($WriteValues == PIE_VALUE_NATURAL) {

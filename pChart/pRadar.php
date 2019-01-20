@@ -106,9 +106,11 @@ class pRadar
 			}
 		}
 
+		$Step = 360 / $Points;
+		
 		/* Draw the axis */
-		$CenterX = ($X2 - $X1) / 2 + $X1;
-		$CenterY = ($Y2 - $Y1) / 2 + $Y1;
+		$CenterX = ($X2 + $X1) / 2;
+		$CenterY = ($Y2 + $Y1) / 2;
 		$EdgeHeight = min(($X2 - $X1) / 2, ($Y2 - $Y1) / 2);
 		if ($WriteLabels) {
 			$EdgeHeight = $EdgeHeight - $FontSize - $LabelPadding - $TicksLength;
@@ -135,13 +137,7 @@ class pRadar
 			$SegmentHeight = $Scale["RowHeight"];
 		}
 
-		if ($LabelMiddle && $SkipLabels == 1) {
-			$Axisoffset = (360 / $Points) / 2;
-		} elseif ($LabelMiddle && $SkipLabels != 1) {
-			$Axisoffset = (360 / ($Points / $SkipLabels)) / 2;
-		} elseif (!$LabelMiddle) {
-			$Axisoffset = 0;
-		}
+		$Axisoffset = ($LabelMiddle) ? ($Step * $SkipLabels) / 2 : 0;
 
 		/* Background processing */
 		if ($DrawBackground) {
@@ -151,10 +147,11 @@ class pRadar
 				if ($Layout == RADAR_LAYOUT_STAR) {
 					
 					$PointArray = [];
-					for ($i = 0; $i <= 360; $i = $i + (360 / $Points)) {
+					for ($i = 0; $i <= 360; $i += $Step) {
 						$PointArray[] = cos(deg2rad($i + $AxisRotation)) * $EdgeHeight + $CenterX;
 						$PointArray[] = sin(deg2rad($i + $AxisRotation)) * $EdgeHeight + $CenterY;
 					}
+					
 					$this->myPicture->drawPolygon($PointArray, ["Color" => $BackgroundColor]);
 					
 				} elseif ($Layout == RADAR_LAYOUT_CIRCLE) {;
@@ -168,7 +165,7 @@ class pRadar
 				if ($Layout == RADAR_LAYOUT_STAR) {
 					for ($j = $Segments; $j >= 1; $j--) {
 						$PointArray = [];
-						for ($i = 0; $i <= 360; $i = $i + (360 / $Points)) {
+						for ($i = 0; $i <= 360; $i += $Step) {
 							$PointArray[] = cos(deg2rad($i + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterX;
 							$PointArray[] = sin(deg2rad($i + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterY;
 						}
@@ -190,11 +187,11 @@ class pRadar
 		
 		if ($Layout == RADAR_LAYOUT_STAR) {
 			for ($j = 1; $j <= $Segments; $j++) {
-				for ($i = 0; $i < 360; $i = $i + (360 / $Points)) {
+				for ($i = 0; $i < 360; $i += $Step) {
 					$EdgeX1 = cos(deg2rad($i + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterX;
 					$EdgeY1 = sin(deg2rad($i + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterY;
-					$EdgeX2 = cos(deg2rad($i + $AxisRotation + (360 / $Points))) * ($EdgeHeight / $Segments) * $j + $CenterX;
-					$EdgeY2 = sin(deg2rad($i + $AxisRotation + (360 / $Points))) * ($EdgeHeight / $Segments) * $j + $CenterY;
+					$EdgeX2 = cos(deg2rad($i + $AxisRotation + $Step)) * ($EdgeHeight / $Segments) * $j + $CenterX;
+					$EdgeY2 = sin(deg2rad($i + $AxisRotation + $Step)) * ($EdgeHeight / $Segments) * $j + $CenterY;
 					$this->myPicture->drawLine($EdgeX1, $EdgeY1, $EdgeX2, $EdgeY2, $Color);
 				}
 			}
@@ -218,7 +215,7 @@ class pRadar
 
 			$Options["FontName"] = $AxisFontName;
 			$Options["FontSize"] = $AxisFontSize;
-			$Angle = 360 / ($Points * 2);
+			$Angle = $Step / 2;
 			
 			for ($j = 1; $j <= $Segments; $j++) {
 				$Label = $j * $SegmentHeight;
@@ -228,19 +225,19 @@ class pRadar
 				} elseif ($Layout == RADAR_LAYOUT_STAR) {
 					$EdgeX1 = cos(deg2rad($AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterX;
 					$EdgeY1 = sin(deg2rad($AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterY;
-					$EdgeX2 = cos(deg2rad((360 / $Points) + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterX;
-					$EdgeY2 = sin(deg2rad((360 / $Points) + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterY;
-					$EdgeX1 = ($EdgeX2 - $EdgeX1) / 2 + $EdgeX1;
-					$EdgeY1 = ($EdgeY2 - $EdgeY1) / 2 + $EdgeY1;
+					$EdgeX2 = cos(deg2rad($Step + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterX;
+					$EdgeY2 = sin(deg2rad($Step + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterY;
+					$EdgeX1 = ($EdgeX2 + $EdgeX1) / 2;
+					$EdgeY1 = ($EdgeY2 + $EdgeY1) / 2;
 				}
-
+				
 				$this->myPicture->drawText($EdgeX1, $EdgeY1, $Label, $Options);
 			}
 		}
 
 		/* Axis lines */
 		$ID = 0;
-		for ($i = 0; $i < 360; $i = $i + (360 / $Points)) {
+		for ($i = 0; $i < 360; $i += $Step) {
 			$EdgeX = cos(deg2rad($i + $AxisRotation)) * ($EdgeHeight + $TicksLength) + $CenterX;
 			$EdgeY = sin(deg2rad($i + $AxisRotation)) * ($EdgeHeight + $TicksLength) + $CenterY;
 			if ($ID % $SkipLabels == 0) {
@@ -304,7 +301,7 @@ class pRadar
 			if ($SerieName != $LabelSerie) {
 
 				foreach($DataS["Data"] as $Key => $Value) {
-					$Angle = (360 / $Points) * $Key;
+					$Angle = $Step * $Key;
 					$Length = ($EdgeHeight / ($Segments * $SegmentHeight)) * $Value;
 					$X = cos(deg2rad($Angle + $AxisRotation)) * $Length + $CenterX;
 					$Y = sin(deg2rad($Angle + $AxisRotation)) * $Length + $CenterY;
@@ -320,7 +317,10 @@ class pRadar
 
 		/* Draw all that stuff! */
 		foreach($Plot as $ID => $Points) {
+			
 			$Color = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
+			$PointCount = count($Points);
+			
 			/* Draw the polygons */
 			if ($DrawPoly) {
 				if (!is_null($PolyAlpha)) {
@@ -328,7 +328,7 @@ class pRadar
 				}
 
 				$PointsArray = [];
-				for ($i = 0; $i < count($Points); $i++) {
+				for ($i = 0; $i < $PointCount; $i++) {
 					$PointsArray[] = $Points[$i][0];
 					$PointsArray[] = $Points[$i][1];
 				}
@@ -344,10 +344,10 @@ class pRadar
 			$OuterColor = ["Color" => (!is_null($OuterBubbleColor)) ? $OuterBubbleColor : $Palette[$ID]->newOne()->RGBChange(20)];
 
 			/* Loop to the starting points if asked */
-			if ($LineLoopStart && $DrawLines) $this->myPicture->drawLine($Points[count($Points) - 1][0], $Points[count($Points) - 1][1], $Points[0][0], $Points[0][1], $Color);
+			if ($LineLoopStart && $DrawLines) $this->myPicture->drawLine($Points[$PointCount - 1][0], $Points[$PointCount - 1][1], $Points[0][0], $Points[0][1], $Color);
 			/* Draw the lines & points */
-			for ($i = 0; $i < count($Points); $i++) {
-				if ($DrawLines && $i < count($Points) - 1) {
+			for ($i = 0; $i < $PointCount; $i++) {
+				if ($DrawLines && $i < $PointCount - 1) {
 					$this->myPicture->drawLine($Points[$i][0], $Points[$i][1], $Points[$i + 1][0], $Points[$i + 1][1], $Color);
 				}
 
@@ -437,8 +437,8 @@ class pRadar
 		}
 
 		/* Draw the axis */
-		$CenterX = ($X2 - $X1) / 2 + $X1;
-		$CenterY = ($Y2 - $Y1) / 2 + $Y1;
+		$CenterX = ($X2 + $X1) / 2;
+		$CenterY = ($Y2 + $Y1) / 2;
 		$EdgeHeight = min(($X2 - $X1) / 2, ($Y2 - $Y1) / 2);
 		if ($WriteLabels) {
 			$EdgeHeight = $EdgeHeight - $FontSize - $LabelPadding - $TicksLength;
@@ -581,15 +581,18 @@ class pRadar
 
 		/* Draw all that stuff! */
 		foreach($Plot as $ID => $Points) {
+			
 			$Color = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
+			$PointCount = count($Points);
+			
 			/* Draw the polygons */
 			if ($DrawPoly) {
 				if (!is_null($PolyAlpha)) {
 					$Color = ["Color" => $Palette[$ID]->newOne()->AlphaSet($PolyAlpha),"Surrounding" => $PointSurrounding];
 				}
-
+				
 				$PointsArray = [];
-				for ($i = 0; $i < count($Points); $i++) {
+				for ($i = 0; $i < $PointCount; $i++) {
 					$PointsArray[] = $Points[$i][0];
 					$PointsArray[] = $Points[$i][1];
 				}
@@ -605,12 +608,12 @@ class pRadar
 
 			/* Loop to the starting points if asked */
 			if ($LineLoopStart && $DrawLines) {
-				$this->myPicture->drawLine($Points[count($Points) - 1][0], $Points[count($Points) - 1][1], $Points[0][0], $Points[0][1], $Color);
+				$this->myPicture->drawLine($Points[$PointCount - 1][0], $Points[$PointCount - 1][1], $Points[0][0], $Points[0][1], $Color);
 			}
 
 			/* Draw the lines & points */
-			for ($i = 0; $i < count($Points); $i++) {
-				if ($DrawLines && $i < count($Points) - 1) {
+			for ($i = 0; $i < $PointCount; $i++) {
+				if ($DrawLines && $i < $PointCount - 1) {
 					$this->myPicture->drawLine($Points[$i][0], $Points[$i][1], $Points[$i + 1][0], $Points[$i + 1][1], $Color);
 				}
 
