@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 if (php_sapi_name() != "cli") {
 	chdir("../");
 }
