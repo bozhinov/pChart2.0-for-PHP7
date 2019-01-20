@@ -963,16 +963,16 @@ class pDraw
 		}
 
 		$TxtPos = $this->getTextBox($X, $Y, $FontName, $FontSize, $Angle, $Text);
-		if ($DrawBox && ($Angle == 0 || $Angle == 90 || $Angle == 180 || $Angle == 270)) {
-			$T = ($Angle == 0) ? [0 => ["X" => - $TOffset, "Y" => $TOffset]] : [0 => ["X" => 0, "Y" => 0]];
+		if ($DrawBox && in_array($Angle,[0,90,180,270])) {
+			$T = ($Angle == 0) ? ["X" => - $TOffset, "Y" => $TOffset] : ["X" => 0, "Y" => 0];
 			$X1 = min($TxtPos[0]["X"], $TxtPos[1]["X"], $TxtPos[2]["X"], $TxtPos[3]["X"]) - $BorderOffset + 3;
 			$Y1 = min($TxtPos[0]["Y"], $TxtPos[1]["Y"], $TxtPos[2]["Y"], $TxtPos[3]["Y"]) - $BorderOffset;
 			$X2 = max($TxtPos[0]["X"], $TxtPos[1]["X"], $TxtPos[2]["X"], $TxtPos[3]["X"]) + $BorderOffset + 3;
 			$Y2 = max($TxtPos[0]["Y"], $TxtPos[1]["Y"], $TxtPos[2]["Y"], $TxtPos[3]["Y"]) + $BorderOffset - 3;
-			$X1 = $X1 - $TxtPos[$Align]["X"] + $X + $T[0]["X"];
-			$Y1 = $Y1 - $TxtPos[$Align]["Y"] + $Y + $T[0]["Y"];
-			$X2 = $X2 - $TxtPos[$Align]["X"] + $X + $T[0]["X"];
-			$Y2 = $Y2 - $TxtPos[$Align]["Y"] + $Y + $T[0]["Y"];
+			$X1 = $X1 - $TxtPos[$Align]["X"] + $X + $T["X"];
+			$Y1 = $Y1 - $TxtPos[$Align]["Y"] + $Y + $T["Y"];
+			$X2 = $X2 - $TxtPos[$Align]["X"] + $X + $T["X"];
+			$Y2 = $Y2 - $TxtPos[$Align]["Y"] + $Y + $T["Y"];
 			$Settings = ["Color" => $BoxColor,"BorderColor" => $BoxBorderColor];
 			if ($BoxRounded) {
 				$this->drawRoundedFilledRectangle($X1, $Y1, $X2, $Y2, $RoundedRadius, $Settings);
@@ -981,8 +981,8 @@ class pDraw
 			}
 		}
 
-		$X = $X - $TxtPos[$Align]["X"] + $X;
-		$Y = $Y - $TxtPos[$Align]["Y"] + $Y;
+		$X = $X + $X - $TxtPos[$Align]["X"];
+		$Y = $Y + $Y - $TxtPos[$Align]["Y"];
 		if ($this->Shadow) {
 			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowAllocatedColor, realpath($FontName), $Text);
 		}
