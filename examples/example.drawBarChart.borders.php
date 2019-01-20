@@ -40,12 +40,10 @@ $myPicture->drawScale(["GridColor"=>new pColor(200),"DrawSubTicks"=>TRUE,"CycleB
 /* Write the chart legend */
 $myPicture->drawLegend(580,12,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
-/* Turn on shadow computing */ 
+/* Turn shadow on */ 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Draw the chart */
-$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
-
 (new pCharts($myPicture))->drawBarChart(["Surrounding"=>-30,"InnerSurrounding"=>30]);
 
 /* Render the picture (choose the best way) */
