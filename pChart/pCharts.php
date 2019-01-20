@@ -2305,7 +2305,7 @@ class pCharts {
 				$MinSlope = 0;
 				$MaxSlope = 1;
 				$LastColor = NULL;
-								
+
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($Caption) {
 						if ($CaptionLine) {
@@ -2339,26 +2339,29 @@ class pCharts {
 					
 					$RestoreShadow = $this->myPicture->Shadow;
 					$this->myPicture->Shadow = FALSE;
-					
 					/* Determine the Max slope index */
+
 					foreach($PosArray as $Y) {
-						
-						if ($Y != VOID && $LastX != VOID) {
+						if ($Y != VOID && ($LastX != VOID)) {
 							$Slope = ($LastY - $Y);
 							($Slope > $MaxSlope) AND $MaxSlope = $Slope;
 							($Slope < $MinSlope) AND $MinSlope = $Slope;
 						}
-						
-						$LastX = $X;
-						$LastY = $Y;
+
+						if ($Y == VOID) {
+							$LastX = VOID;
+							$LastY = VOID;
+						} else {
+							$LastX = $X;
+							$LastY = $Y;
+						}
 					}
 
 					$LastX = VOID;
 					$LastY = VOID;
 
 					foreach($PosArray as $Y) {
-						
-						if ($Y != VOID && $LastY != VOID) {
+						if ($Y != VOID && ($LastY != VOID)) {
 							$Slope = $LastY - $Y;
 							if ($Slope >= 0) {
 								$Gradient = new pColorGradient($PositiveSlopeStartColor, $PositiveSlopeEndColor);
@@ -2380,8 +2383,12 @@ class pCharts {
 							$LastColor = $Color;
 						}
 
-						$LastX = $X;
-						$LastY = $Y;
+						if ($Y == VOID) {
+							$LastY = VOID;
+						} else {
+							$LastX = $X;
+							$LastY = $Y;
+						}
 
 						$X += $XStep;
 					}
@@ -2416,9 +2423,7 @@ class pCharts {
 					/* Determine the Max slope index */
 
 					foreach($PosArray as $X) {
-						
-						if ($X != VOID && $LastX != VOID) {
-							
+						if ($X != VOID && ($LastX != VOID)) {
 							$Slope = ($X - $LastX);
 							($Slope > $MaxSlope) AND $MaxSlope = $Slope;
 							($Slope < $MinSlope) AND $MinSlope = $Slope;
@@ -2431,8 +2436,7 @@ class pCharts {
 					$LastY = VOID;
 
 					foreach($PosArray as $X) {
-												
-						if ($X != VOID && $LastX != VOID) {
+						if ($X != VOID && ($LastX != VOID)) {
 							$Slope = $X - $LastX;
 							if ($Slope >= 0) {
 								$Gradient = new pColorGradient($PositiveSlopeStartColor, $PositiveSlopeEndColor);
@@ -2453,9 +2457,13 @@ class pCharts {
 
 							$LastColor = $Color;
 						}
-						
-						$LastX = $X;
-						$LastY = $Y;
+
+						if ($X == VOID) {
+							$LastX = VOID;
+						} else {
+							$LastX = $X;
+							$LastY = $Y;
+						}
 
 						$Y += $XStep;
 					}
@@ -2466,7 +2474,7 @@ class pCharts {
 				$this->myPicture->Shadow = $RestoreShadow;
 			}
 		}
-	} 
+	}
 	
 	/* Draw the line of best fit */
 	function drawBestFit(array $Format = [])
