@@ -53,10 +53,10 @@ $myPicture->drawGradientArea(0,0,400,20,DIRECTION_VERTICAL, ["StartColor"=>new p
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawScatterLineChart() - Draw a scatter line chart",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"drawScatterLineChart() - Draw a scatter line chart",["Color"=>new pColor(255)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0)]);
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));

@@ -23,7 +23,7 @@ $myPicture->myData->setAbscissa("Labels");
 $myPicture->Antialias = FALSE;
 
 /* Draw the border */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 
@@ -31,7 +31,7 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","Font
 $myPicture->setGraphArea(60,30,650,190);
 
 /* Draw the scale */
-$myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
+$myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridColor"=>new pColor(200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Draw the step chart */
 (new pCharts($myPicture))->drawStepChart();

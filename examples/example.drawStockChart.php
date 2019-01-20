@@ -30,7 +30,7 @@ $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "D
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the title */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));

@@ -28,11 +28,11 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawLabel() - Write labels over your charts",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"drawLabel() - Write labels over your charts",["Color"=>new pColor(255)]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
@@ -57,11 +57,11 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize
 $myPicture->writeLabel(["Probe 1"],[0]);
 
 /* Write a label over the chart */
-$LabelSettings = array("TitleMode"=>LABEL_TITLE_BACKGROUND,"DrawSerieColor"=>FALSE,"TitleColor"=>new pColor(255,255,255));
+$LabelSettings = array("TitleMode"=>LABEL_TITLE_BACKGROUND,"DrawSerieColor"=>FALSE,"TitleColor"=>new pColor(255));
 $myPicture->writeLabel(["Probe 1"],[5],$LabelSettings);
 
 /* Write a label over the chart */
-$LabelSettings = array("OverrideTitle"=>"Multiple series","DrawVerticalLine"=>TRUE,"TitleMode"=>LABEL_TITLE_BACKGROUND,"TitleColor"=>new pColor(255,255,255));
+$LabelSettings = array("OverrideTitle"=>"Multiple series","DrawVerticalLine"=>TRUE,"TitleMode"=>LABEL_TITLE_BACKGROUND,"TitleColor"=>new pColor(255));
 $myPicture->writeLabel(["Probe 1","Probe 2"],[4],$LabelSettings);
 
 /* Render the picture (choose the best way) */

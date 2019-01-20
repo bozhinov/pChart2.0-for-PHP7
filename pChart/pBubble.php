@@ -237,9 +237,9 @@ class pBubble
 		
 		$DrawPoint = isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
 		if ($DrawPoint == LABEL_POINT_CIRCLE) {
-			$this->myPicture->drawFilledCircle($X, $Y, 3, ["Color" => new pColor(255,255,255), "BorderColor" => new pColor(0,0,0)]);
+			$this->myPicture->drawFilledCircle($X, $Y, 3, ["Color" => new pColor(255), "BorderColor" => new pColor(0)]);
 		} elseif ($DrawPoint == LABEL_POINT_BOX) {
-			$this->myPicture->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["Color" => new pColor(255,255,255), "BorderColor" => new pColor(0,0,0)]);
+			$this->myPicture->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["Color" => new pColor(255), "BorderColor" => new pColor(0)]);
 		}
 
 		$this->myPicture->drawLabelBox($X, $Y - 3, $Description, $Series, $Format);

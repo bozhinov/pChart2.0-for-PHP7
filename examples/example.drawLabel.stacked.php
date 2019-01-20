@@ -21,7 +21,7 @@ $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 
 /* Draw background */
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(240,240,240,100), "EndColor"=>new pColor(180,180,180,100)]);
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(240), "EndColor"=>new pColor(180)]);
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,["StartColor"=>new pColor(240,240,240,20), "EndColor"=>new pColor(180,180,180,20)]);
 
 /* Set the default font properties */

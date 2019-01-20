@@ -28,11 +28,11 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,["StartColor"=>new pColor(0,0,0,80), "EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawFilledRectangle() - Transparency & colors",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"drawFilledRectangle() - Transparency & colors",["Color"=>new pColor(255)]);
 
 /* Turn on shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
@@ -42,12 +42,12 @@ $myPicture->Antialias = TRUE;
 
 /* Draw a customized filled circle */ 
 $Color = new pColor(267,165,169);
-$myPicture->drawFilledCircle(300,120,50,["Color"=>$Color,"Dash"=>TRUE,"BorderColor"=>new pColor(255,255,255)]);
+$myPicture->drawFilledCircle(300,120,50,["Color"=>$Color,"Dash"=>TRUE,"BorderColor"=>new pColor(255)]);
 $myPicture->addToImageMap("CIRCLE","300,120,50",$Color->toHTMLColor(),"Circle","My Message");
 
 /* Draw a customized polygon */
 $Color = new pColor(71,87,145);
-$myPicture->drawPolygon([402,62,460,80,420,190,360,168],["Color"=>$Color,"Dash"=>TRUE,"BorderColor"=>new pColor(255,255,255)]);
+$myPicture->drawPolygon([402,62,460,80,420,190,360,168],["Color"=>$Color,"Dash"=>TRUE,"BorderColor"=>new pColor(255)]);
 $myPicture->addToImageMap("POLY","402,62,460,80,420,190,360,168",$Color->toHTMLColor(),"Polygon","My Message");
 
 /* Turn off Anti-aliasing */
@@ -55,7 +55,7 @@ $myPicture->Antialias = FALSE;
 
 /* Draw a customized filled rectangle */ 
 $Color = new pColor(150,200,170);
-$myPicture->drawFilledRectangle(20,60,210,170,["Color"=>$Color,"Dash"=>TRUE,"DashColor"=>new pColor(170,220,190),"BorderColor"=>new pColor(255,255,255)]);
+$myPicture->drawFilledRectangle(20,60,210,170,["Color"=>$Color,"Dash"=>TRUE,"DashColor"=>new pColor(170,220,190),"BorderColor"=>new pColor(255)]);
 $myPicture->addToImageMap("RECT","20,60,210,170",$Color->toHTMLColor(),"Box 1","Message 1");
 
 /* Draw a customized filled rectangle */ 

@@ -39,10 +39,10 @@ class pStock
 		$SerieMax = "Max";
 		$SerieMedian = NULL;
 		$LineWidth = 1;
-		$LineColor = new pColor(0,0,0,100);
+		$LineColor = new pColor(0);
 		$ExtremityWidth = 1;
 		$ExtremityLength = 3;
-		$ExtremityColor = new pColor(0,0,0,100);
+		$ExtremityColor = new pColor(0);
 		$BoxWidth = 8;
 		$BoxUpColor = new pColor(188,224,46,100);
 		$BoxUpSurrounding = NULL;

@@ -23,7 +23,7 @@ $myPicture->myData->setAbscissaName("Months");
 $myPicture->Antialias = FALSE;
 
 /* Set the default font */ 
-$myPicture->setFontProperties(["Color"=>new pColor(0,0,0),"FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["Color"=>new pColor(0),"FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 
 /* Define the chart area */
 $myPicture->setGraphArea(50,40,680,170);

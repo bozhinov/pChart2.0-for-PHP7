@@ -25,7 +25,7 @@ $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(173,152,217), "
 
 /* Draw a gradient overlay */
 $myPicture->drawGradientArea(0,0,700,230, DIRECTION_VERTICAL, ["StartColor"=>new pColor(209,150,231,50), "EndColor"=>new pColor(111,3,138,50)]);
-$myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL,  ["StartColor"=>ColorBlack(),"EndColor"=>new pColor(50,50,50,100)]);
+$myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL,  ["StartColor"=>ColorBlack(),"EndColor"=>new pColor(50)]);
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,699,229,["Color"=>ColorBlack()]);
 
@@ -34,7 +34,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","F
 $myPicture->drawText(10,13,"pPie - Draw 2D pie charts",["Color"=>ColorWhite()]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80,80,80)));
+$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80)));
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>ColorBlack($Alpha=50)]);
@@ -55,7 +55,7 @@ $PieChart->draw2DPie(560,125,["WriteValues"=>PIE_VALUE_PERCENTAGE,"DataGapAngle"
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>ColorBlack($Alpha=20)]);
 $myPicture->drawText(120,200,"Single AA pass",["DrawBox"=>TRUE,"BoxRounded"=>TRUE,"Color"=>ColorBlack(),"Align"=>TEXT_ALIGN_TOPMIDDLE]);
-$myPicture->drawText(440,200,"Extended AA pass / Split",["DrawBox"=>TRUE,"BoxRounded"=>TRUE,"Color"=>ColorBlack(),"Align"=>TEXT_ALIGN_TOPMIDDLE,"BoxBorderColor"=>new pColor(0,0,0)]);
+$myPicture->drawText(440,200,"Extended AA pass / Split",["DrawBox"=>TRUE,"BoxRounded"=>TRUE,"Color"=>ColorBlack(),"Align"=>TEXT_ALIGN_TOPMIDDLE,"BoxBorderColor"=>new pColor(0)]);
 
 /* Write the legend box */ 
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6,"Color"=>ColorWhite()]);

@@ -45,7 +45,7 @@ $myPicture->myData->setXAxisDisplay(AXIS_FORMAT_TIME,"H:00");
 $myPicture->Antialias = FALSE;
 
 /* Draw a background */
-$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(90,90,90), "Dash"=>TRUE, "DashColor"=>new pColor(120,120,120)]);
+$myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(90), "Dash"=>TRUE, "DashColor"=>new pColor(120)]);
 
 /* Overlay with a gradient */ 
 $Settings = ["StartColor"=>new pColor(200,200,200,50), "EndColor"=>new pColor(50,50,50,50)];
@@ -53,14 +53,14 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,$Settings);
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,$Settings);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11]);
 $myPicture->drawText(150,35,"Interface bandwidth usage",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Set the default font */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 
 /* Define the chart area */
 $myPicture->setGraphArea(60,40,680,200);
@@ -70,7 +70,7 @@ $myPicture->drawScale([
 	"XMargin"=>10,
 	"YMargin"=>10,
 	"Floating"=>TRUE,
-	"GridColor"=>new pColor(200,200,200),
+	"GridColor"=>new pColor(200),
 	"RemoveSkippedAxis"=>TRUE,
 	"DrawSubTicks"=>FALSE,
 	"Mode"=>SCALE_MODE_START0,

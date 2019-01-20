@@ -28,11 +28,11 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
-$myPicture->drawText(10,13,"drawLegend() - Write your chart legend",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"drawLegend() - Write your chart legend",["Color"=>new pColor(255)]);
 
 /* Write a legend box */ 
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
@@ -40,11 +40,11 @@ $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 $myPicture->drawLegend(70,60);
 
 /* Write a legend box */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/MankSans.ttf","FontSize"=>10,"Color"=>new pColor(30,30,30)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/MankSans.ttf","FontSize"=>10,"Color"=>new pColor(30)]);
 $myPicture->drawLegend(230,60,["BoxSize"=>4,"Color"=>new pColor(173,163,83),"Surrounding"=>20,"Family"=>LEGEND_FAMILY_CIRCLE]);
 
 /* Write a legend box */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>9,"Color"=>new pColor(80,80,80)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>9,"Color"=>new pColor(80)]);
 $myPicture->drawLegend(400,60,["Style"=>LEGEND_BOX,"BoxSize"=>4,"Color"=>new pColor(200,200,200,30),"Surrounding"=>20]);
 
 /* Write a legend box */ 

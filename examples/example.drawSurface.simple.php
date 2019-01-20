@@ -18,14 +18,14 @@ $myPicture->drawFilledRectangle(0,0,210,100,["Color"=>new pColor(179,217,91), "D
 
 /* Do a gradient overlay */
 $myPicture->drawGradientArea(0,0,210,100,DIRECTION_VERTICAL,["StartColor"=>new pColor(194,231,44,50), "EndColor"=>new pColor(43,107,58,50)]);
-$myPicture->drawGradientArea(0,0,210,20, DIRECTION_VERTICAL,["StartColor"=>new pColor(0,0,0,100), "EndColor"=>new pColor(50,50,50,100)]);
+$myPicture->drawGradientArea(0,0,210,20, DIRECTION_VERTICAL,["StartColor"=>new pColor(0), "EndColor"=>new pColor(50)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,209,99,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,209,99,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"pSurface() :: Surface charts",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"pSurface() :: Surface charts",["Color"=>new pColor(255)]);
 
 /* Define the charting area */
 $myPicture->setGraphArea(50,60,180,80);

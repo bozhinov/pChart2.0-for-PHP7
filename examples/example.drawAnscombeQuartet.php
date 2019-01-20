@@ -55,8 +55,8 @@ $myPicture->drawRectangle(0,0,799,581,["Color"=>new pColor(0,0,0)]);
 
 /* Write the title */
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>23]);
-$myPicture->drawText(55,50,"Anscombe's Quartet drawing example",["Color"=>new pColor(255,255,255)]);
-$myPicture->drawText(55,65,"This example demonstrate the importance of graphing data before analyzing it. (The line of best fit is the same for all datasets)",["FontSize"=>12,"Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(55,50,"Anscombe's Quartet drawing example",["Color"=>new pColor(255)]);
+$myPicture->drawText(55,65,"This example demonstrate the importance of graphing data before analyzing it. (The line of best fit is the same for all datasets)",["FontSize"=>12,"Color"=>new pColor(255)]);
 
 /* Set the default font */
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);

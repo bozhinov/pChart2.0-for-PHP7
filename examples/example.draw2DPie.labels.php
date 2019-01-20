@@ -35,7 +35,7 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSi
 $myPicture->drawText(10,13,"pPie - Draw 2D pie charts",["Color"=>ColorWhite()]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80,80,80)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,ColorBlack($Alpha=50)]);

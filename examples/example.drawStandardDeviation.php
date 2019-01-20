@@ -30,7 +30,7 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new 
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11]);
@@ -44,7 +44,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $myPicture->setGraphArea(60,50,670,200);
 
 /* Draw the scale */
-$scaleSettings = array("LabelSkip"=>9,"GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
+$scaleSettings = array("LabelSkip"=>9,"GridColor"=>new pColor(200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
 $myPicture->drawScale($scaleSettings);
 
 /* Turn on Anti-aliasing */
@@ -69,7 +69,7 @@ $myPicture->setShadow(TRUE);
 $myPicture->drawThreshold([$Average],["WriteCaption"=>TRUE,"Caption"=>"Average value","AxisID"=>0]);
 
 /* Draw the standard deviation boundaries */
-$ThresholdSettings = ["WriteCaption"=>TRUE,"CaptionAlign"=>CAPTION_RIGHT_BOTTOM ,"Caption"=>"SD","AxisID"=>0,"Color"=>new pColor(0,0,0)];
+$ThresholdSettings = ["WriteCaption"=>TRUE,"CaptionAlign"=>CAPTION_RIGHT_BOTTOM ,"Caption"=>"SD","AxisID"=>0,"Color"=>new pColor(0)];
 $myPicture->drawThreshold([$Average+$StandardDeviation],$ThresholdSettings);
 $myPicture->drawThreshold([$Average-$StandardDeviation],$ThresholdSettings);
 

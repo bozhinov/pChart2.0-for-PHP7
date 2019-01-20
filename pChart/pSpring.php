@@ -49,18 +49,18 @@ class pSpring
 		$this->Links = [];
 		/* Set nodes defaults */
 		$this->Default = [
-			"Color" => new pColor(255,255,255,100),
-			"BorderColor" => new pColor(0,0,0,100),
+			"Color" => new pColor(255),
+			"BorderColor" => new pColor(0),
 			"Surrounding" => NULL,
-			"BackgroundColor" => new pColor(255,255,255,100),
+			"BackgroundColor" => new pColor(255),
 			"Force" => 1,
 			"NodeType" => NODE_TYPE_FREE,
 			"Size" => 5,
 			"Shape" => NODE_SHAPE_CIRCLE,
 			"FreeZone" => 40,
-			"LinkColor" => new pColor(0,0,0,100)
+			"LinkColor" => new pColor(0)
 		];
-		$this->Labels = ["Type" => LABEL_CLASSIC, "Color" => new pColor(0,0,0,100)];
+		$this->Labels = ["Type" => LABEL_CLASSIC, "Color" => new pColor(0)];
 		$this->AutoComputeFreeZone = FALSE;
 		
 		if (!($pChartObject instanceof pDraw)){
@@ -108,7 +108,7 @@ class pSpring
 			throw pException::SpringInvalidInputException("No data ToNode!");
 		}
 
-		$Color = new pColor(0,0,0,100);
+		$Color = new pColor(0);
 		$Name = NULL;
 		$Ticks = NULL;
 		

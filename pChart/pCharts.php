@@ -79,7 +79,7 @@ class pCharts {
 		$DisplayValues = FALSE;
 		$DisplayOffset = 4;
 		$DisplayType = DISPLAY_MANUAL; # was display color
-		$DisplayColor = new pColor(0,0,0);
+		$DisplayColor = new pColor(0);
 		$RecordImageMap = FALSE;
 		
 		/* Override defaults */
@@ -198,7 +198,7 @@ class pCharts {
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
 		$DisplayType = DISPLAY_MANUAL;
-		$DisplayColor = new pColor(0,0,0);
+		$DisplayColor = new pColor(0);
 		$RecordImageMap = FALSE;
 		$ImageMapPlotSize = 5;
 		
@@ -335,7 +335,7 @@ class pCharts {
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
 		$DisplayType = DISPLAY_MANUAL;
-		$DisplayColor = new pColor(0,0,0);
+		$DisplayColor = new pColor(0);
 		$AroundZero = TRUE;
 		$Threshold = [];
 		
@@ -522,7 +522,7 @@ class pCharts {
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
 		$DisplayType = DISPLAY_MANUAL;
-		$DisplayColor = new pColor(0,0,0);
+		$DisplayColor = new pColor(0);
 		$RecordImageMap = FALSE;
 		$ImageMapPlotSize = 5;
 		$UseForcedColor = FALSE;
@@ -741,7 +741,7 @@ class pCharts {
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
 		$DisplayType = DISPLAY_MANUAL;
-		$DisplayColor = new pColor(0,0,0);
+		$DisplayColor = new pColor(0);
 		$RecordImageMap = FALSE;
 		$ImageMapPlotSize = 5;
 		
@@ -940,7 +940,7 @@ class pCharts {
 		$DisplayOffset = 2;
 		$DisplayType = DISPLAY_MANUAL;
 		$ForceTransparency = NULL;
-		$DisplayColor = new pColor(0,0,0);
+		$DisplayColor = new pColor(0);
 		$AroundZero = TRUE;
 		
 		/* Override defaults */
@@ -1120,7 +1120,7 @@ class pCharts {
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
 		$DisplayType = DISPLAY_MANUAL;
-		$DisplayColor = new pColor(0,0,0);
+		$DisplayColor = new pColor(0);
 		$ForceTransparency = 25;
 		$AroundZero = TRUE;
 		$Threshold = [];
@@ -1317,7 +1317,7 @@ class pCharts {
 		extract($Format);
 		
 		if (is_null($DisplayColor)){
-			$DisplayColor = new pColor(0,0,0);
+			$DisplayColor = new pColor(0);
 		}
 		
 		$ColorOverride = [];
@@ -1605,7 +1605,7 @@ class pCharts {
 		$DisplayType = DISPLAY_MANUAL;
 		$DisplayFont = $this->myPicture->FontName;
 		$DisplaySize = $this->myPicture->FontSize;
-		$DisplayColor = new pColor(0,0,0);
+		$DisplayColor = new pColor(0);
 		$Interleave = .5;
 		$Rounded = FALSE;
 		$RoundRadius = 4;
@@ -1634,7 +1634,7 @@ class pCharts {
 				$Color = $Serie["Color"]->newOne();
 				$Ticks = $Serie["Ticks"];
 				if ($DisplayType == DISPLAY_AUTO) {
-					$DisplayColor = new pColor(255,255,255);
+					$DisplayColor = new pColor(255);
 				}
 
 				(!is_null($Surrounding)) AND $BorderColor = $Color->newOne()->RGBChange($Surrounding);
@@ -1965,7 +1965,7 @@ class pCharts {
 
 	function drawPolygonChart(array $Points, array $Format = [])
 	{
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Threshold = isset($Format["Threshold"]) ? $Format["Threshold"] : [];
 		$NoFill = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
 		$NoBorder = isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
@@ -2269,7 +2269,7 @@ class pCharts {
 		$DrawBackground = isset($Format["DrawBackground"]) ? $Format["DrawBackground"] : TRUE;
 		$BackgroundColor = isset($Format["BackgroundColor"]) ? $Format["BackgroundColor"] : new pColor(255,255,255,20);
 		$DrawBorder = isset($Format["DrawBorder"]) ? $Format["DrawBorder"] : TRUE;
-		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : new pColor(0,0,0,100);
+		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : new pColor(0);
 		$Caption = isset($Format["Caption"]) ? $Format["Caption"] : TRUE;
 		$CaptionHeight = isset($Format["CaptionHeight"]) ? $Format["CaptionHeight"] : 10;
 		$CaptionWidth = isset($Format["CaptionWidth"]) ? $Format["CaptionWidth"] : 20;

@@ -16,14 +16,14 @@ $myPicture->drawFilledRectangle(0,0,400,400,["Color"=>new pColor(179,217,91), "D
 
 /* Do a gradient overlay */
 $myPicture->drawGradientArea(0,0,400,400,DIRECTION_VERTICAL,["StartColor"=>new pColor(194,231,44,50), "EndColor"=>new pColor(43,107,58,50)]);
-$myPicture->drawGradientArea(0,0,400,20,DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,100), "EndColor"=>new pColor(50,50,50,100)]);
+$myPicture->drawGradientArea(0,0,400,20,DIRECTION_VERTICAL, ["StartColor"=>new pColor(0), "EndColor"=>new pColor(50)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"pSurface() :: 2D surface charts",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"pSurface() :: 2D surface charts",["Color"=>new pColor(255)]);
 
 /* Define the charting area */
 $myPicture->setGraphArea(20,40,380,380);
@@ -55,7 +55,7 @@ $mySurface->computeMissing();
 $mySurface->drawSurface(["Border"=>TRUE,"Surrounding"=>40]);
 
 /* Draw the contour with a threshold of 50 */
-$mySurface->drawContour(50,["Color"=>new pColor(0,0,0)]);
+$mySurface->drawContour(50,["Color"=>new pColor(0)]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.surface.png");

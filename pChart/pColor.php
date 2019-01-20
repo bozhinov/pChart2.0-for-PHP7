@@ -17,16 +17,28 @@ class pColor {
 	var $B;
 	var $Alpha;
 
-	function __construct(int $R, int $G, int $B, float $Alpha = 100)
+	function __construct(int $R, int $G = 0, int $B = 0, float $Alpha = 100)
 	{
 		($R < 0)	AND $R = 0;
 		($R > 255)	AND $R = 255;
-		($G < 0) 	AND $G = 0;
-		($G > 255) 	AND $G = 255;
-		($B < 0) 	AND $B = 0;
-		($B > 255) 	AND $B = 255;
-		($Alpha < 0) AND $Alpha = 0;
-		($Alpha > 100) AND $Alpha = 100;
+		
+		switch (func_num_args()){
+			case 1:
+			case 2:
+				$G = $R;
+				$B = $R;
+				$Alpha = 100;
+				break;
+			case 3:
+			case 4:
+				($G < 0) 	AND $G = 0;
+				($G > 255) 	AND $G = 255;
+				($B < 0) 	AND $B = 0;
+				($B > 255) 	AND $B = 255;
+				($Alpha < 0) AND $Alpha = 0;
+				($Alpha > 100) AND $Alpha = 100;
+				break;
+		}
 
 		$this->R = $R;
 		$this->G = $G;

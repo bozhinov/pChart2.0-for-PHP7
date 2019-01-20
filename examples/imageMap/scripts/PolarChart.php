@@ -29,13 +29,13 @@ $myPicture->myData->addPoints([40,80,120,160,200,240,280,320,360],"Coord");
 $myPicture->myData->setAbscissa("Coord");
 
 /* Draw the background */
-$myPicture->drawGradientArea(0,0,300,300,DIRECTION_VERTICAL,["StartColor"=>new pColor(200,200,200,100), "EndColor"=>new pColor(240,240,240,100)]);
+$myPicture->drawGradientArea(0,0,300,300,DIRECTION_VERTICAL,["StartColor"=>new pColor(200), "EndColor"=>new pColor(240)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,299,299,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,299,299,["Color"=>new pColor(0)]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80,80,80)));
+$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80)));
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);

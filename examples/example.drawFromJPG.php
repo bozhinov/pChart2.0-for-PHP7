@@ -18,11 +18,11 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawFromJPG() - add pictures to your charts",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"drawFromJPG() - add pictures to your charts",["Color"=>new pColor(255)]);
 
 /* Turn off shadow computing */ 
 $myPicture->setShadow(FALSE);
@@ -38,7 +38,7 @@ $myPicture->drawFromJPG(380,45,"examples/resources/landscape2.jpg");
 
 /* Write the legend */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
-$TextSettings = ["Color"=>new pColor(255,255,255),"FontSize"=>10,"FontName"=>"pChart/fonts/MankSans.ttf","Align"=>TEXT_ALIGN_BOTTOMMIDDLE];
+$TextSettings = ["Color"=>new pColor(255),"FontSize"=>10,"FontName"=>"pChart/fonts/MankSans.ttf","Align"=>TEXT_ALIGN_BOTTOMMIDDLE];
 $myPicture->drawText(220,210,"Without shadow",$TextSettings);
 $myPicture->drawText(490,210,"With enhanced shadow",$TextSettings);
 

@@ -30,7 +30,7 @@ $myPicture->Antialias = FALSE;
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(190,213,107), "Dash"=>TRUE, "DashColor"=>new pColor(210,223,127)]); 
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
@@ -43,7 +43,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $myPicture->setGraphArea(60,40,650,200);
 
 /* Draw the scale */
-$myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
+$myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridColor"=>new pColor(200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;

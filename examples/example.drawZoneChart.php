@@ -37,9 +37,9 @@ $myPicture->myData->setAbscissaName("Time (years)");
 $myPicture->Antialias = FALSE;
 
 /* Draw the background and the border  */
-$myPicture->drawFilledRectangle(0,0,699,229,["Color"=>new pColor(200,200,200)]);
+$myPicture->drawFilledRectangle(0,0,699,229,["Color"=>new pColor(200)]);
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(220,220,220,30), "EndColor"=>new pColor(100,100,100,30)]);
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));

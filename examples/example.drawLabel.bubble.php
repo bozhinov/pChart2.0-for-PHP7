@@ -42,11 +42,11 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawBubbleChart() - draw a linear bubble chart",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"drawBubbleChart() - draw a linear bubble chart",["Color"=>new pColor(255)]);
 
 /* Write the title */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
@@ -71,7 +71,7 @@ $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,30)]);
 $myBubbleChart->drawBubbleChart($bubbleDataSeries,$bubbleWeightSeries);
 
 /* Write a label over the chart */
-$LabelSettings = ["TitleMode"=>LABEL_TITLE_BACKGROUND,"VerticalMargin"=>4,"HorizontalMargin"=>6,"DrawSerieColor"=>FALSE,"TitleColor"=>new pColor(255,255,255)];
+$LabelSettings = ["TitleMode"=>LABEL_TITLE_BACKGROUND,"VerticalMargin"=>4,"HorizontalMargin"=>6,"DrawSerieColor"=>FALSE,"TitleColor"=>new pColor(255)];
 $myBubbleChart->writeBubbleLabel("Probe1","Probe1Weight",3,$LabelSettings);
 $myBubbleChart->writeBubbleLabel("Probe2","Probe2Weight",4,$LabelSettings);
 

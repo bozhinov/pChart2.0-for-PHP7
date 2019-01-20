@@ -142,7 +142,7 @@ class pSurface
 	/* Draw the area around the specified Threshold */
 	function drawContour(int $Threshold, array $Format = [])
 	{
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : 3;
 		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 0;
 		
@@ -183,7 +183,7 @@ class pSurface
 		$ShadeColor1 = isset($Format["ShadeColor1"]) ? $Format["ShadeColor1"] : new pColor(77,205,21,40);
 		$ShadeColor2 = isset($Format["ShadeColor2"]) ? $Format["ShadeColor2"] : new pColor(227,135,61,100);
 		$Border = isset($Format["Border"]) ? $Format["Border"] : FALSE;
-		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : new pColor(0,0,0);
+		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : new pColor(0);
 		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
 		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 1;
 				
@@ -201,7 +201,7 @@ class pSurface
 				if ($Value != UNKNOWN && $Value != IGNORED) {
 					
 					if (!empty($Palette)) {
-						$Settings = ["Color" => (isset($Palette[$Value])) ? $Palette[$Value] : new pColor(0,0,0,100)];			
+						$Settings = ["Color" => (isset($Palette[$Value])) ? $Palette[$Value] : new pColor(0)];			
 					} else {
 						$Settings = ["Color" => $Gradient->Next($Value, TRUE)];
 					}

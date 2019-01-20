@@ -23,19 +23,19 @@ $myPicture->myData->setSerieDescription("ScoreB","Coverage B");
 $myPicture->myData->addPoints([40,80,120,160,200,240,280,320,360],"Coord");
 $myPicture->myData->setAbscissa("Coord");
 
-$myPicture->drawGradientArea(0,0,300,300,DIRECTION_VERTICAL,  ["StartColor"=>new pColor(200,200,200,100),"EndColor"=>new pColor(240,240,240,100)]);
-$myPicture->drawGradientArea(0,0,300,20, DIRECTION_HORIZONTAL,["StartColor"=>new pColor(30,30,30,100),"EndColor"=>new pColor(100,100,100,100)]);
-$myPicture->drawLine(0,20,300,20,["Color"=>new pColor(255,255,255)]);
+$myPicture->drawGradientArea(0,0,300,300,DIRECTION_VERTICAL,  ["StartColor"=>new pColor(200),"EndColor"=>new pColor(240)]);
+$myPicture->drawGradientArea(0,0,300,20, DIRECTION_HORIZONTAL,["StartColor"=>new pColor(30),"EndColor"=>new pColor(100)]);
+$myPicture->drawLine(0,20,300,20,["Color"=>new pColor(255)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,299,299,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,299,299,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
-$myPicture->drawText(10,13,"pRadar - Draw radar charts",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"pRadar - Draw radar charts",["Color"=>new pColor(255)]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80,80,80)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(FALSE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
@@ -50,7 +50,7 @@ $SplitChart->drawPolar([
 	"WriteValues"=>TRUE,
 	"ValueFontSize"=>8,
 	"Layout"=>RADAR_LAYOUT_CIRCLE,
-	"BackgroundGradient"=>["StartColor"=>new pColor(255,255,255,100),"EndColor"=>new pColor(207,227,125,50)]
+	"BackgroundGradient"=>["StartColor"=>new pColor(255),"EndColor"=>new pColor(207,227,125,50)]
 ]);
 
 /* Render the picture (choose the best way) */

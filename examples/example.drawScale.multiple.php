@@ -39,14 +39,14 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new 
 $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawScale() - draw the X-Y scales",["Color"=>new pColor(255,255,255)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
+$myPicture->drawText(10,13,"drawScale() - draw the X-Y scales",["Color"=>new pColor(255)]);
 
 /* Set the default font */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 
 /* Draw the scale */
 $myPicture->setGraphArea(90,60,660,190);
@@ -54,7 +54,7 @@ $myPicture->drawFilledRectangle(90,60,660,190,["Color"=>new pColor(255,255,255,1
 $myPicture->drawScale(["DrawYLines"=>[0],"Pos"=>SCALE_POS_LEFTRIGHT]);
 
 /* Write the chart title */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11]);
 $myPicture->drawText(350,55,"My chart title",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Render the picture (choose the best way) */

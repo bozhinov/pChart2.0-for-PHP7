@@ -16,11 +16,11 @@ $myPicture = new pDraw(600,310,TRUE);
 
 /* Draw the rounded box */
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color" => new pColor(0,0,0,30)]);
-$myPicture->drawRoundedFilledRectangle(10,10,590,300,10,["Color"=> new pColor(255,255,255), "BorderColor" => new pColor(0,0,0)]);
+$myPicture->drawRoundedFilledRectangle(10,10,590,300,10,["Color"=> new pColor(255), "BorderColor" => new pColor(0)]);
 
 /* Draw the cell divisions */
 $myPicture->setShadow(FALSE);
-$Settings = ["Color" => new pColor(0,0,0)];
+$Settings = ["Color" => new pColor(0)];
 $myPicture->drawLine(10,110,590,110,$Settings);
 $myPicture->drawLine(200,10,200,110,$Settings);
 $myPicture->drawLine(400,10,400,110,$Settings);
@@ -32,7 +32,7 @@ $myPicture->drawLine(400,220,400,300,$Settings);
 
 /* Write the fields labels */
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10]);
-$Settings = ["Color" => new pColor(0,0,0),"Align"=>TEXT_ALIGN_TOPLEFT];
+$Settings = ["Color" => new pColor(0),"Align"=>TEXT_ALIGN_TOPLEFT];
 $myPicture->drawText(20,20,"FROM",$Settings);
 $myPicture->drawText(210,20,"TO",$Settings);
 $myPicture->drawText(20,120,"ACCT.\r\nNUMBER",$Settings);
@@ -51,12 +51,12 @@ $myPicture->setFontProperties(["FontSize"=>35]);
 $myPicture->drawText(100,120,"2342355552340",$Settings);
 
 $myPicture->setFontProperties(["FontSize"=>20]);
-$Settings = ["Color" => new pColor(0,0,0),"Align"=>TEXT_ALIGN_TOPRIGHT];
+$Settings = ["Color" => new pColor(0),"Align"=>TEXT_ALIGN_TOPRIGHT];
 $myPicture->drawText(210,180,"75 CANS",$Settings);
 $myPicture->drawText(310,180,"TLSE",$Settings); 
 $myPicture->drawText(580,180,"WAREHOUSE#SLOT#B15",$Settings);
 
-$Settings = ["Color" => new pColor(0,0,0),"Align" => TEXT_ALIGN_TOPLEFT];
+$Settings = ["Color" => new pColor(0),"Align" => TEXT_ALIGN_TOPLEFT];
 $myPicture->drawText(410,236,"06/06/2010",$Settings);
 $myPicture->drawText(410,276,"12.340 Kg",$Settings);
 

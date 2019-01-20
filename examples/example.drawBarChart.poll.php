@@ -22,7 +22,7 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize
 $myPicture->drawText(20,34,"Q: Flexibility is a key point of this library",["FontSize"=>20]);
 
 /* Define the default font */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 
 /* Set the graph area */ 
 $myPicture->setGraphArea(70,60,480,200);

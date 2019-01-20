@@ -25,7 +25,7 @@ $myPicture->drawFilledRectangle(0,0,400,400,["Color"=>new pColor(170,183,87), "D
 
 /* Overlay with a gradient */
 $myPicture->drawGradientArea(0,0,400,400,DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]);
-$myPicture->drawGradientArea(0,0,400,20,DIRECTION_VERTICAL,["StartColor"=>ColorBlack(), "EndColor"=>new pColor(50,50,50,100)]);
+$myPicture->drawGradientArea(0,0,400,20,DIRECTION_VERTICAL,["StartColor"=>ColorBlack(), "EndColor"=>new pColor(50)]);
 
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,399,399,["Color"=>ColorBlack()]);
@@ -35,7 +35,7 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSi
 $myPicture->drawText(10,13,"pPie - Draw 3D ring charts",["Color"=>ColorWhite()]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80,80,80)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>ColorBlack($Alpha=50)]);

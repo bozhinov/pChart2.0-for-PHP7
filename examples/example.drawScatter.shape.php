@@ -38,7 +38,7 @@ $myPicture->myData->setAxisPosition(1,AXIS_POSITION_LEFT);
 /* Create the 1st scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 1","Probe 3",0);
 $myPicture->myData->setScatterSerieDescription(0,"This year");
-$myPicture->myData->setScatterSerieColor(0,new pColor(0,0,0));
+$myPicture->myData->setScatterSerieColor(0,new pColor(0));
 $myPicture->myData->setScatterSerieShape(0,SERIE_SHAPE_TRIANGLE);
 
 /* Create the 2nd scatter chart binding */
@@ -50,7 +50,7 @@ $myPicture->myData->setScatterSerieShape(1,SERIE_SHAPE_FILLEDTRIANGLE);
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0)]);
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
@@ -62,7 +62,7 @@ $myPicture->setGraphArea(40,40,370,370);
 $myScatter = new pScatter($myPicture);
 
 /* Draw the scale */
-$myScatter->drawScatterScale(["XMargin"=>15,"YMargin"=>15,"Floating"=>TRUE,"GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
+$myScatter->drawScatterScale(["XMargin"=>15,"YMargin"=>15,"Floating"=>TRUE,"GridColor"=>new pColor(200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Draw the legend */
 $myScatter->drawScatterLegend(280,380,["Mode"=>LEGEND_HORIZONTAL,"Style"=>LEGEND_NOBORDER]);

@@ -25,7 +25,7 @@ $myPicture->drawRectangle(0,0,299,299,["Color"=>new pColor(0,0,0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"pSpring - Draw spring charts",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"pSpring - Draw spring charts",["Color"=>new pColor(255)]);
 
 /* Set the graph area boundaries*/ 
 $myPicture->setGraphArea(20,20,280,280);

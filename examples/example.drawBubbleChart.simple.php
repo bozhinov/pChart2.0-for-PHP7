@@ -29,7 +29,7 @@ $myPicture->myData->setAbscissaName("Selected Products");
 $myPicture->Antialias = FALSE;
 
 /* Draw the border */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
 
@@ -37,7 +37,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $myPicture->setGraphArea(60,30,650,190);
 
 /* Draw the scale */
-$myPicture->drawScale(["GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
+$myPicture->drawScale(["GridColor"=>new pColor(200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Create the Bubble chart object and scale up */
 $myPicture->Antialias = TRUE;

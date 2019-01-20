@@ -29,8 +29,8 @@ $myPicture->drawGradientArea(0,0,700,230, DIRECTION_VERTICAL, ["StartColor"=>new
 $myPicture->drawGradientArea(540,0,700,30, DIRECTION_VERTICAL, ["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
-$myPicture->drawRectangle(540,0,699,31,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
+$myPicture->drawRectangle(540,0,699,31,["Color"=>new pColor(0)]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>20));
@@ -43,7 +43,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $myPicture->setGraphArea(60,40,650,200);
 
 /* Draw the scale */
-$myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
+$myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridColor"=>new pColor(200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Turn on Anti-aliasing */
 $myPicture->Antialias = TRUE;
@@ -66,7 +66,7 @@ $pCharts->drawLineChart();
 $pCharts->drawPlotChart(["PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-60,"BorderColor"=>new pColor(50,50,50,80)]);
 
 /* Write the chart legend */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11,"Color"=>new pColor(255,255,255)));
+$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11,"Color"=>new pColor(255)));
 $myPicture->drawLegend(560,15,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Render the picture (choose the best way) */

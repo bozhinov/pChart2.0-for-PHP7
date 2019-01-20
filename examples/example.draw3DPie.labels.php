@@ -25,7 +25,7 @@ $myPicture->drawFilledRectangle(0,0,300,300,["Color"=>new pColor(170,183,87), "D
 
 /* Overlay with a gradient */
 $myPicture->drawGradientArea(0,0,300,260, DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]);
-$myPicture->drawGradientArea(0,0,300,20, DIRECTION_VERTICAL, ["StartColor"=>ColorBlack(), "EndColor"=>new pColor(50,50,50,100)]);
+$myPicture->drawGradientArea(0,0,300,20, DIRECTION_VERTICAL, ["StartColor"=>ColorBlack(), "EndColor"=>new pColor(50)]);
 
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,299,259,["Color"=>ColorBlack()]);
@@ -35,7 +35,7 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSi
 $myPicture->drawText(10,13,"pPie - Draw 2D pie charts",["Color"=>ColorWhite()]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80,80,80)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
 
 /* Create the pPie object */ 
 $PieChart = new pPie($myPicture);

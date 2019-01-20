@@ -54,10 +54,10 @@ $myPicture->drawGradientArea(0,0,400,20, DIRECTION_VERTICAL, ["StartColor"=>new 
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"createFunctionSerie() - Functions computing",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"createFunctionSerie() - Functions computing",["Color"=>new pColor(255)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0)]);
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
@@ -75,8 +75,8 @@ $myScatter->drawScatterScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE]);
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Draw the 0/0 lines */
-$myScatter->drawScatterThreshold(0,["AxisID"=>0,"Color"=>new pColor(0,0,0),"Ticks"=>10]);
-$myScatter->drawScatterThreshold(0,["AxisID"=>1,"Color"=>new pColor(0,0,0),"Ticks"=>10]);
+$myScatter->drawScatterThreshold(0,["AxisID"=>0,"Color"=>new pColor(0),"Ticks"=>10]);
+$myScatter->drawScatterThreshold(0,["AxisID"=>1,"Color"=>new pColor(0),"Ticks"=>10]);
 
 /* Draw a threshold area */
 $myScatter->drawScatterThresholdArea(-0.1,0.1,["AreaName"=>"Error zone"]); /* ["AreaName"=>NULL] */

@@ -21,7 +21,7 @@ $myPicture->myData->addPoints(["A","B","C"],"Labels");
 $myPicture->myData->setAbscissa("Labels");
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80,80,80)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
 
 /* Create the pPie object */ 
 $PieChart = new pPie($myPicture);

@@ -56,7 +56,7 @@ class pRadar
 		$ValuePadding = 4;
 		$OuterBubbleRadius = 2;
 		$OuterBubbleColor = NULL;
-		$InnerBubbleColor = new pColor(255,255,255,100);
+		$InnerBubbleColor = new pColor(255);
 		$DrawBackground = TRUE;
 		$BackgroundColor = new pColor(255,255,255,50);
 		$BackgroundGradient = NULL;
@@ -388,7 +388,7 @@ class pRadar
 		$ValuePadding = 4;
 		$OuterBubbleRadius = 2;
 		$OuterBubbleColor = NULL;
-		$InnerBubbleColor = new pColor(255,255,255,100);
+		$InnerBubbleColor = new pColor(255);
 		$DrawBackground = TRUE;
 		$BackgroundColor = new pColor(255,255,255,50);
 		$BackgroundGradient = NULL;

@@ -19,7 +19,7 @@ $myPicture->myData->addPoints(["January","February","March","April","May","June"
 $myPicture->myData->setSerieDescription("Months","Month");
 $myPicture->myData->setAbscissa("Months");
 
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(240,240,240,100), "EndColor"=>new pColor(180,180,180,100)]);
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(240), "EndColor"=>new pColor(180)]);
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,["StartColor"=>new pColor(240,240,240,20), "EndColor"=>new pColor(180,180,180,20)]);
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
 
@@ -35,7 +35,7 @@ $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 	"Gradient"=>TRUE,
 	"DisplayPos"=>LABEL_POS_INSIDE,
 	"DisplayValues"=>TRUE,
-	"DisplayColor"=>new pColor(255,255,255),
+	"DisplayColor"=>new pColor(255),
 	"DisplayShadow"=>TRUE,
 	"Surrounding"=>10
 ]);

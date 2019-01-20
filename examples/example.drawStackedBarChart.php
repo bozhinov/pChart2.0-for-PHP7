@@ -33,7 +33,7 @@ $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawStackedBarChart() - draw a stacked bar chart",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"drawStackedBarChart() - draw a stacked bar chart",["Color"=>new pColor(255)]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));

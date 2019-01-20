@@ -55,10 +55,10 @@ $myPicture->drawGradientArea(0,0,400,20,DIRECTION_VERTICAL,["StartColor"=>new pC
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawScatterLineChart() - Draw a scatter line chart",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"drawScatterLineChart() - Draw a scatter line chart",["Color"=>new pColor(255)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0)]);
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
@@ -85,7 +85,7 @@ $myScatter->drawScatterLegend(280,380,["Mode"=>LEGEND_HORIZONTAL,"Style"=>LEGEND
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
 
 /* Write a label over the chart */
-$myScatter->writeScatterLabel(1,17,["Decimals"=>1,"TitleMode"=>LABEL_TITLE_BACKGROUND,"TitleColor"=>new pColor(255,255,255)]);
+$myScatter->writeScatterLabel(1,17,["Decimals"=>1,"TitleMode"=>LABEL_TITLE_BACKGROUND,"TitleColor"=>new pColor(255)]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawLabel.scatter.png");

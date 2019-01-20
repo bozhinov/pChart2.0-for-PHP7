@@ -34,11 +34,11 @@ $myPicture->setGraphArea(60,30,650,190);
 $myPicture->drawScale(["CycleBackground"=>TRUE,"DrawSubTicks"=>TRUE,"GridColor"=>new pColor(0,0,0,10),"Mode"=>SCALE_MODE_ADDALL]);
 
 /* Draw some thresholds */
-$myPicture->drawThreshold([-40],["WriteCaption"=>TRUE,"Color"=>new pColor(0,0,0),"Ticks"=>4]);
-$myPicture->drawThreshold([28],["WriteCaption"=>TRUE,"Color"=>new pColor(0,0,0),"Ticks"=>4]);
+$myPicture->drawThreshold([-40],["WriteCaption"=>TRUE,"Color"=>new pColor(0),"Ticks"=>4]);
+$myPicture->drawThreshold([28],["WriteCaption"=>TRUE,"Color"=>new pColor(0),"Ticks"=>4]);
 
 /* Draw the chart */
-(new pCharts($myPicture))->drawStackedBarChart(["Rounded"=>TRUE,"DisplayValues"=>TRUE,"DisplayType"=>DISPLAY_AUTO,"DisplaySize"=>6,"BorderColor"=>new pColor(255,255,255)]);
+(new pCharts($myPicture))->drawStackedBarChart(["Rounded"=>TRUE,"DisplayValues"=>TRUE,"DisplayType"=>DISPLAY_AUTO,"DisplaySize"=>6,"BorderColor"=>new pColor(255)]);
 
 /* Write the chart legend */
 $myPicture->drawLegend(570,212,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);

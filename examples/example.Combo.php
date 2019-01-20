@@ -25,14 +25,14 @@ $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(179,217,91), "D
 
 /* Do a gradient overlay */
 $myPicture->drawGradientArea(0,0,700,230, DIRECTION_VERTICAL, ["StartColor"=>new pColor(194,217,91,50),"EndColor"=>new pColor(44,107,58,50)]);
-$myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL,  ["StartColor"=>new pColor(0,0,0,100),"EndColor"=>new pColor(50,50,50,100)]);
+$myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL,  ["StartColor"=>new pColor(0),"EndColor"=>new pColor(50)]);
 
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
-$myPicture->drawText(10,13,"Chart title",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"Chart title",["Color"=>new pColor(255)]);
 
 /* Draw the scale */
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);

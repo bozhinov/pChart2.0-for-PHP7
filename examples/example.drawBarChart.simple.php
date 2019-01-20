@@ -23,7 +23,7 @@ $myPicture->myData->setAbscissa("Months");
 $myPicture->Antialias = FALSE;
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
@@ -32,7 +32,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf",
 $myPicture->setGraphArea(60,40,650,200);
 
 /* Draw the scale */
-$myPicture->drawScale(["GridColor"=>new pColor(200,200,200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
+$myPicture->drawScale(["GridColor"=>new pColor(200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Write the chart legend */
 $myPicture->drawLegend(580,12,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
@@ -46,7 +46,7 @@ $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 	"GradientMode"=>GRADIENT_EFFECT_CAN,
 	"DisplayPos"=>LABEL_POS_INSIDE,
 	"DisplayValues"=>TRUE,
-	"DisplayColor"=>new pColor(255,255,255),
+	"DisplayColor"=>new pColor(255),
 	"DisplayShadow"=>TRUE,
 	"Surrounding"=>10
 ]);

@@ -66,8 +66,8 @@ class pScatter
 		$DrawYLines = ALL;
 		$GridTicks = 4;
 		$GridColor = new pColor(255,255,255,40);
-		$AxisoColor = isset($Format["AxisColor"]) ? $Format["AxisColor"] : new pColor(0,0,0,100);
-		$TickoColor = isset($Format["TickColor"]) ? $Format["TickColor"] : new pColor(0,0,0,100);
+		$AxisoColor = isset($Format["AxisColor"]) ? $Format["AxisColor"] : new pColor(0);
+		$TickoColor = isset($Format["TickColor"]) ? $Format["TickColor"] : new pColor(0);
 		$DrawSubTicks = FALSE;
 		$InnerSubTickWidth = 0;
 		$OuterSubTickWidth = 2;
@@ -616,8 +616,8 @@ class pScatter
 		$IconAreaHeight = $BoxHeight;
 		$XSpacing = 5;
 		$Margin = 5;
-		$Color = new pColor(200,200,200,100);
-		$BorderColor = new pColor(255,255,255);
+		$Color = new pColor(200);
+		$BorderColor = new pColor(255);
 		$Surrounding = NULL;
 		$Style = LEGEND_ROUND;
 		$Mode = LEGEND_VERTICAL;
@@ -922,7 +922,7 @@ class pScatter
 		$Caption = NULL;
 		$CaptionAlign = CAPTION_LEFT_TOP;
 		$CaptionOffset = 10;
-		$CaptionColor = new pColor(255,255,255,100);
+		$CaptionColor = new pColor(255);
 		$DrawBox = TRUE;
 		$DrawBoxBorder = FALSE;
 		$BorderOffset = 5;
@@ -930,7 +930,7 @@ class pScatter
 		$RoundedRadius = 3;
 		$BoxColor = new pColor(0,0,0,20);
 		$BoxSurrounding = 0;
-		$BoxBorderColor = new pColor(255,255,255,100);
+		$BoxBorderColor = new pColor(255);
 		
 		/* Override defaults */
 		extract($Format);
@@ -1013,7 +1013,7 @@ class pScatter
 		$BorderTicks = 2;
 		$AreaName = NULL; 
 		$NameAngle = ZONE_NAME_ANGLE_AUTO;
-		$NameColor = new pColor(255,255,255,100);
+		$NameColor = new pColor(255);
 		$DisableShadowOnArea = TRUE;
 
 		/* Override defaults */

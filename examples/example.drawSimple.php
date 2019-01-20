@@ -21,8 +21,8 @@ $myPicture->myData->setAbscissa("Labels");
 $myPicture->myData->setPalette("DEFCA",new pColor(55,91,127));
 
 
-$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(220,220,220,100), "EndColor"=>new pColor(255,255,255,100)]);
-$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(220,220,220)]);
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(220), "EndColor"=>new pColor(255)]);
+$myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(220)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11]);

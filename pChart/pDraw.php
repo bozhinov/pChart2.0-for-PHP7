@@ -167,13 +167,13 @@ class pDraw
 			imagefilledrectangle($this->Picture, 0, 0, $XSize, $YSize, imagecolorallocatealpha($this->Picture, 255, 255, 255, 0));
 		}
 		
-		$this->ShadowAllocatedColor = $this->allocateColor(new pColor(0,0,0,0));
+		$this->ShadowAllocatedColor = $this->allocateColor(new pColor(0));
 		
 		# TODO if PHP 7.2 consider imageantialias
 		#imageantialias($this->Picture, TRUE);
 		
 		/* default font color */
-		$this->FontColor = new pColor(255,255,255);
+		$this->FontColor = new pColor(255);
 
 	}
 
@@ -203,7 +203,7 @@ class pDraw
 	/* Draw a polygon */
 	function drawPolygon(array $Points, array $Format = [])
 	{
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$NoFill = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
 		$NoBorder = isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
 		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
@@ -287,7 +287,7 @@ class pDraw
 	/* Draw a rectangle with rounded corners */
 	function drawRoundedRectangle($X1, $Y1, $X2, $Y2, $Radius, array $Format = [])
 	{
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 
 		list($X1, $Y1, $X2, $Y2) = $this->fixBoxCoordinates($X1, $Y1, $X2, $Y2);
 		($X2 - $X1 < $Radius) AND $Radius = floor(($X2 - $X1) / 2);
@@ -340,7 +340,7 @@ class pDraw
 	/* Draw a rectangle with rounded corners */
 	function drawRoundedFilledRectangle($X1, $Y1, $X2, $Y2, $Radius, array $Format = [])
 	{
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $Color;
 		
@@ -442,7 +442,7 @@ class pDraw
 	/* Draw a rectangle */
 	function drawRectangle($X1, $Y1, $X2, $Y2, array $Format = [])
 	{
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$NoAngle = isset($Format["NoAngle"]) ? $Format["NoAngle"] : FALSE;
 		
@@ -470,7 +470,7 @@ class pDraw
 	/* Draw a filled rectangle */
 	function drawFilledRectangle($X1, $Y1, $X2, $Y2, array $Format = [])
 	{
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$NoBorder = isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
 		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
@@ -641,7 +641,7 @@ class pDraw
 	/* Draw a bezier curve with two controls points */
 	function drawBezier($X1, $Y1, $X2, $Y2, $Xv1, $Yv1, $Xv2, $Yv2, array $Format = [])
 	{
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Segments = isset($Format["Segments"]) ? $Format["Segments"] : NULL;
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$NoDraw = isset($Format["NoDraw"]) ? (bool)$Format["NoDraw"] : FALSE;
@@ -711,9 +711,9 @@ class pDraw
 			$Xv2 = floor($Xv2);
 			$Yv2 = floor($Yv2);
 			$this->drawLine($X1, $Y1, $X2, $Y2, ["Color" => new pColor(0,0,0,30)]);
-			$this->drawRectangleMarker($Xv1, $Yv1, ["Color" => new pColor(255,0,0,100),"BorderColor" => new pColor(255,255,255,100),"Size" => 4]);
+			$this->drawRectangleMarker($Xv1, $Yv1, ["Color" => new pColor(255,0,0,100),"BorderColor" => new pColor(255),"Size" => 4]);
 			$this->drawText($Xv1 + 4, $Yv1, "v1");
-			$this->drawRectangleMarker($Xv2, $Yv2, ["Color" => new pColor(0,0,255,100),"BorderColor" => new pColor(255,255,255,100),"Size" => 4]);
+			$this->drawRectangleMarker($Xv2, $Yv2, ["Color" => new pColor(0,0,255,100),"BorderColor" => new pColor(255),"Size" => 4]);
 			$this->drawText($Xv2 + 4, $Yv2, "v2");
 		}
 
@@ -828,7 +828,7 @@ class pDraw
 	function drawCircle($Xc, $Yc, $Height, $Width, array $Format = [])
 	{
 	
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$Mask = isset($Format["Mask"]) ? $Format["Mask"] : [];
 
@@ -888,7 +888,7 @@ class pDraw
 	function drawFilledCircle(int $X, int $Y, int $Radius, array $Format = [])
 	{
 
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : NULL;
@@ -959,7 +959,7 @@ class pDraw
 		}
 
 		if ($ShowOrigine) {
-			$this->drawRectangleMarker($X, $Y, ["Color" => new pColor(255,0,0), "BorderColor" => new pColor(255,255,255), "Size" => 4]);
+			$this->drawRectangleMarker($X, $Y, ["Color" => new pColor(255,0,0), "BorderColor" => new pColor(255), "Size" => 4]);
 		}
 
 		$TxtPos = $this->getTextBox($X, $Y, $FontName, $FontSize, $Angle, $Text);
@@ -1273,7 +1273,7 @@ class pDraw
 	/* Draw an arrow */
 	function drawArrow($X1, $Y1, $X2, $Y2, array $Format = [])
 	{
-		$FillColor = isset($Format["FillColor"]) ? $Format["FillColor"] : new pColor(0,0,0,100);
+		$FillColor = isset($Format["FillColor"]) ? $Format["FillColor"] : new pColor(0);
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $FillColor->newOne();
 		$Size = isset($Format["Size"]) ? $Format["Size"] : 10;
 		$Ratio = isset($Format["Ratio"]) ? $Format["Ratio"] : .5;
@@ -1334,7 +1334,7 @@ class pDraw
 	/* Draw a label with associated arrow */
 	function drawArrowLabel($X1, $Y1, $Text, array $Format = [])
 	{
-		$FillColor = isset($Format["FillColor"]) ? $Format["FillColor"] : new pColor(0,0,0,100);
+		$FillColor = isset($Format["FillColor"]) ? $Format["FillColor"] : new pColor(0);
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $FillColor->newOne();
 		$FontName = isset($Format["FontName"]) ? $Format["FontName"] : $this->FontName;
 		$FontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : $this->FontSize;
@@ -1393,11 +1393,11 @@ class pDraw
 		$ShowLabel = FALSE;
 		$LabelPos = LABEL_POS_INSIDE;
 		$Margin = 10;
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(130,130,130);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(130);
 		$FadeColor = NULL;
 		$BorderColor = $Color->newOne();
-		$BoxBorderColor = isset($Format["BoxBorderColor"]) ? $Format["BoxBorderColor"] : new pColor(0,0,0);
-		$BoxBackColor = isset($Format["BoxBackColor"]) ? $Format["BoxBackColor"] : new pColor(255,255,255);
+		$BoxBorderColor = isset($Format["BoxBorderColor"]) ? $Format["BoxBorderColor"] : new pColor(0);
+		$BoxBackColor = isset($Format["BoxBackColor"]) ? $Format["BoxBackColor"] : new pColor(255);
 		$Surrounding = NULL;
 		$BoxSurrounding = NULL;
 		$NoAngle = FALSE;
@@ -1563,8 +1563,8 @@ class pDraw
 		/* Override defaults */
 		extract($Format);
 
-		(is_null($Color)) AND $Color = new pColor(200,200,200,100);
-		(is_null($BorderColor)) AND $BorderColor = new pColor(255,255,255);
+		(is_null($Color)) AND $Color = new pColor(200);
+		(is_null($BorderColor)) AND $BorderColor = new pColor(255);
 		(!is_null($Surrounding)) AND $BorderColor->RGBChange($Surrounding);
 
 		foreach($this->myData->Data["Series"] as $SerieName => $Serie) {
@@ -1691,8 +1691,8 @@ class pDraw
 		$DrawYLines = isset($Format["DrawYLines"]) ? $Format["DrawYLines"] : ALL;
 		$GridTicks = isset($Format["GridTicks"]) ? $Format["GridTicks"] : 4;
 		$GridColor = isset($Format["GridColor"]) ? ["Color" => $Format["GridColor"]] : ["Color" => new pColor(255,255,255,40)];
-		$AxisColor = isset($Format["AxisColor"]) ? ["Color" => $Format["AxisColor"]] : ["Color" => new pColor(0,0,0,100)];
-		$TickColor = isset($Format["TickColor"]) ? ["Color" => $Format["TickColor"]] : ["Color" => new pColor(0,0,0,100)];
+		$AxisColor = isset($Format["AxisColor"]) ? ["Color" => $Format["AxisColor"]] : ["Color" => new pColor(0)];
+		$TickColor = isset($Format["TickColor"]) ? ["Color" => $Format["TickColor"]] : ["Color" => new pColor(0)];
 		$DrawSubTicks = isset($Format["DrawSubTicks"]) ? $Format["DrawSubTicks"] : FALSE;
 		$InnerSubTickWidth = isset($Format["InnerSubTickWidth"]) ? $Format["InnerSubTickWidth"] : 0;
 		$OuterSubTickWidth = isset($Format["OuterSubTickWidth"]) ? $Format["OuterSubTickWidth"] : 2;
@@ -2678,7 +2678,7 @@ class pDraw
 		$Caption = isset($Format["Caption"]) ? $Format["Caption"] : NULL;
 		$CaptionAlign = isset($Format["CaptionAlign"]) ? $Format["CaptionAlign"] : CAPTION_LEFT_TOP;
 		$CaptionOffset = isset($Format["CaptionOffset"]) ? $Format["CaptionOffset"] : 5;
-		$CaptionColor = isset($Format["CaptionColor"]) ? $Format["CaptionColor"] : new pColor(255,255,255,100);
+		$CaptionColor = isset($Format["CaptionColor"]) ? $Format["CaptionColor"] : new pColor(255);
 		$DrawBox = isset($Format["DrawBox"]) ? $Format["DrawBox"] : TRUE;
 		$DrawBoxBorder = isset($Format["DrawBoxBorder"]) ? $Format["DrawBoxBorder"] : FALSE;
 		$BorderOffset = isset($Format["BorderOffset"]) ? $Format["BorderOffset"] : 3;
@@ -2686,7 +2686,7 @@ class pDraw
 		$RoundedRadius = isset($Format["RoundedRadius"]) ? $Format["RoundedRadius"] : 3;
 		$BoxColor = isset($Format["BoxColor"]) ? $Format["BoxColor"] : new pColor(0,0,0,30);
 		$BoxSurrounding = isset($Format["BoxSurrounding"]) ? $Format["BoxSurrounding"] : 0;
-		$BoxBorderColor = isset($Format["BoxBorderColor"]) ? $Format["BoxBorderColor"] : new pColor(255,255,255,100);
+		$BoxBorderColor = isset($Format["BoxBorderColor"]) ? $Format["BoxBorderColor"] : new pColor(255);
 		$ValueIsLabel = isset($Format["ValueIsLabel"]) ? $Format["ValueIsLabel"] : FALSE;
 		
 		$Data = $this->myData->Data;
@@ -2792,7 +2792,7 @@ class pDraw
 		$BorderTicks = isset($Format["BorderTicks"]) ? $Format["BorderTicks"] : 2;
 		$AreaName = isset($Format["AreaName"]) ? $Format["AreaName"] : NULL;
 		$NameAngle = isset($Format["NameAngle"]) ? $Format["NameAngle"] : ZONE_NAME_ANGLE_AUTO;
-		$NameColor = isset($Format["NameColor"]) ? $Format["NameColor"] : new pColor(255,255,255,100);
+		$NameColor = isset($Format["NameColor"]) ? $Format["NameColor"] : new pColor(255);
 		$DisableShadowOnArea = isset($Format["DisableShadowOnArea"]) ? $Format["DisableShadowOnArea"] : TRUE;
 
 		if (is_null($BorderColor)){
@@ -2882,7 +2882,7 @@ class pDraw
 		$Caption = isset($Format["Caption"]) ? $Format["Caption"] : NULL;
 		$CaptionAlign = isset($Format["CaptionAlign"]) ? $Format["CaptionAlign"] : CAPTION_LEFT_TOP;
 		$CaptionOffset = isset($Format["CaptionOffset"]) ? $Format["CaptionOffset"] : 10;
-		$CaptionColor = isset($Format["CaptionColor"]) ? $Format["CaptionColor"] : new pColor(255,255,255,100);
+		$CaptionColor = isset($Format["CaptionColor"]) ? $Format["CaptionColor"] : new pColor(255);
 		$DrawBox = isset($Format["DrawBox"]) ? $Format["DrawBox"] : TRUE;
 		$DrawBoxBorder = isset($Format["DrawBoxBorder"]) ? $Format["DrawBoxBorder"] : FALSE;
 		$BorderOffset = isset($Format["BorderOffset"]) ? $Format["BorderOffset"] : 5;
@@ -2890,7 +2890,7 @@ class pDraw
 		$RoundedRadius = isset($Format["RoundedRadius"]) ? $Format["RoundedRadius"] : 3;
 		$BoxColor = isset($Format["BoxColor"]) ? $Format["BoxColor"] : new pColor(0,0,0,20);
 		$BoxSurrounding = isset($Format["BoxSurrounding"]) ? $Format["BoxSurrounding"] : 0;
-		$BoxBorderColor = isset($Format["BoxBorderColor"]) ? $Format["BoxBorderColor"] : new pColor(255,255,255,100);
+		$BoxBorderColor = isset($Format["BoxBorderColor"]) ? $Format["BoxBorderColor"] : new pColor(255);
 		$NoMargin = isset($Format["NoMargin"]) ? $Format["NoMargin"] : FALSE;
 		
 		$WideColor = $Color->newOne()->AlphaSlash($WideFactor);
@@ -2981,7 +2981,7 @@ class pDraw
 		$BorderTicks = isset($Format["BorderTicks"]) ? $Format["BorderTicks"] : 2;
 		$AreaName = isset($Format["AreaName"]) ? $Format["AreaName"] : NULL;
 		$NameAngle = isset($Format["NameAngle"]) ? $Format["NameAngle"] : ZONE_NAME_ANGLE_AUTO;
-		$NameColor = isset($Format["NameColor"]) ? $Format["NameColor"] : new pColor(255,255,255,100);
+		$NameColor = isset($Format["NameColor"]) ? $Format["NameColor"] : new pColor(255);
 		$DisableShadowOnArea = isset($Format["DisableShadowOnArea"]) ? $Format["DisableShadowOnArea"] : TRUE;
 		$NoMargin = isset($Format["NoMargin"]) ? $Format["NoMargin"] : FALSE;
 		
@@ -3192,8 +3192,8 @@ class pDraw
 		$ExcludedSeries = [];
 		$DisplayOffset = 4;
 		$DisplayColor = DISPLAY_MANUAL;
-		$MaxDisplayColor = new pColor(0,0,0);
-		$MinDisplayColor = new pColor(255,255,255);
+		$MaxDisplayColor = new pColor(0);
+		$MinDisplayColor = new pColor(255);
 		$MinLabelPos = BOUND_LABEL_POS_AUTO;
 		$MaxLabelPos = BOUND_LABEL_POS_AUTO;
 		$DrawBox = TRUE;
@@ -3483,9 +3483,9 @@ class pDraw
 						}
 
 						if ($DrawPoint == LABEL_POINT_CIRCLE) {
-							$this->drawFilledCircle($X, $Y, 3, ["Color" => new pColor(255,255,255),"BorderColor" => new pColor(0,0,0)]);
+							$this->drawFilledCircle($X, $Y, 3, ["Color" => new pColor(255),"BorderColor" => new pColor(0)]);
 						} elseif ($DrawPoint == LABEL_POINT_BOX) {
-							$this->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["Color" => new pColor(255,255,255),"BorderColor" => new pColor(0,0,0)]);
+							$this->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["Color" => new pColor(255),"BorderColor" => new pColor(0)]);
 						}
 
 						$Series[] = ["Format" => $SerieFormat,"Caption" => $Caption];
@@ -3572,9 +3572,9 @@ class pDraw
 						}
 
 						if ($DrawPoint == LABEL_POINT_CIRCLE) {
-							$this->drawFilledCircle($X, $Y, 3, ["Color" => new pColor(255,255,255),"BorderColor" => new pColor(0,0,0)]);
+							$this->drawFilledCircle($X, $Y, 3, ["Color" => new pColor(255),"BorderColor" => new pColor(0)]);
 						} elseif ($DrawPoint == LABEL_POINT_BOX) {
-							$this->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["Color" => new pColor(255,255,255),"BorderColor" => new pColor(0,0,0)]);
+							$this->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["Color" => new pColor(255),"BorderColor" => new pColor(0)]);
 						}
 
 						$Series[] = ["Format" => $SerieFormat,"Caption" => $Caption];
@@ -3728,7 +3728,7 @@ class pDraw
 			$CaptionHeight = ($TxtPos[0]["Y"] - $TxtPos[2]["Y"]);
 			/* Write the serie color if needed */
 			if ($DrawSerieColor) {
-				$BoxSettings = ["Color" => $Caption["Format"],"BorderColor" => new pColor(0,0,0)];
+				$BoxSettings = ["Color" => $Caption["Format"],"BorderColor" => new pColor(0)];
 				$this->drawFilledRectangle($XMin + $VerticalMargin, $YPos - $SerieBoxSize, $XMin + $VerticalMargin + $SerieBoxSize, $YPos, $BoxSettings);
 			}
 
@@ -3875,7 +3875,7 @@ class pDraw
 	/* Set current font properties */
 	function setFontProperties(array $Format = [])
 	{
-		$this->FontColor = (isset($Format['Color'])) ? $Format['Color'] : new pColor(0,0,0,100);
+		$this->FontColor = (isset($Format['Color'])) ? $Format['Color'] : new pColor(0);
 		
 		(isset($Format['FontSize'])) AND $this->FontSize = $Format['FontSize'];
 

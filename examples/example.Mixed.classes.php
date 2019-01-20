@@ -35,7 +35,7 @@ $myPicture->drawGradientArea(0,0,700,220, DIRECTION_VERTICAL, ["StartColor"=>new
 $myPicture->drawGradientArea(0,222,700,350, DIRECTION_VERTICAL,["StartColor"=>new pColor(1,138,68,50),"EndColor"=>new pColor(219,231,239,50)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,349,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,349,["Color"=>new pColor(0)]);
 
 /* Set the default font */
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
@@ -70,10 +70,10 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","Fon
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
-$myPicture->drawText(150,35,"Probability of heart disease",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE,"Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(150,35,"Probability of heart disease",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE,"Color"=>new pColor(255)]);
 
 /* Write a label over the chart */
-$myPicture->writeLabel(["Statistical probability"],[35],["DrawVerticalLine"=>TRUE,"TitleMode"=>LABEL_TITLE_BACKGROUND,"TitleColor"=>new pColor(255,255,255)]);
+$myPicture->writeLabel(["Statistical probability"],[35],["DrawVerticalLine"=>TRUE,"TitleMode"=>LABEL_TITLE_BACKGROUND,"TitleColor"=>new pColor(255)]);
 
 /* Create the pIndicator object */ 
 $Indicator = new pIndicator($myPicture);

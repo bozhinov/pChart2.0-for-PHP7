@@ -27,17 +27,17 @@ $myPicture->drawFilledRectangle(0,0,300,300,["Color"=>new pColor(179,217,91), "D
 
 /* Overlay some gradient areas */
 $myPicture->drawGradientArea(0,0,300,300,DIRECTION_VERTICAL,  ["StartColor"=>new pColor(194,231,44,50),"EndColor"=>new pColor(43,107,58,50)]);
-$myPicture->drawGradientArea(0,0,300,20, DIRECTION_HORIZONTAL,["StartColor"=>new pColor(30,30,30,100), "EndColor"=>new pColor(100,100,100,100)]);
+$myPicture->drawGradientArea(0,0,300,20, DIRECTION_HORIZONTAL,["StartColor"=>new pColor(30), "EndColor"=>new pColor(100)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,299,299,["Color"=>new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,299,299,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"pRadar - Draw radar charts",["Color"=>new pColor(255,255,255)]);
+$myPicture->drawText(10,13,"pRadar - Draw radar charts",["Color"=>new pColor(255)]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80,80,80)));
+$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80)));
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
@@ -51,7 +51,7 @@ $SplitChart->drawRadar([
 	"FixedMax"=>10,
 	"AxisRotation"=>-60,
 	"Layout"=>RADAR_LAYOUT_STAR,
-	"BackgroundGradient"=>["StartColor"=>new pColor(255,255,255,100),"EndColor"=>new pColor(207,227,125,50)]
+	"BackgroundGradient"=>["StartColor"=>new pColor(255),"EndColor"=>new pColor(207,227,125,50)]
 	]);
 
 /* Render the picture (choose the best way) */

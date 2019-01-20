@@ -22,7 +22,7 @@ $myPicture->setFontProperties(array("FontName"=>"pChart/fonts/MankSans.ttf","Fon
 /* Draw the text box */
 $myPicture->setShadow(FALSE);
 $myPicture->drawFilledRectangle(141,72,415,126,["Color"=>new pColor(230,230,230,20)]);
-$myPicture->drawRectangle(141,72,415,126,["Color"=>new pColor(50,50,50)]);
+$myPicture->drawRectangle(141,72,415,126,["Color"=>new pColor(50)]);
 
 /* Write the text */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
@@ -30,7 +30,7 @@ $myPicture->drawText(144,125,"My text box",["Color"=>new pColor(201,230,40),"Fon
 
 /* Prepare and draw the markers */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
-$MyMarker = ["Color"=>new pColor(255,0,0),"BorderColor"=>new pColor(0,0,0),"Size"=>4];
+$MyMarker = ["Color"=>new pColor(255,0,0),"BorderColor"=>new pColor(0),"Size"=>4];
 
 $myPicture->drawRectangleMarker(141,72,$MyMarker);
 $myPicture->drawRectangleMarker(141,101,$MyMarker);
