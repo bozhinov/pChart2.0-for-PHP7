@@ -861,7 +861,7 @@ class pDraw
 
 				if ($Mode) { 
 					if (isset($Mask[$Xc])) {
-						if (!isset($Mask[$Xc][$Yc])) {
+						if (!in_array($Yc, $Mask[$Xc])) {
 							$this->drawAntialiasPixel($X, $Y, $Color);
 						} 
 					} else {
@@ -872,7 +872,7 @@ class pDraw
 				$Cpt++;
 			} else {
 				if (isset($Mask[$Xc])) {
-					if (!isset($Mask[$Xc][$Yc])) {
+					if (!in_array($Yc, $Mask[$Xc])) {
 						$this->drawAntialiasPixel($X, $Y, $Color);
 					} 
 				} else {
@@ -914,8 +914,8 @@ class pDraw
 			$XPos = floor($Slice);
 			$YPos = $Y + $i - $Radius;
 			#$AAlias = $Slice - floor($Slice); # Momchil: UNUSED
-			$Mask[$X - $XPos][$YPos] = TRUE;
-			$Mask[$X + $XPos][$YPos] = TRUE;
+			$Mask[$X - $XPos][] = $YPos;
+			$Mask[$X + $XPos][] = $YPos;
 			imageline($this->Picture, $X - $XPos, $YPos, $X + $XPos, $YPos, $AllocatedColor);
 		}
 
