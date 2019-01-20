@@ -97,7 +97,7 @@ class pIndicator
 
 			/* Determine the position of the breaks */
 			$Break = [];
-			foreach($Values as $iKey => $Value) {
+			foreach($Values as $Value) {
 				if ($Value >= $Settings["Start"] && $Value <= $Settings["End"]) {
 					$XBreak = $X1 + ($Value - $Settings["Start"]) * $XScale;
 					$ValuesPos[$Value] = $XBreak;
@@ -112,7 +112,7 @@ class pIndicator
 					sort($Break);
 					$Poly = [$X1, $Y];
 					$LastPointWritten = FALSE;
-					foreach($Break as $iKey => $Value) {
+					foreach($Break as $Value) {
 						
 						if ($Value - 5 >= $X1) {
 							$Poly[] = $Value - 5;
