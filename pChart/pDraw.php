@@ -140,7 +140,6 @@ class pDraw
 		$this->YSize = $YSize;
 
 		if (!($XSize > 0 && $YSize > 0)){
-			$this->Picture = imagecreatetruecolor(1, 1);
 			throw pException::InvalidDimentions("Image dimensions (X * Y) must be > 0!");
 		}
 
@@ -179,13 +178,17 @@ class pDraw
 
 	function __destruct()
 	{
-		imagedestroy($this->Picture);
+		if (is_resource($this->Picture)){
+			imagedestroy($this->Picture);
+		}
 	}
 	
 	/* Destroy the image and start over. UNUSED */
 	function resize(int $XSize, int $YSize)
 	{
-		imagedestroy($this->Picture);
+		if (is_resource($this->Picture)){
+			imagedestroy($this->Picture);
+		}
 		$this->__construct($XSize, $YSize, $this->TransparentBackground);
 	}
 
