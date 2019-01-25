@@ -207,28 +207,22 @@ class pDraw
 		$NoFill = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
 		$NoBorder = isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
 		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
-		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : NULL;
+		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $Color->newOne()->AlphaSlash(2);
 
-		if (is_null($BorderColor)){
-			$BorderColor = $Color->newOne()->AlphaSlash(2);
-		}
-		$SkipX = isset($Format["SkipX"]) ? $Format["SkipX"] : OUT_OF_SIGHT;
-		$SkipY = isset($Format["SkipY"]) ? $Format["SkipY"] : OUT_OF_SIGHT;
-		/* Calling the ImageFilledPolygon() function over the $Points array will round it */
-		$Backup = $Points;
+		/* Calling the ImageFilledPolygon() function over the $Points array used to round it */
+
+		$PointCount = count($Points);
+		
 		if (!is_null($Surrounding)) {
 			$BorderColor->RGBChange($Surrounding);
 		}
-
-		($SkipX != OUT_OF_SIGHT) AND $SkipX = floor($SkipX);
-		($SkipY != OUT_OF_SIGHT) AND $SkipY = floor($SkipY);
 		
 		$RestoreShadow = $this->Shadow;
 		if (!$NoFill) {
 			if ($this->Shadow) {
 				$this->Shadow = FALSE;
 				$Shadow = []; 
-				for ($i = 0; $i <= count($Points) - 1; $i = $i + 2) {
+				for ($i = 0; $i <= $PointCount - 1; $i += 2) {
 					$Shadow[] = $Points[$i] + $this->ShadowX;
 					$Shadow[] = $Points[$i + 1] + $this->ShadowY;
 				}
@@ -236,23 +230,22 @@ class pDraw
 				$this->drawPolygon($Shadow, ["Color" => $this->ShadowColor,"NoBorder" => TRUE]);
 			}
 
-			if (count($Points) >= 6) {
-				imageFilledPolygon($this->Picture, $Points, count($Points) / 2, $this->allocateColor($Color));
+			if ($PointCount >= 6) {
+				imageFilledPolygon($this->Picture, $Points, $PointCount / 2, $this->allocateColor($Color));
 			}
 		}
-
+		
 		if (!$NoBorder) {
-			$Points = $Backup;
 			$BorderSettings = ["Color" => ($NoFill) ? $Color : $BorderColor];
 
-			for ($i = 0; $i <= count($Points) - 1; $i = $i + 2) {
+			for ($i = 0; $i <= $PointCount - 1; $i += 2) {
 				if (isset($Points[$i + 2])) {
-					if (!($Points[$i] == $Points[$i + 2] && $Points[$i] == $SkipX) && !($Points[$i + 1] == $Points[$i + 3] && $Points[$i + 1] == $SkipY)){
+					if ($Points[$i] != $Points[$i + 2] && $Points[$i + 1] != $Points[$i + 3]){
 						$this->drawLine($Points[$i], $Points[$i + 1], $Points[$i + 2], $Points[$i + 3], $BorderSettings);
 					}
 				} else {
-					if (!($Points[$i] == $Points[0] && $Points[$i] == $SkipX) && !($Points[$i + 1] == $Points[1] && $Points[$i + 1] == $SkipY)) {
-						$this->drawLine($Points[$i], $Points[$i + 1], $Points[0], $Points[1], $BorderSettings); # TODO Fix the bug here
+					if ($Points[$i] != $Points[0] && $Points[$i + 1] != $Points[1]) {
+						$this->drawLine($Points[$i], $Points[$i + 1], $Points[0], $Points[1], $BorderSettings);
 					}
 				}
 			}
