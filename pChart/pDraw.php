@@ -128,7 +128,7 @@ class pDraw
 	var $ShadowAllocatedColor;
 
 	/* Data Set */
-	var $myData = []; // Attached myData
+	var $myData;
 	
 	/* Class constructor */
 	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE)
