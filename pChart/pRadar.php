@@ -363,7 +363,8 @@ class pRadar
 				}
 
 				if ($WriteValues) {
-					$this->myPicture->drawText($Points[$i][0] - 1, $Points[$i][1] - 1, $Points[$i][2], $TextSettings);
+					#Momchil: Visual fix applied
+					$this->myPicture->drawText($Points[$i][0], $Points[$i][1], $Points[$i][2], $TextSettings);
 				}
 			}
 		}
@@ -629,7 +630,8 @@ class pRadar
 				}
 
 				if ($WriteValues) {
-					$this->myPicture->drawText($Points[$i][0] - 1, $Points[$i][1] - 1, $Points[$i][2], $TextSettings);
+					#Momchil: Visual fix applied
+					$this->myPicture->drawText($Points[$i][0] + 1, $Points[$i][1], $Points[$i][2], $TextSettings);
 				}
 			}
 		}
