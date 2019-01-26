@@ -1965,13 +1965,13 @@ class pCharts {
 
 	function drawPolygonChart(array $Points, array $Format = [])
 	{
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
+		$DefaultColor = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Threshold = isset($Format["Threshold"]) ? $Format["Threshold"] : [];
 		$NoFill = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
 		$NoBorder = isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
-		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $Color->newOne()->AlphaSlash(2);
+		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $DefaultColor->newOne()->AlphaSlash(2);
 		if (isset($Format["Surrounding"])){
-			$BorderColor = $Color->newOne()->RGBChange($Format["Surrounding"]);
+			$BorderColor = $DefaultColor->newOne()->RGBChange($Format["Surrounding"]);
 		}
 				
 		$RestoreShadow = $this->myPicture->Shadow;
@@ -2033,7 +2033,6 @@ class pCharts {
 		$MinY = floor($MinY);
 		$MaxY = floor($MaxY);
 		/* Scan each Y lines */
-		$DefaultColor = $this->myPicture->allocateColor($Color);
 		$MinY = floor($MinY);
 		$MaxY = floor($MaxY);
 		$YStep = 1;
@@ -2115,15 +2114,15 @@ class pCharts {
 							$LastX++;
 						}
 
-						$Color = $DefaultColor;
+						$Color = $DefaultColor->newOne();
 
 						foreach($Threshold as $Parameters) {
 							if ($Y <= $Parameters["MinX"] && $Y >= $Parameters["MaxX"]) {
-								$Color = $this->myPicture->allocateColor($Parameters['Color']);
+								$Color = $Parameters['Color']->newOne();
 							}
 						}
 
-						imageline($this->myPicture->Picture, $LastX, $Y, $X, $Y, $Color);
+						$this->myPicture->drawLine($LastX, $Y, $X, $Y, ["Color" => $Color]);
 						
 						$LastX = OUT_OF_SIGHT;
 					}
