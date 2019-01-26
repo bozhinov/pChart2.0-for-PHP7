@@ -98,7 +98,7 @@ class pCharts {
 				# That is for the example.Combo.area.lines
 				$Color = $Serie["Color"]->newOne()->AlphaSet(100);
 				
-				if (isset($Serie["Picture"])) {
+				if (!is_null($Serie["Picture"])) {
 					$Picture = $Serie["Picture"];
 					$PicInfo = $this->myPicture->getPicInfo($Picture);
 					list($PicWidth, $PicHeight, $PicType) = $PicInfo;

@@ -1480,7 +1480,7 @@ class pDraw
 		extract($Format);
 
 		foreach($this->myData->Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"] && isset($Serie["Picture"])) {
+			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"] && !is_null($Serie["Picture"])) {
 				list($PicWidth, $PicHeight) = $this->getPicInfo($Serie["Picture"]);
 				($IconAreaWidth < $PicWidth) AND $IconAreaWidth = $PicWidth;
 				($IconAreaHeight < $PicHeight) AND $IconAreaHeight = $PicHeight;
@@ -1554,7 +1554,7 @@ class pDraw
 		(!is_null($Surrounding)) AND $BorderColor->RGBChange($Surrounding);
 
 		foreach($this->myData->Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"] && isset($Serie["Picture"])) {
+			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"] && !is_null($Serie["Picture"])) {
 				list($PicWidth, $PicHeight) = $this->getPicInfo($Serie["Picture"]);
 				($IconAreaWidth < $PicWidth) AND $IconAreaWidth = $PicWidth;
 				($IconAreaHeight < $PicHeight) AND $IconAreaHeight = $PicHeight;
@@ -1611,7 +1611,7 @@ class pDraw
 				$Ticks = $Serie["Ticks"];
 				$Weight = $Serie["Weight"];
 
-				if (isset($Serie["Picture"])) {
+				if (!is_null($Serie["Picture"])) {
 					list($PicWidth, $PicHeight) = $this->getPicInfo($Serie["Picture"]);
 					$PicX = $X + $IconAreaWidth / 2;
 					$PicY = $Y + $IconAreaHeight / 2;
@@ -3227,7 +3227,7 @@ class pDraw
 				$Format = $this->myData->Data["Axis"][$AxisID]["Format"];
 				$Unit = $this->myData->Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->scaleComputeY($Serie["Data"], $Serie["Axis"]);
-				$SerieOffset = isset($Serie["XOffset"]) ? $Serie["XOffset"] : 0;
+				$SerieOffset = $Serie["XOffset"];
 
 				if ($this->myData->Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
@@ -3426,7 +3426,7 @@ class pDraw
 							$SerieFormat = $Data["Series"][$SerieName]["Color"];
 						}
 
-						$SerieOffset = (count($SeriesName) == 1 && isset($Data["Series"][$SerieName]["XOffset"])) ? $Data["Series"][$SerieName]["XOffset"] : 0;
+						$SerieOffset = (count($SeriesName) == 1) ? $Data["Series"][$SerieName]["XOffset"] : 0;
 						$Value = $Data["Series"][$SerieName]["Data"][$Index];
 						($Value == VOID) AND $Value = "NaN";
 						
@@ -3515,7 +3515,7 @@ class pDraw
 							$SerieFormat = $Data["Series"][$SerieName]["Color"];
 						}
 	
-						$SerieOffset = (count($SeriesName) == 1 && isset($Data["Series"][$SerieName]["XOffset"])) ? $Data["Series"][$SerieName]["XOffset"] : 0;
+						$SerieOffset = (count($SeriesName) == 1) ? $Data["Series"][$SerieName]["XOffset"] : 0;
 						$Value = $Data["Series"][$SerieName]["Data"][$Index];
 						($Value == VOID) AND $Value = "NaN";
 						

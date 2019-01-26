@@ -52,7 +52,7 @@ define("EURO_SYMBOL", utf8_encode("&#8364;"));
 class pData
 {
 	var $Data;
-	var $Palette = [];
+	var $Palette;
 
 	/* Class creator */
 	function __construct()
@@ -91,14 +91,16 @@ class pData
 		$ID = (isset($this->Data["Series"])) ? count($this->Data["Series"]) : 0;
 
 		$this->Data["Series"][$Serie] = [
+			"Data" => [],
 			"Description" => $Serie,
 			"isDrawable" => TRUE,
 			"Picture" => NULL,
-			"Max" => NULL,
-			"Min" => NULL,
+			"Max" => 0,
+			"Min" => 0,
 			"Axis" => 0,
 			"Ticks" => NULL,
 			"Weight" => NULL,
+			"XOffset" => 0,
 			"Shape" => SERIE_SHAPE_FILLEDCIRCLE,
 			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : $this->getRandomColor()
 		];
@@ -130,6 +132,8 @@ class pData
 	function clearPoints(string $SerieName = "Serie1")
 	{
 		$this->Data["Series"][$SerieName]["Data"] = [];
+		$this->Data["Series"][$SerieName]["Max"] = 0;
+		$this->Data["Series"][$SerieName]["Min"] = 0;
 	}
 
 	/* Return the number of values contained in a given serie */
@@ -190,13 +194,13 @@ class pData
 	/* Return the max value of a given serie */
 	function getMax(string $Serie)
 	{
-		return (isset($this->Data["Series"][$Serie]["Max"])) ? $this->Data["Series"][$Serie]["Max"] : 0;
+		return (isset($this->Data["Series"][$Serie])) ? $this->Data["Series"][$Serie]["Max"] : 0;
 	}
 
 	/* Return the min value of a given serie */
 	function getMin(string $Serie)
 	{
-		return (isset($this->Data["Series"][$Serie]["Min"])) ? $this->Data["Series"][$Serie]["Min"] : 0;
+		return (isset($this->Data["Series"][$Serie])) ? $this->Data["Series"][$Serie]["Min"] : 0;
 	}
 
 	/* Set the description of a given serie */
