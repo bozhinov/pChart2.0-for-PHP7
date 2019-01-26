@@ -3212,16 +3212,10 @@ class pDraw
 		foreach($this->myData->Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"] && !isset($ExcludedSeries[$SerieName])) {
 
-				$MinValue = $this->myData->getMin($SerieName);
-				$MaxValue = $this->myData->getMax($SerieName);
-				$MinPos = VOID;
-				$MaxPos = VOID;
-				
-				foreach($Serie["Data"] as $Key => $Value) {
-					($Value == $MinValue && $MinPos == VOID) AND $MinPos = $Key;
-					($Value == $MaxValue) AND $MaxPos = $Key;
-				}
-
+				$MinValue = $Serie["Min"];
+				$MaxValue = $Serie["Max"];
+				$MinPos = array_search($MinValue, $Serie["Data"]);
+				$MaxPos = array_search($MaxValue, $Serie["Data"]);
 				$AxisID = $Serie["Axis"];
 				$Mode = $this->myData->Data["Axis"][$AxisID]["Display"];
 				$Format = $this->myData->Data["Axis"][$AxisID]["Format"];
