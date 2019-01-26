@@ -114,7 +114,6 @@ class pPie
 		}
 
 		/* Draw the polygon pie elements */
-		#$Step = 360 / (2 * PI * $Radius);
 		$Step = rad2deg(1/$Radius);
 		$Offset = 0;
 		$ID = 0;
@@ -207,7 +206,6 @@ class pPie
 
 		/* Second pass to smooth the angles */
 		if ($SecondPass) {
-			#$Step = 360 / (2 * PI * $Radius);
 			$Step = rad2deg(1/$Radius);
 			$Offset = 0;
 			$ID = 0;
@@ -383,7 +381,6 @@ class pPie
 		}
 
 		/* Draw the polygon pie elements */
-		#$Step = 360 / (2 * PI * $Radius);
 		$Step = rad2deg(1/$Radius);
 		$Offset = 360;
 		$ID = count($Values) - 1;
@@ -460,7 +457,6 @@ class pPie
 				$this->myPicture->drawPolygon($ShadowPie, $Settings);
 			}
 
-			#$Step = 360 / (2 * PI * $Radius);
 			$Step = rad2deg(1/$Radius);
 			$Offset = 360;
 			foreach($Values as $Key => $Value) {
@@ -590,7 +586,6 @@ class pPie
 
 		/* Second pass to smooth the angles */
 		if ($SecondPass) {
-			#$Step = 360 / (2 * PI * $Radius);
 			$Step = rad2deg(1/$Radius);
 			$Offset = 360;
 			$ID = count($Values) - 1;
@@ -969,7 +964,6 @@ class pPie
 		}
 
 		/* Draw the polygon pie elements */
-		#$Step = 360 / (2 * PI * $OuterRadius);
 		$Step = rad2deg(1/$OuterRadius);
 		$Offset = 0;
 		$ID = 0;
@@ -1088,7 +1082,6 @@ class pPie
 		}
 
 		if ($WriteValues && !$Shadow) {
-			#$Step = 360 / (2 * PI * $OuterRadius);
 			$Step = rad2deg(1/$OuterRadius);
 			$Offset = 0;
 			foreach($Values as $Value) {
@@ -1218,7 +1211,6 @@ class pPie
 			$SliceColors[$Slice] = $Palette[$ID];
 			$EndAngle = $Offset - ($Value * $ScaleFactor);
 			($EndAngle < 0) AND $EndAngle = 0;
-			#$Step = (360 / (2 * PI * $OuterRadius)) / 2;
 			$Step = (rad2deg(1/$OuterRadius)) / 2;
 			$OutX1 = VOID;
 			$OutY1 = VOID;
@@ -1264,7 +1256,6 @@ class pPie
 			$OutY2 = $Yc;
 			$Slices[$Slice]["Angle"][] = VOID;
 			$Lasti = $i;
-			#$Step = (360 / (2 * PI * $InnerRadius)) / 2;
 			$Step = (rad2deg(1/$InnerRadius)) / 2;
 			$InX1 = VOID;
 			$InY1 = VOID;

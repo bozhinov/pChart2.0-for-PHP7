@@ -209,16 +209,14 @@ class pDraw
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$NoFill = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
 		$NoBorder = isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
-		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $Color->newOne()->AlphaSlash(2);
-
-		/* Calling the ImageFilledPolygon() function over the $Points array used to round it */
-
-		$PointCount = count($Points);
-		
-		if (!is_null($Surrounding)) {
-			$BorderColor->RGBChange($Surrounding);
+		if (isset($Format["Surrounding"])){
+			$BorderColor->RGBChange($Format["Surrounding"]);
 		}
+		
+		/* Calling the ImageFilledPolygon() function over the $Points array used to round it */
+		
+		$PointCount = count($Points);
 		
 		$RestoreShadow = $this->Shadow;
 		if (!$NoFill) {
@@ -308,9 +306,9 @@ class pDraw
 			imageline($this->Picture, $X1, $Y1 + $Radius, $X1, $Y2 - $Radius, $AllocatedColor);
 		}
 
-		$Step = 360 / (2 * PI * $Radius);
+		$Step = rad2deg(1/$Radius);
 
-		for ($i = 0; $i <= 90; $i = $i + $Step) {
+		for ($i = 0; $i <= 90; $i += $Step) {
 
 			$cos1 = cos(deg2rad($i + 180)) * $Radius;
 			$sin1 = sin(deg2rad($i + 180)) * $Radius;
@@ -337,26 +335,24 @@ class pDraw
 	function drawRoundedFilledRectangle($X1, $Y1, $X2, $Y2, $Radius, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
-		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
-		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $Color;
-		
+		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $Color->newOne();
+		if (isset($Format["Surrounding"])){
+			$BorderColor->RGBChange($Format["Surrounding"]);
+		}
+
 		/* Temporary fix for AA issue */
 		$Y1 = floor($Y1);
 		$Y2 = floor($Y2);
 		$X1 = floor($X1);
 		$X2 = floor($X2);
 		
-		if (!is_null($Surrounding)) {
-			$BorderColor = $Color->newOne()->RGBChange($Surrounding);
-		}
-
 		list($X1, $Y1, $X2, $Y2) = $this->fixBoxCoordinates($X1, $Y1, $X2, $Y2);
 		if ($X2 - $X1 < $Radius * 2) {
-			$Radius = floor((($X2 - $X1)) / 4);
+			$Radius = floor(($X2 - $X1) / 4);
 		}
 
 		if ($Y2 - $Y1 < $Radius * 2) {
-			$Radius = floor((($Y2 - $Y1)) / 4);
+			$Radius = floor(($Y2 - $Y1) / 4);
 		}
 
 		$RestoreShadow = $this->Shadow;
@@ -373,7 +369,6 @@ class pDraw
 
 		$YTop = $Y1 + $Radius;
 		$YBottom = $Y2 - $Radius;
-		#$Step = 360 / (2 * PI * $Radius);
 		$Step = rad2deg(1/$Radius);
 		$Positions = [];
 		$Radius--;
@@ -417,7 +412,7 @@ class pDraw
 			$X1 = $Bounds["X1"];
 			$X1Dec = $this->getFirstDecimal($X1);
 			if ($X1Dec != 0) {
-				$X1 = floor($X1) + 1;
+				$X1 = ceil($X1);
 			}
 
 			$X2 = $Bounds["X2"];
@@ -467,19 +462,17 @@ class pDraw
 	function drawFilledRectangle($X1, $Y1, $X2, $Y2, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
-		$NoBorder = isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
-		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
-		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : NULL;
-		$NoAngle = isset($Format["NoAngle"]) ? $Format["NoAngle"] : NULL;
+		if (isset($Format["Surrounding"])){
+			$BorderColor = $Color->newOne()->RGBChange($Format["Surrounding"]);
+		}
+		$NoBorder = isset($Format["NoBorder"]) ? $Format["NoBorder"] : FALSE;
+		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
+		$NoAngle = isset($Format["NoAngle"]) ? $Format["NoAngle"] : FALSE;
 		$Dash = isset($Format["Dash"]) ? $Format["Dash"] : FALSE;
 		$DashStep = isset($Format["DashStep"]) ? $Format["DashStep"] : 4;
 		$DashColor = isset($Format["DashColor"]) ? $Format["DashColor"] : new pColor(0,0,0,$Color->Alpha);
-		
-		if (!is_null($Surrounding)) {
-			$BorderColor = $Color->newOne()->RGBChange($Surrounding);
-		}
-		
+
 		($X1 > $X2) AND list($X1, $X2) = [$X2,$X1];
 		($Y1 > $Y2) AND list($Y1, $Y2) = [$Y2,$Y1];
 		
@@ -613,7 +606,7 @@ class pDraw
 				# Momchil: it is possible to save some calcs here
 				# $Angle2 is already defined if not 0,1,Last member
 				# cos(($Angle2 + 180) * PI / 180) is negated cos($Angle2 * PI / 180) (or at least close enough)
-				# Not worth the code complexity as verfy few calls
+				# Not worth the code complexity (very few calls)
 				$Angle1 = $this->getAngle($X2, $Y2, $Coordinates[$i + 1][0], $Coordinates[$i + 1][1]);
 				$Angle2 = $this->getAngle($X1, $Y1, $X2, $Y2);
 				$XOff = cos(deg2rad($Angle2 + 180)) * $Force + $X2;
@@ -841,7 +834,6 @@ class pDraw
 			$this->drawCircle($Xc + $this->ShadowX, $Yc + $this->ShadowY, $Height, $Width, ["Color" => $this->ShadowColor,"Ticks" => $Ticks]);
 		}
 
-		#$Step = 360 / (2 * PI * max($Width, $Height));
 		$Step = rad2deg(1/max($Width, $Height));
 		$Mode = TRUE;
 		$Cpt = 1;
@@ -885,13 +877,11 @@ class pDraw
 	{
 
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
-		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
-		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : NULL;
-
-		if (!is_null($Surrounding)) {
-			$BorderColor = $Color->newOne()->RGBChange($Surrounding);
+		if(isset($Format["Surrounding"])){
+			$BorderColor = $Color->newOne()->RGBChange($Format["Surrounding"]);
 		}
+		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 
 		$X = floor($X);
 		$Y = floor($Y);
@@ -1418,7 +1408,7 @@ class pDraw
 				$Gradient = new pColorGradient($Color, $FadeColor);
 				$Gradient->SetSegments(100);
 				$this->drawGradientArea($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, DIRECTION_VERTICAL, ["StartColor"=>$Gradient->Next($Percent, TRUE),"EndColor"=>$Color]);
-				($Surrounding != NULL) AND $this->drawRectangle($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, ["Color" => new pColor(255,255,255,$Surrounding)]);
+				(!is_null($Surrounding)) AND $this->drawRectangle($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, ["Color" => new pColor(255,255,255,$Surrounding)]);
 			} else {
 				$this->drawFilledRectangle($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, ["Color" => $Color,"BorderColor" => $BorderColor]);
 			}
@@ -1448,7 +1438,7 @@ class pDraw
 				$Gradient = new pColorGradient($Color, $FadeColor);
 				$Gradient->SetSegments(100);
 				$this->drawGradientArea($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, DIRECTION_HORIZONTAL, ["StartColor"=>$Color,"EndColor"=>$Gradient->Next($Percent, TRUE)]);
-				($Surrounding != NULL) AND $this->drawRectangle($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, ["Color" => new pColor(255,255,255,$Surrounding)]);
+				(!is_null($Surrounding)) AND $this->drawRectangle($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, ["Color" => new pColor(255,255,255,$Surrounding)]);
 			} else {
 				$this->drawFilledRectangle($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, ["Color" => $Color,"BorderColor" => $BorderColor]);
 			}
@@ -2973,17 +2963,13 @@ class pDraw
 		$AxisID = isset($Format["AxisID"]) ? $Format["AxisID"] : 0;
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(255,0,0,20);
 		$Border = isset($Format["Border"]) ? $Format["Border"] : TRUE;
-		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : NULL;
+		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $Color->newOne()->AlphaChange(20);
 		$BorderTicks = isset($Format["BorderTicks"]) ? $Format["BorderTicks"] : 2;
 		$AreaName = isset($Format["AreaName"]) ? $Format["AreaName"] : NULL;
 		$NameAngle = isset($Format["NameAngle"]) ? $Format["NameAngle"] : ZONE_NAME_ANGLE_AUTO;
 		$NameColor = isset($Format["NameColor"]) ? $Format["NameColor"] : new pColor(255);
 		$DisableShadowOnArea = isset($Format["DisableShadowOnArea"]) ? $Format["DisableShadowOnArea"] : TRUE;
 		$NoMargin = isset($Format["NoMargin"]) ? $Format["NoMargin"] : FALSE;
-		
-		if (is_null($BorderColor)){
-			$BorderColor = $Color->newOne()->AlphaChange(20);
-		}
 		
 		if (!isset($this->myData->Data["Axis"][$AxisID])) {
 			throw pException::InvalidInput("Axis ID is invalid");
