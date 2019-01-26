@@ -31,7 +31,7 @@ $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,["StartColor"=>new pC
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
 $myPicture->drawText(10,13,"drawFilledRectangle() - Transparency & colors",["Color"=>new pColor(255)]);
 
 /* Turn on shadow computing */ 

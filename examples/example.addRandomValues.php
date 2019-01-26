@@ -26,14 +26,14 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL,["StartColor"=>new pColor(0),"EndColor"=>new pColor(50)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,699,229,["Color" => new pColor(0,0,0)]);
+$myPicture->drawRectangle(0,0,699,229,["Color" => new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
 $myPicture->drawText(10,13,"addRandomValues() :: assess your scales",["Color" => new pColor(255)]);
 
 /* Draw the scale */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11]);
 $myPicture->setGraphArea(50,60,670,190);
 $myPicture->drawFilledRectangle(50,60,670,190,["Color"=> new pColor(255,255,255,10),"Surrounding"=>-200]);
 $myPicture->drawScale(["CycleBackground"=>TRUE,"LabelSkip"=>4,"DrawSubTicks"=>TRUE]);

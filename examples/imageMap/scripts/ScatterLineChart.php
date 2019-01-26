@@ -44,7 +44,7 @@ $myPicture->myData->setAxisPosition(1,AXIS_POSITION_RIGHT);
 /* Create the 1st scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 1","Probe 3",0);
 $myPicture->myData->setScatterSerieDescription(0,"This year");
-$myPicture->myData->setScatterSerieColor(0,new pColor(0,0,0));
+$myPicture->myData->setScatterSerieColor(0, new pColor(0));
 
 /* Create the 2nd scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 2","Probe 3",1);
@@ -63,7 +63,7 @@ $myPicture->drawGradientArea(0,0,400,400,DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0)]);
 
 /* Set the default font */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 
 /* Set the graph area */
 $myPicture->setGraphArea(50,30,350,330);
