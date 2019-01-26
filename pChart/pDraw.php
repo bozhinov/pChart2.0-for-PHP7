@@ -711,7 +711,7 @@ class pDraw
 			if ($ArrowTwoHeads){
 				/* Get the first segment */
 				$FirstTwo = array_slice($Q, 0, 2);
-				$this->drawArrow($FirstTwo[0]["X"], $FirstTwo[0]["Y"], $FirstTwo[1]["X"], $FirstTwo[1]["Y"], $ArrowSettings);
+				$this->drawArrow($FirstTwo[1]["X"], $FirstTwo[1]["Y"], $FirstTwo[0]["X"], $FirstTwo[0]["Y"], $ArrowSettings);
 			}
 			/* Get the last segment */
 			$LastTwo = array_slice($Q, -2, 2);
