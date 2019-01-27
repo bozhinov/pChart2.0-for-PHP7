@@ -32,13 +32,27 @@ class pPyramid
 
 	function drawPyramid($X, $Y, $Base, $Height, $NumSegments = 4, array $Format = []){
 
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
+		$Color =  isset($Format["Color"])  ? $Format["Color"]  : FALSE;
 		$Offset = isset($Format["Offset"]) ? $Format["Offset"] : 5;
-
+		$NoFill = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
+		
+		$Settings = [
+			"Color" => $Color,
+			"NoFill" => $NoFill
+		];
+		
 		# Account for the combined heights of the offsets
 		$h = ($Height - (($NumSegments - 1) * $Offset)) / $NumSegments;
 
 		for($i=0; $i<$NumSegments; $i++){
+			
+			if ($Color == FALSE){
+				if (isset($this->myPicture->myData->Palette[$i])){
+					$Settings["Color"] = $this->myPicture->myData->Palette[$i]->newOne();
+				} else {
+					$Settings["Color"] = $this->myPicture->myData->getRandomColor();
+				}
+			}
 			
 			if ($i != 0){
 				$Base -= (2 * $h);
@@ -57,10 +71,59 @@ class pPyramid
 				];
 
 			#print_r($Points);
-			$this->myPicture->drawPolygon($Points, ["Color"=> $Color,"NoFill" => TRUE]);
+			
+			$this->myPicture->drawPolygon($Points, $Settings);
 		}
 
 	}
+	
+	function drawReversePyramid($X, $Y, $Base, $Height, $NumSegments = 4, array $Format = []){
+
+		$Color =  isset($Format["Color"])  ? $Format["Color"]  : FALSE;
+		$Offset = isset($Format["Offset"]) ? $Format["Offset"] : 5;
+		$NoFill = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
+		
+		$Settings = [
+			"Color" => $Color,
+			"NoFill" => $NoFill
+		];
+		
+		# Account for the combined heights of the offsets
+		$h = ($Height - (($NumSegments - 1) * $Offset)) / $NumSegments;
+		
+		$Y -= $Height;
+
+		for($i=0; $i<$NumSegments; $i++){
+			
+			if ($Color == FALSE){
+				if (isset($this->myPicture->myData->Palette[$i])){
+					$Settings["Color"] = $this->myPicture->myData->Palette[$i]->newOne();
+				} else {
+					$Settings["Color"] = $this->myPicture->myData->getRandomColor();
+				}
+			}
+			
+			if ($i != 0){
+				$Base -= (2 * $h);
+			}
+
+			$Xi = $X + ($h * $i);
+			$Yi = $Y + ($h * $i);
+			$Oi = ($Offset * $i);
+			
+			$Points = [
+					$Xi + $Oi, $Yi + $Oi,
+					$Xi - $Oi + $Base, $Yi + $Oi,
+					$Xi + $Base - $h - $Oi, $Yi + $h + $Oi,
+					$Xi + $Oi + $h, $Yi + $h + $Oi,
+					$Xi + $Oi, $Yi + $Oi
+				];
+
+			#print_r($Points);	
+			$this->myPicture->drawPolygon($Points, $Settings);
+		}
+
+	}	
 
 }
 
