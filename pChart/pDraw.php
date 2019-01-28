@@ -168,12 +168,8 @@ class pDraw
 		
 		$this->ShadowAllocatedColor = $this->allocateColor(new pColor(0));
 		
-		# TODO if PHP 7.2 consider imageantialias
-		#imageantialias($this->Picture, TRUE);
-		
 		/* default font color */
 		$this->FontColor = new pColor(255);
-
 	}
 
 	function __destruct()
@@ -722,16 +718,18 @@ class pDraw
 	/* Draw a line between two points */
 	function drawLine($X1, $Y1, $X2, $Y2, array $Format = []) # FAST
 	{
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,100);
+		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Cpt = isset($Format["Cpt"]) ? $Format["Cpt"] : 1;
 		$Threshold = isset($Format["Threshold"]) ? $Format["Threshold"] : [];
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$Weight = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
 		$Mode = isset($Format["Mode"]) ? (bool)$Format["Mode"] : 1;
 		
+		# NULL == 0
+		# Keep it as some of the examples pass 0 for Ticks
+		# e.g. example.drawArrow.php
 		if ($Ticks == 0){
 			$Ticks = NULL;
-			#throw pException::InvalidInput("Ticks can not be zero!");
 		}
 
 		if ($this->Antialias == FALSE && is_null($Ticks)) {
@@ -806,7 +804,7 @@ class pDraw
 					$this->drawAntialiasPixel($X, $Y, $Color);
 				}
 			}
-			
+
 		}
 
 	}
@@ -1710,7 +1708,7 @@ class pDraw
 		
 		/* Check LabelRotation range */
 		if (($LabelRotation < 0) || ($LabelRotation > 359)){
-			die("drawScale: LabelRotation must be between 0 and 359");
+			throw pException::InvalidInput("drawScale: LabelRotation must be between 0 and 359");
 		}
 
 		$Data = $this->myData->Data;
