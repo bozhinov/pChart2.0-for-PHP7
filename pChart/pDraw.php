@@ -748,7 +748,8 @@ class pDraw
 		$Distance = hypot(($X2 - $X1), ($Y2 - $Y1));
 		if ($Distance == 0) {
 			# throw pException::InvalidDimentions("Line coordinates are not valid!");
-			# Momchil: that one revealed way too many bugs to fix now
+			# Momchil: As of 28.01.2019 all examples generate a total of 20 invalid calls
+			# Good way to check your math though
 			return;
 		}
 		
