@@ -219,6 +219,7 @@ class pDraw
 		$PointCount = count($Points);
 		
 		$RestoreShadow = $this->Shadow;
+		
 		if (!$NoFill) {
 			if ($this->Shadow) {
 				$this->Shadow = FALSE;
@@ -237,17 +238,14 @@ class pDraw
 		}
 
 		if (!$NoBorder) {
+			
 			$BorderSettings = ["Color" => ($NoFill) ? $Color : $BorderColor];
 
 			for ($i = 0; $i <= $PointCount - 1; $i += 2) {
 				if (isset($Points[$i + 2])) {
-					if (!($Points[$i] == $Points[$i + 2] && $Points[$i] == OUT_OF_SIGHT) && !($Points[$i + 1] == $Points[$i + 3] && $Points[$i + 1] == OUT_OF_SIGHT)){
-						$this->drawLine($Points[$i], $Points[$i + 1], $Points[$i + 2], $Points[$i + 3], $BorderSettings);
-					}
+					$this->drawLine($Points[$i], $Points[$i + 1], $Points[$i + 2], $Points[$i + 3], $BorderSettings);
 				} else {
-					if (!($Points[$i] == $Points[0] && $Points[$i] == OUT_OF_SIGHT) && !($Points[$i + 1] == $Points[1] && $Points[$i + 1] == OUT_OF_SIGHT)) {
-						$this->drawLine($Points[$i], $Points[$i + 1], $Points[0], $Points[1], $BorderSettings);
-					}
+					$this->drawLine($Points[$i], $Points[$i + 1], $Points[0], $Points[1], $BorderSettings);
 				}
 			}
 		}
