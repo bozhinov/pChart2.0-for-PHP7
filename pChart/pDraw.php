@@ -239,9 +239,13 @@ class pDraw
 
 			for ($i = 0; $i <= $PointCount - 1; $i += 2) {
 				if (isset($Points[$i + 2])) {
-					$this->drawLine($Points[$i], $Points[$i + 1], $Points[$i + 2], $Points[$i + 3], $BorderSettings);
+					if (!($Points[$i] == $Points[$i + 2] && $Points[$i + 1] == $Points[$i + 3])){
+						$this->drawLine($Points[$i], $Points[$i + 1], $Points[$i + 2], $Points[$i + 3], $BorderSettings);
+					}
 				} else {
-					$this->drawLine($Points[$i], $Points[$i + 1], $Points[0], $Points[1], $BorderSettings);
+					if (!($Points[$i] == $Points[0] && $Points[$i + 1] == $Points[1])){
+						$this->drawLine($Points[$i], $Points[$i + 1], $Points[0], $Points[1], $BorderSettings);
+					}
 				}
 			}
 		}
