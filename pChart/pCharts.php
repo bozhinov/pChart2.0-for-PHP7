@@ -3,9 +3,9 @@
 /*
 pCharts - class with charts
 
-Version     : 0.4
+Version     : 0.5
 Made by     : Forked by Momchil Bozhinov from the original pDraw class from Jean-Damien POGOLOTTI
-Last Update : 01/02/2018
+Last Update : 02/02/2019
 
 Contains functions:
 	drawPolygonChart
@@ -102,6 +102,8 @@ class pCharts {
 					$Picture = $Serie["Picture"];
 					$PicInfo = $this->myPicture->getPicInfo($Picture);
 					list($PicWidth, $PicHeight, $PicType) = $PicInfo;
+					$PicOffset = $PicWidth / 2;
+					$SerieWeight = 0;
 				} else {
 					$Picture = NULL;
 					$PicOffset = 0;
@@ -126,11 +128,6 @@ class pCharts {
 
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
 
-				if (!is_null($Picture)) {
-					$PicOffset = $PicWidth / 2;
-					$SerieWeight = 0;
-				}
-				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
@@ -526,7 +523,7 @@ class pCharts {
 		$RecordImageMap = FALSE;
 		$ImageMapPlotSize = 5;
 		$UseForcedColor = FALSE;
-		$ForceColor = new pColor(0,0,0,100);
+		$ForceColor = new pColor(0);
 		
 		/* Override defaults */
 		extract($Format);
@@ -972,8 +969,6 @@ class pCharts {
 				
 				$LastX = VOID;
 				$LastY = VOID;
-				$LastGoodY = NULL;
-				$LastGoodX = NULL;
 				$Points = [];
 				
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
@@ -1017,11 +1012,6 @@ class pCharts {
 							$Points[] = $Y;
 						}
 
-						if ($Y != VOID) {
-							$LastGoodY = $Y;
-							$LastGoodX = $X;
-						} 
-						
 						if (!$Init && $ReCenter) {
 							$X = $X - $XStep / 2;
 							$Init = TRUE;
@@ -1037,8 +1027,10 @@ class pCharts {
 					}
 
 					if ($ReCenter) {
-						$Points[] = $LastX+$XStep/2; $Points[] = $LastY;
-						$Points[] = $LastX+$XStep/2; $Points[] = $YZero;
+						$Points[] = $LastX+$XStep/2;
+						$Points[] = $LastY;
+						$Points[] = $LastX+$XStep/2;
+						$Points[] = $YZero;
 					} else {
 						$Points[] = $LastX;
 						$Points[] = $YZero;
@@ -1078,11 +1070,6 @@ class pCharts {
 							$Points[] = $Y;
 							$Points[] = $X;
 							$Points[] = $Y;
-						}
-
-						if ($X != VOID) {
-							$LastGoodY = $Y;
-							$LastGoodX = $X;
 						}
 
 						if (($LastX == VOID) && $ReCenter) {
@@ -2338,19 +2325,13 @@ class pCharts {
 					
 					/* Determine the Max slope index */
 					foreach($PosArray as $Y) {
-						if ($Y != VOID && ($LastX != VOID)) {
+						if (($Y != VOID) && ($LastY != VOID)) {
 							$Slope = ($LastY - $Y);
 							($Slope > $MaxSlope) AND $MaxSlope = $Slope;
 							($Slope < $MinSlope) AND $MinSlope = $Slope;
 						}
-
-						if ($Y == VOID) {
-							$LastX = VOID;
-							$LastY = VOID;
-						} else {
-							$LastX = $X;
-							$LastY = $Y;
-						}
+						
+						$LastY = $Y;
 					}
 
 					$LastX = VOID;
