@@ -143,21 +143,38 @@ class pPie
 
 			$Plots = [$X0, $Y0];
 			for ($i = $Offset; $i <= $EndAngle; $i += $Step) {
+				
 				$Xc = cos(deg2rad($i - 90)) * $Radius + $X;
 				$Yc = sin(deg2rad($i - 90)) * $Radius + $Y;
-				if ($SecondPass && ($i < 90)) {
-					$Yc++;
-				}
+								
+				if ($SecondPass){
+					
+					# Momchil: Visial fix. No idea why this is required
+					# example: example.draw2DPie
+					if ($i > 265 && $i < 270) {
+						$Yc++;
+					}
+					
+					if ($i > 90 && $i < 95) {
+						$Yc++;
+					}
+					# End Visial fix
+					
+					if ($i < 90) {
+						$Yc++;
+					}
+					
+					# $i >= 90 && $i =< 180
+
+					if ($i > 180 && $i < 270) {
+						$Xc++;
+					}
+
+					if ($i >= 270) {
+						$Xc++;
+						$Yc++;
+					}
 				
-				# Momchil TODO: $i >= 90 && $i =< 180 ?
-
-				if ($SecondPass && ($i > 180 && $i < 270)) {
-					$Xc++;
-				}
-
-				if ($SecondPass && ($i >= 270)) {
-					$Xc++;
-					$Yc++;
 				}
 
 				$Plots[] = $Xc;
@@ -198,7 +215,7 @@ class pPie
 			$Offset = 0;
 			$ID = 0;
 			foreach($Values as $Key => $Value) {
-				$FirstPoint = TRUE;
+
 				if ($Shadow) {
 					$Settings = ["Color" => $this->myPicture->ShadowColor];
 				} else {
@@ -226,10 +243,9 @@ class pPie
 				for ($i = $Offset; $i <= $EndAngle; $i += $Step) {
 					$Xc = cos(deg2rad($i - 90)) * $Radius + $X;
 					$Yc = sin(deg2rad($i - 90)) * $Radius + $Y;
-					if ($FirstPoint) {
+					if ($i == $Offset) {
 						$this->myPicture->drawLine($Xc, $Yc, $X0, $Y0, $Settings);
 					} 
-					$FirstPoint = FALSE;
 					$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Settings["Color"]);
 				}
 
@@ -980,11 +996,19 @@ class pPie
 				if ($i < 90) {
 					$Yc++;
 				}
-
+				
+				# Visial fix added due to a bug in example.draw2DRing
+				if ($i > 265 && $i < 270) {
+					$Yc++;
+				}
+				
+				if ($i > 90 && $i < 95) {
+					$Yc++;
+				}
+				# End Visial fix
+								
 				if ($i > 180 && $i < 270) {
 					$Xc++;
-					# Added due to a bug in example.draw2DRing
-					$Yc++;
 				}
 
 				if ($i >= 270) {
