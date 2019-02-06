@@ -5,7 +5,7 @@ pPie - class to draw pie charts
 Version     : 2.3.0-dev
 Made by     : Jean-Damien POGOLOTTI
 Maintainedby: Momchil Bozhinov
-Last Update : 01/02/2018
+Last Update : 06/02/2019
 
 This file can be distributed under the license you can find at:
 http://www.pchart.net/license
@@ -70,40 +70,28 @@ class pPie
 		$Palette = $this->myPicture->myData->Palette;
 		
 		/* Do we have an abscissa serie defined? */
-		if ($Data["Abscissa"] == "") {
+		if ($Data["Abscissa"] == "" || !in_array($Data["Abscissa"], array_keys($Data["Series"]))) {
 			throw pException::PieNoAbscissaException();
+		} else {
+			$AbscissaData = $Data["Series"][$Data["Abscissa"]]["Data"];
+			unset($Data["Series"][$Data["Abscissa"]]);
 		}
-
-		/* Try to find the data serie */
-		$DataSerie = "";
-		foreach($Data["Series"] as $SerieName => $SerieData) {
-			if ($SerieName != $Data["Abscissa"]) {
-				$DataSerie = $SerieName;
-			}
-		}
-
-		/* Do we have data to compute? */
-		if ($DataSerie == "") {
+		
+		/* Pop off the Abscissa and whatever is left must be the dataSerie */
+		if (count($Data["Series"]) != 1){
 			throw pException::PieNoDataSerieException();
 		}
 
+		$DataSerieData = array_shift($Data["Series"])["Data"];
+
 		/* Remove unused data */
-		list($Data, $Palette) = $this->clean0Values($Data, $Palette, $DataSerie, $Data["Abscissa"]);
-
-		/* Compute the pie sum */
-		$SerieSum = $this->myPicture->myData->getSum($DataSerie);
-		/* Do we have data to draw? */
-		if ($SerieSum == 0) {
-			throw pException::PieNoDataToDrawException();
-		}
-
-		/* Dump the real number of data to draw */
-		$Values = array_diff($Data["Series"][$DataSerie]["Data"], [0]);
+		list($Values, $Palette) = $this->clean0Values($DataSerieData, $Palette);
 
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
 
 		/* Compute the scale */
+		$SerieSum = array_sum($Values);
 		$ScaleFactor = (360 - $WastedAngular) / $SerieSum;
 		$RestoreShadow = $this->myPicture->Shadow;
 		if ($this->myPicture->Shadow) {
@@ -178,7 +166,7 @@ class pPie
 
 			$this->myPicture->drawPolygon($Plots, $Settings);
 			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$ID]->toHTMLColor(), $Data["Series"][$Data["Abscissa"]]["Data"][$Key], $Value);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$ID]->toHTMLColor(), $AbscissaData[$Key], $Value);
 			}
 
 			if ($DrawLabels && !$Shadow && !$SecondPass) {
@@ -191,7 +179,7 @@ class pPie
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
 				$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
 				$Yc = sin(deg2rad($Angle - 90)) * $Radius + $Y;
-				$Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
+				$Label = $AbscissaData[$Key];
 				
 				if ($LabelStacked) {
 					$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Y, $Radius);
@@ -257,7 +245,7 @@ class pPie
 					$Angle = ($EndAngle - $Offset) / 2 + $Offset;
 					$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
 					$Yc = sin(deg2rad($Angle - 90)) * $Radius + $Y;
-					$Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
+					$Label = $DataSerieData[$Key];
 					
 					if ($LabelStacked) {
 						$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Y, $Radius);
@@ -340,40 +328,29 @@ class pPie
 		/* Data Processing */
 		$Data = $this->myPicture->myData->Data;
 		$Palette = $this->myPicture->myData->Palette;
+
 		/* Do we have an abscissa serie defined? */
-		if ($Data["Abscissa"] == "") {
+		if ($Data["Abscissa"] == "" || !in_array($Data["Abscissa"], array_keys($Data["Series"]))) {
 			throw pException::PieNoAbscissaException();
+		} else {
+			$AbscissaData = $Data["Series"][$Data["Abscissa"]]["Data"];
+			unset($Data["Series"][$Data["Abscissa"]]);
 		}
-
-		/* Try to find the data serie */
-		$DataSerie = "";
-		foreach($Data["Series"] as $SerieName => $SerieData) {
-			if ($SerieName != $Data["Abscissa"]) {
-				$DataSerie = $SerieName;
-			}
-		}
-
-		/* Do we have data to compute? */
-		if ($DataSerie == "") {
+		
+		if (count($Data["Series"]) != 1){
 			throw pException::PieNoDataSerieException();
 		}
 
-		/* Remove unused data */
-		list($Data, $Palette) = $this->clean0Values($Data, $Palette, $DataSerie, $Data["Abscissa"]);
-		/* Compute the pie sum */
-		$SerieSum = $this->myPicture->myData->getSum($DataSerie);
-		/* Do we have data to draw? */
-		if ($SerieSum == 0) {
-			throw pException::PieNoDataToDrawException();
-		}
+		$DataSerieData = array_shift($Data["Series"])["Data"];
 
-		/* Dump the real number of data to draw */
-		$Values = array_diff($Data["Series"][$DataSerie]["Data"], [0]);
+		/* Remove unused data */
+		list($Values, $Palette) = $this->clean0Values($DataSerieData, $Palette);
 
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
 
 		/* Compute the scale */
+		$SerieSum = array_sum($Values);
 		$ScaleFactor = (360 - $WastedAngular) / $SerieSum;
 		$RestoreShadow = $this->myPicture->Shadow;
 		if ($this->myPicture->Shadow) {
@@ -580,7 +557,7 @@ class pPie
 			}
 			$this->myPicture->drawPolygon($Top, $Settings);
 			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Top), $Settings["Color"]->toHTMLColor(), $Data["Series"][$Data["Abscissa"]]["Data"][count($Slices) - $SliceID - 1], $Values[$SliceID]);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Top), $Settings["Color"]->toHTMLColor(), $AbscissaData[count($Slices) - $SliceID - 1], $Values[$SliceID]);
 			}
 		}
 
@@ -677,8 +654,8 @@ class pPie
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
 				$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
 				$Yc = sin(deg2rad($Angle - 90)) * $Radius * $SkewFactor + $Y - $SliceHeight;
-				if (isset($Data["Series"][$Data["Abscissa"]]["Data"][$ID])) {
-					$Label = $Data["Series"][$Data["Abscissa"]]["Data"][$ID];
+				if (isset($AbscissaData[$ID])) {
+					$Label = $AbscissaData[$ID];
 					if ($LabelStacked) {
 						$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Y, $Radius, TRUE);
 					} else {
@@ -700,7 +677,6 @@ class pPie
 
 	function drawPieLegend(int $X, int $Y, array $Format = [])
 	{
-
 		$FontName = $this->myPicture->FontName;
 		$FontSize = $this->myPicture->FontSize;
 		$FontColor = $this->myPicture->FontColor;
@@ -906,46 +882,25 @@ class pPie
 		/* Data Processing */
 		$Data = $this->myPicture->myData->Data;
 		$Palette = $this->myPicture->myData->Palette;
+		
 		/* Do we have an abscissa serie defined? */
-		if ($Data["Abscissa"] == "") {
+		if ($Data["Abscissa"] == "" || !in_array($Data["Abscissa"], array_keys($Data["Series"]))) {
 			throw pException::PieNoAbscissaException();
+		} else {
+			$AbscissaData = $Data["Series"][$Data["Abscissa"]]["Data"];
+			unset($Data["Series"][$Data["Abscissa"]]);
 		}
-
-		/* Try to find the data serie */ 
-		$DataSerie = ""; # TODO Optimize this
-		foreach($Data["Series"] as $SerieName => $SerieData) {
-			if ($SerieName != $Data["Abscissa"]) {
-				$DataSerie = $SerieName;
-			}
-		}
-
-		/* Do we have data to compute? */
-		if ($DataSerie == "") {
+		
+		if (count($Data["Series"]) != 1){
 			throw pException::PieNoDataSerieException();
 		}
 
+		$DataSerieData = array_shift($Data["Series"])["Data"];
+
 		/* Remove unused data */
-		list($Data, $Palette) = $this->clean0Values($Data, $Palette, $DataSerie, $Data["Abscissa"]);
-		/* Compute the pie sum */
-		$SerieSum = $this->myPicture->myData->getSum($DataSerie);
-		/* Do we have data to draw? */
-		if ($SerieSum == 0) {
-			throw pException::PieNoDataToDrawException();
-		}
-
-		/* Dump the real number of data to draw */
-		$Values = [];
-		foreach($Data["Series"][$DataSerie]["Data"] as $Value) {
-			if ($Value != 0) {
-				$Values[] = $Value;
-			}
-		}
-
-		/* Compute the wasted angular space between series */
-		$WastedAngular = (count($Values) == 1) ? 0 : 0; # MOMCHIL TODO
-
-		/* Compute the scale */
-		$ScaleFactor = (360 - $WastedAngular) / $SerieSum;
+		list($Values, $Palette) = $this->clean0Values($DataSerieData, $Palette);
+		
+		/* Shadow */
 		$RestoreShadow = $this->myPicture->Shadow;
 		if ($this->myPicture->Shadow) {
 			$this->myPicture->Shadow = FALSE;
@@ -955,9 +910,12 @@ class pPie
 		}
 
 		/* Draw the polygon pie elements */
+		$SerieSum = array_sum($Values);
+		$ScaleFactor = 360 / $SerieSum;
 		$Step = rad2deg(1/$OuterRadius);
 		$Offset = 0;
 		$ID = 0;
+		
 		foreach($Values as $Key => $Value) {
 			
 			if ($Shadow) {
@@ -1044,7 +1002,7 @@ class pPie
 			/* Draw the polygon */
 			$this->myPicture->drawPolygon($Plots, $Settings);
 			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$ID]->toHTMLColor(), $Data["Series"][$Data["Abscissa"]]["Data"][$Key], $Value);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$ID]->toHTMLColor(), $AbscissaData[$Key], $Value);
 			}
 
 			/* Smooth the edges using AA */
@@ -1059,7 +1017,7 @@ class pPie
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
 				$Xc = cos(deg2rad($Angle - 90)) * $OuterRadius + $X;
 				$Yc = sin(deg2rad($Angle - 90)) * $OuterRadius + $Y;
-				$Label = $Data["Series"][$Data["Abscissa"]]["Data"][$Key];
+				$Label = $AbscissaData[$Key];
 				if ($LabelStacked) {
 					$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Y, $OuterRadius);
 				} else {
@@ -1141,45 +1099,29 @@ class pPie
 		/* Data Processing */
 		$Data = $this->myPicture->myData->Data;
 		$Palette = $this->myPicture->myData->Palette;
+		
 		/* Do we have an abscissa serie defined? */
-		if ($Data["Abscissa"] == "") {
+		if ($Data["Abscissa"] == "" || !in_array($Data["Abscissa"], array_keys($Data["Series"]))) {
 			throw pException::PieNoAbscissaException();
+		} else {
+			$AbscissaData = $Data["Series"][$Data["Abscissa"]]["Data"];
+			unset($Data["Series"][$Data["Abscissa"]]);
 		}
-
-		/* Try to find the data serie */
-		$DataSerie = "";
-		foreach($Data["Series"] as $SerieName => $SerieData) {
-			if ($SerieName != $Data["Abscissa"]) {
-				$DataSerie = $SerieName;
-			}
-		}
-
-		/* Do we have data to compute? */
-		if ($DataSerie == "") {
+		
+		if (count($Data["Series"]) != 1){
 			throw pException::PieNoDataSerieException();
 		}
 
-		/* Remove unused data */
-		list($Data, $Palette) = $this->clean0Values($Data, $Palette, $DataSerie, $Data["Abscissa"]);
-		/* Compute the pie sum */
-		$SerieSum = $this->myPicture->myData->getSum($DataSerie);
-		/* Do we have data to draw? */
-		if ($SerieSum == 0) {
-			throw pException::PieNoDataToDrawException();
-		}
+		$DataSerieData = array_shift($Data["Series"])["Data"];
 
-		/* Dump the real number of data to draw */
-		$Values = [];
-		foreach($Data["Series"][$DataSerie]["Data"] as $Key => $Value) {
-			if ($Value != 0) {
-				$Values[] = $Value;
-			}
-		}
+		/* Remove unused data */
+		list($Values, $Palette) = $this->clean0Values($DataSerieData, $Palette);
 
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
 
 		/* Compute the scale */
+		$SerieSum = array_sum($Values);
 		$ScaleFactor = (360 - $WastedAngular) / $SerieSum;
 		$RestoreShadow = $this->myPicture->Shadow;
 		if ($this->myPicture->Shadow) {
@@ -1433,7 +1375,7 @@ class pPie
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf * 2), "NoBorder" => TRUE];
 			$this->myPicture->drawPolygon($Plots["TopPoly"], $Settings);
 			if ($RecordImageMap) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots["TopPoly"]), $Settings["Color"]->toHTMLColor(), $Data["Series"][$Data["Abscissa"]]["Data"][$SliceID], $Data["Series"][$DataSerie]["Data"][count($Slices) - $SliceID - 1]);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Plots["TopPoly"]), $Settings["Color"]->toHTMLColor(), $AbscissaData[$SliceID], $DataSerieData[count($Slices) - $SliceID - 1]);
 			}
 
 			foreach($Plots["AA"] as $Key => $Pos) {
@@ -1456,7 +1398,7 @@ class pPie
 				if ($WriteValues == PIE_VALUE_PERCENTAGE) {
 					$Label = strval(round((100 / $SerieSum) * $Value, $Precision)) . "%";
 				} elseif ($WriteValues == PIE_VALUE_NATURAL) {
-					$Label = strval($Data["Series"][$Data["Abscissa"]]["Data"][$Key]);
+					$Label = strval($AbscissaData[$Key]);
 				} else {
 					$Label = "";
 				}
@@ -1479,34 +1421,20 @@ class pPie
 		$this->myPicture->Shadow = $RestoreShadow;
 	}
 
-	/* Remove unused series & values */
-	function clean0Values(array $Data, array $Palette, string $DataSerie, string $AbscissaSerie)
+	/* Remove NULL values and reset Palette */
+	function clean0Values(array $DataSerieData, array $Palette)
 	{
 		$NewPalette = [];
-		$NewData = [];
-		$NewAbscissa = [];
-		/* Remove unused series */
-		foreach($Data["Series"] as $SerieName => $SerieSettings) {
-			if ($SerieName != $DataSerie && $SerieName != $AbscissaSerie) {
-				unset($Data["Series"][$SerieName]);
-			}
-		}
-
-		/* Remove NULL values */
-		foreach($Data["Series"][$DataSerie]["Data"] as $Key => $Value) {
-			if ($Value != 0) {
-				$NewData[] = $Value;
-				$NewAbscissa[] = $Data["Series"][$AbscissaSerie]["Data"][$Key];
-				if (isset($Palette[$Key])) {
-					$NewPalette[] = $Palette[$Key];
-				}
-			}
-		}
-
-		$Data["Series"][$DataSerie]["Data"] = $NewData;
-		$Data["Series"][$AbscissaSerie]["Data"] = $NewAbscissa;
+		$NewData = array_diff($DataSerieData, [NULL, 0]);
 		
-		return [$Data,$NewPalette];
+		foreach($NewData as $Key => $Value) {
+			if (isset($Palette[$Key])) {
+				$NewPalette[] = $Palette[$Key];
+			}
+		}
+		
+		# array_diff preserves keys
+		return [array_values($NewData), $NewPalette];
 	}
 
 }

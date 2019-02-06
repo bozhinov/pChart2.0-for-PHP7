@@ -77,11 +77,6 @@ class pException extends \Exception
 		return new static('pPie: No DataSerie');
 	}
 
-	public static function PieNoDataToDrawException()
-	{
-		return new static('pPie: No Data to draw');
-	}
-
 	public static function StockMissingSerieException()
 	{
 		return new static('pStock: No DataSerie');

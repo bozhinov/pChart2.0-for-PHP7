@@ -185,12 +185,6 @@ class pData
 		}
 	}
 
-	/* Return the sum of the serie values */
-	function getSum(string $Serie)
-	{
-		return (isset($this->Data["Series"][$Serie])) ? array_sum($this->Data["Series"][$Serie]["Data"]) : 0;
-	}
-
 	/* Return the max value of a given serie */
 	function getMax(string $Serie)
 	{
