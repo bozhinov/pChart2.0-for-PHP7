@@ -1224,7 +1224,7 @@ class pDraw
 					for ($Yc = 0; $Yc <= $Height - 1; $Yc++) {
 						$Values = imagecolorsforindex($Raster, imagecolorat($Raster, $Xc, $Yc));
 						if ($Values["alpha"] < 120) {
-							$picShadowColor->Alpha = floor(($this->ShadowColor->Alpha / 100) * ((100 / 127) * (127 - $Values["alpha"])));	
+							$picShadowColor->Alpha = floor($this->ShadowColor->Alpha * (1 - $Values["alpha"]/127));
 							$this->drawAlphaPixel($X + $Xc + $this->ShadowX, $Y + $Yc + $this->ShadowY, $picShadowColor);
 						}
 					}
@@ -1415,19 +1415,21 @@ class pDraw
 			}
 			$this->Shadow = $RestoreShadow;
 			
-			switch (TRUE) {
-				case ($ShowLabel && $LabelPos == LABEL_POS_BOTTOM):
-					$this->drawText($X + ($Width / 2), $Y + $Margin, $Percent . "%", ["Align" => TEXT_ALIGN_TOPMIDDLE]);
-					break;
-				case ($ShowLabel && $LabelPos == LABEL_POS_TOP):
-					$this->drawText($X + ($Width / 2), $Y - $Height - $Margin, $Percent . "%", ["Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
-					break;
-				case ($ShowLabel && $LabelPos == LABEL_POS_INSIDE):
-					$this->drawText($X + ($Width / 2), $Y - $InnerHeight - $Margin, $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLELEFT,"Angle" => 90]);
-					break;
-				case ($ShowLabel && $LabelPos == LABEL_POS_CENTER):
-					$this->drawText($X + ($Width / 2), $Y - ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"Angle" => 90]);
-					break;
+			if ($ShowLabel){
+				switch ($LabelPos) {
+					case LABEL_POS_BOTTOM:
+						$this->drawText($X + ($Width / 2), $Y + $Margin, $Percent . "%", ["Align" => TEXT_ALIGN_TOPMIDDLE]);
+						break;
+					case LABEL_POS_TOP:
+						$this->drawText($X + ($Width / 2), $Y - $Height - $Margin, $Percent . "%", ["Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
+						break;
+					case LABEL_POS_INSIDE:
+						$this->drawText($X + ($Width / 2), $Y - $InnerHeight - $Margin, $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLELEFT,"Angle" => 90]);
+						break;
+					case LABEL_POS_CENTER:
+						$this->drawText($X + ($Width / 2), $Y - ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"Angle" => 90]);
+						break;
+				}
 			}
 
 		} else {
@@ -1445,22 +1447,24 @@ class pDraw
 			}
 			$this->Shadow = $RestoreShadow;
 			
-			switch (TRUE) {
-				case ($ShowLabel && $LabelPos == LABEL_POS_LEFT):
-					$this->drawText($X - $Margin, $Y + ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLERIGHT]);
-					break;
-				case ($ShowLabel && $LabelPos == LABEL_POS_RIGHT):
-					$this->drawText($X + $Width + $Margin, $Y + ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLELEFT]);
-					break;
-				case ($ShowLabel && $LabelPos == LABEL_POS_CENTER):
-					$this->drawText($X + ($Width / 2), $Y + ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLEMIDDLE]);
-					break;
-				case ($ShowLabel && $LabelPos == LABEL_POS_INSIDE):
-					$this->drawText($X + $InnerWidth + $Margin, $Y + ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLELEFT]);
-					break;
+			if ($ShowLabel){
+				switch ($LabelPos) {
+					case LABEL_POS_LEFT:
+						$this->drawText($X - $Margin, $Y + ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLERIGHT]);
+						break;
+					case LABEL_POS_RIGHT:
+						$this->drawText($X + $Width + $Margin, $Y + ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLELEFT]);
+						break;
+					case LABEL_POS_CENTER:
+						$this->drawText($X + ($Width / 2), $Y + ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLEMIDDLE]);
+						break;
+					case LABEL_POS_INSIDE:
+						$this->drawText($X + $InnerWidth + $Margin, $Y + ($Height / 2), $Percent . "%", ["Align" => TEXT_ALIGN_MIDDLELEFT]);
+						break;
+				}
 			}
 		}
-		
+
 	}
 	
 	/* Get the legend box size */
