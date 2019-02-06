@@ -32,11 +32,11 @@ class pColor {
 			case 3:
 			case 4:
 				($G < 0) 	AND $G = 0;
-				($G > 255) 	AND $G = 255;
+				($G > 255)	AND $G = 255;
 				($B < 0) 	AND $B = 0;
-				($B > 255) 	AND $B = 255;
-				($Alpha < 0) AND $Alpha = 0;
-				($Alpha > 100) AND $Alpha = 100;
+				($B > 255)	AND $B = 255;
+				($Alpha < 0)	AND $Alpha = 0;
+				($Alpha > 100)	AND $Alpha = 100;
 				break;
 			case 0: # random
 				$R = rand(0, 255);
@@ -58,7 +58,7 @@ class pColor {
 		return strval($this->R).".".strval($this->G).".".strval($this->B).".".strval($this->Alpha);
 	}
 
-	function toHTMLColor()
+	function toHex()
 	{
 		$R = dechex($this->R);
 		$G = dechex($this->G);
@@ -78,7 +78,7 @@ class pColor {
 		($this->B < 0) AND $this->B = 0;
 		($this->R > 255) AND $this->R = 255;
 		($this->G > 255) AND $this->G = 255;
-		($this->B > 255) AND $this->B = 255;	
+		($this->B > 255) AND $this->B = 255;
 
 		return $this;
 	}

@@ -120,7 +120,7 @@ class pStock
 					$Values = $Values."Median : ".$Data[$SerieMedian]["Data"][$Key]."<br />";
 				}
 
-				$ImageMapColor = ($PosArray[0] > $PosArray[1]) ? $BoxUpColor->toHTMLColor() : $BoxDownColor->toHTMLColor();
+				$ImageMapColor = ($PosArray[0] > $PosArray[1]) ? $BoxUpColor->toHex() : $BoxDownColor->toHex();
 			}
 
 			if ($ShadowOnBoxesOnly) {

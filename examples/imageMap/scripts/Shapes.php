@@ -43,12 +43,12 @@ $myPicture->Antialias = TRUE;
 /* Draw a customized filled circle */ 
 $Color = new pColor(267,165,169);
 $myPicture->drawFilledCircle(300,120,50,["Color"=>$Color,"Dash"=>TRUE,"BorderColor"=>new pColor(255)]);
-$myPicture->addToImageMap("CIRCLE","300,120,50",$Color->toHTMLColor(),"Circle","My Message");
+$myPicture->addToImageMap("CIRCLE","300,120,50",$Color->toHex(),"Circle","My Message");
 
 /* Draw a customized polygon */
 $Color = new pColor(71,87,145);
 $myPicture->drawPolygon([402,62,460,80,420,190,360,168],["Color"=>$Color,"Dash"=>TRUE,"BorderColor"=>new pColor(255)]);
-$myPicture->addToImageMap("POLY","402,62,460,80,420,190,360,168",$Color->toHTMLColor(),"Polygon","My Message");
+$myPicture->addToImageMap("POLY","402,62,460,80,420,190,360,168",$Color->toHex(),"Polygon","My Message");
 
 /* Turn off Anti-aliasing */
 $myPicture->Antialias = FALSE;
@@ -56,32 +56,32 @@ $myPicture->Antialias = FALSE;
 /* Draw a customized filled rectangle */ 
 $Color = new pColor(150,200,170);
 $myPicture->drawFilledRectangle(20,60,210,170,["Color"=>$Color,"Dash"=>TRUE,"DashColor"=>new pColor(170,220,190),"BorderColor"=>new pColor(255)]);
-$myPicture->addToImageMap("RECT","20,60,210,170",$Color->toHTMLColor(),"Box 1","Message 1");
+$myPicture->addToImageMap("RECT","20,60,210,170",$Color->toHex(),"Box 1","Message 1");
 
 /* Draw a customized filled rectangle */ 
 $Color = new pColor(209,134,27,30);
 $myPicture->drawFilledRectangle(30,30,200,200,["Color"=>$Color]);
-$myPicture->addToImageMap("RECT","30,30,200,200",$Color->toHTMLColor(),"Box 2","Message 2");
+$myPicture->addToImageMap("RECT","30,30,200,200",$Color->toHex(),"Box 2","Message 2");
 
 /* Draw a customized filled rectangle */ 
 $Color = new pColor(209,31,27,100);
 $myPicture->drawFilledRectangle(480,50,650,80,["Color"=>$Color,"Surrounding"=>30]);
-$myPicture->addToImageMap("RECT","480,50,650,80",$Color->toHTMLColor(),"Box 3","Message 3");
+$myPicture->addToImageMap("RECT","480,50,650,80",$Color->toHex(),"Box 3","Message 3");
 
 /* Draw a customized filled rectangle */ 
 $Color = new pColor(209,125,27,100);
 $myPicture->drawFilledRectangle(480,90,650,120,["Color"=>$Color,"Surrounding"=>30]);
-$myPicture->addToImageMap("RECT","480,90,650,120",$Color->toHTMLColor(),"Box 4","Message 4");
+$myPicture->addToImageMap("RECT","480,90,650,120",$Color->toHex(),"Box 4","Message 4");
 
 /* Draw a customized filled rectangle */ 
 $Color = new pColor(209,198,27,100);
 $myPicture->drawFilledRectangle(480,130,650,160,["Color"=>$Color,"Surrounding"=>30,"Ticks"=>2]);
-$myPicture->addToImageMap("RECT","480,130,650,160", $Color->toHTMLColor(),"Box 5","Message 5");
+$myPicture->addToImageMap("RECT","480,130,650,160", $Color->toHex(),"Box 5","Message 5");
 
 /* Draw a customized filled rectangle */ 
 $Color = new pColor(134,209,27,100);
 $myPicture->drawFilledRectangle(480,170,650,200,["Color"=>$Color,"Surrounding"=>30,"Ticks"=>2]);
-$myPicture->addToImageMap("RECT","480,170,650,200",$Color->toHTMLColor(),"Box 6","Message 6");
+$myPicture->addToImageMap("RECT","480,170,650,200",$Color->toHex(),"Box 6","Message 6");
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/Shapes.png");

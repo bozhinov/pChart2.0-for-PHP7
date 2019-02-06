@@ -17,6 +17,7 @@
   o pData->loadPalette no longer uses text file for palette
   o pData->getRandomColor replaced by calling pColor() with no params
   o pColor(0) equals pColor(0,0,0,100)
+  o pColor->toHTMLColor was renamed to pColor->toHex
   o Sandbox: code improvements
   o ImageMapper: map failed to load on first attempt
   o Using rad2deg in favour of manual calculation

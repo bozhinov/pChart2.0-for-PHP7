@@ -166,7 +166,7 @@ class pPie
 
 			$this->myPicture->drawPolygon($Plots, $Settings);
 			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$ID]->toHTMLColor(), $AbscissaData[$Key], $Value);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$ID]->toHex(), $AbscissaData[$Key], $Value);
 			}
 
 			if ($DrawLabels && !$Shadow && !$SecondPass) {
@@ -557,7 +557,7 @@ class pPie
 			}
 			$this->myPicture->drawPolygon($Top, $Settings);
 			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Top), $Settings["Color"]->toHTMLColor(), $AbscissaData[count($Slices) - $SliceID - 1], $Values[$SliceID]);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Top), $Settings["Color"]->toHex(), $AbscissaData[count($Slices) - $SliceID - 1], $Values[$SliceID]);
 			}
 		}
 
@@ -1002,7 +1002,7 @@ class pPie
 			/* Draw the polygon */
 			$this->myPicture->drawPolygon($Plots, $Settings);
 			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$ID]->toHTMLColor(), $AbscissaData[$Key], $Value);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$ID]->toHex(), $AbscissaData[$Key], $Value);
 			}
 
 			/* Smooth the edges using AA */
@@ -1375,7 +1375,7 @@ class pPie
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf * 2), "NoBorder" => TRUE];
 			$this->myPicture->drawPolygon($Plots["TopPoly"], $Settings);
 			if ($RecordImageMap) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots["TopPoly"]), $Settings["Color"]->toHTMLColor(), $AbscissaData[$SliceID], $DataSerieData[count($Slices) - $SliceID - 1]);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Plots["TopPoly"]), $Settings["Color"]->toHex(), $AbscissaData[$SliceID], $DataSerieData[count($Slices) - $SliceID - 1]);
 			}
 
 			foreach($Plots["AA"] as $Key => $Pos) {

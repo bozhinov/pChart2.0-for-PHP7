@@ -449,7 +449,7 @@ class pScatter
 						
 						if ($RecordImageMap) {
 							$RealValue = round($Data["Series"][$Series["X"]]["Data"][$Key], 2) . " / " . round($Data["Series"][$Series["Y"]]["Data"][$Key], 2);
-							$this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".floor($PlotSize + $BorderSize), $Series["Color"]->toHTMLColor(), $Description, $RealValue);
+							$this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".floor($PlotSize + $BorderSize), $Series["Color"]->toHex(), $Description, $RealValue);
 						}
 
 						if (isset($Series["Shape"])) {
@@ -502,7 +502,7 @@ class pScatter
 						
 						if ($RecordImageMap) {
 							$RealValue = round($Data["Series"][$Series["X"]]["Data"][$Key], 2) . " / " . round($Data["Series"][$Series["Y"]]["Data"][$Key], 2);
-							$this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".$ImageMapPlotSize, $Series["Color"]->toHTMLColor(), $Description, $RealValue);
+							$this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".$ImageMapPlotSize, $Series["Color"]->toHex(), $Description, $RealValue);
 						}
 						
 						if ($LastX != VOID && $LastY != VOID){
@@ -550,7 +550,7 @@ class pScatter
 					if ($X != VOID && $Y != VOID) {
 						$RealValue = round($Data["Series"][$Series["X"]]["Data"][$Key], 2) . " / " . round($Data["Series"][$Series["Y"]]["Data"][$Key], 2);
 						if ($RecordImageMap) {
-							$this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".$ImageMapPlotSize, $Series["Color"]->toHTMLColor(), $Description, $RealValue);
+							$this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".$ImageMapPlotSize, $Series["Color"]->toHex(), $Description, $RealValue);
 						}
 						$WayPoints[] = [$X,$Y];
 						$SplineSettings["Forces"][] = hypot(($X - $LastX),($Y - $LastY)) / 5; # GetDistance

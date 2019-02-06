@@ -307,7 +307,7 @@ class pRadar
 					$Y = sin(deg2rad($Angle + $AxisRotation)) * $Length + $CenterY;
 					$Plot[$ID][] = [$X,$Y,$Value];
 					if ($RecordImageMap) {
-						$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . floor($PointRadius), $Palette[$ID]->toHTMLColor(), $DataS["Description"], $Data["Series"][$LabelSerie]["Data"][$Key] . " = " . $Value);
+						$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . floor($PointRadius), $Palette[$ID]->toHex(), $DataS["Description"], $Data["Series"][$LabelSerie]["Data"][$Key] . " = " . $Value);
 					}
 				}
 
@@ -570,7 +570,7 @@ class pRadar
 					$X = cos(deg2rad($Angle + $AxisRotation)) * $Length + $CenterX;
 					$Y = sin(deg2rad($Angle + $AxisRotation)) * $Length + $CenterY;
 					if ($RecordImageMap) {
-						$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . floor($PointRadius), $Palette[$ID]->toHTMLColor(), $DataSet["Description"], $Data["Series"][$LabelSerie]["Data"][$Key] . "&deg = " . $Value);
+						$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . floor($PointRadius), $Palette[$ID]->toHex(), $DataSet["Description"], $Data["Series"][$LabelSerie]["Data"][$Key] . "&deg = " . $Value);
 					}
 
 					$Plot[$ID][] = [$X,$Y,$Value];

@@ -160,7 +160,7 @@ class pBubble
 
 			if ($RecordImageMap) {
 				$SerieDescription = (isset($Data[$SerieName]["Description"])) ? $Data[$SerieName]["Description"] : $SerieName;
-				$ImageMapColor = $ColorSettings["Color"]->toHTMLColor();
+				$ImageMapColor = $ColorSettings["Color"]->toHex();
 			}
 
 			foreach($Data[$SerieName]["Data"] as $iKey => $Point) {
