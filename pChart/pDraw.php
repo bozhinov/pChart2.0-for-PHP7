@@ -1061,8 +1061,7 @@ class pDraw
 	/* Draw an aliased pixel */
 	function drawAntialiasPixel($X, $Y, pColor $Color) # FAST
 	{
-		# Momchil: There is room for error here. The initial code does not allow for X if equals XSize
-		# Not a single imagesetpixel returns false though
+		# Momchil: example.drawingObjects -> drawRoundedFilledRectangle is set to start from -5
 		if ($X < 0 || $Y < 0 || ceil($X) > $this->XSize || ceil($Y) > $this->YSize){
 			return;
 		}
@@ -2621,23 +2620,20 @@ class pDraw
 			$Scale["XMax"] = $XMax;
 			/* Compute the needed decimals for the metric view to avoid repetition of the same X Axis labels */
 			if ($Mode == AXIS_FORMAT_METRIC && is_null($Format)) {
-				$Done = FALSE;
+
 				$GoodDecimals = 0;
 				for ($Decimals = 0; $Decimals <= 10; $Decimals++) {
-					if (!$Done) {
-						$LastLabel = "zob";
-						$ScaleOK = TRUE;
-						for ($i = 0; $i <= $Rows; $i++) {
-							$Value = $XMin + $i * $RowHeight;
-							$Label = $this->scaleFormat($Value, AXIS_FORMAT_METRIC, $Decimals);
-							($LastLabel == $Label) AND $ScaleOK = FALSE;
-							$LastLabel = $Label;
-						}
+					$LastLabel = "zob";
+					$ScaleOK = TRUE;
+					for ($i = 0; $i <= $Rows; $i++) {
+						$Label = $this->scaleFormat(($XMin + $i * $RowHeight), AXIS_FORMAT_METRIC, $Decimals);
+						($LastLabel == $Label) AND $ScaleOK = FALSE;
+						$LastLabel = $Label;
+					}
 
-						if ($ScaleOK) {
-							$Done = TRUE;
-							$GoodDecimals = $Decimals;
-						}
+					if ($ScaleOK) {
+						$GoodDecimals = $Decimals;
+						break;
 					}
 				}
 

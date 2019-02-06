@@ -809,30 +809,21 @@ class pPie
 			$YTop = $Y2 - $Height / 2 - 2;
 			$YBottom = $Y2 + $Height / 2 + 2;
 			if (!empty($this->LabelPos)) {
-				$Done = FALSE;
 				foreach($this->LabelPos as $Settings) {
-					if (!$Done) {
-						if (($YTop >= $Settings["YTop"] && $YTop <= $Settings["YBottom"]) || ($YBottom >= $Settings["YTop"] && $YBottom <= $Settings["YBottom"])){
-							
-							switch (TRUE) {
-								case ($Angle <= 90):
-									$this->shift(0, 180, -($Height + 2), $Reversed);
-									$Done = TRUE;
-									break;
-								case ($Angle > 90 && $Angle <= 180):
-									$this->shift(0, 180, -($Height + 2), $Reversed);
-									$Done = TRUE;
-									break;
-								case ($Angle > 180 && $Angle <= 270):
-									$this->shift(180, 360, ($Height + 2), $Reversed);
-									$Done = TRUE;
-									break;
-								case ($Angle > 270 && $Angle <= 360):
-									$this->shift(180, 360, ($Height + 2), $Reversed);
-									$Done = TRUE;
-									break;
-							}
-
+					if (($YTop >= $Settings["YTop"] && $YTop <= $Settings["YBottom"]) || ($YBottom >= $Settings["YTop"] && $YBottom <= $Settings["YBottom"])){
+						switch (TRUE) {
+							case ($Angle <= 90):
+								$this->shift(0, 180, -($Height + 2), $Reversed);
+								break 2;
+							case ($Angle > 90 && $Angle <= 180):
+								$this->shift(0, 180, -($Height + 2), $Reversed);
+								break 2;
+							case ($Angle > 180 && $Angle <= 270):
+								$this->shift(180, 360, ($Height + 2), $Reversed);
+								break 2;
+							case ($Angle > 270 && $Angle <= 360):
+								$this->shift(180, 360, ($Height + 2), $Reversed);
+								break 2;
 						}
 					}
 				}
@@ -1344,14 +1335,12 @@ class pPie
 		foreach($Slices as $SliceID => $Plots) {
 
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf), "NoBorder"=>TRUE];
-			$Outer = TRUE;
 			$Inner = FALSE;
 			$InnerPlotsA = [];
 			$InnerPlotsB = [];
 
 			foreach($Plots["Angle"] as $ID => $Angle) {
 				if ($Angle == VOID) {
-					$Outer = FALSE;
 					$Inner = TRUE;
 				} elseif ($Inner) {
 					if (($Angle < 90 || $Angle > 270) && isset($Plots["BottomPoly"][$ID * 2])) {
@@ -1412,14 +1401,12 @@ class pPie
 			
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf), "NoBorder"=>TRUE];
 			$Outer = TRUE;
-			$Inner = FALSE;
 			$OuterPlotsA = [];
 			$OuterPlotsB = []; 
 			
 			foreach($Plots["Angle"] as $ID => $Angle) {
 				if ($Angle == VOID) {
 					$Outer = FALSE;
-					$Inner = TRUE;
 				} elseif ($Outer) {
 					if (($Angle > 90 && $Angle < 270) && isset($Plots["BottomPoly"][$ID * 2])) {
 						$Xo = $Plots["BottomPoly"][$ID * 2];

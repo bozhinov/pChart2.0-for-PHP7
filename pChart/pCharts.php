@@ -161,12 +161,14 @@ class pCharts {
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
 					
 					foreach($PosArray as $Key => $X) {
-						if ($DisplayValues) $this->myPicture->drawText(
-							$X + $DisplayOffset + $SerieWeight + $BorderSize + $PicOffset,
-							$Y,
-							$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
-							["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]
-						);
+						if ($DisplayValues) {
+							$this->myPicture->drawText(
+								$X + $DisplayOffset + $SerieWeight + $BorderSize + $PicOffset,
+								$Y,
+								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
+								["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]
+							);
+						}
 						if ($X != VOID) {
 							if ($RecordImageMap) {
 								$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $SerieWeight, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
