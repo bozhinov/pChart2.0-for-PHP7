@@ -261,7 +261,7 @@ class pPie
 					$Angle = ($EndAngle - $Offset) / 2 + $Offset;
 					$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
 					$Yc = sin(deg2rad($Angle - 90)) * $Radius + $Y;
-					$Label = $DataSerieData[$Key];
+					$Label = $AbscissaData[$Key];
 					
 					if ($LabelStacked) {
 						$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Y, $Radius);
