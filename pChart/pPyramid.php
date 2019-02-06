@@ -50,7 +50,7 @@ class pPyramid
 				if (isset($this->myPicture->myData->Palette[$i])){
 					$Settings["Color"] = $this->myPicture->myData->Palette[$i]->newOne();
 				} else {
-					$Settings["Color"] = $this->myPicture->myData->getRandomColor();
+					$Settings["Color"] = new pColor();
 				}
 			}
 			
@@ -99,7 +99,7 @@ class pPyramid
 				if (isset($this->myPicture->myData->Palette[$i])){
 					$Settings["Color"] = $this->myPicture->myData->Palette[$i]->newOne();
 				} else {
-					$Settings["Color"] = $this->myPicture->myData->getRandomColor();
+					$Settings["Color"] = new pColor;
 				}
 			}
 			
@@ -123,7 +123,7 @@ class pPyramid
 			$this->myPicture->drawPolygon($Points, $Settings);
 		}
 
-	}	
+	}
 
 }
 

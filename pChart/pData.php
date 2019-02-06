@@ -5,7 +5,7 @@ pDraw - class to manipulate data arrays
 Version     : 2.3.0-dev
 Made by     : Jean-Damien POGOLOTTI
 Maintainedby: Momchil Bozhinov
-Last Update : 01/02/2018
+Last Update : 06/02/2019
 
 This file can be distributed under the license you can find at:
 http://www.pchart.net/license
@@ -102,7 +102,7 @@ class pData
 			"Weight" => NULL,
 			"XOffset" => 0,
 			"Shape" => SERIE_SHAPE_FILLEDCIRCLE,
-			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : $this->getRandomColor()
+			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : new pColor()
 		];
 	}
 
@@ -700,12 +700,6 @@ class pData
 
 	}
 
-	/* Returns a random color */
-	function getRandomColor($Alpha = 100)
-	{
-		return (new pColor(rand(0, 255), rand(0, 255), rand(0, 255), $Alpha));
-	}
-
 	/* Initialize a given scatter serie */
 	function initScatterSerie(int $ID)
 	{
@@ -719,7 +713,7 @@ class pData
 			"Picture" => NULL,
 			"Ticks" => NULL,
 			"Weight" => NULL,
-			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : $this->getRandomColor()
+			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : new pColor()
 		];
 	}
 

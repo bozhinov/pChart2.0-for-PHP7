@@ -1381,7 +1381,7 @@ class pCharts {
 							if (isset($ColorOverride[$ID])) {
 								$Settings = $ColorOverride[$ID];
 							} else {
-								$Settings = ["Color" => $this->myPicture->myData->getRandomColor()];
+								$Settings = ["Color" => new pColor()];
 							}
 						}
 
@@ -1497,7 +1497,7 @@ class pCharts {
 							if (isset($ColorOverride[$ID])) {
 								$Settings = $ColorOverride[$ID];
 							} else {
-								$Settings = ["Color" => $this->myPicture->myData->getRandomColor()];
+								$Settings = ["Color" => new pColor()];
 							}
 						}
 

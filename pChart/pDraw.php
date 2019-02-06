@@ -3412,7 +3412,7 @@ class pDraw
 							if (isset($OverrideColors[$Index])) {
 								$SerieFormat = $OverrideColors[$Index];
 							} else {
-								$SerieFormat = $this->myData->getRandomColor();
+								$SerieFormat = new pColor();
 							}
 						} else {
 							$SerieFormat = $Data["Series"][$SerieName]["Color"];
@@ -3501,7 +3501,7 @@ class pDraw
 							if (isset($OverrideColors[$Index])) {
 								$SerieFormat = $OverrideColors[$Index];
 							} else {
-								$SerieFormat = $this->myData->getRandomColor();
+								$SerieFormat = new pColor();
 							}
 						} else {
 							$SerieFormat = $Data["Series"][$SerieName]["Color"];

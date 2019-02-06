@@ -2,9 +2,9 @@
 /*
 pColor - Data structure for colors
 
-Version     : 0.0.1
+Version     : 0.0.2
 Made by     : Momchil Bozhinov
-Last Update : 01/01/2018
+Last Update : 06/02/2019
 
 */
 
@@ -17,7 +17,7 @@ class pColor {
 	var $B;
 	var $Alpha;
 
-	function __construct(int $R, int $G = 0, int $B = 0, float $Alpha = 100)
+	function __construct(int $R = 0, int $G = 0, int $B = 0, float $Alpha = 100)
 	{
 		($R < 0)	AND $R = 0;
 		($R > 255)	AND $R = 255;
@@ -38,6 +38,10 @@ class pColor {
 				($Alpha < 0) AND $Alpha = 0;
 				($Alpha > 100) AND $Alpha = 100;
 				break;
+			case 0: # random
+				$R = rand(0, 255);
+				$G = rand(0, 255);
+				$B = rand(0, 255);
 		}
 
 		$this->R = $R;

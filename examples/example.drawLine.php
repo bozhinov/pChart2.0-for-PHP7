@@ -30,7 +30,8 @@ $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
 /* Draw some lines */ 
 for($i=1;$i<=100;$i=$i+4)
 {
-	$myPicture->drawLine($i+5, 215, $i*7+5, 30, ["Color"=>$myPicture->myData->getRandomColor(),"Ticks"=>rand(0,4)]);
+	/* new pColor() == get random color */
+	$myPicture->drawLine($i+5, 215, $i*7+5, 30, ["Color"=>new pColor(),"Ticks"=>rand(0,4)]);
 }
 
 /* Draw an horizontal dashed line with extra weight */

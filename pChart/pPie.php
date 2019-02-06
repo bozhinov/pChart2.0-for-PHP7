@@ -112,7 +112,7 @@ class pPie
 				$Settings = ["Color" => $this->myPicture->ShadowColor];
 			} else {
 				if (!isset($Palette[$ID])) {
-					$Color = $this->myPicture->myData->getRandomColor();
+					$Color = new pColor();
 					$Palette[$ID] = $Color;
 					$this->myPicture->myData->savePalette($ID, $Color);
 
@@ -369,7 +369,7 @@ class pPie
 		$SliceAngle = [];
 		foreach($Values as $Value) {
 			if (!isset($Palette[$ID])) {
-				$Color = $this->myPicture->myData->getRandomColor();
+				$Color = new pColor();
 				$Palette[$ID] = $Color;
 				$this->myPicture->myData->savePalette($ID, $Color);
 			}
@@ -923,7 +923,7 @@ class pPie
 				$BorderSettings = $Settings;
 			} else {
 				if (!isset($Palette[$ID])) {
-					$Color = $this->myPicture->myData->getRandomColor();
+					$Color = new pColor();
 					$Palette[$ID] = $Color;
 					$this->myPicture->myData->savePalette($ID, $Color);
 				}
@@ -1139,7 +1139,7 @@ class pPie
 		foreach($Values as $Key => $Value) {
 
 			if (!isset($Palette[$ID])) {
-				$Color = $this->myPicture->myData->getRandomColor();
+				$Color = new pColor();
 				$Palette[$ID] = $Color;
 				$this->myPicture->myData->savePalette($ID, $Color);
 			}
