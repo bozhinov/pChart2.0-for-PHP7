@@ -1025,10 +1025,13 @@ class pPie
 
 				if ($i > 180 && $i < 270) {
 					$Xc++;
+					# Added due to a bug in example.draw2DRing
+					$Yc++;
 				}
 
 				if ($i >= 270) {
-					$Xc++;
+					# Commented out due to a bug in example.draw2DRing
+					#$Xc++;
 					$Yc++;
 				}
 
