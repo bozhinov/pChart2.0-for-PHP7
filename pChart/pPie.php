@@ -1117,6 +1117,7 @@ class pPie
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
 
 		/* Compute the scale */
+		$Values = array_reverse($Values);
 		$SerieSum = array_sum($Values);
 		$ScaleFactor = (360 - $WastedAngular) / $SerieSum;
 		$RestoreShadow = $this->myPicture->Shadow;
@@ -1126,14 +1127,12 @@ class pPie
 
 		/* Draw the polygon ring elements */
 		$Offset = 360;
-		$Values = array_reverse($Values);
-		$Slice = 0;
 		$Slices = [];
 		$SliceColors = [];
 
 		foreach($Values as $Key => $Value) {
 
-			$SliceColors[$Slice] = $Palette[$Key];
+			$SliceColors[$Key] = $Palette[$Key];
 			$EndAngle = $Offset - ($Value * $ScaleFactor);
 			($EndAngle < 0) AND $EndAngle = 0;
 			$Step = (rad2deg(1/$OuterRadius)) / 2;
@@ -1147,14 +1146,14 @@ class pPie
 				
 				$Xc = $cos * ($OuterRadius + $DataGapRadius - 2) + $X;
 				$Yc = $sin * ($OuterRadius + $DataGapRadius - 2) * $SkewFactor + $Y;
-				$Slices[$Slice]["AA"][] = [$Xc,$Yc];
+				$Slices[$Key]["AA"][] = [$Xc,$Yc];
 				$Xc = $cos * ($OuterRadius + $DataGapRadius - 1) + $X;
 				$Yc = $sin * ($OuterRadius + $DataGapRadius - 1) * $SkewFactor + $Y;
-				$Slices[$Slice]["AA"][] = [$Xc,$Yc];
+				$Slices[$Key]["AA"][] = [$Xc,$Yc];
 				$Xc = $cos * ($OuterRadius + $DataGapRadius) + $X;
 				$Yc = $sin * ($OuterRadius + $DataGapRadius) * $SkewFactor + $Y;
 				
-				$this->myPicture->drawAntialiasPixel($Xc, $Yc, $SliceColors[$Slice]);
+				$this->myPicture->drawAntialiasPixel($Xc, $Yc, $SliceColors[$Key]);
 				
 				if ($OutX1 == VOID) {
 					$OutX1 = $Xc;
@@ -1170,16 +1169,16 @@ class pPie
 					$Yc++;
 				}
 
-				$Slices[$Slice]["BottomPoly"][] = floor($Xc);
-				$Slices[$Slice]["BottomPoly"][] = floor($Yc);
-				$Slices[$Slice]["TopPoly"][] = floor($Xc);
-				$Slices[$Slice]["TopPoly"][] = floor($Yc) - $SliceHeight;
-				$Slices[$Slice]["Angle"][] = $i;
+				$Slices[$Key]["BottomPoly"][] = floor($Xc);
+				$Slices[$Key]["BottomPoly"][] = floor($Yc);
+				$Slices[$Key]["TopPoly"][] = floor($Xc);
+				$Slices[$Key]["TopPoly"][] = floor($Yc) - $SliceHeight;
+				$Slices[$Key]["Angle"][] = $i;
 			}
 
 			$OutX2 = $Xc;
 			$OutY2 = $Yc;
-			$Slices[$Slice]["Angle"][] = VOID;
+			$Slices[$Key]["Angle"][] = VOID;
 			$Lasti = $i;
 			$Step = (rad2deg(1/$InnerRadius)) / 2;
 			$InX1 = VOID;
@@ -1189,10 +1188,10 @@ class pPie
 				
 				$Xc = cos(deg2rad($i - 90)) * ($InnerRadius + $DataGapRadius - 1) + $X;
 				$Yc = sin(deg2rad($i - 90)) * ($InnerRadius + $DataGapRadius - 1) * $SkewFactor + $Y;
-				$Slices[$Slice]["AA"][] = [$Xc,$Yc];
+				$Slices[$Key]["AA"][] = [$Xc,$Yc];
 				$Xc = cos(deg2rad($i - 90)) * ($InnerRadius + $DataGapRadius) + $X;
 				$Yc = sin(deg2rad($i - 90)) * ($InnerRadius + $DataGapRadius) * $SkewFactor + $Y;
-				$Slices[$Slice]["AA"][] = [$Xc,$Yc];
+				$Slices[$Key]["AA"][] = [$Xc,$Yc];
 				
 				if ($InX1 == VOID) {
 					$InX1 = $Xc;
@@ -1208,32 +1207,32 @@ class pPie
 					$Yc++;
 				}
 
-				$Slices[$Slice]["BottomPoly"][] = floor($Xc);
-				$Slices[$Slice]["BottomPoly"][] = floor($Yc);
-				$Slices[$Slice]["TopPoly"][] = floor($Xc);
-				$Slices[$Slice]["TopPoly"][] = floor($Yc) - $SliceHeight;
-				$Slices[$Slice]["Angle"][] = $i;
+				$Slices[$Key]["BottomPoly"][] = floor($Xc);
+				$Slices[$Key]["BottomPoly"][] = floor($Yc);
+				$Slices[$Key]["TopPoly"][] = floor($Xc);
+				$Slices[$Key]["TopPoly"][] = floor($Yc) - $SliceHeight;
+				$Slices[$Key]["Angle"][] = $i;
 			}
 
 			$InX2 = $Xc;
 			$InY2 = $Yc;
-			$Slices[$Slice]["InX1"] = $InX1;
-			$Slices[$Slice]["InY1"] = $InY1;
-			$Slices[$Slice]["InX2"] = $InX2;
-			$Slices[$Slice]["InY2"] = $InY2;
-			$Slices[$Slice]["OutX1"] = $OutX1;
-			$Slices[$Slice]["OutY1"] = $OutY1;
-			$Slices[$Slice]["OutX2"] = $OutX2;
-			$Slices[$Slice]["OutY2"] = $OutY2;
+			$Slices[$Key]["InX1"] = $InX1;
+			$Slices[$Key]["InY1"] = $InY1;
+			$Slices[$Key]["InX2"] = $InX2;
+			$Slices[$Key]["InY2"] = $InY2;
+			$Slices[$Key]["OutX1"] = $OutX1;
+			$Slices[$Key]["OutY1"] = $OutY1;
+			$Slices[$Key]["OutX2"] = $OutX2;
+			$Slices[$Key]["OutY2"] = $OutY2;
+			
 			$Offset = $Lasti - $DataGapAngle;
-			$Slice++;
 		}
 
 		/* Draw the bottom pie splice */
 		foreach($Slices as $SliceID => $Plots) {
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne(), "NoBorder" => TRUE];
 			$this->myPicture->drawPolygon($Plots["BottomPoly"], $Settings);
-			foreach($Plots["AA"] as $Key => $Pos){
+			foreach($Plots["AA"] as $Pos){
 				$this->myPicture->drawAntialiasPixel($Pos[0], $Pos[1], $Settings["Color"]);
 			}
 			$this->myPicture->drawLine($Plots["InX1"], $Plots["InY1"], $Plots["OutX2"], $Plots["OutY2"], $Settings);
@@ -1244,11 +1243,13 @@ class pPie
 		$SliceColors = array_reverse($SliceColors);
 		/* Draw the vertical edges (semi-visible) */
 		foreach($Slices as $SliceID => $Plots) {
+			
 			$Settings = ["Color" =>  $SliceColors[$SliceID]->newOne()->RGBChange($Cf), "NoBorder" => TRUE];
 			$StartAngle = $Plots["Angle"][0];
-			foreach($Plots["Angle"] as $Key => $Angle) {
+			
+			foreach($Plots["Angle"] as $ID => $Angle) {
 				if ($Angle == VOID) {
-					$EndAngle = $Plots["Angle"][$Key - 1];
+					$EndAngle = $Plots["Angle"][$ID - 1];
 				}
 			}
 
@@ -1262,15 +1263,11 @@ class pPie
 
 			$this->myPicture->drawLine($Plots["InX1"], $Plots["InY1"], $Plots["InX1"], $Plots["InY1"] - $SliceHeight, $Settings);
 			$this->myPicture->drawLine($Plots["InX2"], $Plots["InY2"], $Plots["InX2"], $Plots["InY2"] - $SliceHeight, $Settings);
-		}
 
-		/* Draw the inner vertical slices */
-		foreach($Slices as $SliceID => $Plots) {
-
+			/* Draw the inner vertical slices */
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf), "NoBorder"=>TRUE];
 			$Inner = FALSE;
 			$InnerPlotsA = [];
-			$InnerPlotsB = [];
 
 			foreach($Plots["Angle"] as $ID => $Angle) {
 				if ($Angle == VOID) {
@@ -1285,19 +1282,10 @@ class pPie
 				}
 			}
 
-			(!empty($InnerPlotsA)) AND $this->myPicture->drawPolygon(array_merge($InnerPlotsA, $this->myPicture->reversePlots($InnerPlotsB)), $Settings);
-			
-		}
+			(!empty($InnerPlotsA)) AND $this->myPicture->drawPolygon($InnerPlotsA, $Settings);
 
-		/* Draw the splice top and left poly */
-		foreach($Slices as $SliceID => $Plots) {
+			/* Draw the splice top and left poly */
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf * 1.5), "NoBorder" => TRUE];
-			$StartAngle = $Plots["Angle"][0];
-			foreach($Plots["Angle"] as $Key => $Angle) {
-				if ($Angle == VOID) {
-					$EndAngle = $Plots["Angle"][$Key - 1];
-				}
-			}
 
 			if ($StartAngle < 180) {
 				$Points = [$Plots["InX2"], $Plots["InY2"], $Plots["InX2"], $Plots["InY2"] - $SliceHeight, $Plots["OutX1"], $Plots["OutY1"] - $SliceHeight, $Plots["OutX1"], $Plots["OutY1"]];
@@ -1308,18 +1296,10 @@ class pPie
 				$Points = [$Plots["InX1"], $Plots["InY1"], $Plots["InX1"], $Plots["InY1"] - $SliceHeight, $Plots["OutX2"], $Plots["OutY2"] - $SliceHeight, $Plots["OutX2"], $Plots["OutY2"]];
 				$this->myPicture->drawPolygon($Points, $Settings);
 			}
-		}
 
-		/* Draw the vertical edges (visible) */
-		foreach($Slices as $SliceID => $Plots) {
+			/* Draw the vertical edges (visible) */
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf), "NoBorder" => TRUE];
-			$StartAngle = $Plots["Angle"][0];
-			foreach($Plots["Angle"] as $Key => $Angle) {
-				if ($Angle == VOID) {
-					$EndAngle = $Plots["Angle"][$Key - 1];
-				}
-			}
-
+			
 			if ($StartAngle <= 270 && $StartAngle >= 90) {
 				$this->myPicture->drawLine($Plots["OutX1"], $Plots["OutY1"], $Plots["OutX1"], $Plots["OutY1"] - $SliceHeight, $Settings);
 			}
@@ -1327,11 +1307,8 @@ class pPie
 			if ($EndAngle <= 270 && $EndAngle >= 90) {
 				$this->myPicture->drawLine($Plots["OutX2"], $Plots["OutY2"], $Plots["OutX2"], $Plots["OutY2"] - $SliceHeight, $Settings);
 			}
-		}
-
-		/* Draw the outer vertical slices */
-		foreach($Slices as $SliceID => $Plots) {
 			
+			/* Draw the outer vertical slices */
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf), "NoBorder"=>TRUE];
 			$Outer = TRUE;
 			$OuterPlotsA = [];
