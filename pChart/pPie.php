@@ -26,7 +26,6 @@ define("PIE_VALUE_OUTSIDE", 140031);
 /* pPie class definition */
 class pPie
 {
-
 	var $LabelPos = [];
 	var $myPicture;
 	
@@ -379,13 +378,7 @@ class pPie
 			$EndAngle = $Offset - ($Value * $ScaleFactor);
 			($EndAngle < 0) AND $EndAngle = 0;
 
-			#if ($StartAngle > 180) {
-				$Visible[$Key]["Start"] = TRUE;
-			#} else {
-			#	$Visible[$Key]["Start"] = TRUE; # TODO
-			#}
-
-			$Visible[$Key]["End"] = ($EndAngle < 180) ? FALSE : TRUE;
+			$Visible[$Key] = ["Start" => TRUE, "End" => ($EndAngle > 180)];
 
 			if ($DataGapAngle == 0) {
 				$X0 = $X;
@@ -399,16 +392,19 @@ class pPie
 			$Slices[$Key][] = $X0;
 			$Slices[$Key][] = $Y0;
 			$SliceAngle[$Key][] = 0;
+			
 			for ($i = $Offset; $i >= $EndAngle; $i = $i - $Step) {
 				$Xc = cos(deg2rad($i - 90)) * $Radius + $X;
 				$Yc = sin(deg2rad($i - 90)) * $Radius * $SkewFactor + $Y;
-				(($SecondPass || $RestoreShadow) && ($i < 90)) AND $Yc++;
-				(($SecondPass || $RestoreShadow) && ($i > 90 && $i < 180)) AND $Xc++;
-				(($SecondPass || $RestoreShadow) && ($i > 180 && $i < 270)) AND $Xc++;
-		
-				if (($SecondPass || $RestoreShadow) && ($i >= 270)) {
-					$Xc++;
-					$Yc++;
+				
+				if ($SecondPass || $RestoreShadow){
+					($i < 90) AND $Yc++;
+					($i > 90 && $i < 180) AND $Xc++;
+					($i > 180 && $i < 270) AND $Xc++;
+					if ($i >= 270) {
+						$Xc++;
+						$Yc++;
+					}
 				}
 
 				$Slices[$Key][] = $Xc;
@@ -477,7 +473,7 @@ class pPie
 		$SliceColorsR = array_reverse($SliceColors);
 		foreach($SlicesR as $SliceID => $Plots) {
 			$Settings = ["Color" => $SliceColorsR[$SliceID]->newOne()->RGBChange(10), "NoBorder"=>TRUE];
-			if ($Visible[$SliceID]["Start"] && isset($Plots[2])) /* Empty error handling */ {
+			if (isset($Plots[2])) /* $Visible[$SliceID]["Start"] &&  */ {
 				$this->myPicture->drawLine($Plots[2], $Plots[3], $Plots[2], $Plots[3] - $SliceHeight, $Settings);
 				$this->myPicture->drawPolygon(
 					[$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $Plots[2], $Plots[3] - $SliceHeight, $Plots[2], $Plots[3]],
@@ -487,18 +483,21 @@ class pPie
 		}
 
 		foreach($Slices as $SliceID => $Plots) {
+			
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange(10), "NoBorder"=>TRUE];
+			$PlotCount = count($Plots);
+			
 			if ($Visible[$SliceID]["End"]) {
-				$this->myPicture->drawLine($Plots[count($Plots) - 2], $Plots[count($Plots) - 1], $Plots[count($Plots) - 2], $Plots[count($Plots) - 1] - $SliceHeight, $Settings);
+				$this->myPicture->drawLine($Plots[$PlotCount - 2], $Plots[$PlotCount - 1], $Plots[$PlotCount - 2], $Plots[$PlotCount - 1] - $SliceHeight, $Settings);
 				$this->myPicture->drawPolygon(
-					[$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $Plots[count($Plots) - 2], $Plots[count($Plots) - 1] - $SliceHeight, $Plots[count($Plots) - 2], $Plots[count($Plots) - 1]],
+					[$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $Plots[$PlotCount - 2], $Plots[$PlotCount - 1] - $SliceHeight, $Plots[$PlotCount - 2], $Plots[$PlotCount - 1]],
 					$Settings
 				);
 			}
 
 			/* Draw the rounded edges */
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange(10), "NoBorder" => TRUE];
-			for ($j = 2; $j < count($Plots) - 2; $j = $j + 2) {
+			for ($j = 2; $j <$PlotCount - 2; $j += 2) {
 				$Angle = $SliceAngle[$SliceID][$j / 2];
 				if ($Angle < 270 && $Angle > 90) {
 					$this->myPicture->drawPolygon(
@@ -546,13 +545,11 @@ class pPie
 					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $Settings);
 				}
 			}
-		}
 
-		/* Draw the top splice */
-		foreach($Slices as $SliceID => $Plots) {
+			/* Draw the top splice */
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange(20)];
 			$Top = [];
-			for ($j = 0; $j < count($Plots); $j = $j + 2) {
+			for ($j = 0; $j < $PlotCount; $j += 2) {
 				$Top[] = $Plots[$j];
 				$Top[] = $Plots[$j + 1] - $SliceHeight;
 			}
@@ -566,16 +563,17 @@ class pPie
 		if ($SecondPass) {
 			$Step = rad2deg(1/$Radius);
 			$Offset = 360;
+
 			foreach($Values as $Key => $Value) {
-				$FirstPoint = TRUE;
-				$Settings = [];
+
 				if ($Shadow) {
 					$Settings = ["Color" => $this->myPicture->ShadowColor];
 				} else {
 					if ($Border) {
-						$Settings["Color"] = $Palette[$Key]->newOne()->RGBChange(30);
+						$Settings = ["Color" => $Palette[$Key]->newOne()->RGBChange(30)];
 					} else {
-						$Settings = $Palette[$Key];
+						# Momchil: No example goes in here
+						$Settings = ["Color" => $Palette[$Key]];
 					}
 				}
 
@@ -596,10 +594,9 @@ class pPie
 				for ($i = $Offset; $i >= $EndAngle; $i = $i - $Step) {
 					$Xc = cos(deg2rad($i - 90)) * $Radius + $X;
 					$Yc = sin(deg2rad($i - 90)) * $Radius * $SkewFactor + $Y - $SliceHeight;
-					if ($FirstPoint) {
+					if ($Key == 0) {
 						$this->myPicture->drawLine($Xc, $Yc, $X0, $Y0, $Settings);
 					}
-					$FirstPoint = FALSE;
 
 					$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Settings["Color"]);
 					if ($i < 270 && $i > 90) {
@@ -807,7 +804,6 @@ class pPie
 	}
 
 	/* Internally used to shift label positions */
-
 	function shift($StartAngle, $EndAngle, $Offset, $Reversed)
 	{
 		if ($Reversed) {
@@ -824,7 +820,6 @@ class pPie
 	}
 
 	/* Internally used to write the re-computed labels */
-
 	function writeShiftedLabels()
 	{
 
@@ -1385,8 +1380,8 @@ class pPie
 		$this->myPicture->Shadow = $RestoreShadow;
 	}
 	
-	function get_palette(array $Points){
-		
+	function get_palette(array $Points)
+	{
 		$Palette = $this->myPicture->myData->getPalette();
 
 		$NewPalette = [];
