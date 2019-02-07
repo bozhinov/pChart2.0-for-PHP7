@@ -567,13 +567,13 @@ class pPie
 			foreach($Values as $Key => $Value) {
 
 				if ($Shadow) {
-					$Settings = ["Color" => $this->myPicture->ShadowColor];
+					$Color = $this->myPicture->ShadowColor;
 				} else {
 					if ($Border) {
-						$Settings = ["Color" => $Palette[$Key]->newOne()->RGBChange(30)];
+						$Color = $Palette[$Key]->newOne()->RGBChange(30);
 					} else {
 						# Momchil: No example goes in here
-						$Settings = ["Color" => $Palette[$Key]];
+						$Color = $Palette[$Key];
 					}
 				}
 
@@ -595,16 +595,16 @@ class pPie
 					$Xc = cos(deg2rad($i - 90)) * $Radius + $X;
 					$Yc = sin(deg2rad($i - 90)) * $Radius * $SkewFactor + $Y - $SliceHeight;
 					if ($Key == 0) {
-						$this->myPicture->drawLine($Xc, $Yc, $X0, $Y0, $Settings);
+						$this->myPicture->drawLine($Xc, $Yc, $X0, $Y0, ["Color" => $Color]);
 					}
 
-					$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Settings["Color"]);
+					$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Color);
 					if ($i < 270 && $i > 90) {
-						$this->myPicture->drawAntialiasPixel($Xc, $Yc + $SliceHeight, $Settings["Color"]);
+						$this->myPicture->drawAntialiasPixel($Xc, $Yc + $SliceHeight, $Color);
 					}
 				}
 
-				$this->myPicture->drawLine($Xc, $Yc, $X0, $Y0, $Settings);
+				$this->myPicture->drawLine($Xc, $Yc, $X0, $Y0, ["Color" => $Color]);
 				$Offset = $i - $DataGapAngle;
 			}
 		}
