@@ -97,8 +97,6 @@ class pDraw
 {
 
 	var $aColorCache = [];
-	/* Last generated chart info */
-	var $isChartLayoutStacked = FALSE; // Last layout : regular or stacked
 	/* Image settings, size, quality, .. */
 	var $XSize = 0; // Width of the picture
 	var $YSize = 0; // Height of the picture
@@ -3362,16 +3360,14 @@ class pDraw
 	/* Write labels */
 	function writeLabel(array $SeriesName, array $Indexes, array $Format = [])
 	{
-		$OverrideTitle = NULL;
-		$ForceLabels = [];
-		$DrawPoint = LABEL_POINT_BOX;
-		$DrawVerticalLine = FALSE;
-		$OverrideColors = [];
-		$VerticalLineColor = new pColor(0,0,0,40);
-		$VerticalLineTicks = 2;
-		
-		/* Override defaults */
-		extract($Format);
+		$OverrideTitle = isset($Format["OverrideTitle"]) ? $Format["OverrideTitle"] : NULL;
+		$ForceLabels = 	isset($Format["ForceLabels"]) ? $Format["ForceLabels"] : [];
+		$DrawPoint = 	isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
+		$DrawVerticalLine = isset($Format["DrawVerticalLine"]) ? $Format["DrawVerticalLine"] : FALSE;
+		$OverrideColors = isset($Format["OverrideColors"]) ? $Format["OverrideColors"] : [];
+		$VerticalLineColor = isset($Format["VerticalLineColor"]) ? $Format["VerticalLineColor"] : new pColor(0,0,0,40);
+		$VerticalLineTicks = isset($Format["VerticalLineTicks"]) ? $Format["VerticalLineTicks"] : 2;
+		$forStackedChart = isset($Format["forStackedChart"]) ? $Format["forStackedChart"] : FALSE;
 		
 		list($XMargin, $XDivs) = $this->myData->scaleGetXSettings();
 		$Data = $this->myData->getData();
@@ -3446,7 +3442,7 @@ class pDraw
 							$Caption = $this->scaleFormat($Value, $Data["Axis"][$AxisID]["Display"], $Data["Axis"][$AxisID]["Format"], $Data["Axis"][$AxisID]["Unit"]);
 						}
 
-						if ($this->isChartLayoutStacked) {
+						if ($forStackedChart) {
 							$LookFor = ($Value >= 0) ? "+" : "-";
 							$Value = 0;
 							foreach($Data["Series"] as $Name => $SerieLookup) {
@@ -3535,7 +3531,7 @@ class pDraw
 							$Caption = $this->scaleFormat($Value, $Data["Axis"][$AxisID]["Display"],  $Data["Axis"][$AxisID]["Format"], $Data["Axis"][$AxisID]["Unit"]);
 						}
 
-						if ($this->isChartLayoutStacked) {
+						if ($forStackedChart) {
 							$LookFor = ($Value >= 0) ? "+" : "-";
 							$Value = 0;
 							foreach($Data["Series"] as $Name => $SerieLookup) {

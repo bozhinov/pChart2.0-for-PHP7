@@ -21,6 +21,7 @@
   o Sandbox: code improvements
   o ImageMapper: map failed to load on first attempt
   o Using rad2deg in favour of manual calculation
+  o pDraw->isChartLayoutStacked flag is now passed to writeLabel (example.drawLabel.stacked)
   
  2.2.3 -----------------------------------------------------------------------
   o Cleaned up code

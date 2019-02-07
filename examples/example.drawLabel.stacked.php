@@ -25,19 +25,19 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,["StartColor"=>new pColor(240,240,240,20), "EndColor"=>new pColor(180,180,180,20)]);
 
 /* Set the default font properties */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
 
 /* Draw the scale and the chart */ 
 $myPicture->setGraphArea(60,20,680,190);
 $myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSubTicks"=>TRUE,"Mode"=>SCALE_MODE_ADDALL_START0]);
 
-(new pCharts($myPicture))->drawStackedAreaChart(array("DrawPlot"=>TRUE,"DrawLine"=>TRUE,"LineSurrounding"=>-20));
+(new pCharts($myPicture))->drawStackedAreaChart(["DrawPlot"=>TRUE,"DrawLine"=>TRUE,"LineSurrounding"=>-20]);
 
 /* Turn on shadow processing */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Write a label */
-$myPicture->writeLabel(["Frontend #1","Frontend #2","Frontend #3"],[1],["DrawVerticalLine"=>TRUE]);
+$myPicture->writeLabel(["Frontend #1","Frontend #2","Frontend #3"],[1],["DrawVerticalLine" => TRUE, "forStackedChart" => TRUE]);
 
 /* Write the chart legend */ 
 $myPicture->drawLegend(480,210,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
