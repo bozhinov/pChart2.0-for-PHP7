@@ -140,39 +140,22 @@ class pPie
 								
 				if ($SecondPass){
 					
-					# Momchil: Visial fix. No idea why this is required
-					# example: example.draw2DPie
-					if ($i > 265 && $i < 270) {
-						$Yc++;
-					}
-					
-					if ($i > 90 && $i < 95) {
-						$Yc++;
-					}
-					# End Visial fix
-					
 					if ($i < 90) {
 						$Yc++;
 					}
 					
-					# $i >= 90 && $i =< 180
-
 					if ($i > 180 && $i < 270) {
 						$Xc++;
-					}
-
-					if ($i >= 270) {
-						$Xc++;
-						$Yc++;
-					}
-				
+					}				
 				}
 
 				$Plots[] = $Xc;
-				$Plots[] = $Yc;
-			}
+				$Plots[] = round($Yc);
 
+			}
+			
 			$this->myPicture->drawPolygon($Plots, $Settings);
+			
 			if ($RecordImageMap && !$Shadow) {
 				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$Key]->toHex(), $AbscissaData[$Key], $Value);
 			}
@@ -231,12 +214,15 @@ class pPie
 				$Plots[] = $X0;
 				$Plots[] = $Y0;
 				for ($i = $Offset; $i <= $EndAngle; $i += $Step) {
-					$Xc = cos(deg2rad($i - 90)) * $Radius + $X;
+					$Xc = cos(deg2rad($i - 90)) * $Radius + $X - 1;
 					$Yc = sin(deg2rad($i - 90)) * $Radius + $Y;
 					if ($i == $Offset) {
-						$this->myPicture->drawLine($Xc, $Yc, $X0, $Y0, $Settings);
+						# Momchil: visual fix
+						$this->myPicture->drawLine($Xc+0.2, $Yc, $X0+0.4, $Y0, $Settings);
 					} 
 					$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Settings["Color"]);
+					# Momchil: visual fix
+					$this->myPicture->drawAntialiasPixel($Xc + 1, $Yc, $Settings["Color"]);
 				}
 
 				$this->myPicture->drawLine($Xc, $Yc, $X0, $Y0, $Settings);
@@ -920,8 +906,10 @@ class pPie
 			($EndAngle > 360) AND $EndAngle = 360;
 			
 			for ($i = $Offset; $i <= $EndAngle; $i += $Step) {
+				
 				$Xc = cos(deg2rad($i - 90)) * $OuterRadius + $X;
 				$Yc = sin(deg2rad($i - 90)) * $OuterRadius + $Y;
+				
 				if (!isset($Boundaries[0]["X1"])) {
 					$Boundaries[0]["X1"] = $Xc;
 					$Boundaries[0]["Y1"] = $Yc;
@@ -942,15 +930,17 @@ class pPie
 				}
 
 				$Plots[] = $Xc;
-				$Plots[] = $Yc;
+				$Plots[] = round($Yc);
 			}
 
 			$Boundaries[1]["X1"] = $Xc;
 			$Boundaries[1]["Y1"] = $Yc;
 			$Lasti = $EndAngle;
 			for ($i = $EndAngle; $i >= $Offset; $i = $i - $Step) {
+				
 				$Xc = cos(deg2rad($i - 90)) * ($InnerRadius - 1) + $X;
 				$Yc = sin(deg2rad($i - 90)) * ($InnerRadius - 1) + $Y;
+				
 				if (!isset($Boundaries[1]["X2"])) {
 					$Boundaries[1]["X2"] = $Xc;
 					$Boundaries[1]["Y2"] = $Yc;
@@ -959,32 +949,22 @@ class pPie
 				$AAPixels[] = [$Xc,$Yc];
 				$Xc = cos(deg2rad($i - 90)) * $InnerRadius + $X;
 				$Yc = sin(deg2rad($i - 90)) * $InnerRadius + $Y;
+				
 				if ($i < 90) {
 					$Yc++;
 				}
-				
-				# Visial fix added due to a bug in example.draw2DRing
-				if ($i > 265 && $i < 270) {
-					$Yc++;
-				}
-				
-				if ($i > 90 && $i < 95) {
-					$Yc++;
-				}
-				# End Visial fix
 								
 				if ($i > 180 && $i < 270) {
 					$Xc++;
 				}
 
 				if ($i >= 270) {
-					# Commented out due to a bug in example.draw2DRing
-					#$Xc++;
+					$Xc = round($Xc);
 					$Yc++;
 				}
 
 				$Plots[] = $Xc;
-				$Plots[] = $Yc;
+				$Plots[] = round($Yc);
 			}
 
 			$Boundaries[0]["X2"] = $Xc;
