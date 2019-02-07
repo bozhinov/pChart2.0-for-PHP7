@@ -3833,31 +3833,28 @@ class pDraw
 		$a = deg2rad($Angle);
 		$ca = cos($a);
 		$sa = sin($a);
-		$RealPos = [];
+		$Pos = [];
 		for ($i = 0; $i < 7; $i+= 2) {
-			$RealPos[$i / 2]["X"] = $X + round($coords[$i] * $ca + $coords[$i + 1] * $sa);
-			$RealPos[$i / 2]["Y"] = $Y + round($coords[$i + 1] * $ca - $coords[$i] * $sa);
+			$Pos[$i / 2]["X"] = $X + round($coords[$i] * $ca + $coords[$i + 1] * $sa);
+			$Pos[$i / 2]["Y"] = $Y + round($coords[$i + 1] * $ca - $coords[$i] * $sa);
 		}
 
-		$RealPos[TEXT_ALIGN_BOTTOMLEFT]["X"] = $RealPos[0]["X"];
-		$RealPos[TEXT_ALIGN_BOTTOMLEFT]["Y"] = $RealPos[0]["Y"];
-		$RealPos[TEXT_ALIGN_BOTTOMRIGHT]["X"] = $RealPos[1]["X"];
-		$RealPos[TEXT_ALIGN_BOTTOMRIGHT]["Y"] = $RealPos[1]["Y"];
-		$RealPos[TEXT_ALIGN_TOPLEFT]["X"] = $RealPos[3]["X"];
-		$RealPos[TEXT_ALIGN_TOPLEFT]["Y"] = $RealPos[3]["Y"];
-		$RealPos[TEXT_ALIGN_TOPRIGHT]["X"] = $RealPos[2]["X"];
-		$RealPos[TEXT_ALIGN_TOPRIGHT]["Y"] = $RealPos[2]["Y"];
-		$RealPos[TEXT_ALIGN_BOTTOMMIDDLE]["X"] = ($RealPos[1]["X"] - $RealPos[0]["X"]) / 2 + $RealPos[0]["X"];
-		$RealPos[TEXT_ALIGN_BOTTOMMIDDLE]["Y"] = ($RealPos[0]["Y"] - $RealPos[1]["Y"]) / 2 + $RealPos[1]["Y"];
-		$RealPos[TEXT_ALIGN_TOPMIDDLE]["X"] = ($RealPos[2]["X"] - $RealPos[3]["X"]) / 2 + $RealPos[3]["X"];
-		$RealPos[TEXT_ALIGN_TOPMIDDLE]["Y"] = ($RealPos[3]["Y"] - $RealPos[2]["Y"]) / 2 + $RealPos[2]["Y"];
-		$RealPos[TEXT_ALIGN_MIDDLELEFT]["X"] = ($RealPos[0]["X"] - $RealPos[3]["X"]) / 2 + $RealPos[3]["X"];
-		$RealPos[TEXT_ALIGN_MIDDLELEFT]["Y"] = ($RealPos[0]["Y"] - $RealPos[3]["Y"]) / 2 + $RealPos[3]["Y"];
-		$RealPos[TEXT_ALIGN_MIDDLERIGHT]["X"] = ($RealPos[1]["X"] - $RealPos[2]["X"]) / 2 + $RealPos[2]["X"];
-		$RealPos[TEXT_ALIGN_MIDDLERIGHT]["Y"] = ($RealPos[1]["Y"] - $RealPos[2]["Y"]) / 2 + $RealPos[2]["Y"];
-		$RealPos[TEXT_ALIGN_MIDDLEMIDDLE]["X"] = ($RealPos[1]["X"] - $RealPos[3]["X"]) / 2 + $RealPos[3]["X"];
-		$RealPos[TEXT_ALIGN_MIDDLEMIDDLE]["Y"] = ($RealPos[0]["Y"] - $RealPos[2]["Y"]) / 2 + $RealPos[2]["Y"];
-		return $RealPos;
+		$Pos[TEXT_ALIGN_BOTTOMLEFT] = $Pos[0];
+		$Pos[TEXT_ALIGN_BOTTOMRIGHT] = $Pos[1];
+		$Pos[TEXT_ALIGN_TOPLEFT] = $Pos[3];
+		$Pos[TEXT_ALIGN_TOPRIGHT] = $Pos[2];
+		$Pos[TEXT_ALIGN_BOTTOMMIDDLE]["X"] = ($Pos[1]["X"] - $Pos[0]["X"]) / 2 + $Pos[0]["X"];
+		$Pos[TEXT_ALIGN_BOTTOMMIDDLE]["Y"] = ($Pos[0]["Y"] - $Pos[1]["Y"]) / 2 + $Pos[1]["Y"];
+		$Pos[TEXT_ALIGN_TOPMIDDLE]["X"] = ($Pos[2]["X"] - $Pos[3]["X"]) / 2 + $Pos[3]["X"];
+		$Pos[TEXT_ALIGN_TOPMIDDLE]["Y"] = ($Pos[3]["Y"] - $Pos[2]["Y"]) / 2 + $Pos[2]["Y"];
+		$Pos[TEXT_ALIGN_MIDDLELEFT]["X"] = ($Pos[0]["X"] - $Pos[3]["X"]) / 2 + $Pos[3]["X"];
+		$Pos[TEXT_ALIGN_MIDDLELEFT]["Y"] = ($Pos[0]["Y"] - $Pos[3]["Y"]) / 2 + $Pos[3]["Y"];
+		$Pos[TEXT_ALIGN_MIDDLERIGHT]["X"] = ($Pos[1]["X"] - $Pos[2]["X"]) / 2 + $Pos[2]["X"];
+		$Pos[TEXT_ALIGN_MIDDLERIGHT]["Y"] = ($Pos[1]["Y"] - $Pos[2]["Y"]) / 2 + $Pos[2]["Y"];
+		$Pos[TEXT_ALIGN_MIDDLEMIDDLE]["X"] = ($Pos[1]["X"] - $Pos[3]["X"]) / 2 + $Pos[3]["X"];
+		$Pos[TEXT_ALIGN_MIDDLEMIDDLE]["Y"] = ($Pos[0]["Y"] - $Pos[2]["Y"]) / 2 + $Pos[2]["Y"];
+		
+		return $Pos;
 	}
 
 	/* Set current font properties */
