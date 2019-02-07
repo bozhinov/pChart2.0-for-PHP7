@@ -629,13 +629,13 @@ class pDraw
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Segments = isset($Format["Segments"]) ? $Format["Segments"] : NULL;
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
-		$NoDraw = isset($Format["NoDraw"]) ? (bool)$Format["NoDraw"] : FALSE;
+		$NoDraw = isset($Format["NoDraw"]) ? $Format["NoDraw"] : FALSE;
 		$Weight = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
-		$ShowControl = isset($Format["ShowControl"]) ? (bool)$Format["ShowControl"] : FALSE;
-		$DrawArrow = isset($Format["DrawArrow"]) ? (bool)$Format["DrawArrow"] : FALSE;
+		$ShowControl = isset($Format["ShowControl"]) ? $Format["ShowControl"] : FALSE;
+		$DrawArrow = isset($Format["DrawArrow"]) ? $Format["DrawArrow"] : FALSE;
 		$ArrowSize = isset($Format["ArrowSize"]) ? $Format["ArrowSize"] : 10;
 		$ArrowRatio = isset($Format["ArrowRatio"]) ? $Format["ArrowRatio"] : .5;
-		$ArrowTwoHeads = isset($Format["ArrowTwoHeads"]) ? (bool)$Format["ArrowTwoHeads"] : FALSE;
+		$ArrowTwoHeads = isset($Format["ArrowTwoHeads"]) ? $Format["ArrowTwoHeads"] : FALSE;
 		
 		if (is_null($Segments)) {
 			$Length = hypot(($X2 - $X1),($Y2 - $Y1));
@@ -725,7 +725,7 @@ class pDraw
 		$Threshold = isset($Format["Threshold"]) ? $Format["Threshold"] : [];
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$Weight = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
-		$Mode = isset($Format["Mode"]) ? (bool)$Format["Mode"] : 1;
+		$Mode = isset($Format["Mode"]) ? $Format["Mode"] : 1;
 		
 		# NULL == 0
 		# Keep it as some of the examples pass 0 for Ticks
@@ -1697,7 +1697,7 @@ class pDraw
 		$BackgroundColor2 = isset($Format["BackgroundColor2"]) ? ["Color" => $Format["BackgroundColor2"]] : ["Color" => new pColor(230,230,230,20)];
 		$LabelingMethod = isset($Format["LabelingMethod"]) ? $Format["LabelingMethod"] : LABELING_ALL;
 		$LabelSkip = isset($Format["LabelSkip"]) ? $Format["LabelSkip"] : 0;
-		$LabelRotation = isset($Format["LabelRotation"]) ? (int)$Format["LabelRotation"] : 0;
+		$LabelRotation = isset($Format["LabelRotation"]) ? $Format["LabelRotation"] : 0;
 		$RemoveSkippedAxis = isset($Format["RemoveSkippedAxis"]) ? $Format["RemoveSkippedAxis"] : FALSE;
 		$SkippedAxisTicks = isset($Format["SkippedAxisTicks"]) ? $Format["SkippedAxisTicks"] : $GridTicks + 2;
 		$SkippedAxisColor = isset($Format["SkippedAxisColor"]) ? $Format["SkippedAxisColor"] : $GridColor["Color"]->newOne()->AlphaChange(-30);
@@ -3361,8 +3361,8 @@ class pDraw
 	function writeLabel(array $SeriesName, array $Indexes, array $Format = [])
 	{
 		$OverrideTitle = isset($Format["OverrideTitle"]) ? $Format["OverrideTitle"] : NULL;
-		$ForceLabels = 	isset($Format["ForceLabels"]) ? $Format["ForceLabels"] : [];
-		$DrawPoint = 	isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
+		$ForceLabels = isset($Format["ForceLabels"]) ? $Format["ForceLabels"] : [];
+		$DrawPoint = isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
 		$DrawVerticalLine = isset($Format["DrawVerticalLine"]) ? $Format["DrawVerticalLine"] : FALSE;
 		$OverrideColors = isset($Format["OverrideColors"]) ? $Format["OverrideColors"] : [];
 		$VerticalLineColor = isset($Format["VerticalLineColor"]) ? $Format["VerticalLineColor"] : new pColor(0,0,0,40);
