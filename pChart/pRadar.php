@@ -91,8 +91,8 @@ class pRadar
 		($DrawTicks == FALSE) AND $TicksLength = 0;
 		
 		/* Data Processing */
-		$Data = $this->myPicture->myData->Data;
-		$Palette = $this->myPicture->myData->Palette;
+		$Data = $this->myPicture->myData->getData();
+		$Palette = $this->myPicture->myData->getPalette();
 		/* Catch the number of required axis */
 		$LabelSerie = $Data["Abscissa"];
 		if ($LabelSerie != "") {
@@ -424,8 +424,8 @@ class pRadar
 		($DrawTicks == FALSE) AND $TicksLength = 0;
 		
 		/* Data Processing */
-		$Data = $this->myPicture->myData->Data;
-		$Palette = $this->myPicture->myData->Palette;
+		$Data = $this->myPicture->myData->getData();
+		$Palette = $this->myPicture->myData->getPalette();
 		/* Catch the number of required axis */
 		$LabelSerie = $Data["Abscissa"];
 		if ($LabelSerie != "") {

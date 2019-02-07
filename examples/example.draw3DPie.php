@@ -40,10 +40,12 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize
 /* Create the pPie object */ 
 $PieChart = new pPie($myPicture);
 
-/* Define the slice color */
-$PieChart->setSliceColor(0,new pColor(143,197,0));
-$PieChart->setSliceColor(1,new pColor(97,77,63));
-$PieChart->setSliceColor(2,new pColor(97,113,63));
+/* Define the slice colors */
+$myPicture->myData->savePalette([
+	0 => new pColor(143,197,0),
+	1 => new pColor(97,77,63),
+	2 => new pColor(97,113,63)
+]);
 
 /* Draw a simple pie chart */ 
 $PieChart->draw3DPie(120,125,["SecondPass"=>FALSE]);

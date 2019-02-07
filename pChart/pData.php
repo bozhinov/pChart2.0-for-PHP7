@@ -51,8 +51,8 @@ define("EURO_SYMBOL", utf8_encode("&#8364;"));
 /* pData class definition */
 class pData
 {
-	var $Data;
-	var $Palette;
+	private $Data;
+	private $Palette;
 
 	/* Class creator */
 	function __construct()
@@ -698,7 +698,7 @@ class pData
 		}
 	}
 	
-	/* Save a palette element */
+	/* Save a palette */
 	function savePalette(array $newPalette)
 	{
 		foreach($newPalette as $ID => $Color) {

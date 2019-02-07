@@ -64,8 +64,9 @@ class pStock
 		(!is_null($BoxDownSurrounding)) AND $BoxDownBorderColor = $BoxDownColor->newOne()->RGBChange($BoxDownSurrounding);
 		
 		/* Data Processing */
-		$Data = $this->myPicture->myData->Data["Series"];
-		$Orientation = $this->myPicture->myData->Data["Orientation"];
+		$Data = $this->myPicture->myData->getData();		
+		$Orientation = $Data["Orientation"];
+		$Data = $Data["Series"];
 		
 		if (!isset($Data[$SerieOpen]) || !isset($Data[$SerieClose]) || !isset($Data[$SerieMin]) || !isset($Data[$SerieMax])) {
 			throw pException::StockMissingSerieException();

@@ -38,7 +38,10 @@ class pScatter
 		/* Check if we have at least both one X and Y axis */
 		$GotXAxis = FALSE;
 		$GotYAxis = FALSE;
-		foreach($this->myPicture->myData->Data["Axis"] as $AxisSettings) {
+		
+		$Data = $this->myPicture->myData->getData();
+		
+		foreach($Data["Axis"] as $AxisSettings) {
 			($AxisSettings["Identity"] == AXIS_X) AND $GotXAxis = TRUE;
 			($AxisSettings["Identity"] == AXIS_Y) AND $GotYAxis = TRUE;
 		}
@@ -85,7 +88,6 @@ class pScatter
 		/* Skip a NOTICE event in case of an empty array */
 		($DrawYLines == NONE) AND $DrawYLines = ["zarma" => "31"];
 		
-		$Data = $this->myPicture->myData->Data;
 		foreach($Data["Axis"] as $AxisID => $AxisSettings) {
 			if ($AxisSettings["Identity"] == AXIS_X) {
 				$Width = $this->myPicture->GraphAreaXdiff - $XMargin * 2;
@@ -423,7 +425,7 @@ class pScatter
 		/* Override defaults */
 		extract($Format);
 		
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
@@ -472,7 +474,7 @@ class pScatter
 	/* Draw a scatter line chart */
 	function drawScatterLineChart(array $Format = [])
 	{
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		$RecordImageMap = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
 		$ImageMapTitle = isset($Format["ImageMapTitle"]) ? $Format["ImageMapTitle"] : NULL;
 		$ImageMapPlotSize = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 10;
@@ -520,7 +522,7 @@ class pScatter
 	/* Draw a scatter spline chart */
 	function drawScatterSplineChart(array $Format = [])
 	{
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		$RecordImageMap = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
 		$ImageMapTitle = isset($Format["ImageMapTitle"]) ? $Format["ImageMapTitle"] : NULL;
 		$ImageMapPlotSize = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 10;
@@ -590,7 +592,7 @@ class pScatter
 			return VOID;
 		}
 		
-		$Data = $this->myPicture->myData->Data["Axis"];
+		$Data = $this->myPicture->myData->getData()["Axis"];
 
 		if ($Data[$AxisID]["Identity"] == AXIS_X) {
 			$Height = $this->myPicture->GraphAreaXdiff - $Data[$AxisID]["Margin"] * 2;
@@ -629,7 +631,7 @@ class pScatter
 			$BorderColor = $Color->newOne()->RGBChange($Surrounding);
 		}
 
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"] && isset($Series["Picture"])) {
 				list($PicWidth, $PicHeight) = $this->myPicture->getPicInfo($Series["Picture"]);
@@ -747,7 +749,7 @@ class pScatter
 		$XStep = $BoxSize + 5;
 		$X = 100;
 		$Y = 100;
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"] && isset($Series["Picture"])) {
@@ -801,7 +803,7 @@ class pScatter
 	function drawScatterBestFit(array $Format = [])
 	{
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
@@ -867,7 +869,7 @@ class pScatter
 
 	function writeScatterLabel(int $ScatterSerieID, int $Point, array $Format = [])
 	{
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 
 		if (!isset($Data["ScatterSeries"][$ScatterSerieID])) {
 			throw pException::ScatterInvalidInputException("Serie was not found!");
@@ -935,7 +937,7 @@ class pScatter
 		/* Override defaults */
 		extract($Format);
 		
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		if (!isset($Data["Axis"][$AxisID])) {
 			throw pException::ScatterInvalidInputException("Axis ID was not found!");
 		}
@@ -1023,7 +1025,7 @@ class pScatter
 			$BorderColor = $Color->newOne()->RGBChange(20);
 		}
 
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		if (!isset($Data["Axis"][$AxisID])) {
 			throw pException::ScatterInvalidInputException("Serie was not found!");
 		}

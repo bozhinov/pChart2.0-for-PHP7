@@ -18,7 +18,7 @@ $myPicture = new pDraw(700,230);
 $myPicture->myData->addPoints([1,3,4,3,5]);
 
 /* Id to help identify the image later */
-$uniqueId = serialize($myPicture->myData->Data);
+$uniqueId = serialize($myPicture->myData->getData());
 
 /* Create the cache object */
 $myCache = new pCacheFile(["CacheFolder"=>"cache"], $uniqueId);

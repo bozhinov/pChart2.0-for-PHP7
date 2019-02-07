@@ -86,7 +86,7 @@ class pCharts {
 		extract($Format);
 
 		$this->myPicture->isChartLayoutStacked = FALSE;
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"]&& $SerieName != $Data["Abscissa"]) {
@@ -119,7 +119,7 @@ class pCharts {
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
-				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
+				$Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				if ($RecordImageMap) {
 					$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
@@ -205,7 +205,7 @@ class pCharts {
 		extract($Format);
 		
 		$this->myPicture->isChartLayoutStacked = FALSE;
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
@@ -226,7 +226,7 @@ class pCharts {
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
-				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
+				$Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				$WayPoints = [];
 				$LastGoodY = NULL;
@@ -342,7 +342,7 @@ class pCharts {
 		extract($Format);
 		
 		$this->myPicture->isChartLayoutStacked = FALSE;
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
@@ -367,7 +367,7 @@ class pCharts {
 					$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeYSingle($Params["Max"], $AxisID);
 				}
 
-				$this->myData->Data["Series"][$SerieName]["XOffset"] = 0;
+				$Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
 				
@@ -531,7 +531,7 @@ class pCharts {
 		extract($Format);
 		
 		$this->myPicture->isChartLayoutStacked = FALSE;
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
@@ -561,7 +561,7 @@ class pCharts {
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
-				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
+				$Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				$LastX = VOID;
 				$LastY = VOID;
@@ -674,7 +674,7 @@ class pCharts {
 		$AreaColor = isset($Format["AreaColor"]) ? $Format["AreaColor"] : new pColor(150,150,150,5);
 
 		$this->myPicture->isChartLayoutStacked = FALSE;
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		if (!isset($Data["Series"][$SerieA]["Data"]) || !isset($Data["Series"][$SerieB]["Data"])) {
 			throw pException::ZoneChartInvalidInputException("Invalid data #1");
 		}
@@ -748,7 +748,7 @@ class pCharts {
 		extract($Format);
 		
 		$this->myPicture->isChartLayoutStacked = FALSE;
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -773,7 +773,7 @@ class pCharts {
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$LineSettings = ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
-				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
+				$Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				$LastX = VOID;
 				$LastY = VOID;
@@ -946,7 +946,7 @@ class pCharts {
 		extract($Format);
 		
 		$this->myPicture->isChartLayoutStacked = FALSE;
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
@@ -967,7 +967,7 @@ class pCharts {
 				$PolygonSettings = ["Color" => $Color];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
-				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
+				$Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				$LastX = VOID;
 				$LastY = VOID;
@@ -1118,7 +1118,7 @@ class pCharts {
 		extract($Format);
 		
 		$this->myPicture->isChartLayoutStacked = FALSE;
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
@@ -1138,7 +1138,7 @@ class pCharts {
 					$Threshold[$Key]["MaxX"] = $this->myPicture->scaleComputeYSingle($Params["Max"], $Serie["Axis"]);
 				}
 
-				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
+				$Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
 				
@@ -1312,7 +1312,7 @@ class pCharts {
 		$ColorOverride = [];
 		
 		$this->myPicture->isChartLayoutStacked = FALSE;
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		if (!empty($OverrideColors)) {
 			foreach($OverrideColors as $key => $C){
@@ -1364,7 +1364,7 @@ class pCharts {
 						$XOffset = $this->myPicture->GraphAreaX1 - $X + 1;
 					}
 
-					$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = $XOffset + $XSize / 2;
+					$Data["Series"][$SerieName]["XOffset"] = $XOffset + $XSize / 2;
 					$XSpace = ($Rounded || !is_null($BorderColor)) ? 1 : 0;
 					
 					$ID = 0;
@@ -1480,7 +1480,7 @@ class pCharts {
 						$YOffset = $this->myPicture->GraphAreaY1 - $Y + 1;
 					}
 
-					$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = $YOffset + $YSize / 2;
+					$Data["Series"][$SerieName]["XOffset"] = $YOffset + $YSize / 2;
 					$YSpace = ($Rounded || !is_null($BorderColor)) ? 1 : 0;
 					
 					$ID = 0;
@@ -1613,7 +1613,7 @@ class pCharts {
 		extract($Format);
 		
 		$this->myPicture->isChartLayoutStacked = TRUE;
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		$RestoreShadow = $this->myPicture->Shadow;
 		$LastX = [];
@@ -1636,7 +1636,7 @@ class pCharts {
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY0HeightOnly($Serie["Data"], $Serie["Axis"]);
 				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
-				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
+				$Data["Series"][$SerieName]["XOffset"] = 0;
 				$RectangleSettings = ["TransCorner" => TRUE,"Color" => $Color,"BorderColor" => $BorderColor];
 				
 				if ($RecordImageMap) {
@@ -1824,7 +1824,7 @@ class pCharts {
 		extract($Format);
 		
 		$this->myPicture->isChartLayoutStacked = TRUE;
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		$RestoreShadow = $this->myPicture->Shadow;
 		$this->myPicture->Shadow = FALSE;
@@ -1866,7 +1866,7 @@ class pCharts {
 				$PlotBorderSettings = ["Color" => (!is_null($PlotBorderSurrounding)) ? $Color->newOne()->RGBChange($PlotBorderSurrounding) : $PlotBorderColor];
 				$PosArray = $this->myPicture->scaleComputeY0HeightOnly($Serie["Data"], $Serie["Axis"]);
 				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
-				$this->myPicture->myData->Data["Series"][$SerieName]["XOffset"] = 0;
+				$Data["Series"][$SerieName]["XOffset"] = 0;
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
 				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
@@ -2145,7 +2145,9 @@ class pCharts {
 		$X2 = $this->myPicture->GraphAreaX2;
 		$Y2 = $this->myPicture->GraphAreaY2;
 		/* Data Processing */
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
+		$Palette = $this->myPicture->myData->getPalette();
+		
 		$LabelSerie = $Data["Abscissa"];
 		$DataSerie = NULL;
 
@@ -2197,7 +2199,7 @@ class pCharts {
 			$RightY1 = $RightY + $Spacing;
 			$RightY2 = $RightY + $Spacing + $Value * $YScale;;
 			$Settings = [
-				"Color" => $this->myPicture->myData->Palette[$Key],
+				"Color" => $Palette[$Key],
 				"NoDraw" => TRUE,
 				"Segments" => $Segments,
 				"Surrounding" => $Surrounding
@@ -2275,7 +2277,7 @@ class pCharts {
 		$NegativeSlopeStartColor = isset($Format["NegativeSlopeStartColor"]) ? $Format["NegativeSlopeStartColor"] : new pColor(184,234,88);
 		$NegativeSlopeEndColor = isset($Format["NegativeSlopeEndColor"]) ? $Format["NegativeSlopeEndColor"] : new pColor(67,124,227);
 
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 			$YPos = $this->myPicture->GraphAreaY2 + $Offset;
@@ -2460,14 +2462,16 @@ class pCharts {
 	{
 		$OverrideTicks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$OverrideColor = isset($Format["OverrideColor"]) ? $Format["OverrideColor"] : NULL;
+		
+		$Data = $this->myPicture->myData->getData();
 
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		
-		$XStep = $this->getXstep($this->myPicture->myData->Data["Orientation"], $XDivs, $XMargin);
+		$XStep = $this->getXstep($Data["Orientation"], $XDivs, $XMargin);
 
-		foreach($this->myPicture->myData->Data["Series"] as $SerieName => $Serie) {
+		foreach($Data["Series"] as $SerieName => $Serie) {
 			
-			if ($Serie["isDrawable"] && $SerieName != $this->myPicture->myData->Data["Abscissa"]) {
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				
 				$Settings = (!is_null($OverrideColor)) ? ["Color" => $OverrideColor] : ["Color" => $Serie["Color"]];
 				$Settings["Ticks"] = (is_null($OverrideTicks)) ? $Serie["Ticks"] : $OverrideTicks;
@@ -2480,7 +2484,7 @@ class pCharts {
 				$Sy = 0;
 				$Sxx = 0;
 
-				if ($this->myPicture->myData->Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
+				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
 

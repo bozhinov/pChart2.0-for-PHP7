@@ -43,16 +43,19 @@ class pBubble
 		$MaxValues = 0;
 		$LastPositive = 0;
 		$LastNegative = 0;
+		
+		$Data = $this->myPicture->myData->getData();
+		
 		foreach($DataSeries as $Key => $SerieName) {
 			$SerieWeightName = $WeightSeries[$Key];
 			$this->myPicture->myData->setSerieDrawable($SerieWeightName, FALSE);
-			if (count($this->myPicture->myData->Data["Series"][$SerieName]["Data"]) > $MaxValues) {
-				$MaxValues = count($this->myPicture->myData->Data["Series"][$SerieName]["Data"]);
+			if (count($Data["Series"][$SerieName]["Data"]) > $MaxValues) {
+				$MaxValues = count($Data["Series"][$SerieName]["Data"]);
 			}
 
-			foreach($this->myPicture->myData->Data["Series"][$SerieName]["Data"] as $Key => $Value) {
+			foreach($Data["Series"][$SerieName]["Data"] as $Key => $Value) {
 				if ($Value >= 0) {
-					$BubbleBounds = $Value + $this->myPicture->myData->Data["Series"][$SerieWeightName]["Data"][$Key];
+					$BubbleBounds = $Value + $Data["Series"][$SerieWeightName]["Data"][$Key];
 					if (!isset($NewPositiveSerie[$Key])) {
 						$NewPositiveSerie[$Key] = $BubbleBounds;
 					} elseif ($NewPositiveSerie[$Key] < $BubbleBounds) {
@@ -61,7 +64,7 @@ class pBubble
 
 					$LastPositive = $BubbleBounds;
 				} else {
-					$BubbleBounds = $Value - $this->myPicture->myData->Data["Series"][$SerieWeightName]["Data"][$Key];
+					$BubbleBounds = $Value - $Data["Series"][$SerieWeightName]["Data"][$Key];
 					if (!isset($NewNegativeSerie[$Key])) {
 						$NewNegativeSerie[$Key] = $BubbleBounds;
 					} elseif ($NewNegativeSerie[$Key] > $BubbleBounds) {
@@ -111,10 +114,13 @@ class pBubble
 		
 		/* Override defaults */
 		extract($Format);
-
-		$Data = $this->myPicture->myData->Data["Series"];
-		$Orientation = $this->myPicture->myData->Data["Orientation"];
 		
+		$Data = $this->myPicture->myData->getData();
+		$Palette = $this->myPicture->myData->getPalette();
+		
+		$Orientation = $Data["Orientation"];
+		$Data = $Data["Series"];
+				
 		if (isset($Data["BubbleFakePositiveSerie"])) {
 			$this->myPicture->myData->setSerieDrawable("BubbleFakePositiveSerie", FALSE);
 		}
@@ -141,7 +147,7 @@ class pBubble
 			$X = $this->myPicture->GraphAreaX1 + $XMargin;
 			$Y = $this->myPicture->GraphAreaY1 + $XMargin;
 			
-			$ColorSettings = ["Color" => $this->myPicture->myData->Palette[$Key]];
+			$ColorSettings = ["Color" => $Palette[$Key]];
 
 			(!is_null($ForceAlpha)) AND $ColorSettings["Color"]->AlphaSet($ForceAlpha);
 			
@@ -206,7 +212,7 @@ class pBubble
 
 	function writeBubbleLabel(string $SerieName, string $SerieWeightName, int $Point, array $Format = [])
 	{
-		$Data = $this->myPicture->myData->Data;
+		$Data = $this->myPicture->myData->getData();
 		
 		if (!isset($Data["Series"][$SerieName]) || !isset($Data["Series"][$SerieWeightName])) {
 			throw pException::BubbleInvalidInputException("Serie name or Weight is invalid!");
