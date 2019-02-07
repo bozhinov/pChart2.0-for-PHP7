@@ -677,7 +677,6 @@ class pData
 	/* Load a palette file */
 	function loadPalette(array $MyPalette, bool $Overwrite = FALSE)
 	{
-
 		if ($Overwrite) {
 			$this->Palette = [];
 		}
@@ -697,7 +696,20 @@ class pData
 				$this->Data["Series"][$Key]["Color"] = (!isset($this->Palette[$ID])) ? new pColor(0,0,0,0) : $this->Palette[$ID];
 			}
 		}
+	}
+	
+	/* Save a palette element */
+	function savePalette(array $newPalette)
+	{
+		foreach($newPalette as $ID => $Color) {
+			$this->Palette[$ID] = $Color;
+		}
+	}
 
+	/* Return the palette of the series */
+	function getPalette()
+	{
+		return $this->Palette;
 	}
 
 	/* Initialize a given scatter serie */
@@ -718,7 +730,7 @@ class pData
 	}
 
 	function normalize(int $NormalizationFactor = 100, string $UnitChange = "", int $Round = 1)
-	{		
+	{
 		$Abscissa = $this->Data["Abscissa"];
 		$SelectedSeries = [];
 		$MaxVal = 0;
@@ -869,18 +881,6 @@ class pData
 	function getData()
 	{
 		return $this->Data;
-	}
-
-	/* Save a palette element */
-	function savePalette(int $ID, pColor $Color)
-	{
-		$this->Palette[$ID] = $Color;
-	}
-
-	/* Return the palette of the series */
-	function getPalette()
-	{
-		return $this->Palette;
 	}
 
 	/* Called by the scaling algorithm to save the config */

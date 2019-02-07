@@ -67,7 +67,6 @@ class pPie
 		
 		/* Data Processing */
 		$Data = $this->myPicture->myData->Data;
-		$Palette = $this->myPicture->myData->Palette;
 		
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "" || !in_array($Data["Abscissa"], array_keys($Data["Series"]))) {
@@ -82,10 +81,11 @@ class pPie
 			throw pException::PieNoDataSerieException();
 		}
 
-		$DataSerieData = array_shift($Data["Series"])["Data"];
-
 		/* Remove unused data */
-		list($Values, $Palette) = $this->clean0Values($DataSerieData, $Palette);
+		$Values = $this->clean0Values(array_shift($Data["Series"])["Data"]); # DataSerieData
+		
+		/* Gen Palette */
+		$Palette = $this->get_palette($Values);
 
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
@@ -104,21 +104,13 @@ class pPie
 		/* Draw the polygon pie elements */
 		$Step = rad2deg(1/$Radius);
 		$Offset = 0;
-		$ID = 0;
 
 		foreach($Values as $Key => $Value) {
 
 			if ($Shadow) {
 				$Settings = ["Color" => $this->myPicture->ShadowColor];
-			} else {
-				if (!isset($Palette[$ID])) {
-					$Color = new pColor();
-					$Palette[$ID] = $Color;
-					$this->myPicture->myData->savePalette($ID, $Color);
-
-				}
-	
-				$Settings = ["Color" => $Palette[$ID]];
+			} else {	
+				$Settings = ["Color" => $Palette[$Key]];
 			}
 
 			if (!$SecondPass && !$Shadow) {
@@ -183,12 +175,12 @@ class pPie
 
 			$this->myPicture->drawPolygon($Plots, $Settings);
 			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$ID]->toHex(), $AbscissaData[$Key], $Value);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$Key]->toHex(), $AbscissaData[$Key], $Value);
 			}
 
 			if ($DrawLabels && !$Shadow && !$SecondPass) {
 				if ($LabelColorType == PIE_LABEL_COLOR_AUTO) {
-					$Settings = ["FillColor" => $Palette[$ID]];
+					$Settings = ["FillColor" => $Palette[$Key]];
 				} else {
 					$Settings = ["FillColor" => $LabelColor];
 				}
@@ -206,14 +198,13 @@ class pPie
 			}
 	
 			$Offset = $i + $DataGapAngle;
-			$ID++;
 		}
 
 		/* Second pass to smooth the angles */
 		if ($SecondPass) {
 			$Step = rad2deg(1/$Radius);
 			$Offset = 0;
-			$ID = 0;
+
 			foreach($Values as $Key => $Value) {
 
 				if ($Shadow) {
@@ -222,7 +213,7 @@ class pPie
 					if ($Border) {
 						$Settings = ["Color" => $BorderColor];
 					} else {
-						$Settings = ["Color" => $Palette[$ID]];
+						$Settings = ["Color" => $Palette[$Key]];
 					}
 				}
 
@@ -253,7 +244,7 @@ class pPie
 				if ($DrawLabels && !$Shadow) {
 					
 					if ($LabelColorType == PIE_LABEL_COLOR_AUTO) {
-						$Settings = ["FillColor" => $Palette[$ID]];
+						$Settings = ["FillColor" => $Palette[$Key]];
 					} else {
 						$Settings = ["FillColor" => $LabelColor];
 					}
@@ -271,7 +262,6 @@ class pPie
 				}
 
 				$Offset = $i + $DataGapAngle;
-				$ID++;
 			}
 		}
 	
@@ -343,7 +333,6 @@ class pPie
 		
 		/* Data Processing */
 		$Data = $this->myPicture->myData->Data;
-		$Palette = $this->myPicture->myData->Palette;
 
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "" || !in_array($Data["Abscissa"], array_keys($Data["Series"]))) {
@@ -357,10 +346,11 @@ class pPie
 			throw pException::PieNoDataSerieException();
 		}
 
-		$DataSerieData = array_shift($Data["Series"])["Data"];
-
 		/* Remove unused data */
-		list($Values, $Palette) = $this->clean0Values($DataSerieData, $Palette);
+		$Values = $this->clean0Values(array_shift($Data["Series"])["Data"]); # DataSerieData
+		
+		/* Gen Palette */
+		$Palette = array_reverse($this->get_palette($Values));
 
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
@@ -376,21 +366,15 @@ class pPie
 		/* Draw the polygon pie elements */
 		$Step = rad2deg(1/$Radius);
 		$Offset = 360;
-		$ID = count($Values) - 1;
 		$Values = array_reverse($Values);
 		$Slice = 0;
 		$Slices = [];
 		$SliceColors = [];
 		$Visible = [];
 		$SliceAngle = [];
-		foreach($Values as $Value) {
-			if (!isset($Palette[$ID])) {
-				$Color = new pColor();
-				$Palette[$ID] = $Color;
-				$this->myPicture->myData->savePalette($ID, $Color);
-			}
+		foreach($Values as $Key => $Value) {
 
-			$SliceColors[$Slice] = ["Color" => $Palette[$ID]];
+			$SliceColors[$Slice] = ["Color" => $Palette[$Key]];
 			$StartAngle = $Offset;
 			$EndAngle = $Offset - ($Value * $ScaleFactor);
 			($EndAngle < 0) AND $EndAngle = 0;
@@ -433,7 +417,6 @@ class pPie
 			}
 
 			$Offset = $i - $DataGapAngle;
-			$ID--;
 			$Slice++;
 		}
 
@@ -441,7 +424,7 @@ class pPie
 		if ($RestoreShadow) {
 			foreach($Slices as $Plots) {
 				$ShadowPie = [];
-				for ($i = 0; $i < count($Plots); $i = $i + 2) {
+				for ($i = 0; $i < count($Plots); $i += 2) {
 					$ShadowPie[] = $Plots[$i] + $this->myPicture->ShadowX;
 					$ShadowPie[] = $Plots[$i + 1] + $this->myPicture->ShadowY;
 				}
@@ -452,7 +435,7 @@ class pPie
 
 			$Step = rad2deg(1/$Radius);
 			$Offset = 360;
-			foreach($Values as $Key => $Value) {
+			foreach($Values as $Value) {
 				$EndAngle = $Offset - ($Value * $ScaleFactor);
 				if ($EndAngle < 0) {
 					$EndAngle = 0;
@@ -465,7 +448,6 @@ class pPie
 				}
 
 				$Offset = $i - $DataGapAngle;
-				$ID--;
 			}
 		}
 
@@ -581,17 +563,16 @@ class pPie
 		if ($SecondPass) {
 			$Step = rad2deg(1/$Radius);
 			$Offset = 360;
-			$ID = count($Values) - 1;
-			foreach($Values as $Value) {
+			foreach($Values as $Key => $Value) {
 				$FirstPoint = TRUE;
 				$Settings = [];
 				if ($Shadow) {
 					$Settings = ["Color" => $this->myPicture->ShadowColor];
 				} else {
 					if ($Border) {
-						$Settings["Color"] = $Palette[$ID]->newOne()->RGBChange(30);
+						$Settings["Color"] = $Palette[$Key]->newOne()->RGBChange(30);
 					} else {
-						$Settings = $Palette[$ID];
+						$Settings = $Palette[$Key];
 					}
 				}
 
@@ -625,7 +606,6 @@ class pPie
 
 				$this->myPicture->drawLine($Xc, $Yc, $X0, $Y0, $Settings);
 				$Offset = $i - $DataGapAngle;
-				$ID--;
 			}
 		}
 
@@ -897,7 +877,6 @@ class pPie
 
 		/* Data Processing */
 		$Data = $this->myPicture->myData->Data;
-		$Palette = $this->myPicture->myData->Palette;
 		
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "" || !in_array($Data["Abscissa"], array_keys($Data["Series"]))) {
@@ -911,10 +890,11 @@ class pPie
 			throw pException::PieNoDataSerieException();
 		}
 
-		$DataSerieData = array_shift($Data["Series"])["Data"];
-
 		/* Remove unused data */
-		list($Values, $Palette) = $this->clean0Values($DataSerieData, $Palette);
+		$Values = $this->clean0Values(array_shift($Data["Series"])["Data"]);
+		
+		/* Gen Palette */
+		$Palette = $this->get_palette($Values);
 		
 		/* Shadow */
 		$RestoreShadow = $this->myPicture->Shadow;
@@ -930,7 +910,6 @@ class pPie
 		$ScaleFactor = 360 / $SerieSum;
 		$Step = rad2deg(1/$OuterRadius);
 		$Offset = 0;
-		$ID = 0;
 		
 		foreach($Values as $Key => $Value) {
 			
@@ -938,12 +917,7 @@ class pPie
 				$Settings = ["Color" => $this->myPicture->ShadowColor];
 				$BorderSettings = $Settings;
 			} else {
-				if (!isset($Palette[$ID])) {
-					$Color = new pColor();
-					$Palette[$ID] = $Color;
-					$this->myPicture->myData->savePalette($ID, $Color);
-				}
-				$Settings = ["Color" => $Palette[$ID]];
+				$Settings = ["Color" => $Palette[$Key]];
 				$BorderSettings = ($Border) ? ["Color" => $BorderColor] : $Settings;
 			}
 
@@ -1026,7 +1000,7 @@ class pPie
 			/* Draw the polygon */
 			$this->myPicture->drawPolygon($Plots, $Settings);
 			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$ID]->toHex(), $AbscissaData[$Key], $Value);
+				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$Key]->toHex(), $AbscissaData[$Key], $Value);
 			}
 
 			/* Smooth the edges using AA */
@@ -1037,7 +1011,7 @@ class pPie
 			$this->myPicture->drawLine($Boundaries[0]["X1"], $Boundaries[0]["Y1"], $Boundaries[0]["X2"], $Boundaries[0]["Y2"], $BorderSettings);
 			$this->myPicture->drawLine($Boundaries[1]["X1"], $Boundaries[1]["Y1"], $Boundaries[1]["X2"], $Boundaries[1]["Y2"], $BorderSettings);
 			if ($DrawLabels && !$Shadow) {
-				$Settings = ["FillColor" => ($LabelColorType == PIE_LABEL_COLOR_AUTO) ? $Palette[$ID] : $LabelColor];
+				$Settings = ["FillColor" => ($LabelColorType == PIE_LABEL_COLOR_AUTO) ? $Palette[$Key] : $LabelColor];
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
 				$Xc = cos(deg2rad($Angle - 90)) * $OuterRadius + $X;
 				$Yc = sin(deg2rad($Angle - 90)) * $OuterRadius + $Y;
@@ -1050,7 +1024,6 @@ class pPie
 			}
 
 			$Offset = $Lasti;
-			$ID++;
 		}
 
 		if ($DrawLabels && $LabelStacked) {
@@ -1122,8 +1095,7 @@ class pPie
 		
 		/* Data Processing */
 		$Data = $this->myPicture->myData->Data;
-		$Palette = $this->myPicture->myData->Palette;
-		
+				
 		/* Do we have an abscissa serie defined? */
 		if ($Data["Abscissa"] == "" || !in_array($Data["Abscissa"], array_keys($Data["Series"]))) {
 			throw pException::PieNoAbscissaException();
@@ -1139,7 +1111,10 @@ class pPie
 		$DataSerieData = array_shift($Data["Series"])["Data"];
 
 		/* Remove unused data */
-		list($Values, $Palette) = $this->clean0Values($DataSerieData, $Palette);
+		$Values = $this->clean0Values($DataSerieData);
+		
+		/* Gen Palette */
+		$Palette = array_reverse($this->get_palette($Values));
 
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
@@ -1154,7 +1129,6 @@ class pPie
 
 		/* Draw the polygon ring elements */
 		$Offset = 360;
-		$ID = count($Values) - 1;
 		$Values = array_reverse($Values);
 		$Slice = 0;
 		$Slices = [];
@@ -1162,13 +1136,7 @@ class pPie
 
 		foreach($Values as $Key => $Value) {
 
-			if (!isset($Palette[$ID])) {
-				$Color = new pColor();
-				$Palette[$ID] = $Color;
-				$this->myPicture->myData->savePalette($ID, $Color);
-			}
-
-			$SliceColors[$Slice] = $Palette[$ID];
+			$SliceColors[$Slice] = $Palette[$Key];
 			$EndAngle = $Offset - ($Value * $ScaleFactor);
 			($EndAngle < 0) AND $EndAngle = 0;
 			$Step = (rad2deg(1/$OuterRadius)) / 2;
@@ -1261,7 +1229,6 @@ class pPie
 			$Slices[$Slice]["OutX2"] = $OutX2;
 			$Slices[$Slice]["OutY2"] = $OutY2;
 			$Offset = $Lasti - $DataGapAngle;
-			$ID--;
 			$Slice++;
 		}
 
@@ -1415,7 +1382,7 @@ class pPie
 
 				$EndAngle = $Offset - ($Value * $ScaleFactor);
 				($EndAngle < 0) AND $EndAngle = 0;
-				$Settings = ["FillColor" => ($LabelColorType == PIE_LABEL_COLOR_AUTO) ? $Palette[$ID] : $LabelColor];
+				$Settings = ["FillColor" => ($LabelColorType == PIE_LABEL_COLOR_AUTO) ? $Palette[$Key] : $LabelColor];
 				$Angle = ($EndAngle - $Offset) / 2 + $Offset;
 				$Xc = cos(deg2rad($Angle - 90)) * ($OuterRadius + $DataGapRadius) + $X;
 				$Yc = sin(deg2rad($Angle - 90)) * ($OuterRadius + $DataGapRadius) * $SkewFactor + $Y;
@@ -1434,7 +1401,6 @@ class pPie
 				}
 
 				$Offset = $EndAngle - $DataGapAngle;
-				$ID--;
 			}
 		}
 
@@ -1444,21 +1410,27 @@ class pPie
 
 		$this->myPicture->Shadow = $RestoreShadow;
 	}
-
-	/* Remove NULL values and reset Palette */
-	function clean0Values(array $DataSerieData, array $Palette)
-	{
-		$NewPalette = [];
-		$NewData = array_diff($DataSerieData, [NULL, 0]);
+	
+	function get_palette(array $Points){
 		
-		foreach($NewData as $Key => $Value) {
-			if (isset($Palette[$Key])) {
-				$NewPalette[] = $Palette[$Key];
-			}
+		$Palette = $this->myPicture->myData->Palette;
+
+		$NewPalette = [];
+		
+		foreach($Points as $Key => $Value) {
+			$NewPalette[$Key] = (isset($Palette[$Key])) ? $Palette[$Key] :  new pColor();
 		}
 		
+		$this->myPicture->myData->savePalette($NewPalette);	
+		
+		return $NewPalette;
+	}
+
+	/* Remove NULL values and reset Palette */
+	function clean0Values(array $DataSerieData)
+	{
 		# array_diff preserves keys
-		return [array_values($NewData), $NewPalette];
+		return array_values(array_diff($DataSerieData, [NULL, 0]));
 	}
 
 }
