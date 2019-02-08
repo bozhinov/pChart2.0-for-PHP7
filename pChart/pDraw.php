@@ -1097,7 +1097,7 @@ class pDraw
 						break;
 					case ($Xleaf == 0):
 						$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaMultiply(1 - $Yleaf));
-						$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaMultiply($Yleaf));		
+						$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaMultiply($Yleaf));
 						break;
 					default:
 						$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaMultiply((1 - $Xleaf) * (1 - $Yleaf)));
@@ -1793,9 +1793,9 @@ class pDraw
 						if (isset($Data["Series"][$SerieID]["Data"][$ID]) && !is_null($Data["Series"][$SerieID]["Data"][$ID])) {
 							$Value = $Data["Series"][$SerieID]["Data"][$ID];
 							if ($Value > 0) {
-								$PointMax += $Value; 
+								$PointMax += $Value;
 							} else { 
-								$PointMin += $Value; 
+								$PointMin += $Value;
 							}
 						}
 					}

@@ -162,7 +162,7 @@ class pCacheFile implements pCacheInterface
 				if ($UpdateHitsCount) {
 					/* increment hints as an INT and then convert back to STR */
 					$Hits = intval($Hits);
-					$Hits++; 
+					$Hits++;
 					$Hits = strval($Hits);
 					
 					if (strlen($Hits) < 7) {
@@ -228,7 +228,7 @@ class pCacheFile implements pCacheInterface
 		/* Lookup for the picture in the cache */
 		$CacheInfo = $this->isInCache(TRUE, TRUE);
 		/* Not in the cache */
-		if (!$CacheInfo) { 
+		if (!$CacheInfo) {
 			# Momchil: fread returns FALSE on failure. 
 			# Return FALSE here as well and not NULL
 			return FALSE;

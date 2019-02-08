@@ -136,7 +136,7 @@ class pBubble
 			$XStep = 0;
 		} else {
 			if ($Orientation == SCALE_POS_LEFTRIGHT) {
-				$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;		
+				$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 			} elseif ($Orientation == SCALE_POS_TOPBOTTOM) {
 				$XStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
 			}
@@ -160,7 +160,7 @@ class pBubble
 				} else {
 					(!is_null($Surrounding)) AND $BorderColor->RGBChange($Surrounding);
 					(!is_null($ForceAlpha))  AND $BorderColor->AlphaSet($ForceAlpha / 2);
-					$ColorSettings["BorderColor"] = $BorderColor;					
+					$ColorSettings["BorderColor"] = $BorderColor;
 				}
 			}
 

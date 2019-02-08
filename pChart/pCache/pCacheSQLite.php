@@ -44,7 +44,7 @@ class pCacheSQLite implements pCacheInterface
 		$this->DbPath = isset($Settings["DbPath"]) ? $Settings["DbPath"] : "sql.cache.db";
 		$this->DbPath = $CacheFolder . "/" . $this->DbPath;
 
-		$this->DbSQLite = new \PDO("sqlite:".$this->DbPath); 
+		$this->DbSQLite = new \PDO("sqlite:".$this->DbPath);
 		$this->DbSQLite->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
 		/* Create the cache Db */
@@ -233,7 +233,7 @@ class pCacheSQLite implements pCacheInterface
 		$CacheInfo = $this->isInCache(TRUE, TRUE);
 
 		/* Not in the cache */
-		if (!$CacheInfo) { 
+		if (!$CacheInfo) {
 			return FALSE;
 		} else {
 			/* Return back the raw picture data */

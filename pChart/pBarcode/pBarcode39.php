@@ -50,7 +50,7 @@ class pBarcode39 extends pBarcode
 
 	private static function encodeEx(string $Value, array $Codes, bool $MOD43)
 	{
-		$Result = "100101101101" . "0";
+		$Result = "1001011011010";
 		$TextString = "";
 		$Arr = str_split($Value);
 

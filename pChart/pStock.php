@@ -64,7 +64,7 @@ class pStock
 		(!is_null($BoxDownSurrounding)) AND $BoxDownBorderColor = $BoxDownColor->newOne()->RGBChange($BoxDownSurrounding);
 		
 		/* Data Processing */
-		$Data = $this->myPicture->myData->getData();		
+		$Data = $this->myPicture->myData->getData();
 		$Orientation = $Data["Orientation"];
 		$Data = $Data["Series"];
 		

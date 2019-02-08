@@ -20,7 +20,7 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE, string $UniqueID = "imageMap", string $StorageFile = "temp/imageMap.db")
 	{
 		$this->DbTable = $UniqueID;
-		$this->DbSQLite = new \PDO("sqlite:".$StorageFile); 
+		$this->DbSQLite = new \PDO("sqlite:".$StorageFile);
 		$this->DbSQLite->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 		
 		/* Create the IM Db */

@@ -54,7 +54,7 @@ class pBarcode128 extends pBarcode
 
 		return parent::getProjectionEx(strlen($Result), $Format);
 	}
-		
+
 	private static function encodeEx(string $Value, array $Codes, array $Reverse)
 	{
 		$Result = "11010010000";

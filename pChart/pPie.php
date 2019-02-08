@@ -146,7 +146,7 @@ class pPie
 					
 					if ($i > 180 && $i < 270) {
 						$Xc++;
-					}				
+					}
 				}
 
 				$Plots[] = $Xc;
@@ -953,7 +953,7 @@ class pPie
 				if ($i < 90) {
 					$Yc++;
 				}
-								
+
 				if ($i > 180 && $i < 270) {
 					$Xc++;
 				}
@@ -1287,7 +1287,7 @@ class pPie
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf), "NoBorder"=>TRUE];
 			$Outer = TRUE;
 			$OuterPlotsA = [];
-			$OuterPlotsB = []; 
+			$OuterPlotsB = [];
 			
 			foreach($Plots["Angle"] as $ID => $Angle) {
 				if ($Angle == VOID) {
@@ -1370,7 +1370,7 @@ class pPie
 			$NewPalette[$Key] = (isset($Palette[$Key])) ? $Palette[$Key] :  new pColor();
 		}
 		
-		$this->myPicture->myData->savePalette($NewPalette);	
+		$this->myPicture->myData->savePalette($NewPalette);
 		
 		return $NewPalette;
 	}

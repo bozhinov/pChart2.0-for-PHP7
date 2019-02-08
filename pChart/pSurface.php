@@ -201,7 +201,7 @@ class pSurface
 				if ($Value != UNKNOWN && $Value != IGNORED) {
 					
 					if (!empty($Palette)) {
-						$Settings = ["Color" => (isset($Palette[$Value])) ? $Palette[$Value] : new pColor(0)];			
+						$Settings = ["Color" => (isset($Palette[$Value])) ? $Palette[$Value] : new pColor(0)];
 					} else {
 						$Settings = ["Color" => $Gradient->Next($Value, TRUE)];
 					}
