@@ -24,6 +24,17 @@ Major changes:
  - ImageMapper: JavaScript re-write using jQuery
  - ImageMapper: added PDO SQLite storage option
  - Removed DelayedLoader
+
+ 
+ pChart 2.3
+===================
+ - Introduce pPyramid (in progress)
+ - Introduce pQRCode (maybe)
+ - More cleanup
+ - Performace boost
+ - Separated pBarcode
+ - No more config files (palettes & barcode db)
+ 
  
  The sandbox and all examples work as expected.<br />
  Code is being tested against PHP versions 7.0, 7.1, 7.2 & 7.3
