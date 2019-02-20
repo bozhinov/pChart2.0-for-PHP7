@@ -54,10 +54,6 @@ class pColor {
 		return new pColor($saved["R"],$saved["G"],$saved["B"],$saved["Alpha"]);
 	}
 
-	function getId(){
-		return strval($this->R).".".strval($this->G).".".strval($this->B).".".strval($this->Alpha);
-	}
-
 	function toHex()
 	{
 		$R = dechex($this->R);
