@@ -95,8 +95,6 @@ define("OUT_OF_SIGHT", -10000000000000);
 
 class pDraw
 {
-
-	var $aColorCache = [];
 	/* Image settings, size, quality, .. */
 	var $XSize = 0; // Width of the picture
 	var $YSize = 0; // Height of the picture
@@ -988,7 +986,7 @@ class pDraw
 		/* Draw a gradient within a defined area */
 		$Shadow = $this->Shadow;
 		$this->Shadow = FALSE;
-		if ($GradientColor->StartColor->getId() == $GradientColor->EndColor->getId()) {
+		if ($GradientColor->StartColor == $GradientColor->EndColor) {
 			$this->drawFilledRectangle($X1, $Y1, $X2, $Y2, ["Color" => $GradientColor->StartColor]);
 			return;
 		}
@@ -1145,13 +1143,7 @@ class pDraw
 	/* Allocate a color with transparency */
 	function allocateColor($Color) # FAST
 	{
-		$Id = $Color->getId();
-		if (!isset($this->aColorCache[$Id])){
-
-			$this->aColorCache[$Id] = imagecolorallocatealpha($this->Picture, $Color->R, $Color->G, $Color->B, (1.27 * (100 - $Color->Alpha)));
-		}
-
-		return $this->aColorCache[$Id];
+		return imagecolorallocatealpha($this->Picture, $Color->R, $Color->G, $Color->B, (1.27 * (100 - $Color->Alpha)));
 	}
 
 	/* Load a PNG file and draw it over the chart */
