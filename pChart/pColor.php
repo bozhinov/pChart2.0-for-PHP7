@@ -50,10 +50,6 @@ class pColor {
 		$this->Alpha = $Alpha;
 	}
 
-	public static function __set_state($saved){
-		return new pColor($saved["R"],$saved["G"],$saved["B"],$saved["Alpha"]);
-	}
-
 	function toHex()
 	{
 		$R = dechex($this->R);
