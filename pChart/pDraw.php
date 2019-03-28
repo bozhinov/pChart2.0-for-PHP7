@@ -3075,14 +3075,7 @@ class pDraw
 	}
 
 	function scaleComputeY(array $Values, int $AxisID)
-	{
-
-		$Data = $this->myData->getData();
-		
-		if (!isset($Data["Axis"][$AxisID])) {
-			throw pException::InvalidInput("Invalid serie ID");
-		}
-		
+	{		
 		$Result = [];
 		foreach($Values as $Val){
 			$Result[] = $this->scaleComputeYSingle($Val, $AxisID);
