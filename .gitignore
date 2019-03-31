@@ -1,0 +1,15 @@
+
+cloc-1.80.exe
+php.exe
+php.ini
+php7.2/php.exe
+php7.2/php7ts.dll
+php7.2/php_gd2.dll
+php7.2/php_pdo_sqlite.dll
+php7.3/php.exe
+php7.3/php7ts.dll
+php7.3/php_gd2.dll
+php7.3/php_pdo_sqlite.dll
+php7ts.dll
+php_gd2.dll
+php_pdo_sqlite.dll
