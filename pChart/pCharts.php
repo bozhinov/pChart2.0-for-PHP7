@@ -207,45 +207,42 @@ class pCharts {
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
-				$Ticks = $Serie["Ticks"];
-				$Weight = $Serie["Weight"];
+
+				$Mode	= $Data["Axis"][$Serie["Axis"]]["Display"];
+				$Format	= $Data["Axis"][$Serie["Axis"]]["Format"];
+				$Unit	= $Data["Axis"][$Serie["Axis"]]["Unit"];
+
 				if (is_null($BreakColor)) {
 					$BreakSettings = ["Color" => $Serie["Color"], "Ticks" => $VoidTicks];
 				} else {
-					$BreakSettings = ["Color" => $BreakColor->AlphaSet($Serie["Color"]->Alpha), "Ticks" => $VoidTicks,"Weight" => $Weight];
+					$BreakSettings = ["Color" => $BreakColor->AlphaSet($Serie["Color"]->Alpha), "Ticks" => $VoidTicks,"Weight" => $Serie["Weight"]];
 				}
 
 				if ($DisplayType == DISPLAY_AUTO) {
 					$DisplayColor = $Serie["Color"];
 				}
 
-				$AxisID = $Serie["Axis"];
-				$Mode = $Data["Axis"][$AxisID]["Display"];
-				$Format = $Data["Axis"][$AxisID]["Format"];
-				$Unit = $Data["Axis"][$AxisID]["Unit"];
-				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
-				$Data["Series"][$SerieName]["XOffset"] = 0;
-				
-				$WayPoints = [];
-				$LastGoodY = NULL;
-				$LastGoodX = NULL;
-				$LastX = 1;
-				$LastY = 1;
-				
 				if ($RecordImageMap) {
 					$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
 					$ImageMapColor = $Serie["Color"]->toHex();
 				}
 
+				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
+				$WayPoints = [];
+
+				$Data["Series"][$SerieName]["XOffset"] = 0;
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
+				$SplineSettings = ["Force" => $XStep / 5, "Color" => $Serie["Color"], "Ticks" => $Serie["Ticks"], "Weight" => $Serie["Weight"]];
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
-					$X = $this->myPicture->GraphAreaX1 + $XMargin;
-					$Force = $XStep / 5;
-	
-					foreach($PosArray as $Key => $Y) {
+				   $X = $this->myPicture->GraphAreaX1 + $XMargin; 
 
+				   $LastGoodY = NULL;
+				   $LastGoodX = NULL;
+				   $LastY = 1;
+
+				   foreach($PosArray as $Key => $Y){
 						if ($DisplayValues) {
 							$this->myPicture->drawText(
 								$X,
@@ -254,39 +251,47 @@ class pCharts {
 								["Color" => $DisplayColor, "Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 							);
 						}
-						
+
 						if ($Y != VOID){
 							if ($RecordImageMap) {
 								$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
-							
-							if (($LastY == VOID) && !is_null($LastGoodY) && !$BreakVoid) {
-								$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
-							}
+						}
+			  
+						if ($Y == VOID && $LastY != NULL){ 
+							$this->myPicture->drawSpline($WayPoints, $SplineSettings);
+							$WayPoints = [];
+						}
 
+						if ($Y != VOID && $LastY == NULL && $LastGoodY != NULL && !$BreakVoid){
+							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings); 
+						}
+
+						if ($Y != VOID ){
 							$WayPoints[] = [$X,$Y];
 							$LastGoodY = $Y;
-							$LastGoodX = $X;
-							
-						} else {
-							if ($LastY != VOID) {
-								$this->myPicture->drawSpline($WayPoints, ["Color" => $Serie["Color"], "Ticks" => $Ticks,"Weight" => $Weight]);
-								$WayPoints = [];
-							}
+							$LastGoodX = $X; 
+						}
+
+						if ($Y == VOID) {
+							$Y = NULL; 
 						}
 
 						$LastY = $Y;
 						$X += $XStep;
 					}
-					
-					$this->myPicture->drawSpline($WayPoints, ["Force" => $Force, "Color" => $Serie["Color"], "Ticks" => $Ticks,"Weight" => $Weight]);
-					
+
+					$this->myPicture->drawSpline($WayPoints, $SplineSettings);
+
 				} else {
 
-					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-					$Force = $XStep / 5;
+				   $Y = $this->myPicture->GraphAreaY1 + $XMargin;
 
-					foreach($PosArray as $Key => $X) {
+				   $LastGoodY = NULL;
+				   $LastGoodX = NULL;
+				   $LastX = 1;
+
+				   foreach($PosArray as $Key => $X){
 
 						if ($DisplayValues) {
 							$this->myPicture->drawText(
@@ -295,32 +300,37 @@ class pCharts {
 								["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 							);
 						}
-				
+				  
 						if ($X != VOID) {
 							if ($RecordImageMap) {
 								$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
-							
-							if (($LastX == VOID) && !is_null($LastGoodX) && !$BreakVoid) {
-								$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
-							}
-							
-							$WayPoints[] = [$X,	$Y];
+						}
+
+						if ($X == VOID && $LastX != NULL){
+							$this->myPicture->drawSpline($WayPoints, $SplineSettings);
+							$WayPoints = [];
+						}
+
+						if ($X != VOID && $LastX == NULL && $LastGoodX != NULL && !$BreakVoid){
+							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings); 
+						}
+
+						if ($X != VOID){
+							$WayPoints[] = [$X,$Y];
 							$LastGoodX = $X;
 							$LastGoodY = $Y;
-							
-						} else {
-							if ($LastX != VOID) {
-								$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"Color" => $Serie["Color"],"Ticks" => $Ticks,"Weight" => $Weight]);
-								$WayPoints = [];
-							}
+						}
+						
+						if ($X == VOID) {
+							$X = NULL; 
 						}
 
 						$LastX = $X;
 						$Y += $XStep;
 					}
 
-					$this->myPicture->drawSpline($WayPoints, ["Force" => $Force,"Color" => $Serie["Color"],"Ticks" => $Ticks,"Weight" => $Weight]);
+					$this->myPicture->drawSpline($WayPoints, $SplineSettings);
 				}
 			}
 		}
@@ -367,12 +377,13 @@ class pCharts {
 				$Data["Series"][$SerieName]["XOffset"] = 0;
 				
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
+				$WayPoints = [];
+				$Force = $XStep / 5;
 				
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
-					$WayPoints = [];
-					$Force = $XStep / 5;
+
 					if (!$AroundZero) {
 						$YZero = $this->myPicture->GraphAreaY2 - 1;
 					}
@@ -438,8 +449,7 @@ class pCharts {
 				} else {
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-					$WayPoints = [];
-					$Force = $XStep / 5;
+
 					if (!$AroundZero) {
 						$YZero = $this->myPicture->GraphAreaX1 + 1;
 					}
