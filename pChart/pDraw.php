@@ -3780,7 +3780,7 @@ class pDraw
 		$this->ShadowX = $X;
 		$this->ShadowY = $Y;
 
-		isset($Format["Color"]){
+		if (isset($Format["Color"])){
 			$this->ShadowColor = $Format["Color"];
 			$this->ShadowAllocatedColor = $this->allocateColor($this->ShadowColor);
 		}
