@@ -161,9 +161,11 @@ class pDraw
 			# Momchil: $this->allocateColor(new pColor(255,255,255,100)); sets alpha at 1.27 which is not completely transparent
 			imagefilledrectangle($this->Picture, 0, 0, $XSize, $YSize, imagecolorallocatealpha($this->Picture, 255, 255, 255, 0));
 		}
-		
-		$this->ShadowAllocatedColor = $this->allocateColor(new pColor(0));
-		
+
+		/* default shadow color */
+		$this->ShadowColor = new pColor(0,0,0,10);
+		$this->ShadowAllocatedColor = $this->allocateColor($this->ShadowColor);
+
 		/* default font color */
 		$this->FontColor = new pColor(255);
 	}
@@ -3761,28 +3763,27 @@ class pDraw
 	/* Enable / Disable and set shadow properties */
 	function setShadow(bool $Enabled = TRUE, array $Format = [])
 	{
-
 		$this->Shadow = $Enabled;
-		
+
 		/* Disable the shadow and exit */
 		if (!$Enabled){
 			return;
 		}
-		
+
 		$X = isset($Format["X"]) ? $Format["X"] : 2;
 		$Y = isset($Format["Y"]) ? $Format["Y"] : 2;
-		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0,0,0,10);
-		
+
 		if ($X == 0 || $Y == 0){
 			throw pException::InvalidInput("Invalid shadow specs");
 		}
 
 		$this->ShadowX = $X;
 		$this->ShadowY = $Y;
-		
-		$this->ShadowColor = $Color;
-		$this->ShadowAllocatedColor = $this->allocateColor($this->ShadowColor);
 
+		isset($Format["Color"]){
+			$this->ShadowColor = $Format["Color"];
+			$this->ShadowAllocatedColor = $this->allocateColor($this->ShadowColor);
+		}
 	}
 
 	/* Set the graph area position */
