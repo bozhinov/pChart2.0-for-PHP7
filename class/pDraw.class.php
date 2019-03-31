@@ -3957,12 +3957,14 @@ class pDraw
 		list($XMargin, $XDivs) = $this->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] == TRUE && $SerieName != $Data["Abscissa"]) {
+
 				$R = $Serie["Color"]["R"];
 				$G = $Serie["Color"]["G"];
 				$B = $Serie["Color"]["B"];
 				$Alpha = $Serie["Color"]["Alpha"];
 				$Ticks = $Serie["Ticks"];
 				$Weight = $Serie["Weight"];
+
 				if ($BreakR == NULL) {
 					$BreakSettings = ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $VoidTicks];
 				} else {
@@ -3976,13 +3978,16 @@ class pDraw
 				}
 
 				$AxisID = $Serie["Axis"];
-				$Mode = $Data["Axis"][$AxisID]["Display"];
+				$Mode	= $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
-				$Unit = $Data["Axis"][$AxisID]["Unit"];
+				$Unit	= $Data["Axis"][$AxisID]["Unit"];
+
 				$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
 				$PosArray = $this->scaleComputeY($Serie["Data"], ["AxisID" => $Serie["Axis"]]);
 				$this->DataSet->Data["Series"][$SerieName]["XOffset"] = 0;
+
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
+
 					if ($XDivs == 0) {
 						$XStep = ($this->GraphAreaX2 - $this->GraphAreaX1) / 4;
 					} else {
@@ -3992,51 +3997,52 @@ class pDraw
 					$X = $this->GraphAreaX1 + $XMargin;
 					$WayPoints = [];
 					$Force = $XStep / 5;
-
 					$PosArray = $this->convertToArray($PosArray);
-					
 					$LastGoodY = NULL;
 					$LastGoodX = NULL;
-					$LastX = 1;
 					$LastY = 1;
+
 					foreach($PosArray as $Key => $Y) {
-						if ($DisplayValues) $this->drawText($X, $Y - $DisplayOffset, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), array(
-							"R" => $DisplayR,
-							"G" => $DisplayG,
-							"B" => $DisplayB,
-							"Align" => TEXT_ALIGN_BOTTOMMIDDLE
-						));
+						if ($DisplayValues){
+							$this->drawText($X, $Y - $DisplayOffset, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), [
+								"R" => $DisplayR,
+								"G" => $DisplayG,
+								"B" => $DisplayB,
+								"Align" => TEXT_ALIGN_BOTTOMMIDDLE
+							]);
+						}
 						if ($RecordImageMap && $Y != VOID) {
 							$this->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $this->toHTMLColor($R, $G, $B), $SerieDescription, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 						}
 
-						if ($Y == VOID && $LastY != NULL) {
-							$this->drawSpline($WayPoints, ["R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight]);
-							$WayPoints = [];
+						if ($Y == VOID && $LastY != NULL){ 
+							$this->drawSpline($WayPoints,["Force"=>$Force,"R"=>$R,"G"=>$G,"B"=>$B,"Alpha"=>$Alpha,"Ticks"=>$Ticks,"Weight"=>$Weight]);
+							$WayPoints = []; 
 						}
 
 						if ($Y != VOID && $LastY == NULL && $LastGoodY != NULL && !$BreakVoid) {
 							$this->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
 						}
 
-						if ($Y != VOID) $WayPoints[] = [$X,$Y];
+						if ($Y != VOID){
+							$WayPoints[] = [$X,$Y];
+						}
+
 						if ($Y != VOID) {
 							$LastGoodY = $Y;
 							$LastGoodX = $X;
-						}
-
-						if ($Y == VOID) {
+						} else {
 							$Y = NULL;
 						}
 
-						$LastX = $X;
 						$LastY = $Y;
-						$X = $X + $XStep;
+						$X += $XStep;
 					}
 
 					$this->drawSpline($WayPoints, ["Force" => $Force,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight]);
-					
+
 				} else {
+
 					if ($XDivs == 0) {
 						$YStep = ($this->GraphAreaY2 - $this->GraphAreaY1) / 4;
 					} else {
@@ -4048,12 +4054,12 @@ class pDraw
 					$Force = $YStep / 5;
 
 					$PosArray = $this->convertToArray($PosArray);
-					
 					$LastGoodY = NULL;
 					$LastGoodX = NULL;
 					$LastX = 1;
-					$LastY = 1;
+
 					foreach($PosArray as $Key => $X) {
+
 						if ($DisplayValues) {
 							$this->drawText($X + $DisplayOffset, $Y, $this->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Angle" => 270,"R" => $DisplayR,"G" => $DisplayG,"B" => $DisplayB,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
 						}
@@ -4071,20 +4077,19 @@ class pDraw
 							$this->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
 						}
 
+						if ($X != VOID){
+							$WayPoints[] = [$X,$Y];
+						}
+
 						if ($X != VOID) {
-							$WayPoints[] = [$X,	$Y];
-						#} # Momchil 
-						#if ($X != VOID) {
 							$LastGoodX = $X;
 							$LastGoodY = $Y;
 						} else {
-						#if ($X == VOID) {
 							$X = NULL;
 						}
 
 						$LastX = $X;
-						$LastY = $Y;
-						$Y = $Y + $YStep;
+						$Y += $YStep;
 					}
 
 					$this->drawSpline($WayPoints, ["Force" => $Force,"R" => $R,"G" => $G,"B" => $B,"Alpha" => $Alpha,"Ticks" => $Ticks,"Weight" => $Weight]);
