@@ -199,10 +199,10 @@ class pCharts {
 		$DisplayColor = new pColor(0);
 		$RecordImageMap = FALSE;
 		$ImageMapPlotSize = 5;
-		
+
 		/* Override defaults */
 		extract($Format);
-		
+
 		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -236,7 +236,7 @@ class pCharts {
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
-				   $X = $this->myPicture->GraphAreaX1 + $XMargin; 
+				   $X = $this->myPicture->GraphAreaX1 + $XMargin;
 
 				   $LastGoodY = NULL;
 				   $LastGoodX = NULL;
@@ -246,8 +246,8 @@ class pCharts {
 						if ($DisplayValues) {
 							$this->myPicture->drawText(
 								$X,
-								$Y - $DisplayOffset, 
-								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), 
+								$Y - $DisplayOffset,
+								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
 								["Color" => $DisplayColor, "Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 							);
 						}
@@ -257,24 +257,22 @@ class pCharts {
 								$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
 							}
 						}
-			  
+
 						if ($Y == VOID && $LastY != NULL){ 
 							$this->myPicture->drawSpline($WayPoints, $SplineSettings);
 							$WayPoints = [];
 						}
 
 						if ($Y != VOID && $LastY == NULL && $LastGoodY != NULL && !$BreakVoid){
-							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings); 
+							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
 						}
 
 						if ($Y != VOID ){
 							$WayPoints[] = [$X,$Y];
 							$LastGoodY = $Y;
-							$LastGoodX = $X; 
-						}
-
-						if ($Y == VOID) {
-							$Y = NULL; 
+							$LastGoodX = $X;
+						} else {
+							$Y = NULL;
 						}
 
 						$LastY = $Y;
@@ -300,7 +298,7 @@ class pCharts {
 								["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 							);
 						}
-				  
+
 						if ($X != VOID) {
 							if ($RecordImageMap) {
 								$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . $ImageMapPlotSize, $ImageMapColor, $SerieDescription, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit));
@@ -313,17 +311,15 @@ class pCharts {
 						}
 
 						if ($X != VOID && $LastX == NULL && $LastGoodX != NULL && !$BreakVoid){
-							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings); 
+							$this->myPicture->drawLine($LastGoodX, $LastGoodY, $X, $Y, $BreakSettings);
 						}
 
 						if ($X != VOID){
 							$WayPoints[] = [$X,$Y];
 							$LastGoodX = $X;
 							$LastGoodY = $Y;
-						}
-						
-						if ($X == VOID) {
-							$X = NULL; 
+						} else {
+							$X = NULL;
 						}
 
 						$LastX = $X;
