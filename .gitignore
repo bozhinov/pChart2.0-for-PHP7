@@ -7,3 +7,4 @@ php_pdo_sqlite.dll
 cache/cache.db
 cache/index.db
 cache/sql.cache.db
+cloc-1.80.exe

@@ -9,7 +9,7 @@ use pChart\pDraw;
 use pChart\pPyramid;
 
 /* Create a pChart object and associate your dataset */ 
-$myPicture = new pDraw(1200,800);
+$myPicture = new pDraw(1800,800);
 $myPyramid = new pPyramid($myPicture);
 
 $Settings = ["Color" => new pColor(0),"NoFill" => TRUE];
@@ -30,6 +30,9 @@ $myPicture->myData->loadPalette($palette_light, $overwrite=TRUE);
 $Settings = ["NoFill" => FALSE];
 
 $myPyramid->drawReversePyramid($X = 600, $Y = 600, $Base = 400, $Height = 200, $Segments = 3, $Settings);
+
+$Settings = ["NoFill" => FALSE];
+$myPyramid->draw3DPyramid($X = 1100, $Y = 600, $Base = 400, $Height = 200, $Segments = 4, $Settings);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.pyramid.png");
