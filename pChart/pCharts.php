@@ -49,8 +49,8 @@ class pCharts {
 		$this->myPicture = $pChartObject;
 	}
 
-	function getXstep($Orientation, $XDivs, $XMargin){
-
+	function getXstep($Orientation, $XDivs, $XMargin)
+	{
 		if ($Orientation == SCALE_POS_LEFTRIGHT) {
 			if ($XDivs == 0) {
 				$XStep = $this->myPicture->GraphAreaXdiff / 4;

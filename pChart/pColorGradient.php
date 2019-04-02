@@ -68,11 +68,13 @@ class pColorGradient {
 		}
 	}
 
-	function getLatest(){
+	function getLatest()
+	{
 		return $this->ReturnColor;
 	}
 
-	function FindStep(){
+	function FindStep()
+	{
 		$this->Step = max(abs($this->EndColor->R - $this->StartColor->R), abs($this->EndColor->G - $this->StartColor->G), abs($this->EndColor->B - $this->StartColor->B));
 		($this->Step == 0) AND $this->Step = 1;
 

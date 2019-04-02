@@ -808,7 +808,6 @@ class pPie
 	/* Internally used to write the re-computed labels */
 	function writeShiftedLabels()
 	{
-
 		if (empty($this->LabelPos)) {
 			return; # Momchil: example.draw2DPie.labels
 		}

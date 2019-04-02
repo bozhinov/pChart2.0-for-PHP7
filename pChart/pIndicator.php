@@ -39,7 +39,6 @@ class pIndicator
 	/* Draw an indicator */
 	function draw(int $X, int $Y, int $Width, int $Height, array $Format = [])
 	{
-
 		/* No section */
 		if (isset($Format["IndicatorSections"])){
 			$IndicatorSections = $Format["IndicatorSections"];

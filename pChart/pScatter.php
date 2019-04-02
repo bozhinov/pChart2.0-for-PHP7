@@ -34,7 +34,6 @@ class pScatter
 	/* Prepare the scale */
 	function drawScatterScale(array $Format = [])
 	{
-		
 		/* Check if we have at least both one X and Y axis */
 		$GotXAxis = FALSE;
 		$GotYAxis = FALSE;
