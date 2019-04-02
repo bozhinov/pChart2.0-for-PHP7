@@ -57,7 +57,6 @@ class pData
 	/* Class creator */
 	function __construct()
 	{
-
 		$this->Palette = [
 			new pColor(188,224,46,100),
 			new pColor(224,100,46,100),
