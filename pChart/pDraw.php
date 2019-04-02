@@ -1469,9 +1469,11 @@ class pDraw
 		$XSpacing = 5;
 
 		extract($Format);
+		
+		$Data = $this->myData->getData();
 
-		foreach($this->myData->Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"] && !is_null($Serie["Picture"])) {
+		foreach($Data["Series"] as $SerieName => $Serie) {
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"] && !is_null($Serie["Picture"])) {
 				list($PicWidth, $PicHeight) = $this->getPicInfo($Serie["Picture"]);
 				($IconAreaWidth < $PicWidth) AND $IconAreaWidth = $PicWidth;
 				($IconAreaHeight < $PicHeight) AND $IconAreaHeight = $PicHeight;
@@ -1485,8 +1487,8 @@ class pDraw
 		$Y = 100;
 		$Boundaries = ["L" => $X, "T" => 100, "R" => 0, "B" => 0];
 		$vY = $Y;
-		foreach($this->myData->Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] && $SerieName != $this->myData->Data["Abscissa"]) {
+		foreach($Data["Series"] as $SerieName => $Serie) {
+			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				$Lines = preg_split("/\n/", $Serie["Description"]);
 				if ($Mode == LEGEND_VERTICAL) {
 					$BoxArray = $this->getTextBox($X + $IconAreaWidth + 4, $vY + $IconAreaHeight / 2, $FontName, $FontSize, 0, $Serie["Description"]);
@@ -2554,9 +2556,11 @@ class pDraw
 	/* Compute the best matching scale based on size & factors */
 	function processScale($XMin, $XMax, $MaxDivs, array $Factors, $AxisID)
 	{
+		$Data = $this->myData->getData();
+		
 		$ScaleHeight = abs(ceil($XMax) - floor($XMin));
-		$Format = (isset($this->myData->Data["Axis"][$AxisID]["Format"])) ?  $this->myData->Data["Axis"][$AxisID]["Format"] : NULL;
-		$Mode = (isset($this->myData->Data["Axis"][$AxisID]["Display"])) ? $this->myData->Data["Axis"][$AxisID]["Display"] : AXIS_FORMAT_DEFAULT;
+		$Format = (isset($Data["Axis"][$AxisID]["Format"])) ?  $Data["Axis"][$AxisID]["Format"] : NULL;
+		$Mode = (isset($Data["Axis"][$AxisID]["Display"])) ? $Data["Axis"][$AxisID]["Display"] : AXIS_FORMAT_DEFAULT;
 		$Scale = [];
 
 		if ($XMin != $XMax) {
