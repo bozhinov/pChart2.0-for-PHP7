@@ -26,17 +26,17 @@ class pRadar
 {
 	/* Class creator */
 	var $myPicture;
-	
+
 	/* Class creator */
 	function __construct($pChartObject)
 	{
 		if (!($pChartObject instanceof pDraw)){
 			die("pRadar needs a pDraw object. Please check the examples.");
 		}
-		
+
 		$this->myPicture = $pChartObject;
 	}
-	
+
 	/* Draw a radar chart */
 	function drawRadar(array $Format = [])
 	{
@@ -86,10 +86,10 @@ class pRadar
 
 		/* Override defaults */
 		extract($Format);
-		
+
 		/* Cancel default tick length if ticks not enabled */
 		($DrawTicks == FALSE) AND $TicksLength = 0;
-		
+
 		/* Data Processing */
 		$Data = $this->myPicture->myData->getData();
 		$Palette = $this->myPicture->myData->getPalette();
@@ -107,7 +107,7 @@ class pRadar
 		}
 
 		$Step = 360 / $Points;
-		
+
 		/* Draw the axis */
 		$CenterX = ($X2 + $X1) / 2;
 		$CenterY = ($Y2 + $Y1) / 2;
@@ -145,20 +145,20 @@ class pRadar
 			$this->myPicture->Shadow = FALSE;
 			if (!is_array($BackgroundGradient)) {
 				if ($Layout == RADAR_LAYOUT_STAR) {
-					
+
 					$PointArray = [];
 					for ($i = 0; $i <= 360; $i += $Step) {
 						$PointArray[] = cos(deg2rad($i + $AxisRotation)) * $EdgeHeight + $CenterX;
 						$PointArray[] = sin(deg2rad($i + $AxisRotation)) * $EdgeHeight + $CenterY;
 					}
-					
+
 					$this->myPicture->drawPolygon($PointArray, ["Color" => $BackgroundColor]);
-					
+
 				} elseif ($Layout == RADAR_LAYOUT_CIRCLE) {;
 					$this->myPicture->drawFilledCircle($CenterX, $CenterY, $EdgeHeight, ["Color" => $BackgroundColor]);
 				}
 			} else {
-				
+
 				$GradientColor = new pColorGradient($BackgroundGradient["StartColor"], $BackgroundGradient["EndColor"], TRUE);
 				$GradientColor->SetSegments($Segments);
 
@@ -184,7 +184,7 @@ class pRadar
 		/* Axis to axis lines */
 		$Color = ["Color" => $AxisColor];
 		$ColorDotted = ["Color" => $AxisColor->newOne()->AlphaMultiply(.8),"Ticks" => 2];
-		
+
 		if ($Layout == RADAR_LAYOUT_STAR) {
 			for ($j = 1; $j <= $Segments; $j++) {
 				for ($i = 0; $i < 360; $i += $Step) {
@@ -216,7 +216,7 @@ class pRadar
 			$Options["FontName"] = $AxisFontName;
 			$Options["FontSize"] = $AxisFontSize;
 			$Angle = $Step / 2;
-			
+
 			for ($j = 1; $j <= $Segments; $j++) {
 				$Label = $j * $SegmentHeight;
 				if ($Layout == RADAR_LAYOUT_CIRCLE) {
@@ -230,7 +230,7 @@ class pRadar
 					$EdgeX1 = ($EdgeX2 + $EdgeX1) / 2;
 					$EdgeY1 = ($EdgeY2 + $EdgeY1) / 2;
 				}
-				
+
 				$this->myPicture->drawText($EdgeX1, $EdgeY1, $Label, $Options);
 			}
 		}
@@ -286,7 +286,7 @@ class pRadar
 								break;
 						}
 					}
-					
+
 					$this->myPicture->drawText($LabelX, $LabelY, $Label, $Align);
 				}
 			}
@@ -317,10 +317,10 @@ class pRadar
 
 		/* Draw all that stuff! */
 		foreach($Plot as $ID => $Points) {
-			
+
 			$Color = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
 			$PointCount = count($Points);
-			
+
 			/* Draw the polygons */
 			if ($DrawPoly) {
 				if (!is_null($PolyAlpha)) {
@@ -335,7 +335,7 @@ class pRadar
 
 				$this->myPicture->drawPolygon($PointsArray, $Color);
 			}
-			
+
 			/* Bubble and labels settings */
 			$TextSettings = array("Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"Color" => $Palette[$ID]);
 
@@ -414,15 +414,15 @@ class pRadar
 		$X2 = $this->myPicture->GraphAreaX2;
 		$Y2 = $this->myPicture->GraphAreaY2;
 		$RecordImageMap = FALSE;
-		
+
 		/* Override defaults */
 		extract($Format);
-		
+
 		($AxisBoxRounded) AND $DrawAxisValues = TRUE;
-		
+
 		/* Cancel default tick length if ticks not enabled */
 		($DrawTicks == FALSE) AND $TicksLength = 0;
-		
+
 		/* Data Processing */
 		$Data = $this->myPicture->myData->getData();
 		$Palette = $this->myPicture->myData->getPalette();
@@ -498,7 +498,7 @@ class pRadar
 			}
 
 			($AxisBoxRounded) AND $Options["BoxRounded"] = TRUE;
-			
+
 			$Options["FontName"] = $AxisFontName;
 			$Options["FontSize"] = $AxisFontSize;
 			$Angle = 360 / ($Points * 2);
@@ -520,7 +520,7 @@ class pRadar
 				$LabelX = cos(deg2rad($i + $AxisRotation)) * ($EdgeHeight + $LabelPadding + $TicksLength) + $CenterX;
 				$LabelY = sin(deg2rad($i + $AxisRotation)) * ($EdgeHeight + $LabelPadding + $TicksLength) + $CenterY;
 				$Label = $i . "°";
-				
+
 				if ($LabelPos == RADAR_LABELS_ROTATED) {
 					$Align = ["Angle" => (360 - $i),"Align" => TEXT_ALIGN_BOTTOMMIDDLE];
 				} else { # RADAR_LABELS_HORIZONTAL
@@ -551,7 +551,7 @@ class pRadar
 							break;
 					}
 				}
-				
+
 				$this->myPicture->drawText($LabelX, $LabelY, $Label, $Align);
 			}
 
@@ -582,16 +582,16 @@ class pRadar
 
 		/* Draw all that stuff! */
 		foreach($Plot as $ID => $Points) {
-			
+
 			$Color = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
 			$PointCount = count($Points);
-			
+
 			/* Draw the polygons */
 			if ($DrawPoly) {
 				if (!is_null($PolyAlpha)) {
 					$Color = ["Color" => $Palette[$ID]->newOne()->AlphaSet($PolyAlpha),"Surrounding" => $PointSurrounding];
 				}
-				
+
 				$PointsArray = [];
 				for ($i = 0; $i < $PointCount; $i++) {
 					$PointsArray[] = $Points[$i][0];
@@ -600,7 +600,7 @@ class pRadar
 
 				$this->myPicture->drawPolygon($PointsArray, $Color);
 			}
-			
+
 			/* Bubble and labels settings */
 			$Color = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
 			$TextSettings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"Color" => $Palette[$ID]];

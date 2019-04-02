@@ -40,7 +40,7 @@ class pSpring
 	var $Y2;
 	var $AutoComputeFreeZone;
 	var $Labels;
-	
+
 	/* Class creator */
 	function __construct($pChartObject)
 	{
@@ -62,11 +62,11 @@ class pSpring
 		];
 		$this->Labels = ["Type" => LABEL_CLASSIC, "Color" => new pColor(0)];
 		$this->AutoComputeFreeZone = FALSE;
-		
+
 		if (!($pChartObject instanceof pDraw)){
 			die("pSpring needs a pDraw object. Please check the examples.");
 		}
-		
+
 		$this->myPicture = $pChartObject;
 	}
 
@@ -85,7 +85,7 @@ class pSpring
 		#$vars = ["Type", "R", "G", "B", "Alpha"];
 		foreach ($Settings as $key => $value){
 			$this->Labels[$key] = $value;
-		}	
+		}
 	}
 
 	/* Auto compute the FreeZone size based on the number of connections */
@@ -111,9 +111,9 @@ class pSpring
 		$Color = new pColor(0);
 		$Name = NULL;
 		$Ticks = NULL;
-		
+
 		extract($Settings);
-		
+
 		$this->Links[$FromNode][$ToNode] = ["Color" => $Color, "Name" => $Name, "Ticks" => $Ticks];
 		$this->Links[$ToNode][$FromNode] = $this->Links[$FromNode][$ToNode];
 
@@ -146,10 +146,10 @@ class pSpring
 		$Size = $this->Default["Size"];
 		$Shape = $this->Default["Shape"];
 		$FreeZone = $this->Default["FreeZone"];
-		
+
 		/* Override defaults */
 		extract($Settings);
-		
+
 		if (!is_null($Surrounding)) {
 			$BorderColor = $Color->newOne()->RGBChange($Surrounding);
 		}
@@ -169,7 +169,7 @@ class pSpring
 		if (!is_array($Connections)){
 			throw pException::SpringIvalidConnectionsException();
 		}
-		
+
 		foreach($Connections as $Value){
 			$this->Data[$NodeID]["Connections"][] = $Value;
 		}
@@ -180,16 +180,16 @@ class pSpring
 	{
 		foreach($Nodes as $NodeID) {
 			if (isset($this->Data[$NodeID])) {
-				
+
 				(isset($Settings["Color"]))		  AND $this->Data[$NodeID]["Color"] = $Settings["Color"];
 				(isset($Settings["BorderColor"])) AND $this->Data[$NodeID]["BorderColor"] = $Settings["BorderColor"];
 				(isset($Settings["Surrounding"])) AND $this->Data[$NodeID]["BorderColor"] = $this->Data[$NodeID]["Color"]->newOne()->RGBChange($Settings["Surrounding"]);
-				
+
 			} else {
 				throw pException::SpringInvalidInputException($NodeID." is invalid node");
 			}
 		}
-		
+
 	}
 
 	/* Get the median linked nodes position */
@@ -263,7 +263,7 @@ class pSpring
 				}
 			}
 		}
-		
+
 		switch ($Algorithm) {
 			case ALGORITHM_WEIGHTED:
 				foreach($this->Data as $Key => $Settings) {
@@ -591,7 +591,7 @@ class pSpring
 
 					if (isset($this->Data[$NodeID]) && !isset($Drawn[$Key][$NodeID]) && !isset($Drawn[$NodeID][$Key])) {
 						$Color = $defaultColor;
-						if (!empty($this->Links)) {	
+						if (!empty($this->Links)) {
 							if (isset($this->Links[$Key][$NodeID])) {
 								$Color = $this->Links[$Key][$NodeID];
 								unset($Color['name']); # ticks is already there
@@ -639,7 +639,7 @@ class pSpring
 			$Name = $Settings["Name"];
 			$Size = $Settings["Size"];
 			$ShapeSettings = ["Color" => $Settings["Color"],"BorderColor" => $Settings["BorderColor"]];
-			
+
 			switch ($Settings["Shape"]){
 				case NODE_SHAPE_CIRCLE:
 					$this->myPicture->drawFilledCircle($X, $Y, $Size, $ShapeSettings);

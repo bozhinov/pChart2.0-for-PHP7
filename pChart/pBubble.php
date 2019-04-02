@@ -23,14 +23,14 @@ class pBubble
 {
 
 	var $myPicture;
-	
+
 	/* Class creator */
 	function __construct($pChartObject)
 	{
 		if (!($pChartObject instanceof pDraw)){
 			die("pBubble needs a pDraw object. Please check the examples.");
 		}
-		
+
 		$this->myPicture = $pChartObject;
 	}
 
@@ -43,9 +43,9 @@ class pBubble
 		$MaxValues = 0;
 		$LastPositive = 0;
 		$LastNegative = 0;
-		
+
 		$Data = $this->myPicture->myData->getData();
-		
+
 		foreach($DataSeries as $Key => $SerieName) {
 			$SerieWeightName = $WeightSeries[$Key];
 			$this->myPicture->myData->setSerieDrawable($SerieWeightName, FALSE);
@@ -111,16 +111,16 @@ class pBubble
 		$Surrounding = NULL;
 		$BorderColor = new pColor(0,0,0,30);
 		$RecordImageMap = FALSE;
-		
+
 		/* Override defaults */
 		extract($Format);
-		
+
 		$Data = $this->myPicture->myData->getData();
 		$Palette = $this->myPicture->myData->getPalette();
-		
+
 		$Orientation = $Data["Orientation"];
 		$Data = $Data["Series"];
-				
+
 		if (isset($Data["BubbleFakePositiveSerie"])) {
 			$this->myPicture->myData->setSerieDrawable("BubbleFakePositiveSerie", FALSE);
 		}
@@ -143,14 +143,14 @@ class pBubble
 		}
 
 		foreach($DataSeries as $Key => $SerieName) {
-			
+
 			$X = $this->myPicture->GraphAreaX1 + $XMargin;
 			$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-			
+
 			$ColorSettings = ["Color" => $Palette[$Key]];
 
 			(!is_null($ForceAlpha)) AND $ColorSettings["Color"]->AlphaSet($ForceAlpha);
-			
+
 			if ($DrawBorder) {
 				if ($BorderWidth != 1) {
 					(!is_null($Surrounding)) AND $BorderColor = $ColorSettings["Color"]->newOne()->RGBChange($Surrounding);
@@ -170,12 +170,12 @@ class pBubble
 			}
 
 			foreach($Data[$SerieName]["Data"] as $iKey => $Point) {
-				
+
 				$DataWeightSeries = $Data[$WeightSeries[$Key]]["Data"][$iKey];
 				$Weight = $this->myPicture->scaleComputeYSingle($Point + $DataWeightSeries, $Data[$SerieName]["Axis"]);
 				$Pos = $this->myPicture->scaleComputeYSingle($Point, $Data[$SerieName]["Axis"]);
 				$Radius = floor(abs($Pos - $Weight) / 2);
-				
+
 				if ($Orientation == SCALE_POS_LEFTRIGHT) {
 
 					$Y = floor($Pos);
@@ -213,13 +213,13 @@ class pBubble
 	function writeBubbleLabel(string $SerieName, string $SerieWeightName, int $Point, array $Format = [])
 	{
 		$Data = $this->myPicture->myData->getData();
-		
+
 		if (!isset($Data["Series"][$SerieName]) || !isset($Data["Series"][$SerieWeightName])) {
 			throw pException::BubbleInvalidInputException("Serie name or Weight is invalid!");
 		}
 
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
-		
+
 		$AxisID = $Data["Series"][$SerieName]["Axis"];
 		$Value = $Data["Series"][$SerieName]["Data"][$Point];
 		$Pos = $this->myPicture->scaleComputeYSingle($Value, $AxisID);
@@ -240,7 +240,7 @@ class pBubble
 			$X = floor($Pos);
 			$Y = floor($Y + $Point * $YStep);
 		}
-		
+
 		$DrawPoint = isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
 		if ($DrawPoint == LABEL_POINT_CIRCLE) {
 			$this->myPicture->drawFilledCircle($X, $Y, 3, ["Color" => new pColor(255), "BorderColor" => new pColor(0)]);
