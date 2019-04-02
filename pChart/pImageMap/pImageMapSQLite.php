@@ -31,8 +31,8 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 	}
 
 	/* Create Db schema */
-	function InitDb(){
-
+	function InitDb()
+	{
 		try{
 			$q = $this->DbSQLite->prepare("CREATE TABLE IF NOT EXISTS ".$this->DbSQLite->quote($this->DbTable)." (Type TEXT, Plots BLOB, Color TEXT, Title TEXT, Message TEXT);");
 			$q->execute();
@@ -72,8 +72,8 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 		parent::__destruct();
 	}
 	
-	function ImageMapExists(){
-
+	function ImageMapExists()
+	{
 		$match = [];
 		try{
 			$q = $this->DbSQLite->prepare("SELECT \"Type\" FROM ".$this->DbSQLite->quote($this->DbTable).";");

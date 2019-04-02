@@ -24,7 +24,6 @@ class pCacheFile implements pCacheInterface
 	/* Class creator */
 	function __construct(array $Settings = [], string $uniqueId)
 	{
-
 		$CacheFolder = isset($Settings["CacheFolder"]) ? $Settings["CacheFolder"] : "cache";
 
 		#if (!is_dir($CacheFolder)){
@@ -57,7 +56,8 @@ class pCacheFile implements pCacheInterface
 	}
 
 	/* For when you need to work with multiple cached images */
-	function changeID(string $uniqueId){
+	function changeID(string $uniqueId)
+	{
 		$this->Id = md5($uniqueId);
 	}
 

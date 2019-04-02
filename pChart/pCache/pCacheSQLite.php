@@ -25,7 +25,6 @@ class pCacheSQLite implements pCacheInterface
 	/* Class creator */
 	function __construct(array $Settings = [], string $uniqueId)
 	{
-
 		$CacheFolder = isset($Settings["CacheFolder"]) ? $Settings["CacheFolder"] : "cache";
 		
 		#if (!is_dir($CacheFolder)){
@@ -58,8 +57,8 @@ class pCacheSQLite implements pCacheInterface
 	}
 
 	/* Create Db schema */
-	function InitDb(){
-
+	function InitDb()
+	{
 		try{
 			$q = $this->DbSQLite->prepare("CREATE TABLE cache (Id TEXT,time INTEGER,hits INTEGER,data BLOB,PRIMARY KEY(Id));");
 			$q->execute();
@@ -70,7 +69,8 @@ class pCacheSQLite implements pCacheInterface
 	}
 	
 	/* For when you need to work with multiple cached images */
-	function changeID(string $uniqueId){
+	function changeID(string $uniqueId)
+	{
 		$this->Id = md5($uniqueId);
 	}
 
@@ -86,7 +86,6 @@ class pCacheSQLite implements pCacheInterface
 	/* Write the generated picture to the cache */
 	function writeToCache($pChartObject)
 	{
-
 		if (!($pChartObject instanceof \pChart\pDraw)){
 			die("pCache needs a pDraw object. Please check the examples.");
 		}

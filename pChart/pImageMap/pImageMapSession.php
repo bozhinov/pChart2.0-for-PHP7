@@ -35,15 +35,16 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 		parent::__construct($XSize, $YSize, $TransparentBackground);
 	}
 	
-	function __destruct(){
-
+	function __destruct()
+	{
 		$_SESSION[$this->ImageMapIndex][$this->UniqueID] = $this->ImageMapBuffer;
 
 		parent::__destruct();
 	}
 
 	/* does the image map already exist */
-	function ImageMapExists(){
+	function ImageMapExists()
+	{
 		if (isset($_SESSION[$this->ImageMapIndex])){
 			if (isset($_SESSION[$this->ImageMapIndex][$this->UniqueID])){
 				return TRUE;
@@ -85,7 +86,6 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 	/* Replace the title of one image map series */
 	function replaceImageMapTitle(string $OldTitle, $NewTitle)
 	{
-
 		if (is_array($NewTitle)) {
 			$ID = 0;
 			$NewTitle = $this->stripFromSerie($OldTitle, $NewTitle);
@@ -108,7 +108,6 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 	/* Replace the values of the image map contents */
 	function replaceImageMapValues(string $Title, array $Values)
 	{
-
 		$Values = $this->stripFromSerie($Title, $Values);
 		$ID = 0;
 
