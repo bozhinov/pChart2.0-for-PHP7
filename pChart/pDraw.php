@@ -129,7 +129,6 @@ class pDraw
 	/* Class constructor */
 	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE)
 	{
-
 		$this->myData = new pData();
 
 		$this->XSize = $XSize;
@@ -757,8 +756,8 @@ class pDraw
 		/* Derivative algorithm for overweighted lines, re-route to polygons primitives */
 		if (!is_null($Weight)) {
 			$Angle = $this->getAngle($X1, $Y1, $X2, $Y2);
-			$AngleCosPlus90 =  cos(deg2rad($Angle + 90)) * $Weight;
-			$AngleSinPlus90 =  sin(deg2rad($Angle + 90)) * $Weight;
+			$AngleCosPlus90 = cos(deg2rad($Angle + 90)) * $Weight;
+			$AngleSinPlus90 = sin(deg2rad($Angle + 90)) * $Weight;
 			
 			$PolySettings = ["Color" => $Color];
 			
@@ -815,7 +814,6 @@ class pDraw
 	/* Draw a circle */
 	function drawCircle($Xc, $Yc, $Height, $Width, array $Format = [])
 	{
-	
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$Mask = isset($Format["Mask"]) ? $Format["Mask"] : [];
@@ -874,7 +872,6 @@ class pDraw
 	/* Draw a filled circle */
 	function drawFilledCircle(int $X, int $Y, int $Radius, array $Format = [])
 	{
-
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : NULL;
 		if(isset($Format["Surrounding"])){
@@ -982,7 +979,6 @@ class pDraw
 	/* Draw a gradient within a defined area */
 	function drawGradientArea($X1, $Y1, $X2, $Y2, $Direction, array $GradientColor, $Levels = NULL)
 	{
-
 		$GradientColor = new pColorGradient($GradientColor["StartColor"]->newOne(), $GradientColor["EndColor"]->newOne());
 
 		/* Draw a gradient within a defined area */
@@ -2854,7 +2850,6 @@ class pDraw
 	/* Draw an Y threshold with the computed scale */
 	function drawThreshold(array $Values, array $Format = [])
 	{
-
 		$AxisID = isset($Format["AxisID"]) ? $Format["AxisID"] : 0;
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(255,0,0,20);
 		$Weight = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
@@ -3717,7 +3712,6 @@ class pDraw
 	/* Draw a basic shape */
 	function drawShape($X, $Y, $Shape, $PlotSize, $PlotBorder, $BorderSize, pColor $Color, pColor $BorderColor)
 	{
-
 		switch ($Shape){
 			case SERIE_SHAPE_FILLEDCIRCLE:
 				if ($PlotBorder) {
@@ -3889,8 +3883,8 @@ class pDraw
 	}
 	
 	/* http://php.net/manual/en/function.imagefilter.php */
-	function setFilter(int $filtertype, int $arg1 = 0, int $arg2 = 0, int $arg3 = 0, int $arg4 = 0){
-	
+	function setFilter(int $filtertype, int $arg1 = 0, int $arg2 = 0, int $arg3 = 0, int $arg4 = 0)
+	{
 		$ret = imagefilter($this->Picture, $filtertype, $arg1, $arg2, $arg3, $arg4);
 		
 		if (!$ret){
