@@ -162,18 +162,6 @@ class pData
 		}
 	}
 
-	/* Return a value from given serie & index */ # UNUSED
-	function getValueAt(string $Serie, int $Index = 0)
-	{
-		return (isset($this->Data["Series"][$Serie]["Data"][$Index])) ? $this->Data["Series"][$Serie]["Data"][$Index] : FALSE;
-	}
-
-	/* Return the values array */ # UNUSED
-	function getValues(string $Serie)
-	{
-		return (isset($this->Data["Series"][$Serie]["Data"])) ? $this->Data["Series"][$Serie]["Data"] : [];
-	}
-
 	/* Reverse the values in the given serie */
 	function reverseSerie(string $Serie) # UNUSED
 	{
@@ -696,7 +684,19 @@ class pData
 			}
 		}
 	}
-	
+
+	/* used in pPie */
+	function getPaletteForPie(array $Points)
+	{
+		foreach($Points as $ID => $Value) {
+			if(!isset($this->Palette[$ID])){
+				$this->Palette[$ID] = new pColor();
+			}
+		}
+
+		return $this->Palette;
+	}
+
 	/* Save a palette */
 	function savePalette(array $newPalette)
 	{

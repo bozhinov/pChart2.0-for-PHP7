@@ -84,7 +84,7 @@ class pPie
 		$Values = $this->clean0Values(array_shift($Data["Series"])["Data"]); # DataSerieData
 
 		/* Gen Palette */
-		$Palette = $this->get_palette($Values);
+		$Palette = $this->myPicture->myData->getPaletteForPie($Values);
 
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
@@ -333,9 +333,10 @@ class pPie
 
 		/* Remove unused data */
 		$Values = $this->clean0Values(array_shift($Data["Series"])["Data"]); # DataSerieData
+		$Values = array_reverse($Values);
 
 		/* Gen Palette */
-		$Palette = array_reverse($this->get_palette($Values));
+		$Palette = $this->myPicture->myData->getPaletteForPie($Values);
 
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
@@ -351,7 +352,6 @@ class pPie
 		/* Draw the polygon pie elements */
 		$Step = rad2deg(1/$Radius);
 		$Offset = 360;
-		$Values = array_reverse($Values);
 		$Slices = [];
 		$SliceColors = [];
 		$Visible = [];
@@ -681,6 +681,8 @@ class pPie
 		$XStep = $BoxSize + 5;
 		/* Data Processing */
 		$Data = $this->myPicture->myData->getData();
+
+		/* Gen Palette */
 		$Palette = $this->myPicture->myData->getPalette();
 
 		/* Do we have an abscissa serie defined? */
@@ -871,7 +873,7 @@ class pPie
 		$Values = $this->clean0Values(array_shift($Data["Series"])["Data"]);
 
 		/* Gen Palette */
-		$Palette = $this->get_palette($Values);
+		$Palette = $this->myPicture->myData->getPaletteForPie($Values);
 
 		/* Shadow */
 		$RestoreShadow = $this->myPicture->Shadow;
@@ -1082,16 +1084,15 @@ class pPie
 		$DataSerieData = array_shift($Data["Series"])["Data"];
 
 		/* Remove unused data */
-		$Values = $this->clean0Values($DataSerieData);
+		$Values = array_reverse($this->clean0Values($DataSerieData));
 
 		/* Gen Palette */
-		$Palette = array_reverse($this->get_palette($Values));
+		$Palette = $this->myPicture->myData->getPaletteForPie($Values);
 
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
 
 		/* Compute the scale */
-		$Values = array_reverse($Values);
 		$SerieSum = array_sum($Values);
 		$ScaleFactor = (360 - $WastedAngular) / $SerieSum;
 		$RestoreShadow = $this->myPicture->Shadow;
@@ -1359,22 +1360,7 @@ class pPie
 		$this->myPicture->Shadow = $RestoreShadow;
 	}
 
-	function get_palette(array $Points)
-	{
-		$Palette = $this->myPicture->myData->getPalette();
-
-		$NewPalette = [];
-
-		foreach($Points as $Key => $Value) {
-			$NewPalette[$Key] = (isset($Palette[$Key])) ? $Palette[$Key] :  new pColor();
-		}
-
-		$this->myPicture->myData->savePalette($NewPalette);
-
-		return $NewPalette;
-	}
-
-	/* Remove NULL values and reset Palette */
+	/* Remove invalid values */
 	function clean0Values(array $DataSerieData)
 	{
 		# array_diff preserves keys
