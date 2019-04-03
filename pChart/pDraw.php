@@ -3057,7 +3057,6 @@ class pDraw
 
 		$Data = $this->myData->getData();
 
-		$Result = 0;
 		$Scale = $Data["Axis"][$AxisID]["ScaleMax"] - $Data["Axis"][$AxisID]["ScaleMin"];
 		$Margin = $Data["Axis"][$AxisID]["Margin"];
 
@@ -3074,9 +3073,25 @@ class pDraw
 
 	function scaleComputeY(array $Values, int $AxisID)
 	{
+		$Data = $this->myData->getData();
 		$Result = [];
-		foreach($Values as $Val){
-			$Result[] = $this->scaleComputeYSingle($Val, $AxisID);
+
+		$Scale = $Data["Axis"][$AxisID]["ScaleMax"] - $Data["Axis"][$AxisID]["ScaleMin"];
+		$Margin = $Data["Axis"][$AxisID]["Margin"];
+
+		foreach($Values as $Value){
+
+			if ($Value == VOID) {
+				$Result[] = VOID;
+			} else {
+				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
+					$Height = $this->GraphAreaYdiff - $Margin * 2;
+					$Result[] = $this->GraphAreaY2 - $Margin - (($Height / $Scale) * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));
+				} else {
+					$Width = $this->GraphAreaXdiff - $Margin * 2;
+					$Result[] = $this->GraphAreaX1 + $Margin + (($Width / $Scale) * ($Value - $Data["Axis"][$AxisID]["ScaleMin"]));
+				}
+			}
 		}
 
 		return $Result;
