@@ -378,11 +378,11 @@ class pPie
 			$Slices[$Key][] = $X0;
 			$Slices[$Key][] = $Y0;
 			$SliceAngle[$Key][] = 0;
-			
+
 			for ($i = $Offset; $i >= $EndAngle; $i = $i - $Step) {
 				$Xc = cos(deg2rad($i - 90)) * $Radius + $X;
 				$Yc = sin(deg2rad($i - 90)) * $Radius * $SkewFactor + $Y;
-				
+
 				if ($SecondPass || $RestoreShadow){
 					($i < 90) AND $Yc++;
 					($i > 90 && $i < 180) AND $Xc++;

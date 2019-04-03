@@ -237,7 +237,7 @@ class pSpring
 		foreach($this->Data as $Key => $Settings) {
 			if (isset($Settings["Connections"])) {
 				foreach($Settings["Connections"] as $ConnectionID) {
-					
+
 					/* Check connections reciprocity */
 					if (isset($this->Data[$ConnectionID]["Connections"])) {
 						if(!in_array($Key, $this->Data[$ConnectionID]["Connections"])) {

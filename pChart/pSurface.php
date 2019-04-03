@@ -29,14 +29,14 @@ class pSurface
 	var $GridSizeY;
 	var $Points = [];
 	var $myPicture;
-	
+
 	/* Class creator */
 	function __construct($pChartObject)
 	{
 		if (!($pChartObject instanceof pDraw)){
 			die("pSurface needs a pDraw object. Please check the examples.");
 		}
-		
+
 		$this->myPicture = $pChartObject;
 	}
 
@@ -84,10 +84,10 @@ class pSurface
 		$Position = LABEL_POSITION_TOP;
 		$Labels = [];
 		$CountOffset = 0;
-		
+
 		/* Override defaults */
 		extract($Format);
-		
+
 		$X0 = $this->myPicture->GraphAreaX1;
 		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
 		$Settings = ["Angle" => $Angle,"Color" => $Color];
@@ -121,7 +121,7 @@ class pSurface
 		$Y0 = $this->myPicture->GraphAreaY1;
 		$YSize = $this->myPicture->GraphAreaYdiff / ($this->GridSizeY + 1);
 		$Settings = ["Angle" => $Angle,"Color" => $Color];
-		
+
 		if ($Position == LABEL_POSITION_LEFT) {
 			$XPos = $this->myPicture->GraphAreaX1 - $Padding;
 			$Settings["Align"] = TEXT_ALIGN_MIDDLERIGHT;
@@ -145,7 +145,7 @@ class pSurface
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : 3;
 		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 0;
-		
+
 		$X0 = $this->myPicture->GraphAreaX1;
 		$Y0 = $this->myPicture->GraphAreaY1;
 		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
@@ -186,12 +186,12 @@ class pSurface
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : new pColor(0);
 		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
 		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 1;
-				
+
 		$X0 = $this->myPicture->GraphAreaX1;
 		$Y0 = $this->myPicture->GraphAreaY1;
 		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
 		$YSize = $this->myPicture->GraphAreaYdiff / ($this->GridSizeY + 1);
-	
+
 		$Gradient = new pColorGradient($ShadeColor1->newOne(), $ShadeColor2->newOne());
 		$Gradient->SetSegments(100);
 
@@ -199,7 +199,7 @@ class pSurface
 			for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {
 				$Value = $this->Points[$X][$Y];
 				if ($Value != UNKNOWN && $Value != IGNORED) {
-					
+
 					if (!empty($Palette)) {
 						$Settings = ["Color" => (isset($Palette[$Value])) ? $Palette[$Value] : new pColor(0)];
 					} else {

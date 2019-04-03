@@ -99,7 +99,7 @@ class pPyramid
 				if (isset($this->myPicture->myData->Palette[$i])){
 					$Settings["Color"] = $this->myPicture->myData->Palette[$i]->newOne();
 				} else {
-					$Settings["Color"] = new pColor;
+					$Settings["Color"] = new pColor();
 				}
 			}
 			

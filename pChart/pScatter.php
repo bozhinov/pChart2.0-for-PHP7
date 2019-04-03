@@ -20,26 +20,26 @@ class pScatter
 {
 	/* Class creator */
 	var $myPicture;
-	
+
 	/* Class creator */
 	function __construct($pChartObject)
 	{
 		if (!($pChartObject instanceof pDraw)){
 			die("pScatter needs a pDraw object. Please check the examples.");
 		}
-		
+
 		$this->myPicture = $pChartObject;
 	}
-	
+
 	/* Prepare the scale */
 	function drawScatterScale(array $Format = [])
 	{
 		/* Check if we have at least both one X and Y axis */
 		$GotXAxis = FALSE;
 		$GotYAxis = FALSE;
-		
+
 		$Data = $this->myPicture->myData->getData();
-		
+
 		foreach($Data["Axis"] as $AxisSettings) {
 			($AxisSettings["Identity"] == AXIS_X) AND $GotXAxis = TRUE;
 			($AxisSettings["Identity"] == AXIS_Y) AND $GotYAxis = TRUE;
@@ -52,7 +52,7 @@ class pScatter
 		if (!$GotYAxis) {
 			throw pException::ScatterInvalidInputException("Missing YAxis!");
 		}
-		
+
 		$Mode = SCALE_MODE_FLOATING;
 		$Floating = FALSE;
 		$XLabelsRotation = 90;
@@ -80,13 +80,13 @@ class pScatter
 		$CycleBackground = FALSE;
 		$BackgroundColor1 = new pColor(255,255,255,10);
 		$BackgroundColor2 = new pColor(230,230,230,10);
-		
+
 		/* Override defaults */
 		extract($Format);
-		
+
 		/* Skip a NOTICE event in case of an empty array */
 		($DrawYLines == NONE) AND $DrawYLines = ["zarma" => "31"];
-		
+
 		foreach($Data["Axis"] as $AxisID => $AxisSettings) {
 			if ($AxisSettings["Identity"] == AXIS_X) {
 				$Width = $this->myPicture->GraphAreaXdiff - $XMargin * 2;
@@ -212,7 +212,7 @@ class pScatter
 						if ($DrawSubTicks && $i != $AxisSettings["Rows"]){
 							$this->myPicture->drawLine($XPos + $SubTicksSize, $YPos - $InnerSubTickWidth, $XPos + $SubTicksSize, $YPos + $OuterSubTickWidth, ["Color" => $SubTickColor]);
 						}
-						
+
 						$this->myPicture->drawLine($XPos, $YPos - $InnerTickWidth, $XPos, $YPos + $OuterTickWidth, ["Color" => $TickColor]);
 						$Bounds = $this->myPicture->drawText($XPos, $YPos + $OuterTickWidth + $LabelOffset, $Value, ["Angle" => $XLabelsRotation,"Align" => $LabelAlign]);
 						$TxtBottom = $YPos + 2 + $OuterTickWidth + 2 + ($Bounds[0]["Y"] - $Bounds[2]["Y"]);
@@ -228,9 +228,9 @@ class pScatter
 					}
 
 					$AxisPos["B"] = $MaxBottom + $ScaleSpacing;
-					
+
 				} elseif ($AxisSettings["Position"] == AXIS_POSITION_TOP) {
-					
+
 					if ($XLabelsRotation == 0) {
 						$LabelAlign = TEXT_ALIGN_BOTTOMMIDDLE;
 						$LabelOffset = 2;
@@ -301,7 +301,7 @@ class pScatter
 
 					$AxisPos["T"] = $MinTop - $ScaleSpacing;
 				}
-				
+
 			} elseif ($AxisSettings["Identity"] == AXIS_Y) {
 				if ($AxisSettings["Position"] == AXIS_POSITION_LEFT) {
 					if ($Floating) {
@@ -337,7 +337,7 @@ class pScatter
 						if ($DrawSubTicks && $i != $AxisSettings["Rows"]) {
 							 $this->myPicture->drawLine($XPos - $OuterSubTickWidth, $YPos - $SubTicksSize, $XPos + $InnerSubTickWidth, $YPos - $SubTicksSize, ["Color" => $SubTickColor]);
 						}
-						
+
 						$this->myPicture->drawLine($XPos - $OuterTickWidth, $YPos, $XPos + $InnerTickWidth, $YPos, ["Color" => $TickColor]);
 						$Bounds = $this->myPicture->drawText($XPos - $OuterTickWidth - 2, $YPos, $Value, ["Align" => TEXT_ALIGN_MIDDLERIGHT]);
 						$TxtLeft = $XPos - $OuterTickWidth - 2 - ($Bounds[1]["X"] - $Bounds[0]["X"]);
@@ -419,12 +419,12 @@ class pScatter
 		$BorderSize = 1;
 		$RecordImageMap = FALSE;
 		$ImageMapTitle = NULL;
-		
+
 		/* Override defaults */
 		extract($Format);
-		
+
 		$Data = $this->myPicture->myData->getData();
-		
+
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 
@@ -437,15 +437,15 @@ class pScatter
 				} else {
 					$Picture = NULL;
 				}
-				
+
 				$PosArrayX = $this->getPosArray($Data["Series"][$Series["X"]]["Data"], $Data["Series"][$Series["X"]]["Axis"]);
 				$PosArrayY = $this->getPosArray($Data["Series"][$Series["Y"]]["Data"], $Data["Series"][$Series["Y"]]["Axis"]);
-					
+
 				foreach($PosArrayX as $Key => $Value) {
 					$X = $Value;
 					$Y = $PosArrayY[$Key];
 					if ($X != VOID && $Y != VOID) {
-						
+
 						if ($RecordImageMap) {
 							$RealValue = round($Data["Series"][$Series["X"]]["Data"][$Key], 2) . " / " . round($Data["Series"][$Series["Y"]]["Data"][$Key], 2);
 							$this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".floor($PlotSize + $BorderSize), $Series["Color"]->toHex(), $Description, $RealValue);
@@ -472,12 +472,12 @@ class pScatter
 	function drawScatterLineChart(array $Format = [])
 	{
 		$Data = $this->myPicture->myData->getData();
-		
+
 		$RecordImageMap = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
 		$ImageMapTitle = isset($Format["ImageMapTitle"]) ? $Format["ImageMapTitle"] : NULL;
 		$ImageMapPlotSize = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 10;
 		#$ImageMapPrecision = isset($Format["ImageMapPrecision"]) ? $Format["ImageMapPrecision"] : 2; # UNUSED
-		
+
 		/* Parse all the series to draw */
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
@@ -486,23 +486,23 @@ class pScatter
 
 				$PosArrayX = $this->getPosArray($Data["Series"][$Series["X"]]["Data"], $Data["Series"][$Series["X"]]["Axis"]);	
 				$PosArrayY = $this->getPosArray($Data["Series"][$Series["Y"]]["Data"], $Data["Series"][$Series["Y"]]["Axis"]);
-				
-				$Settings = ["Color" => $Series["Color"]]; 
+
+				$Settings = ["Color" => $Series["Color"]];
 				(!is_null($Series["Ticks"])) AND $Settings["Ticks"] = $Series["Ticks"];
 				(!is_null($Series["Weight"])) AND $Settings["Weight"] = $Series["Weight"];
-				
+
 				$LastX = VOID;
 				$LastY = VOID;
 				foreach($PosArrayX as $Key => $Value) {
 					$X = $Value;
 					$Y = $PosArrayY[$Key];
 					if ($X != VOID && $Y != VOID) {
-						
+
 						if ($RecordImageMap) {
 							$RealValue = round($Data["Series"][$Series["X"]]["Data"][$Key], 2) . " / " . round($Data["Series"][$Series["Y"]]["Data"][$Key], 2);
 							$this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".$ImageMapPlotSize, $Series["Color"]->toHex(), $Description, $RealValue);
 						}
-						
+
 						if ($LastX != VOID && $LastY != VOID){
 							$this->myPicture->drawLine($LastX, $LastY, $X, $Y, $Settings);
 						}
@@ -519,12 +519,12 @@ class pScatter
 	function drawScatterSplineChart(array $Format = [])
 	{
 		$Data = $this->myPicture->myData->getData();
-		
+
 		$RecordImageMap = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
 		$ImageMapTitle = isset($Format["ImageMapTitle"]) ? $Format["ImageMapTitle"] : NULL;
 		$ImageMapPlotSize = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 10;
 		#$ImageMapPrecision = isset($Format["ImageMapPrecision"]) ? $Format["ImageMapPrecision"] : 2; # UNUSED
-		
+
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 
@@ -536,12 +536,12 @@ class pScatter
 				$SplineSettings = ["Color" => $Series["Color"]]; 
 				(!is_null($Series["Ticks"])) AND $SplineSettings["Ticks"] = $Series["Ticks"];
 				(!is_null($Series["Weight"])) AND $SplineSettings["Weight"] = $Series["Weight"];
-				
+
 				$LastX = VOID;
 				$LastY = VOID;
 				$WayPoints = [];
 				$SplineSettings["Forces"] = [];
-				
+
 				foreach($PosArrayX as $Key => $Value) {
 					$X = $Value;
 					$Y = $PosArrayY[$Key];
@@ -572,21 +572,21 @@ class pScatter
 	function getPosArray(array $Values, int $AxisID)
 	{
 		$Result = [];
-		
+
 		foreach($Values as $Value) {
 			$Result[] = $this->getPosArraySingle($Value, $AxisID);
 		}
-		
+
 		return $Result;
 	}
-	
+
 	/* Return the scaled plot position */
 	function getPosArraySingle($Value, int $AxisID)
 	{
 		if ($Value == VOID) {
 			return VOID;
 		}
-		
+
 		$Data = $this->myPicture->myData->getData()["Axis"];
 
 		if ($Data[$AxisID]["Identity"] == AXIS_X) {
@@ -596,7 +596,7 @@ class pScatter
 			$Height = $this->myPicture->GraphAreaYdiff - $Data[$AxisID]["Margin"] * 2;
 			$Result = $this->myPicture->GraphAreaY2 - $Data[$AxisID]["Margin"] - (($Height / ($Data[$AxisID]["ScaleMax"] - $Data[$AxisID]["ScaleMin"])) * ($Value - $Data[$AxisID]["ScaleMin"]));
 		}
-		
+
 		return $Result;
 	}
 
@@ -618,10 +618,10 @@ class pScatter
 		$Surrounding = NULL;
 		$Style = LEGEND_ROUND;
 		$Mode = LEGEND_VERTICAL;
-		
+
 		/* Override defaults */
 		extract($Format);
-		
+
 		if (!is_null($Surrounding)) {
 			$BorderColor = $Color->newOne()->RGBChange($Surrounding);
 		}
@@ -693,7 +693,7 @@ class pScatter
 					$PicX = $X + $IconAreaWidth / 2;
 					$PicY = $Y + $IconAreaHeight / 2;
 					$this->myPicture->drawFromPNG($PicX - $PicWidth / 2, $PicY - $PicHeight / 2, $Picture);
-					
+
 				} else {
 					if ($Family == LEGEND_FAMILY_BOX) {
 						$XOffset = ($BoxWidth != $IconAreaWidth) ? floor(($IconAreaWidth - $BoxWidth) / 2) : 0;
@@ -709,7 +709,7 @@ class pScatter
 						$this->myPicture->drawLine($X, $Y + $IconAreaHeight / 2, $X + $IconAreaWidth, $Y + $IconAreaHeight / 2, ["Color" => $Series["Color"],"Ticks" => $Series["Ticks"],"Weight" => $Series["Weight"]]);
 					}
 				}
-				
+
 				$Lines = preg_split("/\n/", $Series["Description"]);
 
 				if ($Mode == LEGEND_VERTICAL) {
@@ -792,7 +792,7 @@ class pScatter
 		($Boundaries["B"] - $vY < $TopOffset) AND $Boundaries["B"] = $vY + $TopOffset;
 		$Width = ($Boundaries["R"] + $Margin) - ($Boundaries["L"] - $Margin);
 		$Height = ($Boundaries["B"] + $Margin) - ($Boundaries["T"] - $Margin);
-		
+
 		return ["Width" => $Width,"Height" => $Height];
 	}
 
@@ -801,7 +801,7 @@ class pScatter
 	{
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$Data = $this->myPicture->myData->getData();
-		
+
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 				$SerieXAxis = $Data["Series"][$Series["X"]]["Axis"];
@@ -868,7 +868,7 @@ class pScatter
 		if (!isset($Data["ScatterSeries"][$ScatterSerieID])) {
 			throw pException::ScatterInvalidInputException("Serie was not found!");
 		}
-		
+
 		$DrawPoint = isset($Format["DrawPoint"]) ? $Format["DrawPoint"] : LABEL_POINT_BOX;
 		$Decimals = isset($Format["Decimals"]) ? $Format["Decimals"] : NULL;
 
@@ -877,7 +877,7 @@ class pScatter
 		$SerieXAxis = $Data["Series"][$Series["X"]]["Axis"];
 		$SerieValuesY = $Data["Series"][$Series["Y"]]["Data"];
 		$SerieYAxis = $Data["Series"][$Series["Y"]]["Axis"];
-		
+
 		$PosArrayX = $this->getPosArray($SerieValuesX, $SerieXAxis);
 		$PosArrayY = $this->getPosArray($SerieValuesY, $SerieYAxis);
 
@@ -892,10 +892,10 @@ class pScatter
 
 			$XValue = (is_null($Decimals)) ? $SerieValuesX[$Point] : round($SerieValuesX[$Point], $Decimals);
 			$XValue = $this->myPicture->scaleFormat($XValue, $Data["Axis"][$SerieXAxis]["Display"], $Data["Axis"][$SerieXAxis]["Format"], $Data["Axis"][$SerieXAxis]["Unit"]);
-			
+
 			$YValue = (is_null($Decimals)) ? $SerieValuesY[$Point] : round($SerieValuesY[$Point], $Decimals);
 			$YValue = $this->myPicture->scaleFormat($YValue, $Data["Axis"][$SerieYAxis]["Display"], $Data["Axis"][$SerieYAxis]["Format"], $Data["Axis"][$SerieYAxis]["Unit"]);
-			
+
 			$Description = (isset($Series["Description"])) ? $Series["Description"] : "No description";
 			$this->myPicture->drawLabelBox($X, $Y - 3, $Description, ["Format" => $Series["Color"],"Caption" => $XValue . " / " . $YValue], $Format);
 		}
@@ -925,15 +925,15 @@ class pScatter
 		$BoxColor = new pColor(0,0,0,20);
 		$BoxSurrounding = 0;
 		$BoxBorderColor = new pColor(255);
-		
+
 		/* Override defaults */
 		extract($Format);
-		
+
 		$Data = $this->myPicture->myData->getData();
 		if (!isset($Data["Axis"][$AxisID])) {
 			throw pException::ScatterInvalidInputException("Axis ID was not found!");
 		}
-		
+
 		(is_null($Caption)) AND $Caption = strval($Value);
 		$CaptionSettings = [
 			"DrawBox" => $DrawBox,
@@ -1005,7 +1005,7 @@ class pScatter
 		$Border = TRUE;
 		$BorderColor = NULL;
 		$BorderTicks = 2;
-		$AreaName = NULL; 
+		$AreaName = NULL;
 		$NameAngle = ZONE_NAME_ANGLE_AUTO;
 		$NameColor = new pColor(255);
 		$DisableShadowOnArea = TRUE;

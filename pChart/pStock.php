@@ -19,14 +19,14 @@ namespace pChart;
 class pStock
 {
 	var $myPicture;
-	
+
 	/* Class creator */
 	function __construct($pChartObject)
 	{
 		if (!($pChartObject instanceof pDraw)){
 			die("pStock needs a pDraw object. Please check the examples.");
 		}
-		
+
 		$this->myPicture = $pChartObject;
 	}
 
@@ -54,29 +54,29 @@ class pStock
 		$MedianColor = new pColor(255,0,0,100);
 		$RecordImageMap = FALSE;
 		$ImageMapTitle = "Stock Chart";
-		
+
 		/* Override defaults */
 		extract($Format);
-		
+
 		(is_null($BoxUpBorderColor)) AND $BoxUpBorderColor = $BoxUpColor->newOne()->RGBChange(-20);
 		(is_null($BoxDownBorderColor)) AND $BoxDownBorderColor = $BoxDownColor->newOne()->RGBChange(-20);
 		(!is_null($BoxUpSurrounding)) AND $BoxUpBorderColor = $BoxUpColor->newOne()->RGBChange($BoxUpSurrounding);
 		(!is_null($BoxDownSurrounding)) AND $BoxDownBorderColor = $BoxDownColor->newOne()->RGBChange($BoxDownSurrounding);
-		
+
 		/* Data Processing */
 		$Data = $this->myPicture->myData->getData();
 		$Orientation = $Data["Orientation"];
 		$Data = $Data["Series"];
-		
+
 		if (!isset($Data[$SerieOpen]) || !isset($Data[$SerieClose]) || !isset($Data[$SerieMin]) || !isset($Data[$SerieMax])) {
 			throw pException::StockMissingSerieException();
 		}
-		
+
 		($LineWidth != 1) AND $LineOffset = $LineWidth / 2;
 		$BoxOffset = $BoxWidth / 2;
 
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
-		
+
 		$Plots = [];
 		foreach($Data[$SerieOpen]["Data"] as $Key => $Value) {
 			$Point = [];
@@ -103,7 +103,7 @@ class pStock
 
 		$X = $this->myPicture->GraphAreaX1 + $XMargin;
 		$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-		
+
 		$LineSettings = ["Color" => $LineColor];
 		$ExtremitySettings = ["Color" => $ExtremityColor];
 		$BoxUpSettings = ["Color" => $BoxUpColor,"BorderColor" => $BoxUpBorderColor];
@@ -158,9 +158,9 @@ class pStock
 				(isset($PosArray[4])) AND $this->myPicture->drawLine($X - $ExtremityLength, $PosArray[4], $X + $ExtremityLength, $PosArray[4], $MedianSettings);
 
 				$X = $X + $XStep;
-				
+
 			} else { # if ($Orientation == SCALE_POS_TOPBOTTOM) { # Momchil: so I don't mess up the shadow
-				
+
 				if ($LineWidth == 1) {
 					$this->myPicture->drawLine($PosArray[2], $Y, $PosArray[3], $Y, $LineSettings);
 				} else {

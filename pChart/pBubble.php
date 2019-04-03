@@ -227,10 +227,10 @@ class pBubble
 		$Description = (isset($Data["Series"][$SerieName]["Description"])) ? $Data["Series"][$SerieName]["Description"] : "No description";
 		$Abscissa = (isset($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Point])) ? $Data["Series"][$Data["Abscissa"]]["Data"][$Point]." : " : "";
 		$Series = ["Format" => $Data["Series"][$SerieName]["Color"],"Caption" => $Abscissa . $Value . " / " . $Data["Series"][$SerieWeightName]["Data"][$Point]];
-		
+
 		$X = $this->myPicture->GraphAreaX1 + $XMargin;
 		$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-		
+
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 			$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
 			$X = floor($X + $Point * $XStep);
