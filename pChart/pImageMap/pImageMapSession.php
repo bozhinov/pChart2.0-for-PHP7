@@ -19,22 +19,22 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 	var $ImageMapIndex = "pChart"; // Name of the session array
 	var $ImageMapBuffer = [];
 	var $UniqueID = "imageMap";
-	
+
 	/* Class constructor */
 	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE, $Name = "pChart", string $UniqueID = "imageMap")
-	{		
+	{
 		if (session_status() !== PHP_SESSION_ACTIVE) {
 			throw \pChart\pException::ImageMapSessionNotStarted();
 		}
-		
+
 		/* Initialize the image map methods */
 		$this->ImageMapIndex = $Name;
 		$this->UniqueID = $UniqueID;
-						
+
 		/* Initialize the parent */
 		parent::__construct($XSize, $YSize, $TransparentBackground);
 	}
-	
+
 	function __destruct()
 	{
 		$_SESSION[$this->ImageMapIndex][$this->UniqueID] = $this->ImageMapBuffer;
@@ -50,19 +50,19 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 				return TRUE;
 			}
 		}
-		
+
 		return FALSE;
 	}
-	
+
 	/* Add a zone to the image map */
 	function addToImageMap(string $Type, string $Plots, string $Color = "", string $Title = "", string $Message = "", bool $HTMLEncode = FALSE)
 	{
 		/* Encode the characters in the imagemap in HTML standards */
 		$Title = str_replace("&#8364;", "\u20AC", $Title); # Momchil TODO TEST THIS
 		$Title = htmlentities($Title, ENT_QUOTES); #, "ISO-8859-15"); # As of PHP 5.6 The default value for the encoding parameter = the default_charset config option.
-		
+
 		($HTMLEncode) AND $Message = htmlentities($Message, ENT_QUOTES);
-	
+
 		$this->ImageMapBuffer[] = [$Type,$Plots,$Color,$Title,$Message];
 	}
 
@@ -82,7 +82,7 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 
 		return $Result;
 	}
-	
+
 	/* Replace the title of one image map series */
 	function replaceImageMapTitle(string $OldTitle, $NewTitle)
 	{
@@ -102,7 +102,7 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 				}
 			}
 		}
-		
+
 	}
 
 	/* Replace the values of the image map contents */

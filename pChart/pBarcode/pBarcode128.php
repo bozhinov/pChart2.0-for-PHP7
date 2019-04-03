@@ -19,7 +19,7 @@ class pBarcode128 extends pBarcode
 {
 	var $Codes = [];
 	var $Reverse = [];
-	
+
 	/* Class creator */
 	function __construct($pChartObject)
 	{
@@ -27,11 +27,11 @@ class pBarcode128 extends pBarcode
 
 		list($this->Codes, $this->Reverse) = self::getCodes();
 	}
-	
+
 	private static function getCodes()
 	{
 		require("128B.php");
-		
+
 		$Codes = [];
 		$Reverse = [];
 
@@ -41,10 +41,10 @@ class pBarcode128 extends pBarcode
 			$Reverse[$entry[0]]["Code"] = $entry[2];
 			$Reverse[$entry[0]]["Asc"] = $entry[1];
 		}
-		
+
 		return [$Codes, $Reverse];
 	}
-	
+
 	/* Return the projected size of a barcode */
 	static function getProjection(string $TextString, array $Format = [])
 	{
@@ -74,7 +74,7 @@ class pBarcode128 extends pBarcode
 
 		return $Result;
 	}
-	
+
 	function draw(string $Value, int $X, int $Y, array $Format = [])
 	{
 		list($TextString, $Result) = $this->encode128($Value);

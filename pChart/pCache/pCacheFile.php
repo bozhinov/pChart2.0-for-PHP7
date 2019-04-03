@@ -20,7 +20,7 @@ class pCacheFile implements pCacheInterface
 	var $CacheIndex;
 	var $CacheDB;
 	var $Id;
-	
+
 	/* Class creator */
 	function __construct(array $Settings = [], string $uniqueId)
 	{
@@ -31,20 +31,20 @@ class pCacheFile implements pCacheInterface
 		#}
 
 		$this->Id = md5($uniqueId);
-		
+
 		/* blocking the file access to the cache seems a good idea 
 		<Files ~ "\cache">
 			Order allow,deny
 			Deny from all
-		</Files> 
+		</Files>
 		*/
-		
+
 		$this->CacheIndex = isset($Settings["CacheIndex"]) ? $Settings["CacheIndex"] : "index.db";
 		$this->CacheIndex = $CacheFolder . "/" . $this->CacheIndex;
-		
+
 		$this->CacheDB = isset($Settings["CacheDB"]) ? $Settings["CacheDB"] : "cache.db";
 		$this->CacheDB = $CacheFolder . "/" . $this->CacheDB;
-		
+
 		/* Create the cache Db and Index */
 		if (!file_exists($this->CacheIndex)) {
 			touch($this->CacheIndex);
@@ -80,7 +80,7 @@ class pCacheFile implements pCacheInterface
 
 		/* Flush the picture to a temporary file */
 		imagepng($pChartObject->Picture, $TempHandle);
-		
+
 		/* Retrieve the files size */
 		$stats = fstat($TempHandle);
 		$PicSize = $stats['size'];
@@ -92,7 +92,7 @@ class pCacheFile implements pCacheInterface
 		$Raw = fread($TempHandle, $PicSize);
 		/* Close the temporary stream */
 		fclose($TempHandle);
-		
+
 		/* Save the picture in the solid database file */
 		file_put_contents($this->CacheDB, $Raw, FILE_APPEND | LOCK_EX);
 
@@ -236,7 +236,7 @@ class pCacheFile implements pCacheInterface
 
 		/* Extract the picture from the solid cache file */
 		$Picture = file_get_contents($this->CacheDB, NULL, NULL, $CacheInfo["DBPos"], $CacheInfo["PicSize"]);
-		
+
 		/* Return back the raw picture data */
 		return $Picture;
 	}

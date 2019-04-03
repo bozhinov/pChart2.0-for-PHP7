@@ -20,7 +20,7 @@ class pBarcode39 extends pBarcode
 	var $Codes = [];
 	var $myPicture;
 	var $MOD43;
-	
+
 	/* Class creator */
 	function __construct($pChartObject, bool $EnableMOD43 = FALSE)
 	{

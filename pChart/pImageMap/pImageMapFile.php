@@ -18,7 +18,7 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 	/* Image map */
 	var $ImageMapFileName = NULL;
 	var $ImageMapBuffer = [];
-	
+
 	/* Class constructor */
 	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE, string $UniqueID = "imageMap", string $StorageFolder = "temp")
 	{
@@ -28,7 +28,7 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 		/* Initialize the parent */
 		parent::__construct($XSize, $YSize, $TransparentBackground);
 	}
-	
+
 	function __destruct()
 	{
 		if (!empty($this->ImageMapBuffer)){
@@ -43,16 +43,16 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 	{
 		return file_exists($this->ImageMapFileName);
 	}
-	
+
 	/* Add a zone to the image map */
 	function addToImageMap(string $Type, string $Plots, string $Color = "", string $Title = "", string $Message = "", bool $HTMLEncode = FALSE)
 	{
 		/* Encode the characters in the imagemap in HTML standards */
 		$Title = str_replace("&#8364;", "\u20AC", $Title); # Momchil TODO TEST THIS
 		$Title = htmlentities($Title, ENT_QUOTES); #, "ISO-8859-15"); # As of PHP 5.6 The default value for the encoding parameter = the default_charset config option.
-		
+
 		($HTMLEncode) AND $Message = htmlentities($Message, ENT_QUOTES);
-		
+
 		$this->ImageMapBuffer[] = [$Type,$Plots,$Color,$Title,$Message];
 	}
 
@@ -72,7 +72,7 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 
 		return $Result;
 	}
-	
+
 	/* Replace the title of one image map series */
 	function replaceImageMapTitle(string $OldTitle, $NewTitle)
 	{
@@ -92,7 +92,7 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 				}
 			}
 		}
-		
+
 	}
 
 	/* Replace the values of the image map contents */
@@ -109,7 +109,7 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 				$ID++;
 			}
 		}
-	
+
 	}
 
 	/* Dump the image map */
@@ -117,7 +117,7 @@ class pImageMapFile extends \pChart\pDraw implements pImageMapInterface
 	function dumpImageMap()
 	{
 		if (file_exists($this->ImageMapFileName)){
-	
+
 			echo file_get_contents($this->ImageMapFileName);
 
 		} else {

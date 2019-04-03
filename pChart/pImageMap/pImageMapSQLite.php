@@ -15,17 +15,17 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 	var $DbSQLite;
 	var $DbTable;
 	var $ImageMapBuffer = [];
-	
+
 	/* Class constructor */
 	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE, string $UniqueID = "imageMap", string $StorageFile = "temp/imageMap.db")
 	{
 		$this->DbTable = $UniqueID;
 		$this->DbSQLite = new \PDO("sqlite:".$StorageFile);
 		$this->DbSQLite->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-		
+
 		/* Create the IM Db */
 		$this->InitDb();
-		
+
 		/* Initialize the parent */
 		parent::__construct($XSize, $YSize, $TransparentBackground);
 	}
@@ -40,7 +40,7 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 			throw \pChart\pException::ImageMapSQLiteException($e->getMessage());
 		}
 	}
-	
+
 	function __destruct()
 	{
 		if (!empty($this->ImageMapBuffer)){
@@ -53,7 +53,7 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 				/* store the new image map */
 				$this->DbSQLite->beginTransaction();
 				$q = $this->DbSQLite->prepare("INSERT INTO ".$this->DbSQLite->quote($this->DbTable)." VALUES(:Type, :Plots, :Color, :Title, :Message)");
-				
+
 				foreach($this->ImageMapBuffer as $entry){
 					$q->bindParam(':Type',	$entry[0], \PDO::PARAM_STR);
 					$q->bindParam(':Plots', $entry[1], \PDO::PARAM_STR);
@@ -71,7 +71,7 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 
 		parent::__destruct();
 	}
-	
+
 	function ImageMapExists()
 	{
 		$match = [];
@@ -117,7 +117,7 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 
 		return $Result;
 	}
-	
+
 	/* Replace the title of one image map series */
 	function replaceImageMapTitle(string $OldTitle, $NewTitle)
 	{
@@ -154,7 +154,7 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 			}
 		}
 	}
-	
+
 	private function formatOutput(array $buffer)
 	{
 		$ret = [];
@@ -162,10 +162,10 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 		foreach($buffer as $array) {
 			$ret[] = array_values($array);
 		}
-		
+
 		return $ret;
 	}
-	
+
 	/* Dump the image map */
 	/* Momchil: this function relies on the fact that the ImageMap for the image already exists */
 	function dumpImageMap()

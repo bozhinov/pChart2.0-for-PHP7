@@ -26,7 +26,7 @@ class pCacheSQLite implements pCacheInterface
 	function __construct(array $Settings = [], string $uniqueId)
 	{
 		$CacheFolder = isset($Settings["CacheFolder"]) ? $Settings["CacheFolder"] : "cache";
-		
+
 		#if (!is_dir($CacheFolder)){
 		#	mkdir($CacheFolder, 0775);
 		#}
@@ -37,7 +37,7 @@ class pCacheSQLite implements pCacheInterface
 		<Files ~ "\cache">
 			Order allow,deny
 			Deny from all
-		</Files> 
+		</Files>
 		*/
 
 		$this->DbPath = isset($Settings["DbPath"]) ? $Settings["DbPath"] : "sql.cache.db";
@@ -145,7 +145,7 @@ class pCacheSQLite implements pCacheInterface
 				throw \pChart\pException::SQLiteException(" ID ".$ID ." not in cache!");
 			}
 		}
-		
+
 		try{
 			if ($ID != "") {
 				$statement = "DELETE FROM cache WHERE Id= :Id;";

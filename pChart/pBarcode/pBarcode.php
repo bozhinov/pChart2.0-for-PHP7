@@ -18,7 +18,7 @@ namespace pChart\pBarcode;
 class pBarcode
 {
 	var $myPicture;
-	
+
 	/* Class creator */
 	function __construct($pChartObject)
 	{
@@ -41,7 +41,7 @@ class pBarcode
 
 		$WOffset = ($DrawArea) ? 20 : 0;
 		$HOffset = ($ShowLegend) ? $FontSize + $LegendOffset + $WOffset : 0;
-		
+
 		if ($Angle == 0){
 			return [$WOffset + $BarcodeLength, $Height + $HOffset];
 		} else {
@@ -67,13 +67,13 @@ class pBarcode
 		$AreaBorderColor = isset($Format["AreaBorderColor"]) ? $Format["AreaBorderColor"] : $AreaColor->newOne();
 
 		$BarcodeLength = strlen($Result);
-		
+
 		$cos = cos(deg2rad($Angle));
 		$sin = sin(deg2rad($Angle));
-		
+
 		$cos90 = cos(deg2rad($Angle + 90));
 		$sin90 = sin(deg2rad($Angle + 90));
-		
+
 		if ($DrawArea) {
 			$X1 = $X + cos(deg2rad($Angle - 135)) * 10;
 			$Y1 = $Y + sin(deg2rad($Angle - 135)) * 10;

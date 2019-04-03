@@ -17,13 +17,13 @@ interface pImageMapInterface
 
 	/* Remove VOID values from an imagemap custom values array */
 	function stripFromSerie(string $SerieName, array $Values);
-	
+
 	/* Replace the title of one image map series */
 	function replaceImageMapTitle(string $OldTitle, $NewTitle);
 
 	/* Replace the values of the image map contents */
 	function replaceImageMapValues(string $Title, array $Values);
-	
+
 	function ImageMapExists();
 
 	function dumpImageMap();
