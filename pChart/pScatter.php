@@ -94,7 +94,7 @@ class pScatter
 				$Width = $this->myPicture->GraphAreaYdiff - $YMargin * 2;
 			}
 
-			$AxisMin = ABSOLUTE_MAX;
+			$AxisMin = PHP_INT_MAX;
 			$AxisMax = OUT_OF_SIGHT;
 			if ($Mode == SCALE_MODE_FLOATING) {
 				foreach($Data["Series"] as $SerieID => $SerieParameter) {

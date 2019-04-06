@@ -91,7 +91,7 @@ define("PI", 3.14159265);
 define("ALL", 69);
 define("NONE", 31);
 define("AUTO", 690000);
-define("OUT_OF_SIGHT", -10000000000000);
+define("OUT_OF_SIGHT", PHP_INT_MIN);
 
 class pDraw
 {
@@ -1738,7 +1738,7 @@ class pDraw
 				$Height = $this->GraphAreaYdiff;
 			}
 
-			$AxisMin = ABSOLUTE_MAX;
+			$AxisMin = PHP_INT_MAX;
 			$AxisMax = OUT_OF_SIGHT;
 			if ($Mode == SCALE_MODE_FLOATING || $Mode == SCALE_MODE_START0) {
 				foreach($Data["Series"] as $SerieID => $SerieParameter) {
