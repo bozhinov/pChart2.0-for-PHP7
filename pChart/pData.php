@@ -40,13 +40,8 @@ define("SERIE_SHAPE_DIAMOND", 681018);
 /* Axis position */
 define("AXIS_X", 682001);
 define("AXIS_Y", 682002);
-/* Define value limits */
-define("ABSOLUTE_MIN", -10000000000000);
-define("ABSOLUTE_MAX", 10000000000000);
 /* Replacement to the PHP NULL keyword */
 define("VOID", 0.123456789);
-/* Euro symbol for GD fonts */
-define("EURO_SYMBOL", utf8_encode("&#8364;"));
 
 /* pData class definition */
 class pData
@@ -367,8 +362,8 @@ class pData
 	/* Compute the series limits for an individual and global point of view */
 	function limits()
 	{
-		$GlobalMin = ABSOLUTE_MAX;
-		$GlobalMax = ABSOLUTE_MIN;
+		$GlobalMin = PHP_INT_MIN;
+		$GlobalMax = PHP_INT_MAX;
 		foreach($this->Data["Series"] as $Key => $Value) {
 			if ($this->Data["Abscissa"] != $Key && $this->Data["Series"][$Key]["isDrawable"]) {
 				if ($GlobalMin > $this->Data["Series"][$Key]["Min"]) {
