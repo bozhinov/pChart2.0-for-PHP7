@@ -92,6 +92,33 @@ define("ALL", 69);
 define("NONE", 31);
 define("AUTO", 690000);
 define("OUT_OF_SIGHT", PHP_INT_MIN);
+/* Axis configuration */
+define("AXIS_FORMAT_DEFAULT", 680001);
+define("AXIS_FORMAT_TIME", 680002);
+define("AXIS_FORMAT_DATE", 680003);
+define("AXIS_FORMAT_METRIC", 680004);
+define("AXIS_FORMAT_CURRENCY", 680005);
+define("AXIS_FORMAT_TRAFFIC", 680006);
+define("AXIS_FORMAT_CUSTOM", 680007);
+/* Axis position */
+define("AXIS_POSITION_LEFT", 681001);
+define("AXIS_POSITION_RIGHT", 681002);
+define("AXIS_POSITION_TOP", 681001);
+define("AXIS_POSITION_BOTTOM", 681002);
+/* Families of data points */
+define("SERIE_SHAPE_FILLEDCIRCLE", 681011);
+define("SERIE_SHAPE_FILLEDTRIANGLE", 681012);
+define("SERIE_SHAPE_FILLEDSQUARE", 681013);
+define("SERIE_SHAPE_FILLEDDIAMOND", 681017);
+define("SERIE_SHAPE_CIRCLE", 681014);
+define("SERIE_SHAPE_TRIANGLE", 681015);
+define("SERIE_SHAPE_SQUARE", 681016);
+define("SERIE_SHAPE_DIAMOND", 681018);
+/* Axis position */
+define("AXIS_X", 682001);
+define("AXIS_Y", 682002);
+/* Replacement to the PHP NULL keyword */
+define("VOID", 0.123456789);
 
 class pDraw
 {
