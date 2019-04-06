@@ -302,7 +302,7 @@ class pData
 	}
 
 	/* Define if a scatter serie should be draw with ticks */
-	function setScatterSerieTicks(int $ID, int $Ticks = NULL)
+	function setScatterSerieTicks(int $ID, $Ticks = NULL)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
 			$this->Data["ScatterSeries"][$ID]["Ticks"] = $Ticks;
@@ -312,7 +312,7 @@ class pData
 	}
 
 	/* Define if a scatter serie should be draw with a special weight */
-	function setScatterSerieWeight(int $ID, int $Weight = NULL)
+	function setScatterSerieWeight(int $ID, $Weight = NULL) # UNUSED
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
 			$this->Data["ScatterSeries"][$ID]["Weight"] = $Weight;
