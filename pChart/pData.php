@@ -629,9 +629,9 @@ class pData
 	}
 
 	/* Load a palette file */
-	function loadPalette(array $MyPalette, bool $Overwrite = FALSE)
+	function loadPalette(array $MyPalette, bool $Reset = FALSE)
 	{
-		if ($Overwrite) {
+		if ($Reset) {
 			$this->Palette = [];
 		}
 
