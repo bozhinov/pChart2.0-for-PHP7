@@ -47,7 +47,6 @@ $g_gradient_start		= $_SESSION["g_gradient_start"];
 $g_gradient_end			= $_SESSION["g_gradient_end"];
 $g_gradient_direction	= $_SESSION["g_gradient_direction"];
 $g_gradient_alpha		= $_SESSION["g_gradient_alpha"];
-/* ------------------------------------------------------------------------ */
 
 /* -- Retrieve Data configuration items ----------------------------------- */
 $d_serie1_enabled	= $_SESSION["d_serie1_enabled"];
@@ -86,8 +85,6 @@ $d_axis0_format		= $_SESSION["d_axis0_format"];
 $d_axis1_format		= $_SESSION["d_axis1_format"];
 $d_axis2_format		= $_SESSION["d_axis2_format"];
 
-/* ------------------------------------------------------------------------ */
-
 /* -- Retrieve Scale configuration items ---------------------------------- */
 $s_x				= $_SESSION["s_x"];
 $s_y				= $_SESSION["s_y"];
@@ -118,7 +115,6 @@ $s_ticks_alpha		= $_SESSION["s_ticks_alpha"];
 $s_subticks_color	= $_SESSION["s_subticks_color"];
 $s_subticks_alpha	= $_SESSION["s_subticks_alpha"];
 $s_subticks_enabled	= $_SESSION["s_subticks_enabled"];
-/* ------------------------------------------------------------------------ */
 
 /* -- Retrieve Chart configuration items ---------------------------------- */
 $c_family			= $_SESSION["c_family"];
@@ -138,7 +134,6 @@ $c_around_zero1		= $_SESSION["c_around_zero1"];
 $c_transparency		= $_SESSION["c_transparency"];
 $c_forced_transparency	= $_SESSION["c_forced_transparency"];
 $c_around_zero2		= $_SESSION["c_around_zero2"];
-/* ------------------------------------------------------------------------ */
 
 /* -- Retrieve Legend configuration items ---------------------------------- */
 $l_enabled		= $_SESSION["l_enabled"];
@@ -159,7 +154,6 @@ $l_x			= $_SESSION["l_x"];
 $l_y			= $_SESSION["l_y"];
 
 $l_family		= $_SESSION["l_family"];
-/* ------------------------------------------------------------------------ */
 
 /* -- Retrieve Threshold configuration items ------------------------------ */
 $t_enabled		= $_SESSION["t_enabled"];
@@ -174,18 +168,15 @@ $t_ticks		= $_SESSION["t_ticks"];
 $t_caption		= $_SESSION["t_caption"];
 $t_box			= $_SESSION["t_box"];
 $t_caption_enabled	= $_SESSION["t_caption_enabled"];
-/* ------------------------------------------------------------------------ */
 
 /* -- Retrieve slope chart configuration items ---------------------------- */
 $sl_enabled			= $_SESSION["sl_enabled"];
 $sl_shaded			= $_SESSION["sl_shaded"];
 $sl_caption_enabled	= $_SESSION["sl_caption_enabled"];
 $sl_caption_line	= $_SESSION["sl_caption_line"];
-/* ------------------------------------------------------------------------ */
 
 /* -- Retrieve color configuration items ---------------------------------- */
 $p_template	= $_SESSION["p_template"];
-/* ------------------------------------------------------------------------ */
 
 $p_templates = [
 	"autumn" => [[185,106,154,100],	[216,137,184,100],	[156,192,137,100],	[216,243,201,100],	[253,232,215,100],	[255,255,255,100]],
@@ -209,6 +200,7 @@ require_once("../examples/bootstrap.php");
 
 use pChart\{
 	pColor,
+	pColorGradient,
 	pDraw,
 	pCharts
 };
@@ -267,7 +259,7 @@ if ($d_serie1_enabled == "true"){
 }
 
 if ($d_serie2_enabled == "true"){
-	
+
 	$Values = json_decode($data1, true);
 	$myPicture->myData->addPoints($Values,"Serie2");
 	$myPicture->myData->setSerieDescription("Serie2",$d_serie2_name);
@@ -309,7 +301,7 @@ if ($d_absissa_enabled == "true")
 	$myPicture->myData->setAbscissa("Absissa");
 
 	if ($Mode == "Source"){
-		
+
 		echo '$myPicture->myData->addPoints(['.$helper->stringify($Values).'],"Absissa");'.$newLine;
 		echo '$myPicture->myData->setAbscissa("Absissa");'.$doubleLine;
 	}
@@ -514,7 +506,14 @@ switch ($s_mode){
 	case "SCALE_MODE_ADDALL_START0": $iMode = 690204; break;
 }
 
-$Settings = array("Pos"=>$Pos,"Mode"=>$iMode,"LabelingMethod"=>$Labeling,"GridColor"=>new pColor($GridR,$GridG,$GridB,$s_grid_alpha),"TickColor"=>new pColor($TickR,$TickG,$TickB,$s_ticks_alpha),"LabelRotation"=>$s_x_label_rotation);
+$Settings = [
+	"Pos"=>$Pos,
+	"Mode"=>$iMode,
+	"LabelingMethod"=>$Labeling,
+	"GridColor"=>new pColor($GridR,$GridG,$GridB,$s_grid_alpha),
+	"TickColor"=>new pColor($TickR,$TickG,$TickB,$s_ticks_alpha),
+	"LabelRotation"=>$s_x_label_rotation
+];
 
 ($s_x_skip != 0) AND $Settings["LabelSkip"] = $s_x_skip;
 ($s_cycle_enabled == "true") AND $Settings["CycleBackground"] = TRUE;
@@ -806,6 +805,5 @@ if ($Mode == "Render"){
 } else {
 	echo $newLine.'$myPicture->stroke();'.$doubleLine;;
 }
-
 
 ?>
