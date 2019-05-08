@@ -24,7 +24,7 @@ if (isset($_POST["View"]))
 	a.smallLink:visited  { text-decoration: none; color: #6A6A6A; }
 	a.smallLink:hover    { text-decoration: underline; color: #6A6A6A; }
 </style>
-<script src='resources/jquery-3.3.1.min.js' type="text/javascript"></script>
+<script src='resources/jquery-3.4.1.min.js' type="text/javascript"></script>
 <script>
 
 	LastOpened = null;
@@ -115,9 +115,9 @@ if (isset($_POST["View"]))
 <?php
 
 /* Determine the current package version */
-$FileHandle  = fopen("../readme.txt", "r");
+$FileHandle = fopen("../readme.txt", "r");
 for ($i=0; $i<=5; $i++) {
-	$buffer = fgets($FileHandle); 
+	$buffer = fgets($FileHandle);
 }
 fclose($FileHandle);
 # Change if readme.txt no longer binary
@@ -138,7 +138,7 @@ while (($FileName = readdir($DirectoryHandle)) !== false)
 		if (substr($buffer, 0, 7) == "/* CAT:"){ # /* CAT:Misc */
 			$Categorie = substr($buffer, 7);
 			$Categorie = substr($Categorie, 0, -5);
-		
+
 			$Tree[$Categorie][] = str_replace(["example.",".php"], ["",""], $FileName);
 		}
 	}
@@ -156,7 +156,7 @@ echo <<<EOHTML
 	  <td><img src='resources/application_view_list.png'/></td>
 	  <td>&nbsp;Examples folder contents</td>
 	 </tr></table>
-	</div>     
+	</div>
 EOHTML;
 
 $_TREE_HTML = "";
@@ -165,13 +165,13 @@ $keys = array_keys($Tree);
 $LastKey = end($keys);
 
 foreach($Tree as $Key => $Elements){
-	
+
 	if ($LastKey == $Key) {
 		$Icon = "dash-explorer-last.png";
-		$SubIcon = "dash-explorer-blank.png"; 
-	} else { 
+		$SubIcon = "dash-explorer-blank.png";
+	} else {
 		$Icon = "dash-explorer.png";
-		$SubIcon = "dash-explorer-noleaf.png"; 
+		$SubIcon = "dash-explorer-noleaf.png";
 	}
 
 	$_TREE_HTML .= "<table noborder cellpadding=0 cellspacing=0>\r\n";
@@ -195,7 +195,7 @@ foreach($Tree as $Key => $Elements){
 		$_TREE_HTML .= "	<td><div class='example' id='".$Element."'>&nbsp;<a class='smallLink' href='#'>".$Element."</a></div></td>\r\n";
 		$_TREE_HTML .= "</tr>\r\n";
 	}
-	
+
 	$_TREE_HTML .= "</table>\r\n";
 
 }

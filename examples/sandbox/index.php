@@ -20,7 +20,7 @@ You can find the whole class documentation on the pChart web site.
 	<title>Sandbox system</title>
 	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 	<link rel='stylesheet' type='text/css' href='style.css'/>
-	<script src='../resources/jquery-3.3.1.min.js' type="text/javascript"></script>
+	<script src='../resources/jquery-3.4.1.min.js' type="text/javascript"></script>
 	<script type='text/javascript' src='includes/jscolor.js'></script>
 	<script type='text/javascript' src='includes/functions.js'></script>
 </head>
@@ -622,14 +622,14 @@ function listfonts($Default="")
 	echo "<option value='Bedizen.ttf'>Bedizen</option>";
 	if ($Default == ""){
 		echo "<option value='Forgotte.ttf' selected='selected'>Forgotte</option>";
-	} else { 
+	} else {
 		echo "<option value='Forgotte.ttf'>Forgotte</option>"; 
 	}
 	echo "<option value='GeosansLight.ttf'>GeosansLight</option>";
 	if ($Default == "pf_arma_five"){ 
-		echo "<option value='pf_arma_five.ttf' selected='selected'>pf_arma_five</option>"; 
-	} else { 
-		echo "<option value='pf_arma_five.ttf'>pf_arma_five</option>"; 
+		echo "<option value='pf_arma_five.ttf' selected='selected'>pf_arma_five</option>";
+	} else {
+		echo "<option value='pf_arma_five.ttf'>pf_arma_five</option>";
 	}
 	echo "<option value='Silkscreen.ttf'>Silkscreen</option>";
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 if (isset($_GET["View"]))
 {
 	$result = preg_match("/^[a-z,A-Z,0-9,\.]{3,30}$/", $_GET["View"], $matches);
@@ -18,7 +18,7 @@ if (isset($_GET["View"]))
 <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 <meta http-equiv="pragma" content="no-cache" />
 <link rel='stylesheet' type='text/css' href='imagemap.css'/>
-<script src='../resources/jquery-3.3.1.min.js' type="text/javascript"></script>
+<script src='../resources/jquery-3.4.1.min.js' type="text/javascript"></script>
 <script src='jquery.imagemap.js' type="text/javascript"></script>
 <script>
 $(document).ready(function() {
@@ -84,9 +84,9 @@ $(document).ready(function() {
 			<td>
 <?php
 	/* Determine the current package version */
-	$FileHandle  = fopen("../../readme.txt", "r");
+	$FileHandle = fopen("../../readme.txt", "r");
 	for ($i=0; $i<=5; $i++) {
-		$buffer = fgets($FileHandle); 
+		$buffer = fgets($FileHandle);
 	}
 	fclose($FileHandle);
 	# Change if readme.txt no longer binary
@@ -149,7 +149,7 @@ EOHTML;
 			<div id="htmlsource" style='width: 800px; font-size: 13px; font-family: Lucida Console'>
 				&lt;head&gt;<br/>
 				&nbsp;&nbsp; &lt;link href='imagemap.css' type='text/css' rel='stylesheet'&gt;&lt;/link&gt;<br/>
-				&nbsp;&nbsp; &lt;script src="jquery-3.3.1.min.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
+				&nbsp;&nbsp; &lt;script src="jquery-3.4.1.min.js" type="text/javascript"&gt;&lt;/script&gt;<br/>
 				&nbsp;&nbsp; &lt;script src="jquery.imagemap.js" &nbsp;type="text/javascript"&gt;&lt;/script&gt;<br/>
 				&nbsp;&nbsp; &lt;script&gt;<br/>
 				&nbsp;&nbsp; $(document).ready(function() {<br/>
