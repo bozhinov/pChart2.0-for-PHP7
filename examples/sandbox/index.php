@@ -2,10 +2,10 @@
 /*
 index.php - Sandbox web front end
 
-Version     : 1.2.0
+Version     : 1.2.1
 Made by     : Jean-Damien POGOLOTTI
 MaintainedBy: Momchil Bozhinov
-Last Update : 01/02/18
+Last Update : 09/05/19
 
 This file can be distributed under the license you can find at :
 
@@ -13,6 +13,15 @@ This file can be distributed under the license you can find at :
 
 You can find the whole class documentation on the pChart web site.
 */
+
+function listfonts($selected)
+{
+	$list = ["advent_light", "Bedizen", "Forgotte", "pf_arma_five", "GeosansLight", "Silkscreen"];
+	foreach($list as $font){
+		echo "<option value='".$font.".ttf'".(($font == $selected) ? " selected='selected'" : "").">".$font."</option>";
+	}
+}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -140,7 +149,19 @@ You can find the whole class documentation on the pChart web site.
   </tr></table>
   <table><tr>
    <td width='147'>Alignment method (<a class='smallLinkBlack' target='_new' href='http://wiki.pchart.net/doc.draw.text.html'>help</a>)</td>
-   <td><select id='g_title_align'><?php listalign(); ?></select></td>
+   <td>
+	<select id='g_title_align'>
+		<option value='TEXT_ALIGN_TOPLEFT'>TEXT_ALIGN_TOPLEFT</option>
+		<option value='TEXT_ALIGN_TOPMIDDLE'>TEXT_ALIGN_TOPMIDDLE</option>
+		<option value='TEXT_ALIGN_TOPRIGHT'>TEXT_ALIGN_TOPRIGHT</option>
+		<option value='TEXT_ALIGN_MIDDLELEFT'>TEXT_ALIGN_MIDDLELEFT</option>
+		<option selected='selected' value='TEXT_ALIGN_MIDDLEMIDDLE'>TEXT_ALIGN_MIDDLEMIDDLE</option>
+		<option value='TEXT_ALIGN_MIDDLERIGHT'>TEXT_ALIGN_MIDDLERIGHT</option>
+		<option value='TEXT_ALIGN_BOTTOMLEFT'>TEXT_ALIGN_BOTTOMLEFT</option>
+		<option value='TEXT_ALIGN_BOTTOMMIDDLE'>TEXT_ALIGN_BOTTOMMIDDLE</option>
+		<option value='TEXT_ALIGN_BOTTOMRIGHT'>TEXT_ALIGN_BOTTOMRIGHT</option>
+	</select>
+</td>
   </tr></table>
   <table><tr>
    <td width='55'>X position &nbsp;</td>
@@ -153,7 +174,7 @@ You can find the whole class documentation on the pChart web site.
   </tr></table>
   <table><tr>
    <td width='55'>Font name &nbsp;</td>
-   <td><select id='g_title_font'><?php listfonts(); ?></select></td>
+   <td><select id='g_title_font'><?php listfonts("Forgotte"); ?></select></td>
    <td>&nbsp;&nbsp; Size &nbsp;</td>
    <td><input type='text' id='g_title_font_size' value='14' style='width: 20px; text-align: center;' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td>&nbsp;&nbsp; <input type='checkbox' id='g_title_box' /></td>
@@ -235,9 +256,27 @@ You can find the whole class documentation on the pChart web site.
    </tr>
    <tr>
     <td width='46'>Binding</td>
-    <td width='65'><center><select id='d_serie1_axis' style='width: 54px;' onchange='checkEnabledAxis();'><?php listaxis(); ?></select></center></td>
-    <td width='65'><center><select id='d_serie2_axis' style='width: 54px;' onchange='checkEnabledAxis();'><?php listaxis(); ?></select></center></td>
-    <td width='65'><center><select id='d_serie3_axis' style='width: 54px;' onchange='checkEnabledAxis();'><?php listaxis(); ?></select></center></td>
+    <td width='65'><center>
+	<select id='d_serie1_axis' style='width: 54px;' onchange='checkEnabledAxis();'>
+		<option value='0' selected='selected'>Axis 0</option>
+		<option value='1'>Axis 1</option>
+		<option value='2'>Axis 2</option>
+	</select>
+	</center></td>
+    <td width='65'><center>
+	<select id='d_serie2_axis' style='width: 54px;' onchange='checkEnabledAxis();'>
+		<option value='0' selected='selected'>Axis 0</option>
+		<option value='1'>Axis 1</option>
+		<option value='2'>Axis 2</option>	
+	</select>
+	</center></td>
+    <td width='65'><center>
+	<select id='d_serie3_axis' style='width: 54px;' onchange='checkEnabledAxis();'>
+		<option value='0' selected='selected'>Axis 0</option>
+		<option value='1'>Axis 1</option>
+		<option value='2'>Axis 2</option>
+	</select>
+	</center></td>
     <td width='65'><center>-</center></td>
    </tr>
 <?php
@@ -292,15 +331,48 @@ You can find the whole class documentation on the pChart web site.
    </tr>
    <tr>
     <td>Position</td>
-    <td><center><select id='d_axis0_position' style='width: 80px;' onchange='checkEnabledAxis();'><?php listaxispos(); ?></select></center></td>
-    <td><center><select id='d_axis1_position' style='width: 80px;' onchange='checkEnabledAxis();'><?php listaxispos(); ?></select></center></td>
-    <td><center><select id='d_axis2_position' style='width: 80px;' onchange='checkEnabledAxis();'><?php listaxispos(); ?></select></center></td>
+    <td><center>
+		<select id='d_axis0_position' style='width: 80px;' onchange='checkEnabledAxis();'>
+			<option value='left' selected='selected'>Left</option>
+			<option value='right'>Right</option>
+		</select>
+	</center></td>
+	<td><center>
+		<select id='d_axis1_position' style='width: 80px;' onchange='checkEnabledAxis();'>
+			<option value='left' selected='selected'>Left</option>
+			<option value='right'>Right</option>
+		</select>
+	</center></td>
+    <td><center>
+		<select id='d_axis2_position' style='width: 80px;' onchange='checkEnabledAxis();'>
+			<option value='left' selected='selected'>Left</option>
+			<option value='right'>Right</option>
+		</select>
+	</center></td>
    </tr>
    <tr>
     <td>Format</td>
-    <td><center><select id='d_axis0_format' style='width: 80px;' onchange='checkEnabledAxis();'><?php listaxisformat(); ?></select></center></td>
-    <td><center><select id='d_axis1_format' style='width: 80px;' onchange='checkEnabledAxis();'><?php listaxisformat(); ?></select></center></td>
-    <td><center><select id='d_axis2_format' style='width: 80px;' onchange='checkEnabledAxis();'><?php listaxisformat(); ?></select></center></td>
+    <td><center>
+		<select id='d_axis0_format' style='width: 80px;' onchange='checkEnabledAxis();'>
+			<option selected='selected' value='AXIS_FORMAT_DEFAULT'>DEFAULT</option>
+			<option value='AXIS_FORMAT_METRIC'>METRIC</option>
+			<option value='AXIS_FORMAT_CURRENCY'>CURRENCY</option>
+		</select>
+	</center></td>
+    <td><center>
+		<select id='d_axis1_format' style='width: 80px;' onchange='checkEnabledAxis();'>
+			<option selected='selected' value='AXIS_FORMAT_DEFAULT'>DEFAULT</option>
+			<option value='AXIS_FORMAT_METRIC'>METRIC</option>
+			<option value='AXIS_FORMAT_CURRENCY'>CURRENCY</option>
+		</select>
+	</center></td>
+    <td><center>
+		<select id='d_axis2_format' style='width: 80px;' onchange='checkEnabledAxis();'>
+			<option selected='selected' value='AXIS_FORMAT_DEFAULT'>DEFAULT</option>
+			<option value='AXIS_FORMAT_METRIC'>METRIC</option>
+			<option value='AXIS_FORMAT_CURRENCY'>CURRENCY</option>
+		</select>
+	</center></td>
    </tr>
   </table>
  </div>
@@ -420,7 +492,20 @@ You can find the whole class documentation on the pChart web site.
   <br/>
   <table><tr>
    <td width='60'>Chart family</td>
-   <td><select id='c_family' onchange='checkChartSettings();'><?php echo listCharts(); ?></select></td>
+   <td>
+	<select id='c_family' onchange='checkChartSettings();'>
+		<option value='plot'>Plot chart</option>
+		<option value='line'>Line chart</option>
+		<option value='spline' selected='selected'>Spline chart</option>
+		<option value='step'>Step chart</option>
+		<option value='bar'>Bar chart</option>
+		<option value='area'>Area chart</option>
+		<option value='fspline'>Filled spline chart &nbsp;&nbsp;&nbsp;&nbsp;</option>
+		<option value='fstep'>Filled step chart</option>
+		<option value='sbar'>Stacked bar chart</option>
+		<option value='sarea'>Stacked area chart</option>
+	</select>
+</td>
    <td>&nbsp;Break color</td>
    <td>&nbsp;<input type='text' id='c_break_color' class='jscolor' value='#EA371A' style='text-align: center; width: 60px; text-align: center' onchange='applyColor("c_break_color","c_break_color_show");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td><div id='c_break_color_show' style='margin-left: 4px; width: 10px; height: 10px; border: 1px solid #808080;'></div></td>
@@ -507,7 +592,13 @@ You can find the whole class documentation on the pChart web site.
    <td>&nbsp; Alpha &nbsp;</td>
    <td><input type='text' id='l_alpha' value='30' style='width: 20px; text-align: center;' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td>&nbsp; Format</td>
-   <td>&nbsp; <select id='l_format'><?php echo  LegendFormat(); ?></select></td>
+   <td>&nbsp; 
+	<select id='l_format'>
+		<option value='LEGEND_NOBORDER' selected='selected'>LEGEND_NOBORDER</option>
+		<option value='LEGEND_BOX'>LEGEND_BOX</option>
+		<option value='LEGEND_ROUND'>LEGEND_ROUND</option>
+	</select>
+</td>
   </tr></table>
   <table><tr>
    <td width='50'>Orientation</td>
@@ -586,7 +677,21 @@ You can find the whole class documentation on the pChart web site.
   <br/>
   <table><tr>
    <td width='50'>Template</td>
-   <td>&nbsp; <select id='p_template'><?php echo listPalettes(); ?></select></td>
+   <td>&nbsp; 
+	<select id='p_template'>
+		<option value='default'>Default</option>
+		<option value='autumn'>Autumn</option>
+		<option value='blind'>Blind</option>
+		<option value='evening'>Evening</option>
+		<option value='kitchen'>Kitchen</option>
+		<option value='light'>Light</option>
+		<option value='navy'>Navy</option>
+		<option value='shade'>Shade</option>
+		<option value='spring'>Spring</option>
+		<option value='shade'>Shade</option>
+		<option value='summer'>Summer</option>
+	</select>
+</td>
   </tr></table>
  </div>
  </td>
@@ -613,92 +718,3 @@ You can find the whole class documentation on the pChart web site.
 </script>
 </body>
 </html>
-<?php
-function listfonts($Default="")
-{
-	echo "<option value='advent_light.ttf'>advent_light</option>";
-	echo "<option value='Bedizen.ttf'>Bedizen</option>";
-	if ($Default == ""){
-		echo "<option value='Forgotte.ttf' selected='selected'>Forgotte</option>";
-	} else {
-		echo "<option value='Forgotte.ttf'>Forgotte</option>"; 
-	}
-	echo "<option value='GeosansLight.ttf'>GeosansLight</option>";
-	if ($Default == "pf_arma_five"){ 
-		echo "<option value='pf_arma_five.ttf' selected='selected'>pf_arma_five</option>";
-	} else {
-		echo "<option value='pf_arma_five.ttf'>pf_arma_five</option>";
-	}
-	echo "<option value='Silkscreen.ttf'>Silkscreen</option>";
-}
-
-function listaxis()
-{
-	echo "<option value='0' selected='selected'>Axis 0</option>
-<option value='1'>Axis 1</option>
-<option value='2'>Axis 2</option>";
-}
-
-function listaxispos()
-{
-	echo "<option value='left' selected='selected'>Left</option>
-<option value='right'>Right</option>";
-}
-
-function LegendFormat()
-{
-	echo "<option value='LEGEND_NOBORDER' selected='selected'>LEGEND_NOBORDER</option>
-<option value='LEGEND_BOX'>LEGEND_BOX</option>
-<option value='LEGEND_ROUND'>LEGEND_ROUND</option>";
-}
-
-function listCharts()
-{
-	echo "<option value='plot'>Plot chart</option>
-<option value='line'>Line chart</option>
-<option value='spline' selected='selected'>Spline chart</option>
-<option value='step'>Step chart</option>
-<option value='bar'>Bar chart</option>
-<option value='area'>Area chart</option>
-<option value='fspline'>Filled spline chart &nbsp;&nbsp;&nbsp;&nbsp;</option>
-<option value='fstep'>Filled step chart</option>
-<option value='sbar'>Stacked bar chart</option>
-<option value='sarea'>Stacked area chart</option>";
-}
-
-function listPalettes()
-{
-	echo "<option value='default'>Default</option>
-<option value='autumn'>Autumn</option>
-<option value='blind'>Blind</option>
-<option value='evening'>Evening</option>
-<option value='kitchen'>Kitchen</option>
-<option value='light'>Light</option>
-<option value='navy'>Navy</option>
-<option value='shade'>Shade</option>
-<option value='spring'>Spring</option>
-<option value='shade'>Shade</option>
-<option value='summer'>Summer</option>";
-}
-
-function listalign()
-{
-	echo "<option value='TEXT_ALIGN_TOPLEFT'>TEXT_ALIGN_TOPLEFT</option>
-<option value='TEXT_ALIGN_TOPMIDDLE'>TEXT_ALIGN_TOPMIDDLE</option>
-<option value='TEXT_ALIGN_TOPRIGHT'>TEXT_ALIGN_TOPRIGHT</option>
-<option value='TEXT_ALIGN_MIDDLELEFT'>TEXT_ALIGN_MIDDLELEFT</option>
-<option selected='selected' value='TEXT_ALIGN_MIDDLEMIDDLE'>TEXT_ALIGN_MIDDLEMIDDLE</option>
-<option value='TEXT_ALIGN_MIDDLERIGHT'>TEXT_ALIGN_MIDDLERIGHT</option>
-<option value='TEXT_ALIGN_BOTTOMLEFT'>TEXT_ALIGN_BOTTOMLEFT</option>
-<option value='TEXT_ALIGN_BOTTOMMIDDLE'>TEXT_ALIGN_BOTTOMMIDDLE</option>
-<option value='TEXT_ALIGN_BOTTOMRIGHT'>TEXT_ALIGN_BOTTOMRIGHT</option>";
-}
-
-function listaxisformat()
-{
-	echo "<option selected='selected' value='AXIS_FORMAT_DEFAULT'>DEFAULT</option>
-<option value='AXIS_FORMAT_METRIC'>METRIC</option>
-<option value='AXIS_FORMAT_CURRENCY'>CURRENCY</option>";
-}
-
-?>
