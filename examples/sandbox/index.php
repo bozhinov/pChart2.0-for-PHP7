@@ -241,20 +241,18 @@ You can find the whole class documentation on the pChart web site.
     <td width='65'><center>-</center></td>
    </tr>
 <?php
- for($i=0; $i<8;$i++){
-?>
-   <tr>
-<?php if ($i == 0){ ?>
-    <td>Data</td>
-<?php } else { ?>
-    <td></td>
-<?php } ?>
-    <td><center><input type='text' id='d_serie1_data<?php echo $i; ?>' style='width: 50px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
-    <td><center><input type='text' id='d_serie2_data<?php echo $i; ?>' style='width: 50px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
-    <td><center><input type='text' id='d_serie3_data<?php echo $i; ?>' style='width: 50px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
-    <td><center><input type='text' id='d_absissa_data<?php echo $i; ?>' style='width: 60px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
-   </tr>
-<?php
+	for($i=0; $i<8;$i++){
+		echo "<tr><td>";
+
+		if ($i == 0){
+			echo "Data";
+		}
+
+		echo "</td><td><center><input type='text' id='d_serie1_data".$i."' style='width: 50px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
+		<td><center><input type='text' id='d_serie2_data".$i."' style='width: 50px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
+		<td><center><input type='text' id='d_serie3_data".$i."' style='width: 50px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
+		<td><center><input type='text' id='d_absissa_data".$i."' style='width: 60px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></center></td>
+		</tr>";
   }
 ?>
   </table>

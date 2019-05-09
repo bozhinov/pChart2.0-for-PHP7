@@ -1,10 +1,11 @@
 <?php
 
 class helper {
-	
+
 	public $Constants;
-	
-	function __construct(){
+
+	function __construct()
+	{
 		$this->Constants = get_defined_constants(true)["user"];
 	}
 
@@ -20,7 +21,7 @@ class helper {
 
 		return [$R,$G,$B];
 	}
-	
+
 	function getConstant($Mode)
 	{
 		return $this->Constants[$Mode];
@@ -44,11 +45,11 @@ class helper {
 
 		return substr($Result, 0, -2)."];\r\n";
 	}
-	
-	function stringify($Values){
-		
+
+	function stringify($Values)
+	{
 		array_walk($Values, array($this, 'toString'));
-		
+
 		return implode(",", $Values);
 	}
 
@@ -57,7 +58,7 @@ class helper {
 		if ($Value == ""){
 			return "VOID";
 		}
-		
+
 		if (!$Value instanceof pChart\pColor){
 			$pos = array_search($Value, $this->Constants);
 			return ($pos != FALSE) ? $pos : $Value;

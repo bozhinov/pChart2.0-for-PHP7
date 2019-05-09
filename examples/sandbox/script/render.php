@@ -414,7 +414,7 @@ if ($g_gradient_enabled == "true"){
 	list($StartR,$StartG,$StartB) = $helper->extractColors($g_gradient_start);
 	list($EndR,$EndG,$EndB)       = $helper->extractColors($g_gradient_end);
 
-	$Settings = array("StartColor"=>new pColor($StartR,$StartG,$StartB,$g_gradient_alpha),"EndColor"=>new pColor($EndR,$EndG,$EndB,$g_gradient_alpha));
+	$Settings = ["StartColor"=>new pColor($StartR,$StartG,$StartB,$g_gradient_alpha),"EndColor"=>new pColor($EndR,$EndG,$EndB,$g_gradient_alpha)];
 
 	if ($Mode == "Render"){
 		if ($g_gradient_direction == "vertical"){
