@@ -12,22 +12,22 @@ This file can be distributed under the license you can find at :
 
 You can find the whole class documentation on the pChart web site.
 */
- 
+
 (function( $ ) {
 
 	var LastcX = 0;
 	var LastcY = 0;
 	var tooltipDivElement;
-	
+
 	/* Add a picture element that need ImageMap parsing */
-	$.fn.addImageMap = function(ImageMapID, ImageMapURL, mySettings) 
+	$.fn.addImageMap = function(ImageMapID, ImageMapURL, mySettings)
 	{
 		var Settings = $.extend({
 				SmoothMove: false,
 				SmoothMoveFactor: 5,
 				tooltipDiv: "ImageMapDiv" // mind the #
 			}, mySettings );
-				
+
 		/* create ToolTipDiv if needed */
 		if ($("#"+Settings.tooltipDiv).length) {
 			document.getElementById(Settings.tooltipDiv).innerHTML = "";
@@ -39,9 +39,9 @@ You can find the whole class documentation on the pChart web site.
 			element.style.position = "absolute";
 			document.body.appendChild(element);
 		}
-		
+
 		tooltipDivElement = document.getElementById(Settings.tooltipDiv);
-		
+
 		/* re create ImageMap element */
 		if ($("#"+ImageMapID).length) {
 			$("#"+ImageMapID).remove();
@@ -51,10 +51,10 @@ You can find the whole class documentation on the pChart web site.
 		element.name = ImageMapID;
 		document.body.appendChild(element);
 		document.getElementById(this.attr('id')).useMap = "#"+ImageMapID;
-				
+
 		/* get the image map */
 		var map = document.getElementById(ImageMapID);
-		
+
 		$.getJSON(ImageMapURL).done(function(data) {
 			$.each(data, function(index, value) {
 				/* Add an area to the specified image map */
@@ -72,10 +72,10 @@ You can find the whole class documentation on the pChart web site.
 
 		/* Attach the onMouseMove() event to picture frame */
 		$("#"+ImageMapID).mousemove(function(e){
-			cX = e.pageX; 
+			cX = e.pageX;
 			cY = e.pageY;
 			if (Settings.SmoothMove)
-			{ 
+			{
 				cX = LastcX - (LastcX-cX)/4;
 				cY = LastcY - (LastcY-cY)/Settings.SmoothMoveFactor;
 			}
@@ -86,12 +86,12 @@ You can find the whole class documentation on the pChart web site.
 			LastcX = cX;
 			LastcY = cY;
 		});
-		
+
 		return this;
 	};
-	
+
 	/* Show the tooltip */
-	function showDiv(Color, Title, Message) 
+	function showDiv(Color, Title, Message)
 	{
 		tooltipDivElement.innerHTML = '\
 			<div class="imageMapShell">\
