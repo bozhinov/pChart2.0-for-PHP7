@@ -87,7 +87,6 @@ define("LABEL_POINT_NONE", 691071);
 define("LABEL_POINT_CIRCLE", 691072);
 define("LABEL_POINT_BOX", 691073);
 define("ZONE_NAME_ANGLE_AUTO", 691081);
-define("PI", 3.14159265);
 define("ALL", 69);
 define("NONE", 31);
 define("AUTO", 690000);
@@ -626,7 +625,7 @@ class pDraw
 			} else {
 				# Momchil: it is possible to save some calcs here
 				# $Angle2 is already defined if not 0,1,Last member
-				# cos(($Angle2 + 180) * PI / 180) is negated cos($Angle2 * PI / 180) (or at least close enough)
+				# cos(($Angle2 + 180) * M_PI / 180) is negated cos($Angle2 * M_PI / 180) (or at least close enough)
 				# Not worth the code complexity (very few calls)
 				$Angle1 = $this->getAngle($X2, $Y2, $Coordinates[$i + 1][0], $Coordinates[$i + 1][1]);
 				$Angle2 = $this->getAngle($X1, $Y1, $X2, $Y2);

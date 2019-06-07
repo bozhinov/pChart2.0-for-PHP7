@@ -519,7 +519,7 @@ class pPie
 					#$Xc = cos(deg2rad(270 - 90)) * $Radius + $X;
 					#$Yc = sin(deg2rad(270 - 90)) * $Radius * $SkewFactor + $Y;
 					$Xc = -$Radius + $X;
-					$Yc = sin(PI) * $Radius * $SkewFactor + $Y;
+					$Yc = sin(M_PI) * $Radius * $SkewFactor + $Y;
 					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $Settings);
 				}
 
