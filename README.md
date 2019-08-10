@@ -37,7 +37,7 @@ Major changes:
  
  
  The sandbox and all examples work as expected.<br />
- Code is being tested against PHP versions 7.0, 7.1, 7.2 & 7.3
+ Code is being tested against PHP versions 7.0 to 7.4
  
  Word of advice, keep it secure:
  - Set write permissions only to the "cache" and "temp" folders if you are going to be using them.
