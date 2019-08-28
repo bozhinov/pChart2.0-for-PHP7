@@ -337,6 +337,7 @@ class pPie
 
 		/* Gen Palette */
 		$Palette = $this->myPicture->myData->getPaletteForPie($Values);
+		$Palette = array_reverse($Palette);
 
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
