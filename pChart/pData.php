@@ -653,7 +653,7 @@ class pData
 	}
 
 	/* used in pPie */
-	function get_pie_params($forLegend = FALSE)
+	function getPieParams($forLegend = FALSE)
 	{
 		/* Do we have an abscissa serie defined? */
 		if ($this->Data["Abscissa"] == "" || !in_array($this->Data["Abscissa"], array_keys($this->Data["Series"]))) {

@@ -65,7 +65,7 @@ class pPie
 		extract($Format);
 
 		/* Data Processing */
-		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->get_pie_params();
+		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->getPieParams();
 		
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
@@ -298,7 +298,7 @@ class pPie
 		($SkewFactor < .5) AND $SkewFactor = .5;
 
 		/* Data Processing */
-		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->get_pie_params();
+		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->getPieParams();
 
 		$Values = array_reverse($Values);
 		$Palette = array_reverse(array_slice($Palette, 0, count($Values)));
@@ -643,7 +643,7 @@ class pPie
 		$BorderColor->AlphaSet($Color->Alpha);
 
 		/* Data Processing */
-		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->get_pie_params($forLegend = TRUE);
+		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->getPieParams($forLegend = TRUE);
 
 		$YStep = max($this->myPicture->FontSize, $BoxSize) + 5;
 		$XStep = $BoxSize + 5;
@@ -813,7 +813,7 @@ class pPie
 		extract($Format);
 
 		/* Data Processing */
-		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->get_pie_params();
+		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->getPieParams();
 
 		/* Shadow */
 		$RestoreShadow = $this->myPicture->Shadow;
@@ -1007,7 +1007,7 @@ class pPie
 		($SkewFactor < .5) AND $SkewFactor = .5;
 
 		/* Data Processing */
-		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->get_pie_params();
+		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->getPieParams();
 
 		$AbscissaData = array_reverse($AbscissaData);
 		$Values = array_reverse($Values);
