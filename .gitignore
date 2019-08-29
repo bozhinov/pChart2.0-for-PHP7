@@ -8,3 +8,5 @@ cache/cache.db
 cache/index.db
 cache/sql.cache.db
 cloc-1.80.exe
+libsqlite3.dll
+php7.4/php.webserver.cmd
