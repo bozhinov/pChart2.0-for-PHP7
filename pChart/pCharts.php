@@ -1302,7 +1302,7 @@ class pCharts {
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				$Color = $Serie["Color"]->newOne();
-				$Ticks = $Serie["Ticks"];
+				#$Ticks = $Serie["Ticks"];
 				if ($DisplayType == DISPLAY_AUTO) {
 					$DisplayColor = $Color;
 				}
@@ -1595,7 +1595,7 @@ class pCharts {
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				$Color = $Serie["Color"]->newOne();
-				$Ticks = $Serie["Ticks"];
+				#$Ticks = $Serie["Ticks"];
 				if ($DisplayType == DISPLAY_AUTO) {
 					$DisplayColor = new pColor(255);
 				}
