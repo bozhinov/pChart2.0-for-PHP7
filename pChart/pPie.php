@@ -65,27 +65,8 @@ class pPie
 		extract($Format);
 
 		/* Data Processing */
-		$Data = $this->myPicture->myData->getData();
-
-		/* Do we have an abscissa serie defined? */
-		if ($Data["Abscissa"] == "" || !in_array($Data["Abscissa"], array_keys($Data["Series"]))) {
-			throw pException::PieNoAbscissaException();
-		} else {
-			$AbscissaData = $Data["Series"][$Data["Abscissa"]]["Data"];
-			unset($Data["Series"][$Data["Abscissa"]]);
-		}
-
-		/* Pop off the Abscissa and whatever is left must be the dataSerie */
-		if (count($Data["Series"]) != 1){
-			throw pException::PieNoDataSerieException();
-		}
-
-		/* Remove unused data */
-		$Values = $this->clean0Values(array_shift($Data["Series"])["Data"]); # DataSerieData
-
-		/* Gen Palette */
-		$Palette = $this->myPicture->myData->getPaletteForPie($Values);
-
+		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->get_pie_params();
+		
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
 
@@ -317,26 +298,9 @@ class pPie
 		($SkewFactor < .5) AND $SkewFactor = .5;
 
 		/* Data Processing */
-		$Data = $this->myPicture->myData->getData();
+		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->get_pie_params();
 
-		/* Do we have an abscissa serie defined? */
-		if ($Data["Abscissa"] == "" || !in_array($Data["Abscissa"], array_keys($Data["Series"]))) {
-			throw pException::PieNoAbscissaException();
-		} else {
-			$AbscissaData = $Data["Series"][$Data["Abscissa"]]["Data"];
-			unset($Data["Series"][$Data["Abscissa"]]);
-		}
-
-		if (count($Data["Series"]) != 1){
-			throw pException::PieNoDataSerieException();
-		}
-
-		/* Remove unused data */
-		$Values = $this->clean0Values(array_shift($Data["Series"])["Data"]); # DataSerieData
 		$Values = array_reverse($Values);
-
-		/* Gen Palette */
-		$Palette = $this->myPicture->myData->getPaletteForPie($Values);
 		$Palette = array_reverse(array_slice($Palette, 0, count($Values)));
 
 		/* Compute the wasted angular space between series */
@@ -678,24 +642,17 @@ class pPie
 
 		$BorderColor->AlphaSet($Color->Alpha);
 
+		/* Data Processing */
+		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->get_pie_params($forLegend = TRUE);
+
 		$YStep = max($this->myPicture->FontSize, $BoxSize) + 5;
 		$XStep = $BoxSize + 5;
-		/* Data Processing */
-		$Data = $this->myPicture->myData->getData();
-
-		/* Gen Palette */
-		$Palette = $this->myPicture->myData->getPalette();
-
-		/* Do we have an abscissa serie defined? */
-		if ($Data["Abscissa"] == "") {
-			throw pException::PieNoAbscissaException();
-		}
 
 		$Boundaries = ["L" => $X, "T" => $Y, "R" => 0, "B" => 0];
 		$vY = $Y;
 		$vX = $X;
 
-		foreach($Data["Series"][$Data["Abscissa"]]["Data"] as $Value) {
+		foreach($AbscissaData as $Value) {
 			$BoxArray = $this->myPicture->getTextBox($vX + $BoxSize + 4, $vY + $BoxSize / 2, $FontName, $FontSize, 0, $Value);
 			if ($Mode == LEGEND_VERTICAL) {
 				($Boundaries["T"] > $BoxArray[2]["Y"] + $BoxSize / 2) 		AND $Boundaries["T"] = $BoxArray[2]["Y"] + $BoxSize / 2;
@@ -729,7 +686,7 @@ class pPie
 		$RestoreShadow = $this->myPicture->Shadow;
 		$this->myPicture->Shadow = FALSE;
 
-		foreach($Data["Series"][$Data["Abscissa"]]["Data"] as $Key => $Value) {
+		foreach($AbscissaData as $Key => $Value) {
 			$Settings = ["Color" => $Palette[$Key]];
 			$Settings["Surrounding"] = 20;
 			$this->myPicture->drawFilledRectangle($X + 1, $Y + 1, $X + $BoxSize + 1, $Y + $BoxSize + 1, ["Color" => new pColor(0,0,0,20)]);
@@ -856,25 +813,7 @@ class pPie
 		extract($Format);
 
 		/* Data Processing */
-		$Data = $this->myPicture->myData->getData();
-
-		/* Do we have an abscissa serie defined? */
-		if ($Data["Abscissa"] == "" || !in_array($Data["Abscissa"], array_keys($Data["Series"]))) {
-			throw pException::PieNoAbscissaException();
-		} else {
-			$AbscissaData = $Data["Series"][$Data["Abscissa"]]["Data"];
-			unset($Data["Series"][$Data["Abscissa"]]);
-		}
-
-		if (count($Data["Series"]) != 1){
-			throw pException::PieNoDataSerieException();
-		}
-
-		/* Remove unused data */
-		$Values = $this->clean0Values(array_shift($Data["Series"])["Data"]);
-
-		/* Gen Palette */
-		$Palette = $this->myPicture->myData->getPaletteForPie($Values);
+		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->get_pie_params();
 
 		/* Shadow */
 		$RestoreShadow = $this->myPicture->Shadow;
@@ -1068,27 +1007,10 @@ class pPie
 		($SkewFactor < .5) AND $SkewFactor = .5;
 
 		/* Data Processing */
-		$Data = $this->myPicture->myData->getData();
+		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->get_pie_params();
 
-		/* Do we have an abscissa serie defined? */
-		if ($Data["Abscissa"] == "" || !in_array($Data["Abscissa"], array_keys($Data["Series"]))) {
-			throw pException::PieNoAbscissaException();
-		} else {
-			$AbscissaData = $Data["Series"][$Data["Abscissa"]]["Data"];
-			$AbscissaData = array_reverse($AbscissaData);
-			unset($Data["Series"][$Data["Abscissa"]]);
-		}
-
-		if (count($Data["Series"]) != 1){
-			throw pException::PieNoDataSerieException();
-		}
-
-		/* Remove unused data */
-		$Values = $this->clean0Values(array_shift($Data["Series"])["Data"]); # DataSerieData
+		$AbscissaData = array_reverse($AbscissaData);
 		$Values = array_reverse($Values);
-
-		/* Gen Palette */
-		$Palette = $this->myPicture->myData->getPaletteForPie($Values);
 		$Palette = array_reverse(array_slice($Palette, 0, count($Values)));
 
 		/* Compute the wasted angular space between series */
@@ -1360,13 +1282,6 @@ class pPie
 		}
 
 		$this->myPicture->Shadow = $RestoreShadow;
-	}
-
-	/* Remove invalid values */
-	function clean0Values(array $DataSerieData)
-	{
-		# array_diff preserves keys
-		return array_values(array_diff($DataSerieData, [NULL, 0]));
 	}
 
 }

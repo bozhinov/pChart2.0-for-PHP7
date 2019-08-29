@@ -653,15 +653,38 @@ class pData
 	}
 
 	/* used in pPie */
-	function getPaletteForPie(array $Points)
+	function get_pie_params($forLegend = FALSE)
 	{
-		foreach($Points as $ID => $Value) {
-			if(!isset($this->Palette[$ID])){
-				$this->Palette[$ID] = new pColor();
-			}
+		/* Do we have an abscissa serie defined? */
+		if ($this->Data["Abscissa"] == "" || !in_array($this->Data["Abscissa"], array_keys($this->Data["Series"]))) {
+			throw pException::PieNoAbscissaException();
+		} else {
+			$AbscissaData = $this->Data["Series"][$this->Data["Abscissa"]]["Data"];
 		}
 
-		return $this->Palette;
+		if(!$forLegend){
+			$SeriesData = $this->Data["Series"];
+			$left = array_diff(array_keys($SeriesData), [$this->Data["Abscissa"]]);
+
+			if (count($left) != 1){
+				throw pException::PieNoDataSerieException();
+			}
+
+			/* Remove unused data clean0Values */
+			$Values = array_shift($SeriesData)["Data"];
+			$Values = array_values(array_diff($Values, [NULL, 0]));
+
+			/* Gen Palette */
+			foreach($Values as $ID => $Value) {
+				if(!isset($this->Palette[$ID])){
+					$this->Palette[$ID] = new pColor();
+				}
+			}
+		} else {
+			$Values = [];
+		}
+
+		return [$AbscissaData, $Values, $this->Palette];
 	}
 
 	/* Save a palette */
