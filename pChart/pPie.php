@@ -643,7 +643,7 @@ class pPie
 		$BorderColor->AlphaSet($Color->Alpha);
 
 		/* Data Processing */
-		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->getPieParams($forLegend = TRUE);
+		list($AbscissaData, , $Palette) = $this->myPicture->myData->getPieParams($forLegend = TRUE);
 
 		$YStep = max($this->myPicture->FontSize, $BoxSize) + 5;
 		$XStep = $BoxSize + 5;
