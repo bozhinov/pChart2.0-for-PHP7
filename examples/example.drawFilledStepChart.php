@@ -48,7 +48,7 @@ $myPicture->drawFilledRectangle(60,60,450,190,["Color"=>new pColor(255,255,255,1
 $myPicture->drawScale(["DrawSubTicks"=>TRUE]);
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
-$pCharts->drawFilledStepChart(["ForceTransparency"=>40,"DisplayValues"=>TRUE,"DisplayType"=>DISPLAY_AUTO]);
+$pCharts->drawFilledStepChart(["ForceTransparency"=>40]);
 $myPicture->setShadow(FALSE);
 
 /* Draw the scale and the 2nd chart */

@@ -926,11 +926,7 @@ class pCharts {
 	function drawFilledStepChart(array $Format = [])
 	{
 		$ReCenter = TRUE;
-		$DisplayValues = FALSE;
-		$DisplayOffset = 2;
-		$DisplayType = DISPLAY_MANUAL;
 		$ForceTransparency = NULL;
-		$DisplayColor = new pColor(0);
 		$AroundZero = TRUE;
 
 		/* Override defaults */
@@ -941,16 +937,7 @@ class pCharts {
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				$Color = $Serie["Color"]->newOne();
-				$Ticks = $Serie["Ticks"];
-				$Weight = $Serie["Weight"];
-				if ($DisplayType == DISPLAY_AUTO) {
-					$DisplayColor = $Color;
-				}
 
-				$AxisID = $Serie["Axis"];
-				$Mode = $Data["Axis"][$AxisID]["Display"];
-				$Format = $Data["Axis"][$AxisID]["Format"];
-				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				if (!is_null($ForceTransparency)) {
 					$Color->AlphaSet($ForceTransparency);
 				}
