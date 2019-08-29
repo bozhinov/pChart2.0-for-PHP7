@@ -1075,6 +1075,7 @@ class pPie
 			throw pException::PieNoAbscissaException();
 		} else {
 			$AbscissaData = $Data["Series"][$Data["Abscissa"]]["Data"];
+			$AbscissaData = array_reverse($AbscissaData);
 			unset($Data["Series"][$Data["Abscissa"]]);
 		}
 
@@ -1082,13 +1083,13 @@ class pPie
 			throw pException::PieNoDataSerieException();
 		}
 
-		$DataSerieData = array_shift($Data["Series"])["Data"];
-
 		/* Remove unused data */
-		$Values = array_reverse($this->clean0Values($DataSerieData));
+		$Values = $this->clean0Values(array_shift($Data["Series"])["Data"]); # DataSerieData
+		$Values = array_reverse($Values);
 
 		/* Gen Palette */
 		$Palette = $this->myPicture->myData->getPaletteForPie($Values);
+		$Palette = array_reverse(array_slice($Palette, 0, count($Values)));
 
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
