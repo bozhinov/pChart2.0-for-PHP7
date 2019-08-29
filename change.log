@@ -6,7 +6,7 @@
  ¦   Version     : 2.3.0-dev               ¦
  ¦   Made by     : Jean-Damien POGOLOTTI   ¦
  ¦   Maintainedby: Momchil Bozhinov        ¦
- ¦   Last Update : 28/01/19                ¦
+ ¦   Last Update : 28/08/19                ¦
  ¦                                         ¦
  +-----------------------------------------+
  
@@ -22,6 +22,7 @@
   o ImageMapper: map failed to load on first attempt
   o Using rad2deg in favour of manual calculation
   o pDraw->isChartLayoutStacked flag is now passed to writeLabel (example.drawLabel.stacked)
+  o FIXED: Issue #29 - draw3DPie reverse order of color
   
  2.2.3 -----------------------------------------------------------------------
   o Cleaned up code
