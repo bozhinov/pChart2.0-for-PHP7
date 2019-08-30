@@ -2,71 +2,55 @@
 /*
 pImageMapSQLite - pChart core class
 
-Version     : 0.2
+Version     : 0.3
 Made by     : Momchil Bozhinov
-Last Update : 22/01/2018
+Last Update : 30/08/2019
 */
 
 namespace pChart\pImageMap;
 
+use pChart\pSQLite;
+
 class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 {
 	/* Image map */
-	var $DbSQLite;
+	var $SQLite;
 	var $DbTable;
 	var $ImageMapBuffer = [];
 
 	/* Class constructor */
 	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE, string $UniqueID = "imageMap", string $StorageFile = "temp/imageMap.db")
 	{
-		$this->DbTable = $UniqueID;
-		$this->DbSQLite = new \PDO("sqlite:".$StorageFile);
-		$this->DbSQLite->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-		/* Create the IM Db */
-		$this->InitDb();
+		/* Create the cache Db */
+		$this->SQLite = new pSQLite($StorageFile);
+		$this->DbTable = $this->SQLite->quote($UniqueID);
+		$this->SQLite->execute("CREATE TABLE IF NOT EXISTS ".$this->DbTable." (Type TEXT, Plots BLOB, Color TEXT, Title TEXT, Message TEXT);");
 
 		/* Initialize the parent */
 		parent::__construct($XSize, $YSize, $TransparentBackground);
 	}
 
-	/* Create Db schema */
-	function InitDb()
-	{
-		try{
-			$q = $this->DbSQLite->prepare("CREATE TABLE IF NOT EXISTS ".$this->DbSQLite->quote($this->DbTable)." (Type TEXT, Plots BLOB, Color TEXT, Title TEXT, Message TEXT);");
-			$q->execute();
-		} catch(\PDOException $e) {
-			throw \pChart\pException::ImageMapSQLiteException($e->getMessage());
-		}
-	}
-
 	function __destruct()
 	{
 		if (!empty($this->ImageMapBuffer)){
-			try{
 
-				/* flush existing image map */
-				$q = $this->DbSQLite->prepare("DELETE FROM ".$this->DbSQLite->quote($this->DbTable).";");
-				$q->execute();
+			/* flush existing image map */
+			$this->SQLite->execute("DELETE FROM ".$this->DbTable.";");
 
-				/* store the new image map */
-				$this->DbSQLite->beginTransaction();
-				$q = $this->DbSQLite->prepare("INSERT INTO ".$this->DbSQLite->quote($this->DbTable)." VALUES(:Type, :Plots, :Color, :Title, :Message)");
+			/* store the new image map */
+			$params = [];
 
-				foreach($this->ImageMapBuffer as $entry){
-					$q->bindParam(':Type',	$entry[0], \PDO::PARAM_STR);
-					$q->bindParam(':Plots', $entry[1], \PDO::PARAM_STR);
-					$q->bindParam(':Color', $entry[2], \PDO::PARAM_STR);
-					$q->bindParam(':Title', $entry[3], \PDO::PARAM_STR);
-					$q->bindParam(':Message', $entry[4], \PDO::PARAM_STR);
-					$q->execute();
-				}
-
-				$this->DbSQLite->commit();
-			} catch(\PDOException $e) {
-				throw \pChart\pException::ImageMapSQLiteException($e->getMessage());
+			foreach($this->ImageMapBuffer as $entry){
+				$params[] = [
+					"Type" => [$entry[0], 1],
+					"Plots" => [$entry[1], 1],
+					"Color" => [$entry[2], 1],
+					"Title" => [$entry[3], 1],
+					"Message" => [$entry[4], 1]
+				];
 			}
+
+			$this->SQLite->execute("INSERT INTO ".$this->DbTable." VALUES(:Type, :Plots, :Color, :Title, :Message)", $params);
 		}
 
 		parent::__destruct();
@@ -74,16 +58,8 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 
 	function ImageMapExists()
 	{
-		$match = [];
-		try{
-			$q = $this->DbSQLite->prepare("SELECT \"Type\" FROM ".$this->DbSQLite->quote($this->DbTable).";");
-			$q->execute();
-			$match = $q->fetch(\PDO::FETCH_ASSOC);
-			return (empty($match)) ? FALSE : TRUE;
-
-		} catch(\PDOException $e) {
-			throw \pChart\pException::ImageMapSQLiteException($e->getMessage());
-		}
+		$match = $this->SQLite->execute("SELECT \"Type\" FROM ".$this->DbTable.";", [], $expects_return = TRUE, $select_one = TRUE);
+		return (!empty($match));
 	}
 
 	/* Add a zone to the image map */
@@ -92,13 +68,12 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 		/* Encode the characters in the image map in HTML standards */
 		$Title = str_replace("&#8364;", "\u20AC", $Title); # Momchil TODO TEST THIS
 		$Title = htmlentities($Title, ENT_QUOTES);
-		
+
 		if ($HTMLEncode) {
 			$Message = htmlentities($Message, ENT_QUOTES);
 		}
 
 		$this->ImageMapBuffer[] = [$Type,$Plots,$Color,$Title,$Message];
-
 	}
 
 	/* Remove VOID values from an image map custom values array */
@@ -170,15 +145,8 @@ class pImageMapSQLite extends \pChart\pDraw implements pImageMapInterface
 	/* Momchil: this function relies on the fact that the ImageMap for the image already exists */
 	function dumpImageMap()
 	{
-		try{
-			$q = $this->DbSQLite->prepare("SELECT * FROM ".$this->DbSQLite->quote($this->DbTable).";");
-			$q->execute();
-			$match = $q->fetchAll(\PDO::FETCH_ASSOC);
-			echo json_encode($this->formatOutput($match));
-
-		} catch(\PDOException $e) {
-			throw \pChart\pException::ImageMapSQLiteException($e->getMessage());
-		}
+		$match = $this->SQLite->execute("SELECT * FROM ".$this->DbTable.";", [], $expects_return = TRUE, $select_one = FALSE);
+		echo json_encode($this->formatOutput($match));
 	
 		/* When the image map is returned to the client, the script ends */
 		exit();

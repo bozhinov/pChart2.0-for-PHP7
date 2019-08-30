@@ -4,9 +4,9 @@ pCacheSqlite - Cache images to SQLite database
 
 Requires SQLite PDO ext
 
-Version     : 0.1-dev
+Version     : 0.2-dev
 Made by     : Momchil Bozhinov
-Last Update : 01/01/2018
+Last Update : 30/08/2019
 
 This file can be distributed under the license you can find at:
 http://www.pchart.net/license
@@ -16,10 +16,11 @@ You can find the whole class documentation on the pChart web site.
 
 namespace pChart\pCache;
 
+use pChart\pSQLite;
+
 class pCacheSQLite implements pCacheInterface
 {
-	var $DbSQLite;
-	var $DbPath;
+	var $SQLite;
 	var $Id;
 
 	/* Class creator */
@@ -40,34 +41,13 @@ class pCacheSQLite implements pCacheInterface
 		</Files>
 		*/
 
-		$this->DbPath = isset($Settings["DbPath"]) ? $Settings["DbPath"] : "sql.cache.db";
-		$this->DbPath = $CacheFolder . "/" . $this->DbPath;
-
-		$this->DbSQLite = new \PDO("sqlite:".$this->DbPath);
-		$this->DbSQLite->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+		$DbPath = isset($Settings["DbPath"]) ? $Settings["DbPath"] : "sql.cache.db";
 
 		/* Create the cache Db */
-		if (!file_exists($this->DbPath)){
-			$this->InitDb();
-		} else {
-			if (filesize($this->DbPath) < 10000){ # freshly created is 12288
-				$this->InitDb();
-			}
-		}
+		$this->SQLite = new pSQLite($CacheFolder . "/" . $DbPath);
+		$this->SQLite->execute("CREATE TABLE IF NOT EXISTS cache (Id TEXT,time INTEGER,hits INTEGER,data BLOB,PRIMARY KEY(Id));");
 	}
 
-	/* Create Db schema */
-	function InitDb()
-	{
-		try{
-			$q = $this->DbSQLite->prepare("CREATE TABLE cache (Id TEXT,time INTEGER,hits INTEGER,data BLOB,PRIMARY KEY(Id));");
-			$q->execute();
-		} catch(\PDOException $e) {
-			throw \pChart\pException::SQLiteException($e->getMessage());
-		}
-
-	}
-	
 	/* For when you need to work with multiple cached images */
 	function changeID(string $uniqueId)
 	{
@@ -77,10 +57,7 @@ class pCacheSQLite implements pCacheInterface
 	/* Flush the cache contents */
 	function flush()
 	{
-		if (file_exists($this->DbPath)){
-			unlink($this->DbPath);
-		}
-		$this->InitDb();
+		$this->SQLite->flush("cache");
 	}
 
 	/* Write the generated picture to the cache */
@@ -106,17 +83,15 @@ class pCacheSQLite implements pCacheInterface
 		fclose($TempHandle);
 
 		$time = time();
-		/* Save picture to cache */
-		try{
-			$q = $this->DbSQLite->prepare("INSERT INTO cache VALUES(:Id, :time, 0, :data);");
-			$q->bindParam(':Id',	$this->Id, \PDO::PARAM_STR);
-			$q->bindParam(':time', 	$time, \PDO::PARAM_INT);
-			$q->bindParam(':data', 	$Raw, \PDO::PARAM_STR);
-			$q->execute();
-		} catch(\PDOException $e) {
-			throw \pChart\pException::SQLiteException($e->getMessage());
-		}
 
+		/* Save picture to cache */
+		$params = [
+			"Id" => [$this->Id, 1],
+			"time" => [$time, 0],
+			"data" => [$Raw, 1]
+		];
+
+		$this->SQLite->execute("INSERT INTO cache VALUES(:%s, :%s, 0, :%s);", $params);
 	}
 
 	/* Remove object older than the specified TS */
@@ -146,47 +121,31 @@ class pCacheSQLite implements pCacheInterface
 			}
 		}
 
-		try{
-			if ($ID != "") {
-				$statement = "DELETE FROM cache WHERE Id= :Id;";
-			} else {
-				$statement = "DELETE FROM cache WHERE time < :from;";
-			}
-			$q = $this->DbSQLite->prepare($statement);
-			$q->bindParam(':Id', $ID, \PDO::PARAM_STR);
-			$q->bindParam(':from', $TS, \PDO::PARAM_INT);
-			$q->execute();
-
-		} catch(\PDOException $e) {
-			throw pException::SQLiteException($e->getMessage());
+		if ($ID != "") {
+			$statement = "DELETE FROM cache WHERE Id= :%s;";
+			$params = ["Id" => [$ID, 1]];
+		} else {
+			$statement = "DELETE FROM cache WHERE time < :%s;";
+			$params = ["from" => [$TS, 0]];
 		}
 
+		$this->SQLite->execute($statement, $params);
 	}
 
 	function isInCache(bool $Verbose = FALSE, bool $UpdateHitsCount = FALSE)
 	{
-		try{
-			$q = $this->DbSQLite->prepare("SELECT Id,hits,data FROM cache WHERE Id= :Id;");
-			$q->bindParam(':Id', $this->Id, \PDO::PARAM_STR);
-			$q->execute();
-			$match = $q->fetch(\PDO::FETCH_ASSOC);
-			if ($match != FALSE){
-				if ($UpdateHitsCount) {
-					$match["hits"]++;
-					$q = $this->DbSQLite->prepare("UPDATE cache SET hits= :hits WHERE Id= :Id;");
-					$q->bindParam(':Id',   $this->Id, \PDO::PARAM_STR);
-					$q->bindParam(':hits', $match["hits"], \PDO::PARAM_INT);
-					$q->execute();
-				}
-				return ($Verbose) ? $match["data"] : TRUE;
-			} else {
-				return FALSE;
-			}
 
-		} catch(\PDOException $e) {
-			throw \pChart\pException::SQLiteException($e->getMessage());
+		$match = $this->SQLite->execute("SELECT Id,hits,data FROM cache WHERE Id= :%s;", ["Id" => [$this->Id,1]], $expects_return = TRUE, $select_one = TRUE);
+
+		if ($match != FALSE){
+			if ($UpdateHitsCount) {
+				$match["hits"]++;
+				$this->SQLite->execute("UPDATE cache SET hits= :%s WHERE Id= :%s;", ["Id" => [$this->Id,1], "hits" => [$match["hits"],0]]);
+			}
+			return ($Verbose) ? $match["data"] : TRUE;
+		} else {
+			return FALSE;
 		}
-		
 	}
 
 	/* Automatic output method based on the calling interface */
@@ -223,7 +182,6 @@ class pCacheSQLite implements pCacheInterface
 			/* Flush the picture to a file */
 			file_put_contents($Destination, $Picture);
 		}
-
 	}
 
 	function getFromCache()
@@ -238,8 +196,8 @@ class pCacheSQLite implements pCacheInterface
 			/* Return back the raw picture data */
 			return $CacheInfo;
 		}
-
 	}
+
 }
 
 ?>
