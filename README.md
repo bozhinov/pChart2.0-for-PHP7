@@ -29,10 +29,10 @@ Major changes:
  pChart 2.3
 ===================
  - Introduce pPyramid (in progress)
- - Introduce pQRCode (maybe)
- - More cleanup
+ - Introduce pQRCode /* Check my PHP-QRCode-fork repo */
  - Performace boost
- - Separated pBarcode
+ - pBarcode to own dir
+ - Extracted SQLite code
  - No more config files (palettes & barcode db)
  
  
