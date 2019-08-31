@@ -28,6 +28,7 @@ Major changes:
  
  pChart 2.3
 ===================
+ - PHP 7.2+ required
  - Introduce pPyramid (in progress)
  - Introduce pQRCode /* Check my PHP-QRCode-fork repo */
  - Performace boost
