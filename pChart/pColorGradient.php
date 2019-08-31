@@ -37,7 +37,6 @@ class pColorGradient
 		$this->OffsetG = ($this->EndColor->G - $this->StartColor->G) / $Segments;
 		$this->OffsetB = ($this->EndColor->B - $this->StartColor->B) / $Segments;
 		$this->OffsetAlpha = ($this->EndColor->Alpha - $this->StartColor->Alpha) / $Segments;
-
 	}
 
 	/* pDraw uses default for $j */

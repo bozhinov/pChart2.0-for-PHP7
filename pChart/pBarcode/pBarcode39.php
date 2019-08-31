@@ -22,7 +22,7 @@ class pBarcode39 extends pBarcode
 	var $MOD43;
 
 	/* Class creator */
-	function __construct($pChartObject, bool $EnableMOD43 = FALSE)
+	function __construct(\pChart\pDraw $pChartObject, bool $EnableMOD43 = FALSE)
 	{
 		parent::__construct($pChartObject);
 

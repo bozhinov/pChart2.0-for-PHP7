@@ -20,8 +20,7 @@ class pBarcode128 extends pBarcode
 	var $Codes = [];
 	var $Reverse = [];
 
-	/* Class creator */
-	function __construct($pChartObject)
+	function __construct(\pChart\pDraw $pChartObject)
 	{
 		parent::__construct($pChartObject);
 

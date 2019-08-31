@@ -95,7 +95,6 @@ class pCacheFile implements pCacheInterface
 
 		/* Save the picture in the solid database file */
 		file_put_contents($this->CacheDB, $Raw, FILE_APPEND | LOCK_EX);
-
 	}
 
 	/* Remove object older than the specified TS */
@@ -164,7 +163,7 @@ class pCacheFile implements pCacheInterface
 					$Hits = intval($Hits);
 					$Hits++;
 					$Hits = strval($Hits);
-					
+
 					if (strlen($Hits) < 7) {
 						$Hits .= str_repeat(" ", 7 - strlen($Hits));
 					}
@@ -174,7 +173,7 @@ class pCacheFile implements pCacheInterface
 				$ret = ($Verbose) ? ["DBPos" => $DBPos,"PicSize" => $PicSize,"GeneratedTS" => $GeneratedTS,"Hits" => $Hits] : TRUE;
 				break;
 			}
-			
+
 			$i++;
 		}
 
