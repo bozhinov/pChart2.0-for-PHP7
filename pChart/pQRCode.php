@@ -27,11 +27,10 @@ class pQRCode
 	private $myPicture;
 	private $QRCode;
 
-	/* Class creator */
 	function __construct($pChartObject)
 	{
 		if (!($pChartObject instanceof pDraw)){
-			die("pBubble needs a pDraw object. Please check the examples.");
+			die("pQRCode needs a pDraw object. Please check the examples.");
 		}
 
 		$this->myPicture = $pChartObject;
@@ -44,7 +43,7 @@ class pQRCode
 
 		return $this;
 	}
-	
+
 	/* $text - Text to encode, $X & $Y - start position on the grid */
 	function draw(string $text, $X, $Y)
 	{
