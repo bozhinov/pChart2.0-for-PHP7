@@ -1,6 +1,6 @@
 {
   "name": "bozhinov/pChart2.0-for-PHP7",
-  "description": "pChart 2.2 compatible with PHP 7",
+  "description": "pChart 2.3 compatible with PHP 7",
   "keywords": [
     "php",
     "charts",
@@ -34,7 +34,7 @@
   "prefer-stable": true,
  
   "require": {
-    "php": ">=7.0",
+    "php": ">=7.2",
     "ext-gd": "*"
   }
 
