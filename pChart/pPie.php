@@ -29,13 +29,8 @@ class pPie
 	var $LabelPos = [];
 	var $myPicture;
 
-	/* Class creator */
-	function __construct($pChartObject)
+	function __construct(\pChart\pDraw $pChartObject)
 	{
-		if (!($pChartObject instanceof pDraw)){
-			die("pPie needs a pDraw object. Please check the examples.");
-		}
-
 		$this->myPicture = $pChartObject;
 	}
 
@@ -66,7 +61,7 @@ class pPie
 
 		/* Data Processing */
 		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->getPieParams();
-		
+
 		/* Compute the wasted angular space between series */
 		$WastedAngular = (count($Values) == 1) ? 0 : count($Values) * $DataGapAngle;
 
@@ -120,7 +115,7 @@ class pPie
 				$Yc = sin(deg2rad($i - 90)) * $Radius + $Y;
 
 				if ($SecondPass){
-					
+
 					if ($i < 90) {
 						$Yc++;
 					}
@@ -152,14 +147,14 @@ class pPie
 				$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
 				$Yc = sin(deg2rad($Angle - 90)) * $Radius + $Y;
 				$Label = $AbscissaData[$Key];
-				
+
 				if ($LabelStacked) {
 					$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Y, $Radius);
 				} else {
 					$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, FALSE);
 				}
 			}
-	
+
 			$Offset = $i + $DataGapAngle;
 		}
 
@@ -850,7 +845,7 @@ class pPie
 
 				$Xc = cos(deg2rad($i - 90)) * $OuterRadius + $X;
 				$Yc = sin(deg2rad($i - 90)) * $OuterRadius + $Y;
-				
+
 				if (!isset($Boundaries[0]["X1"])) {
 					$Boundaries[0]["X1"] = $Xc;
 					$Boundaries[0]["Y1"] = $Yc;
@@ -951,7 +946,7 @@ class pPie
 				$EndAngle = $Offset + ($Value * $ScaleFactor);
 				($EndAngle > 360) AND $EndAngle = 360;
 				$Angle = $Offset + ($Value * $ScaleFactor) / 2;
-				
+
 				if ($ValuePosition == PIE_VALUE_OUTSIDE) {
 					$Xc = cos(deg2rad($Angle - 90)) * ($OuterRadius + $ValuePadding) + $X;
 					$Yc = sin(deg2rad($Angle - 90)) * ($OuterRadius + $ValuePadding) + $Y;

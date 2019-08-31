@@ -24,16 +24,10 @@ define("RADAR_LABELS_HORIZONTAL", 690022);
 /* pRadar class definition */
 class pRadar
 {
-	/* Class creator */
 	var $myPicture;
 
-	/* Class creator */
-	function __construct($pChartObject)
+	function __construct(\pChart\pDraw $pChartObject)
 	{
-		if (!($pChartObject instanceof pDraw)){
-			die("pRadar needs a pDraw object. Please check the examples.");
-		}
-
 		$this->myPicture = $pChartObject;
 	}
 

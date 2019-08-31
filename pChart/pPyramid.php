@@ -17,16 +17,10 @@ namespace pChart;
 /* pRadar class definition */
 class pPyramid
 {
-	/* Class creator */
 	var $myPicture;
-	
-	/* Class creator */
-	function __construct($pChartObject)
+
+	function __construct(\pChart\pDraw $pChartObject)
 	{
-		if (!($pChartObject instanceof pDraw)){
-			die("pRadar needs a pDraw object. Please check the examples.");
-		}
-		
 		$this->myPicture = $pChartObject;
 	}
 
@@ -35,17 +29,17 @@ class pPyramid
 		$Color =  isset($Format["Color"])  ? $Format["Color"]  : FALSE;
 		$Offset = isset($Format["Offset"]) ? $Format["Offset"] : 5;
 		$NoFill = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
-		
+
 		$Settings = [
 			"Color" => $Color,
 			"NoFill" => $NoFill
 		];
-		
+
 		# Account for the combined heights of the offsets
 		$h = ($Height - (($NumSegments - 1) * $Offset)) / $NumSegments;
 
 		for($i=0; $i<$NumSegments; $i++){
-			
+
 			if ($Color == FALSE){
 				if (isset($this->myPicture->myData->Palette[$i])){
 					$Settings["Color"] = $this->myPicture->myData->Palette[$i]->newOne();
@@ -53,7 +47,7 @@ class pPyramid
 					$Settings["Color"] = new pColor();
 				}
 			}
-			
+
 			if ($i != 0){
 				$Base -= (2 * $h);
 			}
@@ -61,7 +55,7 @@ class pPyramid
 			$Xi = $X + ($h * $i);
 			$Yi = $Y - ($h * $i);
 			$Oi = ($Offset * $i);
-			
+
 			$Points = [
 					$Xi + $Oi, $Yi - $Oi,
 					$Xi - $Oi + $Base, $Yi - $Oi,
@@ -71,30 +65,30 @@ class pPyramid
 				];
 
 			#print_r($Points);
-			
+
 			$this->myPicture->drawPolygon($Points, $Settings);
 		}
 
 	}
-	
+
 	function drawReversePyramid($X, $Y, $Base, $Height, $NumSegments = 4, array $Format = []){
 
 		$Color =  isset($Format["Color"])  ? $Format["Color"]  : FALSE;
 		$Offset = isset($Format["Offset"]) ? $Format["Offset"] : 5;
 		$NoFill = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
-		
+
 		$Settings = [
 			"Color" => $Color,
 			"NoFill" => $NoFill
 		];
-		
+
 		# Account for the combined heights of the offsets
 		$h = ($Height - (($NumSegments - 1) * $Offset)) / $NumSegments;
-		
+
 		$Y -= $Height;
 
 		for($i=0; $i<$NumSegments; $i++){
-			
+
 			if ($Color == FALSE){
 				if (isset($this->myPicture->myData->Palette[$i])){
 					$Settings["Color"] = $this->myPicture->myData->Palette[$i]->newOne();
@@ -102,7 +96,7 @@ class pPyramid
 					$Settings["Color"] = new pColor();
 				}
 			}
-			
+
 			if ($i != 0){
 				$Base -= (2 * $h);
 			}
@@ -110,7 +104,7 @@ class pPyramid
 			$Xi = $X + ($h * $i);
 			$Yi = $Y + ($h * $i);
 			$Oi = ($Offset * $i);
-			
+
 			$Points = [
 					$Xi + $Oi, $Yi + $Oi,
 					$Xi - $Oi + $Base, $Yi + $Oi,
@@ -119,7 +113,7 @@ class pPyramid
 					$Xi + $Oi, $Yi + $Oi
 				];
 
-			#print_r($Points);	
+			#print_r($Points);
 			$this->myPicture->drawPolygon($Points, $Settings);
 		}
 

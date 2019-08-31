@@ -175,7 +175,7 @@ class pDraw
 		*/
 
 		$this->Picture = imagecreatetruecolor($XSize, $YSize);
-		
+
 		$this->TransparentBackground = $TransparentBackground;
 		if ($TransparentBackground) {
 			imagealphablending($this->Picture, FALSE); #  TRUE by default on True color images
@@ -201,7 +201,7 @@ class pDraw
 			imagedestroy($this->Picture);
 		}
 	}
-	
+
 	/* Destroy the image and start over. UNUSED */
 	function resize(int $XSize, int $YSize)
 	{
@@ -307,7 +307,7 @@ class pDraw
 		($X2 - $X1 < $Radius) AND $Radius = floor(($X2 - $X1) / 2);
 		($Y2 - $Y1 < $Radius) AND $Radius = floor(($Y2 - $Y1) / 2);
 		$Options = ["Color" => $Color,"NoBorder" => TRUE];
-		
+
 		if ($Radius <= 0) {
 			$this->drawRectangle($X1, $Y1, $X2, $Y2, $Options);
 			return;
@@ -365,7 +365,7 @@ class pDraw
 		$Y2 = floor($Y2);
 		$X1 = floor($X1);
 		$X2 = floor($X2);
-		
+
 		list($X1, $Y1, $X2, $Y2) = $this->fixBoxCoordinates($X1, $Y1, $X2, $Y2);
 		if ($X2 - $X1 < $Radius * 2) {
 			$Radius = floor(($X2 - $X1) / 4);
@@ -686,9 +686,9 @@ class pDraw
 				3 * $u * $u * (1 - $u),
 				pow($u,3)
 			];
-			
+
 			$Q[$ID] = ["X" => 0, "Y" => 0];
-			
+
 			for ($j = 0; $j <= 3; $j++) {
 				$Q[$ID]["X"] += ($P[$j]["X"] * $C[$j]);
 				$Q[$ID]["Y"] += ($P[$j]["Y"] * $C[$j]);
@@ -750,7 +750,7 @@ class pDraw
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$Weight = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
 		$Mode = isset($Format["Mode"]) ? $Format["Mode"] : 1;
-		
+
 		# NULL == 0
 		# Keep it as some of the examples pass 0 for Ticks
 		# e.g. example.drawArrow.php
@@ -929,7 +929,7 @@ class pDraw
 		if ($this->Antialias) {
 			$this->drawCircle($X, $Y, $Radius, $Radius, ["Color" => $Color,"Ticks" => $Ticks, "Mask" => $Mask]);
 		}
-		
+
 		if (!is_null($BorderColor)) {
 			$this->drawCircle($X, $Y, $Radius, $Radius, ["Color" => $BorderColor,"Ticks" => $Ticks]);
 		}
@@ -1137,7 +1137,7 @@ class pDraw
 				if ($Alpha2 > $this->AntialiasQuality) {
 					$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaSet($Alpha2));
 				}
-				
+
 				$Alpha3 = (1 - $Xleaf) * $Yleaf * $Alpha;
 				if ($Alpha3 > $this->AntialiasQuality) {
 					$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaSet($Alpha3));
@@ -1458,7 +1458,7 @@ class pDraw
 				$this->drawFilledRectangle($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, ["Color" => $Color,"BorderColor" => $BorderColor]);
 			}
 			$this->Shadow = $RestoreShadow;
-			
+
 			if ($ShowLabel){
 				switch ($LabelPos) {
 					case LABEL_POS_LEFT:
@@ -1792,9 +1792,9 @@ class pDraw
 				} else {
 					throw pException::InvalidInput("Manual scale boundaries not set.");
 				}
-				
+
 			} elseif ($Mode == SCALE_MODE_ADDALL || $Mode == SCALE_MODE_ADDALL_START0) {
-				
+
 				$Series = [];
 				foreach($Data["Series"] as $SerieID => $SerieParameter) {
 					if ($SerieParameter["Axis"] == $AxisID && $SerieParameter["isDrawable"] && $Data["Abscissa"] != $SerieID) {
@@ -2583,7 +2583,7 @@ class pDraw
 	function processScale($XMin, $XMax, $MaxDivs, array $Factors, $AxisID)
 	{
 		$Data = $this->myData->getData();
-		
+
 		$ScaleHeight = abs(ceil($XMax) - floor($XMin));
 		$Format = (isset($Data["Axis"][$AxisID]["Format"])) ?  $Data["Axis"][$AxisID]["Format"] : NULL;
 		$Mode = (isset($Data["Axis"][$AxisID]["Display"])) ? $Data["Axis"][$AxisID]["Display"] : AXIS_FORMAT_DEFAULT;
@@ -2724,7 +2724,7 @@ class pDraw
 				}
 				return;
 			}
-			
+
 			if (is_null($Caption)) {
 				if (isset($Data["Abscissa"])) {
 					$Caption = (isset($Data["Series"][$Data["Abscissa"]]["Data"][$Value])) ? $Data["Series"][$Data["Abscissa"]]["Data"][$Value] : $Value;
@@ -2783,7 +2783,7 @@ class pDraw
 					}
 				}
 			}
-		
+
 		} # foreach
 
 	}
@@ -2974,7 +2974,7 @@ class pDraw
 					}
 				}
 			}
-		
+
 		} # foreach
 	}
 
@@ -3833,7 +3833,7 @@ class pDraw
 		$this->GraphAreaY1 = $Y1;
 		$this->GraphAreaX2 = $X2;
 		$this->GraphAreaY2 = $Y2;
-		
+
 		$this->GraphAreaXdiff = $X2 - $X1;
 		$this->GraphAreaYdiff = $Y2 - $Y1;
 	}
@@ -3977,3 +3977,5 @@ class pDraw
 	}
 
 }
+
+?>

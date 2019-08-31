@@ -18,16 +18,10 @@ namespace pChart;
 /* pScatter class definition */
 class pScatter
 {
-	/* Class creator */
 	var $myPicture;
 
-	/* Class creator */
-	function __construct($pChartObject)
+	function __construct(\pChart\pDraw $pChartObject)
 	{
-		if (!($pChartObject instanceof pDraw)){
-			die("pScatter needs a pDraw object. Please check the examples.");
-		}
-
 		$this->myPicture = $pChartObject;
 	}
 

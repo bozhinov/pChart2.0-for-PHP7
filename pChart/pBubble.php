@@ -21,16 +21,10 @@ define("BUBBLE_SHAPE_SQUARE", 700002);
 /* pBubble class definition */
 class pBubble
 {
-
 	var $myPicture;
 
-	/* Class creator */
-	function __construct($pChartObject)
+	function __construct(\pChart\pDraw $pChartObject)
 	{
-		if (!($pChartObject instanceof pDraw)){
-			die("pBubble needs a pDraw object. Please check the examples.");
-		}
-
 		$this->myPicture = $pChartObject;
 	}
 

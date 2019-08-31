@@ -10,8 +10,8 @@ Last Update : 01/01/2018
 
 namespace pChart;
 
-class pColorGradient {
-
+class pColorGradient
+{
 	var $StartColor;
 	var $EndColor;
 	var $ReturnColor;

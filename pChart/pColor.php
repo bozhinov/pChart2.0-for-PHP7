@@ -10,8 +10,8 @@ Last Update : 06/02/2019
 
 namespace pChart;
 
-class pColor {
-
+class pColor 
+{
 	var $R;
 	var $G;
 	var $B;
@@ -21,7 +21,7 @@ class pColor {
 	{
 		($R < 0)	AND $R = 0;
 		($R > 255)	AND $R = 255;
-		
+
 		switch (func_num_args()){
 			case 1:
 			case 2:

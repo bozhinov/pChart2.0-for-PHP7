@@ -21,7 +21,6 @@ class pData
 	private $Data;
 	private $Palette;
 
-	/* Class creator */
 	function __construct()
 	{
 		$this->Palette = [

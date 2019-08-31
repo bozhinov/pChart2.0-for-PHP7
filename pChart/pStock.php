@@ -20,13 +20,8 @@ class pStock
 {
 	var $myPicture;
 
-	/* Class creator */
-	function __construct($pChartObject)
+	function __construct(\pChart\pDraw $pChartObject)
 	{
-		if (!($pChartObject instanceof pDraw)){
-			die("pStock needs a pDraw object. Please check the examples.");
-		}
-
 		$this->myPicture = $pChartObject;
 	}
 

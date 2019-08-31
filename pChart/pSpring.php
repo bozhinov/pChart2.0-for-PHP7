@@ -41,8 +41,7 @@ class pSpring
 	var $AutoComputeFreeZone;
 	var $Labels;
 
-	/* Class creator */
-	function __construct($pChartObject)
+	function __construct(\pChart\pDraw $pChartObject)
 	{
 		/* Initialize data arrays */
 		$this->Data = [];
@@ -62,10 +61,6 @@ class pSpring
 		];
 		$this->Labels = ["Type" => LABEL_CLASSIC, "Color" => new pColor(0)];
 		$this->AutoComputeFreeZone = FALSE;
-
-		if (!($pChartObject instanceof pDraw)){
-			die("pSpring needs a pDraw object. Please check the examples.");
-		}
 
 		$this->myPicture = $pChartObject;
 	}

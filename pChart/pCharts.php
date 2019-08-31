@@ -35,17 +35,12 @@ namespace pChart;
 define("TEXT_POS_TOP", 690001);
 define("TEXT_POS_RIGHT", 690002);
 
-class pCharts {
-
+class pCharts
+{
 	var $myPicture;
 
-	/* Class creator */
-	function __construct($pChartObject)
+	function __construct(\pChart\pDraw $pChartObject)
 	{
-		if (!($pChartObject instanceof pDraw)){
-			die("Charts needs a pDraw object. Please check the examples.");
-		}
-
 		$this->myPicture = $pChartObject;
 	}
 
@@ -573,7 +568,7 @@ class pCharts {
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
 
 					foreach($PosArray as $Key => $Y) {
-						
+
 						if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
 							if ($Serie["Data"][$Key] > 0) {
 								$Align = TEXT_ALIGN_BOTTOMMIDDLE;
@@ -1115,9 +1110,9 @@ class pCharts {
 				}
 
 				$Data["Series"][$SerieName]["XOffset"] = 0;
-				
+
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
-				
+
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($YZero > $this->myPicture->GraphAreaY2 - 1) {
 						$YZero = $this->myPicture->GraphAreaY2 - 1;
@@ -1631,7 +1626,7 @@ class pCharts {
 					foreach($PosArray as $Key => $Height) {
 						if ($Height != VOID && $Serie["Data"][$Key] != 0) {
 							$Pos = ($Serie["Data"][$Key] > 0) ? "+" : "-";
-	
+
 							(!isset($LastY[$Key])) AND $LastY[$Key] = [];
 							(!isset($LastY[$Key][$Pos])) AND $LastY[$Key][$Pos] = $YZero;
 

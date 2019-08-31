@@ -27,12 +27,8 @@ class pQRCode
 	private $myPicture;
 	private $QRCode;
 
-	function __construct($pChartObject)
+	function __construct(\pChart\pDraw $pChartObject)
 	{
-		if (!($pChartObject instanceof pDraw)){
-			die("pQRCode needs a pDraw object. Please check the examples.");
-		}
-
 		$this->myPicture = $pChartObject;
 		$this->QRCode = new \QRCode\QRcode();
 	}

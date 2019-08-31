@@ -26,13 +26,9 @@ define("INDICATOR_VALUE_LABEL", 700022);
 class pIndicator
 {
 	var $myPicture;
-	/* Class creator */
-	function __construct($pChartObject)
-	{
-		if (!($pChartObject instanceof pDraw)){
-			die("pIndicator needs a pDraw object. Please check the examples.");
-		}
 
+	function __construct(\pChart\pDraw $pChartObject)
+	{
 		$this->myPicture = $pChartObject;
 	}
 
