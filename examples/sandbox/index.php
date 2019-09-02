@@ -169,7 +169,7 @@ function listfonts($selected)
    <td>&nbsp;&nbsp; Y position &nbsp;</td>
    <td><input type='text' id='g_title_y' value='25' style='width: 30px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td>&nbsp;&nbsp; Color &nbsp;</td>
-   <td><input type='text' class='jscolor' id='g_title_color' value='#FFFFFF' style='text-align: center; width: 60px;' onchange='applyColor("g_title_color","g_title_color_show");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
+   <td><input type='text' class='jscolor' id='g_title_color' value='#FFFFFF' style='text-align: center; width: 60px;' onchange='applyColor("g_title_color");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td><div id='g_title_color_show' style='margin-left: 4px; width: 10px; height: 10px; border: 1px solid #808080;'></div></td>
   </tr></table>
   <table><tr>
@@ -192,7 +192,7 @@ function listfonts($selected)
   <br/>
   <table><tr>
    <td width='55'>Color</td>
-   <td><input type='text' class='jscolor' id='g_solid_color' value='#AAB757' style='text-align: center; width: 60px;' onchange='applyColor("g_solid_color","g_solid_color_show");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
+   <td><input type='text' class='jscolor' id='g_solid_color' value='#AAB757' style='text-align: center; width: 60px;' onchange='applyColor("g_solid_color");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td width='40'><div id='g_solid_color_show' style='margin-left: 4px; width: 10px; height: 10px; border: 1px solid #808080;'></div></td>
    <td width='20'><input type='checkbox' id='g_solid_dashed' checked='checked' /></td>
    <td width='38'>Dashed</td>
@@ -209,10 +209,10 @@ function listfonts($selected)
   <br/>
   <table><tr>
    <td width='55'>Start color</td>
-   <td><input type='text' class='jscolor' id='g_gradient_start' value='#DBE78B' style='text-align: center; width: 60px;' onchange='applyColor("g_gradient_start","g_gradient_start_show");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
+   <td><input type='text' class='jscolor' id='g_gradient_start' value='#DBE78B' style='text-align: center; width: 60px;' onchange='applyColor("g_gradient_start");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td width='55'><div id='g_gradient_start_show' style='margin-left: 4px; width: 10px; height: 10px; border: 1px solid #808080;'></div></td>
    <td width='54'>End color &nbsp;</td>
-   <td><input type='text' class='jscolor' id='g_gradient_end' value='#018A44' style='text-align: center; width: 60px;' onchange='applyColor("g_gradient_end","g_gradient_end_show");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
+   <td><input type='text' class='jscolor' id='g_gradient_end' value='#018A44' style='text-align: center; width: 60px;' onchange='applyColor("g_gradient_end");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td><div id='g_gradient_end_show' style='margin-left: 4px; width: 10px; height: 10px; border: 1px solid #808080;'></div></td>
   </tr></table>
   <table><tr>
@@ -419,7 +419,7 @@ function listfonts($selected)
    <td>&nbsp; Size &nbsp;</td>
    <td><input type='text' id='s_font_size' value='6' style='width: 20px; text-align: center;' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td>&nbsp; Color &nbsp;</td>
-   <td><input type='text' id='s_font_color' class='jscolor' value='#000000' style='text-align: center; width: 50px;' onchange='applyColor("s_font_color","s_font_color_show");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
+   <td><input type='text' id='s_font_color' class='jscolor' value='#000000' style='text-align: center; width: 50px;' onchange='applyColor("s_font_color");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td><div id='s_font_color_show' style='margin-left: 4px; width: 10px; height: 10px; border: 1px solid #808080;'></div></td>
   </tr></table>
   <br/>
@@ -447,7 +447,7 @@ function listfonts($selected)
   <br/>
   <table><tr>
    <td width='70'>Grid color</td>
-   <td><input type='text' id='s_grid_color' class='jscolor' value='#FFFFFF' style='text-align: center; width: 60px; text-align: center' onchange='applyColor("s_grid_color","s_grid_color_show");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
+   <td><input type='text' id='s_grid_color' class='jscolor' value='#FFFFFF' style='text-align: center; width: 60px; text-align: center' onchange='applyColor("s_grid_color");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td><div id='s_grid_color_show' style='margin-left: 4px; width: 10px; height: 10px; border: 1px solid #808080;'></div></td>
    <td>&nbsp; Alpha</td>
    <td>&nbsp; <input type='text' id='s_grid_alpha' value='50' style='width: 30px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
@@ -468,14 +468,14 @@ function listfonts($selected)
   <br/>
   <table><tr>
    <td width='70'>Ticks color</td>
-   <td><input type='text' id='s_ticks_color' class='jscolor' value='#000000' style='text-align: center; width: 60px; text-align: center' onchange='applyColor("s_ticks_color","s_ticks_color_show");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
+   <td><input type='text' id='s_ticks_color' class='jscolor' value='#000000' style='text-align: center; width: 60px; text-align: center' onchange='applyColor("s_ticks_color");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td><div id='s_ticks_color_show' style='margin-left: 4px; width: 10px; height: 10px; border: 1px solid #808080;'></div></td>
    <td>&nbsp; Alpha</td>
    <td>&nbsp; <input type='text' id='s_ticks_alpha' value='50' style='width: 30px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
   </tr></table>
   <table><tr>
    <td width='70'>Sub ticks color</td>
-   <td><input type='text' id='s_subticks_color' class='jscolor' value='#FF0000' style='text-align: center; width: 60px; text-align: center' onchange='applyColor("s_subticks_color","s_subticks_color_show");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
+   <td><input type='text' id='s_subticks_color' class='jscolor' value='#FF0000' style='text-align: center; width: 60px; text-align: center' onchange='applyColor("s_subticks_color");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td><div id='s_subticks_color_show' style='margin-left: 4px; width: 10px; height: 10px; border: 1px solid #808080;'></div></td>
    <td>&nbsp; Alpha</td>
    <td>&nbsp; <input type='text' id='s_subticks_alpha' value='50' style='width: 30px; text-align: center' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
@@ -507,7 +507,7 @@ function listfonts($selected)
 	</select>
 </td>
    <td>&nbsp;Break color</td>
-   <td>&nbsp;<input type='text' id='c_break_color' class='jscolor' value='#EA371A' style='text-align: center; width: 60px; text-align: center' onchange='applyColor("c_break_color","c_break_color_show");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
+   <td>&nbsp;<input type='text' id='c_break_color' class='jscolor' value='#EA371A' style='text-align: center; width: 60px; text-align: center' onchange='applyColor("c_break_color");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td><div id='c_break_color_show' style='margin-left: 4px; width: 10px; height: 10px; border: 1px solid #808080;'></div></td>
   </tr></table>
   <table><tr>
@@ -583,7 +583,7 @@ function listfonts($selected)
    <td>&nbsp; Size &nbsp;</td>
    <td><input type='text' id='l_font_size' value='6' style='width: 20px; text-align: center;' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td>&nbsp; Color &nbsp;</td>
-   <td><input type='text' id='l_font_color' class='jscolor' value='#000000' style='text-align: center; width: 50px;' onchange='applyColor("l_font_color","l_font_color_show");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
+   <td><input type='text' id='l_font_color' class='jscolor' value='#000000' style='text-align: center; width: 50px;' onchange='applyColor("l_font_color");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td><div id='l_font_color_show' style='margin-left: 4px; width: 10px; height: 10px; border: 1px solid #808080;'></div></td>
   </tr></table>
   <table><tr>
@@ -638,7 +638,7 @@ function listfonts($selected)
   </tr></table>
   <table><tr>
    <td width='50'>Color</td>
-   <td><input type='text' id='t_color' class='jscolor' value='#000000' style='text-align: center; width: 50px;' onchange='applyColor("t_color","t_color_show");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
+   <td><input type='text' id='t_color' class='jscolor' value='#000000' style='text-align: center; width: 50px;' onchange='applyColor("t_color");' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
    <td><div id='t_color_show' style='margin-left: 4px; width: 10px; height: 10px; border: 1px solid #808080;'></div></td>
    <td>&nbsp; Alpha &nbsp;</td>
    <td><input type='text' id='t_alpha' value='50' style='width: 20px; text-align: center;' onmouseover='setFocus(this,true);' onmouseout='setFocus(this,false);' /></td>
@@ -701,20 +701,20 @@ function listfonts($selected)
  </td>
  </tr></table>
 <script type="text/javascript">
- CurrentDiv = 1;
- URL        = "";
- Automatic  = true;
+	CurrentDiv = 1;
+	URL        = "";
+	Automatic  = true;
 
- /* Initial layout */
- toggleDIV(1);
- randomize();
- setDefaultAbsissa();
- checkEnabledAxis();
- toggleSubTicks();
- toggleAutoMargins();
- checkChartSettings();
- checkLegend();
- setColors();
+	/* Initial layout */
+	toggleDIV(1);
+	randomize();
+	setDefaultAbsissa();
+	checkEnabledAxis();
+	toggleSubTicks();
+	toggleAutoMargins();
+	checkChartSettings();
+	checkLegend();
+	setColors();
 </script>
 </body>
 </html>
