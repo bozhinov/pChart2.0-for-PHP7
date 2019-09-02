@@ -150,6 +150,51 @@ function saveScale()
 	push("script/session.php?" + GET.slice(0, -1), 3);
 }
 
+function saveChart()
+{
+	$("result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration (Chart)");
+
+	// checkboxes - c_display_values, c_break, c_border_enabled, c_around_zero1, c_forced_transparency, c_around_zero2	
+	// radios - c_bar_classic, c_bar_rounded, c_bar_gradient
+	// text - c_break_color, c_plot_size, c_border_size, c_transparency
+	// selects - c_family
+
+	GET = input4GET('c_'); 
+	GET += selected4GET("c_");
+
+	push("script/session.php?" + GET.slice(0, -1), 4);
+}
+
+function saveLegend()
+{
+	$("result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration (Legend and Thresholds)");
+
+	// checkboxes - l_enabled, t_enabled, t_ticks, t_box, t_caption_enabled, sl_enabled, sl_shaded, sl_caption_enabled, sl_caption_line
+	// radios - c_bar_classic, c_bar_rounded, c_bar_gradient
+	// text - l_font_size, l_font_color, l_margin, l_alpha, l_box_size, t_value, t_color, t_alpha, t_caption
+	// selects - l_font, l_format, l_orientation, l_position, l_family, p_template
+
+	GET = input4GET(''); 
+	GET += selected4GET("l_");
+	GET += selected4GET("p_");
+
+	switch(true) {
+		case document.getElementById("t_axis0").checked:
+			t_axis = 0;
+			break;
+		case document.getElementById("t_axis1").checked:
+			t_axis = 1;
+			break;
+		case document.getElementById("t_axis2").checked:
+			t_axis = 2;
+			break;
+	}
+
+	GET += "t_axis=" + t_axis;
+
+	push("script/session.php?" + GET, 5);
+}
+
 function input4GET(key)
 {
 	var List = "";
@@ -189,51 +234,6 @@ function getSelected(ID)
 {
 	e = document.getElementById(ID);
 	return e.options[e.selectedIndex].value;
-}
-
-function saveChart()
-{
-	$("result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration (Chart)");
-
-	// checkboxes - c_display_values, c_break, c_border_enabled, c_around_zero1, c_forced_transparency, c_around_zero2	
-	// radios - c_bar_classic, c_bar_rounded, c_bar_gradient
-	// text - c_break_color, c_plot_size, c_border_size, c_transparency
-	// selects - c_family
-
-	GET = input4GET('c_'); 
-	GET += selected4GET("c_");
-
-	push("script/session.php?" + GET.slice(0, -1), 4);
-}
-
-function saveLegend()
-{
-	$("result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration (Legend and Thresholds)");
-
-	// checkboxes - l_enabled, t_enabled, t_ticks, t_box, t_caption_enabled, sl_enabled, sl_shaded, sl_caption_enabled, sl_caption_line
-	// radios - c_bar_classic, c_bar_rounded, c_bar_gradient
-	// text - l_font_size, l_font_color, l_margin, l_alpha, l_box_size, t_value, t_color, t_alpha, t_caption
-	// selects - l_font, l_format, l_orientation, l_position, l_family, p_template
-
-	GET = input4GET(''); 
-	GET += selected4GET("l_");
-	GET += selected4GET("p_");
-	
-	switch(true) {
-		case document.getElementById("t_axis0").checked:
-			t_axis = 0;
-			break;
-		case document.getElementById("t_axis1").checked:
-			t_axis = 1;
-			break;
-		case document.getElementById("t_axis2").checked:
-			t_axis = 2;
-			break;
-	}
-
-	GET += "t_axis=" + t_axis;
-
-	push("script/session.php?" + GET, 5);
 }
 
 function randomize()
@@ -382,50 +382,22 @@ function checkEnabledAxis()
 	if ( Serie1Enabled ) Series++;
 	if ( Serie2Enabled ) Series++;
 	if ( Serie3Enabled ) Series++;
-
-	if ( (Serie1Binding != 0 || !Serie1Enabled) && (Serie2Binding != 0 || !Serie2Enabled) && (Serie3Binding != 0 || !Serie3Enabled) )
-	{
-		disableItem("d_axis0_name");
-		disableItem("d_axis0_unit");
-		disableItem("d_axis0_position");
-		disableItem("d_axis0_format");
-	}
-	else
-	{
-		enableItem("d_axis0_name");
-		enableItem("d_axis0_unit");
-		enableItem("d_axis0_position");
-		enableItem("d_axis0_format");
-	}
-
-	if ( (Serie1Binding != 1 || !Serie1Enabled) && (Serie2Binding != 1 || !Serie2Enabled) && (Serie3Binding != 1 || !Serie3Enabled) )
-	{
-		disableItem("d_axis1_name");
-		disableItem("d_axis1_unit");
-		disableItem("d_axis1_position");
-		disableItem("d_axis1_format");
-	}
-	else
-	{
-		enableItem("d_axis1_name");
-		enableItem("d_axis1_unit");
-		enableItem("d_axis1_position");
-		enableItem("d_axis1_format");
-	}
-
-	if ( (Serie1Binding != 2 || !Serie1Enabled) && (Serie2Binding != 2 || !Serie2Enabled) && (Serie3Binding != 2 || !Serie3Enabled) )
-	{
-		disableItem("d_axis2_name");
-		disableItem("d_axis2_unit");
-		disableItem("d_axis2_position");
-		disableItem("d_axis2_format");
-	}
-	else
-	{
-		enableItem("d_axis2_name");
-		enableItem("d_axis2_unit");
-		enableItem("d_axis2_position");
-		enableItem("d_axis2_format");
+	
+	for( i = 0; i < 3; i++ ){
+		if ( (Serie1Binding != i || !Serie1Enabled) && (Serie2Binding != i || !Serie2Enabled) && (Serie3Binding != i || !Serie3Enabled) )
+		{
+			disableItem("d_axis" + i + "_name");
+			disableItem("d_axis" + i + "_unit");
+			disableItem("d_axis" + i + "_position");
+			disableItem("d_axis" + i + "_format");
+		}
+		else
+		{
+			enableItem("d_axis" + i + "_name");
+			enableItem("d_axis" + i + "_unit");
+			enableItem("d_axis" + i + "_position");
+			enableItem("d_axis" + i + "_format");
+		}
 	}
 
 	if ( Automatic )
@@ -433,19 +405,18 @@ function checkEnabledAxis()
 		sl_enabled  = document.getElementById("sl_enabled").checked;
 		g_width     = document.getElementById("g_width").value;
 		g_height    = document.getElementById("g_height").value;
-		s_direction = document.getElementById("s_direction").options[document.getElementById("s_direction").selectedIndex].value;
 
 		leftSeries = 0;
 		rightSeries = 0;
 
-		if ( !document.getElementById("d_axis0_position").disabled && getSelected("d_axis0_position") == "left" ) { leftSeries++; }
+		if ( !document.getElementById("d_axis0_position").disabled && getSelected("d_axis0_position") == "left"  ) { leftSeries++;  }
 		if ( !document.getElementById("d_axis0_position").disabled && getSelected("d_axis0_position") == "right" ) { rightSeries++; }
-		if ( !document.getElementById("d_axis1_position").disabled && getSelected("d_axis1_position") == "left" ) { leftSeries++; }
+		if ( !document.getElementById("d_axis1_position").disabled && getSelected("d_axis1_position") == "left"  ) { leftSeries++;  }
 		if ( !document.getElementById("d_axis1_position").disabled && getSelected("d_axis1_position") == "right" ) { rightSeries++; }
 		if ( !document.getElementById("d_axis2_position").disabled && getSelected("d_axis2_position") == "right" ) { rightSeries++; }
 		if ( !document.getElementById("d_axis2_position").disabled && getSelected("d_axis2_position") == "right" ) { rightSeries++; }
 
-		if ( s_direction == "SCALE_POS_LEFTRIGHT" )
+		if ( getSelected("s_direction") == "SCALE_POS_LEFTRIGHT" )
 		{
 			leftOffset = (leftSeries == 0 ? 20 : 10);
 			rightOffset = (rightSeries == 0 ? 25 : 15);

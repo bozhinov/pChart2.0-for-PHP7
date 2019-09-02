@@ -19,8 +19,8 @@ foreach($_GET as $Key => $Value){
 	$_SESSION[$Key] = $Value;
 }
 
-print_r($_SESSION);
+#print_r($_SESSION);
 
-usleep(200000);
+#usleep(200000);
 
 ?>
