@@ -99,7 +99,6 @@ function post(json_data, Action)
 			if (Action == "Code"){
 				$("#result_area").html("<pre name='code'>"+result+"</pre>");
 			} else if (Action == "Render") {
-				console.log("<img src=\"data:image/png;base64, "+result+"\" />");
 				$("#result_area").html("<img src=\"data:image/png;base64, "+result+"\" />");
 			}
 		},
@@ -124,46 +123,6 @@ function doLayout()
 	document.getElementById("g_title_x").value = g_width/2;
 
 	checkEnabledAxis();
-}
-
-/* Set or remove the focus */
-function setFocus(Object,Mode)
-{
-	Object.style.borderColor = (Mode == true ? "#808080" : "#D0D0D0");
-}
-
-function highlightDIV(ID)
-{
-	if ( ID == CurrentDiv ) { return; }
-	document.getElementById("menu"+ID).style.backgroundColor = "#F4F4F4";
-}
-
-function clearDIV(ID)
-{
-	if ( ID == CurrentDiv ) { return; }
-	document.getElementById("menu"+ID).style.backgroundColor = "#EAEAEA";
-}
-
-function toggleDIV(ID)
-{
-	/* reset the tab styles */
-	for (i=1;i<=6;i++){
-		if ( i != ID ) {
-			document.getElementById("menu"+i).style.backgroundColor = "#EAEAEA";
-			document.getElementById("menu"+i).style.borderColor = "#FEFEFE";
-		}
-	}
-
-	/* hide the currently displayed tab */
-	if ( CurrentDiv != ID ) {
-		document.getElementById("tab"+CurrentDiv).style.display = "none";
-	}
-
-	document.getElementById("tab"+ID).style.display = "block";
-
-	CurrentDiv = ID;
-	document.getElementById("menu"+ID).style.backgroundColor = "#D0D0D0";
-	document.getElementById("menu"+ID).style.borderColor = "#B0B0B0";
 }
 
 function getSelected(ID)
