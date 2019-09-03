@@ -12,8 +12,6 @@ This file can be distributed under the license you can find at :
 You can find the whole class documentation on the pChart web site.
 */
 
-Action = "Render";
-
 function toggleAuto()
 {
 	Automatic = (document.getElementById("g_autopos").checked ? true : false);
@@ -73,42 +71,22 @@ function toggleDIV(ID)
 
 function render()
 {
-	Action = "Render";
-	saveToSession();
+	saveToSession("Render");
 }
 
 function code()
 {
-	Action = "Code";
-	saveToSession();
+	saveToSession("Code");
 }
 
-function saveToSession()
+function saveToSession(Action)
 {
-	saveGeneral();
-}
-
-function saveGeneral()
-{
-	$("result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration (General)");
-
-	// checkboxes & radios  - g_border, g_aa, g_shadow, g_transparent, g_autopos, g_title_enabled, g_title_box, g_solid_enabled, g_solid_dashed, g_gradient_enabled
-	// text - g_width, g_height, g_title, g_title_x, g_title_y, g_title_color, g_title_font_size, g_solid_color, g_gradient_start, g_gradient_end, g_gradient_alpha
-	// selects - g_title_align, g_title_font, g_gradient_direction
+	$("#result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration");
 
 	GET = input4GET('g_'); 
 	GET += selected4GET("g_");
 
-	push("script/session.php?" + GET.slice(0, -1), 1);
-}
-
-function saveData()
-{
-	$("result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration (Data)");
-
-	// checkboxes & radios  - d_normalize_enabled
-	// text - d_serie1_enabled, d_serie2_enabled, d_serie3_enabled, d_absissa_enabled, d_serie1_name, d_serie2_name, d_serie3_name, d_axis0_name, d_axis1_name, d_axis2_name, d_axis0_unit, d_axis1_unit, d_axis2_unit
-	// selects - d_serie1_axis, d_serie2_axis, d_serie3_axis, d_axis0_position, d_axis1_position, d_axis2_position, d_axis0_format, d_axis1_format, d_axis2_format
+	push("script/session.php?" + GET.slice(0, -1));
 
 	GET = input4GET('d_');
 	GET += selected4GET("d_");
@@ -133,46 +111,17 @@ function saveData()
 
 	GET += "data0=" + data0 + "&data1=" + data1 + "&data2=" + data2 + "&absissa=" + absissa;
 
-	push("script/session.php?" + GET, 2);
-}
-
-function saveScale()
-{
-	$("result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration (Scale)");
-
-	// checkboxes & radios  - s_arrows_enabled, s_cycle_enabled, s_automargin_enabled, s_grid_x_enabled, s_grid_y_enabled, s_subticks_enabled	
-	// text - s_x, s_y, s_width, s_height, s_x_margin, s_y_margin, s_font_size, s_font_color, s_x_skip, s_x_label_rotation, s_grid_color, s_grid_alpha, s_ticks_color, s_ticks_alpha, s_subticks_color, s_subticks_alpha
-	// selects - s_direction, s_mode, s_font, s_x_labeling
+	push("script/session.php?" + GET);
 
 	GET = input4GET('s_'); 
 	GET += selected4GET('s_');
 
-	push("script/session.php?" + GET.slice(0, -1), 3);
-}
-
-function saveChart()
-{
-	$("result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration (Chart)");
-
-	// checkboxes - c_display_values, c_break, c_border_enabled, c_around_zero1, c_forced_transparency, c_around_zero2	
-	// radios - c_bar_classic, c_bar_rounded, c_bar_gradient
-	// text - c_break_color, c_plot_size, c_border_size, c_transparency
-	// selects - c_family
+	push("script/session.php?" + GET.slice(0, -1));
 
 	GET = input4GET('c_'); 
 	GET += selected4GET("c_");
 
-	push("script/session.php?" + GET.slice(0, -1), 4);
-}
-
-function saveLegend()
-{
-	$("result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration (Legend and Thresholds)");
-
-	// checkboxes - l_enabled, t_enabled, t_ticks, t_box, t_caption_enabled, sl_enabled, sl_shaded, sl_caption_enabled, sl_caption_line
-	// radios - c_bar_classic, c_bar_rounded, c_bar_gradient
-	// text - l_font_size, l_font_color, l_margin, l_alpha, l_box_size, t_value, t_color, t_alpha, t_caption
-	// selects - l_font, l_format, l_orientation, l_position, l_family, p_template
+	push("script/session.php?" + GET.slice(0, -1));
 
 	GET = input4GET(''); 
 	GET += selected4GET("l_");
@@ -192,7 +141,13 @@ function saveLegend()
 
 	GET += "t_axis=" + t_axis;
 
-	push("script/session.php?" + GET, 5);
+	push("script/session.php?" + GET);
+
+	if ( Action == "Render" ) {
+		$("#result_area").html("<center><img src='script/render.php' /></center>");
+	} else {
+		push("script/render.php?Mode=Source");		
+	}
 }
 
 function input4GET(key)
@@ -497,38 +452,17 @@ function setDefaultAbsissa()
 	document.getElementById("d_absissa_data7").value = "August";
 }
 
-function push(URL,nextStep)
+function push(URL)
 {
 	$.ajax({
 		type: "GET",
 		url: URL,
-		beforeSend: function(){
-			$("#result_area").html("<img src='graphix/wait.gif'><br />Working");
-		},
-		success: function (result) {
-			switch (nextStep) {
-				case 1:
-					saveData();
-					break;
-				case 2:
-					saveScale();
-					break;
-				case 3:
-					saveChart();
-					break;
-				case 4:
-					saveLegend();
-					break;
-				case 5:
-					if ( Action == "Render" ) {
-						$("#result_area").html("<center><img src='script/render.php' /></center>");
-					} else {
-						push("script/render.php?Mode=Source",6);
-					}
-					break;
-				case 6:
-					$("#result_area").html("<pre name='code'>"+result+"</pre>");
-			}
-		}
+		async: false,
+		success: function(result) {
+			$("#result_area").html("<pre name='code'>"+result+"</pre>");
+        },
+        error: function() {
+             $("#result_area").html("Push failed!");
+        }
 	});
 }
