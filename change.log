@@ -21,6 +21,7 @@
   o pColor(0) equals pColor(0,0,0,100)
   o pColor->toHTMLColor was renamed to pColor->toHex
   o Sandbox: code improvements
+  o Sandbox: replaced JSColor with drawrPalette
   o ImageMapper: map failed to load on first attempt
   o Using rad2deg in favour of manual calculation
   o pDraw->isChartLayoutStacked flag is now passed to writeLabel (example.drawLabel.stacked)
