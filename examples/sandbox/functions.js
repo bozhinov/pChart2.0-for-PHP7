@@ -4,7 +4,7 @@ functions.js - Sandbox JS
 Version     : 1.2.2
 Made by     : Jean-Damien POGOLOTTI
 Maintainedby: Momchil Bozhinov
-Last Update : 02/09/19
+Last Update : 03/09/19
 This file can be distributed under the license you can find at :
 
 			http://www.pchart.net/license
@@ -12,17 +12,12 @@ This file can be distributed under the license you can find at :
 You can find the whole class documentation on the pChart web site.
 */
 
-function render()
+function Do(Action)
 {
-	saveToSession("Render");
+	post(prepPOST(), Action);
 }
 
-function code()
-{
-	saveToSession("Code");
-}
-
-function saveToSession(Action)
+function prepPOST()
 {
 	$("#result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration");
 
@@ -60,13 +55,7 @@ function saveToSession(Action)
 
 	POST["t_axis"] = t_axis;
 
-	post("script/session.php", JSON.stringify(POST));
-
-	if ( Action == "Render" ) {
-		$("#result_area").html("<center><img src='script/render.php' /></center>");
-	} else {
-		post("script/render.php?Mode=Source", JSON.stringify([]));
-	}
+	return JSON.stringify(POST);
 }
 
 function input4POST()
@@ -100,16 +89,20 @@ function selected4POST()
 	return List;
 }
 
-function post(URL, json_data)
+function post(json_data, Action)
 {
 	$.ajax({
 		type: "POST",
-		data: {data : json_data},
-		url: URL,
-		async: false,
-		success: function(result) {
-			$("#result_area").html("<pre name='code'>"+result+"</pre>");
-        },
+		data: {Data : json_data, Action : Action},
+		url: "render.php",
+		success: function (result) {
+			if (Action == "Code"){
+				$("#result_area").html("<pre name='code'>"+result+"</pre>");
+			} else if (Action == "Render") {
+				console.log("<img src=\"data:image/png;base64, "+result+"\" />");
+				$("#result_area").html("<img src=\"data:image/png;base64, "+result+"\" />");
+			}
+		},
 		error: function() {
              $("#result_area").html("Post failed!");
         }

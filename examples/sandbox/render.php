@@ -2,10 +2,10 @@
 /*
  render.php - Sandbox rendering engine
 
- Version     : 2.1
+ Version     : 2.2
  Made by     : Jean-Damien POGOLOTTI
  Maintained by : Momchil Bozhinov
- Last Update : 02/09/19
+ Last Update : 03/09/19
 
  This file can be distributed under the license you can find at :
 
@@ -14,12 +14,12 @@
  You can find the whole class documentation on the pChart web site.
 */
 
-session_start();
-chdir("../../");
+chdir("../");
 
-$Mode = (!isset($_GET["Mode"])) ? "Render" : $_GET["Mode"];
+$WebConfig = json_decode($_REQUEST["Data"], TRUE);
+$Mode = $_REQUEST["Action"];
 
-extract($_SESSION);
+extract($WebConfig);
 
 $p_templates = [
 	"autumn" => [[185,106,154,100],	[216,137,184,100],	[156,192,137,100],	[216,243,201,100],	[253,232,215,100],	[255,255,255,100]],
@@ -640,7 +640,7 @@ if ($sl_enabled == "true"){
 }
 
 if ($Mode == "Render"){
-	$myPicture->stroke();
+	echo $myPicture->toBase64();
 } else {
 	echo $newLine.'$myPicture->stroke();'.$doubleLine;;
 }

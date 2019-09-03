@@ -2,10 +2,10 @@
 /*
 index.php - Sandbox web front end
 
-Version     : 1.2.1
+Version     : 1.2.2
 Made by     : Jean-Damien POGOLOTTI
 MaintainedBy: Momchil Bozhinov
-Last Update : 09/05/19
+Last Update : 03/09/19
 
 This file can be distributed under the license you can find at :
 
@@ -30,8 +30,8 @@ function listfonts($selected)
 	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 	<link rel='stylesheet' type='text/css' href='style.css'/>
 	<script src='../resources/jquery-3.4.1.min.js' type="text/javascript"></script>
-	<script type='text/javascript' src='includes/jscolor.js'></script>
-	<script type='text/javascript' src='includes/functions.js'></script>
+	<script type='text/javascript' src='jscolor.js'></script>
+	<script type='text/javascript' src='functions.js'></script>
 </head>
 <body>
  <table style=''><tr><td>
@@ -86,7 +86,7 @@ function listfonts($selected)
  <td>
   <table style='padding: 2px; background-color: #D0D0D0; border: 1px solid #D0D0D0;'><tr>
    <td class='topMenu'>
-    <div class='topMenu' id='menu6' onmouseover='highlightDIV(6);' onmouseout='clearDIV(6);' onclick='code();'>
+    <div class='topMenu' id='menu6' onmouseover='highlightDIV(6);' onmouseout='clearDIV(6);' onclick='Do("Code");'>
      <table style='padding: 2px; border: 1px solid #D0D0D0;'><tr>
       <td class='topMenu'><img src='graphix/cog.png' /></td>
       <td class='topMenu'>&nbsp;Show code&nbsp;</td>
@@ -95,7 +95,7 @@ function listfonts($selected)
    </td>
    <td class='topMenu' width='5'></td>
    <td class='topMenu'>
-    <div class='topMenu' id='menu7' onmouseover='highlightDIV(7);' onmouseout='clearDIV(7);' onclick='render();'>
+    <div class='topMenu' id='menu7' onmouseover='highlightDIV(7);' onmouseout='clearDIV(7);' onclick='Do("Render");'>
      <table style='padding: 2px; border: 1px solid #D0D0D0;'><tr>
       <td class='topMenu'><img src='graphix/accept.png' /></td>
       <td class='topMenu'>&nbsp;Render picture&nbsp;</td>
