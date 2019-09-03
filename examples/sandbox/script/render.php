@@ -83,17 +83,16 @@ if ($p_template != "default"){
 
 $Axis = [];
 
-if ($d_serie1_enabled == "true"){
-
-	$Values = json_decode($data0, true);
-	$myPicture->myData->addPoints($Values,"Serie1");
+if ($d_serie1_enabled == "true")
+{
+	$myPicture->myData->addPoints($data0,"Serie1");
 	$myPicture->myData->setSerieDescription("Serie1",$d_serie1_name);
 	$myPicture->myData->setSerieOnAxis("Serie1",$d_serie1_axis);
 	$Axis[$d_serie1_axis] = TRUE;
 
 	if ($Mode == "Source"){
 
-		echo '$myPicture->myData->addPoints(['.$helper->stringify($Values).'],"Serie1");'.$newLine;
+		echo '$myPicture->myData->addPoints(['.$helper->stringify($data0).'],"Serie1");'.$newLine;
 		echo '$myPicture->myData->setSerieDescription("Serie1","'.$d_serie1_name.'");'.$newLine;
 		echo '$myPicture->myData->setSerieOnAxis("Serie1",'.$d_serie1_axis.');'.$doubleLine;
 
@@ -101,17 +100,16 @@ if ($d_serie1_enabled == "true"){
 	}
 }
 
-if ($d_serie2_enabled == "true"){
-
-	$Values = json_decode($data1, true);
-	$myPicture->myData->addPoints($Values,"Serie2");
+if ($d_serie2_enabled == "true")
+{
+	$myPicture->myData->addPoints($data1,"Serie2");
 	$myPicture->myData->setSerieDescription("Serie2",$d_serie2_name);
 	$myPicture->myData->setSerieOnAxis("Serie2",$d_serie2_axis);
 	$Axis[$d_serie2_axis] = TRUE;
 
 	if ($Mode == "Source"){
 
-		echo '$myPicture->myData->addPoints(['.$helper->stringify($Values).'],"Serie2");'.$newLine;
+		echo '$myPicture->myData->addPoints(['.$helper->stringify($data1).'],"Serie2");'.$newLine;
 		echo '$myPicture->myData->setSerieDescription("Serie2","'.$d_serie2_name.'");'.$newLine;
 		echo '$myPicture->myData->setSerieOnAxis("Serie2",'.$d_serie2_axis.');'.$doubleLine;
 
@@ -119,17 +117,16 @@ if ($d_serie2_enabled == "true"){
 	}
 }
 
-if ($d_serie3_enabled == "true"){
-
-	$Values = json_decode($data2, true);
-	$myPicture->myData->addPoints($Values,"Serie3");
+if ($d_serie3_enabled == "true")
+{
+	$myPicture->myData->addPoints($data2,"Serie3");
 	$myPicture->myData->setSerieDescription("Serie3",$d_serie3_name);
 	$myPicture->myData->setSerieOnAxis("Serie3",$d_serie3_axis);
 	$Axis[$d_serie3_axis] = TRUE;
 
 	if ($Mode == "Source"){
 
-		echo '$myPicture->myData->addPoints(['.$helper->stringify($Values).'],"Serie3");'.$newLine;
+		echo '$myPicture->myData->addPoints(['.$helper->stringify($data2).'],"Serie3");'.$newLine;
 		echo '$myPicture->myData->setSerieDescription("Serie3","'.$d_serie3_name.'");'.$newLine;
 		echo '$myPicture->myData->setSerieOnAxis("Serie3",'.$d_serie3_axis.');'.$doubleLine;
 
@@ -139,13 +136,12 @@ if ($d_serie3_enabled == "true"){
 
 if ($d_absissa_enabled == "true")
 {
-	$Values = json_decode($absissa, true);
-	$myPicture->myData->addPoints($Values,"Absissa");
+	$myPicture->myData->addPoints($absissa,"Absissa");
 	$myPicture->myData->setAbscissa("Absissa");
 
 	if ($Mode == "Source"){
 
-		echo '$myPicture->myData->addPoints(['.$helper->stringify($Values).'],"Absissa");'.$newLine;
+		echo '$myPicture->myData->addPoints(['.$helper->stringify($absissa).'],"Absissa");'.$newLine;
 		echo '$myPicture->myData->setAbscissa("Absissa");'.$doubleLine;
 	}
 }

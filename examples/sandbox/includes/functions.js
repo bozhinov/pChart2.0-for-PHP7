@@ -12,6 +12,110 @@ This file can be distributed under the license you can find at :
 You can find the whole class documentation on the pChart web site.
 */
 
+function render()
+{
+	saveToSession("Render");
+}
+
+function code()
+{
+	saveToSession("Code");
+}
+
+function saveToSession(Action)
+{
+	$("#result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration");
+
+	POST = {...input4POST(), ...selected4POST()};
+
+	data0 = [];
+	data1 = [];
+	data2 = [];
+	absissa = [];
+
+	for(i=0;i<8;i++)
+	{
+		data0.push(document.getElementById("d_serie1_data"+i).value);
+		data1.push(document.getElementById("d_serie2_data"+i).value);
+		data2.push(document.getElementById("d_serie3_data"+i).value);
+		absissa.push(document.getElementById("d_absissa_data"+i).value);
+	}
+
+	POST["data0"] = data0;
+	POST["data1"] = data1;
+	POST["data2"] = data2;
+	POST["absissa"] = absissa;
+
+	switch(true) {
+		case document.getElementById("t_axis0").checked:
+			t_axis = 0;
+			break;
+		case document.getElementById("t_axis1").checked:
+			t_axis = 1;
+			break;
+		case document.getElementById("t_axis2").checked:
+			t_axis = 2;
+			break;
+	}
+
+	POST["t_axis"] = t_axis;
+
+	post("script/session.php", JSON.stringify(POST));
+
+	if ( Action == "Render" ) {
+		$("#result_area").html("<center><img src='script/render.php' /></center>");
+	} else {
+		post("script/render.php?Mode=Source", JSON.stringify([]));
+	}
+}
+
+function input4POST()
+{
+	var List = {};
+
+	let inputs = document.querySelectorAll('input');
+
+	inputs.forEach(function(element) {
+		if ((element.type == "checkbox") || (element.type == "radio")){
+			List[element.id] = element.checked;
+		} else if (element.type == "text"){
+			List[element.id] = element.value;
+		}
+	});
+
+	return List;
+}
+
+function selected4POST()
+{
+	var List = {};
+
+	let inputs = document.querySelectorAll('select');
+
+	inputs.forEach(function(element) {
+		var e = document.getElementById(element.id);
+		List[element.id] = e.options[e.selectedIndex].value;
+	});
+
+	return List;
+}
+
+function post(URL, json_data)
+{
+	$.ajax({
+		type: "POST",
+		data: {data : json_data},
+		url: URL,
+		async: false,
+		success: function(result) {
+			$("#result_area").html("<pre name='code'>"+result+"</pre>");
+        },
+		error: function() {
+             $("#result_area").html("Post failed!");
+        }
+	});
+}
+
 function toggleAuto()
 {
 	Automatic = (document.getElementById("g_autopos").checked ? true : false);
@@ -67,122 +171,6 @@ function toggleDIV(ID)
 	CurrentDiv = ID;
 	document.getElementById("menu"+ID).style.backgroundColor = "#D0D0D0";
 	document.getElementById("menu"+ID).style.borderColor = "#B0B0B0";
-}
-
-function render()
-{
-	saveToSession("Render");
-}
-
-function code()
-{
-	saveToSession("Code");
-}
-
-function saveToSession(Action)
-{
-	$("#result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration");
-
-	GET = input4GET('g_'); 
-	GET += selected4GET("g_");
-
-	push("script/session.php?" + GET.slice(0, -1));
-
-	GET = input4GET('d_');
-	GET += selected4GET("d_");
-
-	data0 = [];
-	data1 = [];
-	data2 = [];
-	absissa = [];
-
-	for(i=0;i<8;i++)
-	{
-		data0.push(document.getElementById("d_serie1_data"+i).value);
-		data1.push(document.getElementById("d_serie2_data"+i).value);
-		data2.push(document.getElementById("d_serie3_data"+i).value);
-		absissa.push(document.getElementById("d_absissa_data"+i).value);
-	}
-
-	data0 = JSON.stringify(data0);
-	data1 = JSON.stringify(data1);
-	data2 = JSON.stringify(data2);
-	absissa = JSON.stringify(absissa);
-
-	GET += "data0=" + data0 + "&data1=" + data1 + "&data2=" + data2 + "&absissa=" + absissa;
-
-	push("script/session.php?" + GET);
-
-	GET = input4GET('s_'); 
-	GET += selected4GET('s_');
-
-	push("script/session.php?" + GET.slice(0, -1));
-
-	GET = input4GET('c_'); 
-	GET += selected4GET("c_");
-
-	push("script/session.php?" + GET.slice(0, -1));
-
-	GET = input4GET(''); 
-	GET += selected4GET("l_");
-	GET += selected4GET("p_");
-
-	switch(true) {
-		case document.getElementById("t_axis0").checked:
-			t_axis = 0;
-			break;
-		case document.getElementById("t_axis1").checked:
-			t_axis = 1;
-			break;
-		case document.getElementById("t_axis2").checked:
-			t_axis = 2;
-			break;
-	}
-
-	GET += "t_axis=" + t_axis;
-
-	push("script/session.php?" + GET);
-
-	if ( Action == "Render" ) {
-		$("#result_area").html("<center><img src='script/render.php' /></center>");
-	} else {
-		push("script/render.php?Mode=Source");		
-	}
-}
-
-function input4GET(key)
-{
-	var List = "";
-
-	let inputs = document.querySelectorAll('input');
-
-	inputs.forEach(function(element) {
-		if ((element.id).startsWith(key)){
-			if ((element.type == "checkbox") || (element.type == "radio")){
-				List += element.id + "="+ element.checked+"&";
-			} else if (element.type == "text"){
-				List += element.id + "="+ element.value+"&";
-			}
-		}
-	});
-
-	return List;
-}
-
-function selected4GET(key)
-{
-	var List = "";
-
-	let inputs = document.querySelectorAll('select');
-
-	inputs.forEach(function(element) {
-		if ((element.id).startsWith(key)){
-			var e = document.getElementById(element.id);
-			List += element.id + "=" + e.options[e.selectedIndex].value+"&";
-		}
-	});
-
-	return List;
 }
 
 function getSelected(ID)
@@ -450,19 +438,4 @@ function setDefaultAbsissa()
 	document.getElementById("d_absissa_data5").value = "June";
 	document.getElementById("d_absissa_data6").value = "July";
 	document.getElementById("d_absissa_data7").value = "August";
-}
-
-function push(URL)
-{
-	$.ajax({
-		type: "GET",
-		url: URL,
-		async: false,
-		success: function(result) {
-			$("#result_area").html("<pre name='code'>"+result+"</pre>");
-        },
-        error: function() {
-             $("#result_area").html("Push failed!");
-        }
-	});
 }

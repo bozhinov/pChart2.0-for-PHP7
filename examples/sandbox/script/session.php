@@ -15,7 +15,9 @@
 
 session_start();
 
-foreach($_GET as $Key => $Value){
+$Config = json_decode($_REQUEST["data"], TRUE);
+
+foreach($Config as $Key => $Value){
 	$_SESSION[$Key] = $Value;
 }
 
