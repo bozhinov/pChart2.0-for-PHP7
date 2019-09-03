@@ -3960,17 +3960,17 @@ class pDraw
 		header('Content-type: image/png');
 		imagepng($this->Picture, NULL, $Compression, $Filters);
 	}
-	
+
 	function toBase64(int $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
 		$TempHandle = fopen("php://temp", "wb");
-		imagepng($this->Picture, $TempHandle);
+		imagepng($this->Picture, $TempHandle, $Compression, $Filters);
 		$stats = fstat($TempHandle);
 		rewind($TempHandle);
 		$Raw = fread($TempHandle, $stats['size']);
 		fclose($TempHandle);
 
-		return base64_encode($Raw);		
+		return base64_encode($Raw);
 	}
 
 	/*	Automatic output method based on the calling interface
