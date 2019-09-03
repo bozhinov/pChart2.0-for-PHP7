@@ -1,6 +1,7 @@
 body
 {
 	margin: 4px;
+	font-size: 14px;
 	text-align: left;
 	font-family: tahoma;
 	background-color: #FFFFFF;
@@ -12,8 +13,6 @@ table { margin: 0px; padding: 0px;}
 td { margin: 0px; padding: 0px; }
 
 tr { margin: 0px; padding: 0px; }
-
-td.topMenu   { font-family: tahoma; font-size: 11px; }
 
 div.roundedCorner {
 	font-size: 10px;
@@ -27,12 +26,13 @@ div.roundedCorner {
 	border: 1px solid #E0E0E0;
 }
 
-div.topMenu
+td.topMenu
 {
 	border: 1px solid #FEFEFE;
 	background-color: #EAEAEA;
 	cursor: hand;
 	cursor: pointer;
+	padding: 10px 5px 10px 5px;
 }
 
 div.color-show
@@ -51,7 +51,7 @@ table.defaultTable
 	border-bottom: 1px solid #E0E0E0;
 }
 
-table.topTable
+div.topTable > table
 {
 	padding: 2px;
 	border: 1px solid #D0D0D0;
@@ -59,7 +59,6 @@ table.topTable
 
 input
 {
-	font-family: tahoma;
 	font-size: 10px;
 }
 
@@ -100,7 +99,6 @@ input[type="submit"]
 
 pre
 {
-	font-family; tahoma;
 	font-size: 11px;
 	background-color: #FFFFFF;
 	border: 1px solid #E0E0E0;

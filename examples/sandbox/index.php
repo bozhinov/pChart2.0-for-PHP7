@@ -34,86 +34,45 @@ function listfonts($selected)
 	<script type='text/javascript' src='functions.js'></script>
 </head>
 <body>
- <table style=''>
- <tr><td>
-  <table class='topTable'><tr>
-   <td>
-    <div class='topMenu' id='menu1'>
-     <table class='topTable'><tr>
-      <td><img src='graphix/tab.png' /></td>
-      <td>&nbsp;General settings&nbsp;</td>
-     </tr>
-	 </table>
-    </div>
-   </td>
-   <td width='5'></td>
-   <td>
-    <div class='topMenu' id='menu2'>
-     <table class='topTable'><tr>
-      <td><img src='graphix/tab.png' /></td>
-      <td>&nbsp;Data&nbsp;</td>
-     </tr>
-	 </table>
-    </div>
-   </td>
-   <td width='5'></td>
-   <td>
-    <div class='topMenu' id='menu3'>
-     <table class='topTable'><tr>
-      <td><img src='graphix/tab.png' /></td>
-      <td>&nbsp;Scale&nbsp;</td>
-     </tr>
-	 </table>
-    </div>
-   </td>
-   <td width='5'></td>
-   <td>
-    <div class='topMenu' id='menu4'>
-     <table class='topTable'><tr>
-      <td><img src='graphix/tab.png' /></td>
-      <td>&nbsp;Chart&nbsp;</td>
-     </tr></table>
-    </div>
-   </td>
-   <td width='5'></td>
-   <td>
-    <div class='topMenu' id='menu5'>
-     <table class='topTable'><tr>
-      <td><img src='graphix/tab.png' /></td>
-      <td>&nbsp;Legend, thresholds &amp; Misc&nbsp;</td>
-     </tr></table>
-    </div>
-   </td>
-  </tr>
-  </table>
- </td>
- <td width='5'></td>
- <td>
-  <table class='topTable' style='background-color: #D0D0D0;'><tr>
-   <td>
-    <div class='topMenu' id='menu6' onclick='Do("Code");'>
-     <table class='topTable'><tr>
-      <td><img src='graphix/cog.png' /></td>
-      <td>&nbsp;Show code&nbsp;</td>
-     </tr>
-	 </table>
-    </div>
-   </td>
-   <td width='5'></td>
-   <td>
-    <div class='topMenu' id='menu7' onclick='Do("Render");'>
-     <table class='topTable'><tr>
-      <td><img src='graphix/accept.png' /></td>
-      <td>&nbsp;Render picture&nbsp;</td>
-     </tr></table>
-    </div>
-   </td>
-  </tr>
-</table>
- </td></tr>
- </table>
 
- <table><tr><td valign='top'>
+ <div class='topTable'>
+	<table style='background-color: #D0D0D0; display: inline-block;'>
+		<td class='topMenu' id='menu6' onclick='Do("Code");'>
+			<img src='graphix/cog.png' />
+			&nbsp;Show code&nbsp;
+		</td>
+		<td class='topMenu' id='menu7' onclick='Do("Render");'>
+			<img src='graphix/accept.png' />
+			&nbsp;Render picture&nbsp;
+		</td>
+	</table>
+
+	<table style="float: left;">
+		<td class='topMenu' id='menu1' >
+			<img src='graphix/tab.png' />
+			&nbsp;General settings&nbsp;
+		</td>
+		<td class='topMenu' id='menu2'>
+			<img src='graphix/tab.png' />
+			&nbsp;Data&nbsp;
+		</td>
+		<td class='topMenu' id='menu3'>
+			<img src='graphix/tab.png' />
+			&nbsp;Scale&nbsp;
+		</td>
+		<td class='topMenu' id='menu4'>
+			<img src='graphix/tab.png' />
+			&nbsp;Chart&nbsp;
+		</td>
+		<td class='topMenu' id='menu5'>
+			<img src='graphix/tab.png' />
+			&nbsp;Legend, thresholds &amp; Misc&nbsp;
+		</td>
+	</table>
+ </div>
+
+<table>
+<td valign='top'>
 
  <div class="roundedCorner" id='tab1'>
   <table class="defaultTable"><tr>
@@ -736,12 +695,12 @@ function listfonts($selected)
 </td>
   </tr></table>
  </div>
+ 
  </td>
  <td width='20'></td>
- <td width='730'>
-  <center><div id='result_area' style='font-size: 10px;'></div></center>
- </td>
- </tr></table>
+ <td width='730' style="align: center;"><div id='result_area'></div></td>
+ </table>
+ 
 <script type="text/javascript">	
 	$(document).ready(function() {
 
@@ -771,7 +730,7 @@ function listfonts($selected)
 			}
 		);
 		
-		$('div.topMenu').hover(
+		$('td.topMenu').hover(
 			function () {
 				$(this).css({"background-color": "#F4F4F4"});
 			},
@@ -785,7 +744,7 @@ function listfonts($selected)
 			}
 		);
 		
-		$('div.topMenu').on("click", function() {
+		$('td.topMenu').on("click", function() {
 			ID = ($(this)[0].id).replace("menu", "");
 			if (ID < 6){
 				for (i=1;i<6;i++){
