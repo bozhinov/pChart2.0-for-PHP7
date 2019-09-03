@@ -21,7 +21,13 @@ function prepPOST()
 {
 	$("#result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration");
 
-	POST = {...input4POST(), ...selected4POST()};
+	objs = [input4POST(), selected4POST()],
+	POST =  objs.reduce(function (r, o) {
+        Object.keys(o).forEach(function (k) {
+            r[k] = o[k];
+        });
+        return r;
+    }, {});
 
 	data0 = [];
 	data1 = [];
@@ -64,13 +70,13 @@ function input4POST()
 
 	let inputs = document.querySelectorAll('input');
 
-	inputs.forEach(function(element) {
-		if ((element.type == "checkbox") || (element.type == "radio")){
-			List[element.id] = element.checked;
-		} else if (element.type == "text"){
-			List[element.id] = element.value;
+	for (var i = 0; i < inputs.length; i++) {
+		if ((inputs[i].type == "checkbox") || (inputs[i].type == "radio")){
+			List[inputs[i].id] = inputs[i].checked;
+		} else if (inputs[i].type == "text"){
+			List[inputs[i].id] = inputs[i].value;
 		}
-	});
+	};
 
 	return List;
 }
@@ -79,12 +85,12 @@ function selected4POST()
 {
 	var List = {};
 
-	let inputs = document.querySelectorAll('select');
+	let selects = document.querySelectorAll('select');
 
-	inputs.forEach(function(element) {
-		var e = document.getElementById(element.id);
-		List[element.id] = e.options[e.selectedIndex].value;
-	});
+	for (var i = 0; i < selects.length; i++) {
+		var e = document.getElementById(selects[i].id);
+		List[selects[i].id] = e.options[e.selectedIndex].value;
+	};
 
 	return List;
 }

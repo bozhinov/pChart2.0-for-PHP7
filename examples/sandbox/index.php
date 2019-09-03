@@ -23,8 +23,7 @@ function listfonts($selected)
 }
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
 <head>
 	<title>Sandbox system</title>
 	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
@@ -37,11 +36,11 @@ function listfonts($selected)
 
  <div class='topTable'>
 	<table style='background-color: #D0D0D0; display: inline-block;'>
-		<td class='topMenu' id='menu6' onclick='Do("Code");'>
+		<td class='topMenu' id='menu6' onclick="Do('Code')">
 			<img src='graphix/cog.png' />
 			&nbsp;Show code&nbsp;
 		</td>
-		<td class='topMenu' id='menu7' onclick='Do("Render");'>
+		<td class='topMenu' id='menu7' onclick="Do('Render')">
 			<img src='graphix/accept.png' />
 			&nbsp;Render picture&nbsp;
 		</td>
@@ -268,7 +267,7 @@ function listfonts($selected)
     <td><input type='checkbox' id='d_normalize_enabled' /></td>
     <td>normalize the datasets.</td>
     <td width='10'></td>
-    <td>[ <a class='smallLinkBlack' href='javascript:randomize();'>randomize</a> ]</td>
+    <td>[ <a class='smallLinkBlack' href='#' onClick="randomize()">randomize</a> ]</td>
    </tr>
   </table>
   <br/>
