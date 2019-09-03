@@ -9,15 +9,18 @@ class helper {
 		$this->Constants = get_defined_constants(true)["user"];
 	}
 
-	function extractColors($Hexa)
+	function extractColors($Hex)
 	{
-		if (strlen($Hexa) != 6){
+		if (strlen($Hex) != 7){
 			return [0,0,0];
 		}
+		
+		// strip the #
+		$Hex = substr($Hex, 1);
 
-		$R = hexdec($Hexa[0].$Hexa[1]);
-		$G = hexdec($Hexa[2].$Hexa[3]);
-		$B = hexdec($Hexa[4].$Hexa[5]);
+		$R = hexdec($Hex[0].$Hex[1]);
+		$G = hexdec($Hex[2].$Hex[3]);
+		$B = hexdec($Hex[4].$Hex[5]);
 
 		return [$R,$G,$B];
 	}

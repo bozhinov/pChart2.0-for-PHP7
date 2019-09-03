@@ -147,28 +147,6 @@ function randomize()
 	}
 }
 
-function setColors()
-{
-	applyColor("g_title_color");
-	applyColor("g_solid_color");
-	applyColor("g_gradient_start");
-	applyColor("g_gradient_end");
-	applyColor("s_font_color");
-	applyColor("s_grid_color");
-	applyColor("s_ticks_color");
-	applyColor("s_subticks_color");
-	applyColor("l_font_color");
-	applyColor("t_color");
-	applyColor("c_break_color");
-}
-
-function applyColor(SourceID)
-{
-	TargetID = SourceID + "_show";
-	color = document.getElementById(SourceID).value;
-	document.getElementById(TargetID).style.backgroundColor = "#"+color.replace("#","");
-}
-
 function checkChartSettings()
 {
 	ChartFamily = getSelected("c_family");

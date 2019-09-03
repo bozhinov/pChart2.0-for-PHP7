@@ -19,7 +19,7 @@ div.roundedCorner {
 	margin-top: 30px;
 	margin-left: 20px;
 	width: 350px;
-	height: 420px;
+	height: 470px;
 	background: #F0F0F0;
 	padding: 10px;
 	color: #667309;
@@ -33,14 +33,6 @@ td.topMenu
 	cursor: hand;
 	cursor: pointer;
 	padding: 10px 5px 10px 5px;
-}
-
-div.color-show
-{
-	margin-left: 4px;
-	width: 10px;
-	height: 10px;
-	border: 1px solid #808080;
 }
 
 table.defaultTable
@@ -64,7 +56,7 @@ input
 
 input[type="text"]
 {
-	width: 30px;
+	width: 50px;
 	border: 1px solid #D0D0D0;
 	background-color: #FFFFFF;
 	vertical-align: middle;
@@ -111,12 +103,6 @@ pre
 	white-space: -pre-wrap;
 	white-space: -o-pre-wrap;
 	word-wrap: break-word;
-}
-
-input.jscolor 
-{
-	text-align: center;
-	width: 60px;
 }
 
 a.link:link		{ text-decoration: none; }

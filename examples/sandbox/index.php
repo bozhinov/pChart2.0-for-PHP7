@@ -2,12 +2,12 @@
 /*
 index.php - Sandbox web front end
 
-Version     : 1.2.2
+Version     : 1.2.3
 Made by     : Jean-Damien POGOLOTTI
 MaintainedBy: Momchil Bozhinov
 Last Update : 03/09/19
 
-This file can be distributed under the license you can find at :
+This file can be distributed under the license you can find at:
 
 	http://www.pchart.net/license
 
@@ -29,7 +29,7 @@ function listfonts($selected)
 	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 	<link rel='stylesheet' type='text/css' href='style.css'/>
 	<script src='../resources/jquery-3.4.1.min.js' type="text/javascript"></script>
-	<script type='text/javascript' src='jscolor.js'></script>
+	<script type='text/javascript' src='jquery.drawrpalette-min.js'></script>
 	<script type='text/javascript' src='functions.js'></script>
 </head>
 <body>
@@ -131,12 +131,12 @@ function listfonts($selected)
   </tr></table>
   <table><tr>
    <td width='55'>X position &nbsp;</td>
-   <td><input type='text' id='g_title_x' value='350' /></td>
+   <td><input type='text' id='g_title_x' value='350' style="width:30px;" /></td>
    <td>&nbsp;&nbsp; Y position &nbsp;</td>
-   <td><input type='text' id='g_title_y' value='25' /></td>
+   <td><input type='text' id='g_title_y' value='25' style="width:30px;" /></td>
    <td>&nbsp;&nbsp; Color &nbsp;</td>
-   <td><input type='text' class='jscolor' id='g_title_color' value='#FFFFFF' onchange='applyColor("g_title_color");' /></td>
-   <td><div id='g_title_color_show' class='color-show'></div></td>
+   <td><input type='text' class='picker' id='g_title_color' value='#FFFFFF' /></td>
+   <td><input type='text' id='g_title_color_show' value='#FFFFFF' /></td>
   </tr></table>
   <table><tr>
    <td width='55'>Font name &nbsp;</td>
@@ -158,8 +158,8 @@ function listfonts($selected)
   <br/>
   <table><tr>
    <td width='55'>Color</td>
-   <td><input type='text' class='jscolor' id='g_solid_color' value='#AAB757' onchange='applyColor("g_solid_color");'/></td>
-   <td width='40'><div id='g_solid_color_show' class='color-show'></div></td>
+   <td><input type='text' class='picker' id='g_solid_color' value='#AAB757' /></td>
+   <td><input type='text' id='g_solid_color_show' value='#AAB757' /></td>
    <td width='20'><input type='checkbox' id='g_solid_dashed' checked='checked' /></td>
    <td width='38'>Dashed</td>
   </tr></table>
@@ -175,11 +175,11 @@ function listfonts($selected)
   <br/>
   <table><tr>
    <td width='55'>Start color</td>
-   <td><input type='text' class='jscolor' id='g_gradient_start' value='#DBE78B' onchange='applyColor("g_gradient_start");' /></td>
-   <td width='55'><div id='g_gradient_start_show' class='color-show'></div></td>
+   <td><input type='text' class='picker' id='g_gradient_start' value='#DBE78B' /></td>
+   <td width='55'><input type='text' id='g_gradient_start_show' value='#DBE78B' /></td>
    <td width='54'>End color &nbsp;</td>
-   <td><input type='text' class='jscolor' id='g_gradient_end' value='#018A44' onchange='applyColor("g_gradient_end");' /></td>
-   <td><div id='g_gradient_end_show' class='color-show'></div></td>
+   <td><input type='text' class='picker' id='g_gradient_end' value='#018A44' /></td>
+   <td><input type='text' id='g_gradient_end_show' value='#018A44' /></td>
   </tr></table>
   <table><tr>
    <td width='55'>Direction</td>
@@ -397,8 +397,8 @@ function listfonts($selected)
    <td>&nbsp; Size &nbsp;</td>
    <td><input type='text' id='s_font_size' value='6' style='width: 20px;' /></td>
    <td>&nbsp; Color &nbsp;</td>
-   <td><input type='text' id='s_font_color' class='jscolor' value='#000000' onchange='applyColor("s_font_color");' /></td>
-   <td><div id='s_font_color_show' class='color-show'></div></td>
+   <td><input type='text' id='s_font_color' class='picker' value='#000000' /></td>
+   <td><input type='text' id='s_font_color_show' value='#000000' /></td>
   </tr></table>
   <br/>
   <table class="defaultTable"><tr>
@@ -430,8 +430,8 @@ function listfonts($selected)
   <br/>
   <table><tr>
    <td width='70'>Grid color</td>
-   <td><input type='text' id='s_grid_color' class='jscolor' value='#FFFFFF' onchange='applyColor("s_grid_color");' /></td>
-   <td><div id='s_grid_color_show' class='color-show'></div></td>
+   <td><input type='text' id='s_grid_color' class='picker' value='#FFFFFF' /></td>
+   <td><input type='text' id='s_grid_color_show' value='#FFFFFF' /></td>
    <td>&nbsp; Alpha</td>
    <td>&nbsp; <input type='text' id='s_grid_alpha' value='50' /></td>
   </tr></table>
@@ -451,15 +451,15 @@ function listfonts($selected)
   <br/>
   <table><tr>
    <td width='70'>Ticks color</td>
-   <td><input type='text' id='s_ticks_color' class='jscolor' value='#000000' onchange='applyColor("s_ticks_color");' /></td>
-   <td><div id='s_ticks_color_show' class='color-show'></div></td>
+   <td><input type='text' id='s_ticks_color' class='picker' value='#000000' /></td>
+   <td><input type='text'  id='s_ticks_color_show' value='#000000' /></td>
    <td>&nbsp; Alpha</td>
    <td>&nbsp; <input type='text' id='s_ticks_alpha' value='50' /></td>
   </tr></table>
   <table><tr>
    <td width='70'>Sub ticks color</td>
-   <td><input type='text' id='s_subticks_color' class='jscolor' value='#FF0000' onchange='applyColor("s_subticks_color");' /></td>
-   <td><div id='s_subticks_color_show' class='color-show'></div></td>
+   <td><input type='text' id='s_subticks_color' class='picker' value='#FF0000' /></td>
+   <td><input type='text' id='s_subticks_color_show' value='#FF0000' /></td>
    <td>&nbsp; Alpha</td>
    <td>&nbsp; <input type='text' id='s_subticks_alpha' value='50' /></td>
    <td>&nbsp;<input type='checkbox' id='s_subticks_enabled' checked='checked' onclick='toggleSubTicks();' /></td>
@@ -490,8 +490,8 @@ function listfonts($selected)
 	</select>
 </td>
    <td>&nbsp;Break color</td>
-   <td>&nbsp;<input type='text' id='c_break_color' class='jscolor' value='#EA371A' onchange='applyColor("c_break_color");'/></td>
-   <td><div id='c_break_color_show' class='color-show'></div></td>
+   <td>&nbsp;<input type='text' id='c_break_color' class='picker' value='#EA371A' /></td>
+   <td><input type='text' id='c_break_color_show' value='#EA371A' /></td>
   </tr></table>
   <table><tr>
    <td width='60'>Settings : </td>
@@ -566,8 +566,8 @@ function listfonts($selected)
    <td>&nbsp; Size &nbsp;</td>
    <td><input type='text' id='l_font_size' value='6' style='width: 20px;' /></td>
    <td>&nbsp; Color &nbsp;</td>
-   <td><input type='text' id='l_font_color' class='jscolor' value='#000000' onchange='applyColor("l_font_color");' /></td>
-   <td><div id='l_font_color_show' class='color-show'></div></td>
+   <td><input type='text' id='l_font_color' class='picker' value='#000000' /></td>
+   <td><input type='text' id='l_font_color_show' value='#000000' /></td>
   </tr></table>
   <table><tr>
    <td width='50'>Margin</td>
@@ -638,8 +638,8 @@ function listfonts($selected)
   </tr></table>
   <table><tr>
    <td width='50'>Color</td>
-   <td><input type='text' id='t_color' class='jscolor' value='#000000' onchange='applyColor("t_color");' /></td>
-   <td><div id='t_color_show' class='color-show'></div></td>
+   <td><input type='text' id='t_color' class='picker' value='#000000' /></td>
+   <td><input type='text' id='t_color_show' value='#000000' /></td>
    <td>&nbsp; Alpha &nbsp;</td>
    <td><input type='text' id='t_alpha' value='50' style='width: 20px;' /></td>
    <td>&nbsp;&nbsp; <input type='checkbox' id='t_ticks' checked='checked' /></td>
@@ -716,7 +716,13 @@ function listfonts($selected)
 		toggleAutoMargins();
 		checkChartSettings();
 		checkLegend();
-		setColors();
+		
+		 $(".picker").drawrpalette().on("choose.drawrpalette",function(event,hexcolor){
+			divID = "#" + ($(this)[0].id) + "_show";
+			$(divID).val(hexcolor);
+		})
+
+		$(".picker").css({"height" : "20px", "width" : "20px"});
 
 		$('input[type=text]').hover(
 			// hover begin (mouse-in)
