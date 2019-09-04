@@ -21,7 +21,7 @@ list($XSize, $YSize) = pBarcode39::getProjection($String, $Settings);
 $Barcode = new pBarcode39(new pDraw($XSize, $YSize));
 
 /* Set the font to use */
-$Barcode->myPicture->setFontProperties(["FontName"=>"pChart/fonts/GeosansLight.ttf"]);
+$Barcode->myPicture->setFontProperties(["FontName"=>"pChart/fonts/Dosis-Light.ttf"]);
 
 /* Render the barcode */
 $Barcode->draw($String,10,10,$Settings);

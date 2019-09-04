@@ -31,32 +31,32 @@ $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL, ["StartColor"=>new p
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
-$myPicture->drawText(10,13,"drawLegend() - Write your chart legend",["Color"=>new pColor(255)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->drawText(10,15,"drawLegend() - Write your chart legend",["Color"=>new pColor(255)]);
 
 /* Write a legend box */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7]);
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 $myPicture->drawLegend(70,60);
 
 /* Write a legend box */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/MankSans.ttf","FontSize"=>10,"Color"=>new pColor(30)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Abel-Regular.ttf","FontSize"=>10,"Color"=>new pColor(30)]);
 $myPicture->drawLegend(230,60,["BoxSize"=>4,"Color"=>new pColor(173,163,83),"Surrounding"=>20,"Family"=>LEGEND_FAMILY_CIRCLE]);
 
 /* Write a legend box */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>9,"Color"=>new pColor(80)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>9,"Color"=>new pColor(80)]);
 $myPicture->drawLegend(400,60,["Style"=>LEGEND_BOX,"BoxSize"=>4,"Color"=>new pColor(200,200,200,30),"Surrounding"=>20]);
 
 /* Write a legend box */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf ","FontSize"=>6,"Color"=>new pColor(0,0,0,60)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf ","FontSize"=>6,"Color"=>new pColor(0,0,0,60)]);
 $myPicture->drawLegend(70,150,["Mode"=>LEGEND_HORIZONTAL, "Family"=>LEGEND_FAMILY_CIRCLE]);
 
 /* Write a legend box */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7]);
 $myPicture->drawLegend(400,150,["Style"=>LEGEND_BOX,"Mode"=>LEGEND_HORIZONTAL, "BoxWidth"=>30,"Family"=>LEGEND_FAMILY_LINE]);
 
 /* Write a legend box */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
 $myPicture->drawFilledRectangle(1,200,698,228,["Color"=>new pColor(255,255,255,30)]);
 $myPicture->drawLegend(10,208,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
@@ -66,7 +66,7 @@ $myPicture->myData->setSeriePicture("My Serie 2","examples/resources/application
 $myPicture->myData->setSeriePicture("My Serie 3","examples/resources/chart_bar.png");
 
 /* Write a legend box */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7]);
 $myPicture->drawLegend(540,50,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_VERTICAL]);
 
 /* Render the picture (choose the best way) */

@@ -14,7 +14,7 @@ $myPicture = new pDraw(700,230);
 $myPicture->myData->addPoints([1,3,4,3,5]);
 
 /* Choose a nice font */
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>11]);
 
 /* Define the boundaries of the graph area */
 $myPicture->setGraphArea(60,40,670,190);

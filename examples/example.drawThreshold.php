@@ -28,11 +28,11 @@ $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL, ["StartColor"=>new 
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6));
-$myPicture->drawText(10,13,"drawThreshold() - draw a threshold in the charting area",["Color"=>new pColor(255)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->drawText(10,15,"drawThreshold() - draw a threshold in the charting area",["Color"=>new pColor(255)]);
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>11]);
 $myPicture->drawText(250,55,"My chart title",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Draw the scale and do some cosmetics */ 
@@ -42,7 +42,7 @@ $myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSubTick
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
 
 /* Draw static thresholds */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontSize"=>7]);
 $myPicture->drawThreshold([5], ["WriteCaption"=>TRUE,"Caption"=>"Step 1","BoxColor"=>new pColor(255,40,40,100),"Ticks"=>1,"Color"=>new pColor(255,40,70,70)]);
 $myPicture->drawThreshold([15],["WriteCaption"=>TRUE,"Caption"=>"Step 2","BoxColor"=>new pColor(40,70,255,100),"Ticks"=>2,"Color"=>new pColor(40,70,255,70)]);
 

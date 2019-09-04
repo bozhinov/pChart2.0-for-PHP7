@@ -17,7 +17,7 @@ $myPicture->drawFilledRectangle(0,0,550,175,["Color"=>new pColor(183,161,71), "D
 $myPicture->drawGradientArea(0,0,550,175,DIRECTION_VERTICAL, ["StartColor"=>new pColor(231,228,155,50), "EndColor"=>new pColor(138,91,10,50)]);
 
 /* Set the default font */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/MankSans.ttf","FontSize"=>20));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Abel-Regular.ttf","FontSize"=>20]);
 
 /* Draw the text box */
 $myPicture->setShadow(FALSE);
@@ -45,7 +45,7 @@ $myPicture->drawRectangleMarker(415,101,$MyMarker);
 $myPicture->drawRectangleMarker(415,126,$MyMarker);
 
 /* Change the font settings */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/MankSans.ttf","FontSize"=>7));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Abel-Regular.ttf","FontSize"=>7]);
 $myPicture->setShadow(FALSE);
 
 /* Write the arrows */

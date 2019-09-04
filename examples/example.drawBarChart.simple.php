@@ -26,7 +26,7 @@ $myPicture->Antialias = FALSE;
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Set the default font */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7));
 
 /* Define the chart area */
 $myPicture->setGraphArea(60,40,650,200);

@@ -34,11 +34,11 @@ $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
-$myPicture->drawText(10,13,"pRadar - Draw polar charts",["Color"=>new pColor(255)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->drawText(10,15,"pRadar - Draw polar charts",["Color"=>new pColor(255)]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
@@ -50,8 +50,8 @@ $SplitChart = new pRadar($myPicture);
 $SplitChart->myPicture->setGraphArea(10,25,340,225);
 $SplitChart->drawPolar([
 	"BackgroundGradient" => ["StartColor"=>new pColor(255),"EndColor"=>new pColor(207,227,125,50)],
-	"FontName"=>"pChart/fonts/pf_arma_five.ttf",
-	"FontSize"=>6
+	"FontName"=>"pChart/fonts/Cairo-Regular.ttf",
+	"FontSize"=>7
 ]);
 
 /* Draw a polar chart */ 
@@ -63,12 +63,12 @@ $SplitChart->drawPolar([
 	"AxisRotation"=>0,
 	"DrawPoly"=>TRUE,
 	"PolyAlpha"=>50,
-	"FontName"=>"pChart/fonts/pf_arma_five.ttf",
-	"FontSize"=>6
+	"FontName"=>"pChart/fonts/Cairo-Regular.ttf",
+	"FontSize"=>7
 ]);
 
 /* Write the chart legend */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontSize"=>7]);
 $myPicture->drawLegend(270,205,["Style"=>LEGEND_BOX,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Render the picture (choose the best way) */

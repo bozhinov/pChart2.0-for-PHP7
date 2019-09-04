@@ -35,7 +35,7 @@ $myPicture->drawLine(10,200,590,200,$Settings);
 $myPicture->drawLine(400,220,400,300,$Settings);
 
 /* Write the fields labels */
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>10]);
 $Settings = ["Color" => new pColor(0),"Align"=>TEXT_ALIGN_TOPLEFT];
 $myPicture->drawText(20,20,"FROM",$Settings);
 $myPicture->drawText(210,20,"TO",$Settings);
@@ -67,7 +67,7 @@ $myPicture->drawText(410,276,"12.340 Kg",$Settings);
 /* Create the barcode 39 object */ 
 $Barcode39 = new pBarcode39($myPicture);
 
-$Barcode39->myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$Barcode39->myPicture->setFontProperties(["FontSize"=>7]);
 $Barcode39->draw("12250000234502",30,220,["ShowLegend" => TRUE, "Height" => 55, "DrawArea" => FALSE]);
 
 $Settings = ["ShowLegend" => TRUE, "Height" => 14,"DrawArea" => FALSE];

@@ -31,11 +31,11 @@ $myPicture->drawGradientArea(0,0,400,20,DIRECTION_VERTICAL, ["StartColor"=>Color
 $myPicture->drawRectangle(0,0,399,399,["Color"=>ColorBlack()]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
-$myPicture->drawText(10,13,"pPie - Draw 3D ring charts",["Color"=>ColorWhite()]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->drawText(10,15,"pPie - Draw 3D ring charts",["Color"=>ColorWhite()]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>8,"Color"=>new pColor(80)]);
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>ColorBlack($Alpha=50)]);
@@ -47,7 +47,7 @@ $PieChart = new pPie($myPicture);
 $PieChart->draw3DRing(200,200,["DrawLabels"=>TRUE,"LabelStacked"=>TRUE,"Border"=>TRUE]);
 
 /* Write the legend box */ 
-$PieChart->drawPieLegend(80,360,["Mode"=>LEGEND_HORIZONTAL,"Style"=>LEGEND_NOBORDER,"Color"=>new pColor(200,200,200,20)]);
+$PieChart->drawPieLegend(45,360,["Mode"=>LEGEND_HORIZONTAL,"Style"=>LEGEND_NOBORDER,"Color"=>new pColor(200,200,200,20)]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.draw3DRing.png");

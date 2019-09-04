@@ -33,18 +33,18 @@ $myPicture->Antialias = FALSE;
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>11]);
 $myPicture->drawText(160,35,"Measured temperature",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 $myPicture->drawText(340,30,"(and associated standard deviation)",["FontSize"=>10,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Set the default font */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontSize"=>7]);
 
 /* Define the chart area */
 $myPicture->setGraphArea(60,50,670,200);
 
 /* Draw the scale */
-$scaleSettings = array("LabelSkip"=>9,"GridColor"=>new pColor(200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE);
+$scaleSettings = ["LabelSkip"=>9,"GridColor"=>new pColor(200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE];
 $myPicture->drawScale($scaleSettings);
 
 /* Turn on Anti-aliasing */
@@ -75,7 +75,7 @@ $myPicture->drawThreshold([$Average-$StandardDeviation],$ThresholdSettings);
 
 /* Write the coefficient of variation */
 $CoefficientOfVariation = round($myPicture->myData->getCoefficientOfVariation("Probe 1"),1);
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+
 $myPicture->drawText(610,46,"coefficient of variation : ".$CoefficientOfVariation,["Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Render the picture (choose the best way) */

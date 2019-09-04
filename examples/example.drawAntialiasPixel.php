@@ -17,8 +17,8 @@ $myPicture->drawGradientArea(0,0,700,20,  DIRECTION_VERTICAL, ["StartColor"=>new
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
-$myPicture->drawText(10,13,"drawAntialiasPixel() - Drawing anti-aliased pixel with transparency",["Color"=>new pColor(255)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->drawText(10,15,"drawAntialiasPixel() - Drawing anti-aliased pixel with transparency",["Color"=>new pColor(255)]);
 
 /* Draw some alpha pixels */ 
 $PixelColor = new pColor(128,255,255);

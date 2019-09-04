@@ -24,18 +24,18 @@ $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL, ["StartColor"=>$Star
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the title */
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
-$myPicture->drawText(10,13,"Barcode 39 - Add barcode to your pictures",["Color"=>new pColor(255)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->drawText(10,15,"Barcode 39 - Add barcode to your pictures",["Color"=>new pColor(255)]);
 
 /* Create the barcode 39 object */
 $Barcode = new pBarcode39($myPicture);
 
 /* Draw a simple barcode */
-$Barcode->myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$Barcode->myPicture->setFontProperties(["FontSize"=>6]);
 $Barcode->draw("pChart Rocks!",50,50,["ShowLegend"=>TRUE,"DrawArea"=>TRUE]);
 
 /* Draw a rotated barcode */
-$Barcode->myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>12]);
+$Barcode->myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>12]);
 $Barcode->draw("Turn me on",650,50,["ShowLegend"=>TRUE,"DrawArea"=>TRUE,"Angle"=>90]);
 
 /* Draw a rotated barcode */

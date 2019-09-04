@@ -33,7 +33,7 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new 
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the title */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>11]);
 $myPicture->drawText(60,45,"Stock price",["FontSize"=>28,"Align"=>TEXT_ALIGN_BOTTOMLEFT]);
 
 /* Draw the 1st scale */

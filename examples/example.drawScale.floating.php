@@ -28,18 +28,18 @@ $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL, ["StartColor"=>new 
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
-$myPicture->drawText(10,13,"drawScale() - draw the X-Y scales",["Color"=>new pColor(255)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->drawText(10,15,"drawScale() - draw the X-Y scales",["Color"=>new pColor(255)]);
 
 /* Set the default font */
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>11]);
 
 /* Write the chart title */
 $myPicture->setGraphArea(60,50,660,200);
 $myPicture->drawText(350,55,"My chart title",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Set the default font */
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontSize"=>7]);
 
 /* Draw the scale */
 $myPicture->drawScale(["XMargin"=>15,"YMargin"=>15,"Floating"=>TRUE,"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);

@@ -138,7 +138,7 @@ class pDraw
 	/* Scale settings */
 	# var $ScaleMinDivHeight = 20; // Minimum height for scale divs # UNUSED
 	/* Font properties */
-	var $FontName = "pChart/fonts/GeosansLight.ttf"; // Default font file
+	var $FontName = "pChart/fonts/Dosis-Light.ttf"; // Default font file
 	var $FontSize = 12; // Default font size
 	#var $FontBox = NULL; // Return the bounding box of the last written string
 	var $FontColor; // Default color settings

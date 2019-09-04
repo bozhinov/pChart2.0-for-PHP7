@@ -16,7 +16,7 @@ You can find the whole class documentation on the pChart web site.
 
 function listfonts($selected)
 {
-	$list = ["advent_light", "Bedizen", "Forgotte", "pf_arma_five", "GeosansLight", "Silkscreen"];
+	$list = ["Gayathri-Regular", "Signika-Regular", "Cairo-Regular", "Dosis-Light", "PressStart2P-Regular", "Abel-Regular"];
 	foreach($list as $font){
 		echo "<option value='".$font.".ttf'".(($font == $selected) ? " selected='selected'" : "").">".$font."</option>";
 	}
@@ -141,7 +141,7 @@ function listfonts($selected)
   </tr></table>
   <table><tr>
    <td width='55'>Font name &nbsp;</td>
-   <td><select id='g_title_font'><?php listfonts("Forgotte"); ?></select></td>
+   <td><select id='g_title_font'><?php listfonts("Cairo-Regular"); ?></select></td>
    <td>&nbsp;&nbsp; Size &nbsp;</td>
    <td><input type='text' id='g_title_font_size' value='14' style='width: 20px;'/></td>
    <td>&nbsp;&nbsp; <input type='checkbox' id='g_title_box' /></td>
@@ -394,7 +394,7 @@ function listfonts($selected)
   </tr></table>
   <table><tr>
    <td width='50'>Font</td>
-   <td><select id='s_font'><?php listfonts("pf_arma_five"); ?></select></td>
+   <td><select id='s_font'><?php listfonts("Cairo-Regular"); ?></select></td>
    <td>&nbsp; Size &nbsp;</td>
    <td><input type='text' id='s_font_size' value='6' style='width: 20px;' /></td>
    <td>&nbsp; Color &nbsp;</td>
@@ -563,7 +563,7 @@ function listfonts($selected)
   <br/>
   <table><tr>
    <td width='50'>Font</td>
-   <td><select id='l_font'><?php listfonts("pf_arma_five"); ?></select></td>
+   <td><select id='l_font'><?php listfonts("Cairo-Regular"); ?></select></td>
    <td>&nbsp; Size &nbsp;</td>
    <td><input type='text' id='l_font_size' value='6' style='width: 20px;' /></td>
    <td>&nbsp; Color &nbsp;</td>

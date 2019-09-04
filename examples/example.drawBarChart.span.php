@@ -32,10 +32,10 @@ $myPicture->myData->addPoints([60,80,20,40,40,50,90,30,100],"Floating 0");
 $myPicture->myData->setSerieDrawable("Floating 0",FALSE);
 
 /* Set the default font */
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(110)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>10,"Color"=>new pColor(110)]);
 
 /* Write the title */
-$myPicture->drawText(10,13,"Net Income 2k8");
+$myPicture->drawText(10,15,"Net Income 2k8");
 
 /* Set the graphical area  */
 $myPicture->setGraphArea(50,30,680,180);

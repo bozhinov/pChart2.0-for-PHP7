@@ -26,13 +26,13 @@ $myPicture->drawGradientArea(0,0,60,230, DIRECTION_HORIZONTAL,["StartColor"=>new
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 $myPicture->drawLine(60,0,60,230,["Color"=>new pColor(70)]);
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>11]);
 $myPicture->drawText(35,115,"Recorded cases",["Color"=>new pColor(255),"FontSize"=>20,"Angle"=>90,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Draw a spline chart */
 $myPicture->setGraphArea(100,30,680,190);
 $myPicture->drawFilledRectangle(100,30,680,190,["Color"=>new pColor(255,255,255,20)]);
-$myPicture->setFontProperties(["Color"=>new pColor(255),"FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["Color"=>new pColor(255),"FontSize"=>7]);
 $myPicture->drawScale(["AxisColor"=>new pColor(255),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 (new pCharts($myPicture))->drawSplineChart();
 

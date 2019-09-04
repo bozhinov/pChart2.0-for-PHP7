@@ -21,8 +21,8 @@ $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,["StartColor"=>new pC
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
-$myPicture->drawText(10,13,"drawCircle() - Transparency & colors",["Color"=>new pColor(255)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->drawText(10,15,"drawCircle() - Transparency & colors",["Color"=>new pColor(255)]);
 
 /* Draw some circles */ 
 $myPicture->drawCircle(100,125,50,50,["Color"=>new pColor(213,226,0,100)]);

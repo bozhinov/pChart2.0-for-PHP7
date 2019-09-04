@@ -6,7 +6,7 @@ The good old pChart got an overhaul!
  - All examples work fine with zero code modifications to them
  - Code was beautified
  - Made minor improvements and added some speed ups
- 
+
 
 pChart 2.2
 ===================
@@ -25,12 +25,19 @@ Major changes:
  - ImageMapper: added PDO SQLite storage option
  - Removed DelayedLoader
 
- 
+
  pChart 2.3
 ===================
+Goals:
+ - Reduce the use of the hard disk to fonts only
+ - Eliminate not-exactly-free 3rd party components
+ - Add the first batch of new features since 2011
+
+Major changes:
  - PHP 7.2+ required
  - Introduce pPyramid (in progress)
  - Introduce pQRCode /* Check my PHP-QRCode-fork repo */
+ - Replace all fonts with Open Font licensed ones
  - Performace boost
  - pBarcode to own dir
  - Extracted SQLite code

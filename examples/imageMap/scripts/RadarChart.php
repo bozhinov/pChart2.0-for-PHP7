@@ -36,7 +36,7 @@ $myPicture->drawGradientArea(0,0,300,300,DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawRectangle(0,0,299,299,["Color"=>new pColor(0)]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);

@@ -42,7 +42,7 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new p
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7]);
 
 /* Define the chart area */
 $myPicture->setGraphArea(60,30,650,190);

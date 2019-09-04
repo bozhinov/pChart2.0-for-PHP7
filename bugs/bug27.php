@@ -38,7 +38,7 @@ $Graph_Height = $Image_Height * 0.65;
 $myPicture->setGraphArea($GraphX_UL, $GraphY_UL, $GraphX_UL + $Graph_Width, $GraphY_UL + $Graph_Height);
 
 $myPicture->drawFilledRectangle(0, 0, $Image_Width, $Image_Height, ["Color"=> new pColor(170,183,87)]); // Olive-green color #AAB757
-$myPicture->setFontProperties(["Color"=> new pColor(255,255,0),"FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=> 10]);
+$myPicture->setFontProperties(["Color"=> new pColor(255,255,0),"FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>10]);
 
 $myPicture->drawScale([
 	"Mode"=>SCALE_MODE_MANUAL,

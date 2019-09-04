@@ -22,7 +22,7 @@ $myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_METRIC,1);
 
 $myPicture->drawGradientArea(0,0,500,500,DIRECTION_VERTICAL,  myColors::myGridColor());
 $myPicture->drawGradientArea(0,0,500,500,DIRECTION_HORIZONTAL,myColors::myGridColor($Alpha=20));
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7]);
 
 /* Draw the chart scale */ 
 $myPicture->setGraphArea(100,30,480,480);

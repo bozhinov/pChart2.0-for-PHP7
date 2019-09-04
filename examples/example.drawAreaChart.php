@@ -32,11 +32,11 @@ $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
-$myPicture->drawText(10,13,"drawAreaChart() - draw an area chart",["Color"=>new pColor(255)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->drawText(10,15,"drawAreaChart() - draw an area chart",["Color"=>new pColor(255)]);
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>11]);
 $myPicture->drawText(250,55,"Average temperature",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Draw the scale and the 1st chart */
@@ -47,7 +47,7 @@ $myPicture->drawScale(["DrawSubTicks"=>TRUE]);
 /* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
-$pCharts->myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$pCharts->myPicture->setFontProperties(["FontSize"=>7]);
 $pCharts->drawAreaChart(["DisplayValues"=>TRUE,"DisplayType"=>DISPLAY_AUTO]);
 
 /* Draw the scale and the 2nd chart */

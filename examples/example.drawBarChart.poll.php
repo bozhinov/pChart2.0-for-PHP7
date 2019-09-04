@@ -18,11 +18,11 @@ $myPicture->myData->addPoints(["I do agree  ","I disagree  ","No opinion  "],"Op
 $myPicture->myData->setAbscissa("Options");
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>15]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>15]);
 $myPicture->drawText(20,34,"Q: Flexibility is a key point of this library",["FontSize"=>20]);
 
 /* Define the default font */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontSize"=>7]);
 
 /* Set the graph area */ 
 $myPicture->setGraphArea(70,60,480,200);

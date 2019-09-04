@@ -36,7 +36,7 @@ $myPicture->drawGradientArea(0,0,300,260,DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawRectangle(0,0,299,259,["Color"=>new pColor(0)]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
 
 /* Create the pPie object */ 
 $PieChart = new pPie($myPicture);

@@ -38,7 +38,7 @@ $myPicture->drawGradientArea(0,222,700,350, DIRECTION_VERTICAL,["StartColor"=>ne
 $myPicture->drawRectangle(0,0,699,349,["Color"=>new pColor(0)]);
 
 /* Set the default font */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/pf_arma_five.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>8]);
 
 /* Define the chart area */
 $myPicture->setGraphArea(60,40,650,200);
@@ -66,11 +66,10 @@ $myPicture->drawLegend(570,20,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTA
 
 /* Set the default font & shadow settings */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>8]);
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11));
-$myPicture->drawText(150,35,"Probability of heart disease",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE,"Color"=>new pColor(255)]);
+$myPicture->drawText(150,35,"Probability of heart disease",["FontSize"=>12,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE,"Color"=>new pColor(255)]);
 
 /* Write a label over the chart */
 $myPicture->writeLabel(["Statistical probability"],[35],["DrawVerticalLine"=>TRUE,"TitleMode"=>LABEL_TITLE_BACKGROUND,"TitleColor"=>new pColor(255)]);
@@ -86,7 +85,7 @@ $IndicatorSettings = [
 	"CaptionColor"=>new pColor(0,0,0),
 	"DrawLeftHead"=>FALSE,
 	"ValueDisplay"=>INDICATOR_VALUE_LABEL,
-	"ValueFontName"=>"pChart/fonts/Forgotte.ttf",
+	"ValueFontName"=>"pChart/fonts/Cairo-Regular.ttf",
 	"ValueFontSize"=>15,
 	"IndicatorSections"=> [
 			array("Start"=>0,"End"=>29,"Caption"=>"Low","Color"=>new pColor(0,142,176)),

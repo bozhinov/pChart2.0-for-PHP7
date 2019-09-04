@@ -31,7 +31,7 @@ if ($myCache->isInCache()){
 } else {
 
 	/* Choose a nice font */
-	$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Forgotte.ttf","FontSize"=>11]);
+	$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>11]);
 
 	/* Define the boundaries of the graph area */
 	$myPicture->setGraphArea(60,40,670,190);
@@ -44,8 +44,8 @@ if ($myCache->isInCache()){
 
 	/* Do some cosmetics */
 	$myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL, ["StartColor"=>new pColor(0),"EndColor"=>new pColor(50)]);
-	$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Silkscreen.ttf","FontSize"=>6]);
-	$myPicture->drawText(10,13,"Test of the pCache class",["Color"=> new pColor(255)]);
+	$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+	$myPicture->drawText(10,15,"Test of the pCache class",["Color"=> new pColor(255)]);
 
 	/* Push the rendered picture to the cache */
 	$myCache->writeToCache($myPicture);
