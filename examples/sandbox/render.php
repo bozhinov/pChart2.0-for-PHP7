@@ -1,17 +1,17 @@
 <?php   
 /*
- render.php - Sandbox rendering engine
+render.php - Sandbox rendering engine
 
- Version     : 2.2
- Made by     : Jean-Damien POGOLOTTI
- Maintained by : Momchil Bozhinov
- Last Update : 03/09/19
+Version     : 1.2.3
+Made by     : Jean-Damien POGOLOTTI
+Maintained by : Momchil Bozhinov
+Last Update : 05/09/19
 
- This file can be distributed under the license you can find at :
+This file can be distributed under the license you can find at:
 
-	http://www.pchart.net/license
+http://www.pchart.net/license
 
- You can find the whole class documentation on the pChart web site.
+You can find the whole class documentation on the pChart web site.
 */
 
 chdir("../");
