@@ -247,6 +247,8 @@ function listfonts($selected)
     <td width='65' align="center">-</td>
    </tr>
 <?php
+	$values = ["January", "February", "March", "April", "May", "June","July", "August"];
+
 	for($i=0; $i<8;$i++){
 		echo "<tr><td>";
 
@@ -257,7 +259,7 @@ function listfonts($selected)
 		echo "</td><td align=\"center\"><input type='text' id='d_serie1_data".$i."' style='width: 50px;' /></td>
 		<td align=\"center\"><input type='text' id='d_serie2_data".$i."' style='width: 50px;' /></td>
 		<td align=\"center\"><input type='text' id='d_serie3_data".$i."' style='width: 50px;' /></td>
-		<td align=\"center\"><input type='text' id='d_absissa_data".$i."' style='width: 60px;' /></td>
+		<td align=\"center\"><input type='text' id='d_absissa_data".$i."' value='".$values[$i]."' style='width: 60px;' /></td>
 		</tr>";
   }
 ?>
@@ -711,7 +713,6 @@ function listfonts($selected)
 
 		/* Initial layout */
 		randomize();
-		setDefaultAbsissa();
 		checkEnabledAxis();
 		toggleSubTicks();
 		toggleAutoMargins();

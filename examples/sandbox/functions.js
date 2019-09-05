@@ -368,15 +368,3 @@ function enableRadio(ID)
 {
 	document.getElementById(ID).disabled = false;
 }
-
-function setDefaultAbsissa()
-{
-	document.getElementById("d_absissa_data0").value = "January";
-	document.getElementById("d_absissa_data1").value = "February";
-	document.getElementById("d_absissa_data2").value = "March";
-	document.getElementById("d_absissa_data3").value = "April";
-	document.getElementById("d_absissa_data4").value = "May";
-	document.getElementById("d_absissa_data5").value = "June";
-	document.getElementById("d_absissa_data6").value = "July";
-	document.getElementById("d_absissa_data7").value = "August";
-}
