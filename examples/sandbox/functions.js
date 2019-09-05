@@ -262,7 +262,8 @@ function checkEnabledAxis()
 	if ( Serie2Enabled ) Series++;
 	if ( Serie3Enabled ) Series++;
 	
-	for( i = 0; i < 3; i++ ){
+	for( i = 0; i < 3; i++ )
+	{
 		if ( (Serie1Binding != i || !Serie1Enabled) && (Serie2Binding != i || !Serie2Enabled) && (Serie3Binding != i || !Serie3Enabled) )
 		{
 			disableItem("d_axis" + i + "_name");
@@ -288,12 +289,16 @@ function checkEnabledAxis()
 		leftSeries = 0;
 		rightSeries = 0;
 
-		if ( !document.getElementById("d_axis0_position").disabled && getSelected("d_axis0_position") == "left"  ) { leftSeries++;  }
-		if ( !document.getElementById("d_axis0_position").disabled && getSelected("d_axis0_position") == "right" ) { rightSeries++; }
-		if ( !document.getElementById("d_axis1_position").disabled && getSelected("d_axis1_position") == "left"  ) { leftSeries++;  }
-		if ( !document.getElementById("d_axis1_position").disabled && getSelected("d_axis1_position") == "right" ) { rightSeries++; }
-		if ( !document.getElementById("d_axis2_position").disabled && getSelected("d_axis2_position") == "right" ) { rightSeries++; }
-		if ( !document.getElementById("d_axis2_position").disabled && getSelected("d_axis2_position") == "right" ) { rightSeries++; }
+		for ( i = 0; i < 3; i++ )
+		{
+			if (!document.getElementById("d_axis" + i + "_position").disabled){
+				if (getSelected("d_axis" + i + "_position") == "left"){
+					leftSeries++;
+				} else {
+					rightSeries++;
+				}
+			}
+		}
 
 		if ( getSelected("s_direction") == "SCALE_POS_LEFTRIGHT" )
 		{

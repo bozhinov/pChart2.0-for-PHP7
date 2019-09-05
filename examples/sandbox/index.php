@@ -698,10 +698,10 @@ function listfonts($selected)
  
  </td>
  <td width='20'></td>
- <td width='730' style="align: center;"><div id='result_area'></div></td>
+ <td width='730'><center><div id='result_area'></div></center></td>
  </table>
  
-<script type="text/javascript">	
+<script type="text/javascript">
 	$(document).ready(function() {
 
 		CurrentDiv = 1;
@@ -717,7 +717,7 @@ function listfonts($selected)
 		toggleAutoMargins();
 		checkChartSettings();
 		checkLegend();
-		
+
 		 $(".picker").drawrpalette().on("choose.drawrpalette",function(event,hexcolor){
 			divID = "#" + ($(this)[0].id) + "_show";
 			$(divID).val(hexcolor);
@@ -735,7 +735,7 @@ function listfonts($selected)
 				$(this).css({"border-color": ""});
 			}
 		);
-		
+
 		$('td.topMenu').hover(
 			function () {
 				$(this).css({"background-color": "#F4F4F4"});
@@ -749,7 +749,7 @@ function listfonts($selected)
 				}
 			}
 		);
-		
+
 		$('td.topMenu').on("click", function() {
 			ID = ($(this)[0].id).replace("menu", "");
 			if (ID < 6){
