@@ -35,12 +35,30 @@ class helper {
 		return $src;
 	}
 
+	function HexToColorObj(string $Hex, $alpha = NULL)
+	{
+		// strip the #
+		$Hex = substr($Hex, 1);
+
+		$R = hexdec($Hex[0].$Hex[1]);
+		$G = hexdec($Hex[2].$Hex[3]);
+		$B = hexdec($Hex[4].$Hex[5]);
+
+		if (is_null($alpha)){
+			$ret = 'new pColor('.$R.','.$G.','.$B.')';
+		} else {
+			$ret = 'new pColor('.$R.','.$G.','.$B.','.$alpha.')';
+		}
+
+		return $ret;
+	}
+
 	function extractColors(string $Hex)
 	{
 		if (strlen($Hex) != 7){
 			return [0,0,0];
 		}
-		
+
 		// strip the #
 		$Hex = substr($Hex, 1);
 

@@ -453,7 +453,7 @@ for($i=0; $i<8;$i++){
 			<td width='50'>Font</td>
 			<td><select id='s_font'><?php listfonts("Cairo-Regular"); ?></select></td>
 			<td>&nbsp; Size &nbsp;</td>
-			<td><input type='text' id='s_font_size' value='6' style='width: 20px;' /></td>
+			<td><input type='text' id='s_font_size' value='7' style='width: 20px;' /></td>
 			<td>&nbsp; Color &nbsp;</td>
 			<td><input type='text' id='s_font_color' class='picker' value='#000000' /></td>
 			<td><input type='text' id='s_font_color_show' value='#000000' /></td>
@@ -668,7 +668,7 @@ for($i=0; $i<8;$i++){
 			<td width='50'>Font</td>
 			<td><select id='l_font'><?php listfonts("Cairo-Regular"); ?></select></td>
 			<td>&nbsp; Size &nbsp;</td>
-			<td><input type='text' id='l_font_size' value='6' style='width: 20px;' /></td>
+			<td><input type='text' id='l_font_size' value='7' style='width: 20px;' /></td>
 			<td>&nbsp; Color &nbsp;</td>
 			<td><input type='text' id='l_font_color' class='picker' value='#000000' /></td>
 			<td><input type='text' id='l_font_color_show' value='#000000' /></td>

@@ -47,16 +47,19 @@ use pChart\{
 
 # loading the constants
 $CNST = new pDraw(100, 100);
+unset($CNST);
 
 require_once("helper.class.php");
 $helper = new helper();
 
-$code = [];
-$code[] = 'require_once("examples/functions.inc.php");';
-$code[] = 'require_once("examples/myColors.php");';
-$code[] = 'require_once("examples/bootstrap.php");';
-$code[] = 'use pChart\{pDraw,pCharts,pColor};';
-$code[] = NULL;
+$code = [
+	'require_once("examples/functions.inc.php");',
+	'require_once("examples/myColors.php");',
+	'require_once("examples/bootstrap.php");',
+	NULL,
+	'use pChart\{pDraw,pCharts,pColor};',
+	NULL
+];
 
 if ($g_transparent == "true"){
 	$code[] = '$myPicture = new pDraw('.$g_width.','.$g_height.',TRUE);';
@@ -168,12 +171,7 @@ if ($g_solid_enabled == "true"){
 
 if ($g_gradient_enabled == "true"){
 
-	list($StartR,$StartG,$StartB) = $helper->extractColors($g_gradient_start);
-	list($EndR,$EndG,$EndB)       = $helper->extractColors($g_gradient_end);
-
-	$Settings = ["StartColor"=>new pColor($StartR,$StartG,$StartB,$g_gradient_alpha),"EndColor"=>new pColor($EndR,$EndG,$EndB,$g_gradient_alpha)];
-
-	$code[] = $helper->dumpArray("Settings",$Settings);
+	$code[] = '$Settings = ["StartColor"=> '.$helper->HexToColorObj($g_gradient_start).',"EndColor"=> '.$helper->HexToColorObj($g_gradient_end).'];';
 
 	if ($g_gradient_direction == "vertical"){
 		$code[] = '$myPicture->drawGradientArea(0,0,'.$g_width.','.$g_height.',DIRECTION_VERTICAL,$Settings);';
@@ -196,9 +194,7 @@ if ($g_title_enabled == "true"){
 
 	$code[] = '$myPicture->setFontProperties(["FontName"=>"pChart/fonts/'.$g_title_font.'","FontSize"=>'.$g_title_font_size.']);';
 
-	list($R,$G,$B) = $helper->extractColors($g_title_color);
-
-	$TextSettings = array("Align"=>$helper->getConstant($g_title_align),"Color"=>new pColor($R,$G,$B));
+	$TextSettings = ["Align"=>$helper->getConstant($g_title_align),"Color"=>$helper->HexToColorObj($g_title_color)];
 	if ($g_title_box == "true"){ 
 		$TextSettings["DrawBox"] = TRUE; 
 		$TextSettings["BoxColor"] = new pColor(255,255,255,30);
@@ -215,17 +211,10 @@ if ($g_shadow == "true"){
 }
 
 $code[] = '$myPicture->setGraphArea('.$s_x.','.$s_y.','.($s_x+$s_width).','.($s_y+$s_height).');';
-
-list($R,$G,$B) = $helper->extractColors($s_font_color);
-
-$code[] = '$myPicture->setFontProperties(["Color"=>new pColor('.$R.",".$G.",".$B.'),"FontName"=>"pChart/fonts/'.$s_font.'","FontSize"=>'.$s_font_size.']);';
+$code[] = '$myPicture->setFontProperties(["Color"=> '.$helper->HexToColorObj($s_font_color).',"FontName"=>"pChart/fonts/'.$s_font.'","FontSize"=>'.$s_font_size.']);';
 $code[] = NULL;
 
 /* Scale specific parameters -------------------------------------------------------------------------------- */
-list($GridR,$GridG,$GridB) = $helper->extractColors($s_grid_color);
-list($TickR,$TickG,$TickB) = $helper->extractColors($s_ticks_color);
-list($SubTickR,$SubTickG,$SubTickB) = $helper->extractColors($s_subticks_color);
-
 $Pos = ($s_direction == "SCALE_POS_LEFTRIGHT") ? 690101 : 690102;
 $Labeling = ($s_x_labeling == "LABELING_ALL") ? 691011 : 691012;
 
@@ -240,8 +229,8 @@ $Settings = [
 	"Pos"=>$Pos,
 	"Mode"=>$iMode,
 	"LabelingMethod"=>$Labeling,
-	"GridColor"=>new pColor($GridR,$GridG,$GridB,$s_grid_alpha),
-	"TickColor"=>new pColor($TickR,$TickG,$TickB,$s_ticks_alpha),
+	"GridColor"=> $helper->HexToColorObj($s_grid_color, $s_grid_alpha),
+	"TickColor"=> $helper->HexToColorObj($s_ticks_color, $s_ticks_alpha),
 	"LabelRotation"=>$s_x_label_rotation
 ];
 
@@ -252,7 +241,7 @@ $Settings["DrawXLines"] = ($s_grid_x_enabled == "true")? TRUE : 0;
 
 if ($s_subticks_enabled == "true"){
 	$Settings["DrawSubTicks"] = TRUE;
-	$Settings["SubTickColor"] = new pColor($SubTickR,$SubTickG,$SubTickB,$s_subticks_alpha);
+	$Settings["SubTickColor"] = $helper->HexToColorObj($s_subticks_color, $s_subticks_alpha);
 }
 
 if ($s_automargin_enabled == "false"){
@@ -264,8 +253,6 @@ $Settings["DrawYLines"] = ($s_grid_y_enabled == "true") ? "ALL" : "NONE";
 $code[] = $helper->dumpArray("Settings",$Settings);
 $code[] = '$myPicture->drawScale($Settings);';
 $code[] = NULL;
-
-/* ---------------------------------------------------------------------------------------------------------- */
 
 if ($g_shadow == "true"){
 	$code[] = '$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(50,50,50,10)]);';
@@ -291,11 +278,8 @@ if ($c_family == "plot"){
 if ($c_family == "line"){
 
 	if ($c_break == "true"){
-
-		list($BreakR,$BreakG,$BreakB) = $helper->extractColors($c_break_color);
-
 		$Config["BreakVoid"] = 0;
-		$Config["BreakColor"] = new pColor($BreakR,$BreakG,$BreakB);
+		$Config["BreakColor"] = $helper->HexToColorObj($c_break_color);
 	}
 
 	$code[] = $helper->dumpArray("Config",$Config);
@@ -304,11 +288,8 @@ if ($c_family == "line"){
 
 if ($c_family == "step"){
 	if ($c_break == "true"){
-
-		list($BreakR,$BreakG,$BreakB) = $helper->extractColors($c_break_color);
-
 		$Config["BreakVoid"] = 0;
-		$Config["BreakColor"] = new pColor($BreakR,$BreakG,$BreakB);
+		$Config["BreakColor"] = $helper->HexToColorObj($c_break_color);
 	}
 
 	$code[] = $helper->dumpArray("Config",$Config);
@@ -318,11 +299,8 @@ if ($c_family == "step"){
 if ($c_family == "spline"){
 
 	if ($c_break == "true"){
-
-		list($BreakR,$BreakG,$BreakB) = $helper->extractColors($c_break_color);
-
 		$Config["BreakVoid"] = 0;
-		$Config["BreakColor"] = new pColor($BreakR,$BreakG,$BreakB);
+		$Config["BreakColor"] = $this->helper->HexToColorObj($c_break_color);
 	}
 
 	$code[] = $helper->dumpArray("Config",$Config);
@@ -402,9 +380,7 @@ if ($c_family == "sarea"){
 
 if ($t_enabled == "true"){
 
-	list($R,$G,$B) = $helper->extractColors($t_color);
-
-	$Config = ["Color" => new pColor($R,$G,$B,$t_alpha)];
+	$Config = ["Color" => $this->helper->HexToColorObj($t_color, $t_alpha)];
 
 	if (isset($myData->Data["Axis"][$t_axis])){
 		$Config["AxisID"] = $t_axis; 
@@ -428,10 +404,9 @@ if ($t_enabled == "true"){
 
 if ($l_enabled == "true"){
 	eval($helper->code4eval($code));
-	list($R,$G,$B) = $helper->extractColors($l_font_color);
 
 	$Config = [
-		"FontColor" => new pColor($R,$G,$B,$l_alpha),
+		"FontColor" => $helper->HexToColorObj($l_font_color,$l_alpha),
 		"FontName" => "pChart/fonts/".$l_font,
 		"FontSize" => $l_font_size,
 		"Margin" => $l_margin,
@@ -449,6 +424,7 @@ if ($l_enabled == "true"){
 	($l_family == "LEGEND_FAMILY_LINE") AND $Config["Family"] = 691053;
 
 	$Size = $myPicture->getLegendSize($Config);
+	unset($myPicture);
 
 	if ($l_position == "CORNER_TOP_RIGHT"){
 		$l_y = $l_margin + 10;
