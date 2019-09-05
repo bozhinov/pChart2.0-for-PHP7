@@ -9,7 +9,33 @@ class helper {
 		$this->Constants = get_defined_constants(true)["user"];
 	}
 
-	function extractColors($Hex)
+	function code2src(array $code)
+	{
+		$src = "&lt;?php\r\n\r\n";
+		foreach($code as $line){
+			if (is_null($line)){
+				$src .= "\r\n";
+			} else {
+				$src .= $line."\r\n";
+			}
+		}
+
+		return $src."?&gt\r\n";
+	}
+
+	function code4eval(array $code)
+	{
+		$src = "";
+		foreach($code as $line){
+			if (!is_null($line)){
+				$src .= $line;
+			}
+		}
+
+		return $src;
+	}
+
+	function extractColors(string $Hex)
 	{
 		if (strlen($Hex) != 7){
 			return [0,0,0];
