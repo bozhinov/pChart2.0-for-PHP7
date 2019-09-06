@@ -23,26 +23,9 @@ class helper {
 		return $src."?&gt\r\n";
 	}
 
-	function code4eval(array $code)
-	{
-		$src = "";
-		foreach($code as $line){
-			if (!is_null($line)){
-				$src .= $line;
-			}
-		}
-
-		return $src;
-	}
-
 	function HexToColorObj(string $Hex, $alpha = NULL)
 	{
-		// strip the #
-		$Hex = substr($Hex, 1);
-
-		$R = hexdec($Hex[0].$Hex[1]);
-		$G = hexdec($Hex[2].$Hex[3]);
-		$B = hexdec($Hex[4].$Hex[5]);
+		list($R, $G, $B) = $this->extractColors($Hex);
 
 		if (is_null($alpha)){
 			$ret = 'new pColor('.$R.','.$G.','.$B.')';

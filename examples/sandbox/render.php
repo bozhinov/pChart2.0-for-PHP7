@@ -406,7 +406,8 @@ if ($t_enabled == "true"){
 }
 
 if ($l_enabled == "true"){
-	eval($helper->code4eval($code));
+	// myPicture obj required to get the proper size of the legend
+	eval(implode("", $code));
 
 	$Config = [
 		"FontColor" => $helper->HexToColorObj($l_font_color, $l_alpha),
@@ -458,7 +459,7 @@ if ($sl_enabled == "true"){
 }
 
 if ($Mode == "Render"){
-	eval($helper->code4eval($code));
+	eval(implode("", $code));
 	echo $myPicture->toBase64();
 } else {
 	$code[] = NULL;
