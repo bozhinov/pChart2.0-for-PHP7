@@ -303,7 +303,7 @@ if ($c_family == "spline"){
 
 	if ($c_break == "true"){
 		$Config["BreakVoid"] = 0;
-		$Config["BreakColor"] = $this->helper->HexToColorObj($c_break_color);
+		$Config["BreakColor"] = $helper->HexToColorObj($c_break_color);
 	}
 
 	$code[] = $helper->dumpArray("Config",$Config);
@@ -383,7 +383,7 @@ if ($c_family == "sarea"){
 
 if ($t_enabled == "true"){
 
-	$Config = ["Color" => $this->helper->HexToColorObj($t_color, $t_alpha)];
+	$Config = ["Color" => $helper->HexToColorObj($t_color, $t_alpha)];
 
 	if (isset($myData->Data["Axis"][$t_axis])){
 		$Config["AxisID"] = $t_axis; 
