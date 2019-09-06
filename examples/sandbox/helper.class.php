@@ -65,10 +65,20 @@ class helper {
 
 		$Result = '$'.$Name.' = [';
 		foreach ($Values as $Key => $Value){
-			$Result .= chr(39).$Key.chr(39).'=>'.$Value.', ';
+			$Result .= chr(39).$Key.chr(39).'=>'.$this->translate($Value).', ';
 		}
 
 		return substr($Result, 0, -2)."];";
+	}
+
+	function translate($Value)
+	{
+		if ($Value == ""){
+			return "VOID";
+		}
+
+		$pos = array_search($Value, $this->Constants);
+		return ($pos != FALSE) ? $pos : $Value;
 	}
 
 	function stringify($Values)
