@@ -157,12 +157,15 @@ if ($g_aa == "false"){
 
 if ($g_solid_enabled == "true"){
 
-	list($R,$G,$B) = $helper->extractColors($g_solid_color);
-	$Settings = ["Color"=>new pColor($R,$G,$B)];
+	$Settings = ["Color"=>$helper->HexToColorObj($g_solid_color)];
 
 	if ($g_solid_dashed == "true"){
 		$Settings["Dash"] = TRUE;
-		$Settings["DashColor"] = $Settings["Color"]->newOne()->RGBChange(20);
+
+		list($R,$G,$B) = $helper->extractColors($g_solid_color);
+		$extr_solid_color = new pColor($R,$G,$B);
+		$extr_solid_color->RGBChange(20);
+		$Settings["DashColor"] = $helper->HexToColorObj($extr_solid_color->toHex());
 	}
 
 	$code[] = $helper->dumpArray("Settings",$Settings);
@@ -182,7 +185,7 @@ if ($g_gradient_enabled == "true"){
 }
 
 if($g_border == "true"){
-	$code[] = '$myPicture->drawRectangle(0,0,'.($g_width-1).','.($g_height-1).',["Color"=>new pColor(0,0,0)]);';
+	$code[] = '$myPicture->drawRectangle(0,0,'.($g_width-1).','.($g_height-1).',["Color"=>new pColor(0)]);';
 	$code[] = NULL;
 }
 if($g_shadow == "true"){
@@ -197,7 +200,7 @@ if ($g_title_enabled == "true"){
 	$TextSettings = ["Align"=>$helper->getConstant($g_title_align),"Color"=>$helper->HexToColorObj($g_title_color)];
 	if ($g_title_box == "true"){ 
 		$TextSettings["DrawBox"] = TRUE; 
-		$TextSettings["BoxColor"] = new pColor(255,255,255,30);
+		$TextSettings["BoxColor"] = "new pColor(255,255,255,30)";
 	}
 
 	$code[] = $helper->dumpArray("TextSettings",$TextSettings);
@@ -406,7 +409,7 @@ if ($l_enabled == "true"){
 	eval($helper->code4eval($code));
 
 	$Config = [
-		"FontColor" => $helper->HexToColorObj($l_font_color,$l_alpha),
+		"FontColor" => $helper->HexToColorObj($l_font_color, $l_alpha),
 		"FontName" => "pChart/fonts/".$l_font,
 		"FontSize" => $l_font_size,
 		"Margin" => $l_margin,

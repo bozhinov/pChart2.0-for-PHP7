@@ -77,20 +77,15 @@ class helper {
 	function dumpArray($Name, $Values)
 	{
 		if ($Values == []){
-			return '$'.$Name.' = [];'."\r\n";
+			return '$'.$Name.' = [];';
 		}
 
 		$Result = '$'.$Name.' = [';
 		foreach ($Values as $Key => $Value){
-			if (is_array($Value)){
-				die("TODO: FIX THIS");
-				$Result .= $this->dumpArray($Value); # second param missing
-			} else {
-				$Result .= chr(39).$Key.chr(39).'=>'.$this->translate($Value).', ';
-			}
+			$Result .= chr(39).$Key.chr(39).'=>'.$Value.', ';
 		}
 
-		return substr($Result, 0, -2)."];\r\n";
+		return substr($Result, 0, -2)."];";
 	}
 
 	function stringify($Values)
@@ -98,20 +93,6 @@ class helper {
 		array_walk($Values, array($this, 'toString'));
 
 		return implode(",", $Values);
-	}
-
-	function translate($Value)
-	{
-		if ($Value == ""){
-			return "VOID";
-		}
-
-		if (!$Value instanceof pChart\pColor){
-			$pos = array_search($Value, $this->Constants);
-			return ($pos != FALSE) ? $pos : $Value;
-		} else {
-			return "new pColor(".$Value->R.",".$Value->G.",".$Value->B.",".$Value->Alpha.")";
-		}
 	}
 
 	function toString(&$Value)
