@@ -34,13 +34,10 @@ $p_templates = [
 ];
 
 /* pChart library inclusions */
-require_once("../examples/functions.inc.php");
-require_once("../examples/myColors.php");
 require_once("../examples/bootstrap.php");
 
 use pChart\{
 	pColor,
-	pColorGradient,
 	pDraw,
 	pCharts
 };
@@ -53,8 +50,6 @@ require_once("helper.class.php");
 $helper = new helper();
 
 $code = [
-	'require_once("examples/functions.inc.php");',
-	'require_once("examples/myColors.php");',
 	'require_once("examples/bootstrap.php");',
 	NULL,
 	'use pChart\{pDraw,pCharts,pColor};',
@@ -84,7 +79,7 @@ if ($d_serie1_enabled == "true")
 	$code[] = '$myPicture->myData->addPoints(['.$helper->stringify($data0).'],"Serie1");';
 	$code[] = '$myPicture->myData->setSerieDescription("Serie1","'.$d_serie1_name.'");';
 	$code[] = '$myPicture->myData->setSerieOnAxis("Serie1",'.$d_serie1_axis.');';
-
+	$code[] = NULL;
 	$Axis[$d_serie1_axis] = TRUE;
 }
 
@@ -153,6 +148,7 @@ if ($d_normalize_enabled == "true"){
 
 if ($g_aa == "false"){
 	$code[] = '$myPicture->Antialias = FALSE;';
+	$code[] = NULL;
 }
 
 if ($g_solid_enabled == "true"){

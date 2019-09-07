@@ -28,7 +28,11 @@ class helper {
 		list($R, $G, $B) = $this->extractColors($Hex);
 
 		if (is_null($alpha)){
-			$ret = 'new pColor('.$R.','.$G.','.$B.')';
+			if (($R == $G) && ($G == $B)){
+				$ret = 'new pColor('.$R.')';
+			} else {
+				$ret = 'new pColor('.$R.','.$G.','.$B.')';
+			}
 		} else {
 			$ret = 'new pColor('.$R.','.$G.','.$B.','.$alpha.')';
 		}
