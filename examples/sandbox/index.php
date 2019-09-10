@@ -840,9 +840,8 @@ for($i=0; $i<8;$i++){
 	$(document).ready(function() {
 
 		CurrentDiv = 1;
-		document.getElementById("menu1").style.backgroundColor = "#D0D0D0";
-
 		Automatic  = true;
+		document.getElementById("menu1").style.backgroundColor = "#D0D0D0";
 
 		/* Initial layout */
 		randomize();
@@ -852,10 +851,10 @@ for($i=0; $i<8;$i++){
 		checkChartSettings();
 		checkLegend();
 
-		 $(".picker").drawrpalette().on("choose.drawrpalette",function(event,hexcolor){
+		$(".picker").drawrpalette().on("choose.drawrpalette",function(event,hexcolor){
 			divID = "#" + ($(this)[0].id) + "_show";
 			$(divID).val(hexcolor);
-		})
+		});
 
 		$(".picker").css({"height" : "20px", "width" : "20px"});
 

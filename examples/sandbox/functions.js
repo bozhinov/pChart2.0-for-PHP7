@@ -15,67 +15,52 @@ You can find the whole class documentation on the pChart web site.
 
 function Do(Action)
 {
-	post(prepPOST(), Action);
-}
-
-function prepPOST()
-{
 	$("#result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration");
 
-	POST = {};
+	var Input = {};
 
 	$("select option:selected").each(function() {
-		POST[$(this)[0].parentElement.id] = $(this)[0].value;
+		Input[$(this)[0].parentElement.id] = $(this)[0].value;
 	});
 
 	$("input:checkbox, input:radio").each(function() {
-		POST[$(this)[0].id] = $(this)[0].checked;
+		Input[$(this)[0].id] = $(this)[0].checked;
 	});
 
 	$("input:text").each(function() {
-		POST[$(this)[0].id] = $(this)[0].value;
+		Input[$(this)[0].id] = $(this)[0].value;
 	});
 
-	data0 = [];
-	data1 = [];
-	data2 = [];
-	absissa = [];
+	Input["data0"] = [];
+	Input["data1"] = [];
+	Input["data2"] = [];
+	Input["absissa"] = [];
 
 	for(i=0;i<8;i++)
 	{
-		data0.push(POST["d_serie1_data"+i]);
-		data1.push(POST["d_serie2_data"+i]);
-		data2.push(POST["d_serie3_data"+i]);
-		absissa.push(POST["d_absissa_data"+i]);
+		Input["data0"].push(Input["d_serie1_data"+i]);
+		Input["data1"].push(Input["d_serie2_data"+i]);
+		Input["data2"].push(Input["d_serie3_data"+i]);
+		Input["absissa"].push(Input["d_absissa_data"+i]);
 	}
 
-	POST["data0"] = data0;
-	POST["data1"] = data1;
-	POST["data2"] = data2;
-	POST["absissa"] = absissa;
-
 	switch(true) {
-		case POST["t_axis0"]:
+		case Input["t_axis0"]:
 			t_axis = 0;
 			break;
-		case POST["t_axis1"]:
+		case Input["t_axis1"]:
 			t_axis = 1;
 			break;
-		case POST["t_axis2"]:
+		case Input["t_axis2"]:
 			t_axis = 2;
 			break;
 	}
 
-	POST["t_axis"] = t_axis;
+	Input["t_axis"] = t_axis;
 
-	return JSON.stringify(POST);
-}
-
-function post(json_data, Action)
-{
 	$.ajax({
 		type: "POST",
-		data: {Data : json_data, Action : Action},
+		data: {Data : JSON.stringify(Input), Action : Action},
 		url: "render.php",
 		success: function (result) {
 			if (Action == "Code"){
@@ -92,7 +77,7 @@ function post(json_data, Action)
 
 function toggleAuto()
 {
-	Automatic = (document.getElementById("g_autopos").checked ? true : false);
+	Automatic = document.getElementById("g_autopos").checked;
 }
 
 function doLayout()
