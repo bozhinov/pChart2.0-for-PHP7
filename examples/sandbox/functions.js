@@ -22,13 +22,19 @@ function prepPOST()
 {
 	$("#result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration");
 
-	objs = [input4POST(), selected4POST()],
-	POST =  objs.reduce(function (r, o) {
-        Object.keys(o).forEach(function (k) {
-            r[k] = o[k];
-        });
-        return r;
-    }, {});
+	POST = {};
+
+	$("select option:selected").each(function() {
+		POST[$(this)[0].parentElement.id] = $(this)[0].value;
+	});
+
+	$("input:checkbox, input:radio").each(function() {
+		POST[$(this)[0].id] = $(this)[0].checked;
+	});
+
+	$("input:text").each(function() {
+		POST[$(this)[0].id] = $(this)[0].value;
+	});
 
 	data0 = [];
 	data1 = [];
@@ -37,10 +43,10 @@ function prepPOST()
 
 	for(i=0;i<8;i++)
 	{
-		data0.push(document.getElementById("d_serie1_data"+i).value);
-		data1.push(document.getElementById("d_serie2_data"+i).value);
-		data2.push(document.getElementById("d_serie3_data"+i).value);
-		absissa.push(document.getElementById("d_absissa_data"+i).value);
+		data0.push(POST["d_serie1_data"+i]);
+		data1.push(POST["d_serie2_data"+i]);
+		data2.push(POST["d_serie3_data"+i]);
+		absissa.push(POST["d_absissa_data"+i]);
 	}
 
 	POST["data0"] = data0;
@@ -49,13 +55,13 @@ function prepPOST()
 	POST["absissa"] = absissa;
 
 	switch(true) {
-		case document.getElementById("t_axis0").checked:
+		case POST["t_axis0"]:
 			t_axis = 0;
 			break;
-		case document.getElementById("t_axis1").checked:
+		case POST["t_axis1"]:
 			t_axis = 1;
 			break;
-		case document.getElementById("t_axis2").checked:
+		case POST["t_axis2"]:
 			t_axis = 2;
 			break;
 	}
@@ -63,37 +69,6 @@ function prepPOST()
 	POST["t_axis"] = t_axis;
 
 	return JSON.stringify(POST);
-}
-
-function input4POST()
-{
-	var List = {};
-
-	let inputs = document.querySelectorAll('input');
-
-	for (var i = 0; i < inputs.length; i++) {
-		if ((inputs[i].type == "checkbox") || (inputs[i].type == "radio")){
-			List[inputs[i].id] = inputs[i].checked;
-		} else if (inputs[i].type == "text"){
-			List[inputs[i].id] = inputs[i].value;
-		}
-	};
-
-	return List;
-}
-
-function selected4POST()
-{
-	var List = {};
-
-	let selects = document.querySelectorAll('select');
-
-	for (var i = 0; i < selects.length; i++) {
-		var e = document.getElementById(selects[i].id);
-		List[selects[i].id] = e.options[e.selectedIndex].value;
-	};
-
-	return List;
 }
 
 function post(json_data, Action)
