@@ -19,16 +19,16 @@ function Do(Action)
 
 	var Input = {};
 
-	$("select option:selected").each(function() {
-		Input[$(this)[0].parentElement.id] = $(this)[0].value;
+	$("select option:selected").each(function(idx, v) {
+		Input[v.parentElement.id] = v.value;
 	});
 
-	$("input:checkbox, input:radio").each(function() {
-		Input[$(this)[0].id] = $(this)[0].checked;
+	$("input:checkbox, input:radio").each(function(idx, v) {
+		Input[v.id] = v.checked;
 	});
 
-	$("input:text").each(function() {
-		Input[$(this)[0].id] = $(this)[0].value;
+	$("input:text").each(function(idx, v) {
+		Input[v.id] = v.value;
 	});
 
 	Input["data0"] = [];
