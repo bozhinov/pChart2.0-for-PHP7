@@ -45,7 +45,7 @@ use pChart\{
 };
 
 # loading the constants
-$CNST = new pDraw(100, 100);
+$CNST = new pDraw(1, 1);
 unset($CNST);
 
 require_once("helper.class.php");
@@ -203,24 +203,24 @@ $Settings = [
 	"Pos"=>(int)$s_direction,
 	"Mode"=>(int)$s_mode,
 	"LabelingMethod"=>(int)$s_x_labeling,
-	"GridColor"=> $helper->HexToColorObj($s_grid_color, $s_grid_alpha),
-	"TickColor"=> $helper->HexToColorObj($s_ticks_color, $s_ticks_alpha),
+	"GridColor"=> $helper->HexToColorObj($s_grid_color, (int)$s_grid_alpha),
+	"TickColor"=> $helper->HexToColorObj($s_ticks_color, (int)$s_ticks_alpha),
 	"LabelRotation"=>$s_x_label_rotation
 ];
 
-($s_x_skip != 0) AND $Settings["LabelSkip"] = $s_x_skip;
+($s_x_skip != 0) AND $Settings["LabelSkip"] = (int)$s_x_skip;
 ($s_cycle_enabled) AND $Settings["CycleBackground"] = TRUE;
 ($s_arrows_enabled) AND $Settings["DrawArrows"] = TRUE;
 $Settings["DrawXLines"] = ($s_grid_x_enabled)? TRUE : 0;
 
 if ($s_subticks_enabled){
 	$Settings["DrawSubTicks"] = TRUE;
-	$Settings["SubTickColor"] = $helper->HexToColorObj($s_subticks_color, $s_subticks_alpha);
+	$Settings["SubTickColor"] = $helper->HexToColorObj($s_subticks_color, (int)$s_subticks_alpha);
 }
 
 if (!$s_automargin_enabled){
-	$Settings["XMargin"] = $s_x_margin;
-	$Settings["YMargin"] = $s_y_margin;
+	$Settings["XMargin"] = (int)$s_x_margin;
+	$Settings["YMargin"] = (int)$s_y_margin;
 }
 
 $Settings["DrawYLines"] = ($s_grid_y_enabled) ? "ALL" : "NONE";
@@ -238,10 +238,10 @@ $Config = ($c_display_values) ? ["DisplayValues"=>TRUE] : [];
 
 switch($c_family){
 	case "plot":
-		$Config["PlotSize"] = $c_plot_size;
+		$Config["PlotSize"] = (int)$c_plot_size;
 		if ($c_border_enabled){
 			$Config["PlotBorder"] = TRUE;
-			$Config["BorderSize"] = $c_border_size;
+			$Config["BorderSize"] = (int)$c_border_size;
 		}
 		$chartType = "drawPlotChart";
 		break;
@@ -266,15 +266,9 @@ switch($c_family){
 		}
 		$chartType = "drawSplineChart";
 		break;
-	case "bar":
-		($c_bar_rounded)  AND $Config["Rounded"] = TRUE;
-		($c_bar_gradient) AND $Config["Gradient"] = TRUE;
-		($c_around_zero1) AND $Config["AroundZero"] = TRUE;
-		$chartType = "drawBarChart";
-		break;
 	case "area":
 		if ($c_forced_transparency){
-			$Config["ForceTransparency"] = $c_transparency;
+			$Config["ForceTransparency"] = (int)$c_transparency;
 		}
 		if ($c_around_zero2){
 			$Config["AroundZero"] = TRUE;
@@ -283,19 +277,30 @@ switch($c_family){
 		break;
 	case "fstep":
 		if ($c_forced_transparency){
-			$Config["ForceTransparency"] = $c_transparency;
+			$Config["ForceTransparency"] = (int)$c_transparency;
 		}
-		$Config["AroundZero"] = $c_around_zero2;
+		if ($c_around_zero2){
+			$Config["AroundZero"] = TRUE;
+		}
 		$chartType = "drawFilledStepChart";
 		break;
 	case "fspline":
 		if ($c_forced_transparency){
-			$Config["ForceTransparency"] = $c_transparency;
+			$Config["ForceTransparency"] = (int)$c_transparency;
 		}
 		if ($c_around_zero2){
 			$Config["AroundZero"] = TRUE;
 		}
 		$chartType = "drawFilledSplineChart";
+		break;
+	case "sarea":
+		if ($c_forced_transparency){
+			$Config["ForceTransparency"] = (int)$c_transparency;
+		}
+		if ($c_around_zero2){
+			$Config["AroundZero"] = TRUE;
+		}
+		$chartType = "drawStackedAreaChart";
 		break;
 	case "sbar":
 		($c_bar_rounded)  AND $Config["Rounded"] = TRUE;
@@ -303,14 +308,11 @@ switch($c_family){
 		($c_around_zero1) AND $Config["AroundZero"] = TRUE;
 		$chartType = "drawStackedBarChart";
 		break;
-	case "sarea":
-		if ($c_forced_transparency){
-			$Config["ForceTransparency"] = $c_transparency;
-		}
-		if ($c_around_zero2){
-			$Config["AroundZero"] = TRUE;
-		}
-		$chartType = "drawStackedAreaChart";
+	case "bar":
+		($c_bar_rounded)  AND $Config["Rounded"] = TRUE;
+		($c_bar_gradient) AND $Config["Gradient"] = TRUE;
+		($c_around_zero1) AND $Config["AroundZero"] = TRUE;
+		$chartType = "drawBarChart";
 		break;
 }
 
@@ -319,12 +321,20 @@ $code[] = '(new pCharts($myPicture))->'.$chartType.'($Config);';
 
 if ($t_enabled){
 
-	$Config = ["Color" => $helper->HexToColorObj($t_color, $t_alpha)];
+	// myPicture obj required
+	eval(implode("", $code));
+	$Data = $myPicture->myData->getData();
 
-	if (isset($myData->Data["Axis"][$t_axis])){
-		$Config["AxisID"] = $t_axis; 
+	if (isset($Data["Axis"][$t_axis])){
+		$Config = ["AxisID" => $t_axis];
+	} else {
+		$Config = [];
 	}
 
+	unset($Data);
+	unset($myPicture);
+
+	$Config["Color"] = $helper->HexToColorObj($t_color, (int)$t_alpha);
 	$Config["Ticks"] = ($t_ticks) ? 4 : 0;
 
 	if ($t_caption_enabled){
@@ -347,13 +357,14 @@ if ($l_enabled){
 	$l_format = (int)$l_format;
 	$l_orientation = (int)$l_orientation;
 	$l_family = (int)$l_family;
+	$l_margin = (int)$l_margin;
 
 	$Config = [
-		"FontColor" => $helper->HexToColorObj($l_font_color, $l_alpha),
+		"FontColor" => $helper->HexToColorObj($l_font_color, (int)$l_alpha),
 		"FontName" => "pChart/fonts/".$l_font,
-		"FontSize" => $l_font_size,
+		"FontSize" => (int)$l_font_size,
 		"Margin" => $l_margin,
-		"BoxSize" => $l_box_size,
+		"BoxSize" => (int)$l_box_size,
 		"Style" => $l_format,
 		"Mode" => $l_orientation,
 		"Family" => $l_family
@@ -364,10 +375,10 @@ if ($l_enabled){
 
 	if ($l_position == "CORNER_TOP_RIGHT"){
 		$l_y = $l_margin + 10;
-		$l_x = $g_width - $Size["Width"] - 10 + $l_margin;
+		$l_x = (int)$g_width - $Size["Width"] - 10 + $l_margin;
 	} elseif ($l_position == "CORNER_BOTTOM_RIGHT"){
-		$l_y = $g_height - $Size["Height"] - 10 + $l_margin;
-		$l_x = $g_width - $Size["Width"] - 10 + $l_margin;
+		$l_y = (int)$g_height - $Size["Height"] - 10 + $l_margin;
+		$l_x = (int)$g_width - $Size["Width"] - 10 + $l_margin;
 	}
 
 	$Config["FontName"] = chr(34)."pChart/fonts/".$l_font.chr(34);
