@@ -213,8 +213,8 @@ function listfonts($selected)
 			<td width='55'>Direction</td>
 			<td width='75'>
 				<select id='g_gradient_direction'>
-					<option value='vertical'>Vertical</option>
-					<option value='horizontal'>Horizontal</option>
+					<option value='DIRECTION_VERTICAL'>Vertical</option>
+					<option value='DIRECTION_HORIZONTAL'>Horizontal</option>
 				</select>
 			</td>
 			<td width='100'>&nbsp; Alpha transparency</td>
@@ -341,20 +341,20 @@ for($i=0; $i<8;$i++){
 			<td>Position</td>
 			<td align="center">
 				<select id='d_axis0_position' style='width: 80px;' onchange='checkEnabledAxis();'>
-					<option value='left' selected='selected'>Left</option>
-					<option value='right'>Right</option>
+					<option value='AXIS_POSITION_LEFT' selected='selected'>Left</option>
+					<option value='AXIS_POSITION_RIGHT'>Right</option>
 				</select>
 			</td>
 			<td align="center">
 				<select id='d_axis1_position' style='width: 80px;' onchange='checkEnabledAxis();'>
-					<option value='left' selected='selected'>Left</option>
-					<option value='right'>Right</option>
+					<option value='AXIS_POSITION_LEFT' selected='selected'>Left</option>
+					<option value='AXIS_POSITION_RIGHT'>Right</option>
 				</select>
 			</td>
 			<td align="center">
 				<select id='d_axis2_position' style='width: 80px;' onchange='checkEnabledAxis();'>
-					<option value='left' selected='selected'>Left</option>
-					<option value='right'>Right</option>
+					<option value='AXIS_POSITION_LEFT' selected='selected'>Left</option>
+					<option value='AXIS_POSITION_RIGHT'>Right</option>
 				</select>
 			</td>
 		</tr>
@@ -684,9 +684,9 @@ for($i=0; $i<8;$i++){
 			<td>&nbsp; Format</td>
 			<td>&nbsp; 
 				<select id='l_format'>
-					<option value='LEGEND_NOBORDER' selected='selected'>LEGEND_NOBORDER</option>
-					<option value='LEGEND_BOX'>LEGEND_BOX</option>
-					<option value='LEGEND_ROUND'>LEGEND_ROUND</option>
+					<option value='690800' selected='selected'>LEGEND_NOBORDER</option>
+					<option value='690801'>LEGEND_BOX</option>
+					<option value='690802'>LEGEND_ROUND</option>
 				</select>
 			</td>
 		</tr>
@@ -697,8 +697,8 @@ for($i=0; $i<8;$i++){
 			<td width='50'>Orientation</td>
 			<td>&nbsp; 
 				<select id='l_orientation' style='width: 160px;'>
-					<option value='LEGEND_VERTICAL'>LEGEND_VERTICAL</option>
-					<option value='LEGEND_HORIZONTAL' selected='selected'>LEGEND_HORIZONTAL</option>
+					<option value='690901'>LEGEND_VERTICAL</option>
+					<option value='690902' selected='selected'>LEGEND_HORIZONTAL</option>
 				</select>
 			</td>
 			<td>&nbsp; Box size &nbsp;</td>
@@ -728,9 +728,9 @@ for($i=0; $i<8;$i++){
 			<td width='50'>Layout</td>
 			<td>&nbsp; 
 				<select id='l_family' style='width: 160px;'>
-					<option value='LEGEND_SERIE_BOX'>LEGEND_SERIE_BOX</option>
-					<option value='LEGEND_FAMILY_CIRCLE'>LEGEND_FAMILY_CIRCLE</option>
-					<option value='LEGEND_FAMILY_LINE'>LEGEND_FAMILY_LINE</option>
+					<option value='691051'>LEGEND_FAMILY_BOX</option>
+					<option value='691052'>LEGEND_FAMILY_CIRCLE</option>
+					<option value='691053'>LEGEND_FAMILY_LINE</option>
 				</select>
 			</td>
 		</tr>

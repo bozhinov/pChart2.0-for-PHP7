@@ -31,16 +31,16 @@ function Do(Action)
 		Input[v.id] = v.value;
 	});
 
-	Input["data0"] = [];
 	Input["data1"] = [];
 	Input["data2"] = [];
+	Input["data3"] = [];
 	Input["absissa"] = [];
 
 	for(i=0;i<8;i++)
 	{
-		Input["data0"].push(Input["d_serie1_data"+i]);
-		Input["data1"].push(Input["d_serie2_data"+i]);
-		Input["data2"].push(Input["d_serie3_data"+i]);
+		Input["data1"].push(Input["d_serie1_data"+i]);
+		Input["data2"].push(Input["d_serie2_data"+i]);
+		Input["data3"].push(Input["d_serie3_data"+i]);
 		Input["absissa"].push(Input["d_absissa_data"+i]);
 	}
 
@@ -253,7 +253,7 @@ function checkEnabledAxis()
 		for ( i = 0; i < 3; i++ )
 		{
 			if (!document.getElementById("d_axis" + i + "_position").disabled){
-				if (getSelected("d_axis" + i + "_position") == "left"){
+				if (getSelected("d_axis" + i + "_position") == "AXIS_POSITION_LEFT"){
 					leftSeries++;
 				} else {
 					rightSeries++;

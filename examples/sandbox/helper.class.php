@@ -12,15 +12,8 @@ class helper {
 	function code2src(array $code)
 	{
 		$src = "&lt;?php\r\n\r\n";
-		foreach($code as $line){
-			if (is_null($line)){
-				$src .= "\r\n";
-			} else {
-				$src .= $line."\r\n";
-			}
-		}
-
-		return $src."?&gt\r\n";
+		$src .= implode("\r\n", $code);
+		return $src."\r\n?&gt\r\n";
 	}
 
 	function HexToColorObj(string $Hex, $alpha = NULL)
