@@ -151,10 +151,10 @@ function checkChartSettings()
 	if ( Automatic )
 	{
 		if ( ChartFamily == "sbar" || ChartFamily == "sarea" ){
-			document.getElementById("s_mode").value = "SCALE_MODE_ADDALL";
+			document.getElementById("s_mode").value = "690203";
 		}
 	} else {
-		document.getElementById("s_mode").value = "SCALE_MODE_FLOATING";
+		document.getElementById("s_mode").value = "690201";
 	}
 }
 
@@ -261,7 +261,7 @@ function checkEnabledAxis()
 			}
 		}
 
-		if ( getSelected("s_direction") == "SCALE_POS_LEFTRIGHT" )
+		if ( getSelected("s_direction") == "690101" )
 		{
 			leftOffset = (leftSeries == 0 ? 20 : 10);
 			rightOffset = (rightSeries == 0 ? 25 : 15);

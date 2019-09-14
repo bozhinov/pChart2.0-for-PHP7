@@ -412,8 +412,8 @@ for($i=0; $i<8;$i++){
 			<td width='50'>Direction</td>
 			<td width='160'>
 				<select id='s_direction' onchange='checkEnabledAxis();'>
-					<option value='SCALE_POS_LEFTRIGHT'>SCALE_POS_LEFTRIGHT</option>
-					<option value='SCALE_POS_TOPBOTTOM'>SCALE_POS_TOPBOTTOM</option>
+					<option value='690101'>SCALE_POS_LEFTRIGHT</option>
+					<option value='690102'>SCALE_POS_TOPBOTTOM</option>
 				</select>
 			</td>
 			<td>&nbsp;<input type='checkbox' id='s_arrows_enabled' /></td>
@@ -426,10 +426,10 @@ for($i=0; $i<8;$i++){
 		<td width='50'>Mode</td>
 		<td width='160'>
 			<select id='s_mode'>
-				<option value='SCALE_MODE_FLOATING'>SCALE_MODE_FLOATING</option>
-				<option value='SCALE_MODE_START0'>SCALE_MODE_START0</option>
-				<option value='SCALE_MODE_ADDALL'>SCALE_MODE_ADDALL</option>
-				<option value='SCALE_MODE_ADDALL_START0'>SCALE_MODE_ADDALL_START0</option>
+				<option value='690201'>SCALE_MODE_FLOATING</option>
+				<option value='690202'>SCALE_MODE_START0</option>
+				<option value='690203'>SCALE_MODE_ADDALL</option>
+				<option value='690204'>SCALE_MODE_ADDALL_START0</option>
 			</select>
 		</td>
 		<td>&nbsp;<input type='checkbox' id='s_cycle_enabled' checked='checked' /></td>
@@ -472,8 +472,8 @@ for($i=0; $i<8;$i++){
 			<td width='50'>Mode</td>
 			<td>
 				<select id='s_x_labeling'>
-					<option value='LABELING_ALL'>LABELING_ALL</option>
-					<option value='LABELING_DIFFERENT'>LABELING_DIFFERENT</option>
+					<option value='691011'>LABELING_ALL</option>
+					<option value='691012'>LABELING_DIFFERENT</option>
 				</select>
 			</td>
 			<td>&nbsp;&nbsp; Skip each</td>

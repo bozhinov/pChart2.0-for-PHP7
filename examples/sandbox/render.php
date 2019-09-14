@@ -1,4 +1,4 @@
-<?php   
+<?php
 /*
 render.php - Sandbox rendering engine
 
@@ -180,7 +180,7 @@ if ($g_title_enabled){
 
 	$TextSettings = ["Align"=>$helper->getConstant($g_title_align),"Color"=>$helper->HexToColorObj($g_title_color)];
 	if ($g_title_box){ 
-		$TextSettings["DrawBox"] = TRUE; 
+		$TextSettings["DrawBox"] = TRUE;
 		$TextSettings["BoxColor"] = "new pColor(255,255,255,30)";
 	}
 
@@ -199,20 +199,10 @@ $code[] = '$myPicture->setFontProperties(["Color"=> '.$helper->HexToColorObj($s_
 $code[] = NULL;
 
 /* Scale specific parameters -------------------------------------------------------------------------------- */
-$Pos = ($s_direction == "SCALE_POS_LEFTRIGHT") ? 690101 : 690102;
-$Labeling = ($s_x_labeling == "LABELING_ALL") ? 691011 : 691012;
-
-switch ($s_mode){
-	case "SCALE_MODE_FLOATING": 	$iMode = 690201; break;
-	case "SCALE_MODE_START0": 		$iMode = 690202; break;
-	case "SCALE_MODE_ADDALL": 		$iMode = 690203; break;
-	case "SCALE_MODE_ADDALL_START0":$iMode = 690204; break;
-}
-
 $Settings = [
-	"Pos"=>$Pos,
-	"Mode"=>$iMode,
-	"LabelingMethod"=>$Labeling,
+	"Pos"=>(int)$s_direction,
+	"Mode"=>(int)$s_mode,
+	"LabelingMethod"=>(int)$s_x_labeling,
 	"GridColor"=> $helper->HexToColorObj($s_grid_color, $s_grid_alpha),
 	"TickColor"=> $helper->HexToColorObj($s_ticks_color, $s_ticks_alpha),
 	"LabelRotation"=>$s_x_label_rotation
@@ -340,8 +330,8 @@ if ($t_enabled){
 	if ($t_caption_enabled){
 		$Config["WriteCaption"] = TRUE;
 		$Config["Caption"] = chr(34).$t_caption.chr(34);
-		if ($t_box){ 
-			$Config["DrawBox"] = TRUE; 
+		if ($t_box){
+			$Config["DrawBox"] = TRUE;
 		}
 	}
 
@@ -353,7 +343,7 @@ if ($t_enabled){
 if ($l_enabled){
 	// myPicture obj required to get the proper size of the legend
 	eval(implode("", $code));
-	
+
 	$l_format = (int)$l_format;
 	$l_orientation = (int)$l_orientation;
 	$l_family = (int)$l_family;
@@ -375,9 +365,7 @@ if ($l_enabled){
 	if ($l_position == "CORNER_TOP_RIGHT"){
 		$l_y = $l_margin + 10;
 		$l_x = $g_width - $Size["Width"] - 10 + $l_margin;
-	}
-
-	if ($l_position == "CORNER_BOTTOM_RIGHT"){
+	} elseif ($l_position == "CORNER_BOTTOM_RIGHT"){
 		$l_y = $g_height - $Size["Height"] - 10 + $l_margin;
 		$l_x = $g_width - $Size["Width"] - 10 + $l_margin;
 	}
