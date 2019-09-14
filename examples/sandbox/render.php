@@ -391,13 +391,12 @@ if ($t_enabled == "true"){
 
 	if ($t_caption_enabled == "true"){
 		$Config["WriteCaption"] = TRUE;
-		$Config["Caption"] = $t_caption;
+		$Config["Caption"] = chr(34).$t_caption.chr(34);
 		if ($t_box == "true"){ 
 			$Config["DrawBox"] = TRUE; 
 		}
 	}
 
-	$Config["Caption"] = chr(34).$t_caption.chr(34);
 	$code[] = NULL;
 	$code[] = $helper->dumpArray("Config",$Config);
 	$code[] = '$myPicture->drawThreshold(['.$t_value.'],$Config);';
