@@ -16,10 +16,12 @@ You can find the whole class documentation on the pChart web site.
 
 chdir("../");
 
-$WebConfig = json_decode($_REQUEST["Data"], TRUE);
-$Mode = $_REQUEST["Action"];
-
-extract($WebConfig);
+$WebConfig = json_decode($_REQUEST["Data"], TRUE, 3, JSON_INVALID_UTF8_IGNORE); // PHP 7.2+
+if ((!is_null($WebConfig)) && ($WebConfig !== FALSE)){
+	extract($WebConfig);
+} else {
+	die("Invalid data!");
+}
 
 $p_templates = [
 	"autumn" => [[185,106,154,100],	[216,137,184,100],	[156,192,137,100],	[216,243,201,100],	[253,232,215,100],	[255,255,255,100]],
@@ -454,7 +456,7 @@ if ($sl_enabled == "true"){
 	$code[] = '(new pCharts($myPicture))->drawDerivative($Config);';
 }
 
-if ($Mode == "Render"){
+if ($_REQUEST["Action"] == "Render"){
 	eval(implode("", $code));
 	echo $myPicture->toBase64();
 } else {
