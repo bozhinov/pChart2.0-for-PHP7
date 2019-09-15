@@ -1,3 +1,13 @@
+ The sandbox and all examples work as expected.<br />
+ Code is being tested against PHP versions 7.0 to 7.4
+ 
+ Word of advice, keep it secure:
+ - Set write permissions only to the "cache" and "temp" folders if you are going to be using them.
+ - Make sure the content of these folders is not visible to the rest of the world.
+ 
+ Please check the readme.txt file for details on licensing.
+ 
+
 pChart 2.1 library for PHP 7 (7-Compatible branch)
 ===================
 
@@ -47,14 +57,5 @@ Major changes:
 Goals:
  - Introduce pPyramid
  - Replace exsting barcode implementation. Add more barcode types
- - Remove pImageMap & pCache
+ - Remove pImageMap, pCache & pSpring
 
-
- The sandbox and all examples work as expected.<br />
- Code is being tested against PHP versions 7.0 to 7.4
- 
- Word of advice, keep it secure:
- - Set write permissions only to the "cache" and "temp" folders if you are going to be using them.
- - Make sure the content of these folders is not visible to the rest of the world.
- 
- Please check the readme.txt file for details on licensing.
