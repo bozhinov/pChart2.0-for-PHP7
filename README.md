@@ -56,3 +56,5 @@ Goals:
  Word of advice, keep it secure:
  - Set write permissions only to the "cache" and "temp" folders if you are going to be using them.
  - Make sure the content of these folders is not visible to the rest of the world.
+ 
+ Please check the readme.txt file for details on licensing.
