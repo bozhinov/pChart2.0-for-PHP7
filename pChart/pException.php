@@ -27,6 +27,11 @@ class pException extends \Exception
 		return new static(sprintf('pChart: %s', $text));
 	}
 
+	public static function InvalidImageFilter($text)
+	{
+		return new static(sprintf('pChart: %s', $text));
+	}
+
 	public static function InvalidInput($text)
 	{
 		return new static(sprintf('pChart: %s', $text));
@@ -107,6 +112,10 @@ class pException extends \Exception
 		return new static(sprintf('pSurface: %s', $text));
 	}
 
+	public static function BubbleInvalidInputException($text)
+	{
+		return new static(sprintf('pBubble: %s', $text));
+	}
 }
 
 ?>

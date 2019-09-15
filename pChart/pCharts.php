@@ -1512,7 +1512,7 @@ class pCharts
 								}
 
 								if ($Draw0Line) {
-									$Line0Color = new pColor(0,0,0,20);
+									$Line0Color = ["Color" => new pColor(0,0,0,20)];
 									$Line0Width = (abs($X1 - $X2) > 3) ? 3 : 1;
 									($X2 - $X1 < 0) AND $Line0Width = - $Line0Width;
 									$this->myPicture->drawFilledRectangle(floor($X1), $Y + $YOffset + $YSpace, floor($X1) + $Line0Width, $Y + $YOffset + $YSize - $YSpace, $Line0Color);

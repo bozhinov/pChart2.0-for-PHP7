@@ -34,12 +34,16 @@ class pSpring
 	var $History;
 	var $Data;
 	var $Links;
+	var $AutoComputeFreeZone;
+	var $Labels;
+	var $MagneticForceA;
+	var $MagneticForceR;
+	var $RingSize;
 	var $X1;
 	var $Y1;
 	var $X2;
 	var $Y2;
-	var $AutoComputeFreeZone;
-	var $Labels;
+	var $Default;
 
 	function __construct(\pChart\pDraw $pChartObject)
 	{

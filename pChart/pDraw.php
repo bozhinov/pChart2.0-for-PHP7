@@ -160,10 +160,6 @@ class pDraw
 		$this->XSize = $XSize;
 		$this->YSize = $YSize;
 
-		if (!($XSize > 0 && $YSize > 0)){
-			throw pException::InvalidDimentions("Image dimensions (X * Y) must be > 0!");
-		}
-
 		/* Momchil: I will leave it here in case someone needs it
 		$memory_limit = ini_get("memory_limit");
 		if (intval($memory_limit) * 1024 * 1024 < $XSize * $YSize * 3 * 1.7){ # Momchil: for black & white gifs -> use 1 and not 3
@@ -175,6 +171,9 @@ class pDraw
 		*/
 
 		$this->Picture = imagecreatetruecolor($XSize, $YSize);
+		if ($this->Picture == FALSE){
+			throw pException::InvalidDimentions("Failed to create true color image!");
+		}
 
 		$this->TransparentBackground = $TransparentBackground;
 		if ($TransparentBackground) {
@@ -764,7 +763,7 @@ class pDraw
 			}
 
 			imageline($this->Picture, $X1, $Y1, $X2, $Y2, $this->allocateColor($Color));
-			return;
+			return [$Cpt,$Mode];
 		}
 
 		$Distance = hypot(($X2 - $X1), ($Y2 - $Y1));
@@ -772,7 +771,7 @@ class pDraw
 			# throw pException::InvalidDimentions("Line coordinates are not valid!");
 			# Momchil: As of 28.01.2019 all examples generate a total of 20 invalid calls
 			# Good way to check your math though
-			return;
+			return [];
 		}
 
 		$XStep = ($X2 - $X1) / $Distance;
@@ -800,7 +799,7 @@ class pDraw
 				}
 			}
 
-			return;
+			return [$Cpt,$Mode];
 		}
 
 		if (empty($Threshold) && is_null($Ticks)){ # Momchil: Fast path based on my test cases
@@ -833,6 +832,8 @@ class pDraw
 			}
 
 		}
+		
+		return [$Cpt,$Mode];
 
 	}
 

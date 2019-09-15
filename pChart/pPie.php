@@ -695,7 +695,7 @@ class pPie
 			}
 		}
 
-		$this->Shadow = $RestoreShadow;
+		$this->myPicture->Shadow = $RestoreShadow;
 	}
 
 	/* Internally used compute the label positions */

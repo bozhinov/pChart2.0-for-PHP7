@@ -677,7 +677,7 @@ class pScatter
 		}
 
 		$RestoreShadow = $this->myPicture->Shadow;
-		$this->Shadow = FALSE;
+		$this->myPicture->Shadow = FALSE;
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 
@@ -722,7 +722,7 @@ class pScatter
 			}
 		}
 
-		$this->Shadow = $RestoreShadow;
+		$this->myPicture->Shadow = $RestoreShadow;
 	} 
 
 	/* Get the legend box size */

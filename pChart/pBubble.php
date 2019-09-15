@@ -40,8 +40,8 @@ class pBubble
 
 		$Data = $this->myPicture->myData->getData();
 
-		foreach($DataSeries as $Key => $SerieName) {
-			$SerieWeightName = $WeightSeries[$Key];
+		foreach($DataSeries as $idx => $SerieName) {
+			$SerieWeightName = $WeightSeries[$idx];
 			$this->myPicture->myData->setSerieDrawable($SerieWeightName, FALSE);
 			if (count($Data["Series"][$SerieName]["Data"]) > $MaxValues) {
 				$MaxValues = count($Data["Series"][$SerieName]["Data"]);

@@ -12,10 +12,10 @@ namespace pChart;
 
 class pColor 
 {
-	var $R;
-	var $G;
-	var $B;
-	var $Alpha;
+	public $R;
+	public $G;
+	public $B;
+	public $Alpha;
 
 	function __construct(int $R = 0, int $G = 0, int $B = 0, float $Alpha = 100)
 	{

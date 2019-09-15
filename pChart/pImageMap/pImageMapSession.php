@@ -69,12 +69,14 @@ class pImageMapSession extends \pChart\pDraw implements pImageMapInterface
 	/* Remove VOID values from an imagemap custom values array */
 	function stripFromSerie(string $SerieName, array $Values)
 	{
-		if (!isset($this->myData->Data["Series"][$SerieName])) {
+		$Data = $this->myData->getData();
+
+		if (!isset($Data["Series"][$SerieName])) {
 			throw \pChart\pException::ImageMapInvalidSerieName($SerieName);
 		}
 
 		$Result = [];
-		foreach($this->myData->Data["Series"][$SerieName]["Data"] as $Key => $Value) {
+		foreach($Data[$SerieName]["Data"] as $Key => $Value) {
 			if ($Value != VOID && isset($Values[$Key])) {
 				$Result[] = $Values[$Key];
 			}
