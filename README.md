@@ -26,7 +26,7 @@ Major changes:
  - Removed DelayedLoader
 
 
- pChart 2.3
+ pChart 2.3 (recommended)
 ===================
 Goals:
  - Reduce the use of the hard disk to fonts only
@@ -35,15 +35,21 @@ Goals:
 
 Major changes:
  - PHP 7.2+ required
- - Introduce pPyramid (in progress)
  - Introduce pQRCode /* Check my PHP-QRCode-fork repo */
  - Replace all fonts with Open Font licensed ones
  - Performace boost
  - pBarcode to own dir
- - Extracted SQLite code
  - No more config files (palettes & barcode db)
- 
- 
+
+
+  pChart 2.4
+===================
+Goals:
+ - Introduce pPyramid
+ - Replace exsting barcode implementation. Add more barcode types
+ - Remove pImageMap & pCache
+
+
  The sandbox and all examples work as expected.<br />
  Code is being tested against PHP versions 7.0 to 7.4
  

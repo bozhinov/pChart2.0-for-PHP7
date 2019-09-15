@@ -1,20 +1,20 @@
 
- +-----------------------------------------+
- ¦                                         ¦
- ¦   pChart - a PHP Charting library       ¦
- ¦                                         ¦
- ¦   Version     : 2.3.0-dev               ¦
- ¦   Made by     : Jean-Damien POGOLOTTI   ¦
- ¦   Maintainedby: Momchil Bozhinov        ¦
- ¦   Last Update : 03/09/19                ¦
- ¦                                         ¦
- +-----------------------------------------+
+ +--------------------------------------------+
+ ¦                                            ¦
+ ¦   pChart - a PHP Charting library          ¦
+ ¦                                            ¦
+ ¦   Version     : 2.3.0-dev                  ¦
+ ¦   Based on code by: Jean-Damien POGOLOTTI  ¦
+ ¦   Maintained by   : Momchil Bozhinov       ¦
+ ¦   Last Update : 15/09/19                   ¦
+ ¦                                            ¦
+ +--------------------------------------------+
  
  2.3.0 -----------------------------------------------------------------------
-  o Introduced pPyramid
-  o Introduced pSQLite
   o Introduced pQRCode
+  o Introduced pSQLite
   o Replaced all fonts (OFL license)
+  o pDraw->toBase64() added
   o pBarcode moved to its own folder
   o pBarcode no longer uses text file for codes Db
   o pData->loadPalette no longer uses text file for palette
@@ -23,10 +23,8 @@
   o pColor->toHTMLColor was renamed to pColor->toHex
   o Sandbox: code improvements
   o Sandbox: replaced JSColor with drawrPalette (MIT license)
-  o ImageMapper: map failed to load on first attempt
-  o Using rad2deg in favour of manual calculation
   o pDraw->isChartLayoutStacked flag is now passed to writeLabel (example.drawLabel.stacked)
-  o pDraw->toBase64() added
+  o FIXED: ImageMapper: map failed to load on first attempt
   o FIXED: Issue #29 - draw3DPie reverse order of color
   
  2.2.3 -----------------------------------------------------------------------
