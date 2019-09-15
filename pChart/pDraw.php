@@ -1705,7 +1705,7 @@ class pDraw
 		$InnerSubTickWidth = isset($Format["InnerSubTickWidth"]) ? $Format["InnerSubTickWidth"] : 0;
 		$OuterSubTickWidth = isset($Format["OuterSubTickWidth"]) ? $Format["OuterSubTickWidth"] : 2;
 		$SubTickColor = isset($Format["TickColor"]) ? ["Color" => $Format["TickColor"]] : ["Color" => new pColor(255,0,0,100)];
-		$AutoAxisLabels = isset($Format["AutoAxisLabels"]) ? $Format["AutoAxisLabels"] : TRUE;
+		/* $AutoAxisLabels = isset($Format["AutoAxisLabels"]) ? $Format["AutoAxisLabels"] : TRUE; */
 		$XReleasePercent = isset($Format["XReleasePercent"]) ? $Format["XReleasePercent"] : 1;
 		$DrawArrows = isset($Format["DrawArrows"]) ? $Format["DrawArrows"] : FALSE;
 		$ArrowSize = isset($Format["ArrowSize"]) ? $Format["ArrowSize"] : 8;
@@ -1847,14 +1847,14 @@ class pDraw
 		if ($GotXAxis == FALSE) {
 			if (!is_null($Abscissa)) {
 				$Points = count($Data["Series"][$Abscissa]["Data"]);
-				if ($AutoAxisLabels) {
+				/* if ($AutoAxisLabels) { /// Dead code found by Scrutinizer
 					$AxisName = isset($Data["Series"][$Abscissa]["Description"]) ? $Data["Series"][$Abscissa]["Description"] : NULL;
 				} else {
 					$AxisName = NULL;
-				}
+				} */
 			} else {
 				$Points = 0;
-				$AxisName = isset($Data["XAxisName"]) ? $Data["XAxisName"] : NULL;
+				/* $AxisName = isset($Data["XAxisName"]) ? $Data["XAxisName"] : NULL; */
 				foreach($Data["Series"] as $SerieParameter) {
 					if ($SerieParameter["isDrawable"]) {
 						$Points = max($Points, count($SerieParameter["Data"]));
@@ -1884,7 +1884,7 @@ class pDraw
 		if ($Pos != SCALE_POS_LEFTRIGHT) {
 			$Data["AbsicssaPosition"] = ($Data["AbsicssaPosition"] == AXIS_POSITION_BOTTOM) ? AXIS_POSITION_LEFT : AXIS_POSITION_RIGHT;
 		}
-
+		/* AxisID should not be used here - bug in the original code */
 		$Data["Axis"][$AxisID]["Position"] = $Data["AbsicssaPosition"];
 		$this->myData->saveOrientation($Pos);
 		$this->myData->saveAxisConfig($Data["Axis"]);
