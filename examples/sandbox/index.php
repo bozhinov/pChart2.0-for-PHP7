@@ -132,15 +132,15 @@ function listfonts($selected)
 			<td width='147'>Alignment method (<a class='smallLinkBlack' target='_new' href='http://wiki.pchart.net/doc.draw.text.html'>help</a>)</td>
 			<td>
 				<select id='g_title_align'>
-					<option value='TEXT_ALIGN_TOPLEFT'>TEXT_ALIGN_TOPLEFT</option>
-					<option value='TEXT_ALIGN_TOPMIDDLE'>TEXT_ALIGN_TOPMIDDLE</option>
-					<option value='TEXT_ALIGN_TOPRIGHT'>TEXT_ALIGN_TOPRIGHT</option>
-					<option value='TEXT_ALIGN_MIDDLELEFT'>TEXT_ALIGN_MIDDLELEFT</option>
-					<option selected='selected' value='TEXT_ALIGN_MIDDLEMIDDLE'>TEXT_ALIGN_MIDDLEMIDDLE</option>
-					<option value='TEXT_ALIGN_MIDDLERIGHT'>TEXT_ALIGN_MIDDLERIGHT</option>
-					<option value='TEXT_ALIGN_BOTTOMLEFT'>TEXT_ALIGN_BOTTOMLEFT</option>
-					<option value='TEXT_ALIGN_BOTTOMMIDDLE'>TEXT_ALIGN_BOTTOMMIDDLE</option>
-					<option value='TEXT_ALIGN_BOTTOMRIGHT'>TEXT_ALIGN_BOTTOMRIGHT</option>
+					<option value='690401'>TEXT_ALIGN_TOPLEFT</option>
+					<option value='690402'>TEXT_ALIGN_TOPMIDDLE</option>
+					<option value='690403'>TEXT_ALIGN_TOPRIGHT</option>
+					<option value='690404'>TEXT_ALIGN_MIDDLELEFT</option>
+					<option selected='selected' value='690405'>TEXT_ALIGN_MIDDLEMIDDLE</option>
+					<option value='690406'>TEXT_ALIGN_MIDDLERIGHT</option>
+					<option value='690407'>TEXT_ALIGN_BOTTOMLEFT</option>
+					<option value='690408'>TEXT_ALIGN_BOTTOMMIDDLE</option>
+					<option value='690409'>TEXT_ALIGN_BOTTOMRIGHT</option>
 				</select>
 			</td>
 		</tr>

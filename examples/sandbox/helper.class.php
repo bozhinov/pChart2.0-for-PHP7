@@ -16,9 +16,9 @@ class helper {
 		return $src."\r\n?&gt\r\n";
 	}
 
-	function HexToColorObj(string $Hex, $alpha = NULL)
+	function hexToColorObj(string $Hex, $alpha = NULL)
 	{
-		list($R, $G, $B) = $this->extractColors($Hex);
+		list($R, $G, $B) = $this->getRGB($Hex);
 
 		if (is_null($alpha)){
 			if (($R == $G) && ($G == $B)){
@@ -33,7 +33,7 @@ class helper {
 		return $ret;
 	}
 
-	function extractColors(string $Hex)
+	function getRGB(string $Hex)
 	{
 		if (strlen($Hex) != 7){
 			return [0,0,0];
@@ -47,11 +47,6 @@ class helper {
 		$B = hexdec($Hex[4].$Hex[5]);
 
 		return [$R,$G,$B];
-	}
-
-	function getConstant($Mode)
-	{
-		return $this->Constants[$Mode];
 	}
 
 	function dumpArray($Name, $Values)

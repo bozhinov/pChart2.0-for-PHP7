@@ -143,15 +143,15 @@ if (!$g_aa){
 
 if ($g_solid_enabled){
 
-	$Settings = ["Color"=>$helper->HexToColorObj($g_solid_color)];
+	$Settings = ["Color"=>$helper->hexToColorObj($g_solid_color)];
 
 	if ($g_solid_dashed){
 		$Settings["Dash"] = TRUE;
 
-		list($R,$G,$B) = $helper->extractColors($g_solid_color);
+		list($R,$G,$B) = $helper->getRGB($g_solid_color);
 		$extr_solid_color = new pColor($R,$G,$B);
 		$extr_solid_color->RGBChange(20);
-		$Settings["DashColor"] = $helper->HexToColorObj($extr_solid_color->toHex());
+		$Settings["DashColor"] = $helper->hexToColorObj($extr_solid_color->toHex());
 	}
 
 	$code[] = $helper->dumpArray("Settings",$Settings);
@@ -159,7 +159,7 @@ if ($g_solid_enabled){
 }
 
 if ($g_gradient_enabled){
-	$code[] = '$Settings = ["StartColor"=> '.$helper->HexToColorObj($g_gradient_start).',"EndColor"=> '.$helper->HexToColorObj($g_gradient_end).'];';
+	$code[] = '$Settings = ["StartColor"=> '.$helper->hexToColorObj($g_gradient_start).',"EndColor"=> '.$helper->hexToColorObj($g_gradient_end).'];';
 	$code[] = '$myPicture->drawGradientArea(0,0,'.$g_width.','.$g_height.','.$g_gradient_direction.',$Settings);';
 	$code[] = NULL;
 }
@@ -178,7 +178,7 @@ if ($g_title_enabled){
 
 	$code[] = '$myPicture->setFontProperties(["FontName"=>"pChart/fonts/'.$g_title_font.'","FontSize"=>'.$g_title_font_size.']);';
 
-	$TextSettings = ["Align"=>$helper->getConstant($g_title_align),"Color"=>$helper->HexToColorObj($g_title_color)];
+	$TextSettings = ["Align"=>(int)$g_title_align,"Color"=>$helper->hexToColorObj($g_title_color)];
 	if ($g_title_box){ 
 		$TextSettings["DrawBox"] = TRUE;
 		$TextSettings["BoxColor"] = "new pColor(255,255,255,30)";
@@ -195,7 +195,7 @@ if ($g_shadow){
 }
 
 $code[] = '$myPicture->setGraphArea('.$s_x.','.$s_y.','.($s_x+$s_width).','.($s_y+$s_height).');';
-$code[] = '$myPicture->setFontProperties(["Color"=> '.$helper->HexToColorObj($s_font_color).',"FontName"=>"pChart/fonts/'.$s_font.'","FontSize"=>'.$s_font_size.']);';
+$code[] = '$myPicture->setFontProperties(["Color"=> '.$helper->hexToColorObj($s_font_color).',"FontName"=>"pChart/fonts/'.$s_font.'","FontSize"=>'.$s_font_size.']);';
 $code[] = NULL;
 
 /* Scale specific parameters -------------------------------------------------------------------------------- */
@@ -203,8 +203,8 @@ $Settings = [
 	"Pos"=>(int)$s_direction,
 	"Mode"=>(int)$s_mode,
 	"LabelingMethod"=>(int)$s_x_labeling,
-	"GridColor"=> $helper->HexToColorObj($s_grid_color, (int)$s_grid_alpha),
-	"TickColor"=> $helper->HexToColorObj($s_ticks_color, (int)$s_ticks_alpha),
+	"GridColor"=> $helper->hexToColorObj($s_grid_color, (int)$s_grid_alpha),
+	"TickColor"=> $helper->hexToColorObj($s_ticks_color, (int)$s_ticks_alpha),
 	"LabelRotation"=>$s_x_label_rotation
 ];
 
@@ -215,7 +215,7 @@ $Settings["DrawXLines"] = ($s_grid_x_enabled)? TRUE : 0;
 
 if ($s_subticks_enabled){
 	$Settings["DrawSubTicks"] = TRUE;
-	$Settings["SubTickColor"] = $helper->HexToColorObj($s_subticks_color, (int)$s_subticks_alpha);
+	$Settings["SubTickColor"] = $helper->hexToColorObj($s_subticks_color, (int)$s_subticks_alpha);
 }
 
 if (!$s_automargin_enabled){
@@ -248,21 +248,21 @@ switch($c_family){
 	case "line":
 		if ($c_break){
 			$Config["BreakVoid"] = 0;
-			$Config["BreakColor"] = $helper->HexToColorObj($c_break_color);
+			$Config["BreakColor"] = $helper->hexToColorObj($c_break_color);
 		}
 		$chartType = "drawLineChart";
 		break;
 	case "step":
 		if ($c_break){
 			$Config["BreakVoid"] = 0;
-			$Config["BreakColor"] = $helper->HexToColorObj($c_break_color);
+			$Config["BreakColor"] = $helper->hexToColorObj($c_break_color);
 		}
 		$chartType = "drawStepChart";
 		break;
 	case "spline":
 		if ($c_break){
 			$Config["BreakVoid"] = 0;
-			$Config["BreakColor"] = $helper->HexToColorObj($c_break_color);
+			$Config["BreakColor"] = $helper->hexToColorObj($c_break_color);
 		}
 		$chartType = "drawSplineChart";
 		break;
@@ -334,7 +334,7 @@ if ($t_enabled){
 	unset($Data);
 	unset($myPicture);
 
-	$Config["Color"] = $helper->HexToColorObj($t_color, (int)$t_alpha);
+	$Config["Color"] = $helper->hexToColorObj($t_color, (int)$t_alpha);
 	$Config["Ticks"] = ($t_ticks) ? 4 : 0;
 
 	if ($t_caption_enabled){
@@ -360,7 +360,7 @@ if ($l_enabled){
 	$l_margin = (int)$l_margin;
 
 	$Config = [
-		"FontColor" => $helper->HexToColorObj($l_font_color, (int)$l_alpha),
+		"FontColor" => $helper->hexToColorObj($l_font_color, (int)$l_alpha),
 		"FontName" => "pChart/fonts/".$l_font,
 		"FontSize" => (int)$l_font_size,
 		"Margin" => $l_margin,
