@@ -47,8 +47,6 @@ class pStock
 		$BoxDownBorderColor = NULL;
 		$ShadowOnBoxesOnly = TRUE;
 		$MedianColor = new pColor(255,0,0,100);
-		$RecordImageMap = FALSE;
-		$ImageMapTitle = "Stock Chart";
 
 		/* Override defaults */
 		extract($Format);
@@ -109,16 +107,6 @@ class pStock
 
 			$PosArray = $this->myPicture->scaleComputeY($Points, $Data[$SerieOpen]["Axis"]);
 
-			if ($RecordImageMap) {
-				$Values = "Open :".$Data[$SerieOpen]["Data"][$Key]."<br />Close : ".$Data[$SerieClose]["Data"][$Key]."<br />Min : ".$Data[$SerieMin]["Data"][$Key]."<br />Max : ".$Data[$SerieMax]["Data"][$Key]."<br />";
-
-				if (!is_null($SerieMedian)) {
-					$Values = $Values."Median : ".$Data[$SerieMedian]["Data"][$Key]."<br />";
-				}
-
-				$ImageMapColor = ($PosArray[0] > $PosArray[1]) ? $BoxUpColor->toHex() : $BoxDownColor->toHex();
-			}
-
 			if ($ShadowOnBoxesOnly) {
 				$RestoreShadow = $this->myPicture->Shadow;
 				$this->myPicture->Shadow = FALSE;
@@ -135,15 +123,9 @@ class pStock
 				if ($ExtremityWidth == 1) {
 					$this->myPicture->drawLine($X - $ExtremityLength, $PosArray[2], $X + $ExtremityLength, $PosArray[2], $ExtremitySettings);
 					$this->myPicture->drawLine($X - $ExtremityLength, $PosArray[3], $X + $ExtremityLength, $PosArray[3], $ExtremitySettings);
-					if ($RecordImageMap) {
-						$this->myPicture->addToImageMap("RECT", floor($X - $ExtremityLength).",".floor($PosArray[2]).",".floor($X + $ExtremityLength).",".floor($PosArray[3]), $ImageMapColor, $ImageMapTitle, $Values);
-					}
 				} else {
 					$this->myPicture->drawFilledRectangle($X - $ExtremityLength, $PosArray[2], $X + $ExtremityLength, $PosArray[2] - $ExtremityWidth, $ExtremitySettings);
 					$this->myPicture->drawFilledRectangle($X - $ExtremityLength, $PosArray[3], $X + $ExtremityLength, $PosArray[3] + $ExtremityWidth, $ExtremitySettings);
-					if ($RecordImageMap) {
-						$this->myPicture->addToImageMap("RECT", floor($X - $ExtremityLength).",".floor($PosArray[2] - $ExtremityWidth).",".floor($X + $ExtremityLength).",".floor($PosArray[3] + $ExtremityWidth), $ImageMapColor, $ImageMapTitle, $Values);
-					}
 				}
 
 				($ShadowOnBoxesOnly) AND $this->myPicture->Shadow = $RestoreShadow;
@@ -165,15 +147,9 @@ class pStock
 				if ($ExtremityWidth == 1) {
 					$this->myPicture->drawLine($PosArray[2], $Y - $ExtremityLength, $PosArray[2], $Y + $ExtremityLength, $ExtremitySettings);
 					$this->myPicture->drawLine($PosArray[3], $Y - $ExtremityLength, $PosArray[3], $Y + $ExtremityLength, $ExtremitySettings);
-					if ($RecordImageMap) {
-						$this->myPicture->addToImageMap("RECT", floor($PosArray[2]).",".floor($Y - $ExtremityLength).",".floor($PosArray[3]).",".floor($Y + $ExtremityLength), $ImageMapColor, $ImageMapTitle, $Values);
-					}
 				} else {
 					$this->myPicture->drawFilledRectangle($PosArray[2], $Y - $ExtremityLength, $PosArray[2] - $ExtremityWidth, $Y + $ExtremityLength, $ExtremitySettings);
 					$this->myPicture->drawFilledRectangle($PosArray[3], $Y - $ExtremityLength, $PosArray[3] + $ExtremityWidth, $Y + $ExtremityLength, $ExtremitySettings);
-					if ($RecordImageMap) {
-						$this->myPicture->addToImageMap("RECT", floor($PosArray[2] - $ExtremityWidth).",".floor($Y - $ExtremityLength).",".floor($PosArray[3] + $ExtremityWidth).",".floor($Y + $ExtremityLength), $ImageMapColor, $ImageMapTitle, $Values);
-					}
 				}
 
 				($ShadowOnBoxesOnly) AND $this->myPicture->Shadow = $RestoreShadow;

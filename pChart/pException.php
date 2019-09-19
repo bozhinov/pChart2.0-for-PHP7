@@ -42,36 +42,6 @@ class pException extends \Exception
 		return new static(sprintf('pChart: %s', $text));
 	}
 
-	public static function ImageMapInvalidID($text)
-	{
-		return new static(sprintf('pChart: %s', $text));
-	}
-
-	public static function ImageMapSessionNotStarted()
-	{
-		return new static('ImageMapper: Yon need to start session before you can use the session storage');
-	}
-
-	public static function ImageMapInvalidSerieName($text)
-	{
-		return new static(sprintf('ImageMapper: The serie name "%s" was not found in the dataset', $text));
-	}
-
-	public static function ImageMapSQLiteException($text)
-	{
-		return new static(sprintf('ImageMapper: %s', $text));
-	}
-
-	public static function SQLiteException($text)
-	{
-		return new static(sprintf('pCache: %s', $text));
-	}
-
-	public static function CacheException($text)
-	{
-		return new static(sprintf('pCache: %s', $text));
-	}
-
 	public static function PieNoAbscissaException()
 	{
 		return new static('pPie: No Abscissa');

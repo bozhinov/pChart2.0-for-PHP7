@@ -104,7 +104,6 @@ class pBubble
 		$Shape = BUBBLE_SHAPE_ROUND;
 		$Surrounding = NULL;
 		$BorderColor = new pColor(0,0,0,30);
-		$RecordImageMap = FALSE;
 
 		/* Override defaults */
 		extract($Format);
@@ -158,11 +157,6 @@ class pBubble
 				}
 			}
 
-			if ($RecordImageMap) {
-				$SerieDescription = (isset($Data[$SerieName]["Description"])) ? $Data[$SerieName]["Description"] : $SerieName;
-				$ImageMapColor = $ColorSettings["Color"]->toHex();
-			}
-
 			foreach($Data[$SerieName]["Data"] as $iKey => $Point) {
 
 				$DataWeightSeries = $Data[$WeightSeries[$Key]]["Data"][$iKey];
@@ -174,11 +168,9 @@ class pBubble
 
 					$Y = floor($Pos);
 					if ($Shape == BUBBLE_SHAPE_SQUARE) {
-						($RecordImageMap) AND $this->myPicture->addToImageMap("RECT", floor($X - $Radius).",".floor($Y - $Radius).",".floor($X + $Radius).",".floor($Y + $Radius), $ImageMapColor, $SerieDescription, $DataWeightSeries);
 						($BorderWidth != 1) AND	$this->myPicture->drawFilledRectangle($X - $Radius - $BorderWidth, $Y - $Radius - $BorderWidth, $X + $Radius + $BorderWidth, $Y + $Radius + $BorderWidth, $BorderColorSettings);
 						$this->myPicture->drawFilledRectangle($X - $Radius, $Y - $Radius, $X + $Radius, $Y + $Radius, $ColorSettings);
 					} elseif ($Shape == BUBBLE_SHAPE_ROUND) {
-						($RecordImageMap) AND $this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".floor($Radius), $ImageMapColor, $SerieDescription, $DataWeightSeries);
 						($BorderWidth != 1) AND	$this->myPicture->drawFilledCircle($X, $Y, $Radius + $BorderWidth, $BorderColorSettings);
 						$this->myPicture->drawFilledCircle($X, $Y, $Radius, $ColorSettings);
 					}
@@ -189,11 +181,9 @@ class pBubble
 
 					$X = floor($Pos);
 					if ($Shape == BUBBLE_SHAPE_SQUARE) {
-						($RecordImageMap) AND $this->myPicture->addToImageMap("RECT", floor($X - $Radius).",".floor($Y - $Radius).",".floor($X + $Radius).",".floor($Y + $Radius), $ImageMapColor, $SerieDescription, $DataWeightSeries);
 						($BorderWidth != 1) AND	$this->myPicture->drawFilledRectangle($X - $Radius - $BorderWidth, $Y - $Radius - $BorderWidth, $X + $Radius + $BorderWidth, $Y + $Radius + $BorderWidth, $BorderColorSettings);
 						$this->myPicture->drawFilledRectangle($X - $Radius, $Y - $Radius, $X + $Radius, $Y + $Radius, $ColorSettings);
 					} elseif ($Shape == BUBBLE_SHAPE_ROUND) {
-						($RecordImageMap) AND $this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".floor($Radius), $ImageMapColor, $SerieDescription, $DataWeightSeries);
 						($BorderWidth != 1) AND	$this->myPicture->drawFilledCircle($X, $Y, $Radius + $BorderWidth, $BorderColorSettings);
 						$this->myPicture->drawFilledCircle($X, $Y, $Radius, $ColorSettings);
 					}

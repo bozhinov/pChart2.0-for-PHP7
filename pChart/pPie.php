@@ -50,7 +50,6 @@ class pPie
 		$ValuePosition = PIE_VALUE_OUTSIDE;
 		$ValueSuffix = "";
 		$ValueColor = new pColor(255);
-		$RecordImageMap = FALSE;
 		$Radius = 60;
 		$DataGapAngle = 0;
 		$DataGapRadius = 0;
@@ -131,10 +130,6 @@ class pPie
 			}
 
 			$this->myPicture->drawPolygon($Plots, $Settings);
-
-			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$Key]->toHex(), $AbscissaData[$Key], $Value);
-			}
 
 			if ($DrawLabels && !$Shadow && !$SecondPass) {
 				if ($LabelColorType == PIE_LABEL_COLOR_AUTO) {
@@ -277,7 +272,6 @@ class pPie
 		$WriteValues = NULL;
 		$ValueSuffix = "";
 		$ValueColor = new pColor(255);
-		$RecordImageMap = FALSE;
 		$Radius = 80;
 		$SkewFactor = .5;
 		$SliceHeight = 20;
@@ -500,9 +494,6 @@ class pPie
 				$Top[] = $Plots[$j + 1] - $SliceHeight;
 			}
 			$this->myPicture->drawPolygon($Top, $Settings);
-			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Top), $Settings["Color"]->toHex(), $AbscissaData[count($Slices) - $SliceID - 1], $Values[$SliceID]);
-			}
 		}
 
 		/* Second pass to smooth the angles */
@@ -799,7 +790,6 @@ class pPie
 		$ValuePosition = PIE_VALUE_OUTSIDE;
 		$ValueSuffix = "";
 		$ValueColor = new pColor(255);
-		$RecordImageMap = FALSE;
 		$OuterRadius = 60;
 		$InnerRadius = 30;
 		$ValuePadding = 5;
@@ -907,9 +897,6 @@ class pPie
 			$Boundaries[0]["Y2"] = $Yc;
 			/* Draw the polygon */
 			$this->myPicture->drawPolygon($Plots, $Settings);
-			if ($RecordImageMap && !$Shadow) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots), $Palette[$Key]->toHex(), $AbscissaData[$Key], $Value);
-			}
 
 			/* Smooth the edges using AA */
 			foreach($AAPixels as $Pos) {
@@ -985,7 +972,6 @@ class pPie
 		$LabelColorType = PIE_LABEL_COLOR_MANUAL;
 		$LabelColor = new pColor(0);
 		$WriteValues = NULL;
-		$RecordImageMap = FALSE;
 		$OuterRadius = 100;
 		$InnerRadius = 30;
 		$SkewFactor = .6;
@@ -1233,9 +1219,6 @@ class pPie
 		foreach($Slices as $SliceID => $Plots) {
 			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange($Cf * 2), "NoBorder" => TRUE];
 			$this->myPicture->drawPolygon($Plots["TopPoly"], $Settings);
-			if ($RecordImageMap) {
-				$this->myPicture->addToImageMap("POLY", implode(",", $Plots["TopPoly"]), $Settings["Color"]->toHex(), $AbscissaData[$SliceID], $DataSerieData[count($Slices) - $SliceID - 1]);
-			}
 
 			foreach($Plots["AA"] as $Key => $Pos) {
 				$this->myPicture->drawAntialiasPixel($Pos[0], $Pos[1] - $SliceHeight, $Settings["Color"]);

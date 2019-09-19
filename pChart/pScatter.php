@@ -411,8 +411,6 @@ class pScatter
 		$PlotBorder = FALSE;
 		$BorderColor = new pColor(250,250,250,30);
 		$BorderSize = 1;
-		$RecordImageMap = FALSE;
-		$ImageMapTitle = NULL;
 
 		/* Override defaults */
 		extract($Format);
@@ -422,7 +420,7 @@ class pScatter
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 
-				$Description = (is_null($ImageMapTitle)) ? $Data["Series"][$Series["X"]]["Description"] . " / " . $Data["Series"][$Series["Y"]]["Description"] : $ImageMapTitle;
+				$Description = $Data["Series"][$Series["X"]]["Description"] . " / " . $Data["Series"][$Series["Y"]]["Description"];
 
 				if (isset($Series["Picture"]) && $Series["Picture"] != "") {
 					$Picture = $Series["Picture"];
@@ -439,11 +437,6 @@ class pScatter
 					$X = $Value;
 					$Y = $PosArrayY[$Key];
 					if ($X != VOID && $Y != VOID) {
-
-						if ($RecordImageMap) {
-							$RealValue = round($Data["Series"][$Series["X"]]["Data"][$Key], 2) . " / " . round($Data["Series"][$Series["Y"]]["Data"][$Key], 2);
-							$this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".floor($PlotSize + $BorderSize), $Series["Color"]->toHex(), $Description, $RealValue);
-						}
 
 						if (isset($Series["Shape"])) {
 							$this->myPicture->drawShape($X, $Y, $Series["Shape"], $PlotSize, $PlotBorder, $BorderSize, $Series["Color"], $BorderColor);
@@ -467,16 +460,11 @@ class pScatter
 	{
 		$Data = $this->myPicture->myData->getData();
 
-		$RecordImageMap = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
-		$ImageMapTitle = isset($Format["ImageMapTitle"]) ? $Format["ImageMapTitle"] : NULL;
-		$ImageMapPlotSize = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 10;
-		#$ImageMapPrecision = isset($Format["ImageMapPrecision"]) ? $Format["ImageMapPrecision"] : 2; # UNUSED
-
 		/* Parse all the series to draw */
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 
-				$Description = (is_null($ImageMapTitle)) ? $Data["Series"][$Series["X"]]["Description"] . " / " . $Data["Series"][$Series["Y"]]["Description"] : $ImageMapTitle;
+				$Description = $Data["Series"][$Series["X"]]["Description"] . " / " . $Data["Series"][$Series["Y"]]["Description"];
 
 				$PosArrayX = $this->getPosArray($Data["Series"][$Series["X"]]["Data"], $Data["Series"][$Series["X"]]["Axis"]);	
 				$PosArrayY = $this->getPosArray($Data["Series"][$Series["Y"]]["Data"], $Data["Series"][$Series["Y"]]["Axis"]);
@@ -491,11 +479,6 @@ class pScatter
 					$X = $Value;
 					$Y = $PosArrayY[$Key];
 					if ($X != VOID && $Y != VOID) {
-
-						if ($RecordImageMap) {
-							$RealValue = round($Data["Series"][$Series["X"]]["Data"][$Key], 2) . " / " . round($Data["Series"][$Series["Y"]]["Data"][$Key], 2);
-							$this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".$ImageMapPlotSize, $Series["Color"]->toHex(), $Description, $RealValue);
-						}
 
 						if ($LastX != VOID && $LastY != VOID){
 							$this->myPicture->drawLine($LastX, $LastY, $X, $Y, $Settings);
@@ -514,15 +497,10 @@ class pScatter
 	{
 		$Data = $this->myPicture->myData->getData();
 
-		$RecordImageMap = isset($Format["RecordImageMap"]) ? $Format["RecordImageMap"] : FALSE;
-		$ImageMapTitle = isset($Format["ImageMapTitle"]) ? $Format["ImageMapTitle"] : NULL;
-		$ImageMapPlotSize = isset($Format["ImageMapPlotSize"]) ? $Format["ImageMapPlotSize"] : 10;
-		#$ImageMapPrecision = isset($Format["ImageMapPrecision"]) ? $Format["ImageMapPrecision"] : 2; # UNUSED
-
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 
-				$Description = (is_null($ImageMapTitle)) ? $Data["Series"][$Series["X"]]["Description"] . " / " . $Data["Series"][$Series["Y"]]["Description"] : $ImageMapTitle;
+				$Description = $Data["Series"][$Series["X"]]["Description"] . " / " . $Data["Series"][$Series["Y"]]["Description"];
 
 				$PosArrayX = $this->getPosArray($Data["Series"][$Series["X"]]["Data"], $Data["Series"][$Series["X"]]["Axis"]);
 				$PosArrayY = $this->getPosArray($Data["Series"][$Series["Y"]]["Data"], $Data["Series"][$Series["Y"]]["Axis"]);
@@ -542,9 +520,6 @@ class pScatter
 
 					if ($X != VOID && $Y != VOID) {
 						$RealValue = round($Data["Series"][$Series["X"]]["Data"][$Key], 2) . " / " . round($Data["Series"][$Series["Y"]]["Data"][$Key], 2);
-						if ($RecordImageMap) {
-							$this->myPicture->addToImageMap("CIRCLE", floor($X).",".floor($Y).",".$ImageMapPlotSize, $Series["Color"]->toHex(), $Description, $RealValue);
-						}
 						$WayPoints[] = [$X,$Y];
 						$SplineSettings["Forces"][] = hypot(($X - $LastX),($Y - $LastY)) / 5; # GetDistance
 					} else { # if ($Y == VOID || $X == VOID) {

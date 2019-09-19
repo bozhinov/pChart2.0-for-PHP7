@@ -76,7 +76,6 @@ class pRadar
 		$Y1 = $this->myPicture->GraphAreaY1;
 		$X2 = $this->myPicture->GraphAreaX2;
 		$Y2 = $this->myPicture->GraphAreaY2;
-		$RecordImageMap = FALSE;
 
 		/* Override defaults */
 		extract($Format);
@@ -300,9 +299,6 @@ class pRadar
 					$X = cos(deg2rad($Angle + $AxisRotation)) * $Length + $CenterX;
 					$Y = sin(deg2rad($Angle + $AxisRotation)) * $Length + $CenterY;
 					$Plot[$ID][] = [$X,$Y,$Value];
-					if ($RecordImageMap) {
-						$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . floor($PointRadius), $Palette[$ID]->toHex(), $DataS["Description"], $Data["Series"][$LabelSerie]["Data"][$Key] . " = " . $Value);
-					}
 				}
 
 				$ID++;
@@ -407,7 +403,6 @@ class pRadar
 		$Y1 = $this->myPicture->GraphAreaY1;
 		$X2 = $this->myPicture->GraphAreaX2;
 		$Y2 = $this->myPicture->GraphAreaY2;
-		$RecordImageMap = FALSE;
 
 		/* Override defaults */
 		extract($Format);
@@ -563,10 +558,6 @@ class pRadar
 					$Length = ($EdgeHeight / ($Segments * $SegmentHeight)) * $Value;
 					$X = cos(deg2rad($Angle + $AxisRotation)) * $Length + $CenterX;
 					$Y = sin(deg2rad($Angle + $AxisRotation)) * $Length + $CenterY;
-					if ($RecordImageMap) {
-						$this->myPicture->addToImageMap("CIRCLE", floor($X) . "," . floor($Y) . "," . floor($PointRadius), $Palette[$ID]->toHex(), $DataSet["Description"], $Data["Series"][$LabelSerie]["Data"][$Key] . "&deg = " . $Value);
-					}
-
 					$Plot[$ID][] = [$X,$Y,$Value];
 				}
 
