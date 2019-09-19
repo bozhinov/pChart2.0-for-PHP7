@@ -101,9 +101,7 @@ if (isset($_POST["View"]))
 			 <td width=16><img src='resources/application_view_tile.png'/></td>
 			 <td width=100>&nbsp;<b>Examples</b></td>
 			 <td width=16><img src='resources/application_view_list.png'/></td>
-			 <td width=100>&nbsp;<a class='smallLink' href='sandbox/'>Sandbox</a></td>
-			 <td width=16><img src='resources/application_view_list.png'/></td>
-			 <td width=100>&nbsp;<a class='smallLink' href='imageMap/'>Image Map</a></td>
+			 <td width=100>&nbsp;<a class='smallLink' href='sandbox/' target="_blank">Sandbox</a></td>
 			</tr>
 		</table>
 	</td></tr>
@@ -113,15 +111,6 @@ if (isset($_POST["View"]))
 <table>
 	<tr><td valign='top'>
 <?php
-
-/* Determine the current package version */
-$FileHandle = fopen("../readme.txt", "r");
-for ($i=0; $i<=5; $i++) {
-	$buffer = fgets($FileHandle);
-}
-fclose($FileHandle);
-# Change if readme.txt no longer binary
-$Version = trim(substr($buffer, 39, 16));
 
  /* Build a list of the examples & categories */
 $Tree = [];
@@ -149,7 +138,6 @@ closedir($DirectoryHandle);
 echo <<<EOHTML
 <table style='border: 2px solid #FFFFFF;'>
 	<tr><td>
-	<div style='font-size: 11px; padding: 2px; color: #FFFFFF; background-color: #666666; border-bottom: 3px solid #484848; width: 222px;'>&nbsp;Release $Version</div>
 	<div style='border: 3px solid #D0D0D0; border-top: 1px solid #FFFFFF; background-color: #FAFAFA; width: 220px; overflow: auto'>
 	<div style='padding: 1px; padding-bottom: 3px; color: #000000; background-color:#D0D0D0;'>
 	 <table><tr>
