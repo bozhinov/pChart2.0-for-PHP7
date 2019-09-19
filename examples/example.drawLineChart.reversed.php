@@ -45,7 +45,7 @@ $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the chart title */ 
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>8,"Color"=>new pColor(255)]);
-$myPicture->drawText(10,16,"Average recorded temperature",["FontSize"=>11,"Align"=>TEXT_ALIGN_BOTTOMLEFT]);
+$myPicture->drawText(10,18,"Average recorded temperature",["FontSize"=>11,"Align"=>TEXT_ALIGN_BOTTOMLEFT]);
 
 /* Set the default font */
 $myPicture->setFontProperties(["FontSize"=>7,"Color"=>new pColor(0)]);

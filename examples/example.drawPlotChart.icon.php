@@ -39,7 +39,7 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.tt
 $myPicture->drawText(10,15,"drawPlotChart() - draw a plot chart",["Color"=>new pColor(255)]);
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>11]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>9]);
 $myPicture->drawText(250,55,"Average time spent on projects",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Create the pCharts object */

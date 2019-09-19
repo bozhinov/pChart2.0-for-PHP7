@@ -24,7 +24,7 @@ $myPicture->drawGradientArea(0,0,210,20, DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawRectangle(0,0,209,99,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>5]);
 $myPicture->drawText(10,15,"pSurface() :: Surface charts",["Color"=>new pColor(255)]);
 
 /* Define the charting area */

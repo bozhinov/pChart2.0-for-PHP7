@@ -41,7 +41,7 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.tt
 $myPicture->drawText(10,15,"pRadar - Draw radar charts",["Color"=>new pColor(255)]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>6,"Color"=>new pColor(80)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7,"Color"=>new pColor(80)]);
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
@@ -69,7 +69,7 @@ $Options = [
 $SplitChart->drawRadar($Options);
 
 /* Write the chart legend */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Gayathri-Regular.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Gayathri-Regular.ttf","FontSize"=>7]);
 $myPicture->drawLegend(235,205,["Style"=>LEGEND_BOX,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Render the picture (choose the best way) */

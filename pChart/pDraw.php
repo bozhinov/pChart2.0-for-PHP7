@@ -3745,6 +3745,11 @@ class pDraw
 				$this->drawFilledRectangle($XMin + $VerticalMargin, $YPos - $SerieBoxSize, $XMin + $VerticalMargin + $SerieBoxSize, $YPos, $BoxSettings);
 			}
 
+			/* Momchil: visual fix */
+			if (!$DrawSerieColor) {
+				$YPos += 3;
+			}
+
 			$this->drawText($XPos, $YPos, $Caption["Caption"], ["Align" => TEXT_ALIGN_BOTTOMLEFT]);
 			$YPos = $YPos - $CaptionHeight - $HorizontalMargin;
 		}

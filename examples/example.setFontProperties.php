@@ -28,20 +28,20 @@ $myPicture->drawText(10,15,"setFontProperties() - set default font properties",[
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
 
 /* Write some text */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Gayathri-Regular.ttf","FontSize"=>20]);
-$myPicture->drawText(60,115,"10 degree text",["Angle"=>10]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Gayathri-Regular.ttf","FontSize"=>18]);
+$myPicture->drawText(60,120,"10 degree text",["Angle"=>10]);
 
 /* Write some text */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Abel-Regular.ttf","FontSize"=>20]);
-$myPicture->drawText(75,130,"10 degree text",["Angle"=>10]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Abel-Regular.ttf","FontSize"=>18]);
+$myPicture->drawText(75,140,"10 degree text",["Angle"=>10]);
 
 /* Write some text */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Dosis-Light.ttf","FontSize"=>20]);
-$myPicture->drawText(90,145,"10 degree text",["Angle"=>10]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Dosis-Light.ttf","FontSize"=>18]);
+$myPicture->drawText(90,160,"10 degree text",["Angle"=>10]);
 
 /* Write some text */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Abel-Regular.ttf","FontSize"=>20]);
-$myPicture->drawText(105,160,"10 degree text",["Angle"=>10]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Abel-Regular.ttf","FontSize"=>18]);
+$myPicture->drawText(105,180,"10 degree text",["Angle"=>10]);
 
 /* Write some text */ 
 $myPicture->setFontProperties(["FontSize"=>30,"Color"=>new pColor(231,50,36)]);

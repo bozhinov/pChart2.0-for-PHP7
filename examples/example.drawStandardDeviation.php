@@ -33,8 +33,8 @@ $myPicture->Antialias = FALSE;
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>11]);
-$myPicture->drawText(160,35,"Measured temperature",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>9]);
+$myPicture->drawText(140,35,"Measured temperature",["FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 $myPicture->drawText(340,30,"(and associated standard deviation)",["FontSize"=>10,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Set the default font */

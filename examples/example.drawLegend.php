@@ -56,7 +56,7 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","Fon
 $myPicture->drawLegend(400,150,["Style"=>LEGEND_BOX,"Mode"=>LEGEND_HORIZONTAL, "BoxWidth"=>30,"Family"=>LEGEND_FAMILY_LINE]);
 
 /* Write a legend box */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontSize"=>8]);
 $myPicture->drawFilledRectangle(1,200,698,228,["Color"=>new pColor(255,255,255,30)]);
 $myPicture->drawLegend(10,208,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 

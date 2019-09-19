@@ -38,7 +38,7 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.tt
 $myPicture->drawText(10,15,"pRadar - Draw polar charts",["Color"=>new pColor(255)]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>8,"Color"=>new pColor(80)]);
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);

@@ -32,7 +32,7 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.tt
 $myPicture->drawText(10,15,"drawThresholdArea() - draw threshold areas in the charting area",["Color"=>new pColor(255)]);
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>11]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>9]);
 $myPicture->drawText(250,55,"My chart title",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Draw the scale and do some cosmetics */ 
@@ -47,7 +47,7 @@ $myPicture->drawThresholdArea(0,100,["AreaName"=>"Test Zone","Color"=>new pColor
 $myPicture->setShadow(FALSE);
 
 /* Set the font properties */
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>11]);
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>9]);
 
 /* Draw the scale and do some cosmetics */ 
 $myPicture->setGraphArea(500,60,670,190);

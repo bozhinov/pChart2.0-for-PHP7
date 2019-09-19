@@ -29,10 +29,10 @@ $myPicture->drawFilledRectangle(510,10,689,219,["Color"=>myColors::LighterGreen(
 
 /* Write the legend */
 $myPicture->drawText(600,30,"Weather data",["Color"=>myColors::White(),"Align"=>TEXT_ALIGN_MIDDLEMIDDLE]);
-$TextSettings = ["Color"=>myColors::DarkGreen($Alpha=100),"Align"=>TEXT_ALIGN_TOPLEFT,"FontSize"=>11]; 
-$myPicture->drawText(520,45,"The   data  shown  here   has   been",$TextSettings);
-$myPicture->drawText(520,60,"collected from European locations",$TextSettings);
-$myPicture->drawText(520,75,"by the French NAVI system.",$TextSettings);
+$TextSettings = ["Color"=>myColors::DarkGreen($Alpha=100),"Align"=>TEXT_ALIGN_TOPLEFT,"FontSize"=>9]; 
+$myPicture->drawText(516,45,"The data shown here has been",$TextSettings);
+$myPicture->drawText(516,60,"collected from European locations",$TextSettings);
+$myPicture->drawText(516,75,"by the French NAVI system.",$TextSettings);
 $myPicture->drawFromPNG(540,90,"examples/resources/blocnote.png");
 
 /* Disable shadow computing  */
