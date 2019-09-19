@@ -44,7 +44,7 @@ Goals:
  - Add the first batch of new features since 2011
 
 Major changes:
- - PHP 7.2+ required
+ - PHP 7.2+ required from now on
  - Introduce pQRCode /* Check my PHP-QRCode-fork repo */
  - Replace all fonts with Open Font licensed ones
  - Performace boost
@@ -52,10 +52,10 @@ Major changes:
  - No more config files (palettes & barcode db)
 
 
-  pChart 2.4
+  pChart 2.4 (in progress)
 ===================
 Goals:
  - Introduce pPyramid
- - Replace exsting barcode implementation. Add more barcode types
- - Remove pImageMap, pCache & pSpring
+ - Replace the exsting barcode implementation. Add more barcode types
+ - Remove pImageMap, pCache
 

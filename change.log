@@ -3,12 +3,18 @@
  ¦                                            ¦
  ¦   pChart - a PHP Charting library          ¦
  ¦                                            ¦
- ¦   Version     : 2.3.0-dev                  ¦
+ ¦   Version     : 2.4.0-dev                  ¦
  ¦   Based on code by: Jean-Damien POGOLOTTI  ¦
  ¦   Maintained by   : Momchil Bozhinov       ¦
- ¦   Last Update : 15/09/19                   ¦
+ ¦   Last Update : 19/09/19                   ¦
  ¦                                            ¦
  +--------------------------------------------+
+
+ 2.4.0 -----------------------------------------------------------------------
+  o Removed pSQLite
+  o Removed ImageMapper
+  o Removed pCache
+
  
  2.3.0 -----------------------------------------------------------------------
   o Introduced pQRCode
