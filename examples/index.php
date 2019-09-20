@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>pChart 2.x - Examples</title>
+<title>pChart - Examples</title>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 <style>
 	body { background-color: #F0F0F0; font-family: tahoma; font-size: 14px;}
@@ -18,131 +18,118 @@
 </style>
 <script src='resources/jquery-3.4.1.min.js' type="text/javascript"></script>
 <script>
-
 	var LastOpened = null;
 	var LastScript = null;
 
-	function toggleMenu(Element)
-	{
-		if (LastOpened != null){
-			document.getElementById(LastOpened.slice(0, -5)).style.display = "none";
-			document.getElementById(LastOpened).style.fontWeight = "normal";
-		}
-		document.getElementById(Element.slice(0, -5)).style.display = "inline";
-		document.getElementById(Element).style.fontWeight = "bold";
-
-		LastOpened = Element;
-	}
-
-	function render(PictureName)
-	{
-		if (LastScript != null) {
-			document.getElementById(LastScript).style.fontWeight = "normal"; 
-		}
-		document.getElementById(PictureName).style.fontWeight = "bold";
-		LastScript = PictureName;
-
-		$("#render").html("<center><img src='example." + PictureName + ".php' /></center>");
-		viewSource(PictureName);
-	}
-
-	function viewSource(URL) // fetch the source code
-	{
-		$.ajax({
-			type: "POST", 
-			url: "fetch.src.php",
-			data: {'View': URL},
-			success: function (result) {
-				$("#source").html(result);
-			}
-		});
-	}
-
 	$(document).ready(function() {
-		$(".folder").on("click", function() {
-			toggleMenu($(this).attr('id'));
-		})
-		$(".example").on("click", function() {
-			render($(this).attr('id'));
-		})
-	});
 
+		$(".folder").on("click", function() {
+
+			if (LastOpened != null){
+				document.getElementById(LastOpened.slice(0, -5)).style.display = "none";
+				document.getElementById(LastOpened).style.fontWeight = "normal";
+			}
+
+			LastOpened = $(this).attr('id');
+
+			document.getElementById(LastOpened.slice(0, -5)).style.display = "inline";
+			document.getElementById(LastOpened).style.fontWeight = "bold";
+		});
+
+		$(".example").on("click", function() {
+
+			if (LastScript != null) {
+				document.getElementById(LastScript).style.fontWeight = "normal"; 
+			}
+
+			LastScript = $(this).attr('id');
+
+			document.getElementById(LastScript).style.fontWeight = "bold";
+
+			$("#render").html("<center><img src='example." + LastScript + ".php' /></center>");
+
+			$.ajax({
+				type: "POST", 
+				url: "fetch.src.php",
+				data: {'View': LastScript},
+				success: function (result) {
+					$("#source").html(result);
+				}
+			});
+		});
+
+	});
 </script>
 </head>
 
 <body>
 
 <div style="float: left;">
-		<div style='background-color: white; border: 2px solid #FFFFFF;'>
-			<div style='padding: 1px; padding-bottom: 3px; color: #000000; background-color:#D0D0D0; width: 220px;'>
-				<img src='resources/application_view_list.png'/>
-				 Examples folder contents
-			</div>
+	<div style='background-color: white; border: 2px solid #FFFFFF;'>
+		<div style='padding: 1px; padding-bottom: 3px; color: #000000; background-color:#D0D0D0; width: 220px;'>
+			<img src='resources/application_view_list.png'/>
+			 Examples folder contents
+		</div>
 <?php
 
  /* Build a list of the examples & categories */
-$Tree = [];
-$DirectoryHandle = opendir(".");
+$tree = [];
+foreach (glob("example.*") as $fileName){
 
-while (($FileName = readdir($DirectoryHandle)) !== false)
-{
-	if (substr($FileName,0,8) == "example."){
-		$FileHandle  = fopen($FileName, "r");
-		$buffer      = fgets($FileHandle);
-		$buffer      = fgets($FileHandle);
-		fclose($FileHandle);
+	$fileHandle  = fopen($fileName, "r");
+	$buffer      = fgets($fileHandle);
+	$buffer      = fgets($fileHandle);
+	fclose($fileHandle);
 
-		if (substr($buffer, 0, 7) == "/* CAT:"){ # /* CAT:Misc */
-			$Categorie = substr($buffer, 7, -5);
-			$Tree[$Categorie][] = substr($FileName, 8, -4);
-		}
+	if (substr($buffer, 0, 7) == "/* CAT:"){ # /* CAT:Misc */
+		$cat = substr($buffer, 7, -5);
+		$tree[$cat][] = substr($fileName, 8, -4);
 	}
 }
 
-closedir($DirectoryHandle);
+ksort($tree);
+$keys = array_keys($tree);
+$lastKey = end($keys);
 
-$_TREE_HTML = "";
-ksort($Tree);
-$keys = array_keys($Tree);
-$LastKey = end($keys);
+$treeHTML = "";
 
-foreach($Tree as $Key => $Elements){
+foreach($tree as $key => $elements){
 
-	if ($LastKey == $Key) {
-		$Icon = "dash-explorer-last.png";
-		$SubIcon = "dash-explorer-blank.png";
+	if ($lastKey == $key) {
+		$icon = "dash-explorer-last.png";
+		$subIcon = "dash-explorer-blank.png";
 	} else {
-		$Icon = "dash-explorer.png";
-		$SubIcon = "dash-explorer-noleaf.png";
+		$icon = "dash-explorer.png";
+		$subIcon = "dash-explorer-noleaf.png";
 	}
 
-	$_TREE_HTML .= "<table>\r\n";
-	$_TREE_HTML .= "<tr>\r\n";
-	$_TREE_HTML .= "	<td><img src='resources/".$Icon."' /></td>\r\n";
-	$_TREE_HTML .= "	<td><img src='resources/folder.png'/></td>\r\n";
-	$_TREE_HTML .= "	<td><div class='folder' id='".$Key."_main'>&nbsp;".$Key."</div></td>\r\n";
-	$_TREE_HTML .= "</tr>\r\n";
-	$_TREE_HTML .= "</table>\r\n";
+	$treeHTML .= "<table>\r\n";
+	$treeHTML .= "<tr>\r\n";
+	$treeHTML .= "	<td><img src='resources/".$icon."' /></td>\r\n";
+	$treeHTML .= "	<td><img src='resources/folder.png'/></td>\r\n";
+	$treeHTML .= "	<td><div class='folder' id='".$key."_main'>&nbsp;".$key."</div></td>\r\n";
+	$treeHTML .= "</tr>\r\n";
+	$treeHTML .= "</table>\r\n";
 
-	$_TREE_HTML .= "<table id='".$Key."' style='display: none;'><tr>\r\n";
+	$treeHTML .= "<table id='".$key."' style='display: none;'><tr>\r\n";
 	
-	foreach($Elements as $SubKey => $Element){
+	foreach($elements as $subKey => $element){
 
-		$Icon = ($SubKey == count($Elements)-1) ? "dash-explorer-last.png" : "dash-explorer.png";
+		$icon = ($subKey == count($elements)-1) ? "dash-explorer-last.png" : "dash-explorer.png";
 
-		$_TREE_HTML .= "<tr>\r\n";
-		$_TREE_HTML .= "	<td><img src='resources/".$SubIcon."' /></td>\r\n";
-		$_TREE_HTML .= "	<td><img src='resources/".$Icon."' /></td>\r\n";
-		$_TREE_HTML .= "	<td><img src='resources/application_view_tile.png' /></td>\r\n";
-		$_TREE_HTML .= "	<td><div class='example' id='".$Element."'>&nbsp;<a class='smallLink' href='#'>".$Element."</a></div></td>\r\n";
-		$_TREE_HTML .= "</tr>\r\n";
+		$treeHTML .= "<tr>\r\n";
+		$treeHTML .= "	<td><img src='resources/".$subIcon."' /></td>\r\n";
+		$treeHTML .= "	<td><img src='resources/".$icon."' /></td>\r\n";
+		$treeHTML .= "	<td><img src='resources/application_view_tile.png' /></td>\r\n";
+		$treeHTML .= "	<td><div class='example' id='".$element."'>&nbsp;<a class='smallLink' href='#'>".$element."</a></div></td>\r\n";
+		$treeHTML .= "</tr>\r\n";
 	}
 
-	$_TREE_HTML .= "</table>\r\n";
+	$treeHTML .= "</table>\r\n";
 
 }
 
-echo $_TREE_HTML;
+echo $treeHTML;
 
 ?>
 	</div>

@@ -1,5 +1,5 @@
 <?php   
-/* CAT:Surface chart*/
+/* CAT:Surface chart */
 
 /* pChart library inclusions */
 require_once("bootstrap.php");
