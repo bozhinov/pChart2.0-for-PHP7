@@ -19,8 +19,8 @@
 <script src='resources/jquery-3.4.1.min.js' type="text/javascript"></script>
 <script>
 
-	LastOpened = null;
-	LastScript = null;
+	var LastOpened = null;
+	var LastScript = null;
 
 	function toggleMenu(Element)
 	{
@@ -36,31 +36,17 @@
 
 	function render(PictureName)
 	{
-		if (LastScript != null) { 
+		if (LastScript != null) {
 			document.getElementById(LastScript).style.fontWeight = "normal"; 
 		}
 		document.getElementById(PictureName).style.fontWeight = "bold";
 		LastScript = PictureName;
 
-		ajaxRender(PictureName);
+		$("#render").html("<center><img src='example." + PictureName + ".php' /></center>");
+		viewSource(PictureName);
 	}
 
-	function ajaxRender(URL) // render the picture
-	{
-		$.ajax({
-			url: URL,
-			method: "POST",
-			beforeSend: function(){
-				$("#render").html("<center><img src='resources/wait.gif' /><br>Rendering</center>");
-			},
-			complete: function(){
-				$("#render").html("<center><img src='example." + URL + ".php' /></center>");
-				view(URL); 
-			}
-		});
-	}
-
-	function view(URL) // fetch the source code
+	function viewSource(URL) // fetch the source code
 	{
 		$.ajax({
 			type: "POST", 
@@ -71,7 +57,7 @@
 			}
 		});
 	}
-	
+
 	$(document).ready(function() {
 		$(".folder").on("click", function() {
 			toggleMenu($(this).attr('id'));
