@@ -15,7 +15,7 @@ You can find the whole class documentation on the pChart web site.
 
 function Do(Action)
 {
-	$("#result_area").html("<img src='graphix/wait.gif' /><br />Saving configuration");
+	$("#result_area").html("<img src='../resources/wait.gif' /><br />Saving configuration");
 
 	var Input = {};
 

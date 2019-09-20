@@ -5,7 +5,7 @@ body
 	text-align: left;
 	font-family: tahoma;
 	background-color: #FFFFFF;
-	background-image: url('graphix/background.console.png');
+	background-image: url('../resources/background.console.png');
 }
 
 table { margin: 0px; padding: 0px;}

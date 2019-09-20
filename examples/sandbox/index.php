@@ -38,34 +38,34 @@ function listfonts($selected)
 <div class='topTable'>
 	<table style='background-color: #D0D0D0; display: inline-block;'>
 		<td class='topMenu' id='menu6' onclick="Do('Code')">
-			<img src='graphix/cog.png' />
+			<img src='../resources/cog.png' />
 			&nbsp;Show code&nbsp;
 		</td>
 		<td class='topMenu' id='menu7' onclick="Do('Render')">
-			<img src='graphix/accept.png' />
+			<img src='../resources/accept.png' />
 			&nbsp;Render picture&nbsp;
 		</td>
 	</table>
 
 	<table style="float: left;">
 		<td class='topMenu' id='menu1' >
-			<img src='graphix/tab.png' />
+			<img src='../resources/tab.png' />
 			&nbsp;General settings&nbsp;
 		</td>
 		<td class='topMenu' id='menu2'>
-			<img src='graphix/tab.png' />
+			<img src='../resources/tab.png' />
 			&nbsp;Data&nbsp;
 		</td>
 		<td class='topMenu' id='menu3'>
-			<img src='graphix/tab.png' />
+			<img src='../resources/tab.png' />
 			&nbsp;Scale&nbsp;
 		</td>
 		<td class='topMenu' id='menu4'>
-			<img src='graphix/tab.png' />
+			<img src='../resources/tab.png' />
 			&nbsp;Chart&nbsp;
 		</td>
 		<td class='topMenu' id='menu5'>
-			<img src='graphix/tab.png' />
+			<img src='../resources/tab.png' />
 			&nbsp;Legend, thresholds &amp; Misc&nbsp;
 		</td>
 	</table>
@@ -77,7 +77,7 @@ function listfonts($selected)
 <div class="roundedCorner" id='tab1'>
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/wrench.png' /></td>
+			<td width='20'><img src='../resources/wrench.png' /></td>
 			<td width='300'><b>General settings</b></td>
 		</tr>
 	</table>
@@ -113,7 +113,7 @@ function listfonts($selected)
 
 	<table class="defaultTable">
 		<tr>
-		<td width='20'><img src='graphix/comment.png' /></td>
+		<td width='20'><img src='../resources/comment.png' /></td>
 		<td width='240'><b>Chart title</b></td>
 		<td width='20'><input type='checkbox' id='g_title_enabled' checked='checked' /></td>
 		<td width='38'>Enabled</td>
@@ -171,7 +171,7 @@ function listfonts($selected)
 
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/paintcan.png' /></td>
+			<td width='20'><img src='../resources/paintcan.png' /></td>
 			<td width='240'><b>Solid background</b></td>
 			<td width='20'><input type='checkbox' id='g_solid_enabled' checked='checked' /></td>
 			<td width='38'>Enabled</td>
@@ -190,7 +190,7 @@ function listfonts($selected)
 
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/paintcan.png' /></td>
+			<td width='20'><img src='../resources/paintcan.png' /></td>
 			<td width='240'><b>Gradient background</b></td>
 			<td width='20'><input type='checkbox' id='g_gradient_enabled' checked='checked' /></td>
 			<td width='38'>Enabled</td>
@@ -227,7 +227,7 @@ function listfonts($selected)
 <div class="roundedCorner" id='tab2' style='display: none;'>
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/database_table.png' /></td>
+			<td width='20'><img src='../resources/database_table.png' /></td>
 			<td width='300'><b>Dataset definition</b></td>
 		</tr>
 	</table>
@@ -313,7 +313,7 @@ for($i=0; $i<8;$i++){
 
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/chart_bar_edit.png' /></td>
+			<td width='20'><img src='../resources/chart_bar_edit.png' /></td>
 			<td width='300'><b>Axis position and units</b></td>
 		</tr>
 	</table>
@@ -389,7 +389,7 @@ for($i=0; $i<8;$i++){
 
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/layout_edit.png' /></td>
+			<td width='20'><img src='../resources/layout_edit.png' /></td>
 			<td width='300'><b>Charting area definition</b></td>
 		</tr>
 	</table>
@@ -462,7 +462,7 @@ for($i=0; $i<8;$i++){
 
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/page_edit.png' /></td>
+			<td width='20'><img src='../resources/page_edit.png' /></td>
 			<td width='300'><b>X Axis configuration</b></td>
 		</tr>
 	</table>
@@ -491,7 +491,7 @@ for($i=0; $i<8;$i++){
 
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/page_edit.png' /></td>
+			<td width='20'><img src='../resources/page_edit.png' /></td>
 			<td width='300'><b>Grid</b></td>
 		</tr>
 	</table>
@@ -518,7 +518,7 @@ for($i=0; $i<8;$i++){
 
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/page_edit.png' /></td>
+			<td width='20'><img src='../resources/page_edit.png' /></td>
 			<td width='300'><b>Ticks</b></td>
 		</tr>
 	</table>
@@ -549,7 +549,7 @@ for($i=0; $i<8;$i++){
 <div class="roundedCorner" id='tab4' style='display: none;'>
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/wrench.png' /></td>
+			<td width='20'><img src='../resources/wrench.png' /></td>
 			<td width='300'><b>Chart</b></td>
 		</tr>
 	</table>
@@ -590,7 +590,7 @@ for($i=0; $i<8;$i++){
 	<div style='background: #D2F5C1; padding: 4px; color: #667309; margin-top: 10px;'>
 		<table>
 			<tr>
-				<td width='20'><img src='graphix/comment.png' /></td>
+				<td width='20'><img src='../resources/comment.png' /></td>
 				<td>Selecting a chart layout will enable/disable chart specifics options.</td>
 			</tr>
 		</table>
@@ -598,7 +598,7 @@ for($i=0; $i<8;$i++){
 
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/chart_line.png' /></td>
+			<td width='20'><img src='../resources/chart_line.png' /></td>
 			<td width='300'><b>Plot specifics</b></td>
 		</tr>
 	</table>
@@ -616,7 +616,7 @@ for($i=0; $i<8;$i++){
 
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/chart_bar.png' /></td>
+			<td width='20'><img src='../resources/chart_bar.png' /></td>
 			<td width='300'><b>Bar charts specifics</b></td>
 		</tr>
 	</table>
@@ -636,7 +636,7 @@ for($i=0; $i<8;$i++){
 
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/chart_curve.png' /></td>
+			<td width='20'><img src='../resources/chart_curve.png' /></td>
 			<td width='300'><b>Area charts specifics</b></td>
 		</tr>
 	</table>
@@ -656,7 +656,7 @@ for($i=0; $i<8;$i++){
 <div class="roundedCorner" id='tab5' style='display: none;'>
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/application_form.png' /></td>
+			<td width='20'><img src='../resources/application_form.png' /></td>
 			<td width='240'><b>Legend</b></td>
 			<td width='20'><input type='checkbox' id='l_enabled' checked='checked' /></td>
 			<td width='38'>Enabled</td>
@@ -738,7 +738,7 @@ for($i=0; $i<8;$i++){
 
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/vector.png' /></td>
+			<td width='20'><img src='../resources/vector.png' /></td>
 			<td width='240'><b>Threshold</b></td>
 			<td width='20'><input type='checkbox' id='t_enabled' /></td>
 			<td width='38'>Enabled</td>
@@ -783,7 +783,7 @@ for($i=0; $i<8;$i++){
 
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/shape_flip_vertical.png' /></td>
+			<td width='20'><img src='../resources/shape_flip_vertical.png' /></td>
 			<td width='240'><b>Slope chart</b></td>
 			<td width='20'><input type='checkbox' id='sl_enabled' onclick='doLayout();' /></td>
 			<td width='38'>Enabled</td>
@@ -803,7 +803,7 @@ for($i=0; $i<8;$i++){
 
 	<table class="defaultTable">
 		<tr>
-			<td width='20'><img src='graphix/color_swatch.png' /></td>
+			<td width='20'><img src='../resources/color_swatch.png' /></td>
 			<td width='300'><b>Palette</b></td>
 		</tr>
 	</table>
