@@ -4,16 +4,14 @@
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 <style>
 	body { background-color: #F0F0F0; font-family: tahoma; font-size: 14px;}
-	td { font-family: tahoma; font-size: 11px; margin: 0px; padding: 0px; border: 0px; }
-	div.folder { cursor: hand; cursor: pointer; }
-	a.smallLink:link, a.smallLink:visited { text-decoration: none; color: #6A6A6A; }
-	a.smallLink:hover { text-decoration: underline; color: #6A6A6A; }
-	div.type01 { 
+	div.folder { cursor: hand; }
+	div.example > a:link, a:visited { text-decoration: none; color: #6A6A6A; font-size: 11px;}
+	div.example > a:hover { text-decoration: underline; color: #6A6A6A; }
+	div.type01 {
 		display:table-cell;
 		padding: 10px;
 		border: 2px solid #FFFFFF;
 		background-image: url("resources/dash.png");
-		font-size: 10px;
 	}
 </style>
 <script src='resources/jquery-3.4.1.min.js' type="text/javascript"></script>
@@ -103,30 +101,27 @@ foreach($tree as $key => $elements){
 		$subIcon = "dash-explorer-noleaf.png";
 	}
 
-	$treeHTML .= "<table>\r\n";
-	$treeHTML .= "<tr>\r\n";
-	$treeHTML .= "	<td><img src='resources/".$icon."' /></td>\r\n";
-	$treeHTML .= "	<td><img src='resources/folder.png'/></td>\r\n";
-	$treeHTML .= "	<td><div class='folder' id='".$key."_main'>&nbsp;".$key."</div></td>\r\n";
-	$treeHTML .= "</tr>\r\n";
-	$treeHTML .= "</table>\r\n";
+	$treeHTML .= "<div class='folder' id='".$key."_main'>\r\n";
+	$treeHTML .= "	<img src='resources/".$icon."'/>\r\n";
+	$treeHTML .= "	<img src='resources/folder.png'/>\r\n";
+	$treeHTML .= "	&nbsp;".$key."\r\n";
+	$treeHTML .= "</div>\r\n";
 
-	$treeHTML .= "<table id='".$key."' style='display: none;'><tr>\r\n";
+	$treeHTML .= "<div id='".$key."' style='display: none;'>\r\n";
 	
 	foreach($elements as $subKey => $element){
 
 		$icon = ($subKey == count($elements)-1) ? "dash-explorer-last.png" : "dash-explorer.png";
 
-		$treeHTML .= "<tr>\r\n";
-		$treeHTML .= "	<td><img src='resources/".$subIcon."' /></td>\r\n";
-		$treeHTML .= "	<td><img src='resources/".$icon."' /></td>\r\n";
-		$treeHTML .= "	<td><img src='resources/application_view_tile.png' /></td>\r\n";
-		$treeHTML .= "	<td><div class='example' id='".$element."'>&nbsp;<a class='smallLink' href='#'>".$element."</a></div></td>\r\n";
-		$treeHTML .= "</tr>\r\n";
+		$treeHTML .= "<div class='example' id='".$element."'>\r\n";
+		$treeHTML .= "	<img src='resources/".$subIcon."' />\r\n";
+		$treeHTML .= "	<img src='resources/".$icon."' />\r\n";
+		$treeHTML .= "	<img src='resources/application_view_tile.png' />\r\n";
+		$treeHTML .= "	&nbsp;<a href='#'>".$element."</a>\r\n";
+		$treeHTML .= "</div>\r\n";
 	}
 
-	$treeHTML .= "</table>\r\n";
-
+	$treeHTML .= "</div>\r\n";
 }
 
 echo $treeHTML;
