@@ -36,7 +36,7 @@ function listfonts($selected)
 <body>
 
 <div class='topTable'>
-	<table style='background-color: #D0D0D0; display: inline-block;'>
+	<table style='display: inline-block;'>
 		<td class='topMenu' id='menu6' onclick="Do('Code')">
 			<img src='../resources/cog.png' />
 			&nbsp;Show code&nbsp;
@@ -48,7 +48,7 @@ function listfonts($selected)
 	</table>
 
 	<table style="float: left;">
-		<td class='topMenu' id='menu1' >
+		<td class='topMenu' id='menu1' style="background-color: #D0D0D0;">
 			<img src='../resources/tab.png' />
 			&nbsp;General settings&nbsp;
 		</td>
@@ -839,9 +839,8 @@ for($i=0; $i<8;$i++){
 <script type="text/javascript">
 	$(document).ready(function() {
 
-		CurrentDiv = 1;
+		CurrentDiv = "menu1";
 		Automatic  = true;
-		document.getElementById("menu1").style.backgroundColor = "#D0D0D0";
 
 		/* Initial layout */
 		randomize();
@@ -851,7 +850,7 @@ for($i=0; $i<8;$i++){
 		checkChartSettings();
 		checkLegend();
 
-		$(".picker").drawrpalette().on("choose.drawrpalette",function(event,hexcolor){
+		$(".picker").drawrpalette().on("choose.drawrpalette", function(event,hexcolor){
 			divID = "#" + ($(this)[0].id) + "_show";
 			$(divID).val(hexcolor);
 		});
@@ -874,8 +873,7 @@ for($i=0; $i<8;$i++){
 				$(this).css({"background-color": "#F4F4F4"});
 			},
 			function () {
-				ID = ($(this)[0].id).replace("menu", "");
-				if (ID != CurrentDiv){
+				if ($(this)[0].id != CurrentDiv){
 					$(this).css({"background-color": "#EAEAEA"});
 				} else {
 					$(this).css({"background-color": "#D0D0D0"});
@@ -884,18 +882,19 @@ for($i=0; $i<8;$i++){
 		);
 
 		$('td.topMenu').on("click", function() {
-			ID = ($(this)[0].id).replace("menu", "");
+			CurrentDiv = $(this)[0].id;
+			ID = CurrentDiv.replace("menu", "");
+
 			if (ID < 6){
 				for (i=1;i<6;i++){
-					if ( i != ID ) {
+					if ( i != ID ){
 						document.getElementById("tab"+i).style.display = "none";
 						document.getElementById("menu"+i).style.backgroundColor = "#EAEAEA";
 					}
 				}
 				document.getElementById("tab"+ID).style.display = "block";
-				document.getElementById("menu"+ID).style.backgroundColor = "#D0D0D0";
+				document.getElementById(CurrentDiv).style.backgroundColor = "#D0D0D0";
 			}
-			CurrentDiv = ID;
 		});
 	});
 </script>
