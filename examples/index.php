@@ -3,11 +3,11 @@
 <title>pChart - Examples</title>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 <style>
-	body { background-color: #F0F0F0; font-family: tahoma; font-size: 14px;}
+	body { background-color: #F0F0F0; font-family: tahoma; font-size: 14px; }
 	div.folder { cursor: hand; }
-	div.example > a:link, a:visited { text-decoration: none; color: #6A6A6A; font-size: 11px;}
-	div.example > a:hover { text-decoration: underline; color: #6A6A6A; }
-	div.type01 {
+	div.example > a:link, a:visited { text-decoration: none; color: #6A6A6A; font-size: 11px; }
+	div.example > a:hover { text-decoration: underline; }
+	#render, #source {
 		display:table-cell;
 		padding: 10px;
 		border: 2px solid #FFFFFF;
@@ -130,31 +130,23 @@ echo $treeHTML;
 	</div>
 
 	<div style='width:200px; padding: 10 0 0 10'>
-		<img src='resources/application_view_list.png'/><a class='smallLink' href='sandbox/' target="_blank"> Try the Sandbox</a>
+		<img src='resources/application_view_list.png'/><a href='sandbox/' target="_blank"> Try the Sandbox</a>
 	</div>
 
 </div>
 <div style="margin-left: 280px;"> 
 
-	<div>
-		<img src='resources/chart_bar.png'/> Rendering area
-	</div>
-
-	<div class="type01" id="render">
+	<img src='resources/chart_bar.png'/> Rendering area
+	<div id="render">
 		<img src='resources/accept.png'/> Click on an example to render it!
 	</div>
 
 	<br/>
 	<br/>
 
-	<div>
-		<img src='resources/application_view_list.png'/> Source area
-	</div>
-
-	<div class="type01">
-		<div id="source">
-			<img src='resources/accept.png'/> Click on an example to get its source!
-		</div>
+	<img src='resources/application_view_list.png'/> Source area
+	<div id="source">
+		<img src='resources/accept.png'/> Click on an example to get its source!
 	</div>
 
 </div>
