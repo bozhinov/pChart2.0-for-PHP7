@@ -70,61 +70,68 @@
 		</div>
 <?php
 
- /* Build a list of the examples & categories */
-$tree = [];
-foreach (glob("example.*") as $fileName){
+session_start();
 
-	$fileHandle  = fopen($fileName, "r");
-	$buffer      = fgets($fileHandle);
-	$buffer      = fgets($fileHandle);
-	fclose($fileHandle);
+if (!isset($_SESSION['html'])){
 
-	if (substr($buffer, 0, 7) == "/* CAT:"){ # /* CAT:Misc */
-		$cat = substr($buffer, 7, -5);
-		$tree[$cat][] = substr($fileName, 8, -4);
-	}
-}
+	 /* Build a list of the examples & categories */
+	$tree = [];
+	foreach (glob("example.*") as $fileName){
 
-ksort($tree);
-$keys = array_keys($tree);
-$lastKey = end($keys);
+		$fileHandle  = fopen($fileName, "r");
+		$buffer      = fgets($fileHandle);
+		$buffer      = fgets($fileHandle);
+		fclose($fileHandle);
 
-$treeHTML = "";
-
-foreach($tree as $key => $elements){
-
-	if ($lastKey == $key) {
-		$icon = "dash-explorer-last.png";
-		$subIcon = "dash-explorer-blank.png";
-	} else {
-		$icon = "dash-explorer.png";
-		$subIcon = "dash-explorer-noleaf.png";
+		if (substr($buffer, 0, 7) == "/* CAT:"){ # /* CAT:Misc */
+			$cat = substr($buffer, 7, -5);
+			$tree[$cat][] = substr($fileName, 8, -4);
+		}
 	}
 
-	$treeHTML .= "<div class='folder' id='".$key."_main'>\r\n";
-	$treeHTML .= "	<img src='resources/".$icon."'/>\r\n";
-	$treeHTML .= "	<img src='resources/folder.png'/>\r\n";
-	$treeHTML .= "	&nbsp;".$key."\r\n";
-	$treeHTML .= "</div>\r\n";
+	ksort($tree);
+	$keys = array_keys($tree);
+	$lastKey = end($keys);
 
-	$treeHTML .= "<div id='".$key."' style='display: none;'>\r\n";
-	
-	foreach($elements as $subKey => $element){
+	$treeHTML = "";
 
-		$icon = ($subKey == count($elements)-1) ? "dash-explorer-last.png" : "dash-explorer.png";
+	foreach($tree as $key => $elements){
 
-		$treeHTML .= "<div class='example' id='".$element."'>\r\n";
-		$treeHTML .= "	<img src='resources/".$subIcon."' />\r\n";
-		$treeHTML .= "	<img src='resources/".$icon."' />\r\n";
-		$treeHTML .= "	<img src='resources/application_view_tile.png' />\r\n";
-		$treeHTML .= "	&nbsp;<a href='#'>".$element."</a>\r\n";
+		if ($lastKey == $key) {
+			$icon = "dash-explorer-last.png";
+			$subIcon = "dash-explorer-blank.png";
+		} else {
+			$icon = "dash-explorer.png";
+			$subIcon = "dash-explorer-noleaf.png";
+		}
+
+		$treeHTML .= "<div class='folder' id='".$key."_main'>\r\n";
+		$treeHTML .= "	<img src='resources/".$icon."'/>\r\n";
+		$treeHTML .= "	<img src='resources/folder.png'/>\r\n";
+		$treeHTML .= "	&nbsp;".$key."\r\n";
+		$treeHTML .= "</div>\r\n";
+
+		$treeHTML .= "<div id='".$key."' style='display: none;'>\r\n";
+		
+		foreach($elements as $subKey => $element){
+
+			$icon = ($subKey == count($elements)-1) ? "dash-explorer-last.png" : "dash-explorer.png";
+
+			$treeHTML .= "<div class='example' id='".$element."'>\r\n";
+			$treeHTML .= "	<img src='resources/".$subIcon."' />\r\n";
+			$treeHTML .= "	<img src='resources/".$icon."' />\r\n";
+			$treeHTML .= "	<img src='resources/application_view_tile.png' />\r\n";
+			$treeHTML .= "	&nbsp;<a href='#'>".$element."</a>\r\n";
+			$treeHTML .= "</div>\r\n";
+		}
+
 		$treeHTML .= "</div>\r\n";
 	}
 
-	$treeHTML .= "</div>\r\n";
+	$_SESSION['html'] = $treeHTML;
 }
 
-echo $treeHTML;
+echo $_SESSION['html'];
 
 ?>
 	</div>
