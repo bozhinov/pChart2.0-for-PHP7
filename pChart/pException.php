@@ -3,9 +3,9 @@
 /*
 pException - pChart core class
 
-Version     : 0.1
+Version     : 2.4.0-dev
 Made by     : Created by Momchil Bozhinov
-Last Update : 27/11/2017
+Last Update : 01/09/2019
 
 This file can be distributed under the license you can find at:
 http://www.pchart.net/license

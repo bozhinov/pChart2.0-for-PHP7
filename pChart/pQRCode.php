@@ -2,9 +2,9 @@
 /*
 pQRCode - glue for QRCode
 
-Version     : 0.0.1-dev
+Version     : 2.4.0-dev
 Made by     : Momchil Bozhinov
-Last Update : 31/08/2019
+Last Update : 01/09/2019
 
 You can find examples on:
 https://github.com/bozhinov/PHP-QRCode-fork

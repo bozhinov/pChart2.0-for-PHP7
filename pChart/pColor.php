@@ -2,9 +2,9 @@
 /*
 pColor - Data structure for colors
 
-Version     : 0.0.2
+Version     : 2.4.0-dev
 Made by     : Momchil Bozhinov
-Last Update : 06/02/2019
+Last Update : 01/09/2019
 
 */
 

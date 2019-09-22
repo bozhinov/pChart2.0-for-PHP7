@@ -3,9 +3,9 @@
 /*
 pCharts - class with charts
 
-Version     : 0.5
+Version     : 2.4.0-dev
 Made by     : Forked by Momchil Bozhinov from the original pDraw class from Jean-Damien POGOLOTTI
-Last Update : 02/02/2019
+Last Update : 01/09/2019
 
 Contains functions:
 	drawPolygonChart

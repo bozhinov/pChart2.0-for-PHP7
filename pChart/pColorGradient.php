@@ -2,9 +2,9 @@
 /*
 pColorGradient - Data structure for gradient color
 
-Version     : 0.0.1
+Version     : 2.4.0-dev
 Made by     : Momchil Bozhinov
-Last Update : 01/01/2018
+Last Update : 01/09/2019
 
 */
 
