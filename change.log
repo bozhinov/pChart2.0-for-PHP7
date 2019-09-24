@@ -14,8 +14,9 @@
   o Removed pSQLite
   o Removed ImageMapper
   o Removed pCache
+  o Examples use the QRCode lib directly
+  o Examples use the new Barcode lib
 
- 
  2.3.0 -----------------------------------------------------------------------
   o Introduced pQRCode
   o Introduced pSQLite

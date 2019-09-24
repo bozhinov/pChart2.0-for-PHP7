@@ -8,6 +8,8 @@
     "form",
     "pie",
     "bar",
+	"qrcode",
+	"barcode",
     "server side charts"
   ],
   "homepage": "https://github.com/bozhinov/pChart2.0-for-PHP7",
