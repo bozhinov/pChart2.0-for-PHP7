@@ -4,9 +4,13 @@ require_once("bootstrap.php");
 
 use pChart\{
 	pDraw,
-	pColor,
-	pBarcode\pBarcode39,
-	pBarcode\pBarcode128
+	pColor
+};
+
+use Barcodes\{
+	Barcodes,
+	BarColor,
+	Encoders\Codes
 };
 
 /* CAT:Barcode */
@@ -61,20 +65,16 @@ $myPicture->drawText(410,236,"02/02/2020",$Settings);
 $myPicture->drawText(410,276,"12.340 Kg",$Settings);
 
 /* Create the barcode 39 object */ 
-$Barcode39 = new pBarcode39($myPicture);
-
-$Barcode39->myPicture->setFontProperties(["FontSize"=>8]);
-$Barcode39->draw("12250000234502",30,220,["ShowLegend" => TRUE, "Height" => 55, "DrawArea" => FALSE]);
-
-$Settings = ["ShowLegend" => TRUE, "Height" => 14,"DrawArea" => FALSE];
-$Barcode39->draw("75 cans",260,220,$Settings);
-$Barcode39->draw("06062010",260,260,$Settings);
+$Generator = new Barcodes("code39");
+$Generator->forPChart($myPicture, "12250000234502", [], 30, 220);
+$Generator->forPChart($myPicture, "75 cans", [], 260, 220);
+$Generator->forPChart($myPicture, "06062010", [], 260, 260);
 
 /* Create the barcode 128 object */ 
-$Barcode128 = new pBarcode128($myPicture);
-$Barcode128->draw("TLSE",450,25,["ShowLegend" => TRUE, "Height" => 65,"DrawArea" => FALSE]);
+$Generator = new Barcodes("code128");
+$Generator->forPChart($myPicture, "TLSE", [], 450,25);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.barcode.png");
- 
+
 ?>

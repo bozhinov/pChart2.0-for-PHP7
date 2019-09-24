@@ -4,9 +4,11 @@
 /* pChart library inclusions */
 require_once("bootstrap.php");
 
-use pChart\{
-	pDraw,
-	pBarcode\pBarcode128
+use pChart\pDraw;
+
+use Barcodes\{
+	Barcodes,
+	Encoders\Codes
 };
 
 /* String to be written on the barcode */
