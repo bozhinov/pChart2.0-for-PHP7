@@ -10,9 +10,7 @@ use QRCode\{
 
 use pChart\{
 	pDraw,
-	pColor,
-	pQRCode,
-	pBarcode\pBarcode39
+	pColor
 };
 
 /* Create the pChart object */
@@ -65,18 +63,10 @@ $Settings = ["Color" => new pColor(0),"Align" => TEXT_ALIGN_TOPLEFT];
 $myPicture->drawText(410,236,"06/06/2010",$Settings);
 $myPicture->drawText(410,276,"12.340 Kg",$Settings);
 
-/* Create the barcode 39 object */ 
-$Barcode39 = new pBarcode39($myPicture);
-
-$Barcode39->myPicture->setFontProperties(["FontSize"=>7]);
-$Barcode39->draw("12250000234502",30,220,["ShowLegend" => TRUE, "Height" => 55, "DrawArea" => FALSE]);
-
-$Settings = ["ShowLegend" => TRUE, "Height" => 14,"DrawArea" => FALSE];
-$Barcode39->draw("75 cans",260,220,$Settings);
-$Barcode39->draw("06062010",260,260,$Settings);
-
-$pQRCode = new pQRCode($myPicture);
-$pQRCode->configure($error_correction = 1, $martrix_poit_size = 3, $margin = 4)->draw('momchil@bojinov.info', $X = 445, $Y = 11);
+$QRCode = new QRcode();
+$QRCode->config([$error_correction = 1, $martrix_poit_size = 3, $margin = 4]);
+$QRCode->encode('momchil@bojinov.info');
+$QRCode->forPChart($myPicture, $X = 445, $Y = 11);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.barcode.png");
