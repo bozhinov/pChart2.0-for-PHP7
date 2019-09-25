@@ -18,23 +18,28 @@ use Barcodes\{
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
 
+/* Overlay with a gradient */
+$myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>$Start=new pColor(219,231,139,50), "EndColor"=>new pColor(1,138,68,50)]);
+$myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL, ["StartColor"=>$Start=new pColor(0,0,0,80), "EndColor"=>new pColor(50,50,50,80)]);
+
 /* Write the title */
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
-$myPicture->drawText(10,15,"Barcode 39 - Add barcode to your pictures",["Color"=>new pColor(0)]);
+$myPicture->drawText(10,15,"Barcode 39 - Add barcode to your pictures",["Color"=>new pColor(255)]);
 
 /* Create the barcode 39 object */
 $Generator = new Barcodes("code39");
 
+/* TODO
+$myPicture->drawPolygon());
+
 /* Draw a simple barcode */
-//$Barcode->myPicture->setFontProperties(["FontSize"=>6]);
-$Generator->forPChart($myPicture, "pChart Rocks!", [], 50,50);
+$Generator->forPChart($myPicture, "pChart Rocks!", ['palette' => [1 => new BarColor(255,0,0)], "label" => ['Color' => new BarColor(255,0,0)]], 50,50);
 
 /* Draw a rotated barcode */
-//$Barcode->myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>12]);
-$Generator->forPChart($myPicture, "Turn me on", ["Angle"=>90], 600,20);
+$Generator->forPChart($myPicture, "Turn me on", ["Angle"=>90, "label" => ["TTF" => "pChart/fonts/Cairo-Regular.ttf", "Size" => 12, "Offset" => 1]], 590,30);
 
-//$Barcode->myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>12]);
-$Generator->forPChart($myPicture, "Turn me on", ["Angle"=>350], 300,20);
+/* Draw a rotated barcode - no label */
+$Generator->forPChart($myPicture, "Turn me on", ["Angle"=>350, "label" => ["Skip" => TRUE]], 300,50);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.barcode39.png");
