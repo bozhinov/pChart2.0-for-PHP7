@@ -41,7 +41,11 @@ $Generator->forPChart($myPicture, "Turn me on", ["Angle"=>90, "label" => ["TTF" 
 /* Draw a rotated barcode - no label */
 $Generator->forPChart($myPicture, "Turn me on", ["Angle"=>350, "label" => ["Skip" => TRUE]], 300,50);
 
-/* Render the picture (choose the best way) */
-$myPicture->autoOutput("temp/example.barcode39.png");
+/* Turn black and white */
+$myPicture->setFilter(IMG_FILTER_GRAYSCALE);
+$myPicture->setFilter(IMG_FILTER_CONTRAST, -100);
+
+/* Render the picture with higest compression */
+$myPicture->autoOutput("temp/example.barcode39.png", 9);
 
 ?>

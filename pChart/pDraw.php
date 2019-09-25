@@ -3931,9 +3931,24 @@ class pDraw
 	}
 
 	/* http://php.net/manual/en/function.imagefilter.php */
-	function setFilter(int $filtertype, int $arg1 = 0, int $arg2 = 0, int $arg3 = 0, int $arg4 = 0)
+	function setFilter(int $filtertype, $arg1 = NULL, $arg2 = NULL, $arg3 = NULL, $arg4 = NULL)
 	{
-		$ret = imagefilter($this->Picture, $filtertype, $arg1, $arg2, $arg3, $arg4);
+		switch (TRUE){
+			case (!is_null($arg1)):
+				$ret = imagefilter($this->Picture, $filtertype, $arg1);
+				break;
+			case (!is_null($arg2)):
+				$ret = imagefilter($this->Picture, $filtertype, $arg1, $arg2);
+				break;
+			case (!is_null($arg3)):
+				$ret = imagefilter($this->Picture, $filtertype, $arg1, $arg2, $arg3);
+				break;
+			case (!is_null($arg4)):
+				$ret = imagefilter($this->Picture, $filtertype, $arg1, $arg2, $arg3, $arg4);
+				break;
+			default:
+				$ret = imagefilter($this->Picture, $filtertype);
+		}
 
 		if (!$ret){
 			throw pException::InvalidImageFilter("Could not apply image filter!");
