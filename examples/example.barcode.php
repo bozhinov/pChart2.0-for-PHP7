@@ -66,13 +66,11 @@ $myPicture->drawText(410,276,"12.340 Kg",$Settings);
 
 /* Create the barcode 39 object */ 
 $Generator = new Barcodes("code39");
-$Generator->forPChart($myPicture, "12250000234502", [], 30, 220);
-$Generator->forPChart($myPicture, "75 cans", [], 260, 220);
-$Generator->forPChart($myPicture, "06062010", [], 260, 260);
+$Generator->forPChart($myPicture, "12250000234502", ["Height" => 85], 80, 215);
 
 /* Create the barcode 128 object */ 
 $Generator = new Barcodes("code128");
-$Generator->forPChart($myPicture, "TLSE", [], 450,25);
+$Generator->forPChart($myPicture, "TLSE", ["Height" => 85], 445,25);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.barcode.png");

@@ -10,3 +10,14 @@ cache/sql.cache.db
 cloc-1.80.exe
 libsqlite3.dll
 php7.4/php.webserver.cmd
+Barcodes/Barcodes.php
+Barcodes/BarColor.php
+Barcodes/BarException.php
+Barcodes/Encoders/Codabar.php
+Barcodes/Encoders/Codes.php
+Barcodes/Encoders/DMTX.php
+Barcodes/Encoders/ITF.php
+Barcodes/Encoders/UPC.php
+Barcodes/Renderers/Base.php
+Barcodes/Renderers/Linear.php
+Barcodes/Renderers/Matrix.php
