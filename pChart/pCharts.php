@@ -2257,6 +2257,7 @@ class pCharts
 					}
 
 					$YPos = $YPos + $CaptionHeight + $SerieSpacing;
+					$this->myPicture->Shadow = $RestoreShadow;
 
 				} elseif ($Data["Orientation"] == SCALE_POS_LEFTRIGHT){
 
