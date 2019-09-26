@@ -1696,7 +1696,7 @@ class pDraw
 		$InnerTickWidth = isset($Format["InnerTickWidth"]) ? $Format["InnerTickWidth"] : 2;
 		$OuterTickWidth = isset($Format["OuterTickWidth"]) ? $Format["OuterTickWidth"] : 2;
 		$DrawXLines = isset($Format["DrawXLines"]) ? $Format["DrawXLines"] : TRUE;
-		$DrawYLines = isset($Format["DrawYLines"]) ? $Format["DrawYLines"] : ALL;
+		$DrawYLines = isset($Format["DrawYLines"]) ? $Format["DrawYLines"] : [ALL];
 		$GridTicks = isset($Format["GridTicks"]) ? $Format["GridTicks"] : 4;
 		$GridColor = isset($Format["GridColor"]) ? ["Color" => $Format["GridColor"]] : ["Color" => new pColor(255,255,255,40)];
 		$AxisColor = isset($Format["AxisColor"]) ? ["Color" => $Format["AxisColor"]] : ["Color" => new pColor(0)];
@@ -2331,11 +2331,11 @@ class pDraw
 							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters["Display"], $Parameters["Format"], $Parameters["Unit"]);
 							$BGColor = ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2;
 
-							if (!is_null($LastY) && $CycleBackground && ($DrawYLines == ALL || in_array($AxisID, $DrawYLines))) {
+							if (!is_null($LastY) && $CycleBackground && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
 								$this->drawFilledRectangle($this->GraphAreaX1 + $FloatingOffset, $LastY, $this->GraphAreaX2 - $FloatingOffset, $YPos, $BGColor);
 							}
 
-							if ($DrawYLines == ALL || in_array($AxisID, $DrawYLines)) {
+							if ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines)) {
 								$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $GridColor);
 							}
 
