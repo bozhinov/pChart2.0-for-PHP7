@@ -1118,7 +1118,7 @@ class pCharts
 					]];
 
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-					$LastX = NULL;
+					#$LastX = NULL;
 					$LastY = NULL;
 
 					foreach($PosArray as $Key => $X) {
@@ -1148,7 +1148,7 @@ class pCharts
 							$Areas[$AreaID][] = $Y;
 						}
 
-						$LastX = $X;
+						#$LastX = $X;
 						$LastY = $Y;
 						$Y = $Y + $XStep;
 					}
@@ -1188,7 +1188,7 @@ class pCharts
 		$Floating0Value = NULL;
 		$Draw0Line = FALSE;
 		$DisplayValues = FALSE;
-		$DisplayOrientation = ORIENTATION_HORIZONTAL;
+		#$DisplayOrientation = ORIENTATION_HORIZONTAL;
 		$DisplayOffset = 2;
 		$DisplayType = DISPLAY_MANUAL;
 		$DisplayFont = $this->myPicture->FontName;
@@ -1250,7 +1250,7 @@ class pCharts
 				$Mode = $Data["Axis"][$AxisID]["Display"];
 				$Format = $Data["Axis"][$AxisID]["Format"];
 				$Unit = $Data["Axis"][$AxisID]["Unit"];
-				$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
+				#$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$Floating0Value = (!is_null($Floating0Value)) ? $Floating0Value : 0;
 				$YZero = $this->myPicture->scaleComputeYSingle($Floating0Value, $Serie["Axis"]);
@@ -1900,12 +1900,13 @@ class pCharts
 		}
 
 		$YStep = ($AllIntegers) ? 1 : .5;
+		$YStep = 1; # Momchil: ?!
 		$MinY = floor($MinY);
 		$MaxY = floor($MaxY);
 		/* Scan each Y lines */
 		$MinY = floor($MinY);
 		$MaxY = floor($MaxY);
-		$YStep = 1;
+		
 		if (!$NoFill) {
 
 			for ($Y = $MinY; $Y <= $MaxY; $Y = $Y + $YStep) {
@@ -2331,11 +2332,10 @@ class pCharts
 					}
 
 					$XPos = $XPos + $CaptionHeight + $SerieSpacing;
-				}
-
-				$this->myPicture->Shadow = $RestoreShadow;
-			}
-		}
+					$this->myPicture->Shadow = $RestoreShadow;
+				} # Orientation
+			} # isDrawable
+		} # foreach
 	}
 
 	/* Draw the line of best fit */

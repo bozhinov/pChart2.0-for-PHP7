@@ -127,7 +127,7 @@ class pDraw
 	private $YSize = 0; // Height of the picture
 	public $Antialias = TRUE; // Turn anti alias on or off
 	public $AntialiasQuality = 0; // Quality of the anti aliasing implementation (0-1)
-
+	private $TransparentBackground = FALSE;
 	/* Graph area settings */
 	public $GraphAreaX1 = 0; // Graph area X origin
 	public $GraphAreaY1 = 0; // Graph area Y origin
@@ -949,7 +949,7 @@ class pDraw
 		$ShowOrigine = isset($Format["ShowOrigine"]) ? $Format["ShowOrigine"] : FALSE;
 		$TOffset = isset($Format["TOffset"]) ? $Format["TOffset"] : 2;
 		$DrawBox = isset($Format["DrawBox"]) ? $Format["DrawBox"] : FALSE;
-		$DrawBoxBorder = isset($Format["DrawBoxBorder"]) ? $Format["DrawBoxBorder"] : TRUE;
+		#$DrawBoxBorder = isset($Format["DrawBoxBorder"]) ? $Format["DrawBoxBorder"] : TRUE;
 		$BorderOffset = isset($Format["BorderOffset"]) ? $Format["BorderOffset"] : 6;
 		$BoxRounded = isset($Format["BoxRounded"]) ? $Format["BoxRounded"] : FALSE;
 		$RoundedRadius = isset($Format["RoundedRadius"]) ? $Format["RoundedRadius"] : 6;
@@ -1340,7 +1340,7 @@ class pDraw
 		$FontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : $this->FontSize;
 		$Length = isset($Format["Length"]) ? $Format["Length"] : 50;
 		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 315;
-		$Size = isset($Format["Size"]) ? $Format["Size"] : 10;
+		#$Size = isset($Format["Size"]) ? $Format["Size"] : 10;
 		$Position = isset($Format["Position"]) ? $Format["Position"] : POSITION_TOP;
 		$RoundPos = isset($Format["RoundPos"]) ? $Format["RoundPos"] : FALSE;
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
@@ -1485,9 +1485,9 @@ class pDraw
 	{
 		$FontName = $this->FontName;
 		$FontSize = $this->FontSize;
-		$BoxSize = 5;
+		#$BoxSize = 5;
 		$Margin = 5;
-		$Style = LEGEND_ROUND;
+		#$Style = LEGEND_ROUND;
 		$Mode = LEGEND_VERTICAL;
 		$BoxWidth = isset($Format["BoxWidth"]) ? $Format["BoxWidth"] : 5;
 		$BoxHeight = isset($Format["BoxHeight"]) ? $Format["BoxHeight"] : 5;
@@ -1613,7 +1613,7 @@ class pDraw
 		}
 
 		$vY = $vY - $YStep;
-		$vX = $vX - $XStep;
+		#$vX = $vX - $XStep;
 		$TopOffset = $Y - $Boundaries["T"];
 		($Boundaries["B"] - ($vY + $IconAreaHeight) < $TopOffset) AND $Boundaries["B"] = $vY + $IconAreaHeight + $TopOffset;
 
@@ -2915,7 +2915,7 @@ class pDraw
 			"RoundedRadius" => $RoundedRadius,
 			"BoxColor" => $BoxColor,
 			"BoxSurrounding" => $BoxSurrounding,
-			"BoxBorderColor" => $BoxColor, # Momchil: that was done to match the example
+			"BoxBorderColor" => $BoxBorderColor,
 			"Color" => $CaptionColor
 		];
 
@@ -3210,7 +3210,7 @@ class pDraw
 		$Decimals = 1;
 		$ExcludedSeries = [];
 		$DisplayOffset = 4;
-		$DisplayColor = DISPLAY_MANUAL;
+		#$DisplayColor = DISPLAY_MANUAL;
 		$MaxDisplayColor = new pColor(0);
 		$MinDisplayColor = new pColor(255);
 		$MinLabelPos = BOUND_LABEL_POS_AUTO;
