@@ -32,16 +32,18 @@ $myPicture->drawText(60,35,"2k9 Average Incomes",["FontSize"=>20,"Align"=>TEXT_A
 $myPicture->setGraphArea(60,40,670,190);
 $myPicture->drawFilledRectangle(60,40,670,190,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200]);
 $myPicture->drawScale(["GridColor"=>new pColor(180,180,180,50)]);
+$myPicture->setFontProperties(["FontSize"=>7]);
 
 /* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 /* Draw a spline chart on top */
-$pCharts->myPicture->setFontProperties(["FontSize"=>7]);
 $pCharts->drawFilledSplineChart();
 
-$pCharts->myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
+$myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
+
 $pCharts->drawSplineChart();
+
 $myPicture->setShadow(FALSE);
 
 /* Write the chart legend */ 

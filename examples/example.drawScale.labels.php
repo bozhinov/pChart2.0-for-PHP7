@@ -42,21 +42,23 @@ $myPicture->drawText(350,55,"My chart title",["FontSize"=>20,"Align"=>TEXT_ALIGN
 $myPicture->setGraphArea(60,70,660,200);
 $myPicture->setFontProperties(["FontSize"=>7]);
 
+/* Draw the scale */
+$myPicture->drawScale(["DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE,"RemoveXAxis"=>TRUE]);
+
 /* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
-
-/* Draw the scale */
-$pCharts->myPicture->drawScale(["DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE,"RemoveXAxis"=>TRUE]);
 $pCharts->drawBarChart(["Surrounding"=>-30,"InnerSurrounding"=>30]);
 
 /* Define the 2nd chart area */
-$pCharts->myPicture->setGraphArea(60,220,660,360);
+$myPicture->setGraphArea(60,220,660,360);
 
 /* Draw the scale */
-$pCharts->myPicture->myData->setSerieDrawable("Temperature",FALSE);
-$pCharts->myPicture->myData->setSerieDrawable("Pressure",TRUE);
-$pCharts->myPicture->myData->setAxisName(0,"Pressure");
-$pCharts->myPicture->drawScale(["DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
+$pCharts->setSerieDrawable("Temperature",FALSE);
+$pCharts->setSerieDrawable("Pressure",TRUE);
+$pCharts->setAxisName(0,"Pressure");
+
+$myPicture->drawScale(["DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
+
 $pCharts->drawBarChart(["Surrounding"=>-30,"InnerSurrounding"=>30]);
 
 /* Render the picture (choose the best way) */

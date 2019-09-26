@@ -40,25 +40,28 @@ $myPicture->drawText(10,15,"drawSplineChart() - draw a spline chart",["Color"=>n
 $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>9]);
 $myPicture->drawText(250,55,"Average temperature",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
-/* Create the pCharts object */
-$pCharts = new pCharts($myPicture);
-
 /* Draw the scale and the 1st chart */
 $myPicture->setGraphArea(60,60,450,190);
 $myPicture->drawFilledRectangle(60,60,450,190,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200]);
 $myPicture->drawScale(["DrawSubTicks"=>TRUE]);
-$pCharts->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
-$pCharts->myPicture->setFontProperties(["FontSize"=>7]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
+$myPicture->setFontProperties(["FontSize"=>7]);
+
+/* Create the pCharts object */
+$pCharts = new pCharts($myPicture);
 $pCharts->drawSplineChart(["DisplayValues"=>TRUE,"DisplayType"=>DISPLAY_AUTO]);
-$pCharts->myPicture->setShadow(FALSE);
+
+$myPicture->setShadow(FALSE);
 
 /* Draw the scale and the 2nd chart */
 $myPicture->setGraphArea(500,60,670,190);
 $myPicture->drawFilledRectangle(500,60,670,190,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200]);
 $myPicture->drawScale(["Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE]);
-$pCharts->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
+
 $pCharts->drawSplineChart();
-$pCharts->myPicture->setShadow(FALSE);
+
+$myPicture->setShadow(FALSE);
 
 /* Write the chart legend */
 $myPicture->drawLegend(510,205,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);

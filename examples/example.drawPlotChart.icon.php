@@ -49,18 +49,22 @@ $pCharts = new pCharts($myPicture);
 $myPicture->setGraphArea(60,60,450,190);
 $myPicture->drawFilledRectangle(60,60,450,190,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200]);
 $myPicture->drawScale(["DrawSubTicks"=>TRUE]);
-$pCharts->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
-$pCharts->myPicture->setFontProperties(["FontSize"=>7]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
+$myPicture->setFontProperties(["FontSize"=>7]);
+
 $pCharts->drawSplineChart();
 $pCharts->drawPlotChart(["DisplayValues"=>TRUE,"DisplayType"=>DISPLAY_AUTO]);
+
 $myPicture->setShadow(FALSE);
 
 /* Draw the scale and the 2nd chart */
 $myPicture->setGraphArea(500,60,670,190);
 $myPicture->drawFilledRectangle(500,60,670,190,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200]);
 $myPicture->drawScale(["Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE]);
-$pCharts->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
+
 $pCharts->drawPlotChart();
+
 $myPicture->setShadow(FALSE);
 
 /* Write the chart legend */

@@ -50,7 +50,7 @@ class pColor
 		$this->Alpha = $Alpha;
 	}
 
-	function toHex()
+	public function toHex()
 	{
 		$R = dechex($this->R);
 		$G = dechex($this->G);
@@ -59,7 +59,7 @@ class pColor
 		return  "#".(strlen($R) < 2 ? '0' : '').$R.(strlen($G) < 2 ? '0' : '').$G.(strlen($B) < 2 ? '0' : '').$B;
 	}
 
-	function RGBChange(int $howmuch)
+	public function RGBChange(int $howmuch)
 	{
 		$this->R += $howmuch;
 		$this->G += $howmuch;
@@ -75,7 +75,7 @@ class pColor
 		return $this;
 	}
 
-	function AlphaSet(float $howmuch)
+	public function AlphaSet(float $howmuch)
 	{
 		$this->Alpha = $howmuch;
 
@@ -85,7 +85,7 @@ class pColor
 		return $this;
 	}
 
-	function AlphaChange(float $howmuch)
+	public function AlphaChange(float $howmuch)
 	{
 		$this->Alpha += $howmuch;
 
@@ -95,14 +95,14 @@ class pColor
 		return $this;
 	}
 
-	function AlphaSlash(float $howmuch)
+	public function AlphaSlash(float $howmuch)
 	{
 		$this->Alpha = $this->Alpha / $howmuch;
 
 		return $this;
 	}
 
-	function AlphaMultiply(float $howmuch)
+	public function AlphaMultiply(float $howmuch)
 	{
 		$this->Alpha = $this->Alpha * $howmuch;
 
@@ -112,7 +112,7 @@ class pColor
 		return $this;
 	}
 
-	function newOne()
+	public function newOne()
 	{
 		return (clone $this);
 	}

@@ -26,8 +26,8 @@ define("PIE_VALUE_OUTSIDE", 140031);
 /* pPie class definition */
 class pPie
 {
-	var $LabelPos = [];
-	var $myPicture;
+	private $LabelPos = [];
+	private $myPicture;
 
 	function __construct(\pChart\pDraw $pChartObject)
 	{
@@ -35,7 +35,7 @@ class pPie
 	}
 
 	/* Draw a pie chart */
-	function draw2DPie(int $X, int $Y, array $Format = [])
+	public function draw2DPie(int $X, int $Y, array $Format = [])
 	{
 		$Precision = 0;
 		$SecondPass = TRUE;
@@ -259,7 +259,7 @@ class pPie
 	}
 
 	/* Draw a 3D pie chart */
-	function draw3DPie(int $X, int $Y, array $Format = [])
+	public function draw3DPie(int $X, int $Y, array $Format = [])
 	{
 		$Precision = 0;
 		$SecondPass = TRUE;
@@ -608,7 +608,7 @@ class pPie
 		$this->myPicture->Shadow = $RestoreShadow;
 	}
 
-	function drawPieLegend(int $X, int $Y, array $Format = [])
+	public function drawPieLegend(int $X, int $Y, array $Format = [])
 	{
 		$FontName = $this->myPicture->FontName;
 		$FontSize = $this->myPicture->FontSize;
@@ -690,7 +690,7 @@ class pPie
 	}
 
 	/* Internally used compute the label positions */
-	function writePieLabel($X, $Y, $Label, $Angle, $Settings, $Stacked, $Xc = 0, $Yc = 0, $Radius = 0, $Reversed = FALSE)
+	private function writePieLabel($X, $Y, $Label, $Angle, $Settings, $Stacked, $Xc = 0, $Yc = 0, $Radius = 0, $Reversed = FALSE)
 	{
 		$LabelOffset = 30;
 
@@ -736,7 +736,7 @@ class pPie
 	}
 
 	/* Internally used to shift label positions */
-	function shift($StartAngle, $EndAngle, $Offset, $Reversed)
+	private function shift($StartAngle, $EndAngle, $Offset, $Reversed)
 	{
 		if ($Reversed) {
 			$Offset = - $Offset;
@@ -752,7 +752,7 @@ class pPie
 	}
 
 	/* Internally used to write the re-computed labels */
-	function writeShiftedLabels()
+	private function writeShiftedLabels()
 	{
 		if (empty($this->LabelPos)) {
 			return; # Momchil: example.draw2DPie.labels
@@ -776,7 +776,7 @@ class pPie
 	}
 
 	/* Draw a ring chart */
-	function draw2DRing(int $X, int $Y, array $Format = [])
+	public function draw2DRing(int $X, int $Y, array $Format = [])
 	{
 		$Precision = 0;
 		$Border = FALSE;
@@ -963,7 +963,7 @@ class pPie
 		$this->myPicture->Shadow = $RestoreShadow;
 	}
 
-	function draw3DRing(int $X, int $Y, array $Format = [])
+	public function draw3DRing(int $X, int $Y, array $Format = [])
 	{
 		$Precision = 0;
 		$Shadow = FALSE;

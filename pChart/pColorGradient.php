@@ -12,14 +12,14 @@ namespace pChart;
 
 class pColorGradient
 {
-	var $StartColor;
-	var $EndColor;
-	var $ReturnColor;
-	var $OffsetR;
-	var $OffsetG;
-	var $OffsetB;
-	var $OffsetAlpha;
-	var $Step;
+	public $StartColor;
+	public $EndColor;
+	private $ReturnColor;
+	private $OffsetR;
+	private $OffsetG;
+	private $OffsetB;
+	private $OffsetAlpha;
+	private $Step;
 
 	function __construct(pColor $Start, pColor $End, $Radar = FALSE)
 	{
@@ -28,7 +28,7 @@ class pColorGradient
 		$this->ReturnColor = ($Radar) ? $Start->newOne() : $Start;
 	}
 
-	function SetSegments(int $Segments = 0)
+	public function SetSegments(int $Segments = 0)
 	{
 		if ($Segments == 0){
 			$Segments = $this->Step;
@@ -41,7 +41,7 @@ class pColorGradient
 
 	/* pDraw uses default for $j */
 	/* pRadar passes an actual value */
-	function Next(int $j = 1, bool $doNotAccumulate = FALSE)
+	public function Next(int $j = 1, bool $doNotAccumulate = FALSE)
 	{
 		$R = $this->StartColor->R + $this->OffsetR * $j;
 		$G = $this->StartColor->G + $this->OffsetG * $j;
@@ -67,12 +67,12 @@ class pColorGradient
 		}
 	}
 
-	function getLatest()
+	public function getLatest()
 	{
 		return $this->ReturnColor;
 	}
 
-	function FindStep()
+	public function FindStep()
 	{
 		$this->Step = max(abs($this->EndColor->R - $this->StartColor->R), abs($this->EndColor->G - $this->StartColor->G), abs($this->EndColor->B - $this->StartColor->B));
 		($this->Step == 0) AND $this->Step = 1;

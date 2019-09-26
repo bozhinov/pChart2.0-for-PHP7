@@ -14,14 +14,14 @@ namespace pChart;
 /* pPyramid class definition */
 class pPyramid
 {
-	var $myPicture;
+	private $myPicture;
 
 	function __construct(\pChart\pDraw $pChartObject)
 	{
 		$this->myPicture = $pChartObject;
 	}
 
-	function drawPyramid($X, $Y, $Base, $Height, $NumSegments = 4, array $Format = [])
+	public function drawPyramid($X, $Y, $Base, $Height, $NumSegments = 4, array $Format = [])
 	{
 		$Color =  isset($Format["Color"])  ? $Format["Color"]  : FALSE;
 		$Offset = isset($Format["Offset"]) ? $Format["Offset"] : 5;
@@ -68,7 +68,7 @@ class pPyramid
 
 	}
 
-	function drawReversePyramid($X, $Y, $Base, $Height, $NumSegments = 4, array $Format = [])
+	public function drawReversePyramid($X, $Y, $Base, $Height, $NumSegments = 4, array $Format = [])
 	{
 		$Color =  isset($Format["Color"])  ? $Format["Color"]  : FALSE;
 		$Offset = isset($Format["Offset"]) ? $Format["Offset"] : 5;

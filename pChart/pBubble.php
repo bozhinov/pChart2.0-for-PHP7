@@ -21,7 +21,7 @@ define("BUBBLE_SHAPE_SQUARE", 700002);
 /* pBubble class definition */
 class pBubble
 {
-	var $myPicture;
+	private $myPicture;
 
 	function __construct(\pChart\pDraw $pChartObject)
 	{
@@ -29,7 +29,7 @@ class pBubble
 	}
 
 	/* Prepare the scale */
-	function bubbleScale(array $DataSeries, array $WeightSeries)
+	public function bubbleScale(array $DataSeries, array $WeightSeries)
 	{
 		/* Parse each data series to find the new min & max boundaries to scale */
 		$NewPositiveSerie = [];
@@ -96,7 +96,7 @@ class pBubble
 	}
 
 	/* Prepare the scale */
-	function drawBubbleChart(array $DataSeries, array $WeightSeries, array $Format = [])
+	public function drawBubbleChart(array $DataSeries, array $WeightSeries, array $Format = [])
 	{
 		$ForceAlpha = NULL;
 		$DrawBorder = TRUE;
@@ -194,7 +194,7 @@ class pBubble
 		}
 	}
 
-	function writeBubbleLabel(string $SerieName, string $SerieWeightName, int $Point, array $Format = [])
+	public function writeBubbleLabel(string $SerieName, string $SerieWeightName, int $Point, array $Format = [])
 	{
 		$Data = $this->myPicture->myData->getData();
 

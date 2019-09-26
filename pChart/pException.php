@@ -16,7 +16,6 @@ namespace pChart;
 
 class pException extends \Exception
 {
-
 	public static function InvalidDimentions($text)
 	{
 		return new static(sprintf('pChart: %s', $text));

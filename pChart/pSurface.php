@@ -25,10 +25,10 @@ define("LABEL_POSITION_BOTTOM", 880004);
 /* pStock class definition */
 class pSurface
 {
-	var $GridSizeX;
-	var $GridSizeY;
-	var $Points = [];
-	var $myPicture;
+	private $GridSizeX;
+	private $GridSizeY;
+	private $Points = [];
+	private $myPicture;
 
 	function __construct(\pChart\pDraw $pChartObject)
 	{
@@ -36,7 +36,7 @@ class pSurface
 	}
 
 	/* Define the grid size and initialize the 2D matrix */
-	function setGrid(int $XSize = 10, int $YSize = 10)
+	public function setGrid(int $XSize = 10, int $YSize = 10)
 	{
 		for ($X = 0; $X <= $XSize; $X++) {
 			for ($Y = 0; $Y <= $YSize; $Y++) {
@@ -49,7 +49,7 @@ class pSurface
 	}
 
 	/* Add a point on the grid */
-	function addPoint(int $X, int $Y, $Value, $Force = TRUE)
+	public function addPoint(int $X, int $Y, $Value, $Force = TRUE)
 	{
 		if ($X < 0 || $X > $this->GridSizeX) {
 			return;
@@ -71,7 +71,7 @@ class pSurface
 	}
 
 	/* Write the X labels */
-	function writeXLabels(array $Format = [])
+	public function writeXLabels(array $Format = [])
 	{
 		$Color = $this->myPicture->FontColor;
 		$Angle = 0;
@@ -104,7 +104,7 @@ class pSurface
 	}
 
 	/* Write the Y labels */
-	function writeYLabels(array $Format = [])
+	public function writeYLabels(array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : $this->myPicture->FontColor;
 		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 0;
@@ -135,7 +135,7 @@ class pSurface
 	}
 
 	/* Draw the area around the specified Threshold */
-	function drawContour(int $Threshold, array $Format = [])
+	public function drawContour(int $Threshold, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : 3;
@@ -172,7 +172,7 @@ class pSurface
 	}
 
 	/* Draw the surface chart */
-	function drawSurface(array $Format = [])
+	public function drawSurface(array $Format = [])
 	{
 		$Palette = isset($Format["Palette"]) ? $Format["Palette"] : [];
 		$ShadeColor1 = isset($Format["ShadeColor1"]) ? $Format["ShadeColor1"] : new pColor(77,205,21,40);
@@ -217,7 +217,7 @@ class pSurface
 	}
 
 	/* Compute the missing points */
-	function computeMissing()
+	public function computeMissing()
 	{
 		$Missing = [];
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
@@ -253,7 +253,7 @@ class pSurface
 	}
 
 	/* Return the nearest Neighbor distance of a point */
-	function getNearestNeighbor($Xp, $Yp)
+	private function getNearestNeighbor($Xp, $Yp)
 	{
 		$Nearest = UNKNOWN;
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {

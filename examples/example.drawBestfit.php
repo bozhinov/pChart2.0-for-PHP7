@@ -53,7 +53,7 @@ $myCharts = new pCharts($myPicture);
 $myCharts->drawBestFit();
 
 /* Turn on shadows */
-$myCharts->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Draw the line chart */
 $myCharts->drawPlotChart();

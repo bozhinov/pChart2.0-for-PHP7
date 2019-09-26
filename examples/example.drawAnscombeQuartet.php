@@ -74,25 +74,25 @@ $myScatter->drawScatterPlotChart();
 $myScatter->drawScatterBestFit();
 
 /* Draw the 2nt chart */
-$myScatter->myPicture->myData->setScatterSerieDrawable(0,FALSE);
-$myScatter->myPicture->myData->setScatterSerieDrawable(1,TRUE);
-$myScatter->myPicture->setGraphArea(436,90,760,285);
+$myScatter->setScatterSerieDrawable(0,FALSE);
+$myScatter->setScatterSerieDrawable(1,TRUE);
+$myPicture->setGraphArea(436,90,760,285);
 $myScatter->drawScatterScale(["XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE]);
 $myScatter->drawScatterPlotChart();
 $myScatter->drawScatterBestFit();
 
 /* Draw the 3rd chart */
-$myScatter->myPicture->myData->setScatterSerieDrawable(1,FALSE);
-$myScatter->myPicture->myData->setScatterSerieDrawable(2,TRUE);
-$myScatter->myPicture->setGraphArea(56,342,380,535);
+$myScatter->setScatterSerieDrawable(1,FALSE);
+$myScatter->setScatterSerieDrawable(2,TRUE);
+$myPicture->setGraphArea(56,342,380,535);
 $myScatter->drawScatterScale(["XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE]);
 $myScatter->drawScatterPlotChart();
 $myScatter->drawScatterBestFit();
 
 /* Draw the 4th chart */
-$myScatter->myPicture->myData->setScatterSerieDrawable(2,FALSE);
-$myScatter->myPicture->myData->setScatterSerieDrawable(3,TRUE);
-$myScatter->myPicture->setGraphArea(436,342,760,535);
+$myScatter->setScatterSerieDrawable(2,FALSE);
+$myScatter->setScatterSerieDrawable(3,TRUE);
+$myPicture->setGraphArea(436,342,760,535);
 $myScatter->drawScatterScale(["XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE]);
 $myScatter->drawScatterPlotChart();
 $myScatter->drawScatterBestFit();

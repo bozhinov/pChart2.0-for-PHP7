@@ -41,9 +41,10 @@ $myPicture->setGraphArea(60,60,450,190);
 $myPicture->drawFilledRectangle(60,60,450,190,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200]);
 $myPicture->drawScale(["DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,30)]);
+
 /* Draw the 1st stock chart */
 $mystockChart = new pStock($myPicture);
-$mystockChart->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,30)]);
 $mystockChart->drawStockChart();
 
 /* Reset the display mode because of the graph small size */
@@ -55,9 +56,10 @@ $myPicture->setGraphArea(500,60,670,190);
 $myPicture->drawFilledRectangle(500,60,670,190,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200]);
 $myPicture->drawScale(["Pos"=>SCALE_POS_TOPBOTTOM,"DrawSubTicks"=>TRUE]);
 
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,30)]);
+
 /* Draw the 2nd stock chart */
 $mystockChart = new pStock($myPicture);
-$mystockChart->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,30)]);
 $mystockChart->drawStockChart();
 
 /* Render the picture (choose the best way) */

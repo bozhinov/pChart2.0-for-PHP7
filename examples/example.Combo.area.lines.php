@@ -55,13 +55,16 @@ $myPicture->Antialias = TRUE;
 $pCharts = new pCharts($myPicture);
 
 /* Draw the area chart */
-$pCharts->myPicture->myData->setSerieDrawable("Probe 1",TRUE);
-$pCharts->myPicture->myData->setSerieDrawable("Probe 2",FALSE);
+$pCharts->setSerieDrawable("Probe 1",TRUE);
+$pCharts->setSerieDrawable("Probe 2",FALSE);
+
 $pCharts->drawAreaChart();
 
+$pCharts->setSerieDrawable("Probe 2",TRUE);
+
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
+
 /* Draw a line and a plot chart on top */
-$pCharts->myPicture->myData->setSerieDrawable("Probe 2",TRUE);
-$pCharts->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 $pCharts->drawLineChart();
 $pCharts->drawPlotChart(["PlotBorder"=>TRUE,"PlotSize"=>3,"BorderSize"=>1,"Surrounding"=>-60, "BorderColor"=>new pColor(50,50,50,80)]);
 

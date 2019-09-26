@@ -30,20 +30,20 @@ define("LABEL_LIGHT", 690032);
 /* pSpring class definition */
 class pSpring
 {
-	var $myPicture;
-	var $History;
-	var $Data;
-	var $Links;
-	var $AutoComputeFreeZone;
-	var $Labels;
-	var $MagneticForceA;
-	var $MagneticForceR;
-	var $RingSize;
-	var $X1;
-	var $Y1;
-	var $X2;
-	var $Y2;
-	var $Default;
+	private $myPicture;
+	private $History;
+	private $Data;
+	private $Links;
+	private $AutoComputeFreeZone;
+	private $Labels;
+	private $MagneticForceA;
+	private $MagneticForceR;
+	private $RingSize;
+	private $X1;
+	private $Y1;
+	private $X2;
+	private $Y2;
+	private $Default;
 
 	function __construct(\pChart\pDraw $pChartObject)
 	{
@@ -70,7 +70,7 @@ class pSpring
 	}
 
 	/* Set default links options */
-	function setLinkDefaults(array $Settings = [])
+	public function setLinkDefaults(array $Settings = [])
 	{
 		#$vars = ["R", "G", "B", "Alpha"];
 		foreach ($Settings as $key => $value){
@@ -79,7 +79,7 @@ class pSpring
 	}
 
 	/* Set default links options */
-	function setLabelsSettings(array $Settings = [])
+	public function setLabelsSettings(array $Settings = [])
 	{
 		#$vars = ["Type", "R", "G", "B", "Alpha"];
 		foreach ($Settings as $key => $value){
@@ -88,7 +88,7 @@ class pSpring
 	}
 
 	/* Auto compute the FreeZone size based on the number of connections */
-	function autoFreeZone()
+	public function autoFreeZone()
 	{
 		/* Check connections reciprocity */
 		foreach($this->Data as $Key => $Settings) {
@@ -97,7 +97,7 @@ class pSpring
 	}
 
 	/* Set link properties */
-	function linkProperties(int $FromNode, int $ToNode, array $Settings)
+	public function linkProperties(int $FromNode, int $ToNode, array $Settings)
 	{
 		if (!isset($this->Data[$FromNode])) {
 			throw pException::SpringInvalidInputException("No data FromNode!");
@@ -118,7 +118,7 @@ class pSpring
 
 	}
 
-	function setNodeDefaults(array $Settings = [])
+	public function setNodeDefaults(array $Settings = [])
 	{
 		#$vars = ["R", "G", "B", "Alpha", "BorderR", "BorderG", "BorderB", "BorderAlpha", "Surrounding", "BackgroundR", "BackgroundG", "BackgroundB", "BackgroundAlpha", "NodeType", "Size", "Shape", "FreeZone"];
 		foreach ($Settings as $key => $value){
@@ -127,7 +127,7 @@ class pSpring
 	}
 
 	/* Add a node */
-	function addNode(int $NodeID, array $Settings = [])
+	public function addNode(int $NodeID, array $Settings = [])
 	{
 		/* if the node already exists, ignore */
 		if (isset($this->Data[$NodeID])) {
@@ -175,7 +175,7 @@ class pSpring
 	}
 
 	/* Set color attribute for a list of nodes */
-	function setNodesColor(array $Nodes, array $Settings = [])
+	public function setNodesColor(array $Nodes, array $Settings = [])
 	{
 		foreach($Nodes as $NodeID) {
 			if (isset($this->Data[$NodeID])) {
@@ -192,7 +192,7 @@ class pSpring
 	}
 
 	/* Get the median linked nodes position */
-	function getMedianOffset(int $Key, int $X, int $Y)
+	public function getMedianOffset(int $Key, int $X, int $Y)
 	{
 		$Cpt = 1;
 		if (isset($this->Data[$Key]["Connections"])) {
@@ -209,7 +209,7 @@ class pSpring
 	}
 
 	/* Return the ID of the attached partner with the biggest weight */
-	function getBiggestPartner(int $Key)
+	public function getBiggestPartner(int $Key)
 	{
 		if (!isset($this->Data[$Key]["Connections"])) {
 			throw pException::SpringInvalidInputException("Connection ID is invalid");
@@ -228,7 +228,7 @@ class pSpring
 	}
 
 	/* Do the initial node positions computing pass */
-	function firstPass($Algorithm)
+	private function firstPass($Algorithm)
 	{
 		$CenterX = ($this->X2 - $this->X1) / 2 + $this->X1;
 		$CenterY = ($this->Y2 - $this->Y1) / 2 + $this->Y1;
@@ -363,7 +363,7 @@ class pSpring
 	}
 
 	/* Compute one pass */
-	function doPass()
+	private function doPass()
 	{
 		/* Compute vectors */
 		foreach($this->Data as $Key => $Settings) {
@@ -432,7 +432,7 @@ class pSpring
 		}
 	}
 
-	function lastPass()
+	private function lastPass()
 	{
 		/* Put everything inside the graph area */
 		foreach($this->Data as $Key => $Settings) {
@@ -497,7 +497,7 @@ class pSpring
 	}
 
 	/* Center the graph */
-	function center()
+	private function center()
 	{
 		/* Determine the real center */
 		$TargetCenterX = ($this->X2 - $this->X1) / 2 + $this->X1;
@@ -529,7 +529,7 @@ class pSpring
 	}
 
 	/* Create the encoded string */
-	function drawSpring(array $Settings = [])
+	public function drawSpring(array $Settings = [])
 	{
 		$Pass = isset($Settings["Pass"]) ? $Settings["Pass"] : 50;
 		$Retries = isset($Settings["Retry"]) ? $Settings["Retry"] : 10;
@@ -696,7 +696,7 @@ class pSpring
 	}
 
 	/* Return the angle made by a line and the X axis */
-	function getAngle($X1, $Y1, $X2, $Y2)
+	public function getAngle($X1, $Y1, $X2, $Y2)
 	{
 		#$Opposite = $Y2 - $Y1;
 		#$Adjacent = $X2 - $X1;
@@ -706,7 +706,7 @@ class pSpring
 
 	}
 
-	function intersect($X1, $Y1, $X2, $Y2, $X3, $Y3, $X4, $Y4)
+	private function intersect($X1, $Y1, $X2, $Y2, $X3, $Y3, $X4, $Y4)
 	{
 		$A = (($X3 * $Y4 - $X4 * $Y3) * ($X1 - $X2) - ($X1 * $Y2 - $X2 * $Y1) * ($X3 - $X4));
 		$B = (($Y1 - $Y2) * ($X3 - $X4) - ($Y3 - $Y4) * ($X1 - $X2));

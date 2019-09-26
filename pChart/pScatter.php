@@ -18,15 +18,20 @@ namespace pChart;
 /* pScatter class definition */
 class pScatter
 {
-	var $myPicture;
+	private $myPicture;
 
 	function __construct(\pChart\pDraw $pChartObject)
 	{
 		$this->myPicture = $pChartObject;
 	}
 
+	public function setScatterSerieDrawable(int $ID, bool $Drawable = TRUE)
+	{
+		$this->myPicture->myData->setScatterSerieDrawable($ID, $Drawable);
+	}
+
 	/* Prepare the scale */
-	function drawScatterScale(array $Format = [])
+	public function drawScatterScale(array $Format = [])
 	{
 		/* Check if we have at least both one X and Y axis */
 		$GotXAxis = FALSE;
@@ -405,7 +410,7 @@ class pScatter
 	}
 
 	/* Draw a scatter plot chart */
-	function drawScatterPlotChart(array $Format = [])
+	public function drawScatterPlotChart(array $Format = [])
 	{
 		$PlotSize = 3;
 		$PlotBorder = FALSE;
@@ -456,7 +461,7 @@ class pScatter
 	}
 
 	/* Draw a scatter line chart */
-	function drawScatterLineChart(array $Format = [])
+	public function drawScatterLineChart(array $Format = [])
 	{
 		$Data = $this->myPicture->myData->getData();
 
@@ -493,7 +498,7 @@ class pScatter
 	}
 
 	/* Draw a scatter spline chart */
-	function drawScatterSplineChart(array $Format = [])
+	public function drawScatterSplineChart(array $Format = [])
 	{
 		$Data = $this->myPicture->myData->getData();
 

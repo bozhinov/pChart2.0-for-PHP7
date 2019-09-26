@@ -25,7 +25,7 @@ define("INDICATOR_VALUE_LABEL", 700022);
 /* pIndicator class definition */
 class pIndicator
 {
-	var $myPicture;
+	private $myPicture;
 
 	function __construct(\pChart\pDraw $pChartObject)
 	{
@@ -33,7 +33,7 @@ class pIndicator
 	}
 
 	/* Draw an indicator */
-	function draw(int $X, int $Y, int $Width, int $Height, array $Format = [])
+	public function draw(int $X, int $Y, int $Width, int $Height, array $Format = [])
 	{
 		/* No section */
 		if (isset($Format["IndicatorSections"])){

@@ -58,8 +58,9 @@ $pCharts = new pCharts($myPicture);
 /* Draw the area chart */
 $pCharts->drawAreaChart();
 
+$myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
+
 /* Draw a line and a plot chart on top */
-$pCharts->myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 $pCharts->drawLineChart();
 $pCharts->drawPlotChart(["PlotBorder"=>TRUE,"PlotSize"=>3,"BorderSize"=>1,"Surrounding"=>-60,"BorderColor"=>new pColor(50,50,50,80)]);
 

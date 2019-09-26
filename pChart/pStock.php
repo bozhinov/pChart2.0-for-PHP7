@@ -18,7 +18,7 @@ namespace pChart;
 /* pStock class definition */
 class pStock
 {
-	var $myPicture;
+	private $myPicture;
 
 	function __construct(\pChart\pDraw $pChartObject)
 	{
@@ -26,7 +26,7 @@ class pStock
 	}
 
 	/* Draw a stock chart */
-	function drawStockChart(array $Format = [])
+	public function drawStockChart(array $Format = [])
 	{
 		$SerieOpen = "Open";
 		$SerieClose = "Close";

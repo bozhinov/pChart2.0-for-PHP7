@@ -35,9 +35,9 @@ $myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSubTick
 $pCharts = new pCharts($myPicture);
 
 /* Draw the chart */
-$pCharts->myPicture->Antialias = TRUE;
+$myPicture->Antialias = TRUE;
 $pCharts->drawSplineChart();
-$pCharts->myPicture->Antialias = FALSE;
+$myPicture->Antialias = FALSE;
 
 /* Draw the series derivative graph */
 $pCharts->drawDerivative(["Caption"=>FALSE]);

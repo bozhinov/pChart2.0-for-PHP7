@@ -44,10 +44,10 @@ $myPicture->setGraphArea(60,60,450,190);
 $myPicture->drawFilledRectangle(60,60,450,190,["Color"=>new pColor(255,255,255,10),"Surrounding"=>-200]);
 $myPicture->drawScale(["DrawSubTicks"=>TRUE]);
 
+$myPicture->setFontProperties(["FontSize"=>7]);
+
 /* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
-
-$pCharts->myPicture->setFontProperties(["FontSize"=>7]);
 $pCharts->drawAreaChart(["DisplayValues"=>TRUE,"DisplayType"=>DISPLAY_AUTO]);
 
 /* Draw the scale and the 2nd chart */

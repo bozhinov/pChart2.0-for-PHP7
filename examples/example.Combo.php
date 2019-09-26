@@ -45,24 +45,27 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","Fon
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 $myPicture->drawText(50,52,"Chart subtitle",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMLEFT]);
 
+$myPicture->setFontProperties(["FontSize"=>8]);
+
 /* Create the pCharts object */
 $pCharts = new pCharts($myPicture);
 
 /* Draw the bar chart chart */
-$pCharts->myPicture->setFontProperties(["FontSize"=>8]);
-$pCharts->myPicture->myData->setSerieDrawable("Last year",FALSE);
+$pCharts->setSerieDrawable("Last year",FALSE);
 $pCharts->drawBarChart();
 
 /* Turn on anti-aliasing */
 $myPicture->Antialias = TRUE;
 
+$myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
+
 /* Draw the line and plot chart */
-$pCharts->myPicture->myData->setSerieDrawable("Last year",TRUE);
-$pCharts->myPicture->myData->setSerieDrawable("This year",FALSE);
-$pCharts->myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
+$pCharts->setSerieDrawable("Last year",TRUE);
+$pCharts->setSerieDrawable("This year",FALSE);
 $pCharts->drawSplineChart();
 
 $myPicture->setShadow(FALSE);
+
 $pCharts->drawPlotChart(["PlotSize"=>3,"PlotBorder"=>TRUE,"BorderSize"=>3,"BorderColor"=>new pColor(50,50,50,20)]);
 
 /* Make sure all series are drawable before writing the scale */

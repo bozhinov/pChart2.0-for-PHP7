@@ -51,7 +51,7 @@ class pData
 	}
 
 	/* Initialize a given serie */
-	function initialise(string $Serie)
+	public function initialise(string $Serie)
 	{
 		$ID = (isset($this->Data["Series"])) ? count($this->Data["Series"]) : 0;
 
@@ -72,7 +72,7 @@ class pData
 	}
 
 	/* Add a single point or an array to the given serie */
-	function addPoints(array $Values, string $SerieName = "Serie1")
+	public function addPoints(array $Values, string $SerieName = "Serie1")
 	{
 		if (!isset($this->Data["Series"][$SerieName])){
 			$this->initialise($SerieName);
@@ -94,7 +94,7 @@ class pData
 	}
 
 	/* In case you add points to the a serie with the same name - pSplit */
-	function clearPoints(string $SerieName = "Serie1")
+	public function clearPoints(string $SerieName = "Serie1")
 	{
 		$this->Data["Series"][$SerieName]["Data"] = [];
 		$this->Data["Series"][$SerieName]["Max"] = 0;
@@ -102,13 +102,13 @@ class pData
 	}
 
 	/* Return the number of values contained in a given serie */
-	function getSerieCount(string $Serie) # UNUSED
+	public function getSerieCount(string $Serie) # UNUSED
 	{
 		return (isset($this->Data["Series"][$Serie]["Data"])) ? count($this->Data["Series"][$Serie]["Data"]) : 0;
 	}
 
 	/* Remove a serie from the pData object */
-	function removeSerie(string $Serie)  # UNUSED
+	public function removeSerie(string $Serie)  # UNUSED
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			unset($this->Data["Series"][$Serie]);
@@ -117,7 +117,7 @@ class pData
 		}
 	}
 
-	function resetSeriesColors() # pBubble
+	public function resetSeriesColors() # pBubble
 	{
 		$ID = 0;
 		foreach($this->Data["Series"] as $SerieName => $SeriesParameters) {
@@ -129,7 +129,7 @@ class pData
 	}
 
 	/* Reverse the values in the given serie */
-	function reverseSerie(string $Serie) # UNUSED
+	public function reverseSerie(string $Serie) # UNUSED
 	{
 		if (isset($this->Data["Series"][$Serie]["Data"])) {
 			$this->Data["Series"][$Serie]["Data"] = array_reverse($this->Data["Series"][$Serie]["Data"]);
@@ -139,19 +139,19 @@ class pData
 	}
 
 	/* Return the max value of a given serie */
-	function getMax(string $Serie)
+	public function getMax(string $Serie)
 	{
 		return (isset($this->Data["Series"][$Serie])) ? $this->Data["Series"][$Serie]["Max"] : 0;
 	}
 
 	/* Return the min value of a given serie */
-	function getMin(string $Serie)
+	public function getMin(string $Serie)
 	{
 		return (isset($this->Data["Series"][$Serie])) ? $this->Data["Series"][$Serie]["Min"] : 0;
 	}
 
 	/* Set the description of a given serie */
-	function setSerieShape(string $Serie, int $Shape = SERIE_SHAPE_FILLEDCIRCLE)
+	public function setSerieShape(string $Serie, int $Shape = SERIE_SHAPE_FILLEDCIRCLE)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$this->Data["Series"][$Serie]["Shape"] = $Shape;
@@ -161,7 +161,7 @@ class pData
 	}
 
 	/* Set the description of a given serie */
-	function setSerieDescription(string $Serie, string $Description = "My serie")
+	public function setSerieDescription(string $Serie, string $Description = "My serie")
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$this->Data["Series"][$Serie]["Description"] = $Description;
@@ -171,7 +171,7 @@ class pData
 	}
 
 	/* Set a serie as "drawable" while calling a rendering function */
-	function setSerieDrawable(string $Serie, bool $Drawable = TRUE)
+	public function setSerieDrawable(string $Serie, bool $Drawable = TRUE)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$this->Data["Series"][$Serie]["isDrawable"] = $Drawable;
@@ -181,7 +181,7 @@ class pData
 	}
 
 	/* Set the icon associated to a given serie */
-	function setSeriePicture(string $Serie, string $Picture = "XX")
+	public function setSeriePicture(string $Serie, string $Picture = "XX")
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			if (!file_exists($Picture)){
@@ -194,26 +194,26 @@ class pData
 	}
 
 	/* Set the name of the X Axis */
-	function setXAxisName(string $Name)
+	public function setXAxisName(string $Name)
 	{
 		$this->Data["XAxisName"] = $Name;
 	}
 
 	/* Set the display mode of the  X Axis */
-	function setXAxisDisplay(int $Mode, string $Format = NULL)
+	public function setXAxisDisplay(int $Mode, string $Format = NULL)
 	{
 		$this->Data["XAxisDisplay"] = $Mode;
 		$this->Data["XAxisFormat"] = $Format;
 	}
 
 	/* Set the unit that will be displayed on the X axis */
-	function setXAxisUnit(string $Unit)
+	public function setXAxisUnit(string $Unit)
 	{
 		$this->Data["XAxisUnit"] = $Unit;
 	}
 
 	/* Set the serie that will be used as abscissa */
-	function setAbscissa(string $Serie)
+	public function setAbscissa(string $Serie)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$this->Data["Abscissa"] = $Serie;
@@ -222,19 +222,19 @@ class pData
 		}
 	}
 
-	function setAbsicssaPosition(int $Position = AXIS_POSITION_BOTTOM)
+	public function setAbsicssaPosition(int $Position = AXIS_POSITION_BOTTOM)
 	{
 		$this->Data["AbsicssaPosition"] = $Position;
 	}
 
 	/* Set the name of the abscissa axis */
-	function setAbscissaName(string $Name)
+	public function setAbscissaName(string $Name)
 	{
 		$this->Data["AbscissaName"] = $Name;
 	}
 
 	/* Return the abscissa margin */
-	function getAbscissaMargin()
+	public function getAbscissaMargin()
 	{
 		foreach($this->Data["Axis"] as $Values) {
 			if ($Values["Identity"] == AXIS_X) {
@@ -246,7 +246,7 @@ class pData
 	}
 
 	/* Create a scatter group specifying X and Y data series */
-	function setScatterSerie(string $SerieX, string $SerieY, int $ID = 0)
+	public function setScatterSerie(string $SerieX, string $SerieY, int $ID = 0)
 	{
 		if (isset($this->Data["Series"][$SerieX]) && isset($this->Data["Series"][$SerieY])) {
 			$this->initScatterSerie($ID);
@@ -258,7 +258,7 @@ class pData
 	}
 
 	/* Set the shape of a given scatter serie */
-	function setScatterSerieShape(int $ID, int $Shape = SERIE_SHAPE_FILLEDCIRCLE)
+	public function setScatterSerieShape(int $ID, int $Shape = SERIE_SHAPE_FILLEDCIRCLE)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
 			$this->Data["ScatterSeries"][$ID]["Shape"] = $Shape;
@@ -268,7 +268,7 @@ class pData
 	}
 
 	/* Set the description of a given scatter serie */
-	function setScatterSerieDescription(int $ID, string $Description = "My serie")
+	public function setScatterSerieDescription(int $ID, string $Description = "My serie")
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
 			$this->Data["ScatterSeries"][$ID]["Description"] = $Description;
@@ -278,7 +278,7 @@ class pData
 	}
 
 	/* Set the icon associated to a given scatter serie */
-	function setScatterSeriePicture(int $ID, string $Picture = "xx")
+	public function setScatterSeriePicture(int $ID, string $Picture = "xx")
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
 			if (!file_exists($Picture)){
@@ -291,7 +291,7 @@ class pData
 	}
 
 	/* Set a scatter serie as "drawable" while calling a rendering function */
-	function setScatterSerieDrawable(int $ID, bool $Drawable = TRUE)
+	public function setScatterSerieDrawable(int $ID, bool $Drawable = TRUE)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
 			$this->Data["ScatterSeries"][$ID]["isDrawable"] = $Drawable;
@@ -301,7 +301,7 @@ class pData
 	}
 
 	/* Define if a scatter serie should be draw with ticks */
-	function setScatterSerieTicks(int $ID, int $Ticks = NULL)
+	public function setScatterSerieTicks(int $ID, int $Ticks = NULL)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
 			$this->Data["ScatterSeries"][$ID]["Ticks"] = $Ticks;
@@ -311,7 +311,7 @@ class pData
 	}
 
 	/* Define if a scatter serie should be draw with a special weight */
-	function setScatterSerieWeight(int $ID, int $Weight = NULL) # UNUSED
+	public function setScatterSerieWeight(int $ID, int $Weight = NULL) # UNUSED
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
 			$this->Data["ScatterSeries"][$ID]["Weight"] = $Weight;
@@ -321,7 +321,7 @@ class pData
 	}
 
 	/* Associate a color to a scatter serie */
-	function setScatterSerieColor(int $ID, pColor $Color)
+	public function setScatterSerieColor(int $ID, pColor $Color)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
 			$this->Data["ScatterSeries"][$ID]["Color"] = $Color;
@@ -331,7 +331,7 @@ class pData
 	}
 
 	/* Compute the series limits for an individual and global point of view */
-	function limits()
+	public function limits()
 	{
 		$GlobalMin = PHP_INT_MIN;
 		$GlobalMax = PHP_INT_MAX;
@@ -353,7 +353,7 @@ class pData
 	}
 
 	/* Mark all series as drawable */
-	function setAllDrawable()
+	public function setAllDrawable()
 	{
 		foreach($this->Data["Series"] as $Key => $Value) {
 			if ($this->Data["Abscissa"] != $Key) {
@@ -363,7 +363,7 @@ class pData
 	}
 
 	/* Return the average value of the given serie */
-	function getSerieAverage(string $Serie)
+	public function getSerieAverage(string $Serie)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
@@ -374,7 +374,7 @@ class pData
 	}
 
 	/* Return the geometric mean of the given serie */
-	function getGeometricMean(string $Serie)
+	public function getGeometricMean(string $Serie)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
@@ -390,7 +390,7 @@ class pData
 	}
 
 	/* Return the harmonic mean of the given serie */
-	function getHarmonicMean(string $Serie)
+	public function getHarmonicMean(string $Serie)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
@@ -406,7 +406,7 @@ class pData
 	}
 
 	/* Return the standard deviation of the given serie */
-	function getStandardDeviation(string $Serie)
+	public function getStandardDeviation(string $Serie)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$Average = $this->getSerieAverage($Serie);
@@ -423,7 +423,7 @@ class pData
 	}
 
 	/* Return the Coefficient of variation of the given serie */
-	function getCoefficientOfVariation(string $Serie)
+	public function getCoefficientOfVariation(string $Serie)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$Average = $this->getSerieAverage($Serie);
@@ -435,7 +435,7 @@ class pData
 	}
 
 	/* Return the median value of the given serie */
-	function getSerieMedian(string $Serie)
+	public function getSerieMedian(string $Serie)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
@@ -448,7 +448,7 @@ class pData
 	}
 
 	/* Return the x th percentile of the given serie */
-	function getSeriePercentile(string $Serie = "Serie1", float $Percentil = 95) # UNUSED
+	public function getSeriePercentile(string $Serie = "Serie1", float $Percentil = 95) # UNUSED
 	{
 		if (!isset($this->Data["Series"][$Serie]["Data"])) {
 			throw pException::InvalidInput("Invalid serie name");
@@ -463,7 +463,7 @@ class pData
 	}
 
 	/* Add random values to a given serie */
-	function addRandomValues(string $SerieName = "Serie1", array $Options = [])
+	public function addRandomValues(string $SerieName = "Serie1", array $Options = [])
 	{
 		$Values = isset($Options["Values"]) ? $Options["Values"] : 20;
 		$Min = isset($Options["Min"]) ? $Options["Min"] : 0;
@@ -479,7 +479,7 @@ class pData
 	}
 
 	/* Test if we have valid data */
-	function containsData() # UNUSED
+	public function containsData() # UNUSED
 	{
 		if (!isset($this->Data["Series"])) {
 			return FALSE;
@@ -495,7 +495,7 @@ class pData
 	}
 
 	/* Set the display mode of an Axis */
-	function setAxisDisplay(int $AxisID, int $Mode = AXIS_FORMAT_DEFAULT, string $Format = "")
+	public function setAxisDisplay(int $AxisID, int $Mode = AXIS_FORMAT_DEFAULT, string $Format = "")
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
 			$this->Data["Axis"][$AxisID]["Display"] = $Mode;
@@ -506,7 +506,7 @@ class pData
 	}
 
 	/* Set the position of an Axis */
-	function setAxisPosition(int $AxisID, int $Position = AXIS_POSITION_LEFT)
+	public function setAxisPosition(int $AxisID, int $Position = AXIS_POSITION_LEFT)
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
 			$this->Data["Axis"][$AxisID]["Position"] = $Position;
@@ -516,7 +516,7 @@ class pData
 	}
 
 	/* Associate an unit to an axis */
-	function setAxisUnit(int $AxisID, string $Unit)
+	public function setAxisUnit(int $AxisID, string $Unit)
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
 			$this->Data["Axis"][$AxisID]["Unit"] = $Unit;
@@ -526,7 +526,7 @@ class pData
 	}
 
 	/* Associate a name to an axis */
-	function setAxisName(int $AxisID, string $Name)
+	public function setAxisName(int $AxisID, string $Name)
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
 			$this->Data["Axis"][$AxisID]["Name"] = $Name;
@@ -536,7 +536,7 @@ class pData
 	}
 
 	/* Associate a color to an axis */
-	function setAxisColor(int $AxisID, pColor $Color)
+	public function setAxisColor(int $AxisID, pColor $Color)
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
 			$this->Data["Axis"][$AxisID]["Color"] = $Color;
@@ -546,7 +546,7 @@ class pData
 	}
 
 	/* Design an axis as X or Y member */
-	function setAxisXY(int $AxisID, int $Identity = AXIS_Y)
+	public function setAxisXY(int $AxisID, int $Identity = AXIS_Y)
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
 			$this->Data["Axis"][$AxisID]["Identity"] = $Identity;
@@ -556,7 +556,7 @@ class pData
 	}
 
 	/* Associate one data serie with one axis */
-	function setSerieOnAxis(string $Serie, int $AxisID)
+	public function setSerieOnAxis(string $Serie, int $AxisID)
 	{
 		$PreviousAxis = $this->Data["Series"][$Serie]["Axis"];
 		/* Create missing axis */
@@ -580,7 +580,7 @@ class pData
 	}
 
 	/* Define if a serie should be draw with ticks */
-	function setSerieTicks(string $Serie, int $Ticks = NULL)
+	public function setSerieTicks(string $Serie, int $Ticks = NULL)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$this->Data["Series"][$Serie]["Ticks"] = $Ticks;
@@ -590,7 +590,7 @@ class pData
 	}
 
 	/* Define if a serie should be draw with a special weight */
-	function setSerieWeight(string $Serie, int $Weight = NULL)
+	public function setSerieWeight(string $Serie, int $Weight = NULL)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$this->Data["Series"][$Serie]["Weight"] = $Weight;
@@ -600,7 +600,7 @@ class pData
 	}
 
 	/* Returns the palette of the given serie */
-	function getSeriePalette(string $Serie)
+	public function getSeriePalette(string $Serie)
 	{
 		if (!isset($this->Data["Series"][$Serie])) {
 			throw pException::InvalidInput("Invalid serie name");
@@ -611,7 +611,7 @@ class pData
 
 	/* Set the color of one serie */
 	/* Momchil: tried to refactor. did not work */
-	function setPalette(string $Serie, pColor $Color)
+	public function setPalette(string $Serie, pColor $Color)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$Old = $this->Data["Series"][$Serie]["Color"];
@@ -628,7 +628,7 @@ class pData
 	}
 
 	/* Load a palette file */
-	function loadPalette(array $MyPalette, bool $Reset = FALSE)
+	public function loadPalette(array $MyPalette, bool $Reset = FALSE)
 	{
 		if ($Reset) {
 			$this->Palette = [];
@@ -652,7 +652,7 @@ class pData
 	}
 
 	/* used in pPie */
-	function getPieParams($forLegend = FALSE)
+	public function getPieParams($forLegend = FALSE)
 	{
 		/* Do we have an abscissa serie defined? */
 		if ($this->Data["Abscissa"] == "" || !in_array($this->Data["Abscissa"], array_keys($this->Data["Series"]))) {
@@ -687,7 +687,7 @@ class pData
 	}
 
 	/* Save a palette */
-	function savePalette(array $newPalette)
+	public function savePalette(array $newPalette)
 	{
 		foreach($newPalette as $ID => $Color) {
 			$this->Palette[$ID] = $Color;
@@ -695,13 +695,13 @@ class pData
 	}
 
 	/* Return the palette of the series */
-	function getPalette()
+	public function getPalette()
 	{
 		return $this->Palette;
 	}
 
 	/* Initialize a given scatter serie */
-	function initScatterSerie(int $ID)
+	public function initScatterSerie(int $ID)
 	{
 		if (isset($this->Data["ScatterSeries"][$ID])) {
 			throw pException::InvalidInput("Invalid scatter serie ID");
@@ -717,7 +717,7 @@ class pData
 		];
 	}
 
-	function normalize(int $NormalizationFactor = 100, string $UnitChange = "", int $Round = 1)
+	public function normalize(int $NormalizationFactor = 100, string $UnitChange = "", int $Round = 1)
 	{
 		$Abscissa = $this->Data["Abscissa"];
 		$SelectedSeries = [];
@@ -766,7 +766,7 @@ class pData
 	}
 
 	/* Load data from a CSV (or similar) data source */
-	function importFromCSV($FileName, array $Options = []) # Momchil: TODO: I need a sample here UNUSED
+	public function importFromCSV($FileName, array $Options = []) # Momchil: TODO: I need a sample here UNUSED
 	{
 		$Delimiter = isset($Options["Delimiter"]) ? $Options["Delimiter"] : ",";
 		$GotHeader = isset($Options["GotHeader"]) ? $Options["GotHeader"] : FALSE;
@@ -802,7 +802,7 @@ class pData
 	}
 
 	/* Returns the number of drawable series */
-	function countDrawableSeries()
+	public function countDrawableSeries()
 	{
 		$Results = 0;
 		foreach($this->Data["Series"] as $SerieName => $Serie) {
@@ -815,7 +815,7 @@ class pData
 	}
 
 	/* Create a dataset based on a formula */
-	function createFunctionSerie(string $SerieName, \Closure $Function, string $Formula, array $Options = [])
+	public function createFunctionSerie(string $SerieName, \Closure $Function, string $Formula, array $Options = [])
 	{
 		$MinX = isset($Options["MinX"]) ? $Options["MinX"] : -10;
 		$MaxX = isset($Options["MaxX"]) ? $Options["MaxX"] : 10;
@@ -839,7 +839,7 @@ class pData
 		($RecordAbscissa) AND $this->addPoints($Abscissa, $AbscissaSerie);
 	}
 
-	function negateValues(array $Series)
+	public function negateValues(array $Series)
 	{
 		foreach($Series as $SerieName) {
 			if (isset($this->Data["Series"][$SerieName])) {
@@ -856,7 +856,7 @@ class pData
 		}
 	}
 
-	function scaleGetXSettings()
+	public function scaleGetXSettings()
 	{
 		foreach($this->Data["Axis"] as $Settings) {
 			if ($Settings["Identity"] == AXIS_X) {
@@ -866,25 +866,25 @@ class pData
 	}
 
 	/* Return the data & configuration of the series */
-	function getData()
+	public function getData()
 	{
 		return $this->Data;
 	}
 
 	/* Called by the scaling algorithm to save the config */
-	function saveAxisConfig(array $Axis)
+	public function saveAxisConfig(array $Axis)
 	{
 		$this->Data["Axis"] = $Axis;
 	}
 
 	/* Save the Y Margin if set */
-	function saveYMargin(int $Value)
+	public function saveYMargin(int $Value)
 	{
 		$this->Data["YMargin"] = $Value;
 	}
 
 	/* Called by the scaling algorithm to save the orientation of the scale */
-	function saveOrientation(int $Orientation)
+	public function saveOrientation(int $Orientation)
 	{
 		$this->Data["Orientation"] = $Orientation;
 	}

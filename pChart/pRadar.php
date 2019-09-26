@@ -24,7 +24,7 @@ define("RADAR_LABELS_HORIZONTAL", 690022);
 /* pRadar class definition */
 class pRadar
 {
-	var $myPicture;
+	private $myPicture;
 
 	function __construct(\pChart\pDraw $pChartObject)
 	{
@@ -32,7 +32,7 @@ class pRadar
 	}
 
 	/* Draw a radar chart */
-	function drawRadar(array $Format = [])
+	public function drawRadar(array $Format = [])
 	{
 		$FixedMax = VOID;
 		$AxisColor = new pColor(60,60,60,50);
@@ -361,7 +361,7 @@ class pRadar
 	}
 
 	/* Draw a radar chart */
-	function drawPolar(array $Format = [])
+	public function drawPolar(array $Format = [])
 	{
 		$FixedMax = VOID;
 		$AxisColor = new pColor(60,60,60,50);

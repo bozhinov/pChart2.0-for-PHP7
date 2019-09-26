@@ -33,28 +33,29 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","Fon
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
 
+/* Populate the pData object */  
+$myPicture->myData->addPoints([30,20,15,10,8,4],"Score");
+$myPicture->myData->addPoints(["End of visit","Home Page","Product Page","Sales","Statistics","Prints"],"Labels");
+$myPicture->myData->setAbscissa("Labels");
+
+$myPicture->setGraphArea(10,20,340,230);
+
 /* Create the pSplit object */
 $SplitChart = new pCharts($myPicture);
-
-/* Populate the pData object */  
-$SplitChart->myPicture->myData->addPoints([30,20,15,10,8,4],"Score");
-$SplitChart->myPicture->myData->addPoints(["End of visit","Home Page","Product Page","Sales","Statistics","Prints"],"Labels");
-$SplitChart->myPicture->myData->setAbscissa("Labels");
-
-/* Draw the split chart */
-$myPicture->setGraphArea(10,20,340,230);
 $SplitChart->drawSplitPath(["TextPos"=>TEXT_POS_RIGHT,"TextPadding"=>10,"Spacing"=>20,"Surrounding"=>40]);
+
 /* Clear the existing points otherwise the next pSplit will add to these */
-$SplitChart->myPicture->myData->clearPoints("Score");
-$SplitChart->myPicture->myData->clearPoints("Labels");
+$myPicture->myData->clearPoints("Score");
+$myPicture->myData->clearPoints("Labels");
 
 /* Populate the pData object again */
-$SplitChart->myPicture->myData->addPoints([30,20,15],"Score");
-$SplitChart->myPicture->myData->addPoints(["UK","FR","ES"],"Labels");
-$SplitChart->myPicture->myData->setAbscissa("Labels");
+$myPicture->myData->addPoints([30,20,15],"Score");
+$myPicture->myData->addPoints(["UK","FR","ES"],"Labels");
+$myPicture->myData->setAbscissa("Labels");
+
+$myPicture->setGraphArea(350,50,690,200);
 
 /* Draw the split chart */
-$myPicture->setGraphArea(350,50,690,200);
 $SplitChart->drawSplitPath(["TextPadding"=>4,"Spacing"=>30,"Surrounding"=>20]);
 
 /* Render the picture (choose the best way) */

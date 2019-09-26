@@ -37,14 +37,14 @@ define("TEXT_POS_RIGHT", 690002);
 
 class pCharts
 {
-	var $myPicture;
+	private $myPicture;
 
 	function __construct(\pChart\pDraw $pChartObject)
 	{
 		$this->myPicture = $pChartObject;
 	}
 
-	function getXstep($Orientation, $XDivs, $XMargin)
+	private function getXstep($Orientation, $XDivs, $XMargin)
 	{
 		if ($Orientation == SCALE_POS_LEFTRIGHT) {
 			if ($XDivs == 0) {
@@ -63,8 +63,18 @@ class pCharts
 		return $XStep;
 	}
 
+	public function setAxisName(int $AxisID, string $Name)
+	{
+		$this->myPicture->myData->setAxisName($AxisID, $Name);
+	}
+
+	public function setSerieDrawable(string $Serie, bool $Drawable = TRUE)
+	{
+		$this->myPicture->myData->setSerieDrawable($Serie, $Drawable);
+	}
+
 	/* Draw a plot chart */
-	function drawPlotChart(array $Format = [])
+	public function drawPlotChart(array $Format = [])
 	{
 		$PlotSize = NULL;
 		$PlotBorder = FALSE;
@@ -171,7 +181,7 @@ class pCharts
 	}
 
 	/* Draw a spline chart */
-	function drawSplineChart(array $Format = [])
+	public function drawSplineChart(array $Format = [])
 	{
 		$BreakVoid = TRUE;
 		$VoidTicks = 4;
@@ -294,7 +304,7 @@ class pCharts
 	}
 
 	/* Draw a filled spline chart */
-	function drawFilledSplineChart(array $Format = [])
+	public function drawFilledSplineChart(array $Format = [])
 	{
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
@@ -477,7 +487,7 @@ class pCharts
 	}
 
 	/* Draw a line chart */
-	function drawLineChart(array $Format = [])
+	public function drawLineChart(array $Format = [])
 	{
 		$BreakVoid = TRUE;
 		$VoidTicks = 4;
@@ -615,7 +625,7 @@ class pCharts
 	}
 
 	/* Draw a line chart */
-	function drawZoneChart(string $SerieA, string $SerieB, array $Format = [])
+	public function drawZoneChart(string $SerieA, string $SerieB, array $Format = [])
 	{
 		$AxisID = isset($Format["AxisID"]) ? $Format["AxisID"] : 0;
 		$LineColor = isset($Format["LineColor"]) ? $Format["LineColor"] : new pColor(150,150,150,50);
@@ -679,7 +689,7 @@ class pCharts
 	}
 
 	/* Draw a step chart */
-	function drawStepChart(array $Format = [])
+	public function drawStepChart(array $Format = [])
 	{
 		$BreakVoid = FALSE;
 		$ReCenter = TRUE;
@@ -848,7 +858,7 @@ class pCharts
 	}
 
 	/* Draw a step chart */
-	function drawFilledStepChart(array $Format = [])
+	public function drawFilledStepChart(array $Format = [])
 	{
 		$ReCenter = TRUE;
 		$ForceTransparency = NULL;
@@ -1006,7 +1016,7 @@ class pCharts
 	}
 
 	/* Draw an area chart */
-	function drawAreaChart(array $Format = [])
+	public function drawAreaChart(array $Format = [])
 	{
 		$DisplayValues = FALSE;
 		$DisplayOffset = 2;
@@ -1172,7 +1182,7 @@ class pCharts
 	}
 
 	/* Draw a bar chart */
-	function drawBarChart(array $Format = [])
+	public function drawBarChart(array $Format = [])
 	{
 		$Floating0Serie = NULL;
 		$Floating0Value = NULL;
@@ -1473,7 +1483,7 @@ class pCharts
 	}
 
 	/* Draw a bar chart */
-	function drawStackedBarChart(array $Format = [])
+	public function drawStackedBarChart(array $Format = [])
 	{
 		$DisplayValues = FALSE;
 		$DisplayOrientation = ORIENTATION_AUTO;
@@ -1680,7 +1690,7 @@ class pCharts
 	} 
 
 	/* Draw a stacked area chart */
-	function drawStackedAreaChart(array $Format = [])
+	public function drawStackedAreaChart(array $Format = [])
 	{
 		$DrawLine = FALSE;
 		$LineSurrounding = NULL;
@@ -1823,7 +1833,7 @@ class pCharts
 		$this->myPicture->Shadow = $RestoreShadow;
 	}
 
-	function drawPolygonChart(array $Points, array $Format = [])
+	public function drawPolygonChart(array $Points, array $Format = [])
 	{
 		$DefaultColor = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Threshold = isset($Format["Threshold"]) ? $Format["Threshold"] : [];
@@ -2002,7 +2012,7 @@ class pCharts
 	}
 
 	/* Create the encoded string */
-	function drawSplitPath(array $Format = [])
+	public function drawSplitPath(array $Format = [])
 	{
 		$Spacing = isset($Format["Spacing"]) ? $Format["Spacing"] : 20;
 		$TextPadding = isset($Format["TextPadding"]) ? $Format["TextPadding"] : 2;
@@ -2125,7 +2135,7 @@ class pCharts
 	}
 
 	/* Draw the derivative chart associated to the data series */
-	function drawDerivative(array $Format = [])
+	public function drawDerivative(array $Format = [])
 	{
 		$Offset = isset($Format["Offset"]) ? $Format["Offset"] : 10;
 		$SerieSpacing = isset($Format["SerieSpacing"]) ? $Format["SerieSpacing"] : 3;
@@ -2329,7 +2339,7 @@ class pCharts
 	}
 
 	/* Draw the line of best fit */
-	function drawBestFit(array $Format = [])
+	public function drawBestFit(array $Format = [])
 	{
 		$OverrideTicks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$OverrideColor = isset($Format["OverrideColor"]) ? $Format["OverrideColor"] : NULL;

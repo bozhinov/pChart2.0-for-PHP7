@@ -44,11 +44,11 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","Fon
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Create the pRadar object */ 
-$SplitChart = new pRadar($myPicture);
+$splitChart = new pRadar($myPicture);
 
 /* Draw a polar chart */ 
-$SplitChart->myPicture->setGraphArea(10,25,340,225);
-$SplitChart->drawPolar([
+$myPicture->setGraphArea(10,25,340,225);
+$splitChart->drawPolar([
 	"BackgroundGradient" => ["StartColor"=>new pColor(255),"EndColor"=>new pColor(207,227,125,50)],
 	"FontName"=>"pChart/fonts/Cairo-Regular.ttf",
 	"FontSize"=>7
@@ -56,8 +56,8 @@ $SplitChart->drawPolar([
 
 /* Draw a polar chart */ 
 
-$SplitChart->myPicture->setGraphArea(350,25,690,225);
-$SplitChart->drawPolar([
+$myPicture->setGraphArea(350,25,690,225);
+$splitChart->drawPolar([
 	"LabelPos"=>RADAR_LABELS_HORIZONTAL,
 	"BackgroundGradient" => ["StartColor"=>new pColor(255,255,255,50),"EndColor"=>new pColor(32,109,174,30)],
 	"AxisRotation"=>0,

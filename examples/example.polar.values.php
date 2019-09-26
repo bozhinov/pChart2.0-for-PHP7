@@ -41,11 +41,11 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","Fon
 $myPicture->setShadow(FALSE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Create the pRadar object */ 
-$SplitChart = new pRadar($myPicture);
+$splitChart = new pRadar($myPicture);
 
 /* Draw a radar chart */ 
-$SplitChart->myPicture->setGraphArea(10,25,290,290);
-$SplitChart->drawPolar([
+$myPicture->setGraphArea(10,25,290,290);
+$splitChart->drawPolar([
 	"DrawPoly"=>TRUE,
 	"WriteValues"=>TRUE,
 	"ValueFontSize"=>8,
