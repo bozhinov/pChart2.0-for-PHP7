@@ -896,7 +896,7 @@ class pDraw
 	}
 
 	/* Draw a filled circle */
-	public function drawFilledCircle(int $X, int $Y, int $Radius, array $Format = [])
+	public function drawFilledCircle($X, $Y, $Radius, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : NULL;

@@ -30,7 +30,7 @@ $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,20)]);
 /* Draw some arrows */ 
 for($i=1;$i<=100;$i=$i+8)
 {
-	$myPicture->drawArrow($i+5,215,$i*7+5,30,["FillColor"=>new pColor($i*2.5,$i*2.5,$i*2.5),"Ticks"=>$i % 5]);
+	$myPicture->drawArrow($i+5,215,$i*7+5,30,["FillColor"=>new pColor(intval($i*2.5),intval($i*2.5),intval($i*2.5)),"Ticks"=>$i % 5]);
 }
 
 /* Render the picture (choose the best way) */

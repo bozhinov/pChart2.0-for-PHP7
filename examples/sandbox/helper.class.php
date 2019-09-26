@@ -70,7 +70,7 @@ class helper {
 		}
 
 		$pos = array_search($Value, $this->Constants);
-		return ($pos != FALSE) ? $pos : $Value;
+		return ($pos !== FALSE) ? $pos : $Value;
 	}
 
 	function stringify($Values)
