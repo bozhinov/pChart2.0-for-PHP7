@@ -774,11 +774,11 @@ class pData
 		$DefaultSerieName = isset($Options["DefaultSerieName"]) ? $Options["DefaultSerieName"] : "Serie";
 
 		if (strlen($Delimiter) > 1){
-			die("pChart: delimiter has to be a single char"); # No need to throw exception here
+			throw pException::InvalidInput("Delimiter has to be a single char");
 		}
 
 		if (!file_exists($FileName)){
-			die("pChart: could not find the CSV file"); # No need to throw exception here
+			throw pException::InvalidInput("Could not find the CSV file");
 		}
 
 		$CSVContent = file($FileName, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
