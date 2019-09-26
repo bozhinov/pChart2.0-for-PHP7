@@ -211,19 +211,19 @@ function toggleAutoMargins()
 
 function checkEnabledAxis()
 {
-	Serie1Enabled = document.getElementById("d_serie1_enabled").checked;
-	Serie2Enabled = document.getElementById("d_serie2_enabled").checked;
-	Serie3Enabled = document.getElementById("d_serie3_enabled").checked;
-	Serie1Binding = getSelected("d_serie1_axis");
-	Serie2Binding = getSelected("d_serie2_axis");
-	Serie3Binding = getSelected("d_serie3_axis");
+	var Serie1Enabled = document.getElementById("d_serie1_enabled").checked;
+	var Serie2Enabled = document.getElementById("d_serie2_enabled").checked;
+	var Serie3Enabled = document.getElementById("d_serie3_enabled").checked;
+	var Serie1Binding = getSelected("d_serie1_axis");
+	var Serie2Binding = getSelected("d_serie2_axis");
+	var Serie3Binding = getSelected("d_serie3_axis");
 
-	Series = 0;
-	if ( Serie1Enabled ) Series++;
-	if ( Serie2Enabled ) Series++;
-	if ( Serie3Enabled ) Series++;
-	
-	for( i = 0; i < 3; i++ )
+	var Series = 0;
+	if ( Serie1Enabled ){ Series++ };
+	if ( Serie2Enabled ){ Series++ };
+	if ( Serie3Enabled ){ Series++ };
+
+	for( var i = 0; i < 3; i++ )
 	{
 		if ( (Serie1Binding != i || !Serie1Enabled) && (Serie2Binding != i || !Serie2Enabled) && (Serie3Binding != i || !Serie3Enabled) )
 		{
@@ -243,12 +243,12 @@ function checkEnabledAxis()
 
 	if ( Automatic )
 	{
-		sl_enabled  = document.getElementById("sl_enabled").checked;
-		g_width     = document.getElementById("g_width").value;
-		g_height    = document.getElementById("g_height").value;
+		var sl_enabled  = document.getElementById("sl_enabled").checked;
+		var g_width     = document.getElementById("g_width").value;
+		var g_height    = document.getElementById("g_height").value;
 
-		leftSeries = 0;
-		rightSeries = 0;
+		var leftSeries = 0;
+		var rightSeries = 0;
 
 		for ( i = 0; i < 3; i++ )
 		{
@@ -261,13 +261,14 @@ function checkEnabledAxis()
 			}
 		}
 
+		var RightOffset = 0;
 		if ( getSelected("s_direction") == "690101" )
 		{
-			leftOffset = (leftSeries == 0 ? 20 : 10);
-			rightOffset = (rightSeries == 0 ? 25 : 15);
+			var leftOffset = (leftSeries == 0 ? 20 : 10);
+			RightOffset = (rightSeries == 0 ? 25 : 15);
 
-			leftMargin = leftOffset + 40 * leftSeries;
-			width = g_width - leftMargin - 40 * rightSeries - rightOffset;
+			var leftMargin = leftOffset + 40 * leftSeries;
+			var width = g_width - leftMargin - 40 * rightSeries - RightOffset;
 
 			BottomOffset = (sl_enabled ? Series*15 : 0);
 
@@ -278,13 +279,13 @@ function checkEnabledAxis()
 		}
 		else
 		{
-			topOffset = (leftSeries == 0 ? 40 : 40);
-			bottomOffset = (rightSeries == 0 ? 25 : 15);
+			var topOffset = (leftSeries == 0 ? 40 : 40);
+			var bottomOffset = (rightSeries == 0 ? 25 : 15);
 
-			topMargin = topOffset + 30 * leftSeries;
-			height = g_height - topMargin - 30 * rightSeries - bottomOffset;
+			var topMargin = topOffset + 30 * leftSeries;
+			var height = g_height - topMargin - 30 * rightSeries - bottomOffset;
 
-			RightOffset = (sl_enabled ? Series*15 : 0);
+			RightOffset = (sl_enabled ? Series * 15 : 0);
 
 			document.getElementById("s_x").value = 70;
 			document.getElementById("s_y").value = topMargin;
