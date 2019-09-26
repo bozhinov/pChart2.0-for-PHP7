@@ -461,7 +461,7 @@ class pScatter
 	}
 
 	/* Draw a scatter line chart */
-	public function drawScatterLineChart(array $Format = [])
+	public function drawScatterLineChart()
 	{
 		$Data = $this->myPicture->myData->getData();
 
@@ -498,7 +498,7 @@ class pScatter
 	}
 
 	/* Draw a scatter spline chart */
-	public function drawScatterSplineChart(array $Format = [])
+	public function drawScatterSplineChart()
 	{
 		$Data = $this->myPicture->myData->getData();
 
