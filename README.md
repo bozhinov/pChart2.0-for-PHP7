@@ -58,7 +58,7 @@ Goals:
  - Introduce pPyramid
 
 Major changes:
- - Remove pImageMap, pCache, pBarcode
+ - Removed pImageMap, pCache, pBarcode
  - Removed QRCode glue /* Check example.qrcode.php */
- - Introduce the new Barcodes lib /* Check my PHP-Barcodes-fork repo */
+ - Introduced the new Barcodes lib /* Check my PHP-Barcodes-fork repo */
  - Cleaned up Examples index page
