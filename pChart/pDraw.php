@@ -121,36 +121,36 @@ define("VOID", 0.123456789);
 
 class pDraw
 {
+	/* TODO ALL OF THESE SHOULD BE PRIVATE */
 	/* Image settings, size, quality, .. */
-	var $XSize = 0; // Width of the picture
-	var $YSize = 0; // Height of the picture
-	var $Picture; // GD picture object
-	var $Antialias = TRUE; // Turn anti alias on or off
-	var $AntialiasQuality = 0; // Quality of the anti aliasing implementation (0-1)
-	var $TransparentBackground = FALSE; // Just to know if we need to flush the alpha channels when rendering
-	/* Graph area settings */
-	var $GraphAreaX1 = 0; // Graph area X origin
-	var $GraphAreaY1 = 0; // Graph area Y origin
-	var $GraphAreaX2 = 0; // Graph area bottom right X position
-	var $GraphAreaY2 = 0; // Graph area bottom right Y position
-	var $GraphAreaXdiff = 0; // $X2 - $X1
-	var $GraphAreaYdiff = 0; // $Y2 - $Y1
-	/* Scale settings */
-	# var $ScaleMinDivHeight = 20; // Minimum height for scale divs # UNUSED
-	/* Font properties */
-	var $FontName = "pChart/fonts/Dosis-Light.ttf"; // Default font file
-	var $FontSize = 12; // Default font size
-	#var $FontBox = NULL; // Return the bounding box of the last written string
-	var $FontColor; // Default color settings
-	/* Shadow properties */
-	var $Shadow = FALSE; // Turn shadows on or off
-	var $ShadowX = 0; // X Offset of the shadow
-	var $ShadowY = 0; // Y Offset of the shadow
-	var $ShadowColor;
-	var $ShadowAllocatedColor;
+	private $XSize = 0; // Width of the picture
+	private $YSize = 0; // Height of the picture
+	public $Antialias = TRUE; // Turn anti alias on or off
+	public $AntialiasQuality = 0; // Quality of the anti aliasing implementation (0-1)
 
+	/* Graph area settings */
+	public $GraphAreaX1 = 0; // Graph area X origin
+	public $GraphAreaY1 = 0; // Graph area Y origin
+	public $GraphAreaX2 = 0; // Graph area bottom right X position
+	public $GraphAreaY2 = 0; // Graph area bottom right Y position
+	public $GraphAreaXdiff = 0; // $X2 - $X1
+	public $GraphAreaYdiff = 0; // $Y2 - $Y1
+	/* Font properties */
+	public $FontName = "pChart/fonts/Dosis-Light.ttf"; // Default font file
+	public $FontSize = 12; // Default font size
+	public $FontColor; // Default color settings
+	/* Shadow properties */
+	public $Shadow = FALSE; // Turn shadows on or off
+	public $ShadowX = 0; // X Offset of the shadow
+	public $ShadowY = 0; // Y Offset of the shadow
+	public $ShadowColor;
+	public $ShadowAllocatedColor;
+
+	/* TODO THESE SHOULD REMAIN PUBLIC */
 	/* Data Set */
-	var $myData;
+	public $myData;
+	/* GD picture object */
+	public $Picture;
 
 	/* Class constructor */
 	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE)
@@ -202,7 +202,7 @@ class pDraw
 	}
 
 	/* Destroy the image and start over. UNUSED */
-	function resize(int $XSize, int $YSize)
+	public function resize(int $XSize, int $YSize)
 	{
 		if (is_resource($this->Picture)){
 			imagedestroy($this->Picture);
@@ -211,7 +211,7 @@ class pDraw
 	}
 
 	/* Fix box coordinates */
-	function fixBoxCoordinates($Xa, $Ya, $Xb, $Yb)
+	private function fixBoxCoordinates($Xa, $Ya, $Xb, $Yb)
 	{
 		return [
 			min($Xa, $Xb),
@@ -222,7 +222,7 @@ class pDraw
 	}
 
 	/* Draw a polygon */
-	function drawPolygon(array $Points, array $Format = [])
+	public function drawPolygon(array $Points, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$NoFill = isset($Format["NoFill"]) ? $Format["NoFill"] : FALSE;
@@ -276,7 +276,7 @@ class pDraw
 	}
 
 	/* Apply AALias correction to the rounded box boundaries */
-	function offsetCorrection($Value, $Mode) # UNUSED
+	private function offsetCorrection($Value, $Mode) # UNUSED
 	{
 		$Value = round($Value, 1);
 
@@ -298,7 +298,7 @@ class pDraw
 	}
 
 	/* Draw a rectangle with rounded corners */
-	function drawRoundedRectangle($X1, $Y1, $X2, $Y2, $Radius, array $Format = [])
+	public function drawRoundedRectangle($X1, $Y1, $X2, $Y2, $Radius, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 
@@ -351,7 +351,7 @@ class pDraw
 	}
 
 	/* Draw a rectangle with rounded corners */
-	function drawRoundedFilledRectangle($X1, $Y1, $X2, $Y2, $Radius, array $Format = [])
+	public function drawRoundedFilledRectangle($X1, $Y1, $X2, $Y2, $Radius, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $Color->newOne();
@@ -450,7 +450,7 @@ class pDraw
 	}
 
 	/* Draw a rectangle */
-	function drawRectangle($X1, $Y1, $X2, $Y2, array $Format = [])
+	public function drawRectangle($X1, $Y1, $X2, $Y2, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
@@ -478,7 +478,7 @@ class pDraw
 	}
 
 	/* Draw a filled rectangle */
-	function drawFilledRectangle($X1, $Y1, $X2, $Y2, array $Format = [])
+	public function drawFilledRectangle($X1, $Y1, $X2, $Y2, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : NULL;
@@ -578,7 +578,7 @@ class pDraw
 	}
 
 	/* Draw a rectangular marker of the specified size */
-	function drawRectangleMarker($X, $Y, array $Format = [])
+	public function drawRectangleMarker($X, $Y, array $Format = [])
 	{
 		$Size = isset($Format["Size"]) ? $Format["Size"] : 4;
 		$HalfSize = floor($Size / 2);
@@ -586,7 +586,7 @@ class pDraw
 	}
 
 	/* Drawn a spline based on the bezier function */
-	function drawSpline(array $Coordinates, array $Format = [])
+	public function drawSpline(array $Coordinates, array $Format = [])
 	{
 		$NoDraw = isset($Format["NoDraw"]) ? $Format["NoDraw"] : FALSE;
 		$Force = isset($Format["Force"]) ? $Format["Force"] : 30;
@@ -647,7 +647,7 @@ class pDraw
 	}
 
 	/* Draw a bezier curve with two controls points */
-	function drawBezier($X1, $Y1, $X2, $Y2, $Xv1, $Yv1, $Xv2, $Yv2, array $Format = [])
+	public function drawBezier($X1, $Y1, $X2, $Y2, $Xv1, $Yv1, $Xv2, $Yv2, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Segments = isset($Format["Segments"]) ? $Format["Segments"] : NULL;
@@ -741,7 +741,7 @@ class pDraw
 	}
 
 	/* Draw a line between two points */
-	function drawLine($X1, $Y1, $X2, $Y2, array $Format = []) # FAST
+	public function drawLine($X1, $Y1, $X2, $Y2, array $Format = []) # FAST
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Cpt = isset($Format["Cpt"]) ? $Format["Cpt"] : 1;
@@ -838,7 +838,7 @@ class pDraw
 	}
 
 	/* Draw a circle */
-	function drawCircle($Xc, $Yc, $Height, $Width, array $Format = [])
+	public function drawCircle($Xc, $Yc, $Height, $Width, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
@@ -896,7 +896,7 @@ class pDraw
 	}
 
 	/* Draw a filled circle */
-	function drawFilledCircle(int $X, int $Y, int $Radius, array $Format = [])
+	public function drawFilledCircle(int $X, int $Y, int $Radius, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : NULL;
@@ -939,7 +939,7 @@ class pDraw
 	}
 
 	/* Write text */
-	function drawText($X, $Y, string $Text, array $Format = [])
+	public function drawText($X, $Y, string $Text, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : $this->FontColor;
 		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 0;
@@ -1003,7 +1003,7 @@ class pDraw
 	}
 
 	/* Draw a gradient within a defined area */
-	function drawGradientArea($X1, $Y1, $X2, $Y2, $Direction, array $GradientColor, $Levels = NULL)
+	public function drawGradientArea($X1, $Y1, $X2, $Y2, $Direction, array $GradientColor, $Levels = NULL)
 	{
 		$GradientColor = new pColorGradient($GradientColor["StartColor"]->newOne(), $GradientColor["EndColor"]->newOne());
 
@@ -1079,7 +1079,7 @@ class pDraw
 	}
 
 	/* Draw an aliased pixel */
-	function drawAntialiasPixel($X, $Y, pColor $Color) # FAST
+	public function drawAntialiasPixel($X, $Y, pColor $Color) # FAST
 	{
 		# Momchil: example.drawingObjects -> drawRoundedFilledRectangle is set to start from -5
 		if ($X < 0 || $Y < 0 || ceil($X) > $this->XSize || ceil($Y) > $this->YSize){
@@ -1154,7 +1154,7 @@ class pDraw
 	}
 
 	/* Draw a semi-transparent pixel */
-	function drawAlphaPixel($X, $Y, $Color) # FAST
+	private function drawAlphaPixel($X, $Y, $Color) # FAST
 	{
 		if ($this->Shadow) {
 			$myShadow = $this->ShadowColor->newOne()->AlphaMultiply(floor($Color->Alpha / 100));
@@ -1165,13 +1165,13 @@ class pDraw
 	}
 
 	/* Allocate a color with transparency */
-	function allocateColor($Color) # FAST
+	private function allocateColor($Color) # FAST
 	{
 		return imagecolorallocatealpha($this->Picture, $Color->R, $Color->G, $Color->B, (1.27 * (100 - $Color->Alpha)));
 	}
 
 	/* Load a PNG file and draw it over the chart */
-	function drawFromPNG($X, $Y, $FileName)
+	public function drawFromPNG($X, $Y, $FileName)
 	{
 		$PicInfo = $this->getPicInfo($FileName);
 		$PicInfo[2] = 'imagecreatefrompng'; # force PNG
@@ -1179,7 +1179,7 @@ class pDraw
 	}
 
 	/* Load a GIF file and draw it over the chart */
-	function drawFromGIF($X, $Y, $FileName)
+	public function drawFromGIF($X, $Y, $FileName)
 	{
 		$PicInfo = $this->getPicInfo($FileName);
 		$PicInfo[2] = 'imagecreatefromgif'; # force GIF
@@ -1187,14 +1187,14 @@ class pDraw
 	}
 
 	/* Load a JPEG file and draw it over the chart */
-	function drawFromJPG($X, $Y, $FileName)
+	public function drawFromJPG($X, $Y, $FileName)
 	{
 		$PicInfo = $this->getPicInfo($FileName);
 		$PicInfo[2] = 'imagecreatefromjpeg'; # force JPG
 		$this->drawFromPicture($PicInfo, $FileName, $X, $Y);
 	}
 
-	function getPicInfo($FileName)
+	public function getPicInfo($FileName)
 	{
 		if (!file_exists($FileName)) {
 			throw pException::InvalidImageType("Image ".$FileName." was not found");
@@ -1220,7 +1220,7 @@ class pDraw
 	}
 
 	/* Generic loader function for external pictures */
-	function drawFromPicture($PicInfo, $FileName, $X, $Y)
+	public function drawFromPicture($PicInfo, $FileName, $X, $Y)
 	{
 		list($Width, $Height, $PicType) = $PicInfo;
 
@@ -1252,7 +1252,7 @@ class pDraw
 	}
 
 	/* Mirror Effect */
-	function drawAreaMirror($X, $Y, $Width, $Height, array $Format = [])
+	public function drawAreaMirror($X, $Y, $Width, $Height, array $Format = [])
 	{
 		$StartAlpha = isset($Format["StartAlpha"]) ? $Format["StartAlpha"] : 80;
 		$EndAlpha = isset($Format["EndAlpha"]) ? $Format["EndAlpha"] : 0;
@@ -1271,7 +1271,7 @@ class pDraw
 	}
 
 	/* Draw an arrow */
-	function drawArrow($X1, $Y1, $X2, $Y2, array $Format = [])
+	public function drawArrow($X1, $Y1, $X2, $Y2, array $Format = [])
 	{
 		$FillColor = isset($Format["FillColor"]) ? $Format["FillColor"] : new pColor(0);
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $FillColor->newOne();
@@ -1332,7 +1332,7 @@ class pDraw
 	}
 
 	/* Draw a label with associated arrow */
-	function drawArrowLabel($X1, $Y1, $Text, array $Format = [])
+	public function drawArrowLabel($X1, $Y1, $Text, array $Format = [])
 	{
 		$FillColor = isset($Format["FillColor"]) ? $Format["FillColor"] : new pColor(0);
 		$BorderColor = isset($Format["BorderColor"]) ? $Format["BorderColor"] : $FillColor->newOne();
@@ -1382,7 +1382,7 @@ class pDraw
 	}
 
 	/* Draw a progress bar filled with specified % */
-	function drawProgress($X, $Y, $Percent, array $Format = [])
+	public function drawProgress($X, $Y, $Percent, array $Format = [])
 	{
 		($Percent > 100) AND $Percent = 100;
 		($Percent < 0) AND $Percent = 0;
@@ -1481,7 +1481,7 @@ class pDraw
 	}
 
 	/* Get the legend box size */
-	function getLegendSize(array $Format = [])
+	public function getLegendSize(array $Format = [])
 	{
 		$FontName = $this->FontName;
 		$FontSize = $this->FontSize;
@@ -1548,7 +1548,7 @@ class pDraw
 	}
 
 	/* Draw the legend of the active series */
-	function drawLegend($X, $Y, array $Format = [])
+	public function drawLegend($X, $Y, array $Format = [])
 	{
 		$Family = LEGEND_FAMILY_BOX;
 		$FontName = $this->FontName;
@@ -1680,7 +1680,7 @@ class pDraw
 		$this->Shadow = $RestoreShadow;
 	}
 
-	function drawScale(array $Format = [])
+	public function drawScale(array $Format = [])
 	{
 		$Pos = isset($Format["Pos"]) ? $Format["Pos"] : SCALE_POS_LEFTRIGHT;
 		$Floating = isset($Format["Floating"]) ? $Format["Floating"] : FALSE;
@@ -2523,7 +2523,7 @@ class pDraw
 		}
 	}
 
-	function isValidLabel($Value, $LastValue, $LabelingMethod, $ID, $LabelSkip)
+	private function isValidLabel($Value, $LastValue, $LabelingMethod, $ID, $LabelSkip)
 	{
 		$ret = TRUE;
 
@@ -2544,7 +2544,7 @@ class pDraw
 	}
 
 	/* Compute the scale, check for the best visual factors */
-	function computeScale($XMin, $XMax, $MaxDivs, array $Factors, $AxisID = 0)
+	public function computeScale($XMin, $XMax, $MaxDivs, array $Factors, $AxisID = 0)
 	{
 		$Results = [];
 		$GoodScaleFactors = [];
@@ -2581,7 +2581,7 @@ class pDraw
 	}
 
 	/* Compute the best matching scale based on size & factors */
-	function processScale($XMin, $XMax, $MaxDivs, array $Factors, $AxisID)
+	private function processScale($XMin, $XMax, $MaxDivs, array $Factors, $AxisID)
 	{
 		$Data = $this->myData->getData();
 
@@ -2674,7 +2674,7 @@ class pDraw
 	}
 
 	/* Draw an X threshold */
-	function drawXThreshold(array $Values, array $Format = [])
+	public function drawXThreshold(array $Values, array $Format = [])
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(255,0,0,50);
 		$Weight = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
@@ -2790,7 +2790,7 @@ class pDraw
 	}
 
 	/* Draw an X threshold area */
-	function drawXThresholdArea($Value1, $Value2, array $Format = []) 
+	public function drawXThresholdArea($Value1, $Value2, array $Format = []) 
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(255,0,0,20);
 		$Border = isset($Format["Border"]) ? $Format["Border"] : TRUE;
@@ -2876,7 +2876,7 @@ class pDraw
 	}
 
 	/* Draw an Y threshold with the computed scale */
-	function drawThreshold(array $Values, array $Format = [])
+	public function drawThreshold(array $Values, array $Format = [])
 	{
 		$AxisID = isset($Format["AxisID"]) ? $Format["AxisID"] : 0;
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(255,0,0,20);
@@ -2980,7 +2980,7 @@ class pDraw
 	}
 
 	/* Draw a threshold with the computed scale */
-	function drawThresholdArea($Value1, $Value2, array $Format = []) 
+	public function drawThresholdArea($Value1, $Value2, array $Format = []) 
 	{
 		$AxisID = isset($Format["AxisID"]) ? $Format["AxisID"] : 0;
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(255,0,0,20);
@@ -3076,7 +3076,7 @@ class pDraw
 		$this->Shadow = $RestoreShadow;
 	}
 
-	function scaleComputeYSingle($Value, int $AxisID)
+	public function scaleComputeYSingle($Value, int $AxisID)
 	{
 		if ($Value == VOID) {
 			return VOID;
@@ -3098,7 +3098,7 @@ class pDraw
 		return $Result;
 	}
 
-	function scaleComputeY(array $Values, int $AxisID)
+	public function scaleComputeY(array $Values, int $AxisID)
 	{
 		$Data = $this->myData->getData();
 		$Result = [];
@@ -3125,7 +3125,7 @@ class pDraw
 	}
 
 	/* Used in pCharts->drawStackedAreaChart() & pCharts->drawStackedBarChart() */
-	function scaleComputeY0HeightOnly(array $Values, int $AxisID)
+	public function scaleComputeY0HeightOnly(array $Values, int $AxisID)
 	{
 		$Data = $this->myData->getData();
 		$Scale = $Data["Axis"][$AxisID]["ScaleMax"] - $Data["Axis"][$AxisID]["ScaleMin"];
@@ -3147,7 +3147,7 @@ class pDraw
 	}
 
 	/* Format the axis values */
-	function scaleFormat($Value, $Mode = NULL, $Format = NULL, $Unit = NULL)
+	public function scaleFormat($Value, $Mode = NULL, $Format = NULL, $Unit = NULL)
 	{
 		if ($Value == VOID) {
 			return "";
@@ -3203,7 +3203,7 @@ class pDraw
 	}
 
 	/* Write Max value on a chart */
-	function writeBounds($Type = BOUND_BOTH, array $Format = [])
+	public function writeBounds($Type = BOUND_BOTH, array $Format = [])
 	{
 		$MaxLabelTxt = "max=";
 		$MinLabelTxt = "min=";
@@ -3383,7 +3383,7 @@ class pDraw
 	}
 
 	/* Write labels */
-	function writeLabel(array $SeriesName, array $Indexes, array $Format = [])
+	public function writeLabel(array $SeriesName, array $Indexes, array $Format = [])
 	{
 		$OverrideTitle = isset($Format["OverrideTitle"]) ? $Format["OverrideTitle"] : NULL;
 		$ForceLabels = isset($Format["ForceLabels"]) ? $Format["ForceLabels"] : [];
@@ -3600,7 +3600,7 @@ class pDraw
 	}
 
 	/* Draw a label box */
-	function drawLabelBox($X, $Y, $Title, $Captions, array $Format = [])
+	public function drawLabelBox($X, $Y, $Title, $Captions, array $Format = [])
 	{
 		$NoTitle = FALSE;
 		$BoxWidth = 50;
@@ -3758,7 +3758,7 @@ class pDraw
 	}
 
 	/* Draw a basic shape */
-	function drawShape($X, $Y, $Shape, $PlotSize, $PlotBorder, $BorderSize, pColor $Color, pColor $BorderColor)
+	public function drawShape($X, $Y, $Shape, $PlotSize, $PlotBorder, $BorderSize, pColor $Color, pColor $BorderColor)
 	{
 		switch ($Shape){
 			case SERIE_SHAPE_FILLEDCIRCLE:
@@ -3803,7 +3803,7 @@ class pDraw
 	}
 
 	/* Enable / Disable and set shadow properties */
-	function setShadow(bool $Enabled = TRUE, array $Format = [])
+	public function setShadow(bool $Enabled = TRUE, array $Format = [])
 	{
 		$this->Shadow = $Enabled;
 
@@ -3829,7 +3829,7 @@ class pDraw
 	}
 
 	/* Set the graph area position */
-	function setGraphArea($X1, $Y1, $X2, $Y2)
+	public function setGraphArea($X1, $Y1, $X2, $Y2)
 	{
 		if ($X2 < $X1 || $X1 == $X2 || $Y2 < $Y1 || $Y1 == $Y2) {
 			throw pException::InvalidInput("Invalid graph specs");
@@ -3845,7 +3845,7 @@ class pDraw
 	}
 
 	/* Return the orientation of a line */
-	function getAngle($X1, $Y1, $X2, $Y2)
+	public function getAngle($X1, $Y1, $X2, $Y2)
 	{
 		#$Opposite = $Y2 - $Y1;
 		#$Adjacent = $X2 - $X1;
@@ -3855,7 +3855,7 @@ class pDraw
 	}
 
 	/* Return the surrounding box of text area */
-	function getTextBox($X, $Y, $FontName, $FontSize, $Angle, $Text)
+	public function getTextBox($X, $Y, $FontName, $FontSize, $Angle, $Text)
 	{
 		$coords = imagettfbbox($FontSize, 0, realpath($FontName), $Text);
 		$a = deg2rad($Angle);
@@ -3886,7 +3886,7 @@ class pDraw
 	}
 
 	/* Set current font properties */
-	function setFontProperties(array $Format = [])
+	public function setFontProperties(array $Format = [])
 	{
 		$this->FontColor = (isset($Format['Color'])) ? $Format['Color'] : new pColor(0);
 
@@ -3901,13 +3901,13 @@ class pDraw
 	}
 
 	/* Returns the 1st decimal values (used to correct AA bugs) */
-	function getFirstDecimal($Value)
+	public function getFirstDecimal($Value)
 	{
 		return floor(($Value - floor($Value))*10);
 	}
 
 	/* Reverse an array of points */
-	function reversePlots(array $Plots)
+	public function reversePlots(array $Plots)
 	{
 		$Result = [];
 		for ($i = count($Plots) - 2; $i >= 0; $i = $i - 2) {
@@ -3919,19 +3919,19 @@ class pDraw
 	}
 
 	/* Return the width of the picture */
-	function getWidth()
+	public function getWidth()
 	{
 		return $this->XSize;
 	}
 
 	/* Return the height of the picture */
-	function getHeight()
+	public function getHeight()
 	{
 		return $this->YSize;
 	}
 
 	/* http://php.net/manual/en/function.imagefilter.php */
-	function setFilter(int $filtertype, $arg1 = NULL, $arg2 = NULL, $arg3 = NULL, $arg4 = NULL)
+	public function setFilter(int $filtertype, $arg1 = NULL, $arg2 = NULL, $arg3 = NULL, $arg4 = NULL)
 	{
 		switch (TRUE){
 			case (!is_null($arg1)):
@@ -3956,7 +3956,7 @@ class pDraw
 	}
 
 	/* Render the picture to a file */
-	function render(string $FileName, int $Compression = 6, $Filters = PNG_NO_FILTER)
+	public function render(string $FileName, int $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
 		if ($this->TransparentBackground) {
 			imagealphablending($this->Picture, FALSE);
@@ -3966,7 +3966,7 @@ class pDraw
 	}
 
 	/* Render the picture to a web browser stream */
-	function stroke(bool $BrowserExpire = FALSE, int $Compression = 6, $Filters = PNG_NO_FILTER)
+	public function stroke(bool $BrowserExpire = FALSE, int $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
 		if ($this->TransparentBackground) {
 			imagealphablending($this->Picture, FALSE);
@@ -3982,7 +3982,7 @@ class pDraw
 		imagepng($this->Picture, NULL, $Compression, $Filters);
 	}
 
-	function toBase64(int $Compression = 6, $Filters = PNG_NO_FILTER)
+	public function toBase64(int $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
 		$TempHandle = fopen("php://temp", "wb");
 		imagepng($this->Picture, $TempHandle, $Compression, $Filters);
@@ -4000,7 +4000,7 @@ class pDraw
 		http://php.net/manual/en/image.constants.php
 		https://www.w3.org/TR/PNG-Filters.html
 	*/
-	function autoOutput(string $FileName = "output.png", int $Compression = 6, $Filters = PNG_NO_FILTER)
+	public function autoOutput(string $FileName = "output.png", int $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
 		if (php_sapi_name() == "cli") {
 			$this->Render($FileName, $Compression, $Filters);

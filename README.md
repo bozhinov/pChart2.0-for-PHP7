@@ -61,4 +61,5 @@ Major changes:
  - Removed pImageMap, pCache, pBarcode
  - Removed QRCode glue /* Check example.qrcode.php */
  - Introduced the new Barcodes lib /* Check my PHP-Barcodes-fork repo */
+ - Explicitly declare the visibility for methods
  - Cleaned up Examples index page
