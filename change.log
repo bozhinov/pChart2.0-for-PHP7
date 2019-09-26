@@ -16,6 +16,7 @@
   o Removed pCache
   o Examples use the QRCode lib directly
   o Examples use the new Barcode lib
+  o FIXED: pDraw->setFilter
 
  2.3.0 -----------------------------------------------------------------------
   o Introduced pQRCode

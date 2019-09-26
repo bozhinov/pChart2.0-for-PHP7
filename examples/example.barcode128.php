@@ -32,26 +32,14 @@ $myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.tt
 $myPicture->drawText(10,15,"Barcode 128 - Add barcode to your pictures",["Color"=>new pColor(255)]);
 
 /* Create the barcode 128 object */
-$Barcode = new pBarcode128($myPicture);
+$Generator = new Barcodes("code128");
 
 /* Draw a simple barcode */
-$Barcode->myPicture->setFontProperties(["FontSize"=>6]);
-$Barcode->draw("pChart Rocks!",50,50, ["ShowLegend"=>TRUE,"DrawArea"=>TRUE]);
+$Generator->forPChart($myPicture, "pChart Rocks!", ["label" => ['Size' => 2]], 50,50);
 
 /* Draw a rotated barcode */
-$Barcode->myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>12]);
-$Barcode->draw("Turn me on",650,50,["ShowLegend"=>TRUE,"DrawArea"=>TRUE,"Angle"=>90]);
+$Generator->forPChart($myPicture, "Turn me on", ["Angle"=>90, "label" => ["TTF" => "pChart/fonts/Cairo-Regular.ttf", "Size" => 12, "Offset" => 1]], 590,50);
 
-/* Draw a rotated barcode */
-$Barcode->draw("Do what you want !",290,140,[
-	"Color"=>new pColor(255),
-	"AreaColor"=>new pColor(150,30,27),
-	"AreaBorderColor"=>new pColor(70,20,20),
-	"ShowLegend"=>TRUE,
-	"DrawArea"=>TRUE,
-	"Angle"=>350
-	]);
-	
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawbarcode128.png");
 
