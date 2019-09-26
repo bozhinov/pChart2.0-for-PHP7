@@ -314,7 +314,7 @@ class pPie
 		foreach($Values as $Key => $Value) {
 
 			$SliceColors[$Key] = $Palette[$Key];
-			$StartAngle = $Offset;
+			#$StartAngle = $Offset;
 			$EndAngle = $Offset - ($Value * $ScaleFactor);
 			($EndAngle < 0) AND $EndAngle = 0;
 
@@ -359,7 +359,8 @@ class pPie
 		if ($RestoreShadow) {
 			foreach($Slices as $Plots) {
 				$ShadowPie = [];
-				for ($i = 0; $i < count($Plots); $i += 2) {
+				$PlotCount = count($Plots);
+				for ($i = 0; $i < $PlotCount; $i += 2) {
 					$ShadowPie[] = $Plots[$i] + $this->myPicture->ShadowX;
 					$ShadowPie[] = $Plots[$i + 1] + $this->myPicture->ShadowY;
 				}
@@ -707,8 +708,8 @@ class pPie
 			$YTop = $Y2 - $Height / 2 - 2;
 			$YBottom = $Y2 + $Height / 2 + 2;
 			if (!empty($this->LabelPos)) {
-				foreach($this->LabelPos as $Settings) {
-					if (($YTop >= $Settings["YTop"] && $YTop <= $Settings["YBottom"]) || ($YBottom >= $Settings["YTop"] && $YBottom <= $Settings["YBottom"])){
+				foreach($this->LabelPos as $LabelSettings) {
+					if (($YTop >= $LabelSettings["YTop"] && $YTop <= $LabelSettings["YBottom"]) || ($YBottom >= $LabelSettings["YTop"] && $YBottom <= $LabelSettings["YBottom"])){
 						switch (TRUE) {
 							case ($Angle <= 90):
 								$this->shift(0, 180, -($Height + 2), $Reversed);
@@ -926,7 +927,7 @@ class pPie
 		}
 
 		if ($WriteValues && !$Shadow) {
-			$Step = rad2deg(1/$OuterRadius);
+			#$Step = rad2deg(1/$OuterRadius);
 			$Offset = 0;
 			foreach($Values as $Value) {
 

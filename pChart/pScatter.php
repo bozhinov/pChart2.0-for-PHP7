@@ -63,8 +63,8 @@ class pScatter
 		$ScaleSpacing = 15;
 		$InnerTickWidth = 2;
 		$OuterTickWidth = 2;
-		$DrawXLines = ALL;
-		$DrawYLines = ALL;
+		$DrawXLines = [ALL];
+		$DrawYLines = [ALL];
 		$GridTicks = 4;
 		$GridColor = new pColor(255,255,255,40);
 		$AxisoColor = isset($Format["AxisColor"]) ? $Format["AxisColor"] : new pColor(0);
@@ -154,8 +154,6 @@ class pScatter
 				$this->myPicture->setFontProperties(["Color" => $this->myPicture->FontColor]);
 			}
 
-			$LastValue = "w00t";
-			$ID = 1;
 			if ($AxisSettings["Identity"] == AXIS_X) {
 				if ($AxisSettings["Position"] == AXIS_POSITION_BOTTOM) {
 					if ($XLabelsRotation == 0) {
@@ -200,11 +198,11 @@ class pScatter
 						$YPos = $AxisPos["B"];
 						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings["Display"], $AxisSettings["Format"], $AxisSettings["Unit"]);
 
-						if (!is_null($LastX) && $CycleBackground && ($DrawXLines == ALL || in_array($AxisID, $DrawXLines))) {
+						if (!is_null($LastX) && $CycleBackground && ($DrawXLines == [ALL] || in_array($AxisID, $DrawXLines))) {
 							$this->myPicture->drawFilledRectangle($LastX, $this->myPicture->GraphAreaY1 + $FloatingOffset, $XPos, $this->myPicture->GraphAreaY2 - $FloatingOffset, ["Color" => ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2]);
 						}
 
-						if ($DrawXLines == ALL || in_array($AxisID, $DrawXLines)) {
+						if ($DrawXLines == [ALL] || in_array($AxisID, $DrawXLines)) {
 							$this->myPicture->drawLine($XPos, $this->myPicture->GraphAreaY1 + $FloatingOffset, $XPos, $this->myPicture->GraphAreaY2 - $FloatingOffset, ["Color" => $GridColor,"Ticks" => $GridTicks]);
 						}
 
@@ -325,11 +323,11 @@ class pScatter
 						$XPos = $AxisPos["L"];
 						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings["Display"], $AxisSettings["Format"], $AxisSettings["Unit"]);
 
-						if (!is_null($LastY) && $CycleBackground && ($DrawYLines == ALL || in_array($AxisID, $DrawYLines))) {
+						if (!is_null($LastY) && $CycleBackground && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
 							$this->myPicture->drawFilledRectangle($this->myPicture->GraphAreaX1 + $FloatingOffset, $LastY, $this->myPicture->GraphAreaX2 - $FloatingOffset, $YPos, ["Color" => ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2]);
 						}
 
-						if (($YPos != $this->myPicture->GraphAreaY1 && $YPos != $this->myPicture->GraphAreaY2) && ($DrawYLines == ALL || in_array($AxisID, $DrawYLines))) {
+						if (($YPos != $this->myPicture->GraphAreaY1 && $YPos != $this->myPicture->GraphAreaY2) && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
 							$this->myPicture->drawLine($this->myPicture->GraphAreaX1 + $FloatingOffset, $YPos, $this->myPicture->GraphAreaX2 - $FloatingOffset, $YPos, ["Color" => $GridColor,"Ticks" => $GridTicks]);
 						}
 
@@ -425,8 +423,6 @@ class pScatter
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 
-				$Description = $Data["Series"][$Series["X"]]["Description"] . " / " . $Data["Series"][$Series["Y"]]["Description"];
-
 				if (isset($Series["Picture"]) && $Series["Picture"] != "") {
 					$Picture = $Series["Picture"];
 					$PicInfo = $this->myPicture->getPicInfo($Picture);
@@ -469,8 +465,6 @@ class pScatter
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 
-				$Description = $Data["Series"][$Series["X"]]["Description"] . " / " . $Data["Series"][$Series["Y"]]["Description"];
-
 				$PosArrayX = $this->getPosArray($Data["Series"][$Series["X"]]["Data"], $Data["Series"][$Series["X"]]["Axis"]);	
 				$PosArrayY = $this->getPosArray($Data["Series"][$Series["Y"]]["Data"], $Data["Series"][$Series["Y"]]["Axis"]);
 
@@ -505,8 +499,6 @@ class pScatter
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 
-				$Description = $Data["Series"][$Series["X"]]["Description"] . " / " . $Data["Series"][$Series["Y"]]["Description"];
-
 				$PosArrayX = $this->getPosArray($Data["Series"][$Series["X"]]["Data"], $Data["Series"][$Series["X"]]["Axis"]);
 				$PosArrayY = $this->getPosArray($Data["Series"][$Series["Y"]]["Data"], $Data["Series"][$Series["Y"]]["Axis"]);
 
@@ -524,7 +516,6 @@ class pScatter
 					$Y = $PosArrayY[$Key];
 
 					if ($X != VOID && $Y != VOID) {
-						$RealValue = round($Data["Series"][$Series["X"]]["Data"][$Key], 2) . " / " . round($Data["Series"][$Series["Y"]]["Data"][$Key], 2);
 						$WayPoints[] = [$X,$Y];
 						$SplineSettings["Forces"][] = hypot(($X - $LastX),($Y - $LastY)) / 5; # GetDistance
 					} else { # if ($Y == VOID || $X == VOID) {
