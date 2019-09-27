@@ -3812,7 +3812,7 @@ class pDraw
 
 		if(isset($Format["Y"])){
 			$this->ShadowY = $Format["Y"];
-		}		
+		}
 
 		if (isset($Format["Color"])){
 			$this->ShadowColor = $Format["Color"];
@@ -3874,7 +3874,7 @@ class pDraw
 		$this->GraphAreaXdiff = $X2 - $X1;
 		$this->GraphAreaYdiff = $Y2 - $Y1;
 	}
-	
+
 	public function getGraphAreaCoordinates()
 	{
 		return [
