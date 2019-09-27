@@ -281,8 +281,8 @@ function checkEnabledAxis()
 		}
 		else
 		{
-			var topOffset = (leftSeries == 0 ? 40 : 40);
-			BottomOffset = (rightSeries == 0 ? 25 : 15);
+			var topOffset = (leftSeries === 0 ? 40 : 40);
+			BottomOffset = (rightSeries === 0 ? 25 : 15);
 
 			var topMargin = topOffset + 30 * leftSeries;
 			var height = g_height - topMargin - 30 * rightSeries - BottomOffset;
