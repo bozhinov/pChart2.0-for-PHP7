@@ -20,7 +20,7 @@ $myPicture->myData->setSerieDescription("Months","Month");
 $myPicture->myData->setAbscissa("Months");
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Add a border to the picture */
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(240), "EndColor"=>new pColor(180)]);

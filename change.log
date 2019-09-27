@@ -22,6 +22,7 @@
   o BC: pDraw->drawScale($Format["DrawYLines"]) accepts array now
   o Added pDraw->getShadow()
   o Added pDraw->restoreShadow()
+  o Added pDraw->setAntialias()
   o FIXED: pDraw->setFilter
 
  2.3.0 -----------------------------------------------------------------------

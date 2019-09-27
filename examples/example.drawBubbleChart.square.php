@@ -26,7 +26,7 @@ $myPicture->myData->setAbscissa("Product");
 $myPicture->myData->setAbscissaName("Selected Products");
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Draw the border */
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
@@ -40,7 +40,7 @@ $myPicture->setGraphArea(60,30,650,190);
 $myPicture->drawScale(["GridColor"=>new pColor(200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Create the Bubble chart object and scale up */
-$myPicture->Antialias = TRUE;
+$myPicture->setAntialias(TRUE);
 $myBubbleChart = new pBubble($myPicture);
 
 /* Scale up for the bubble chart */

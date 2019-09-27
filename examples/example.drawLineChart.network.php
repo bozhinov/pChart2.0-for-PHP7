@@ -42,7 +42,7 @@ $myPicture->myData->setAbscissa("TimeStamp");
 $myPicture->myData->setXAxisDisplay(AXIS_FORMAT_TIME,"H:00");
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Draw a background */
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(90), "Dash"=>TRUE, "DashColor"=>new pColor(120)]);
@@ -78,7 +78,7 @@ $myPicture->drawScale([
 ]);
 
 /* Turn on Anti-aliasing */
-$myPicture->Antialias = TRUE;
+$myPicture->setAntialias(TRUE);
 
 /* Draw the line chart */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);

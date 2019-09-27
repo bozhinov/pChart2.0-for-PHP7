@@ -137,7 +137,7 @@ if ($d_normalize_enabled){
 }
 
 if (!$g_aa){
-	$code[] = '$myPicture->Antialias = FALSE;';
+	$code[] = '$myPicture->setAntialias(FALSE);';
 	$code[] = NULL;
 }
 

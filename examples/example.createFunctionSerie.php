@@ -19,7 +19,7 @@ $myPicture->myData->setAxisName(0,"functions");
 $myPicture->myData->setAbscissa("Labels");
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Draw the background */
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
@@ -46,7 +46,7 @@ $myPicture->setGraphArea(60,40,650,200);
 $myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridColor"=>new pColor(200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Turn on Anti-aliasing */
-$myPicture->Antialias = TRUE;
+$myPicture->setAntialias(TRUE);
 
 /* Turn on shadows */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);

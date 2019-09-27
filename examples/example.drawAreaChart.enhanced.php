@@ -22,7 +22,7 @@ $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Draw the background */ 
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
@@ -50,7 +50,7 @@ $myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridColor"=
 $myPicture->drawLegend(540,20,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Turn on Anti-aliasing */
-$myPicture->Antialias = TRUE;
+$myPicture->setAntialias(TRUE);
 
 /* Create the pCharts object */
 $pCharts = new pCharts($myPicture);

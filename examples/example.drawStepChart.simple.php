@@ -20,7 +20,7 @@ $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Draw the border */
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);

@@ -26,7 +26,7 @@ $myPicture->myData->setAbscissa("Time");
 $myPicture->myData->setAbscissaName("Time");
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Draw the border */
 $myPicture->drawRectangle(0,0,699,229,["Color"=>myColors::Black()]);

@@ -18,7 +18,7 @@ $myPicture->myData->addPoints(["Year","Month","Day"],"Labels");
 $myPicture->myData->setAbscissa("Labels");
 
 /* Turn on anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Create a solid background */
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(179,217,91), "Dash"=>TRUE, "DashColor"=>new pColor(199,237,111)]);
@@ -55,7 +55,7 @@ $pCharts->setSerieDrawable("Last year",FALSE);
 $pCharts->drawBarChart();
 
 /* Turn on anti-aliasing */
-$myPicture->Antialias = TRUE;
+$myPicture->setAntialias(TRUE);
 
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
 

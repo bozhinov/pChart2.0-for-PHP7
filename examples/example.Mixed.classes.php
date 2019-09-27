@@ -24,7 +24,7 @@ $myPicture->myData->setAxisName(0,"Probability");
 $myPicture->myData->setAxisUnit(0,"%");
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Draw the background */
 /* Draw the background */
@@ -48,7 +48,7 @@ $scaleSettings = ["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"LabelSkip"=>4,"G
 $myPicture->drawScale($scaleSettings);
 
 /* Turn on Anti-aliasing */
-$myPicture->Antialias = TRUE;
+$myPicture->setAntialias(TRUE);
 
 $myCharts = new pCharts($myPicture);
 

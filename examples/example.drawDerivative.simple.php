@@ -20,7 +20,7 @@ $myPicture->myData->setAbscissa("Labels");
 $myPicture->myData->setAbscissaName("Months");
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Set the default font */ 
 $myPicture->setFontProperties(["Color"=>new pColor(0),"FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7]);
@@ -35,9 +35,9 @@ $myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSubTick
 $pCharts = new pCharts($myPicture);
 
 /* Draw the chart */
-$myPicture->Antialias = TRUE;
+$myPicture->setAntialias(TRUE);
 $pCharts->drawSplineChart();
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Draw the series derivative graph */
 $pCharts->drawDerivative(["Caption"=>FALSE]);

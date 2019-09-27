@@ -127,8 +127,8 @@ class pDraw
 	/* Image settings, size, quality, .. */
 	private $XSize = 0; // Width of the picture
 	private $YSize = 0; // Height of the picture
-	public $Antialias = TRUE; // Turn anti alias on or off
-	public $AntialiasQuality = 0; // Quality of the anti aliasing implementation (0-1)
+	private $Antialias = TRUE; // Turn anti alias on or off
+	private $AntialiasQuality = 0; // Quality of the anti aliasing implementation (0-1)
 	private $TransparentBackground = FALSE;
 	/* Graph area settings */
 	public $GraphAreaX1 = 0; // Graph area X origin
@@ -3838,6 +3838,12 @@ class pDraw
 			'Y' => $this->ShadowY,
 			'Color' => $this->ShadowColor
 		];
+	}
+
+	public function setAntialias(bool $enabled, float $quality = 0)
+	{
+		$this->Antialias = $enabled;
+		$this->AntialiasQuality = $quality;
 	}
 
 	/* Set the graph area position */

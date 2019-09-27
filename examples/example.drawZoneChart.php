@@ -34,7 +34,7 @@ $myPicture->myData->setAbscissa("Labels");
 $myPicture->myData->setAbscissaName("Time (years)");
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Draw the background and the border  */
 $myPicture->drawFilledRectangle(0,0,699,229,["Color"=>new pColor(200)]);
@@ -55,7 +55,7 @@ $myPicture->setGraphArea(40,40,680,200);
 $myPicture->drawScale(["LabelSkip"=>4,"XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridColor"=>new pColor(140,140,140,30),"DrawSubTicks"=>TRUE]);
 
 /* Turn on Anti-aliasing */
-$myPicture->Antialias = TRUE;
+$myPicture->setAntialias(TRUE);
 
 /* Create the pCharts object */
 $pCharts = new pCharts($myPicture);

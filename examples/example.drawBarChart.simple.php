@@ -20,13 +20,13 @@ $myPicture->myData->setSerieDescription("Months","Month");
 $myPicture->myData->setAbscissa("Months");
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Set the default font */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7]);
 
 /* Define the chart area */
 $myPicture->setGraphArea(60,40,650,200);

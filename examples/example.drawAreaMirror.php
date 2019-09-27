@@ -21,7 +21,7 @@ $myPicture->myData->setAbscissa("Months");
 $myPicture->myData->setAbsicssaPosition(AXIS_POSITION_TOP);
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Add a border to the picture */
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, myColors::myGridColor());

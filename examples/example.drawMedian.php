@@ -20,7 +20,7 @@ $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->myData->setAbscissaName("Samples");
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
@@ -39,7 +39,7 @@ $myPicture->setGraphArea(60,40,650,200);
 $myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"GridColor"=>new pColor(200),"DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
 /* Turn on Anti-aliasing */
-$myPicture->Antialias = TRUE;
+$myPicture->setAntialias(TRUE);
 
 /* Draw the line of best fit */
 $Median = $myPicture->myData->getSerieMedian("Probe 1");

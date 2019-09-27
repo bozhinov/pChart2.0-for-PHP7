@@ -27,7 +27,7 @@ $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "D
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]);
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
@@ -48,7 +48,7 @@ $scaleSettings = ["LabelSkip"=>9,"GridColor"=>new pColor(200),"DrawSubTicks"=>TR
 $myPicture->drawScale($scaleSettings);
 
 /* Turn on Anti-aliasing */
-$myPicture->Antialias = TRUE;
+$myPicture->setAntialias(TRUE);
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Draw the line chart */

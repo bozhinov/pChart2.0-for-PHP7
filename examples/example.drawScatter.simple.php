@@ -45,7 +45,7 @@ $myPicture->myData->setScatterSerie("Probe 2","Probe 3",1);
 $myPicture->myData->setScatterSerieDescription(1,"Last Year");
 
 /* Turn off Anti-aliasing */
-$myPicture->Antialias = FALSE;
+$myPicture->setAntialias(FALSE);
 
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0)]);
@@ -66,7 +66,7 @@ $myScatter->drawScatterScale(["XMargin"=>15,"YMargin"=>15,"Floating"=>TRUE,"Grid
 $myScatter->drawScatterLegend(280,380,["Mode"=>LEGEND_HORIZONTAL,"Style"=>LEGEND_NOBORDER]);
 
 /* Draw a scatter plot chart */
-$myPicture->Antialias = TRUE;
+$myPicture->setAntialias(TRUE);
 $myScatter->drawScatterPlotChart();
 
 /* Render the picture (choose the best way) */
