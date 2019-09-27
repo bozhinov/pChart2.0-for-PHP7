@@ -1070,8 +1070,8 @@ class pCharts
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-					if ($YZero > $GraphAreaCoordinates["T"] - 1) {
-						$YZero = $GraphAreaCoordinates["T"] - 1;
+					if ($YZero > $GraphAreaCoordinates["B"] - 1) {
+						$YZero = $GraphAreaCoordinates["B"] - 1;
 					}
 
 					$AreaID = 0;
@@ -1564,7 +1564,7 @@ class pCharts
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					($YZero > $GraphAreaCoordinates["B"] - 1) AND $YZero = $GraphAreaCoordinates["B"] - 1;
-					// ($YZero > $GraphAreaCoordinates["B"] - 1) AND $YZero = $GraphAreaCoordinates["B"] - 1; // BUG?
+					// ($YZero > $GraphAreaCoordinates["B"] - 1) AND $YZero = $GraphAreaCoordinates["B"] - 1; // not a bug
 					$X = $GraphAreaCoordinates["L"] + $XMargin;
 					$XSize = ($XStep / (1 + $Interleave));
 					$XOffset = - ($XSize / 2);
@@ -2423,22 +2423,22 @@ class pCharts
 					$X2 = $GraphAreaCoordinates["R"] - $XMargin;
 					$Y2 = $M * $X2 + $B;
 					if ($Y1 < $GraphAreaCoordinates["T"]) {
-						$X1 = $X1 + ($GraphAreaCoordinates["T"] - $Y1);
+						$X1 = $X1 + $GraphAreaCoordinates["T"] - $Y1;
 						$Y1 = $GraphAreaCoordinates["T"];
 					}
 
 					if ($Y1 > $GraphAreaCoordinates["B"]) {
-						$X1 = $X1 + ($Y1 - $GraphAreaCoordinates["B"]);
+						$X1 = $X1 + $Y1 - $GraphAreaCoordinates["B"];
 						$Y1 = $GraphAreaCoordinates["B"];
 					}
 
 					if ($Y2 < $GraphAreaCoordinates["T"]) {
-						$X2 = $X2 - ($GraphAreaCoordinates["T"] - $Y2);
+						$X2 = $X2 - $GraphAreaCoordinates["T"] - $Y2;
 						$Y2 = $GraphAreaCoordinates["T"];
 					}
 
 					if ($Y2 > $GraphAreaCoordinates["B"]) {
-						$X2 = $X2 - ($Y2 - $GraphAreaCoordinates["B"]);
+						$X2 = $X2 - $Y2 - $GraphAreaCoordinates["B"];
 						$Y2 = $GraphAreaCoordinates["B"];
 					}
 
@@ -2466,22 +2466,24 @@ class pCharts
 					$Y2 = $GraphAreaCoordinates["B"] - $XMargin;
 					$X2 = $M * $Y2 + $B;
 					if ($X1 < $GraphAreaCoordinates["L"]) {
-						$Y1 = $Y1 + ($GraphAreaCoordinates["L"] - $X1);
+						$Y1 = $Y1 + $GraphAreaCoordinates["L"] - $X1;
 						$X1 = $GraphAreaCoordinates["L"];
 					}
 
 					if ($X1 > $GraphAreaCoordinates["R"]) {
-						$Y1 = $Y1 + ($X1 - $GraphAreaCoordinates["R"]);
+						$Y1 = $Y1 + $X1 - $GraphAreaCoordinates["R"];
 						$X1 = $GraphAreaCoordinates["R"];
 					}
 
 					if ($X2 < $GraphAreaCoordinates["L"]) {
-						$Y2 = $Y2 - ($GraphAreaCoordinates["T"] - $X2); // BUG ??
+						// NO EXAMPLE GETS HERE
+						// $Y2 = $Y2 - ($GraphAreaCoordinates["T"] - $X2); // BUG ??
+						$Y2 = $Y2 - $GraphAreaCoordinates["L"] - $X2;
 						$X2 = $GraphAreaCoordinates["L"];
 					}
 
 					if ($X2 > $$GraphAreaCoordinates["R"]) {
-						$Y2 = $Y2 - ($X2 - $GraphAreaCoordinates["R"]);
+						$Y2 = $Y2 - $X2 - $GraphAreaCoordinates["R"];
 						$X2 = $GraphAreaCoordinates["R"];
 					}
 
