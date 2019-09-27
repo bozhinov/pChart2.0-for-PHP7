@@ -21,3 +21,9 @@ Barcodes/Encoders/UPC.php
 Barcodes/Renderers/Base.php
 Barcodes/Renderers/Linear.php
 Barcodes/Renderers/Matrix.php
+QRCode/QRCode.php
+QRCode/QRException.php
+QRCode/QRFrame.php
+QRCode/QRInput.php
+QRCode/QRMask.php
+QRCode/QRrsItem.php

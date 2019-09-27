@@ -122,6 +122,8 @@ define("VOID", 0.123456789);
 class pDraw
 {
 	/* TODO ALL OF THESE SHOULD BE PRIVATE */
+	/* GD picture object */
+	private $Picture;	
 	/* Image settings, size, quality, .. */
 	private $XSize = 0; // Width of the picture
 	private $YSize = 0; // Height of the picture
@@ -146,11 +148,8 @@ class pDraw
 	public $ShadowColor;
 	public $ShadowAllocatedColor;
 
-	/* TODO THESE SHOULD REMAIN PUBLIC */
-	/* Data Set */
+	/* Data Set - read only would have nice to have */
 	public $myData;
-	/* GD picture object */
-	public $Picture;
 
 	/* Class constructor */
 	function __construct(int $XSize, int $YSize, bool $TransparentBackground = FALSE)
@@ -201,13 +200,9 @@ class pDraw
 		}
 	}
 
-	/* Destroy the image and start over. UNUSED */
-	public function resize(int $XSize, int $YSize)
+	public function gettheImage()
 	{
-		if (is_resource($this->Picture)){
-			imagedestroy($this->Picture);
-		}
-		$this->__construct($XSize, $YSize, $this->TransparentBackground);
+		return $this->Picture;
 	}
 
 	/* Fix box coordinates */
