@@ -647,8 +647,9 @@ class pScatter
 			$this->myPicture->drawFilledRectangle($Boundaries["L"] - $Margin, $Boundaries["T"] - $Margin, $Boundaries["R"] + $Margin, $Boundaries["B"] + $Margin, ["Color" => $Color,"BorderColor" => $BorderColor]);
 		}
 
-		$RestoreShadow = $this->myPicture->Shadow;
-		$this->myPicture->Shadow = FALSE;
+		$ShadowSpec = $this->myPicture->getShadow();
+		$this->myPicture->setShadow(FALSE);
+
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 
@@ -693,7 +694,7 @@ class pScatter
 			}
 		}
 
-		$this->myPicture->Shadow = $RestoreShadow;
+		$this->myPicture->restoreShadow($ShadowSpec);
 	} 
 
 	/* Get the legend box size */
@@ -991,9 +992,9 @@ class pScatter
 			list($Value1, $Value2) = [$Value2,$Value1];
 		}
 
-		$RestoreShadow = $this->myPicture->Shadow;
-		if ($DisableShadowOnArea && $this->myPicture->Shadow) {
-			$this->myPicture->Shadow = FALSE;
+		$ShadowSpec = $this->myPicture->getShadow();
+		if ($DisableShadowOnArea && $ShadowSpec['Enabled']) {
+			$this->myPicture->setShadow(FALSE);
 		}
 
 		if ($Data["Axis"][$AxisID]["Identity"] == AXIS_X) {
@@ -1025,9 +1026,9 @@ class pScatter
 					$NameAngle = (abs($X2 - $X1) > $TxtWidth) ? 0 : 90;
 				}
 
-				$this->myPicture->Shadow = $RestoreShadow;
+				$this->myPicture->restoreShadow($ShadowSpec);
 				$this->myPicture->drawText($XPos, $YPos, $AreaName, ["Color" => $NameColor,"Angle" => $NameAngle,"Align" => TEXT_ALIGN_MIDDLEMIDDLE]);
-				($DisableShadowOnArea) AND $this->myPicture->Shadow = FALSE;
+				($DisableShadowOnArea) AND $this->myPicture->setShadow(FALSE);
 			}
 
 		} elseif ($Data["Axis"][$AxisID]["Identity"] == AXIS_Y) {
@@ -1053,14 +1054,14 @@ class pScatter
 			if (!is_null($AreaName)) {
 				$XPos = ($X2 - $X1) / 2 + $X1;
 				$YPos = ($Y2 - $Y1) / 2 + $Y1;
-				$this->myPicture->Shadow = $RestoreShadow;
+				$this->myPicture->restoreShadow($ShadowSpec);
 				$this->myPicture->drawText($YPos, $XPos, $AreaName, ["Color" => $NameColor,"Angle" => 0,"Align" => TEXT_ALIGN_MIDDLEMIDDLE]);
-				($DisableShadowOnArea) AND $this->Shadow = FALSE;
+				($DisableShadowOnArea) AND $this->myPicture->setShadow(FALSE);
 			}
 	
 		}
 
-		$this->myPicture->Shadow = $RestoreShadow;
+		$this->myPicture->restoreShadow($ShadowSpec);
 	}
 }
 

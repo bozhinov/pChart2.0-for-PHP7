@@ -108,8 +108,8 @@ class pStock
 			$PosArray = $this->myPicture->scaleComputeY($Points, $Data[$SerieOpen]["Axis"]);
 
 			if ($ShadowOnBoxesOnly) {
-				$RestoreShadow = $this->myPicture->Shadow;
-				$this->myPicture->Shadow = FALSE;
+				$ShadowSpec = $this->myPicture->getShadow();
+				$this->myPicture->setShadow(FALSE);
 			}
 
 			if ($Orientation == SCALE_POS_LEFTRIGHT) {
@@ -128,7 +128,7 @@ class pStock
 					$this->myPicture->drawFilledRectangle($X - $ExtremityLength, $PosArray[3], $X + $ExtremityLength, $PosArray[3] + $ExtremityWidth, $ExtremitySettings);
 				}
 
-				($ShadowOnBoxesOnly) AND $this->myPicture->Shadow = $RestoreShadow;
+				($ShadowOnBoxesOnly) AND $this->myPicture->restoreShadow($ShadowSpec);
 
 				$this->myPicture->drawFilledRectangle($X - $BoxOffset, $PosArray[0], $X + $BoxOffset, $PosArray[1], ($PosArray[0] > $PosArray[1]) ? $BoxUpSettings : $BoxDownSettings);
 
@@ -152,7 +152,7 @@ class pStock
 					$this->myPicture->drawFilledRectangle($PosArray[3], $Y - $ExtremityLength, $PosArray[3] + $ExtremityWidth, $Y + $ExtremityLength, $ExtremitySettings);
 				}
 
-				($ShadowOnBoxesOnly) AND $this->myPicture->Shadow = $RestoreShadow;
+				($ShadowOnBoxesOnly) AND $this->myPicture->restoreShadow($ShadowSpec);
 
 				$this->myPicture->drawFilledRectangle($PosArray[0], $Y - $BoxOffset, $PosArray[1], $Y + $BoxOffset, ($PosArray[0] < $PosArray[1]) ? $BoxUpSettings : $BoxDownSettings);
 

@@ -1158,17 +1158,18 @@ class pCharts
 				}
 
 				/* Handle shadows in the areas */
-				if ($this->myPicture->Shadow) {
+				$ShadowSpec = $this->myPicture->getShadow();
+				if ($ShadowSpec['Enabled']) {
 					$ShadowArea = [];
 					foreach($Areas as $Key => $Points) {
 						$ShadowArea[$Key] = [];
 						foreach($Points as $Key2 => $Value) {
-							$ShadowArea[$Key][] = ($Key2 % 2 == 0) ? ($Value + $this->myPicture->ShadowX) : ($Value + $this->myPicture->ShadowY);
+							$ShadowArea[$Key][] = ($Key2 % 2 == 0) ? ($Value + $ShadowSpec['X']) : ($Value + $ShadowSpec['Y']);
 						}
 					}
 
 					foreach($ShadowArea as $Points) {
-						$this->drawPolygonChart($Points, ["Color" => $this->myPicture->ShadowColor]);
+						$this->drawPolygonChart($Points, ["Color" => $ShadowSpec['Color']]);
 					}
 				}
 
@@ -1230,7 +1231,7 @@ class pCharts
 			}
 		}
 
-		$RestoreShadow = $this->myPicture->Shadow;
+		$ShadowSpec = $this->myPicture->getShadow();
 		$SeriesCount = $this->myPicture->myData->countDrawableSeries();
 		$CurrentSerie = 0;
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -1309,7 +1310,7 @@ class pCharts
 									}
 
 									if ($Gradient) {
-										$this->myPicture->Shadow = FALSE;
+										$this->myPicture->setShadow(FALSE);
 										if ($GradientMode == GRADIENT_SIMPLE) {
 											if ($Serie["Data"][$Key] >= 0) {
 												$GradienColor = ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor];
@@ -1323,7 +1324,7 @@ class pCharts
 											$this->myPicture->drawGradientArea($X + $XOffset + $XSpan + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y2, DIRECTION_HORIZONTAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 										}
 
-										$this->myPicture->Shadow = $RestoreShadow;
+										$this->myPicture->restoreShadow($ShadowSpec);
 									}
 								}
 
@@ -1337,7 +1338,7 @@ class pCharts
 							}
 
 							if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
-								($DisplayShadow) AND $this->myPicture->Shadow = TRUE;
+								($DisplayShadow) AND $this->myPicture->setShadow(TRUE);
 								$Caption = $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit);
 								$TxtPos = $this->myPicture->getTextBox(0, 0, $DisplayFont, $DisplaySize, 90, $Caption);
 								$TxtHeight = $TxtPos[0]["Y"] - $TxtPos[1]["Y"] + $TxtMargin;
@@ -1356,7 +1357,7 @@ class pCharts
 									$this->myPicture->drawText($X + $XOffset + $XSize / 2, $Y2 - $Offset, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => $Align,"FontSize" => $DisplaySize]);
 								}
 
-								$this->myPicture->Shadow = $RestoreShadow;
+								$this->myPicture->restoreShadow($ShadowSpec);
 							}
 						}
 
@@ -1419,7 +1420,7 @@ class pCharts
 									}
 
 									if ($Gradient) {
-										$this->myPicture->Shadow = FALSE;
+										$this->myPicture->setShadow(FALSE);
 										if ($GradientMode == GRADIENT_SIMPLE) {
 											if ($Serie["Data"][$Key] >= 0) {
 												$GradienColor = ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor];
@@ -1434,7 +1435,7 @@ class pCharts
 											$this->myPicture->drawGradientArea($X1, $Y + $YOffset + $YSpan, $X2, $Y + $YOffset + $YSize - $YSpace, DIRECTION_VERTICAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 										}
 
-										$this->myPicture->Shadow = $RestoreShadow;
+										$this->myPicture->restoreShadow($ShadowSpec);
 									}
 								}
 
@@ -1448,7 +1449,7 @@ class pCharts
 							}
 
 							if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
-								($DisplayShadow) AND $this->myPicture->Shadow = TRUE;
+								($DisplayShadow) AND $this->myPicture->setShadow(TRUE);
 								$Caption = $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit);
 								$TxtPos = $this->myPicture->getTextBox(0, 0, $DisplayFont, $DisplaySize, 0, $Caption);
 								$TxtWidth = $TxtPos[1]["X"] - $TxtPos[0]["X"] + $TxtMargin;
@@ -1468,7 +1469,7 @@ class pCharts
 									$this->myPicture->drawText($X2 + $Offset, $Y + $YOffset + $YSize / 2, $Caption, ["Color" => $DisplayColor,"Align" => $Align,"FontSize" => $DisplaySize]);
 								}
 
-								$this->myPicture->Shadow = $RestoreShadow;
+								$this->myPicture->restoreShadow($ShadowSpec);
 							}
 						}
 
@@ -1510,7 +1511,7 @@ class pCharts
 
 		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
-		$RestoreShadow = $this->myPicture->Shadow;
+		$ShadowSpec = $this->myPicture->getShadow();
 		$LastX = [];
 		$LastY = [];
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -1561,14 +1562,15 @@ class pCharts
 							} else {
 								$this->myPicture->drawFilledRectangle($X + $XOffset, $Y1 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2, $RectangleSettings);
 								if (!is_null($InnerColor)) {
-									$RestoreShadow = $this->myPicture->Shadow;
-									$this->myPicture->Shadow = FALSE;
+									$ShadowSpec = $this->myPicture->getShadow();
+									$this->myPicture->setShadow(FALSE);
 									$this->myPicture->drawRectangle(min($X + $XOffset + 1, $X + $XOffset + $XSize), min($Y1 - $YSpaceUp + $YSpaceDown, $Y2) + 1, max($X + $XOffset + 1, $X + $XOffset + $XSize) - 1, max($Y1 - $YSpaceUp + $YSpaceDown, $Y2) - 1, $InnerColor);
-									$this->myPicture->Shadow = $RestoreShadow;
+									$this->myPicture->restoreShadow($ShadowSpec);
 								}
 
 								if ($Gradient) {
-									$this->myPicture->Shadow = FALSE;
+									$ShadowSpec = $this->myPicture->getShadow();
+									$this->myPicture->setShadow(FALSE);
 									if ($GradientMode == GRADIENT_SIMPLE) {
 										$this->myPicture->drawGradientArea($X + $XOffset, $Y1 - 1 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2 + 1, DIRECTION_VERTICAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 									} elseif ($GradientMode == GRADIENT_EFFECT_CAN) {
@@ -1577,7 +1579,7 @@ class pCharts
 										$this->myPicture->drawGradientArea($X + $XSpan + $XOffset - .5, $Y1 - .5 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2 + .5, DIRECTION_HORIZONTAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 									}
 
-									$this->myPicture->Shadow = $RestoreShadow;
+									$this->myPicture->restoreShadow($ShadowSpec);
 								}
 							}
 
@@ -1635,14 +1637,15 @@ class pCharts
 							} else {
 								$this->myPicture->drawFilledRectangle($X1 + $XSpaceLeft, $Y + $YOffset, $X2 - $XSpaceRight, $Y + $YOffset + $YSize, $RectangleSettings);
 								if (!is_null($InnerColor)) {
-									$RestoreShadow = $this->myPicture->Shadow;
-									$this->myPicture->Shadow = FALSE;
+									$ShadowSpec = $this->myPicture->getShadow();
+									$this->myPicture->setShadow(FALSE);
 									$this->myPicture->drawRectangle(min($X1 + $XSpaceLeft, $X2 - $XSpaceRight) + 1, min($Y + $YOffset, $Y + $YOffset + $YSize) + 1, max($X1 + $XSpaceLeft, $X2 - $XSpaceRight) - 1, max($Y + $YOffset, $Y + $YOffset + $YSize) - 1, $InnerColor);
-									$this->myPicture->Shadow = $RestoreShadow;
+									$this->myPicture->restoreShadow($ShadowSpec);
 								}
 
 								if ($Gradient) {
-									$this->myPicture->Shadow = FALSE;
+									$ShadowSpec = $this->myPicture->getShadow();
+									$this->myPicture->setShadow(FALSE);
 									if ($GradientMode == GRADIENT_SIMPLE) {
 										$this->myPicture->drawGradientArea($X1 + $XSpaceLeft, $Y + $YOffset, $X2 - $XSpaceRight, $Y + $YOffset + $YSize, DIRECTION_HORIZONTAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 									} elseif ($GradientMode == GRADIENT_EFFECT_CAN) {
@@ -1651,7 +1654,7 @@ class pCharts
 										$this->myPicture->drawGradientArea($X1 + $XSpaceLeft, $Y + $YOffset + $YSpan, $X2 - $XSpaceRight, $Y + $YOffset + $YSize, DIRECTION_VERTICAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 									}
 
-									$this->myPicture->Shadow = $RestoreShadow;
+									$this->myPicture->restoreShadow($ShadowSpec);
 								}
 							}
 
@@ -1707,8 +1710,8 @@ class pCharts
 
 		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
-		$RestoreShadow = $this->myPicture->Shadow;
-		$this->myPicture->Shadow = FALSE;
+		$ShadowSpec = $this->myPicture->getShadow();
+		$this->myPicture->setShadow(FALSE);
 
 		/* Build the offset data series */
 		$OverallOffset = [];
@@ -1770,7 +1773,7 @@ class pCharts
 					$Plots[] = $X - $XStep;
 					$Plots[] = $YZero;
 					$this->myPicture->drawPolygon($Plots, $Settings);
-					$this->myPicture->Shadow = $RestoreShadow;
+					$ShadowSpec = $this->myPicture->getShadow();
 					if ($DrawLine) {
 						for ($i = 2; $i <= count($Plots) - 6; $i = $i + 2) {
 							$this->myPicture->drawLine($Plots[$i], $Plots[$i + 1], $Plots[$i + 2], $Plots[$i + 3], $LineSettings);
@@ -1787,7 +1790,7 @@ class pCharts
 						}
 					}
 
-					$this->myPicture->Shadow = FALSE;
+					$this->myPicture->setShadow(FALSE);
 
 				} elseif ($Data["Orientation"] == SCALE_POS_TOPBOTTOM) {
 					($YZero < $this->myPicture->GraphAreaX1 + 1) AND $YZero = $this->myPicture->GraphAreaX1 + 1;
@@ -1808,7 +1811,7 @@ class pCharts
 					$Plots[] = $YZero;
 					$Plots[] = $Y - $XStep;
 					$this->myPicture->drawPolygon($Plots, $Settings);
-					$this->myPicture->Shadow = $RestoreShadow;
+					$this->myPicture->restoreShadow($ShadowSpec);
 					if ($DrawLine) {
 						for ($i = 2; $i <= count($Plots) - 6; $i = $i + 2) {
 							$this->myPicture->drawLine($Plots[$i], $Plots[$i + 1], $Plots[$i + 2], $Plots[$i + 3], $LineSettings);
@@ -1825,12 +1828,12 @@ class pCharts
 						}
 					}
 
-					$this->myPicture->Shadow = FALSE;
+					$this->myPicture->setShadow(FALSE);
 				}
 			}
 		}
 
-		$this->myPicture->Shadow = $RestoreShadow;
+		$this->myPicture->restoreShadow($ShadowSpec);
 	}
 
 	public function drawPolygonChart(array $Points, array $Format = [])
@@ -1844,8 +1847,8 @@ class pCharts
 			$BorderColor = $DefaultColor->newOne()->RGBChange($Format["Surrounding"]);
 		}
 
-		$RestoreShadow = $this->myPicture->Shadow;
-		$this->myPicture->Shadow = FALSE;
+		$ShadowSpec = $this->myPicture->getShadow();
+		$this->myPicture->setShadow(FALSE);
 		$AllIntegers = TRUE;
 		for ($i = 0; $i <= count($Points) - 2; $i = $i + 2) {
 			if ($this->myPicture->getFirstDecimal($Points[$i + 1]) != 0) {
@@ -2009,7 +2012,7 @@ class pCharts
 			}
 		}
 
-		$this->myPicture->Shadow = $RestoreShadow;
+		$this->myPicture->restoreShadow($ShadowSpec);
 	}
 
 	/* Create the encoded string */
@@ -2206,8 +2209,8 @@ class pCharts
 					$EndX = floor($this->myPicture->GraphAreaX2 - $XMargin);
 					($DrawBackground) AND $this->myPicture->drawFilledRectangle($StartX - 1, $TopY - 1, $EndX + 1, $BottomY + 1, ["Color" => $BackgroundColor]);
 					($DrawBorder) AND $this->myPicture->drawRectangle($StartX - 1, $TopY - 1, $EndX + 1, $BottomY + 1, ["Color" => $BorderColor]);
-					$RestoreShadow = $this->myPicture->Shadow;
-					$this->myPicture->Shadow = FALSE;
+					$ShadowSpec = $this->myPicture->getShadow();
+					$this->myPicture->setShadow(FALSE);
 
 					/* Determine the Max slope index */
 					foreach($PosArray as $Y) {
@@ -2257,7 +2260,7 @@ class pCharts
 					}
 
 					$YPos = $YPos + $CaptionHeight + $SerieSpacing;
-					$this->myPicture->Shadow = $RestoreShadow;
+					$this->myPicture->restoreShadow($ShadowSpec);
 
 				} elseif ($Data["Orientation"] == SCALE_POS_LEFTRIGHT){
 
@@ -2282,8 +2285,8 @@ class pCharts
 					$EndY = floor($this->myPicture->GraphAreaY2 - $XMargin);
 					($DrawBackground) AND $this->myPicture->drawFilledRectangle($TopX - 1, $StartY - 1, $BottomX + 1, $EndY + 1, ["Color" => $BackgroundColor]);
 					($DrawBorder) AND $this->myPicture->drawRectangle($TopX - 1, $StartY - 1, $BottomX + 1, $EndY + 1, ["Color" => $BorderColor]);
-					$RestoreShadow = $this->myPicture->Shadow;
-					$this->myPicture->Shadow = FALSE;
+					$ShadowSpec = $this->myPicture->getShadow();
+					$this->myPicture->setShadow(FALSE);
 
 					/* Determine the Max slope index */
 					foreach($PosArray as $X) {
@@ -2333,7 +2336,7 @@ class pCharts
 					}
 
 					$XPos = $XPos + $CaptionHeight + $SerieSpacing;
-					$this->myPicture->Shadow = $RestoreShadow;
+					$this->myPicture->restoreShadow($ShadowSpec);
 				} # Orientation
 			} # isDrawable
 		} # foreach

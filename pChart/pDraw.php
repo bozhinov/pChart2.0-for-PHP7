@@ -142,13 +142,13 @@ class pDraw
 	public $FontSize = 12; // Default font size
 	public $FontColor; // Default color settings
 	/* Shadow properties */
-	public $Shadow = FALSE; // Turn shadows on or off
-	public $ShadowX = 0; // X Offset of the shadow
-	public $ShadowY = 0; // Y Offset of the shadow
-	public $ShadowColor;
-	public $ShadowAllocatedColor;
+	private $Shadow = FALSE; // Turn shadows on or off
+	private $ShadowX = 0; // X Offset of the shadow
+	private $ShadowY = 0; // Y Offset of the shadow
+	private $ShadowColor;
+	private $ShadowAllocatedColor;
 
-	/* Data Set - read only would have nice to have */
+	/* Data Set - read only would have been nice to have */
 	public $myData;
 
 	/* Class constructor */
@@ -3807,20 +3807,37 @@ class pDraw
 			return;
 		}
 
-		$X = isset($Format["X"]) ? $Format["X"] : 2;
-		$Y = isset($Format["Y"]) ? $Format["Y"] : 2;
-
-		if ($X == 0 || $Y == 0){
-			throw pException::InvalidInput("Invalid shadow specs");
+		if(isset($Format["X"])){
+			$this->ShadowX = $Format["X"];
 		}
 
-		$this->ShadowX = $X;
-		$this->ShadowY = $Y;
+		if(isset($Format["Y"])){
+			$this->ShadowY = $Format["Y"];
+		}		
 
 		if (isset($Format["Color"])){
 			$this->ShadowColor = $Format["Color"];
 			$this->ShadowAllocatedColor = $this->allocateColor($this->ShadowColor);
 		}
+	}
+
+	public function restoreShadow(array $shadow)
+	{
+		if(!isset($shadow["Enabled"])){
+			throw pException::InvalidInput("Invalid shadow specs");
+		}
+
+		$this->setShadow((bool)$shadow["Enabled"], $shadow);
+	}
+
+	public function getShadow()
+	{
+		return [
+			'Enabled' => $this->Shadow,
+			'X' => $this->ShadowX,
+			'Y' => $this->ShadowY,
+			'Color' => $this->ShadowColor
+		];
 	}
 
 	/* Set the graph area position */

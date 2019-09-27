@@ -67,12 +67,12 @@ class pPie
 		/* Compute the scale */
 		$SerieSum = array_sum($Values);
 		$ScaleFactor = (360 - $WastedAngular) / $SerieSum;
-		$RestoreShadow = $this->myPicture->Shadow;
-		if ($this->myPicture->Shadow) {
-			$this->myPicture->Shadow = FALSE;
+		$ShadowSpec = $this->myPicture->getShadow();
+		if ($ShadowSpec['Enabled']) {
+			$this->myPicture->setShadow(FALSE);
 			$ShadowFormat = $Format;
 			$ShadowFormat["Shadow"] = TRUE;
-			$this->draw2DPie($X + $this->myPicture->ShadowX, $Y + $this->myPicture->ShadowY, $ShadowFormat);
+			$this->draw2DPie($X + $ShadowSpec['X'], $Y + $ShadowSpec['Y'], $ShadowFormat);
 		}
 
 		/* Draw the polygon pie elements */
@@ -82,7 +82,7 @@ class pPie
 		foreach($Values as $Key => $Value) {
 
 			if ($Shadow) {
-				$Settings = ["Color" => $this->myPicture->ShadowColor];
+				$Settings = ["Color" => $ShadowSpec['Color']];
 			} else {
 				$Settings = ["Color" => $Palette[$Key]];
 			}
@@ -161,7 +161,7 @@ class pPie
 			foreach($Values as $Key => $Value) {
 
 				if ($Shadow) {
-					$Settings = ["Color" => $this->myPicture->ShadowColor];
+					$Settings = ["Color" => $ShadowSpec['Color']];
 				} else {
 					if ($Border) {
 						$Settings = ["Color" => $BorderColor];
@@ -254,8 +254,7 @@ class pPie
 			$this->writeShiftedLabels();
 		}
 
-		$this->myPicture->Shadow = $RestoreShadow;
-
+		$this->myPicture->restoreShadow($ShadowSpec);
 	}
 
 	/* Draw a 3D pie chart */
@@ -298,9 +297,9 @@ class pPie
 		/* Compute the scale */
 		$SerieSum = array_sum($Values);
 		$ScaleFactor = (360 - $WastedAngular) / $SerieSum;
-		$RestoreShadow = $this->myPicture->Shadow;
-		if ($this->myPicture->Shadow) {
-			$this->myPicture->Shadow = FALSE;
+		$ShadowSpec = $this->myPicture->getShadow();
+		if ($ShadowSpec['Enabled']) {
+			$this->myPicture->setShadow(FALSE);
 		}
 
 		/* Draw the polygon pie elements */
@@ -337,7 +336,7 @@ class pPie
 				$Xc = cos(deg2rad($i - 90)) * $Radius + $X;
 				$Yc = sin(deg2rad($i - 90)) * $Radius * $SkewFactor + $Y;
 
-				if ($SecondPass || $RestoreShadow){
+				if ($SecondPass || $ShadowSpec['Enabled']){
 					($i < 90) AND $Yc++;
 					($i > 90 && $i < 180) AND $Xc++;
 					($i > 180 && $i < 270) AND $Xc++;
@@ -356,16 +355,16 @@ class pPie
 		}
 
 		/* Draw the bottom shadow if needed */
-		if ($RestoreShadow) {
+		if ($ShadowSpec['Enabled']) {
 			foreach($Slices as $Plots) {
 				$ShadowPie = [];
 				$PlotCount = count($Plots);
 				for ($i = 0; $i < $PlotCount; $i += 2) {
-					$ShadowPie[] = $Plots[$i] + $this->myPicture->ShadowX;
-					$ShadowPie[] = $Plots[$i + 1] + $this->myPicture->ShadowY;
+					$ShadowPie[] = $Plots[$i] + $ShadowSpec['X'];
+					$ShadowPie[] = $Plots[$i + 1] + $ShadowSpec['Y'];
 				}
 
-				$Settings = ["Color" => $this->myPicture->ShadowColor,"NoBorder" => TRUE];
+				$Settings = ["Color" => $ShadowSpec['Color'],"NoBorder" => TRUE];
 				$this->myPicture->drawPolygon($ShadowPie, $Settings);
 			}
 
@@ -378,8 +377,8 @@ class pPie
 				}
 
 				for ($i = $Offset; $i >= $EndAngle; $i = $i - $Step) {
-					$Xc = cos(deg2rad($i - 90)) * $Radius + $X + $this->myPicture->ShadowX;
-					$Yc = sin(deg2rad($i - 90)) * $Radius * $SkewFactor + $Y + $this->myPicture->ShadowY;
+					$Xc = cos(deg2rad($i - 90)) * $Radius + $X + $ShadowSpec['X'];
+					$Yc = sin(deg2rad($i - 90)) * $Radius * $SkewFactor + $Y + $ShadowSpec['Y'];
 					$this->myPicture->drawAntialiasPixel($Xc, $Yc, $Settings["Color"]);
 				}
 
@@ -606,7 +605,7 @@ class pPie
 			$this->writeShiftedLabels();
 		}
 
-		$this->myPicture->Shadow = $RestoreShadow;
+		$this->myPicture->restoreShadow($ShadowSpec);
 	}
 
 	public function drawPieLegend(int $X, int $Y, array $Format = [])
@@ -670,8 +669,8 @@ class pPie
 			$this->myPicture->drawFilledRectangle($Boundaries["L"] - $Margin, $Boundaries["T"] - $Margin, $Boundaries["R"] + $Margin, $Boundaries["B"] + $Margin, $Settings);
 		}
 
-		$RestoreShadow = $this->myPicture->Shadow;
-		$this->myPicture->Shadow = FALSE;
+		$ShadowSpec = $this->myPicture->getShadow();
+		$this->myPicture->setShadow(FALSE);
 
 		foreach($AbscissaData as $Key => $Value) {
 			$Settings = ["Color" => $Palette[$Key]];
@@ -687,7 +686,7 @@ class pPie
 			}
 		}
 
-		$this->myPicture->Shadow = $RestoreShadow;
+		$this->myPicture->restoreShadow($ShadowSpec);
 	}
 
 	/* Internally used compute the label positions */
@@ -802,12 +801,12 @@ class pPie
 		list($AbscissaData, $Values, $Palette) = $this->myPicture->myData->getPieParams();
 
 		/* Shadow */
-		$RestoreShadow = $this->myPicture->Shadow;
-		if ($this->myPicture->Shadow) {
-			$this->myPicture->Shadow = FALSE;
+		$ShadowSpec = $this->myPicture->getShadow();
+		if ($ShadowSpec['Enabled']) {
+			$this->myPicture->setShadow(FALSE);
 			$ShadowFormat = $Format;
 			$ShadowFormat["Shadow"] = TRUE;
-			$this->draw2DRing($X + $this->myPicture->ShadowX, $Y + $this->myPicture->ShadowY, $ShadowFormat);
+			$this->draw2DRing($X + $ShadowSpec['X'], $Y + $ShadowSpec['Y'], $ShadowFormat);
 		}
 
 		/* Draw the polygon pie elements */
@@ -819,7 +818,7 @@ class pPie
 		foreach($Values as $Key => $Value) {
 
 			if ($Shadow) {
-				$Settings = ["Color" => $this->myPicture->ShadowColor];
+				$Settings = ["Color" => $ShadowSpec['Color']];
 				$BorderSettings = $Settings;
 			} else {
 				$Settings = ["Color" => $Palette[$Key]];
@@ -961,7 +960,7 @@ class pPie
 			}
 		}
 
-		$this->myPicture->Shadow = $RestoreShadow;
+		$this->myPicture->restoreShadow($ShadowSpec);
 	}
 
 	public function draw3DRing(int $X, int $Y, array $Format = [])
@@ -1001,9 +1000,9 @@ class pPie
 		/* Compute the scale */
 		$SerieSum = array_sum($Values);
 		$ScaleFactor = (360 - $WastedAngular) / $SerieSum;
-		$RestoreShadow = $this->myPicture->Shadow;
-		if ($this->myPicture->Shadow) {
-			$this->myPicture->Shadow = FALSE;
+		$ShadowSpec = $this->myPicture->getShadow();
+		if ($ShadowSpec['Enabled']) {
+			$this->myPicture->setShadow(FALSE);
 		}
 
 		/* Draw the polygon ring elements */
@@ -1260,7 +1259,7 @@ class pPie
 			$this->writeShiftedLabels();
 		}
 
-		$this->myPicture->Shadow = $RestoreShadow;
+		$this->myPicture->restoreShadow($ShadowSpec);
 	}
 
 }

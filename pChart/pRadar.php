@@ -134,8 +134,10 @@ class pRadar
 
 		/* Background processing */
 		if ($DrawBackground) {
-			$RestoreShadow = $this->myPicture->Shadow;
-			$this->myPicture->Shadow = FALSE;
+
+			$ShadowSpec = $this->myPicture->getShadow();
+			$this->myPicture->setShadow(FALSE);
+
 			if (!is_array($BackgroundGradient)) {
 				if ($Layout == RADAR_LAYOUT_STAR) {
 
@@ -171,7 +173,7 @@ class pRadar
 				}
 			}
 
-			$this->myPicture->Shadow = $RestoreShadow;
+			$this->myPicture->restoreShadow($ShadowSpec);
 		}
 
 		/* Axis to axis lines */
@@ -457,8 +459,10 @@ class pRadar
 
 		/* Background processing */
 		if ($DrawBackground) {
-			$RestoreShadow = $this->myPicture->Shadow;
-			$this->myPicture->Shadow = FALSE;
+
+			$ShadowSpec = $this->myPicture->getShadow();
+			$this->myPicture->setShadow(FALSE);
+
 			if (!is_array($BackgroundGradient)) {
 				$this->myPicture->drawFilledCircle($CenterX, $CenterY, $EdgeHeight, ["Color" => $BackgroundColor]);
 			} else {
@@ -469,7 +473,7 @@ class pRadar
 				}
 			}
 
-			$this->myPicture->Shadow = $RestoreShadow;
+			$this->myPicture->restoreShadow($ShadowSpec);
 		}
 
 		/* Axis to axis lines */

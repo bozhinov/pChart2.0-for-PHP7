@@ -75,8 +75,8 @@ class pIndicator
 		$XScale = $RealWidth / ($OverallMax - $OverallMin);
 		$X1 = $X;
 		$ValuesPos = [];
-		$RestoreShadow = $this->myPicture->Shadow;
-		$this->myPicture->Shadow = FALSE;
+		$ShadowSpec = $this->myPicture->getShadow();
+		$this->myPicture->setShadow(FALSE);
 
 		foreach($IndicatorSections as $Key => $Settings) {
 			$Color = ["Color" => $Settings['Color']];
@@ -211,7 +211,7 @@ class pIndicator
 			}
 		}
 
-		$this->myPicture->Shadow = $RestoreShadow;
+		$this->myPicture->restoreShadow($ShadowSpec);
 	}
 }
 
