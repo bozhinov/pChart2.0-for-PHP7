@@ -79,6 +79,9 @@ if (!isset($_SESSION['html'])){
 	foreach (glob("example.*") as $fileName){
 
 		$fileHandle  = fopen($fileName, "r");
+		if ($fileHandle === false) {
+			continue;
+		}
 		$buffer      = fgets($fileHandle);
 		$buffer      = fgets($fileHandle);
 		fclose($fileHandle);

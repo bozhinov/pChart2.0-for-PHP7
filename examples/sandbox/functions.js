@@ -262,10 +262,12 @@ function checkEnabledAxis()
 		}
 
 		var RightOffset = 0;
+		var BottomOffset = 0;
+
 		if ( getSelected("s_direction") == "690101" )
 		{
-			var leftOffset = (leftSeries == 0 ? 20 : 10);
-			RightOffset = (rightSeries == 0 ? 25 : 15);
+			var leftOffset = (leftSeries === 0 ? 20 : 10);
+			RightOffset = (rightSeries === 0 ? 25 : 15);
 
 			var leftMargin = leftOffset + 40 * leftSeries;
 			var width = g_width - leftMargin - 40 * rightSeries - RightOffset;
@@ -280,10 +282,10 @@ function checkEnabledAxis()
 		else
 		{
 			var topOffset = (leftSeries == 0 ? 40 : 40);
-			var bottomOffset = (rightSeries == 0 ? 25 : 15);
+			BottomOffset = (rightSeries == 0 ? 25 : 15);
 
 			var topMargin = topOffset + 30 * leftSeries;
-			var height = g_height - topMargin - 30 * rightSeries - bottomOffset;
+			var height = g_height - topMargin - 30 * rightSeries - BottomOffset;
 
 			RightOffset = (sl_enabled ? Series * 15 : 0);
 
