@@ -73,7 +73,9 @@ class pSurface
 	/* Write the X labels */
 	public function writeXLabels(array $Format = [])
 	{
-		$Color = $this->myPicture->FontColor;
+		$fontProperties = $this->myPicture->getFont();
+
+		$Color = $fontProperties['Color'];
 		$Angle = 0;
 		$Padding = 5;
 		$Position = LABEL_POSITION_TOP;
@@ -106,7 +108,9 @@ class pSurface
 	/* Write the Y labels */
 	public function writeYLabels(array $Format = [])
 	{
-		$Color = isset($Format["Color"]) ? $Format["Color"] : $this->myPicture->FontColor;
+		$fontProperties = $this->myPicture->getFont();
+
+		$Color = isset($Format["Color"]) ? $Format["Color"] : $fontProperties['Color'];
 		$Angle = isset($Format["Angle"]) ? $Format["Angle"] : 0;
 		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 5;
 		$Position = isset($Format["Position"]) ? $Format["Position"] : LABEL_POSITION_LEFT;

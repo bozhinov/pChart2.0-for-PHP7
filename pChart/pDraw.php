@@ -138,9 +138,9 @@ class pDraw
 	public $GraphAreaXdiff = 0; // $X2 - $X1
 	public $GraphAreaYdiff = 0; // $Y2 - $Y1
 	/* Font properties */
-	public $FontName = "pChart/fonts/Dosis-Light.ttf"; // Default font file
-	public $FontSize = 12; // Default font size
-	public $FontColor; // Default color settings
+	private $FontName = "pChart/fonts/Dosis-Light.ttf"; // Default font file
+	private $FontSize = 12; // Default font size
+	private $FontColor; // Default color settings
 	/* Shadow properties */
 	private $Shadow = FALSE; // Turn shadows on or off
 	private $ShadowX = 0; // X Offset of the shadow
@@ -3837,6 +3837,15 @@ class pDraw
 			'X' => $this->ShadowX,
 			'Y' => $this->ShadowY,
 			'Color' => $this->ShadowColor
+		];
+	}
+
+	public function getFont()
+	{
+		return [
+			'Name' => $this->FontName,
+			'Size' => $this->FontSize,
+			'Color' => $this->FontColor
 		];
 	}
 

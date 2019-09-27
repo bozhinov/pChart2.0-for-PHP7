@@ -34,6 +34,8 @@ class pRadar
 	/* Draw a radar chart */
 	public function drawRadar(array $Format = [])
 	{
+		$fontProperties = $this->myPicture->getFont();
+
 		$FixedMax = VOID;
 		$AxisColor = new pColor(60,60,60,50);
 		$AxisRotation = 0;
@@ -41,12 +43,12 @@ class pRadar
 		$TicksLength = 2;
 		$DrawAxisValues = TRUE;
 		$AxisBoxRounded = TRUE;
-		$AxisFontName = $this->myPicture->FontName;
-		$AxisFontSize = $this->myPicture->FontSize;
+		$AxisFontName = $fontProperties['Name'];
+		$AxisFontSize = $fontProperties['Size'];
 		$WriteValues = FALSE;
 		$WriteValuesInBubble = TRUE;
-		$ValueFontName = $this->myPicture->FontName;
-		$ValueFontSize = $this->myPicture->FontSize;
+		$ValueFontName = $fontProperties['Name'];
+		$ValueFontSize = $fontProperties['Size'];
 		$ValuePadding = 4;
 		$OuterBubbleRadius = 2;
 		$OuterBubbleColor = NULL;
@@ -71,7 +73,7 @@ class pRadar
 		$LineLoopStart = TRUE;
 		$DrawPoly = FALSE;
 		$PolyAlpha = 40;
-		$FontSize = $this->myPicture->FontSize;
+		$FontSize = $fontProperties['Size'];
 		$X1 = $this->myPicture->GraphAreaX1;
 		$Y1 = $this->myPicture->GraphAreaY1;
 		$X2 = $this->myPicture->GraphAreaX2;
@@ -365,6 +367,8 @@ class pRadar
 	/* Draw a radar chart */
 	public function drawPolar(array $Format = [])
 	{
+		$fontProperties = $this->myPicture->getFont();
+
 		$FixedMax = VOID;
 		$AxisColor = new pColor(60,60,60,50);
 		$AxisRotation = -90;
@@ -372,12 +376,12 @@ class pRadar
 		$TicksLength = 2;
 		$DrawAxisValues = TRUE;
 		$AxisBoxRounded = TRUE;
-		$AxisFontName = isset($Format["FontName"]) ? $Format["FontName"] : $this->myPicture->FontName;
-		$AxisFontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : $this->myPicture->FontSize;
+		$AxisFontName = isset($Format["FontName"]) ? $Format["FontName"] : $fontProperties['Name'];
+		$AxisFontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : $fontProperties['Size'];
 		$WriteValues = FALSE;
 		$WriteValuesInBubble = TRUE;
-		$ValueFontName = $this->myPicture->FontName;
-		$ValueFontSize = $this->myPicture->FontSize;
+		$ValueFontName = $fontProperties['Name'];
+		$ValueFontSize = $fontProperties['Size'];
 		$ValuePadding = 4;
 		$OuterBubbleRadius = 2;
 		$OuterBubbleColor = NULL;
@@ -400,7 +404,7 @@ class pRadar
 		$LineLoopStart = FALSE;
 		$DrawPoly = FALSE;
 		$PolyAlpha = NULL;
-		$FontSize = $this->myPicture->FontSize;
+		$FontSize = $fontProperties['Size'];
 		$X1 = $this->myPicture->GraphAreaX1;
 		$Y1 = $this->myPicture->GraphAreaY1;
 		$X2 = $this->myPicture->GraphAreaX2;

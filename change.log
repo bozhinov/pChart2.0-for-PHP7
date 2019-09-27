@@ -23,6 +23,7 @@
   o Added pDraw->getShadow()
   o Added pDraw->restoreShadow()
   o Added pDraw->setAntialias()
+  o Added pDraw->getFont()
   o FIXED: pDraw->setFilter
 
  2.3.0 -----------------------------------------------------------------------

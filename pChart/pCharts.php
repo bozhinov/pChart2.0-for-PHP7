@@ -1185,6 +1185,8 @@ class pCharts
 	/* Draw a bar chart */
 	public function drawBarChart(array $Format = [])
 	{
+		$fontProperties = $this->myPicture->getFont();
+
 		$Floating0Serie = NULL;
 		$Floating0Value = NULL;
 		$Draw0Line = FALSE;
@@ -1192,8 +1194,8 @@ class pCharts
 		#$DisplayOrientation = ORIENTATION_HORIZONTAL;
 		$DisplayOffset = 2;
 		$DisplayType = DISPLAY_MANUAL;
-		$DisplayFont = $this->myPicture->FontName;
-		$DisplaySize = $this->myPicture->FontSize;
+		$DisplayFont = $fontProperties['Name'];
+		$DisplaySize = $fontProperties['Size'];
 		$DisplayPos = LABEL_POS_OUTSIDE;
 		$DisplayShadow = TRUE;
 		$DisplayColor = NULL;
@@ -1486,12 +1488,14 @@ class pCharts
 	/* Draw a bar chart */
 	public function drawStackedBarChart(array $Format = [])
 	{
+		$fontProperties = $this->myPicture->getFont();
+
 		$DisplayValues = FALSE;
 		$DisplayOrientation = ORIENTATION_AUTO;
 		$DisplayRound = 0;
 		$DisplayType = DISPLAY_MANUAL;
-		$DisplayFont = $this->myPicture->FontName;
-		$DisplaySize = $this->myPicture->FontSize;
+		$DisplayFont = $fontProperties['Name'];
+		$DisplaySize = $fontProperties['Size'];
 		$DisplayColor = new pColor(0);
 		$Interleave = .5;
 		$Rounded = FALSE;
@@ -1511,7 +1515,7 @@ class pCharts
 
 		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
-		$ShadowSpec = $this->myPicture->getShadow();
+
 		$LastX = [];
 		$LastY = [];
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -1773,7 +1777,7 @@ class pCharts
 					$Plots[] = $X - $XStep;
 					$Plots[] = $YZero;
 					$this->myPicture->drawPolygon($Plots, $Settings);
-					$ShadowSpec = $this->myPicture->getShadow();
+					$this->myPicture->restoreShadow($ShadowSpec);
 					if ($DrawLine) {
 						for ($i = 2; $i <= count($Plots) - 6; $i = $i + 2) {
 							$this->myPicture->drawLine($Plots[$i], $Plots[$i + 1], $Plots[$i + 2], $Plots[$i + 3], $LineSettings);
@@ -2061,7 +2065,8 @@ class pCharts
 		if ($TextPos == TEXT_POS_RIGHT) {
 			$MaxWidth = 0;
 			foreach($Data["Series"][$LabelSerie]["Data"] as $Label) {
-				$Boundardies = $this->myPicture->getTextBox(0, 0, $this->myPicture->FontName, $this->myPicture->FontSize, 0, $Label);
+				$fontProperties = $this->myPicture->getFont();
+				$Boundardies = $this->myPicture->getTextBox(0, 0, $fontProperties['Name'], $fontProperties['Size'], 0, $Label);
 				if ($Boundardies[1]["X"] > $MaxWidth) {
 					$MaxWidth = $Boundardies[1]["X"] + $TextPadding * 2;
 				}
@@ -2171,7 +2176,8 @@ class pCharts
 		}
 		/* Momchil: This tweak is a result of poorly re-factored drawScale on my part */
 		/* Removal of $this->DataSet->Data["GraphArea"] to be specific */
-		$YPos += $this->myPicture->FontSize + 2; 
+		$fontProperties = $this->myPicture->getFont();
+		$YPos += $fontProperties['Size'] + 2; 
 
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {

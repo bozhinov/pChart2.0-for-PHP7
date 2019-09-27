@@ -151,7 +151,8 @@ class pScatter
 				$AxisColor = $AxisoColor;
 				$TickColor = $TickoColor;
 				/* Get the default font color */
-				$this->myPicture->setFontProperties(["Color" => $this->myPicture->FontColor]);
+				$fontProperties = $this->myPicture->getFont();
+				$this->myPicture->setFontProperties(["Color" => $fontProperties['Color']]);
 			}
 
 			if ($AxisSettings["Identity"] == AXIS_X) {
@@ -568,10 +569,12 @@ class pScatter
 	/* Draw the legend of the active series */
 	function drawScatterLegend(int $X, int $Y, array $Format = [])
 	{
+		$fontProperties = $this->myPicture->getFont();
+
 		$Family = LEGEND_FAMILY_BOX;
-		$FontName = $this->myPicture->FontName;
-		$FontSize = $this->myPicture->FontSize;
-		$FontColor = $this->myPicture->FontColor;
+		$FontName = $fontProperties['Name'];
+		$FontSize = $fontProperties['Size'];
+		$FontColor = $fontProperties['Color'];
 		$BoxWidth = isset($Format["BoxWidth"]) ? $Format["BoxWidth"] : 5;
 		$BoxHeight = isset($Format["BoxHeight"]) ? $Format["BoxHeight"] : 5;
 		$IconAreaWidth = $BoxWidth;
@@ -600,7 +603,7 @@ class pScatter
 			}
 		}
 
-		$YStep = max($this->myPicture->FontSize, $IconAreaHeight) + 5;
+		$YStep = max($fontProperties['Size'], $IconAreaHeight) + 5;
 		$XStep = $XSpacing;
 		$Boundaries = ["L" => $X, "T" => $Y, "R" => 0, "B" => 0];
 		$vY = $Y;
@@ -616,12 +619,12 @@ class pScatter
 					($Boundaries["R"] < $BoxArray[1]["X"] + 2) AND $Boundaries["R"] = $BoxArray[1]["X"] + 2;
 					($Boundaries["B"] < $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2) AND $Boundaries["B"] = $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2;
 
-					$vY = $vY + max($this->myPicture->FontSize * count($Lines), $IconAreaHeight) + 5;
+					$vY = $vY + max($fontProperties['Size'] * count($Lines), $IconAreaHeight) + 5;
 
 				} elseif ($Mode == LEGEND_HORIZONTAL) {
 					$Width = [];
 					foreach($Lines as $Key => $Value) {
-						$BoxArray = $this->myPicture->getTextBox($vX + $IconAreaWidth + 6, $Y + $IconAreaHeight / 2 + (($this->myPicture->FontSize + 3) * $Key), $FontName, $FontSize, 0, $Value);
+						$BoxArray = $this->myPicture->getTextBox($vX + $IconAreaWidth + 6, $Y + $IconAreaHeight / 2 + (($fontProperties['Size'] + 3) * $Key), $FontName, $FontSize, 0, $Value);
 						($Boundaries["T"] > $BoxArray[2]["Y"] + $IconAreaHeight / 2) AND $Boundaries["T"] = $BoxArray[2]["Y"] + $IconAreaHeight / 2;
 						($Boundaries["R"] < $BoxArray[1]["X"] + 2) AND $Boundaries["R"] = $BoxArray[1]["X"] + 2;
 						($Boundaries["B"] < $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2) AND $Boundaries["B"] = $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2;
@@ -680,13 +683,13 @@ class pScatter
 
 				if ($Mode == LEGEND_VERTICAL) {
 					foreach($Lines as $Key => $Value) {
-						$this->myPicture->drawText($X + $IconAreaWidth + 4, $Y + $IconAreaHeight / 2 + (($this->myPicture->FontSize + 3) * $Key), $Value, ["Color" => $FontColor,"Align" => TEXT_ALIGN_MIDDLELEFT]);
+						$this->myPicture->drawText($X + $IconAreaWidth + 4, $Y + $IconAreaHeight / 2 + (($fontProperties['Size'] + 3) * $Key), $Value, ["Color" => $FontColor,"Align" => TEXT_ALIGN_MIDDLELEFT]);
 					}
-					$Y = $Y + max($this->myPicture->FontSize * count($Lines), $IconAreaHeight) + 5;
+					$Y = $Y + max($fontProperties['Size'] * count($Lines), $IconAreaHeight) + 5;
 				} elseif ($Mode == LEGEND_HORIZONTAL) {
 					$Width = [];
 					foreach($Lines as $Key => $Value) {
-						$BoxArray = $this->myPicture->drawText($X + $IconAreaWidth + 4, $Y + 2 + $IconAreaHeight / 2 + (($this->myPicture->FontSize + 3) * $Key), $Value, ["Color" => $FontColor,"Align" => TEXT_ALIGN_MIDDLELEFT]);
+						$BoxArray = $this->myPicture->drawText($X + $IconAreaWidth + 4, $Y + 2 + $IconAreaHeight / 2 + (($fontProperties['Size'] + 3) * $Key), $Value, ["Color" => $FontColor,"Align" => TEXT_ALIGN_MIDDLELEFT]);
 						$Width[] = $BoxArray[1]["X"];
 					}
 					$X = max($Width) + 2 + $XStep;
@@ -700,13 +703,15 @@ class pScatter
 	/* Get the legend box size */
 	function getScatterLegendSize(array $Format = []) # UNUSED
 	{
-		$FontName = isset($Format["FontName"]) ? $Format["FontName"] : $this->myPicture->FontName;
-		$FontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : $this->myPicture->FontSize;
+		$fontProperties = $this->myPicture->getFont();
+
+		$FontName = isset($Format["FontName"]) ? $Format["FontName"] : $fontProperties['Name'];
+		$FontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : $fontProperties['Size'];
 		$BoxSize = isset($Format["BoxSize"]) ? $Format["BoxSize"] : 5;
 		$Margin = isset($Format["Margin"]) ? $Format["Margin"] : 5;
 		$Style = isset($Format["Style"]) ? $Format["Style"] : LEGEND_ROUND;
 		$Mode = isset($Format["Mode"]) ? $Format["Mode"] : LEGEND_VERTICAL;
-		$YStep = max($this->myPicture->FontSize, $BoxSize) + 5;
+		$YStep = max($fontProperties['Size'], $BoxSize) + 5;
 		$XStep = $BoxSize + 5;
 		$X = 100;
 		$Y = 100;
@@ -734,13 +739,13 @@ class pScatter
 					($Boundaries["R"] < $BoxArray[1]["X"] + 2) AND $Boundaries["R"] = $BoxArray[1]["X"] + 2;
 					($Boundaries["B"] < $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2) AND $Boundaries["B"] = $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2;
 
-					$vY = $vY + max($this->myPicture->FontSize * count($Lines), $IconAreaHeight) + 5;
+					$vY = $vY + max($fontProperties['Size'] * count($Lines), $IconAreaHeight) + 5;
 
 				} elseif ($Mode == LEGEND_HORIZONTAL) {
 
 					$Width = [];
 					foreach($Lines as $Key => $Value) {
-						$BoxArray = $this->myPicture->getTextBox($vX + $IconAreaWidth + 6, $Y + $IconAreaHeight / 2 + (($this->myPicture->FontSize + 3) * $Key), $FontName, $FontSize, 0, $Value);
+						$BoxArray = $this->myPicture->getTextBox($vX + $IconAreaWidth + 6, $Y + $IconAreaHeight / 2 + (($fontProperties['Size'] + 3) * $Key), $FontName, $FontSize, 0, $Value);
 						($Boundaries["T"] > $BoxArray[2]["Y"] + $IconAreaHeight / 2) AND $Boundaries["T"] = $BoxArray[2]["Y"] + $IconAreaHeight / 2;
 						($Boundaries["R"] < $BoxArray[1]["X"] + 2) AND $Boundaries["R"] = $BoxArray[1]["X"] + 2;
 						($Boundaries["B"] < $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2) AND $Boundaries["B"] = $BoxArray[1]["Y"] + 2 + $IconAreaHeight / 2;
@@ -1021,7 +1026,8 @@ class pScatter
 				$XPos = ($X2 - $X1) / 2 + $X1;
 				$YPos = ($Y2 - $Y1) / 2 + $Y1;
 				if ($NameAngle == ZONE_NAME_ANGLE_AUTO) {
-					$TxtPos = $this->myPicture->getTextBox($XPos, $YPos, $this->myPicture->FontName, $this->myPicture->FontSize, 0, $AreaName);
+					$fontProperties = $this->myPicture->getFont();
+					$TxtPos = $this->myPicture->getTextBox($XPos, $YPos, $fontProperties['Name'], $fontProperties['Size'], 0, $AreaName);
 					$TxtWidth = $TxtPos[1]["X"] - $TxtPos[0]["X"];
 					$NameAngle = (abs($X2 - $X1) > $TxtWidth) ? 0 : 90;
 				}

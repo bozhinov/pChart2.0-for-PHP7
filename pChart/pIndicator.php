@@ -35,6 +35,8 @@ class pIndicator
 	/* Draw an indicator */
 	public function draw(int $X, int $Y, int $Width, int $Height, array $Format = [])
 	{
+		$fontProperties = $this->myPicture->getFont();
+
 		/* No section */
 		if (isset($Format["IndicatorSections"])){
 			$IndicatorSections = $Format["IndicatorSections"];
@@ -54,10 +56,10 @@ class pIndicator
 		$CaptionColor = new pColor(255);
 		$SubCaptionColorFactor = NULL;
 		$SubCaptionColor = new pColor(50);
-		$FontName = $this->myPicture->FontName;
-		$FontSize = $this->myPicture->FontSize;
-		$CaptionFontName = $this->myPicture->FontName;
-		$CaptionFontSize = $this->myPicture->FontSize;
+		$FontName = $fontProperties['Name'];
+		$FontSize = $fontProperties['Size'];
+		$CaptionFontName = $fontProperties['Name'];
+		$CaptionFontSize = $fontProperties['Size'];
 		$Unit = "";
 
 		/* Override defaults */

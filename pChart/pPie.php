@@ -504,7 +504,7 @@ class pPie
 			foreach($Values as $Key => $Value) {
 
 				if ($Shadow) {
-					$Color = $this->myPicture->ShadowColor;
+					$Color = $ShadowSpec['Color'];
 				} else {
 					if ($Border) {
 						$Color = $Palette[$Key]->newOne()->RGBChange(30);
@@ -610,9 +610,11 @@ class pPie
 
 	public function drawPieLegend(int $X, int $Y, array $Format = [])
 	{
-		$FontName = $this->myPicture->FontName;
-		$FontSize = $this->myPicture->FontSize;
-		$FontColor = $this->myPicture->FontColor;
+		$fontProperties = $this->myPicture->getFont();
+
+		$FontName = $fontProperties['Name'];
+		$FontSize = $fontProperties['Size'];
+		$FontColor = $fontProperties['Color'];
 		$BoxSize = 5;
 		$Margin = 5;
 		$Color = new pColor(200);
@@ -631,7 +633,7 @@ class pPie
 		/* Data Processing */
 		list($AbscissaData, , $Palette) = $this->myPicture->myData->getPieParams($forLegend = TRUE);
 
-		$YStep = max($this->myPicture->FontSize, $BoxSize) + 5;
+		$YStep = max($fontProperties['Size'], $BoxSize) + 5;
 		$XStep = $BoxSize + 5;
 
 		$Boundaries = ["L" => $X, "T" => $Y, "R" => 0, "B" => 0];
@@ -702,7 +704,8 @@ class pPie
 		} else {
 			$X2 = cos(deg2rad($Angle - 90)) * 20 + $X;
 			$Y2 = sin(deg2rad($Angle - 90)) * 20 + $Y;
-			$TxtPos = $this->myPicture->getTextBox($X, $Y, $this->myPicture->FontName, $this->myPicture->FontSize, 0, $Label);
+			$fontProperties = $this->myPicture->getFont();
+			$TxtPos = $this->myPicture->getTextBox($X, $Y, $fontProperties['Name'], $fontProperties['Size'], 0, $Label);
 			$Height = $TxtPos[0]["Y"] - $TxtPos[2]["Y"];
 			$YTop = $Y2 - $Height / 2 - 2;
 			$YBottom = $Y2 + $Height / 2 + 2;
