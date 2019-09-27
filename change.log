@@ -20,6 +20,7 @@
   o BC: pScatter->drawScatterScale($Format["DrawXLines"]) accepts array now
   o BC: pScatter->drawScatterScale($Format["DrawYLines"]) accepts array now
   o BC: pDraw->drawScale($Format["DrawYLines"]) accepts array now
+  o Added pDraw->gettheImage()
   o Added pDraw->getShadow()
   o Added pDraw->restoreShadow()
   o Added pDraw->setAntialias()
