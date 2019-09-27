@@ -35,6 +35,7 @@ class pRadar
 	public function drawRadar(array $Format = [])
 	{
 		$fontProperties = $this->myPicture->getFont();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 
 		$FixedMax = VOID;
 		$AxisColor = new pColor(60,60,60,50);
@@ -74,10 +75,10 @@ class pRadar
 		$DrawPoly = FALSE;
 		$PolyAlpha = 40;
 		$FontSize = $fontProperties['Size'];
-		$X1 = $this->myPicture->GraphAreaX1;
-		$Y1 = $this->myPicture->GraphAreaY1;
-		$X2 = $this->myPicture->GraphAreaX2;
-		$Y2 = $this->myPicture->GraphAreaY2;
+		$X1 = $GraphAreaCoordinates["L"];
+		$Y1 = $GraphAreaCoordinates["T"];
+		$X2 = $GraphAreaCoordinates["R"];
+		$Y2 = $GraphAreaCoordinates["B"];
 
 		/* Override defaults */
 		extract($Format);
@@ -368,6 +369,7 @@ class pRadar
 	public function drawPolar(array $Format = [])
 	{
 		$fontProperties = $this->myPicture->getFont();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 
 		$FixedMax = VOID;
 		$AxisColor = new pColor(60,60,60,50);
@@ -405,10 +407,10 @@ class pRadar
 		$DrawPoly = FALSE;
 		$PolyAlpha = NULL;
 		$FontSize = $fontProperties['Size'];
-		$X1 = $this->myPicture->GraphAreaX1;
-		$Y1 = $this->myPicture->GraphAreaY1;
-		$X2 = $this->myPicture->GraphAreaX2;
-		$Y2 = $this->myPicture->GraphAreaY2;
+		$X1 = $GraphAreaCoordinates["L"];
+		$Y1 = $GraphAreaCoordinates["T"];
+		$X2 = $GraphAreaCoordinates["R"];
+		$Y2 = $GraphAreaCoordinates["B"];
 
 		/* Override defaults */
 		extract($Format);

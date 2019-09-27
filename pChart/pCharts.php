@@ -93,6 +93,8 @@ class pCharts
 
 		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
+
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"]&& $SerieName != $Data["Abscissa"]) {
 				$SerieWeight = (isset($Serie["Weight"])) ? $Serie["Weight"] + 2 : 2;
@@ -130,7 +132,7 @@ class pCharts
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
-					$X = $this->myPicture->GraphAreaX1 + $XMargin;
+					$X = $GraphAreaCoordinates["L"] + $XMargin;
 
 					foreach($PosArray as $Key => $Y) {
 						if ($DisplayValues) {
@@ -155,7 +157,7 @@ class pCharts
 
 				} else {
 
-					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Y = $GraphAreaCoordinates["T"] + $XMargin;
 
 					foreach($PosArray as $Key => $X) {
 						if ($DisplayValues) {
@@ -198,6 +200,8 @@ class pCharts
 
 		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
+
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 
@@ -228,7 +232,7 @@ class pCharts
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
-					$X = $this->myPicture->GraphAreaX1 + $XMargin;
+					$X = $GraphAreaCoordinates["L"] + $XMargin;
 
 					foreach($PosArray as $Key => $Y) {
 
@@ -266,7 +270,7 @@ class pCharts
 
 				} else {
 
-					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Y = $GraphAreaCoordinates["T"] + $XMargin;
 
 					foreach($PosArray as $Key => $X) {
 
@@ -320,6 +324,8 @@ class pCharts
 
 		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
+
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				$Color = $Serie["Color"];
@@ -351,18 +357,18 @@ class pCharts
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
-					$X = $this->myPicture->GraphAreaX1 + $XMargin;
+					$X = $GraphAreaCoordinates["L"] + $XMargin;
 
 					if (!$AroundZero) {
-						$YZero = $this->myPicture->GraphAreaY2 - 1;
+						$YZero = $GraphAreaCoordinates["B"] - 1;
 					}
 
-					if ($YZero > $this->myPicture->GraphAreaY2 - 1) {
-						$YZero = $this->myPicture->GraphAreaY2 - 1;
+					if ($YZero > $GraphAreaCoordinates["B"] - 1) {
+						$YZero = $GraphAreaCoordinates["B"] - 1;
 					}
 
-					if ($YZero < $this->myPicture->GraphAreaY1 + 1) {
-						$YZero = $this->myPicture->GraphAreaY1 + 1;
+					if ($YZero < $GraphAreaCoordinates["T"] + 1) {
+						$YZero = $GraphAreaCoordinates["T"] + 1;
 					}
 
 					foreach($PosArray as $Key => $Y) {
@@ -417,18 +423,18 @@ class pCharts
 
 				} else {
 
-					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Y = $GraphAreaCoordinates["T"] + $XMargin;
 
 					if (!$AroundZero) {
-						$YZero = $this->myPicture->GraphAreaX1 + 1;
+						$YZero = $GraphAreaCoordinates["L"] + 1;
 					}
 
-					if ($YZero > $this->myPicture->GraphAreaX2 - 1) {
-						$YZero = $this->myPicture->GraphAreaX2 - 1;
+					if ($YZero > $GraphAreaCoordinates["R"] - 1) {
+						$YZero = $GraphAreaCoordinates["R"] - 1;
 					}
 
-					if ($YZero < $this->myPicture->GraphAreaX1 + 1) {
-						$YZero = $this->myPicture->GraphAreaX1 + 1;
+					if ($YZero < $GraphAreaCoordinates["L"] + 1) {
+						$YZero = $GraphAreaCoordinates["L"] + 1;
 					}
 
 					foreach($PosArray as $Key => $X) {
@@ -506,6 +512,8 @@ class pCharts
 
 		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
+
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				$Color = $Serie["Color"]->newOne();
@@ -545,7 +553,7 @@ class pCharts
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
-					$X = $this->myPicture->GraphAreaX1 + $XMargin;
+					$X = $GraphAreaCoordinates["L"] + $XMargin;
 
 					foreach($PosArray as $Key => $Y) {
 
@@ -588,7 +596,7 @@ class pCharts
 
 				} else {
 
-					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Y = $GraphAreaCoordinates["T"] + $XMargin;
 
 					foreach($PosArray as $Key => $X) {
 
@@ -650,10 +658,11 @@ class pCharts
 		$BoundsB = [];
 
 		$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
-			$X = $this->myPicture->GraphAreaX1 + $XMargin;
+			$X = $GraphAreaCoordinates["L"] + $XMargin;
 
 			foreach($PosArrayA as $Key => $Y1) {
 				$BoundsA[] = $X;
@@ -671,7 +680,7 @@ class pCharts
 			}
 		} else {
 
-			$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+			$Y = $GraphAreaCoordinates["T"] + $XMargin;
 
 			foreach($PosArrayA as $Key => $X1) {
 				$BoundsA[] = $X1;
@@ -707,6 +716,7 @@ class pCharts
 
 		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
@@ -742,7 +752,7 @@ class pCharts
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
-					$X = $this->myPicture->GraphAreaX1 + $XMargin;
+					$X = $GraphAreaCoordinates["L"] + $XMargin;
 
 					foreach($PosArray as $Key => $Y) {
 						if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
@@ -762,7 +772,7 @@ class pCharts
 							if (($LastX != VOID) && ($LastY != VOID)) {
 								$this->myPicture->drawLine($LastX, $LastY, $X, $LastY, $LineSettings);
 								$this->myPicture->drawLine($X, $LastY, $X, $Y, $LineSettings);
-								if ($ReCenter && $X + $XStep < $this->myPicture->GraphAreaX2 - $XMargin) {
+								if ($ReCenter && $X + $XStep < $GraphAreaCoordinates["R"] - $XMargin) {
 									$this->myPicture->drawLine($X, $Y, $X + $XStep, $Y, $LineSettings);
 								}
 							}
@@ -776,7 +786,7 @@ class pCharts
 								$LastGoodY = NULL;
 
 							} elseif (!$BreakVoid && is_null($LastGoodY)) {
-								$this->myPicture->drawLine($this->myPicture->GraphAreaX1 + $XMargin, $Y, $X, $Y, $BreakSettings);
+								$this->myPicture->drawLine($GraphAreaCoordinates["L"] + $XMargin, $Y, $X, $Y, $BreakSettings);
 							}
 
 							$LastGoodY = $Y;
@@ -790,20 +800,20 @@ class pCharts
 
 						$LastX = $X;
 						$LastY = $Y;
-						if ($LastX < $this->myPicture->GraphAreaX1 + $XMargin) {
-							$LastX = $this->myPicture->GraphAreaX1 + $XMargin;
+						if ($LastX < $GraphAreaCoordinates["L"] + $XMargin) {
+							$LastX = $GraphAreaCoordinates["L"] + $XMargin;
 						}
 
 						$X += $XStep;
 					}
 
 					if ($ReCenter) {
-						$this->myPicture->drawLine($LastX, $LastY, $this->myPicture->GraphAreaX2 - $XMargin, $LastY, $LineSettings);
+						$this->myPicture->drawLine($LastX, $LastY, $GraphAreaCoordinates["R"] - $XMargin, $LastY, $LineSettings);
 					}
 
 				} else {
 
-					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Y = $GraphAreaCoordinates["T"] + $XMargin;
 
 					foreach($PosArray as $Key => $X) {
 						if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
@@ -830,7 +840,7 @@ class pCharts
 								$this->myPicture->drawLine($LastGoodX, $Y, $X, $Y, $BreakSettings);
 								$LastGoodY = NULL;
 							} elseif (is_null($LastGoodY) && !$BreakVoid) {
-								$this->myPicture->drawLine($X, $this->myPicture->GraphAreaY1 + $XMargin, $X, $Y, $BreakSettings);
+								$this->myPicture->drawLine($X, $GraphAreaCoordinates["T"] + $XMargin, $X, $Y, $BreakSettings);
 							}
 
 							$LastGoodY = $Y;
@@ -844,15 +854,15 @@ class pCharts
 
 						$LastX = $X;
 						$LastY = $Y;
-						if ($LastY < $this->myPicture->GraphAreaY1 + $XMargin) {
-							$LastY = $this->myPicture->GraphAreaY1 + $XMargin;
+						if ($LastY < $GraphAreaCoordinates["T"] + $XMargin) {
+							$LastY = $GraphAreaCoordinates["T"] + $XMargin;
 						}
 
 						$Y += $XStep;
 					}
 
 					if ($ReCenter) {
-						$this->myPicture->drawLine($LastX, $LastY, $LastX, $this->myPicture->GraphAreaY2 - $XMargin, $LineSettings);
+						$this->myPicture->drawLine($LastX, $LastY, $LastX, $GraphAreaCoordinates["B"] - $XMargin, $LineSettings);
 					}
 				}
 			}
@@ -871,6 +881,8 @@ class pCharts
 
 		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
+
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				$Color = $Serie["Color"]->newOne();
@@ -890,18 +902,18 @@ class pCharts
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-					if ($YZero > $this->myPicture->GraphAreaY2 - 1) {
-						$YZero = $this->myPicture->GraphAreaY2 - 1;
+					if ($YZero > $GraphAreaCoordinates["B"] - 1) {
+						$YZero = $GraphAreaCoordinates["B"] - 1;
 					}
 
-					if ($YZero < $this->myPicture->GraphAreaY1 + 1) {
-						$YZero = $this->myPicture->GraphAreaY1 + 1;
+					if ($YZero < $GraphAreaCoordinates["T"] + 1) {
+						$YZero = $GraphAreaCoordinates["T"] + 1;
 					}
 
-					$X = $this->myPicture->GraphAreaX1 + $XMargin;
+					$X = $GraphAreaCoordinates["L"] + $XMargin;
 
 					if (!$AroundZero) {
-						$YZero = $this->myPicture->GraphAreaY2 - 1;
+						$YZero = $GraphAreaCoordinates["B"] - 1;
 					}
 					$Init = FALSE;
 
@@ -935,8 +947,8 @@ class pCharts
 
 						$LastX = $X;
 						$LastY = $Y;
-						if ($LastX < $this->myPicture->GraphAreaX1 + $XMargin) {
-							$LastX = $this->myPicture->GraphAreaX1 + $XMargin;
+						if ($LastX < $GraphAreaCoordinates["L"] + $XMargin) {
+							$LastX = $GraphAreaCoordinates["L"] + $XMargin;
 						}
 
 						$X += $XStep;
@@ -955,15 +967,15 @@ class pCharts
 					$this->myPicture->drawPolygon($Points, $PolygonSettings);
 
 				} else {
-					if ($YZero < $this->myPicture->GraphAreaX1 + 1) {
-						$YZero = $this->myPicture->GraphAreaX1 + 1;
+					if ($YZero < $GraphAreaCoordinates["L"] + 1) {
+						$YZero = $GraphAreaCoordinates["L"] + 1;
 					}
 
-					if ($YZero > $this->myPicture->GraphAreaX2 - 1) {
-						$YZero = $this->myPicture->GraphAreaX2 - 1;
+					if ($YZero > $GraphAreaCoordinates["R"] - 1) {
+						$YZero = $GraphAreaCoordinates["R"] - 1;
 					}
 
-					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Y = $GraphAreaCoordinates["T"] + $XMargin;
 
 					foreach($PosArray as $X) {
 
@@ -994,8 +1006,8 @@ class pCharts
 
 						$LastX = $X;
 						$LastY = $Y;
-						if ($LastY < $this->myPicture->GraphAreaY1 + $XMargin) {
-							$LastY = $this->myPicture->GraphAreaY1 + $XMargin;
+						if ($LastY < $GraphAreaCoordinates["T"] + $XMargin) {
+							$LastY = $GraphAreaCoordinates["T"] + $XMargin;
 						}
 
 						$Y += $XStep;
@@ -1033,6 +1045,8 @@ class pCharts
 
 		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
+
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				$Color = $Serie["Color"]->newOne();
@@ -1056,17 +1070,17 @@ class pCharts
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-					if ($YZero > $this->myPicture->GraphAreaY2 - 1) {
-						$YZero = $this->myPicture->GraphAreaY2 - 1;
+					if ($YZero > $GraphAreaCoordinates["T"] - 1) {
+						$YZero = $GraphAreaCoordinates["T"] - 1;
 					}
 
 					$AreaID = 0;
 					$Areas = [$AreaID => [
-						$this->myPicture->GraphAreaX1 + $XMargin,
-						($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1
+						$GraphAreaCoordinates["L"] + $XMargin,
+						($AroundZero) ? $YZero : $GraphAreaCoordinates["B"] - 1
 					]];
 
-					$X = $this->myPicture->GraphAreaX1 + $XMargin;
+					$X = $GraphAreaCoordinates["L"] + $XMargin;
 					$LastX = NULL;
 					$LastY = NULL;
 
@@ -1085,12 +1099,12 @@ class pCharts
 
 						if ($Y == VOID && isset($Areas[$AreaID])) {
 							$Areas[$AreaID][] = (is_null($LastX)) ? $X : $LastX;
-							$Areas[$AreaID][] = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
+							$Areas[$AreaID][] = ($AroundZero) ? $YZero : $GraphAreaCoordinates["B"] - 1;
 							$AreaID++; # Momchil: Never gets here
 						} elseif ($Y != VOID) {
 							if (!isset($Areas[$AreaID])) {
 								$Areas[$AreaID][] = $X;
-								$Areas[$AreaID][] = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
+								$Areas[$AreaID][] = ($AroundZero) ? $YZero : $GraphAreaCoordinates["B"] - 1;
 							}
 
 							$Areas[$AreaID][] = $X;
@@ -1102,24 +1116,24 @@ class pCharts
 					}
 
 					$Areas[$AreaID][] = $LastX;
-					$Areas[$AreaID][] = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
+					$Areas[$AreaID][] = ($AroundZero) ? $YZero : $GraphAreaCoordinates["B"] - 1;
 
 				} else {
-					if ($YZero < $this->myPicture->GraphAreaX1 + 1) {
-						$YZero = $this->myPicture->GraphAreaX1 + 1;
+					if ($YZero < $GraphAreaCoordinates["L"] + 1) {
+						$YZero = $GraphAreaCoordinates["L"] + 1;
 					}
 
-					if ($YZero > $this->myPicture->GraphAreaX2 - 1) {
-						$YZero = $this->myPicture->GraphAreaX2 - 1;
+					if ($YZero > $GraphAreaCoordinates["R"] - 1) {
+						$YZero = $GraphAreaCoordinates["R"] - 1;
 					}
 
 					$AreaID = 0;
 					$Areas = [$AreaID => [
-						($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1,
-						$this->myPicture->GraphAreaY1 + $XMargin
+						($AroundZero) ? $YZero : $GraphAreaCoordinates["L"] + 1,
+						$GraphAreaCoordinates["T"] + $XMargin
 					]];
 
-					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Y = $GraphAreaCoordinates["T"] + $XMargin;
 					#$LastX = NULL;
 					$LastY = NULL;
 
@@ -1137,12 +1151,12 @@ class pCharts
 						}
 
 						if ($X == VOID && isset($Areas[$AreaID])) {
-							$Areas[$AreaID][] = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
+							$Areas[$AreaID][] = ($AroundZero) ? $YZero : $GraphAreaCoordinates["L"] + 1;
 							$Areas[$AreaID][] = (is_null($LastY)) ? $Y : $LastY;
 							$AreaID++;
 						} elseif ($X != VOID) {
 							if (!isset($Areas[$AreaID])) {
-								$Areas[$AreaID][] = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
+								$Areas[$AreaID][] = ($AroundZero) ? $YZero : $GraphAreaCoordinates["L"] + 1;
 								$Areas[$AreaID][] = $Y;
 							}
 
@@ -1155,7 +1169,7 @@ class pCharts
 						$Y = $Y + $XStep;
 					}
 
-					$Areas[$AreaID][] = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
+					$Areas[$AreaID][] = ($AroundZero) ? $YZero : $GraphAreaCoordinates["L"] + 1;
 					$Areas[$AreaID][] = $LastY;
 				}
 
@@ -1239,6 +1253,8 @@ class pCharts
 
 		$ShadowSpec = $this->myPicture->getShadow();
 		$SeriesCount = $this->myPicture->myData->countDrawableSeries();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
+
 		$CurrentSerie = 0;
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
@@ -1263,11 +1279,11 @@ class pCharts
 				$YZero = $this->myPicture->scaleComputeYSingle($Floating0Value, $Serie["Axis"]);
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-					($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
-					($YZero < $this->myPicture->GraphAreaY1 + 1) AND $YZero = $this->myPicture->GraphAreaY1 + 1;
+					($YZero > $GraphAreaCoordinates["B"] - 1) AND $YZero = $GraphAreaCoordinates["B"] - 1;
+					($YZero < $GraphAreaCoordinates["T"] + 1) AND $YZero = $GraphAreaCoordinates["T"] + 1;
 					$XStep = ($XDivs == 0) ? 0 : ($gaXdiff - $XMargin * 2) / $XDivs;
-					$X = $this->myPicture->GraphAreaX1 + $XMargin;
-					$Y1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
+					$X = $GraphAreaCoordinates["L"] + $XMargin;
+					$Y1 = ($AroundZero) ? $YZero : $GraphAreaCoordinates["B"] - 1;
 
 					if ($XDivs == 0) {
 						$XSize = $gaXdiff / ($SeriesCount + $Interleave);
@@ -1276,8 +1292,8 @@ class pCharts
 					}
 
 					$XOffset = - ($XSize * $SeriesCount) / 2 + $CurrentSerie * $XSize;
-					if ($X + $XOffset <= $this->myPicture->GraphAreaX1) {
-						$XOffset = $this->myPicture->GraphAreaX1 - $X + 1;
+					if ($X + $XOffset <= $GraphAreaCoordinates["L"]) {
+						$XOffset = $GraphAreaCoordinates["L"] - $X + 1;
 					}
 
 					$Data["Series"][$SerieName]["XOffset"] = $XOffset + $XSize / 2;
@@ -1288,9 +1304,9 @@ class pCharts
 						if (!is_null($Floating0Serie)) {
 							$Value = (isset($Data["Series"][$Floating0Serie]["Data"][$Key])) ? $Data["Series"][$Floating0Serie]["Data"][$Key] : 0;
 							$YZero = $this->myPicture->scaleComputeYSingle($Value, $Serie["Axis"]);
-							($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
-							($YZero < $this->myPicture->GraphAreaY1 + 1) AND $YZero = $this->myPicture->GraphAreaY1 + 1;
-							$Y1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
+							($YZero > $GraphAreaCoordinates["B"] - 1) AND $YZero = $GraphAreaCoordinates["B"] - 1;
+							($YZero < $GraphAreaCoordinates["T"] + 1) AND $YZero = $GraphAreaCoordinates["T"] + 1;
+							$Y1 = ($AroundZero) ? $YZero : $GraphAreaCoordinates["B"] - 1;
 						}
 
 						if (!empty($ColorOverride)) {
@@ -1373,11 +1389,11 @@ class pCharts
 
 				} else {
 
-					($YZero < $this->myPicture->GraphAreaX1 + 1) AND $YZero = $this->myPicture->GraphAreaX1 + 1;
-					($YZero > $this->myPicture->GraphAreaX2 - 1) AND $YZero = $this->myPicture->GraphAreaX2 - 1;
+					($YZero < $GraphAreaCoordinates["L"] + 1) AND $YZero = $GraphAreaCoordinates["L"] + 1;
+					($YZero > $GraphAreaCoordinates["R"] - 1) AND $YZero = $GraphAreaCoordinates["R"] - 1;
 					$YStep = ($XDivs == 0) ? 0 : ($gaYdiff - $XMargin * 2) / $XDivs;
-					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
-					$X1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
+					$Y = $GraphAreaCoordinates["T"] + $XMargin;
+					$X1 = ($AroundZero) ? $YZero : $$GraphAreaCoordinates["L"] + 1;
 
 					if ($XDivs == 0) {
 						$YSize = $gaYdiff / ($SeriesCount + $Interleave);
@@ -1386,8 +1402,8 @@ class pCharts
 					}
 
 					$YOffset = - ($YSize * $SeriesCount) / 2 + $CurrentSerie * $YSize;
-					if ($Y + $YOffset <= $this->myPicture->GraphAreaY1) {
-						$YOffset = $this->myPicture->GraphAreaY1 - $Y + 1;
+					if ($Y + $YOffset <= $GraphAreaCoordinates["T"]) {
+						$YOffset = $GraphAreaCoordinates["T"] - $Y + 1;
 					}
 
 					$Data["Series"][$SerieName]["XOffset"] = $YOffset + $YSize / 2;
@@ -1398,9 +1414,9 @@ class pCharts
 						if (!is_null($Floating0Serie)) {
 							$Value = (isset($Data["Series"][$Floating0Serie]["Data"][$Key])) ? $Data["Series"][$Floating0Serie]["Data"][$Key] : 0;
 							$YZero = $this->myPicture->scaleComputeYSingle($Value, $Serie["Axis"]);
-							($YZero < $this->myPicture->GraphAreaX1 + 1) AND $YZero = $this->myPicture->GraphAreaX1 + 1;
-							($YZero > $this->myPicture->GraphAreaX2 - 1) AND $YZero = $this->myPicture->GraphAreaX2 - 1;
-							$X1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
+							($YZero < $GraphAreaCoordinates["L"] + 1) AND $YZero = $GraphAreaCoordinates["L"] + 1;
+							($YZero > $GraphAreaCoordinates["R"] - 1) AND $YZero = $GraphAreaCoordinates["R"] - 1;
+							$X1 = ($AroundZero) ? $YZero : $GraphAreaCoordinates["L"] + 1;
 						}
 
 						if (!empty($ColorOverride)) {
@@ -1519,6 +1535,7 @@ class pCharts
 
 		$Data = $this->myPicture->myData->getData();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 
 		$LastX = [];
 		$LastY = [];
@@ -1546,10 +1563,9 @@ class pCharts
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-					($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
-					($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
-
-					$X = $this->myPicture->GraphAreaX1 + $XMargin;
+					($YZero > $GraphAreaCoordinates["B"] - 1) AND $YZero = $GraphAreaCoordinates["B"] - 1;
+					// ($YZero > $GraphAreaCoordinates["B"] - 1) AND $YZero = $GraphAreaCoordinates["B"] - 1; // BUG?
+					$X = $GraphAreaCoordinates["L"] + $XMargin;
 					$XSize = ($XStep / (1 + $Interleave));
 					$XOffset = - ($XSize / 2);
 
@@ -1623,10 +1639,10 @@ class pCharts
 					}
 				} else { # SCALE_POS_LEFTRIGHT
 
-					($YZero < $this->myPicture->GraphAreaX1 + 1) AND $YZero = $this->myPicture->GraphAreaX1 + 1;
-					($YZero > $this->myPicture->GraphAreaX2 - 1) AND $YZero = $this->myPicture->GraphAreaX2 - 1;
+					($YZero < $GraphAreaCoordinates["L"] + 1) AND $YZero = $GraphAreaCoordinates["L"] + 1;
+					($YZero > $GraphAreaCoordinates["R"] - 1) AND $YZero = $GraphAreaCoordinates["R"] - 1;
 
-					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Y = $GraphAreaCoordinates["T"] + $XMargin;
 					$YSize = $XStep / (1 + $Interleave);
 					$YOffset = - ($YSize / 2);
 
@@ -1738,6 +1754,7 @@ class pCharts
 		}
 
 		$SerieOrder = array_reverse($SerieOrder);
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 
 		foreach($SerieOrder as $SerieName) {
 			$Serie = $Data["Series"][$SerieName];
@@ -1762,10 +1779,10 @@ class pCharts
 				$XStep = $this->getXStep($Data["Orientation"], $XDivs, $XMargin);
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-					($YZero < $this->myPicture->GraphAreaY1 + 1) AND $YZero = $this->myPicture->GraphAreaY1 + 1;
-					($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
+					($YZero < $GraphAreaCoordinates["T"] + 1) AND $YZero = $GraphAreaCoordinates["T"] + 1;
+					($YZero > $GraphAreaCoordinates["B"] - 1) AND $YZero = $GraphAreaCoordinates["B"] - 1;
 
-					$X = $this->myPicture->GraphAreaX1 + $XMargin;
+					$X = $GraphAreaCoordinates["L"] + $XMargin;
 
 					$Plots = [$X, $YZero];
 
@@ -1801,10 +1818,10 @@ class pCharts
 					$this->myPicture->setShadow(FALSE);
 
 				} elseif ($Data["Orientation"] == SCALE_POS_TOPBOTTOM) {
-					($YZero < $this->myPicture->GraphAreaX1 + 1) AND $YZero = $this->myPicture->GraphAreaX1 + 1;
-					($YZero > $this->myPicture->GraphAreaX2 - 1) AND $YZero = $this->myPicture->GraphAreaX2 - 1;
+					($YZero < $GraphAreaCoordinates["L"] + 1) AND $YZero = $GraphAreaCoordinates["L"] + 1;
+					($YZero > $GraphAreaCoordinates["R"] - 1) AND $YZero = $GraphAreaCoordinates["R"] - 1;
 
-					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Y = $GraphAreaCoordinates["T"] + $XMargin;
 
 					$Plots = [$YZero, $Y];
 					foreach($PosArray as $Height) {
@@ -2033,10 +2050,12 @@ class pCharts
 		$Force = isset($Format["Force"]) ? $Format["Force"] : 70;
 		$Segments = isset($Format["Segments"]) ? $Format["Segments"] : 15;
 
-		$X1 = $this->myPicture->GraphAreaX1;
-		$Y1 = $this->myPicture->GraphAreaY1;
-		$X2 = $this->myPicture->GraphAreaX2;
-		$Y2 = $this->myPicture->GraphAreaY2;
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
+		$X1 = $GraphAreaCoordinates["L"];
+		$Y1 = $GraphAreaCoordinates["T"];
+		$X2 = $GraphAreaCoordinates["R"];
+		$Y2 = $GraphAreaCoordinates["B"];
+
 		/* Data Processing */
 		$Data = $this->myPicture->myData->getData();
 		$Palette = $this->myPicture->myData->getPalette();
@@ -2172,11 +2191,13 @@ class pCharts
 		$NegativeSlopeEndColor = isset($Format["NegativeSlopeEndColor"]) ? $Format["NegativeSlopeEndColor"] : new pColor(67,124,227);
 
 		$Data = $this->myPicture->myData->getData();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
+
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-			$YPos = $this->myPicture->GraphAreaY2 + $Offset;
+			$YPos = $GraphAreaCoordinates["B"] + $Offset;
 		} else {
-			$XPos = $this->myPicture->GraphAreaX2 + $Offset;
+			$XPos = $GraphAreaCoordinates["R"] + $Offset;
 		}
 		/* Momchil: This tweak is a result of poorly re-factored drawScale on my part */
 		/* Removal of $this->DataSet->Data["GraphArea"] to be specific */
@@ -2198,8 +2219,8 @@ class pCharts
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					if ($Caption) {
 						if ($CaptionLine) {
-							$StartX = floor($this->myPicture->GraphAreaX1 - $CaptionWidth + $XMargin - $CaptionMargin);
-							$EndX = floor($this->myPicture->GraphAreaX1 - $CaptionMargin + $XMargin);
+							$StartX = floor($GraphAreaCoordinates["L"] - $CaptionWidth + $XMargin - $CaptionMargin);
+							$EndX = floor($GraphAreaCoordinates["L"] - $CaptionMargin + $XMargin);
 
 							if ($CaptionBox) {
 								$this->myPicture->drawFilledRectangle($StartX, $YPos, $EndX, $YPos + $CaptionHeight, ["Color" => $CaptionFillColor,"BorderColor" => $CaptionBorderColor]);
@@ -2208,15 +2229,15 @@ class pCharts
 							$this->myPicture->drawLine($StartX + 2, $YPos + ($CaptionHeight / 2), $EndX - 2, $YPos + ($CaptionHeight / 2), $CaptionSettings);
 
 						} else {
-							$this->myPicture->drawFilledRectangle($this->myPicture->GraphAreaX1 - $CaptionWidth + $XMargin - $CaptionMargin, $YPos, $this->myPicture->GraphAreaX1 - $CaptionMargin + $XMargin, $YPos + $CaptionHeight, ["Color" => $Serie["Color"],"BorderColor" => $CaptionBorderColor]);
+							$this->myPicture->drawFilledRectangle($GraphAreaCoordinates["L"] - $CaptionWidth + $XMargin - $CaptionMargin, $YPos, $GraphAreaCoordinates["L"] - $CaptionMargin + $XMargin, $YPos + $CaptionHeight, ["Color" => $Serie["Color"],"BorderColor" => $CaptionBorderColor]);
 						}
 					}
 
-					$X = $this->myPicture->GraphAreaX1 + $XMargin;
+					$X = $GraphAreaCoordinates["L"] + $XMargin;
 					$TopY = $YPos + ($CaptionHeight / 2) - ($DerivativeHeight / 2);
 					$BottomY = $YPos + ($CaptionHeight / 2) + ($DerivativeHeight / 2);
-					$StartX = floor($this->myPicture->GraphAreaX1 + $XMargin);
-					$EndX = floor($this->myPicture->GraphAreaX2 - $XMargin);
+					$StartX = floor($GraphAreaCoordinates["L"] + $XMargin);
+					$EndX = floor($GraphAreaCoordinates["R"] - $XMargin);
 					($DrawBackground) AND $this->myPicture->drawFilledRectangle($StartX - 1, $TopY - 1, $EndX + 1, $BottomY + 1, ["Color" => $BackgroundColor]);
 					($DrawBorder) AND $this->myPicture->drawRectangle($StartX - 1, $TopY - 1, $EndX + 1, $BottomY + 1, ["Color" => $BorderColor]);
 					$ShadowSpec = $this->myPicture->getShadow();
@@ -2275,8 +2296,8 @@ class pCharts
 				} elseif ($Data["Orientation"] == SCALE_POS_LEFTRIGHT){
 
 					if ($Caption) {
-						$StartY = floor($this->myPicture->GraphAreaY1 - $CaptionWidth + $XMargin - $CaptionMargin);
-						$EndY = floor($this->myPicture->GraphAreaY1 - $CaptionMargin + $XMargin);
+						$StartY = floor($GraphAreaCoordinates["T"] - $CaptionWidth + $XMargin - $CaptionMargin);
+						$EndY = floor($GraphAreaCoordinates["T"] - $CaptionMargin + $XMargin);
 						if ($CaptionLine) {
 							if ($CaptionBox) {
 								$this->myPicture->drawFilledRectangle($XPos, $StartY, $XPos + $CaptionHeight, $EndY, ["Color" => $CaptionFillColor,"BorderColor" => $CaptionBorderColor]);
@@ -2288,7 +2309,7 @@ class pCharts
 						}
 					}
 
-					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Y = $GraphAreaCoordinates["T"] + $XMargin;
 					$TopX = $XPos + ($CaptionHeight / 2) - ($DerivativeHeight / 2);
 					$BottomX = $XPos + ($CaptionHeight / 2) + ($DerivativeHeight / 2);
 					$StartY = floor($this->myPicture->GraphAreaY1 + $XMargin);
@@ -2361,6 +2382,7 @@ class pCharts
 		$Data = $this->myPicture->myData->getData();
 
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 
 		$XStep = $this->getXstep($Data["Orientation"], $XDivs, $XMargin);
 
@@ -2381,7 +2403,7 @@ class pCharts
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
-					$X = $this->myPicture->GraphAreaX1 + $XMargin;
+					$X = $GraphAreaCoordinates["L"] + $XMargin;
 
 					foreach($PosArray as $Y) {
 						if ($Y != VOID) {
@@ -2396,35 +2418,35 @@ class pCharts
 
 					$M = (($n * $Sxy) - ($Sx * $Sy)) / (($n * $Sxx) - ($Sx * $Sx));
 					$B = (($Sy) - ($M * $Sx)) / ($n);
-					$X1 = $this->myPicture->GraphAreaX1 + $XMargin;
+					$X1 = $GraphAreaCoordinates["L"] + $XMargin;
 					$Y1 = $M * $X1 + $B;
-					$X2 = $this->myPicture->GraphAreaX2 - $XMargin;
+					$X2 = $GraphAreaCoordinates["R"] - $XMargin;
 					$Y2 = $M * $X2 + $B;
-					if ($Y1 < $this->myPicture->GraphAreaY1) {
-						$X1 = $X1 + ($this->myPicture->GraphAreaY1 - $Y1);
-						$Y1 = $this->myPicture->GraphAreaY1;
+					if ($Y1 < $GraphAreaCoordinates["T"]) {
+						$X1 = $X1 + ($GraphAreaCoordinates["T"] - $Y1);
+						$Y1 = $GraphAreaCoordinates["T"];
 					}
 
-					if ($Y1 > $this->myPicture->GraphAreaY2) {
-						$X1 = $X1 + ($Y1 - $this->myPicture->GraphAreaY2);
-						$Y1 = $this->myPicture->GraphAreaY2;
+					if ($Y1 > $GraphAreaCoordinates["B"]) {
+						$X1 = $X1 + ($Y1 - $GraphAreaCoordinates["B"]);
+						$Y1 = $GraphAreaCoordinates["B"];
 					}
 
-					if ($Y2 < $this->myPicture->GraphAreaY1) {
-						$X2 = $X2 - ($this->myPicture->GraphAreaY1 - $Y2);
-						$Y2 = $this->myPicture->GraphAreaY1;
+					if ($Y2 < $GraphAreaCoordinates["T"]) {
+						$X2 = $X2 - ($GraphAreaCoordinates["T"] - $Y2);
+						$Y2 = $GraphAreaCoordinates["T"];
 					}
 
-					if ($Y2 > $this->myPicture->GraphAreaY2) {
-						$X2 = $X2 - ($Y2 - $this->myPicture->GraphAreaY2);
-						$Y2 = $this->myPicture->GraphAreaY2;
+					if ($Y2 > $GraphAreaCoordinates["B"]) {
+						$X2 = $X2 - ($Y2 - $GraphAreaCoordinates["B"]);
+						$Y2 = $GraphAreaCoordinates["B"];
 					}
 
 					$this->myPicture->drawLine($X1, $Y1, $X2, $Y2, $Settings);
 
 				} else {
 
-					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Y = $GraphAreaCoordinates["T"] + $XMargin;
 
 					foreach($PosArray as $X) {
 						if ($X != VOID) {
@@ -2439,28 +2461,28 @@ class pCharts
 
 					$M = (($n * $Sxy) - ($Sx * $Sy)) / (($n * $Sxx) - ($Sx * $Sx));
 					$B = (($Sy) - ($M * $Sx)) / $n;
-					$Y1 = $this->myPicture->GraphAreaY1 + $XMargin;
+					$Y1 = $GraphAreaCoordinates["T"] + $XMargin;
 					$X1 = $M * $Y1 + $B;
-					$Y2 = $this->myPicture->GraphAreaY2 - $XMargin;
+					$Y2 = $GraphAreaCoordinates["B"] - $XMargin;
 					$X2 = $M * $Y2 + $B;
-					if ($X1 < $this->myPicture->GraphAreaX1) {
-						$Y1 = $Y1 + ($this->myPicture->GraphAreaX1 - $X1);
-						$X1 = $this->myPicture->GraphAreaX1;
+					if ($X1 < $GraphAreaCoordinates["L"]) {
+						$Y1 = $Y1 + ($GraphAreaCoordinates["L"] - $X1);
+						$X1 = $GraphAreaCoordinates["L"];
 					}
 
-					if ($X1 > $this->myPicture->GraphAreaX2) {
-						$Y1 = $Y1 + ($X1 - $this->myPicture->GraphAreaX2);
-						$X1 = $this->myPicture->GraphAreaX2;
+					if ($X1 > $GraphAreaCoordinates["R"]) {
+						$Y1 = $Y1 + ($X1 - $GraphAreaCoordinates["R"]);
+						$X1 = $GraphAreaCoordinates["R"];
 					}
 
-					if ($X2 < $this->myPicture->GraphAreaX1) {
-						$Y2 = $Y2 - ($this->myPicture->GraphAreaY1 - $X2);
-						$X2 = $this->myPicture->GraphAreaX1;
+					if ($X2 < $GraphAreaCoordinates["L"]) {
+						$Y2 = $Y2 - ($GraphAreaCoordinates["T"] - $X2); // BUG ??
+						$X2 = $GraphAreaCoordinates["L"];
 					}
 
-					if ($X2 > $this->myPicture->GraphAreaX2) {
-						$Y2 = $Y2 - ($X2 - $this->myPicture->GraphAreaX2);
-						$X2 = $this->myPicture->GraphAreaX2;
+					if ($X2 > $$GraphAreaCoordinates["R"]) {
+						$Y2 = $Y2 - ($X2 - $GraphAreaCoordinates["R"]);
+						$X2 = $GraphAreaCoordinates["R"];
 					}
 
 					$this->myPicture->drawLine($X1, $Y1, $X2, $Y2, $Settings);

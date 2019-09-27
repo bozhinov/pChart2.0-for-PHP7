@@ -95,14 +95,15 @@ class pStock
 			}
 		}
 
-		$X = $this->myPicture->GraphAreaX1 + $XMargin;
-		$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
+		$X = $GraphAreaCoordinates["L"] + $XMargin;
+		$Y = $GraphAreaCoordinates["T"] + $XMargin;
 
-		$LineSettings = ["Color" => $LineColor];
-		$ExtremitySettings = ["Color" => $ExtremityColor];
-		$BoxUpSettings = ["Color" => $BoxUpColor,"BorderColor" => $BoxUpBorderColor];
-		$BoxDownSettings = ["Color" => $BoxDownColor,"BorderColor" => $BoxDownBorderColor];
-		$MedianSettings = ["Color" => $MedianColor];
+		$LineSettings 		= ["Color" => $LineColor];
+		$ExtremitySettings 	= ["Color" => $ExtremityColor];
+		$BoxUpSettings 		= ["Color" => $BoxUpColor,	"BorderColor" => $BoxUpBorderColor];
+		$BoxDownSettings 	= ["Color" => $BoxDownColor,"BorderColor" => $BoxDownBorderColor];
+		$MedianSettings 	= ["Color" => $MedianColor];
 
 		foreach($Plots as $Key => $Points) {
 

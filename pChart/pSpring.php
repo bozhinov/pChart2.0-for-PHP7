@@ -541,10 +541,13 @@ class pSpring
 		$CenterGraph = isset($Settings["CenterGraph"]) ? $Settings["CenterGraph"] : TRUE;
 		$TextPadding = isset($Settings["TextPadding"]) ? $Settings["TextPadding"] : 4;
 		$Algorithm = isset($Settings["Algorithm"]) ? $Settings["Algorithm"] : ALGORITHM_WEIGHTED;
-		$this->X1 = $this->myPicture->GraphAreaX1;
-		$this->Y1 = $this->myPicture->GraphAreaY1;
-		$this->X2 = $this->myPicture->GraphAreaX2;
-		$this->Y2 = $this->myPicture->GraphAreaY2;
+
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
+		$this->X1 = $GraphAreaCoordinates["L"];
+		$this->Y1 = $GraphAreaCoordinates["T"];
+		$this->X2 = $GraphAreaCoordinates["R"];
+		$this->Y2 = $GraphAreaCoordinates["B"];
+
 		$Conflicts = 1;
 		$Jobs = 0;
 		$this->History["MinimumConflicts"] = - 1;

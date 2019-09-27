@@ -136,10 +136,12 @@ class pBubble
 			}
 		}
 
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
+
 		foreach($DataSeries as $Key => $SerieName) {
 
-			$X = $this->myPicture->GraphAreaX1 + $XMargin;
-			$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+			$X = $GraphAreaCoordinates["L"] + $XMargin;
+			$Y = $GraphAreaCoordinates["T"] + $XMargin;
 
 			$ColorSettings = ["Color" => $Palette[$Key]];
 
@@ -213,8 +215,9 @@ class pBubble
 		$Abscissa = (isset($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Point])) ? $Data["Series"][$Data["Abscissa"]]["Data"][$Point]." : " : "";
 		$Series = ["Format" => $Data["Series"][$SerieName]["Color"],"Caption" => $Abscissa . $Value . " / " . $Data["Series"][$SerieWeightName]["Data"][$Point]];
 
-		$X = $this->myPicture->GraphAreaX1 + $XMargin;
-		$Y = $this->myPicture->GraphAreaY1 + $XMargin;
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
+		$X = $GraphAreaCoordinates["L"] + $XMargin;
+		$Y = $GraphAreaCoordinates["T"] + $XMargin;
 
 		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
 

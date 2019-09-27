@@ -86,15 +86,16 @@ class pSurface
 		extract($Format);
 
 		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 
-		$X0 = $this->myPicture->GraphAreaX1;
+		$X0 = $GraphAreaCoordinates["L"];
 		$XSize = $Xdiff / ($this->GridSizeX + 1);
 		$Settings = ["Angle" => $Angle,"Color" => $Color];
 		if ($Position == LABEL_POSITION_TOP) {
-			$YPos = $this->myPicture->GraphAreaY1 - $Padding;
+			$YPos = $GraphAreaCoordinates["T"] - $Padding;
 			$Settings["Align"] = ($Angle == 0) ? TEXT_ALIGN_BOTTOMMIDDLE : TEXT_ALIGN_MIDDLELEFT;
 		} elseif ($Position == LABEL_POSITION_BOTTOM) {
-			$YPos = $this->myPicture->GraphAreaY2 + $Padding;
+			$YPos = $GraphAreaCoordinates["B"] + $Padding;
 			$Settings["Align"] = ($Angle == 0) ? TEXT_ALIGN_TOPMIDDLE : TEXT_ALIGN_MIDDLERIGHT;
 		} else {
 			throw pException::SurfaceInvalidInputException("Invalid label position");
@@ -120,16 +121,17 @@ class pSurface
 		$CountOffset = isset($Format["CountOffset"]) ? $Format["CountOffset"] : 0;
 
 		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 
-		$Y0 = $this->myPicture->GraphAreaY1;
+		$Y0 = $GraphAreaCoordinates["T"];
 		$YSize = $Ydiff / ($this->GridSizeY + 1);
 		$Settings = ["Angle" => $Angle,"Color" => $Color];
 
 		if ($Position == LABEL_POSITION_LEFT) {
-			$XPos = $this->myPicture->GraphAreaX1 - $Padding;
+			$XPos = $GraphAreaCoordinates["L"] - $Padding;
 			$Settings["Align"] = TEXT_ALIGN_MIDDLERIGHT;
 		} elseif ($Position == LABEL_POSITION_RIGHT) {
-			$XPos = $this->myPicture->GraphAreaX2 + $Padding;
+			$XPos = $GraphAreaCoordinates["R"] + $Padding;
 			$Settings["Align"] = TEXT_ALIGN_MIDDLELEFT;
 		} else {
 			throw pException::SurfaceInvalidInputException("Invalid label position");
@@ -150,9 +152,10 @@ class pSurface
 		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 0;
 
 		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 
-		$X0 = $this->myPicture->GraphAreaX1;
-		$Y0 = $this->myPicture->GraphAreaY1;
+		$X0 = $GraphAreaCoordinates["L"];
+		$Y0 = $GraphAreaCoordinates["T"];
 		$XSize = $Xdiff / ($this->GridSizeX + 1);
 		$YSize = $Ydiff / ($this->GridSizeY + 1);
 		$Settings = ["Color" => $Color,"Ticks" => $Ticks];
@@ -193,9 +196,10 @@ class pSurface
 		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 1;
 
 		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
+		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 
-		$X0 = $this->myPicture->GraphAreaX1;
-		$Y0 = $this->myPicture->GraphAreaY1;
+		$X0 = $GraphAreaCoordinates["L"];
+		$Y0 = $GraphAreaCoordinates["T"];
 		$XSize = $Xdiff / ($this->GridSizeX + 1);
 		$YSize = $Ydiff / ($this->GridSizeY + 1);
 

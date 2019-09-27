@@ -130,10 +130,10 @@ class pDraw
 	private $AntialiasQuality = 0; // Quality of the anti aliasing implementation (0-1)
 	private $TransparentBackground = FALSE;
 	/* Graph area settings */
-	public $GraphAreaX1 = 0; // Graph area X origin
-	public $GraphAreaY1 = 0; // Graph area Y origin
-	public $GraphAreaX2 = 0; // Graph area bottom right X position
-	public $GraphAreaY2 = 0; // Graph area bottom right Y position
+	private $GraphAreaX1 = 0; // Graph area X origin
+	private $GraphAreaY1 = 0; // Graph area Y origin
+	private $GraphAreaX2 = 0; // Graph area bottom right X position
+	private $GraphAreaY2 = 0; // Graph area bottom right Y position
 	private $GraphAreaXdiff = 0; // $X2 - $X1
 	private $GraphAreaYdiff = 0; // $Y2 - $Y1
 	/* Font properties */
