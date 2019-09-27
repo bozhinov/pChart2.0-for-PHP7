@@ -2269,7 +2269,7 @@ class pCharts
 							}
 
 							$Gradient->SetSegments(100);
-							$Color = $Gradient->Next($SlopeIndex, TRUE);
+							$Color = $Gradient->Next(intval($SlopeIndex), TRUE);
 
 							if ($ShadedSlopeBox && !is_null($LastColor)) // && $Slope != 0
 							{
@@ -2312,8 +2312,8 @@ class pCharts
 					$Y = $GraphAreaCoordinates["T"] + $XMargin;
 					$TopX = $XPos + ($CaptionHeight / 2) - ($DerivativeHeight / 2);
 					$BottomX = $XPos + ($CaptionHeight / 2) + ($DerivativeHeight / 2);
-					$StartY = floor($this->myPicture->GraphAreaY1 + $XMargin);
-					$EndY = floor($this->myPicture->GraphAreaY2 - $XMargin);
+					$StartY = floor($GraphAreaCoordinates["T"]+ $XMargin);
+					$EndY = floor($GraphAreaCoordinates["B"] - $XMargin);
 					($DrawBackground) AND $this->myPicture->drawFilledRectangle($TopX - 1, $StartY - 1, $BottomX + 1, $EndY + 1, ["Color" => $BackgroundColor]);
 					($DrawBorder) AND $this->myPicture->drawRectangle($TopX - 1, $StartY - 1, $BottomX + 1, $EndY + 1, ["Color" => $BorderColor]);
 					$ShadowSpec = $this->myPicture->getShadow();
@@ -2345,7 +2345,7 @@ class pCharts
 							}
 
 							$Gradient->SetSegments(100);
-							$Color = $Gradient->Next($SlopeIndex, TRUE);
+							$Color = $Gradient->Next(intval($SlopeIndex), TRUE);
 
 							if ($ShadedSlopeBox && !is_null($LastColor)) {
 								$this->myPicture->drawGradientArea($TopX, $LastY, $BottomX, $Y, DIRECTION_VERTICAL, ["StartColor" => $LastColor,"EndColor" => $Color]);
