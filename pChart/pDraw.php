@@ -121,7 +121,6 @@ define("VOID", 0.123456789);
 
 class pDraw
 {
-	/* TODO ALL OF THESE SHOULD BE PRIVATE */
 	/* GD picture object */
 	private $Picture;	
 	/* Image settings, size, quality, .. */
@@ -135,8 +134,8 @@ class pDraw
 	public $GraphAreaY1 = 0; // Graph area Y origin
 	public $GraphAreaX2 = 0; // Graph area bottom right X position
 	public $GraphAreaY2 = 0; // Graph area bottom right Y position
-	public $GraphAreaXdiff = 0; // $X2 - $X1
-	public $GraphAreaYdiff = 0; // $Y2 - $Y1
+	private $GraphAreaXdiff = 0; // $X2 - $X1
+	private $GraphAreaYdiff = 0; // $Y2 - $Y1
 	/* Font properties */
 	private $FontName = "pChart/fonts/Dosis-Light.ttf"; // Default font file
 	private $FontSize = 12; // Default font size
@@ -3855,6 +3854,11 @@ class pDraw
 		$this->AntialiasQuality = $quality;
 	}
 
+	public function getGraphAreaDiffs()
+	{
+		return [$this->GraphAreaXdiff, $this->GraphAreaYdiff];
+	}
+
 	/* Set the graph area position */
 	public function setGraphArea($X1, $Y1, $X2, $Y2)
 	{
@@ -3869,6 +3873,16 @@ class pDraw
 
 		$this->GraphAreaXdiff = $X2 - $X1;
 		$this->GraphAreaYdiff = $Y2 - $Y1;
+	}
+	
+	public function getGraphAreaCoordinates()
+	{
+		return [
+			"L" => $this->GraphAreaX1,
+			"R" => $this->GraphAreaX2,
+			"T" => $this->GraphAreaY1,
+			"B" => $this->GraphAreaY2
+		];
 	}
 
 	/* Return the orientation of a line */

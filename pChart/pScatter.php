@@ -86,11 +86,12 @@ class pScatter
 		/* Skip a NOTICE event in case of an empty array */
 		($DrawYLines == NONE) AND $DrawYLines = ["zarma" => "31"];
 
+		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
 		foreach($Data["Axis"] as $AxisID => $AxisSettings) {
 			if ($AxisSettings["Identity"] == AXIS_X) {
-				$Width = $this->myPicture->GraphAreaXdiff - $XMargin * 2;
+				$Width = $Xdiff - $XMargin * 2;
 			} else {
-				$Width = $this->myPicture->GraphAreaYdiff - $YMargin * 2;
+				$Width = $Ydiff - $YMargin * 2;
 			}
 
 			$AxisMin = PHP_INT_MAX;
@@ -135,12 +136,7 @@ class pScatter
 		}
 
 		/* Set the original boundaries */
-		$AxisPos = [
-			"L" => $this->myPicture->GraphAreaX1,
-			"R" => $this->myPicture->GraphAreaX2,
-			"T" => $this->myPicture->GraphAreaY1,
-			"B" => $this->myPicture->GraphAreaY2
-		];
+		$AxisPos = $this->myPicture->getGraphAreaCoordinates();
 		
 		foreach($Data["Axis"] as $AxisID => $AxisSettings) {
 			if (isset($AxisSettings["Color"])) {
@@ -189,7 +185,7 @@ class pScatter
 						$this->myPicture->drawArrow($this->myPicture->GraphAreaX2 - $AxisSettings["Margin"], $AxisPos["B"], $this->myPicture->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["B"], ["FillColor" => $AxisColor,"Size" => $ArrowSize]);
 					}
 
-					$Width = $this->myPicture->GraphAreaXdiff - $AxisSettings["Margin"] * 2;
+					$Width = $Xdiff - $AxisSettings["Margin"] * 2;
 					$Step = $Width / $AxisSettings["Rows"];
 					$SubTicksSize = $Step / 2;
 					$MaxBottom = $AxisPos["B"];
@@ -220,7 +216,7 @@ class pScatter
 
 					if (isset($AxisSettings["Name"])) {
 						$YPos = $MaxBottom + 2;
-						$XPos = $this->myPicture->GraphAreaX1 + ($this->myPicture->GraphAreaXdiff) / 2;
+						$XPos = $this->myPicture->GraphAreaX1 + $Xdiff / 2;
 						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"], ["Align" => TEXT_ALIGN_TOPMIDDLE]);
 						$MaxBottom = $Bounds[0]["Y"];
 					}
@@ -261,7 +257,7 @@ class pScatter
 						$this->myPicture->drawArrow($this->myPicture->GraphAreaX2 - $AxisSettings["Margin"], $AxisPos["T"], $this->myPicture->GraphAreaX2 + ($ArrowSize * 2), $AxisPos["T"], ["FillColor" => $AxisColor,"Size" => $ArrowSize]);
 					}
 
-					$Width = $this->myPicture->GraphAreaXdiff - $AxisSettings["Margin"] * 2;
+					$Width = $Xdiff - $AxisSettings["Margin"] * 2;
 					$Step = $Width / $AxisSettings["Rows"];
 					$SubTicksSize = $Step / 2;
 					$MinTop = $AxisPos["T"];
@@ -292,7 +288,7 @@ class pScatter
 
 					if (isset($AxisSettings["Name"])) {
 						$YPos = $MinTop - 2;
-						$XPos = $this->myPicture->GraphAreaX1 + ($this->myPicture->GraphAreaXdiff) / 2;
+						$XPos = $this->myPicture->GraphAreaX1 + $Xdiff / 2;
 						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
 						$MinTop = $Bounds[2]["Y"];
 					}
@@ -314,7 +310,7 @@ class pScatter
 						$this->myPicture->drawArrow($AxisPos["L"], $this->myPicture->GraphAreaY1 + $AxisSettings["Margin"], $AxisPos["L"], $this->myPicture->GraphAreaY1 - ($ArrowSize * 2), ["FillColor" => $AxisColor,"Size" => $ArrowSize]);
 					}
 
-					$Height = $this->myPicture->GraphAreaYdiff - $AxisSettings["Margin"] * 2;
+					$Height = $Ydiff - $AxisSettings["Margin"] * 2;
 					$Step = $Height / $AxisSettings["Rows"];
 					$SubTicksSize = $Step / 2;
 					$MinLeft = $AxisPos["L"];
@@ -345,7 +341,7 @@ class pScatter
 
 					if (isset($AxisSettings["Name"])) {
 						$XPos = $MinLeft - 2;
-						$YPos = $this->myPicture->GraphAreaY1 + ($this->myPicture->GraphAreaYdiff) / 2;
+						$YPos = $this->myPicture->GraphAreaY1 + $Ydiff / 2;
 						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"],["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 90]);
 						$MinLeft = $Bounds[2]["X"];
 					}
@@ -364,7 +360,7 @@ class pScatter
 						$this->myPicture->drawArrow($AxisPos["R"], $this->myPicture->GraphAreaY1 + $AxisSettings["Margin"], $AxisPos["R"], $this->myPicture->GraphAreaY1 - ($ArrowSize * 2), ["FillColor" => $AxisColor,"Size" => $ArrowSize]);
 					}
 
-					$Height = $this->myPicture->GraphAreaYdiff - $AxisSettings["Margin"] * 2;
+					$Height = $Ydiff - $AxisSettings["Margin"] * 2;
 					$Step = $Height / $AxisSettings["Rows"];
 					$SubTicksSize = $Step / 2;
 					$MaxLeft = $AxisPos["R"];
@@ -395,7 +391,7 @@ class pScatter
 
 					if (isset($AxisSettings["Name"])) {
 						$XPos = $MaxLeft + 6;
-						$YPos = $this->myPicture->GraphAreaY1 + ($this->myPicture->GraphAreaYdiff) / 2;
+						$YPos = $this->myPicture->GraphAreaY1 + $Ydiff / 2;
 						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 270]);
 						$MaxLeft = $Bounds[2]["X"];
 					}
@@ -554,12 +550,13 @@ class pScatter
 		}
 
 		$Data = $this->myPicture->myData->getData()["Axis"];
+		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
 
 		if ($Data[$AxisID]["Identity"] == AXIS_X) {
-			$Height = $this->myPicture->GraphAreaXdiff - $Data[$AxisID]["Margin"] * 2;
+			$Height = $Xdiff - $Data[$AxisID]["Margin"] * 2;
 			$Result = $this->myPicture->GraphAreaX1 + $Data[$AxisID]["Margin"] + (($Height / ($Data[$AxisID]["ScaleMax"] - $Data[$AxisID]["ScaleMin"])) * ($Value - $Data[$AxisID]["ScaleMin"]));
 		} else {
-			$Height = $this->myPicture->GraphAreaYdiff - $Data[$AxisID]["Margin"] * 2;
+			$Height = $Ydiff - $Data[$AxisID]["Margin"] * 2;
 			$Result = $this->myPicture->GraphAreaY2 - $Data[$AxisID]["Margin"] - (($Height / ($Data[$AxisID]["ScaleMax"] - $Data[$AxisID]["ScaleMin"])) * ($Value - $Data[$AxisID]["ScaleMin"]));
 		}
 
@@ -876,7 +873,6 @@ class pScatter
 	/* Draw a Scatter threshold */
 	function drawScatterThreshold($Value, array $Format = [])
 	{
-
 		$AxisID = 0;
 		$Color = new pColor(255,0,0,50);
 		$Weight = NULL;

@@ -128,10 +128,11 @@ class pBubble
 		if ($XDivs == 0) {
 			$XStep = 0;
 		} else {
+			list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
 			if ($Orientation == SCALE_POS_LEFTRIGHT) {
-				$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
+				$XStep = ($Xdiff - $XMargin * 2) / $XDivs;
 			} elseif ($Orientation == SCALE_POS_TOPBOTTOM) {
-				$XStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
+				$XStep = ($Ydiff - $XMargin * 2) / $XDivs;
 			}
 		}
 
@@ -215,12 +216,14 @@ class pBubble
 		$X = $this->myPicture->GraphAreaX1 + $XMargin;
 		$Y = $this->myPicture->GraphAreaY1 + $XMargin;
 
+		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
+
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
-			$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
+			$XStep = ($XDivs == 0) ? 0 : ($Xdiff - $XMargin * 2) / $XDivs;
 			$X = floor($X + $Point * $XStep);
 			$Y = floor($Pos);
 		} else {
-			$YStep = ($XDivs == 0) ? 0 :($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
+			$YStep = ($XDivs == 0) ? 0 : ($Ydiff - $XMargin * 2) / $XDivs;
 			$X = floor($Pos);
 			$Y = floor($Y + $Point * $YStep);
 		}

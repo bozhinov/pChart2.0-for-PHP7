@@ -87,10 +87,11 @@ class pStock
 		if ($XDivs == 0){
 			$XStep = 0;
 		} else {
+			list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
 			if ($Orientation == SCALE_POS_LEFTRIGHT) {
-				$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
+				$XStep = ($Xdiff - $XMargin * 2) / $XDivs;
 			} else {
-				$XStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
+				$XStep = ($Ydiff - $XMargin * 2) / $XDivs;
 			}
 		}
 

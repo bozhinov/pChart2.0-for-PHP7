@@ -85,8 +85,10 @@ class pSurface
 		/* Override defaults */
 		extract($Format);
 
+		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
+
 		$X0 = $this->myPicture->GraphAreaX1;
-		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
+		$XSize = $Xdiff / ($this->GridSizeX + 1);
 		$Settings = ["Angle" => $Angle,"Color" => $Color];
 		if ($Position == LABEL_POSITION_TOP) {
 			$YPos = $this->myPicture->GraphAreaY1 - $Padding;
@@ -117,8 +119,10 @@ class pSurface
 		$Labels = isset($Format["Labels"]) ? $Format["Labels"] : [];
 		$CountOffset = isset($Format["CountOffset"]) ? $Format["CountOffset"] : 0;
 
+		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
+
 		$Y0 = $this->myPicture->GraphAreaY1;
-		$YSize = $this->myPicture->GraphAreaYdiff / ($this->GridSizeY + 1);
+		$YSize = $Ydiff / ($this->GridSizeY + 1);
 		$Settings = ["Angle" => $Angle,"Color" => $Color];
 
 		if ($Position == LABEL_POSITION_LEFT) {
@@ -145,10 +149,12 @@ class pSurface
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : 3;
 		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 0;
 
+		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
+
 		$X0 = $this->myPicture->GraphAreaX1;
 		$Y0 = $this->myPicture->GraphAreaY1;
-		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
-		$YSize = $this->myPicture->GraphAreaYdiff / ($this->GridSizeY + 1);
+		$XSize = $Xdiff / ($this->GridSizeX + 1);
+		$YSize = $Ydiff / ($this->GridSizeY + 1);
 		$Settings = ["Color" => $Color,"Ticks" => $Ticks];
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
 			for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {
@@ -186,10 +192,12 @@ class pSurface
 		$Surrounding = isset($Format["Surrounding"]) ? $Format["Surrounding"] : NULL;
 		$Padding = isset($Format["Padding"]) ? $Format["Padding"] : 1;
 
+		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
+
 		$X0 = $this->myPicture->GraphAreaX1;
 		$Y0 = $this->myPicture->GraphAreaY1;
-		$XSize = $this->myPicture->GraphAreaXdiff / ($this->GridSizeX + 1);
-		$YSize = $this->myPicture->GraphAreaYdiff / ($this->GridSizeY + 1);
+		$XSize = $Xdiff / ($this->GridSizeX + 1);
+		$YSize = $Ydiff / ($this->GridSizeY + 1);
 
 		$Gradient = new pColorGradient($ShadeColor1->newOne(), $ShadeColor2->newOne());
 		$Gradient->SetSegments(100);

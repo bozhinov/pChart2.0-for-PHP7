@@ -46,17 +46,19 @@ class pCharts
 
 	private function getXstep($Orientation, $XDivs, $XMargin)
 	{
+		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
+
 		if ($Orientation == SCALE_POS_LEFTRIGHT) {
 			if ($XDivs == 0) {
-				$XStep = $this->myPicture->GraphAreaXdiff / 4;
+				$XStep = $Xdiff / 4;
 			} else {
-				$XStep = ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
+				$XStep = ($Xdiff - $XMargin * 2) / $XDivs;
 			}
 		} else {
 			if ($XDivs == 0) {
-				$XStep = $this->myPicture->GraphAreaYdiff / 4;
+				$XStep = $Ydiff / 4;
 			} else {
-				$XStep = ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
+				$XStep = ($Ydiff - $XMargin * 2) / $XDivs;
 			}
 		}
 
@@ -1225,7 +1227,9 @@ class pCharts
 		$ColorOverride = [];
 
 		$Data = $this->myPicture->myData->getData();
-		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
+		list($XMargin, $XDivs)   = $this->myPicture->myData->scaleGetXSettings();
+		list($gaXdiff, $gaYdiff) = $this->myPicture->getGraphAreaDiffs();
+
 		if (!empty($OverrideColors)) {
 			foreach($OverrideColors as $key => $C){
 				$ColorOverride[$key]["Color"] = $C;
@@ -1261,12 +1265,12 @@ class pCharts
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					($YZero > $this->myPicture->GraphAreaY2 - 1) AND $YZero = $this->myPicture->GraphAreaY2 - 1;
 					($YZero < $this->myPicture->GraphAreaY1 + 1) AND $YZero = $this->myPicture->GraphAreaY1 + 1;
-					$XStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaXdiff - $XMargin * 2) / $XDivs;
+					$XStep = ($XDivs == 0) ? 0 : ($gaXdiff - $XMargin * 2) / $XDivs;
 					$X = $this->myPicture->GraphAreaX1 + $XMargin;
 					$Y1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaY2 - 1;
 
 					if ($XDivs == 0) {
-						$XSize = $this->myPicture->GraphAreaXdiff / ($SeriesCount + $Interleave);
+						$XSize = $gaXdiff / ($SeriesCount + $Interleave);
 					} else {
 						$XSize = ($XStep / ($SeriesCount + $Interleave));
 					}
@@ -1371,12 +1375,12 @@ class pCharts
 
 					($YZero < $this->myPicture->GraphAreaX1 + 1) AND $YZero = $this->myPicture->GraphAreaX1 + 1;
 					($YZero > $this->myPicture->GraphAreaX2 - 1) AND $YZero = $this->myPicture->GraphAreaX2 - 1;
-					$YStep = ($XDivs == 0) ? 0 : ($this->myPicture->GraphAreaYdiff - $XMargin * 2) / $XDivs;
+					$YStep = ($XDivs == 0) ? 0 : ($gaYdiff - $XMargin * 2) / $XDivs;
 					$Y = $this->myPicture->GraphAreaY1 + $XMargin;
 					$X1 = ($AroundZero) ? $YZero : $this->myPicture->GraphAreaX1 + 1;
 
 					if ($XDivs == 0) {
-						$YSize = $this->myPicture->GraphAreaYdiff / ($SeriesCount + $Interleave);
+						$YSize = $gaYdiff / ($SeriesCount + $Interleave);
 					} else {
 						$YSize = ($YStep / ($SeriesCount + $Interleave));
 					}

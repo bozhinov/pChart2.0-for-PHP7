@@ -24,6 +24,8 @@
   o Added pDraw->restoreShadow()
   o Added pDraw->setAntialias()
   o Added pDraw->getFont()
+  o Added pDraw->getGraphAreaDiffs()
+  o Added pDraw->getGraphAreaCoordinates()
   o FIXED: pDraw->setFilter
 
  2.3.0 -----------------------------------------------------------------------
