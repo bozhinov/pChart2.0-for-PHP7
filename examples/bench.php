@@ -1,5 +1,9 @@
 <?php
 
+if (php_sapi_name() != "cli") {
+	exit();
+}
+
 $start = microtime(true);
 
 $_IGNORED = [
