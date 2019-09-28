@@ -28,6 +28,7 @@
   o Added pDraw->getFont()
   o Added pDraw->getGraphAreaDiffs()
   o Added pDraw->getGraphAreaCoordinates()
+  o Added benchmark script
   o FIXED: pDraw->setFilter
 
  2.3.0 -----------------------------------------------------------------------

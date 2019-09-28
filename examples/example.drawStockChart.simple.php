@@ -9,7 +9,7 @@ use pChart\{
 	pStock
 };
 
-require("myColors.php");
+require_once("myColors.php");
 
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
