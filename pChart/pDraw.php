@@ -3169,8 +3169,8 @@ class pDraw
 				}
 				break;
 			case AXIS_FORMAT_CUSTOM:
-				if (function_exists($Format)) {
-					$ret = (call_user_func($Format, $Value));
+					if (is_callable($Format)) {
+					$ret = $Format($Value);
 				}
 				break;
 			case AXIS_FORMAT_DATE:

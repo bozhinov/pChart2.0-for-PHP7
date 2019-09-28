@@ -10,18 +10,26 @@ use pChart\pDraw;
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
 
+$YAxisFormat = function($Value){
+	return round($Value/1000,2)."k"; 
+}
+
+$XAxisFormat = function($Value){
+	return (($Value-1230768000)/(60*60*24))." day";
+}
+
 /* Populate the pData object */
 $myPicture->myData->addPoints([1700,2500,7800,4500,3150],"Distance");
 $myPicture->myData->setAxisName(0,"Maximum distance");
 $myPicture->myData->setAxisUnit(0,"m");
-$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"YAxisFormat");
+$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,$YAxisFormat);
 
 /* Create the abscissa serie */
 $myPicture->myData->addPoints([1230768000,1233446400,1235865600,1238544000,1241136000,1243814400],"Timestamp");
 $myPicture->myData->setSerieDescription("Timestamp","Sampled Dates");
 $myPicture->myData->setAbscissa("Timestamp");
 $myPicture->myData->setAbscissaName("Dates");
-$myPicture->myData->setXAxisDisplay(AXIS_FORMAT_CUSTOM,"XAxisFormat");
+$myPicture->myData->setXAxisDisplay(AXIS_FORMAT_CUSTOM,$XAxisFormat);
 
 /* Draw the background */
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
@@ -51,13 +59,5 @@ $myPicture->drawText(350,55,"My chart title",["FontSize"=>20,"Align"=>TEXT_ALIGN
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawScale.custom.png");
-
-function YAxisFormat($Value) { 
-	return round($Value/1000,2)."k"; 
-}
-
-function XAxisFormat($Value) { 
-	return (($Value-1230768000)/(60*60*24))." day";
-}
 
 ?>

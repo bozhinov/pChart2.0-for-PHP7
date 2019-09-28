@@ -24,11 +24,9 @@ $myPicture->myData->setAbscissa("Labels");
 /* Reverse the Y axis trick */
 $myPicture->myData->setAbsicssaPosition(AXIS_POSITION_TOP);
 $myPicture->myData->NegateValues(array("Probe 1","Probe 2","Probe 3"));
-$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"NegateValues");
-
-function NegateValues($Value) {
-	return ($Value == VOID) ? VOID : -$Value;
-}
+$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM, function($Value){
+	($Value == VOID) ? VOID : -$Value;
+}); # NegateValues
 
 /* Turn off Anti-aliasing */
 $myPicture->setAntialias(FALSE);

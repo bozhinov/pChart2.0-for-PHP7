@@ -495,7 +495,7 @@ class pData
 	}
 
 	/* Set the display mode of an Axis */
-	public function setAxisDisplay(int $AxisID, int $Mode = AXIS_FORMAT_DEFAULT, string $Format = "")
+	public function setAxisDisplay(int $AxisID, int $Mode = AXIS_FORMAT_DEFAULT, $Format = "")
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
 			$this->Data["Axis"][$AxisID]["Display"] = $Mode;
