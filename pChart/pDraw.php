@@ -2521,16 +2521,14 @@ class pDraw
 	{
 		$ret = TRUE;
 
-		switch(TRUE){
-			case ($LabelingMethod == LABELING_DIFFERENT && $Value != $LastValue):
+		switch($LabelingMethod){
+			case LABELING_DIFFERENT:
+				$ret = ($Value != $LastValue);
 				break;
-			case ($LabelingMethod == LABELING_DIFFERENT && $Value == $LastValue):
-				$ret = FALSE;
-				break;
-			case ($LabelingMethod == LABELING_ALL && $LabelSkip == 0):
-				break;
-			case ($LabelingMethod == LABELING_ALL && ($ID + $LabelSkip) % ($LabelSkip + 1) != 1):
-				$ret = FALSE;
+			case LABELING_ALL:
+				if ($LabelSkip != 0){
+					$ret = (($ID + $LabelSkip) % ($LabelSkip + 1) == 1);
+				}
 				break;
 		}
 
@@ -3169,7 +3167,7 @@ class pDraw
 				}
 				break;
 			case AXIS_FORMAT_CUSTOM:
-					if (is_callable($Format)) {
+				if (is_callable($Format)) {
 					$ret = $Format($Value);
 				}
 				break;
