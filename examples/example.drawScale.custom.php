@@ -12,11 +12,11 @@ $myPicture = new pDraw(700,230);
 
 $YAxisFormat = function($Value){
 	return round($Value/1000,2)."k"; 
-}
+};
 
 $XAxisFormat = function($Value){
 	return (($Value-1230768000)/(60*60*24))." day";
-}
+};
 
 /* Populate the pData object */
 $myPicture->myData->addPoints([1700,2500,7800,4500,3150],"Distance");

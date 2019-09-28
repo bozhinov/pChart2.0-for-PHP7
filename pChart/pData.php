@@ -200,7 +200,7 @@ class pData
 	}
 
 	/* Set the display mode of the  X Axis */
-	public function setXAxisDisplay(int $Mode, string $Format = NULL)
+	public function setXAxisDisplay(int $Mode, $Format = NULL)
 	{
 		$this->Data["XAxisDisplay"] = $Mode;
 		$this->Data["XAxisFormat"] = $Format;
