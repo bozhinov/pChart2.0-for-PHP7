@@ -51,10 +51,16 @@ class pStock
 		/* Override defaults */
 		extract($Format);
 
-		(is_null($BoxUpBorderColor)) AND $BoxUpBorderColor = $BoxUpColor->newOne()->RGBChange(-20);
-		(is_null($BoxDownBorderColor)) AND $BoxDownBorderColor = $BoxDownColor->newOne()->RGBChange(-20);
-		(!is_null($BoxUpSurrounding)) AND $BoxUpBorderColor = $BoxUpColor->newOne()->RGBChange($BoxUpSurrounding);
+		(is_null($BoxUpBorderColor)) 	AND $BoxUpBorderColor 	= $BoxUpColor->newOne()->RGBChange(-20);
+		(is_null($BoxDownBorderColor)) 	AND $BoxDownBorderColor = $BoxDownColor->newOne()->RGBChange(-20);
+		(!is_null($BoxUpSurrounding)) 	AND $BoxUpBorderColor 	= $BoxUpColor->newOne()->RGBChange($BoxUpSurrounding);
 		(!is_null($BoxDownSurrounding)) AND $BoxDownBorderColor = $BoxDownColor->newOne()->RGBChange($BoxDownSurrounding);
+
+		$LineSettings 		= ["Color" => $LineColor];
+		$ExtremitySettings 	= ["Color" => $ExtremityColor];
+		$BoxUpSettings 		= ["Color" => $BoxUpColor,	"BorderColor" => $BoxUpBorderColor];
+		$BoxDownSettings 	= ["Color" => $BoxDownColor,"BorderColor" => $BoxDownBorderColor];
+		$MedianSettings 	= ["Color" => $MedianColor];
 
 		/* Data Processing */
 		$Data = $this->myPicture->myData->getData();
@@ -69,20 +75,6 @@ class pStock
 		$BoxOffset = $BoxWidth / 2;
 
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
-
-		$Plots = [];
-		foreach($Data[$SerieOpen]["Data"] as $Key => $Value) {
-			$Point = [];
-			if (isset($Data[$SerieClose]["Data"][$Key]) || isset($Data[$SerieMin]["Data"][$Key]) || isset($Data[$SerieMax]["Data"][$Key])) {
-				$Point = array($Value,$Data[$SerieClose]["Data"][$Key], $Data[$SerieMin]["Data"][$Key], $Data[$SerieMax]["Data"][$Key]);
-			}
-
-			if (!is_null($SerieMedian) && isset($Data[$SerieMedian]["Data"][$Key])) {
-				$Point[] = $Data[$SerieMedian]["Data"][$Key];
-			}
-
-			$Plots[] = $Point;
-		}
 
 		if ($XDivs == 0){
 			$XStep = 0;
@@ -99,13 +91,17 @@ class pStock
 		$X = $GraphAreaCoordinates["L"] + $XMargin;
 		$Y = $GraphAreaCoordinates["T"] + $XMargin;
 
-		$LineSettings 		= ["Color" => $LineColor];
-		$ExtremitySettings 	= ["Color" => $ExtremityColor];
-		$BoxUpSettings 		= ["Color" => $BoxUpColor,	"BorderColor" => $BoxUpBorderColor];
-		$BoxDownSettings 	= ["Color" => $BoxDownColor,"BorderColor" => $BoxDownBorderColor];
-		$MedianSettings 	= ["Color" => $MedianColor];
+		foreach($Data[$SerieOpen]["Data"] as $Key => $Value) {
 
-		foreach($Plots as $Key => $Points) {
+			if (isset($Data[$SerieClose]["Data"][$Key]) || isset($Data[$SerieMin]["Data"][$Key]) || isset($Data[$SerieMax]["Data"][$Key])) {
+				$Points = [$Value, $Data[$SerieClose]["Data"][$Key], $Data[$SerieMin]["Data"][$Key], $Data[$SerieMax]["Data"][$Key]];
+			} else {
+				$Points = [];
+			}
+
+			if (!is_null($SerieMedian) && isset($Data[$SerieMedian]["Data"][$Key])) {
+				$Points[] = $Data[$SerieMedian]["Data"][$Key];
+			}
 
 			$PosArray = $this->myPicture->scaleComputeY($Points, $Data[$SerieOpen]["Axis"]);
 
