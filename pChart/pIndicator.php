@@ -102,48 +102,45 @@ class pIndicator
 				}
 			}
 
-			if ($ValueDisplay == INDICATOR_VALUE_LABEL) {
-				if (empty($Break)){
-					$this->myPicture->drawFilledRectangle($X1, $Y, $X2, $Y + $Height, $Color);
-				} else {
-					sort($Break);
-					$Poly = [$X1, $Y];
-					$LastPointWritten = FALSE;
-					foreach($Break as $Value) {
+			if ($ValueDisplay == INDICATOR_VALUE_LABEL || empty($Break)) {
 
-						if ($Value - 5 >= $X1) {
-							$Poly[] = $Value - 5;
-							$Poly[] = $Y;
-						} elseif ($X1 - ($Value - 5) > 0) {
-							$Offset = $X1 - ($Value - 5);
-							$Poly = [$X1, $Y + $Offset];
-						}
+				sort($Break);
+				$Poly = [$X1, $Y];
+				$LastPointWritten = FALSE;
+				foreach($Break as $Value) {
 
-						$Poly[] = $Value;
-						$Poly[] = $Y + 5;
-
-						if ($Value + 5 <= $X2) {
-							$Poly[] = $Value + 5;
-							$Poly[] = $Y;
-						} elseif (($Value + 5) > $X2) {
-							$Offset = ($Value + 5) - $X2;
-							$Poly[] = $X2;
-							$Poly[] = $Y + $Offset;
-							$LastPointWritten = TRUE;
-						}
-					}
-
-					if (!$LastPointWritten) {
-						$Poly[] = $X2;
+					if ($Value - 5 >= $X1) {
+						$Poly[] = $Value - 5;
 						$Poly[] = $Y;
+					} elseif ($X1 - ($Value - 5) > 0) {
+						$Offset = $X1 - ($Value - 5);
+						$Poly = [$X1, $Y + $Offset];
 					}
 
-					$Poly[] = $X2;
-					$Poly[] = $Y + $Height;
-					$Poly[] = $X1;
-					$Poly[] = $Y + $Height;
-					$this->myPicture->drawPolygon($Poly, $Color);
+					$Poly[] = $Value;
+					$Poly[] = $Y + 5;
+
+					if ($Value + 5 <= $X2) {
+						$Poly[] = $Value + 5;
+						$Poly[] = $Y;
+					} elseif (($Value + 5) > $X2) {
+						$Offset = ($Value + 5) - $X2;
+						$Poly[] = $X2;
+						$Poly[] = $Y + $Offset;
+						$LastPointWritten = TRUE;
+					}
 				}
+
+				if (!$LastPointWritten) {
+					$Poly[] = $X2;
+					$Poly[] = $Y;
+				}
+
+				$Poly[] = $X2;
+				$Poly[] = $Y + $Height;
+				$Poly[] = $X1;
+				$Poly[] = $Y + $Height;
+				$this->myPicture->drawPolygon($Poly, $Color);
 
 			} else {
 				$this->myPicture->drawFilledRectangle($X1, $Y, $X2, $Y + $Height, $Color);
