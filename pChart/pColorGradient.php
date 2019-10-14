@@ -14,7 +14,6 @@ class pColorGradient
 {
 	private $StartColor;
 	private $EndColor;
-	private $ReturnColor;
 	private $Offsets = NULL;
 	private $Segments;
 
@@ -22,7 +21,6 @@ class pColorGradient
 	{
 		$this->StartColor = $Start;
 		$this->EndColor = $End;
-		$this->ReturnColor = $Start;
 	}
 
 	private function getOffsets()
@@ -52,7 +50,7 @@ class pColorGradient
 
 	public function moveNext()
 	{
-		$this->ReturnColor = $this->StartColor->Slide($this->Offsets, 1/$this->Segments);
+		$this->StartColor->Slide($this->Offsets, 1/$this->Segments);
 	}
 
 	public function getStep(float $j = 1)
@@ -67,7 +65,7 @@ class pColorGradient
 
 	public function getLatest()
 	{
-		return $this->ReturnColor;
+		return $this->StartColor;
 	}
 }
 
