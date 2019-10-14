@@ -64,11 +64,11 @@ $myPicture->drawText(410,236,"06/06/2010",$Settings);
 $myPicture->drawText(410,276,"12.340 Kg",$Settings);
 
 $QRCode = new QRcode();
-$QRCode->config([$error_correction = 1, $martrix_poit_size = 3, $margin = 4]);
+$QRCode->config(['level' => 1, 'size' => 3, 'margin' => 4]);
 $QRCode->encode('momchil@bojinov.info');
 $QRCode->forPChart($myPicture, $X = 445, $Y = 11);
 
 /* Render the picture (choose the best way) */
-$myPicture->autoOutput("temp/example.barcode.png");
+$myPicture->autoOutput("temp/example.qrcode.png");
 
 ?>
