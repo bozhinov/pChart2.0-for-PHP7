@@ -997,21 +997,20 @@ class pDraw
 	}
 
 	/* Draw a gradient within a defined area */
-	public function drawGradientArea($X1, $Y1, $X2, $Y2, $Direction, array $GradientColor, $Levels = NULL)
+	public function drawGradientArea($X1, $Y1, $X2, $Y2, $Direction, array $Colors, $Levels = NULL)
 	{
-		$GradientColor = new pColorGradient($GradientColor["StartColor"]->newOne(), $GradientColor["EndColor"]->newOne());
+		if (!is_null($Levels)) {
+			$Colors["EndColor"] = $Colors["StartColor"]->newOne()->RGBChange($Levels);
+		}
+
+		$GradientColor = new pColorGradient($Colors["StartColor"]->newOne(), $Colors["EndColor"]->newOne());
 
 		/* Draw a gradient within a defined area */
 		$Shadow = $this->Shadow;
 		$this->Shadow = FALSE;
 		if (!$GradientColor->isGradient()) {
-			$this->drawFilledRectangle($X1, $Y1, $X2, $Y2, ["Color" => $GradientColor->getStart()]);
+			$this->drawFilledRectangle($X1, $Y1, $X2, $Y2, ["Color" => $Colors["StartColor"]]);
 			return;
-		}
-
-		if (!is_null($Levels)) {
-			$StartColor = ($GradientColor->getStart())->newOne()->RGBChange($Levels);
-			$GradientColor->setEnd($StartColor);
 		}
 
 		($X1 > $X2) AND list($X1, $X2) = [$X2,$X1];

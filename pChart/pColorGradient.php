@@ -15,7 +15,7 @@ class pColorGradient
 	private $StartColor;
 	private $EndColor;
 	private $ReturnColor;
-	private $Offsets;
+	private $Offsets = NULL;
 	private $Segments;
 
 	function __construct(pColor $Start, pColor $End, $Radar = FALSE)
@@ -35,7 +35,9 @@ class pColorGradient
 
 	public function SetSegments(int $Segments)
 	{
-		$this->Offsets = $this->getOffsets();
+		if (is_null($this->Offsets)){
+			$this->Offsets = $this->getOffsets();
+		}
 		$this->Segments = $Segments;
 	}
 
@@ -48,26 +50,6 @@ class pColorGradient
 		} else {
 			$this->ReturnColor = $this->StartColor->Slide($this->Offsets, abs($j)/$this->Segments);
 		}
-	}
-
-	public function getStart()
-	{
-		return $this->StartColor;
-	}
-
-	public function getEnd()
-	{
-		return $this->EndColor;
-	}
-
-	public function setStart(pColor $Start)
-	{
-		$this->StartColor = $Start;
-	}
-
-	public function setEnd(pColor $End)
-	{
-		$this->EndColor = $End;
 	}
 
 	public function isGradient()
