@@ -4,7 +4,7 @@ pColorGradient - Data structure for gradient color
 
 Version     : 2.4.0-dev
 Made by     : Momchil Bozhinov
-Last Update : 01/09/2019
+Last Update : 14/10/2019
 
 */
 
@@ -15,11 +15,8 @@ class pColorGradient
 	private $StartColor;
 	private $EndColor;
 	private $ReturnColor;
-	private $OffsetR;
-	private $OffsetG;
-	private $OffsetB;
-	private $OffsetAlpha;
-	private $Step;
+	private $Offsets;
+	private $Segments;
 
 	function __construct(pColor $Start, pColor $End, $Radar = FALSE)
 	{
@@ -33,45 +30,23 @@ class pColorGradient
 		list($eR, $eG, $eB, $eA) = $this->EndColor->get();
 		list($sR, $sG, $sB, $sA) = $this->StartColor->get();
 
-		return [($eR - $sR), ($eG - $sG), ($eB - $sB), ($eA - $sA)];
+		return ["R" => ($eR - $sR), "G" => ($eG - $sG), "B" => ($eB - $sB), "Alpha" => ($eA - $sA)];
 	}
 
-	public function SetSegments(int $Segments = 0)
+	public function SetSegments(int $Segments)
 	{
-		if ($Segments == 0){
-			$Segments = $this->Step;
-		}
-
-		list($oR, $oG, $oB, $oA) = $this->getOffsets();
-
-		$this->OffsetR = $oR / $Segments;
-		$this->OffsetG = $oG / $Segments;
-		$this->OffsetB = $oB / $Segments;
-		$this->OffsetAlpha = $oA / $Segments;
+		$this->Offsets = $this->getOffsets();
+		$this->Segments = $Segments;
 	}
 
 	/* pDraw uses default for $j */
 	/* pRadar passes an actual value */
 	public function Next(int $j = 1, bool $doNotAccumulate = FALSE)
 	{
-		$j = abs($j);
-
-		list($R, $G, $B, $Alpha) = $this->StartColor->get();
-
-		$R += $this->OffsetR * $j;
-		$G += $this->OffsetG * $j;
-		$B += $this->OffsetB * $j;
-		$Alpha += $this->OffsetAlpha * $j;
-
-		($R > 255)	AND $R = 255;
-		($G > 255) 	AND $G = 255;
-		($B > 255) 	AND $B = 255;
-		($Alpha > 100) AND $Alpha = 100;
-
 		if ($doNotAccumulate){
-			return new pColor($R,$G,$B,$Alpha);
+			return $this->StartColor->newOne()->Slide($this->Offsets, abs($j)/$this->Segments);
 		} else {
-			$this->ReturnColor->__construct($R,$G,$B,$Alpha);
+			$this->ReturnColor = $this->StartColor->Slide($this->Offsets, abs($j)/$this->Segments);
 		}
 	}
 
@@ -107,11 +82,11 @@ class pColorGradient
 
 	public function FindStep()
 	{
-		list($oR, $oG, $oB, ) = $this->getOffsets();
+		$this->Offsets = $this->getOffsets();
 
-		$this->Step = max(abs($oR), abs($oG), abs($oB), 1);
+		list($oR, $oG, $oB, ) = array_values($this->Offsets);
 
-		return $this->Step;
+		return max(abs($oR), abs($oG), abs($oB), 1);
 	}
 
 }

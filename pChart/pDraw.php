@@ -1027,7 +1027,7 @@ class pDraw
 				$EndY = floor($Y2) + 1;
 				$LastY2 = $StartY;
 
-				for ($i = 0; $i <= $Step; $i++) {
+				for ($i = 0; $i < $Step; $i++) {
 
 					$Y2 = floor($StartY + ($i * $StepSize));
 					($Y2 > $EndY) AND $Y2 = $EndY;
@@ -1054,7 +1054,7 @@ class pDraw
 				$StartX = $X1;
 				$EndX = $X2;
 
-				for ($i = 0; $i <= $Step; $i++) {
+				for ($i = 0; $i < $Step; $i++) {
 
 					$X2 = floor($StartX + ($i * $StepSize));
 					($X2 > $EndX) AND $X2 = $EndX;

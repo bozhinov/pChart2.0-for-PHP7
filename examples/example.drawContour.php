@@ -22,7 +22,7 @@ $myPicture->drawGradientArea(0,0,400,20,DIRECTION_VERTICAL, ["StartColor"=>new p
 $myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
 $myPicture->drawText(10,15,"pSurface() :: 2D surface charts",["Color"=>new pColor(255)]);
 
 /* Define the charting area */
@@ -38,8 +38,8 @@ $mySurface = new pSurface($myPicture);
 $mySurface->setGrid(20,20);
 
 /* Write the axis labels */
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7));
-$mySurface->writeXLabels(array("Position"=>LABEL_POSITION_BOTTOM));
+$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7]);
+$mySurface->writeXLabels(["Position"=>LABEL_POSITION_BOTTOM]);
 $mySurface->writeYLabels();
 
 /* Add random values */

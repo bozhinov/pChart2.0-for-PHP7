@@ -4,7 +4,7 @@ pColor - Data structure for colors
 
 Version     : 2.4.0-dev
 Made by     : Momchil Bozhinov
-Last Update : 01/09/2019
+Last Update : 14/10/2019
 
 */
 
@@ -20,35 +20,45 @@ class pColor
 	/* Floats are required for pGradient */
 	public function __construct(float $R = 0, float $G = 0, float $B = 0, float $Alpha = 100)
 	{
-		($R < 0)	AND $R = 0;
-		($R > 255)	AND $R = 255;
-
 		switch (func_num_args()){
 			case 1:
 			case 2:
-				$G = $R;
-				$B = $R;
-				$Alpha = 100;
+				$this->R = $R;
+				$this->G = $R;
+				$this->B = $R;
+				$this->Alpha = 100;
+				$this->validateRGB();
 				break;
 			case 3:
 			case 4:
-				($G < 0) 	AND $G = 0;
-				($G > 255)	AND $G = 255;
-				($B < 0) 	AND $B = 0;
-				($B > 255)	AND $B = 255;
-				($Alpha < 0)	AND $Alpha = 0;
-				($Alpha > 100)	AND $Alpha = 100;
+				$this->R = $R;
+				$this->G = $G;
+				$this->B = $B;
+				$this->Alpha = $Alpha;
+				$this->validateRGB();
 				break;
 			case 0: # random
-				$R = rand(0, 255);
-				$G = rand(0, 255);
-				$B = rand(0, 255);
+				$this->R = rand(0, 255);
+				$this->G = rand(0, 255);
+				$this->B = rand(0, 255);
+				$this->Alpha = $Alpha;
 		}
+	}
 
-		$this->R = $R;
-		$this->G = $G;
-		$this->B = $B;
-		$this->Alpha = $Alpha;
+	private function validateRGB()
+	{
+		($this->R < 0) AND $this->R = 0;
+		($this->G < 0) AND $this->G = 0;
+		($this->B < 0) AND $this->B = 0;
+		($this->R > 255) AND $this->R = 255;
+		($this->G > 255) AND $this->G = 255;
+		($this->B > 255) AND $this->B = 255;
+	}
+
+	private function validateAlpha()
+	{
+		($this->Alpha < 0)   AND $this->Alpha = 0;
+		($this->Alpha > 100) AND $this->Alpha = 100;
 	}
 
 	public function toHex()
@@ -60,18 +70,25 @@ class pColor
 		return  "#".(strlen($R) < 2 ? '0' : '').$R.(strlen($G) < 2 ? '0' : '').$G.(strlen($B) < 2 ? '0' : '').$B;
 	}
 
+	public function Slide(array $Offsets, float $Percent)
+	{
+		$this->R += $Offsets["R"] * $Percent;
+		$this->G += $Offsets["G"] * $Percent;
+		$this->B += $Offsets["B"] * $Percent;
+		$this->AlphaChange($Offsets["Alpha"] * $Percent);
+
+		$this->validateRGB();
+
+		return $this;
+	}
+
 	public function RGBChange(float $howmuch)
 	{
 		$this->R += $howmuch;
 		$this->G += $howmuch;
 		$this->B += $howmuch;
 
-		($this->R < 0) AND $this->R = 0;
-		($this->G < 0) AND $this->G = 0;
-		($this->B < 0) AND $this->B = 0;
-		($this->R > 255) AND $this->R = 255;
-		($this->G > 255) AND $this->G = 255;
-		($this->B > 255) AND $this->B = 255;
+		$this->validateRGB();
 
 		return $this;
 	}
@@ -80,8 +97,7 @@ class pColor
 	{
 		$this->Alpha = $howmuch;
 
-		($this->Alpha < 0)   AND $this->Alpha = 0;
-		($this->Alpha > 100) AND $this->Alpha = 100;
+		$this->validateAlpha();
 
 		return $this;
 	}
@@ -90,8 +106,7 @@ class pColor
 	{
 		$this->Alpha += $howmuch;
 
-		($this->Alpha < 0)   AND $this->Alpha = 0;
-		($this->Alpha > 100) AND $this->Alpha = 100;
+		$this->validateAlpha();
 
 		return $this;
 	}
@@ -107,8 +122,7 @@ class pColor
 	{
 		$this->Alpha = $this->Alpha * $howmuch;
 
-		($this->Alpha < 0)   AND $this->Alpha = 0;
-		($this->Alpha > 100) AND $this->Alpha = 100;
+		$this->validateAlpha();
 
 		return $this;
 	}

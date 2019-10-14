@@ -1341,8 +1341,8 @@ class pCharts
 											}
 											$this->myPicture->drawGradientArea($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y2, DIRECTION_VERTICAL, $GradienColor);
 										} elseif ($GradientMode == GRADIENT_EFFECT_CAN) {
-											$XSpan = floor($XSize / 3);	
-											$this->myPicture->drawGradientArea($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSpan - $XSpace, $Y2, DIRECTION_HORIZONTAL, ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor]);
+											$XSpan = floor($XSize / 3);
+											$this->myPicture->drawGradientArea($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSpan - $XSpace + 2, $Y2, DIRECTION_HORIZONTAL, ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor]);
 											$this->myPicture->drawGradientArea($X + $XOffset + $XSpan + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y2, DIRECTION_HORIZONTAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 										}
 
@@ -1599,8 +1599,8 @@ class pCharts
 										$this->myPicture->drawGradientArea($X + $XOffset, $Y1 - 1 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2 + 1, DIRECTION_VERTICAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 									} elseif ($GradientMode == GRADIENT_EFFECT_CAN) {
 										$XSpan = floor($XSize / 3);
-										$this->myPicture->drawGradientArea($X + $XOffset - .5, $Y1 - .5 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSpan, $Y2 + .5, DIRECTION_HORIZONTAL, ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor]);
-										$this->myPicture->drawGradientArea($X + $XSpan + $XOffset - .5, $Y1 - .5 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2 + .5, DIRECTION_HORIZONTAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
+										$this->myPicture->drawGradientArea($X + $XOffset, $Y1 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSpan, $Y2 , DIRECTION_HORIZONTAL, ["StartColor"=>$GradientEndColor,"EndColor"=>$GradientStartColor]);
+										$this->myPicture->drawGradientArea($X + $XSpan + $XOffset + 0.5, $Y1 - $YSpaceUp + $YSpaceDown, $X + $XOffset + $XSize, $Y2 , DIRECTION_HORIZONTAL, ["StartColor"=>$GradientStartColor,"EndColor"=>$GradientEndColor]);
 									}
 
 									$this->myPicture->restoreShadow($ShadowSpec);
