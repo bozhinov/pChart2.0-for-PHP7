@@ -199,7 +199,7 @@ class pIndicator
 							$Radius = floor(($TxtPos[1]["X"] - $TxtPos[0]["X"] + $TextPadding * 4) / 2);
 							$this->myPicture->drawFilledCircle($X1, $Y, $Radius + 4, ["Color" => $Settings["Color"]->newOne()->RGBChange(20)]);
 							$this->myPicture->drawFilledCircle($X1, $Y, $Radius, ["Color" => new pColor(255)]);
-							$this->myPicture->drawText($X1 - 1, $Y - 1, strval($Value) . $Unit, ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $FontName,"FontSize" => $FontSize]);
+							$this->myPicture->drawText($X1 + 1, $Y, strval($Value) . $Unit, ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $FontName,"FontSize" => $FontSize]);
 						} elseif ($ValueDisplay == INDICATOR_VALUE_LABEL) {
 							$this->myPicture->drawLabelBox(floor($X1), floor($Y) + 2, "Value - " . $Settings["Caption"], ["Format" => $Settings["Color"]->AlphaSet(100),"Caption" => strval($Value) . $Unit]);
 						}

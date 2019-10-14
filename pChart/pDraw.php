@@ -978,7 +978,7 @@ class pDraw
 			$Settings = ["Color" => $BoxColor,"BorderColor" => $BoxBorderColor];
 			if ($BoxRounded) {
 				#Momchil: Visual fix applied
-				$this->drawRoundedFilledRectangle($X1-3, $Y1, $X2, $Y2, $RoundedRadius, $Settings);
+				$this->drawRoundedFilledRectangle($X1-3, $Y1-2, $X2, $Y2, $RoundedRadius, $Settings);
 			} else {
 				$this->drawFilledRectangle($X1, $Y1, $X2, $Y2, $Settings);
 			}

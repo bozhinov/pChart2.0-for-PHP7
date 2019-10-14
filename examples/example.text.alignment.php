@@ -26,7 +26,7 @@ $myPicture->drawRectangle(141,72,415,126,["Color"=>new pColor(50)]);
 
 /* Write the text */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
-$myPicture->drawText(144,125,"My text box",["Color"=>new pColor(201,230,40),"FontSize"=>40]);
+$myPicture->drawText(170,125,"My text box",["Color"=>new pColor(201,230,40),"FontSize"=>40]);
 
 /* Prepare and draw the markers */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
