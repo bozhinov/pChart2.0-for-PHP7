@@ -18,7 +18,7 @@ class pColor
 	public $Alpha;
 
 	/* Floats are required for pGradient */
-	public function __construct(float $R = 0, float $G = 0, float $B = 0, float $Alpha = 100)
+	function __construct(float $R = 0, float $G = 0, float $B = 0, float $Alpha = 100)
 	{
 		switch (func_num_args()){
 			case 1:
@@ -36,6 +36,7 @@ class pColor
 				$this->B = $B;
 				$this->Alpha = $Alpha;
 				$this->validateRGB();
+				$this->validateAlpha();
 				break;
 			case 0: # random
 				$this->R = rand(0, 255);
