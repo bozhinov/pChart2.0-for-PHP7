@@ -204,7 +204,7 @@ class pSurface
 		$YSize = $Ydiff / ($this->GridSizeY + 1);
 
 		$Gradient = new pColorGradient($ShadeColor1->newOne(), $ShadeColor2->newOne());
-		$Gradient->SetSegments(100);
+		$Gradient->setSegments(100);
 
 		for ($X = 0; $X <= $this->GridSizeX; $X++) {
 			for ($Y = 0; $Y <= $this->GridSizeY; $Y++) {
@@ -214,7 +214,7 @@ class pSurface
 					if (!empty($Palette)) {
 						$Settings = ["Color" => (isset($Palette[$Value])) ? $Palette[$Value] : new pColor(0)];
 					} else {
-						$Settings = ["Color" => $Gradient->Next($Value, TRUE)];
+						$Settings = ["Color" => $Gradient->getStep($Value)];
 					}
 
 					($Border) AND $Settings["BorderColor"] = $BorderColor;

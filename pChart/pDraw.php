@@ -1016,12 +1016,12 @@ class pDraw
 		($X1 > $X2) AND list($X1, $X2) = [$X2,$X1];
 		($Y1 > $Y2) AND list($Y1, $Y2) = [$Y2,$Y1];
 
-		$Step = $GradientColor->FindStep();
+		$Step = $GradientColor->findStep();
 
 		if ($Direction == DIRECTION_VERTICAL){
 
 				$StepSize = abs($Y2 - $Y1)/ $Step;
-				$GradientColor->SetSegments($Step);
+				$GradientColor->setSegments($Step);
 				$StartY = $Y1;
 				$EndY = floor($Y2) + 1;
 				$LastY2 = $StartY;
@@ -1037,7 +1037,7 @@ class pDraw
 						$Y1 = $Y2 + 1;
 					}
 
-					$GradientColor->Next();
+					$GradientColor->moveNext();
 				}
 
 				if ($LastY2 < $EndY) {
@@ -1049,7 +1049,7 @@ class pDraw
 		} elseif ($Direction == DIRECTION_HORIZONTAL) {
 
 				$StepSize = abs($X2 - $X1) / $Step;
-				$GradientColor->SetSegments($Step);
+				$GradientColor->setSegments($Step);
 				$StartX = $X1;
 				$EndX = $X2;
 
@@ -1063,7 +1063,7 @@ class pDraw
 						$X1 = $X2 + 1;
 					}
 
-					$GradientColor->Next();
+					$GradientColor->moveNext();
 				}
 
 				if ($X2 < $EndX) {
@@ -1416,8 +1416,8 @@ class pDraw
 			$this->Shadow = FALSE;
 			if (!is_null($FadeColor)) {
 				$Gradient = new pColorGradient($Color, $FadeColor);
-				$Gradient->SetSegments(100);
-				$this->drawGradientArea($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, DIRECTION_VERTICAL, ["StartColor"=>$Gradient->Next($Percent, TRUE),"EndColor"=>$Color]);
+				$Gradient->setSegments(100);
+				$this->drawGradientArea($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, DIRECTION_VERTICAL, ["StartColor"=>$Gradient->getStep($Percent),"EndColor"=>$Color]);
 				(!is_null($Surrounding)) AND $this->drawRectangle($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, ["Color" => new pColor(255,255,255,$Surrounding)]);
 			} else {
 				$this->drawFilledRectangle($X + 1, $Y - 1, $X + $Width - 1, $Y - $InnerHeight, ["Color" => $Color,"BorderColor" => $BorderColor]);
@@ -1448,8 +1448,8 @@ class pDraw
 			$this->Shadow = FALSE;
 			if (!is_null($FadeColor)) {
 				$Gradient = new pColorGradient($Color, $FadeColor);
-				$Gradient->SetSegments(100);
-				$this->drawGradientArea($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, DIRECTION_HORIZONTAL, ["StartColor"=>$Color,"EndColor"=>$Gradient->Next($Percent, TRUE)]);
+				$Gradient->setSegments(100);
+				$this->drawGradientArea($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, DIRECTION_HORIZONTAL, ["StartColor"=>$Color,"EndColor"=>$Gradient->getStep($Percent)]);
 				(!is_null($Surrounding)) AND $this->drawRectangle($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, ["Color" => new pColor(255,255,255,$Surrounding)]);
 			} else {
 				$this->drawFilledRectangle($X + 1, $Y + 1, $X + $InnerWidth, $Y + $Height - 1, ["Color" => $Color,"BorderColor" => $BorderColor]);

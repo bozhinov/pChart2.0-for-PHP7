@@ -157,8 +157,8 @@ class pRadar
 				}
 			} else {
 
-				$GradientColor = new pColorGradient($BackgroundGradient["StartColor"], $BackgroundGradient["EndColor"], TRUE);
-				$GradientColor->SetSegments($Segments);
+				$GradientColor = new pColorGradient($BackgroundGradient["StartColor"], $BackgroundGradient["EndColor"]);
+				$GradientColor->setSegments($Segments);
 
 				if ($Layout == RADAR_LAYOUT_STAR) {
 					for ($j = $Segments; $j >= 1; $j--) {
@@ -167,11 +167,11 @@ class pRadar
 							$PointArray[] = cos(deg2rad($i + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterX;
 							$PointArray[] = sin(deg2rad($i + $AxisRotation)) * ($EdgeHeight / $Segments) * $j + $CenterY;
 						}
-						$this->myPicture->drawPolygon($PointArray, ["Color" => $GradientColor->Next($j, TRUE)]);
+						$this->myPicture->drawPolygon($PointArray, ["Color" => $GradientColor->getStep($j)]);
 					}
 				} elseif ($Layout == RADAR_LAYOUT_CIRCLE) {
 					for ($j = $Segments; $j >= 1; $j--) {
-						$this->myPicture->drawFilledCircle($CenterX, $CenterY, ($EdgeHeight / $Segments) * $j, ["Color" => $GradientColor->Next($j, TRUE)]);
+						$this->myPicture->drawFilledCircle($CenterX, $CenterY, ($EdgeHeight / $Segments) * $j, ["Color" => $GradientColor->getStep($j)]);
 					}
 				}
 			}
@@ -472,10 +472,10 @@ class pRadar
 			if (!is_array($BackgroundGradient)) {
 				$this->myPicture->drawFilledCircle($CenterX, $CenterY, $EdgeHeight, ["Color" => $BackgroundColor]);
 			} else {
-				$GradientColor = new pColorGradient($BackgroundGradient["StartColor"], $BackgroundGradient["EndColor"], TRUE);
-				$GradientColor->SetSegments($Segments);
+				$GradientColor = new pColorGradient($BackgroundGradient["StartColor"], $BackgroundGradient["EndColor"]);
+				$GradientColor->setSegments($Segments);
 				for ($j = $Segments; $j >= 1; $j--) {
-					$this->myPicture->drawFilledCircle($CenterX, $CenterY, ($EdgeHeight / $Segments) * $j, ["Color" => $GradientColor->Next($j,TRUE)]);
+					$this->myPicture->drawFilledCircle($CenterX, $CenterY, ($EdgeHeight / $Segments) * $j, ["Color" => $GradientColor->getStep($j)]);
 				}
 			}
 
