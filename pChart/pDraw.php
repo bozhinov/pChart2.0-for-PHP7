@@ -957,7 +957,7 @@ class pDraw
 
 		if ($BoxSurrounding != 0) {
 			$BoxBorderColor->RGBChange(-$BoxSurrounding);
-			$BoxBorderColor->Alpha = $BoxColor->Alpha;
+			$BoxBorderColor->AlphaSet($BoxColor->AlphaGet());
 		}
 
 		if ($ShowOrigine) {
@@ -1124,7 +1124,7 @@ class pDraw
 						$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Color->newOne()->AlphaMultiply($Xleaf * $Yleaf));
 				}
 			} else { # Momchil: no changes here
-				$Alpha = $Color->Alpha;
+				$Alpha = $Color->AlphaGet();
 				$Alpha1 = (1 - $Xleaf) * (1 - $Yleaf) * $Alpha;
 				if ($Alpha1 > $this->AntialiasQuality) {
 					$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaSet($Alpha1));
