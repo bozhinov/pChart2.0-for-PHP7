@@ -26,9 +26,7 @@ for($X=0;$X<=160;$X++)
 {
 	for($Y=0;$Y<=160;$Y++)
 	{
-		$PixelColor->G = 255-$Y;
-		$PixelColor->B = $X;
-		$PixelColor->AlphaSet(cos(deg2rad($X*2))*50+50);
+		$PixelColor->__construct(128, 255 - $Y, $X, cos(deg2rad($X*2))*50+50);
 		$myPicture->drawAntialiasPixel($X*2+20.4,$Y+45,$PixelColor);
 		$myPicture->drawAntialiasPixel($X+400,$Y+45,$PixelColor);
 	}

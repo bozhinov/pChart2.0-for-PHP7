@@ -484,7 +484,7 @@ class pDraw
 		$NoAngle = isset($Format["NoAngle"]) ? $Format["NoAngle"] : FALSE;
 		$Dash = isset($Format["Dash"]) ? $Format["Dash"] : FALSE;
 		$DashStep = isset($Format["DashStep"]) ? $Format["DashStep"] : 4;
-		$DashColor = isset($Format["DashColor"]) ? $Format["DashColor"] : new pColor(0,0,0,$Color->Alpha);
+		$DashColor = isset($Format["DashColor"]) ? $Format["DashColor"] : new pColor(0,0,0,$Color->AlphaGet());
 
 		($X1 > $X2) AND list($X1, $X2) = [$X2,$X1];
 		($Y1 > $Y2) AND list($Y1, $Y2) = [$Y2,$Y1];
@@ -1153,7 +1153,7 @@ class pDraw
 	private function drawAlphaPixel($X, $Y, $Color) # FAST
 	{
 		if ($this->Shadow) {
-			$myShadow = $this->ShadowColor->newOne()->AlphaMultiply(floor($Color->Alpha / 100));
+			$myShadow = $this->ShadowColor->newOne()->AlphaMultiply(floor($Color->AlphaGet() / 100));
 			imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($myShadow));
 		}
 
@@ -1163,7 +1163,8 @@ class pDraw
 	/* Allocate a color with transparency */
 	private function allocateColor($Color) # FAST
 	{
-		return imagecolorallocatealpha($this->Picture, $Color->R, $Color->G, $Color->B, (1.27 * (100 - $Color->Alpha)));
+		list($R, $G, $B, $A) = $Color->get();
+		return imagecolorallocatealpha($this->Picture, $R, $G, $B, (1.27 * (100 - $A)));
 	}
 
 	/* Load a PNG file and draw it over the chart */
@@ -1234,7 +1235,7 @@ class pDraw
 					for ($Yc = 0; $Yc <= $Height - 1; $Yc++) {
 						$Values = imagecolorsforindex($Raster, imagecolorat($Raster, $Xc, $Yc));
 						if ($Values["alpha"] < 120) {
-							$picShadowColor->Alpha = floor($this->ShadowColor->Alpha * (1 - $Values["alpha"]/127));
+							$picShadowColor->AlphaSet(floor($this->ShadowColor->AlphaGet() * (1 - $Values["alpha"]/127)));
 							$this->drawAlphaPixel($X + $Xc + $this->ShadowX, $Y + $Yc + $this->ShadowY, $picShadowColor);
 						}
 					}

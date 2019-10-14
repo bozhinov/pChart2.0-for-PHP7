@@ -12,13 +12,13 @@ namespace pChart;
 
 class pColor
 {
-	public $R;
-	public $G;
-	public $B;
-	public $Alpha;
+	private $R;
+	private $G;
+	private $B;
+	private $Alpha;
 
 	/* Floats are required for pGradient */
-	function __construct(float $R = 0, float $G = 0, float $B = 0, float $Alpha = 100)
+	public function __construct(float $R = 0, float $G = 0, float $B = 0, float $Alpha = 100)
 	{
 		switch (func_num_args()){
 			case 1:
@@ -126,6 +126,11 @@ class pColor
 		$this->validateAlpha();
 
 		return $this;
+	}
+
+	public function AlphaGet()
+	{
+		return $this->Alpha;
 	}
 
 	public function get()

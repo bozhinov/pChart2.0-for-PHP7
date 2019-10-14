@@ -628,7 +628,7 @@ class pPie
 
 		(!is_null($Surrounding)) AND $BorderColor = $Color->newOne()->RGBChange($Surrounding);
 
-		$BorderColor->AlphaSet($Color->Alpha);
+		$BorderColor->AlphaSet($Color->AlphaGet());
 
 		/* Data Processing */
 		list($AbscissaData, , $Palette) = $this->myPicture->myData->getPieParams($forLegend = TRUE);
