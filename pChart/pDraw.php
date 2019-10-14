@@ -1004,12 +1004,15 @@ class pDraw
 		/* Draw a gradient within a defined area */
 		$Shadow = $this->Shadow;
 		$this->Shadow = FALSE;
-		if ($GradientColor->StartColor == $GradientColor->EndColor) {
-			$this->drawFilledRectangle($X1, $Y1, $X2, $Y2, ["Color" => $GradientColor->StartColor]);
+		if (!$GradientColor->isGradient()) {
+			$this->drawFilledRectangle($X1, $Y1, $X2, $Y2, ["Color" => $GradientColor->getStart()]);
 			return;
 		}
 
-		(!is_null($Levels)) AND $GradientColor->EndColor = $GradientColor->StartColor->newOne()->RGBChange($Levels);
+		if (!is_null($Levels)) {
+			$StartColor = ($GradientColor->getStart())->newOne()->RGBChange($Levels);
+			$GradientColor->setEnd($StartColor);
+		}
 
 		($X1 > $X2) AND list($X1, $X2) = [$X2,$X1];
 		($Y1 > $Y2) AND list($Y1, $Y2) = [$Y2,$Y1];
@@ -1050,7 +1053,7 @@ class pDraw
 				$GradientColor->SetSegments($Step);
 				$StartX = $X1;
 				$EndX = $X2;
-				
+
 				for ($i = 0; $i <= $Step; $i++) {
 
 					$X2 = floor($StartX + ($i * $StepSize));

@@ -12,8 +12,8 @@ namespace pChart;
 
 class pColorGradient
 {
-	public $StartColor;
-	public $EndColor;
+	private $StartColor;
+	private $EndColor;
 	private $ReturnColor;
 	private $OffsetR;
 	private $OffsetG;
@@ -65,6 +65,31 @@ class pColorGradient
 			$this->ReturnColor->B = $B;
 			$this->ReturnColor->Alpha = $Alpha;
 		}
+	}
+
+	public function getStart()
+	{
+		return $this->StartColor;
+	}
+
+	public function getEnd()
+	{
+		return $this->EndColor;
+	}
+
+	public function setStart(pColor $Start)
+	{
+		$this->StartColor = $Start;
+	}
+
+	public function setEnd(pColor $End)
+	{
+		$this->EndColor = $End;
+	}
+
+	public function isGradient()
+	{
+		return ($this->StartColor != $this->EndColor);
 	}
 
 	public function getLatest()
