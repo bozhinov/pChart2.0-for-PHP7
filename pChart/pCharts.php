@@ -2269,7 +2269,7 @@ class pCharts
 							}
 
 							$Gradient->SetSegments(100);
-							$Color = $Gradient->Next(intval($SlopeIndex), TRUE);
+							$Color = $Gradient->Next(floatval($SlopeIndex), TRUE);
 
 							if ($ShadedSlopeBox && !is_null($LastColor)) // && $Slope != 0
 							{
@@ -2345,7 +2345,7 @@ class pCharts
 							}
 
 							$Gradient->SetSegments(100);
-							$Color = $Gradient->Next(intval($SlopeIndex), TRUE);
+							$Color = $Gradient->Next(floatval($SlopeIndex), TRUE);
 
 							if ($ShadedSlopeBox && !is_null($LastColor)) {
 								$this->myPicture->drawGradientArea($TopX, $LastY, $BottomX, $Y, DIRECTION_VERTICAL, ["StartColor" => $LastColor,"EndColor" => $Color]);

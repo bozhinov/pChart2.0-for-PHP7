@@ -10,14 +10,15 @@ Last Update : 01/09/2019
 
 namespace pChart;
 
-class pColor 
+class pColor
 {
 	public $R;
 	public $G;
 	public $B;
 	public $Alpha;
 
-	function __construct(int $R = 0, int $G = 0, int $B = 0, float $Alpha = 100)
+	/* Floats are required for pGradient */
+	public function __construct(float $R = 0, float $G = 0, float $B = 0, float $Alpha = 100)
 	{
 		($R < 0)	AND $R = 0;
 		($R > 255)	AND $R = 255;
@@ -52,14 +53,14 @@ class pColor
 
 	public function toHex()
 	{
-		$R = dechex($this->R);
-		$G = dechex($this->G);
-		$B = dechex($this->B);
+		$R = dechex(intval($this->R));
+		$G = dechex(intval($this->G));
+		$B = dechex(intval($this->B));
 
 		return  "#".(strlen($R) < 2 ? '0' : '').$R.(strlen($G) < 2 ? '0' : '').$G.(strlen($B) < 2 ? '0' : '').$B;
 	}
 
-	public function RGBChange(int $howmuch)
+	public function RGBChange(float $howmuch)
 	{
 		$this->R += $howmuch;
 		$this->G += $howmuch;
@@ -110,6 +111,11 @@ class pColor
 		($this->Alpha > 100) AND $this->Alpha = 100;
 
 		return $this;
+	}
+
+	public function get()
+	{
+		return [$this->R, $this->G, $this->B, $this->Alpha];
 	}
 
 	public function newOne()
