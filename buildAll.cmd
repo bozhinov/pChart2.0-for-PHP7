@@ -12,7 +12,7 @@ ECHO.
 
 FOR /F "tokens=1,2 delims= " %%G IN ('php -v 2^>NUL') DO (
  IF %%G==PHP SET PHPVersion=%%H
- )
+)
 
 IF NOT DEFINED PHPVersion GOTO noPHP
 
@@ -20,15 +20,12 @@ ECHO     PHP binaries (%PHPVersion%) have been located
 ECHO.
 ECHO Processing examples : >temp\errors.log
 
-REM SET /P Var="   Progress : "<NUL
+SET /P Var="   Progress : "<NUL
 
-FOR %%f IN (examples\example*.*) DO (
-   set t=%%f
-   if !t:~-3! == php (
-     SET /P Var=þ<NUL
-     ECHO %%f >>temp\errors.log
-     php -q "%%f" 2>>&1>>temp\errors.log
-    )
+FOR %%f IN (examples\example*.php) DO (
+ SET /P Var=þ<NUL
+ ECHO %%f >>temp\errors.log
+ php -q "%%f" 2>>&1>>temp\errors.log
 )
 
 ECHO.
