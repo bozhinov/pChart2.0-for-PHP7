@@ -1727,6 +1727,7 @@ class pDraw
 
 		/* Skip a NOTICE event in case of an empty array */
 		($DrawYLines == NONE || $DrawYLines == FALSE) AND $DrawYLines = ["zarma" => "31"];
+		($DrawYLines == ALL) AND $DrawYLines = [ALL];
 
 		/* Check LabelRotation range */
 		if (($LabelRotation < 0) || ($LabelRotation > 359)){
