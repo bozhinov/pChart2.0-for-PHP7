@@ -10,12 +10,11 @@ ECHO     บ                                                             บ
 ECHO     ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
 ECHO.
 
-php -v 1>NUL 2>NUL
-IF NOT %ERRORLEVEL% == 0 GOTO noPHP
-
-FOR /F "tokens=1,2 delims= " %%G IN ('php -v') DO (
+FOR /F "tokens=1,2 delims= " %%G IN ('php -v 2^>NUL') DO (
  IF %%G==PHP SET PHPVersion=%%H
  )
+
+IF NOT DEFINED PHPVersion GOTO noPHP
 
 ECHO     PHP binaries (%PHPVersion%) have been located
 ECHO.
