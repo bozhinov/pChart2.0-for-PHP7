@@ -25,7 +25,7 @@ $myPicture->drawGradientArea(0,0,60,230, DIRECTION_HORIZONTAL,["StartColor"=>new
 /* Do some cosmetics */
 $myPicture->drawLine(60,0,60,230,["Color"=>new pColor(70,70,70)]);
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0,0,0)]);
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>11]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>11]);
 $myPicture->drawText(35,115,"Recorded cases",["Color"=>new pColor(255),"FontSize"=>20,"Angle"=>90,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Prepare the chart area */

@@ -28,11 +28,11 @@ $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL, ["StartColor"=>new 
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
 $myPicture->drawText(10,15,"drawThresholdArea() - draw threshold areas in the charting area",["Color"=>new pColor(255)]);
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>9]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>9]);
 $myPicture->drawText(250,55,"My chart title",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Draw the scale and do some cosmetics */ 
@@ -42,12 +42,12 @@ $myPicture->drawScale(["XMargin"=>10,"YMargin"=>10,"Floating"=>TRUE,"DrawSubTick
 
 /* Draw one static threshold area */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1]);
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Abel-Regular.ttf","FontSize"=>10]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Abel-Regular.ttf","FontSize"=>10]);
 $myPicture->drawXThresholdArea(2,3,["AreaName"=>"Test Zone","Color"=>new pColor(226,194,54,40)]);
 $myPicture->setShadow(FALSE);
 
 /* Set the font properties */
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>9]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>9]);
 
 /* Draw the scale and do some cosmetics */ 
 $myPicture->setGraphArea(500,60,670,190);
@@ -56,7 +56,7 @@ $myPicture->drawScale(["XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"Pos"=>SCALE_P
 
 /* Draw one static threshold area */
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1]);
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Abel-Regular.ttf","FontSize"=>10]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Abel-Regular.ttf","FontSize"=>10]);
 $myPicture->drawXThresholdArea(2,3,["NameColor"=>new pColor(0),"AreaName"=>"Test Zone","Color"=>new pColor(206,231,64,20)]);
 $myPicture->setShadow(FALSE);
 

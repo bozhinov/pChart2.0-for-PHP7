@@ -34,11 +34,11 @@ $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
 $myPicture->drawText(10,15,"pRadar - Draw polar charts",["Color"=>new pColor(255)]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>8,"Color"=>new pColor(80)]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>8,"Color"=>new pColor(80)]);
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
@@ -50,7 +50,7 @@ $splitChart = new pRadar($myPicture);
 $myPicture->setGraphArea(10,25,340,225);
 $splitChart->drawPolar([
 	"BackgroundGradient" => ["StartColor"=>new pColor(255),"EndColor"=>new pColor(207,227,125,50)],
-	"FontName"=>"pChart/fonts/Cairo-Regular.ttf",
+	"FontName"=>"fonts/Cairo-Regular.ttf",
 	"FontSize"=>7
 ]);
 
@@ -63,7 +63,7 @@ $splitChart->drawPolar([
 	"AxisRotation"=>0,
 	"DrawPoly"=>TRUE,
 	"PolyAlpha"=>50,
-	"FontName"=>"pChart/fonts/Cairo-Regular.ttf",
+	"FontName"=>"fonts/Cairo-Regular.ttf",
 	"FontSize"=>7
 ]);
 

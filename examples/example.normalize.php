@@ -27,7 +27,7 @@ $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL, ["StartColor"=>new 
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL, ["StartColor"=>new pColor(240,240,240,20), "EndColor"=>new pColor(180,180,180,20)]);
 
 /* Set the default font properties */
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>7]);
 
 /* Draw the scale and the chart */ 
 $myPicture->setGraphArea(60,20,680,190);

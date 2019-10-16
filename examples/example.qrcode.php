@@ -33,7 +33,7 @@ $myPicture->drawLine(10,200,590,200,$Settings);
 $myPicture->drawLine(400,220,400,300,$Settings);
 
 /* Write the fields labels */
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>8]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>8]);
 $Settings = ["Color" => new pColor(0),"Align"=>TEXT_ALIGN_TOPLEFT];
 $myPicture->drawText(20,20,"FROM",$Settings);
 $myPicture->drawText(210,20,"TO",$Settings);

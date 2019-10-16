@@ -21,7 +21,7 @@ $myPicture->myData->addPoints(["A","B","C"],"Labels");
 $myPicture->myData->setAbscissa("Labels");
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
 
 /* Create the pPie object */ 
 $PieChart = new pPie($myPicture);
@@ -33,7 +33,7 @@ $myPicture->setShadow(TRUE,["X"=>3,"Y"=>3,"Color"=>ColorBlack($Alpha=10)]);
 $PieChart->draw3DPie(120,90,["Radius"=>100,"DataGapAngle"=>12,"DataGapRadius"=>10,"Border"=>TRUE]);
 
 /* Write the legend box */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6,"Color"=>ColorBlack()]);
+$myPicture->setFontProperties(["FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>6,"Color"=>ColorBlack()]);
 $PieChart->drawPieLegend(140,160,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Render the picture (choose the best way) */

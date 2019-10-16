@@ -29,7 +29,7 @@ $myPicture->drawLine(0,210,847,210,["Color"=>new pColor(70)]);
 $myPicture->drawRectangle(0,0,846,303,["Color"=>new pColor(204)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>7]);
 $myPicture->drawText(340,12,"Cyclic magnetic field strength",["Color"=>new pColor(255),"Align"=>TEXT_ALIGN_MIDDLEMIDDLE]);
 
 /* Define the chart area */

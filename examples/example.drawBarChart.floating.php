@@ -36,7 +36,7 @@ $myPicture->myData->setSerieDrawable("Floating 0",FALSE);
 /* Draw the background */
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,  ["StartColor"=>new pColor(240),"EndColor"=>new pColor(180)]);
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,["StartColor"=>new pColor(240,240,240,20), "EndColor"=>new pColor(180,180,180,20)]);
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>7]);
 
 /* Draw the scale  */
 $myPicture->setGraphArea(50,30,680,200);

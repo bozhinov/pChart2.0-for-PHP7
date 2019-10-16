@@ -33,13 +33,13 @@ $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL, ["StartColor"=>new p
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
 $myPicture->drawText(10,15,"drawIndicator() - Create nice looking indicators",["Color"=>new pColor(255)]);
 
 /* Create the pIndicator object */ 
 $Indicator = new pIndicator($myPicture);
 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>7]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>7]);
 
 /* Define the indicator sections */
 $IndicatorSections = [
@@ -48,7 +48,7 @@ $IndicatorSections = [
 	["Start"=>240,"End"=>300,"Caption"=>"High","Color"=>new pColor(157,140,49)]
 ];
 /* Draw the 1st indicator */
-$Indicator->draw(80,50,550,50,["Values"=>[20,230],"FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>15,"IndicatorSections"=>$IndicatorSections,"SubCaptionColorFactor"=>-40]);
+$Indicator->draw(80,50,550,50,["Values"=>[20,230],"FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>15,"IndicatorSections"=>$IndicatorSections,"SubCaptionColorFactor"=>-40]);
 
 /* Define the indicator sections */
 $IndicatorSections = [
@@ -63,7 +63,7 @@ $Indicator->draw(80,160,550,30, [
 	"CaptionColor"=>new pColor(0),
 	"DrawLeftHead"=>FALSE,
 	"ValueDisplay"=>INDICATOR_VALUE_LABEL,
-	"ValueFontName"=>"pChart/fonts/Cairo-Regular.ttf",
+	"ValueFontName"=>"fonts/Cairo-Regular.ttf",
 	"ValueFontSize"=>15,
 	"IndicatorSections"=>$IndicatorSections
 ]);

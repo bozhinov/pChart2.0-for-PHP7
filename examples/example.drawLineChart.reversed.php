@@ -42,7 +42,7 @@ $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL, ["StartColor"=>new 
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>8,"Color"=>new pColor(255)]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>8,"Color"=>new pColor(255)]);
 $myPicture->drawText(10,18,"Average recorded temperature",["FontSize"=>11,"Align"=>TEXT_ALIGN_BOTTOMLEFT]);
 
 /* Set the default font */

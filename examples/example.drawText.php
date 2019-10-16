@@ -21,25 +21,25 @@ $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL, ["StartColor"=>new 
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
 $myPicture->drawText(10,15,"drawText() - add some text to your charts",["Color"=>new pColor(255)]);
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
 
 /* Write some text */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Gayathri-Regular.ttf","FontSize"=>20]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Gayathri-Regular.ttf","FontSize"=>20]);
 
 $myPicture->drawText(60,115,"10 degree text",["Color"=>new pColor(255),"Angle"=>10]);
 $myPicture->drawText(220,130,"Simple text",  ["Color"=>new pColor(0),"Angle"=>0,"FontSize"=>30]);
 $myPicture->drawText(500,170,"Vertical Text",["Color"=>new pColor(200,100,0),"Angle"=>90,"FontSize"=>14]);
 
 /* Write some text */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Signika-Regular.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Signika-Regular.ttf","FontSize"=>6]);
 $myPicture->drawText(220,160,"Encapsulated text",["DrawBox"=>TRUE,"BoxRounded"=>TRUE,"Color"=>new pColor(0),"Angle"=>0,"FontSize"=>10]);
 
 /* Write some text */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>6]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>6]);
 $myPicture->drawText(220,195,"Text in a box",["DrawBox"=>TRUE,"Color"=>new pColor(0),"Angle"=>0,"FontSize"=>10]);
 
 /* Render the picture (choose the best way) */

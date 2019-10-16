@@ -11,7 +11,7 @@ use pChart\pDraw;
 $myPicture = new pDraw(700,230);
 
 /* Define default font settings */
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>14]); 
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>14]); 
 
 /* Create the background */
 $myPicture->drawGradientArea(0,0,500,230,DIRECTION_HORIZONTAL,myColors::myGreenGradient());

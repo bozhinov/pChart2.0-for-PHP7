@@ -21,7 +21,7 @@ $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL, ["StartColor"=>new 
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6));
+$myPicture->setFontProperties(array("FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>6));
 $myPicture->drawText(10,15,"drawRoundedFilledRectangle() - Transparency & colors",["Color"=>new pColor(255)]);
 
 /* Enable shadow computing */

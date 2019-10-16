@@ -24,7 +24,7 @@ $myPicture->drawGradientArea(0,0,210,20, DIRECTION_VERTICAL,["StartColor"=>new p
 $myPicture->drawRectangle(0,0,209,99,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>5]);
+$myPicture->setFontProperties(["FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>5]);
 $myPicture->drawText(10,15,"pSurface() :: Surface charts",["Color"=>new pColor(255)]);
 
 /* Define the charting area */
@@ -40,7 +40,7 @@ $mySurface = new pSurface($myPicture);
 $mySurface->setGrid(9,1);
 
 /* Write the axis labels */
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Signika-Regular.ttf","FontSize"=>7]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Signika-Regular.ttf","FontSize"=>7]);
 $mySurface->writeXLabels(["Angle"=>45,"Labels"=>["Run 1","Run 2","Run 3","Run 4","Run 5","Run 6","Run 7","Run 8","Run 9","Run 10"]]);
 $mySurface->writeYLabels(["Labels"=>["Probe 1","Probe 2"]]);
 

@@ -18,7 +18,7 @@ $myPicture->myData->addPoints(["I do agree  ","I disagree  ","No opinion  "],"Op
 $myPicture->myData->setAbscissa("Options");
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>15]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>15]);
 $myPicture->drawText(20,34,"Q: Flexibility is a key point of this library",["FontSize"=>20]);
 
 /* Define the default font */ 

@@ -33,7 +33,7 @@ $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 $myPicture->drawRectangle(540,0,699,31,["Color"=>new pColor(0)]);
 
 /* Write the chart title */ 
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>18]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>18]);
 $myPicture->drawText(110,35,"Functions computing",["Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Set the default font */
@@ -66,7 +66,7 @@ $pCharts->drawLineChart();
 $pCharts->drawPlotChart(["PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-60,"BorderColor"=>new pColor(50,50,50,80)]);
 
 /* Write the chart legend */
-$myPicture->setFontProperties(["FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>9,"Color"=>new pColor(255)]);
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>9,"Color"=>new pColor(255)]);
 $myPicture->drawLegend(555,15,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Render the picture (choose the best way) */

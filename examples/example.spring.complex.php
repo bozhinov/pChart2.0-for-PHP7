@@ -24,14 +24,14 @@ $myPicture->drawGradientArea(0,0,600,20,  DIRECTION_VERTICAL,["StartColor"=>new 
 $myPicture->drawRectangle(0,0,599,599,["Color"=>new pColor(0,0,0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/PressStart2P-Regular.ttf","FontSize"=>6));
+$myPicture->setFontProperties(array("FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>6));
 $myPicture->drawText(10,15,"pSpring - Draw spring charts",["Color"=>new pColor(255)]);
 
 /* Set the graph area boundaries*/ 
 $myPicture->setGraphArea(20,20,580,580);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(array("FontName"=>"pChart/fonts/Cairo-Regular.ttf","FontSize"=>9,"Color"=>new pColor(80)));
+$myPicture->setFontProperties(array("FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>9,"Color"=>new pColor(80)));
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);

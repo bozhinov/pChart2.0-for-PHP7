@@ -6,7 +6,7 @@
  ¦   Version     : 2.4.0-dev                  ¦
  ¦   Based on code by: Jean-Damien POGOLOTTI  ¦
  ¦   Maintained by   : Momchil Bozhinov       ¦
- ¦   Last Update : 19/09/19                   ¦
+ ¦   Last Update : 16/10/19                   ¦
  ¦                                            ¦
  +--------------------------------------------+
 
@@ -14,6 +14,7 @@
   o Removed pSQLite
   o Removed ImageMapper
   o Removed pCache
+  o Moved fonts out of the pChart folder
   o Examples use the QRCode lib directly
   o Examples use the new Barcode lib
   o Explicitly declare the visibility for methods

@@ -137,7 +137,7 @@ class pDraw
 	private $GraphAreaXdiff = 0; // $X2 - $X1
 	private $GraphAreaYdiff = 0; // $Y2 - $Y1
 	/* Font properties */
-	private $FontName = "pChart/fonts/Dosis-Light.ttf"; // Default font file
+	private $FontName = NULL; // Default font file
 	private $FontSize = 12; // Default font size
 	private $FontColor; // Default color settings
 	/* Shadow properties */
@@ -984,6 +984,8 @@ class pDraw
 			}
 		}
 
+		$this->verifyFontDefined();
+
 		$X = $X + $X - $TxtPos[$Align]["X"];
 		$Y = $Y + $Y - $TxtPos[$Align]["Y"];
 		if ($this->Shadow) {
@@ -1349,6 +1351,8 @@ class pDraw
 		($RoundPos && $Angle > 180) AND $Y2 = floor($Y2);
 
 		$this->drawArrow($X2, $Y2, $X1, $Y1, $Format);
+
+		$this->verifyFontDefined();
 		$Size = imagettfbbox($FontSize, 0, realpath($FontName), $Text);
 		$TxtWidth = max(abs($Size[2] - $Size[0]), abs($Size[0] - $Size[6]));
 		#$TxtHeight = max(abs($Size[1] - $Size[7]), abs($Size[3] - $Size[1])); # UNUSED
@@ -3900,6 +3904,7 @@ class pDraw
 	/* Return the surrounding box of text area */
 	public function getTextBox($X, $Y, $FontName, $FontSize, $Angle, $Text)
 	{
+		$this->verifyFontDefined();
 		$coords = imagettfbbox($FontSize, 0, realpath($FontName), $Text);
 		$a = deg2rad($Angle);
 		$ca = cos($a);
@@ -3926,6 +3931,14 @@ class pDraw
 		$Pos[TEXT_ALIGN_MIDDLEMIDDLE]["Y"] = ($Pos[0]["Y"] - $Pos[2]["Y"]) / 2 + $Pos[2]["Y"];
 
 		return $Pos;
+	}
+	
+	private function verifyFontDefined()
+	{
+		if (is_null($this->FontName))
+		{
+			throw pException::InvalidResourcePath("No font path defined!");
+		}
 	}
 
 	/* Set current font properties */
