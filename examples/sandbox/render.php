@@ -176,7 +176,7 @@ if($g_shadow){
 
 if ($g_title_enabled){
 
-	$code[] = '$myPicture->setFontProperties(["FontName"=>"pChart/fonts/'.$g_title_font.'","FontSize"=>'.$g_title_font_size.']);';
+	$code[] = '$myPicture->setFontProperties(["FontName"=>"fonts/'.$g_title_font.'","FontSize"=>'.$g_title_font_size.']);';
 
 	$TextSettings = ["Align"=>(int)$g_title_align,"Color"=>$helper->hexToColorObj($g_title_color)];
 	if ($g_title_box){ 
@@ -195,7 +195,7 @@ if ($g_shadow){
 }
 
 $code[] = '$myPicture->setGraphArea('.$s_x.','.$s_y.','.($s_x+$s_width).','.($s_y+$s_height).');';
-$code[] = '$myPicture->setFontProperties(["Color"=> '.$helper->hexToColorObj($s_font_color).',"FontName"=>"pChart/fonts/'.$s_font.'","FontSize"=>'.$s_font_size.']);';
+$code[] = '$myPicture->setFontProperties(["Color"=> '.$helper->hexToColorObj($s_font_color).',"FontName"=>"fonts/'.$s_font.'","FontSize"=>'.$s_font_size.']);';
 $code[] = NULL;
 
 /* Scale specific parameters -------------------------------------------------------------------------------- */
@@ -361,7 +361,7 @@ if ($l_enabled){
 
 	$Config = [
 		"FontColor" => $helper->hexToColorObj($l_font_color, (int)$l_alpha),
-		"FontName" => "pChart/fonts/".$l_font,
+		"FontName" => "fonts/".$l_font,
 		"FontSize" => (int)$l_font_size,
 		"Margin" => $l_margin,
 		"BoxSize" => (int)$l_box_size,
@@ -381,7 +381,7 @@ if ($l_enabled){
 		$l_x = (int)$g_width - $Size["Width"] - 10 + $l_margin;
 	}
 
-	$Config["FontName"] = chr(34)."pChart/fonts/".$l_font.chr(34);
+	$Config["FontName"] = chr(34)."fonts/".$l_font.chr(34);
 	$code[] = NULL;
 	$code[] = $helper->dumpArray("Config",$Config);
 	$code[] = '$myPicture->drawLegend('.$l_x.','.$l_y.',$Config);';
