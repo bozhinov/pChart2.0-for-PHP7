@@ -332,14 +332,16 @@ class pRadar
 			}
 
 			/* Bubble and labels settings */
-			$TextSettings = array("Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"Color" => $Palette[$ID]);
-
+			$TextSettings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"Color" => $Palette[$ID]];
 			$PolygonSettings["Color"] = $Palette[$ID];
 			$InnerColor = ["Color" => $InnerBubbleColor];
 			$OuterColor = ["Color" => (!is_null($OuterBubbleColor)) ? $OuterBubbleColor : $Palette[$ID]->newOne()->RGBChange(20)];
 
 			/* Loop to the starting points if asked */
-			if ($LineLoopStart && $DrawLines) $this->myPicture->drawLine($Points[$PointCount - 1][0], $Points[$PointCount - 1][1], $Points[0][0], $Points[0][1], $PolygonSettings);
+			if ($LineLoopStart && $DrawLines){
+				$this->myPicture->drawLine($Points[$PointCount - 1][0], $Points[$PointCount - 1][1], $Points[0][0], $Points[0][1], $PolygonSettings);
+			}
+
 			/* Draw the lines & points */
 			for ($i = 0; $i < $PointCount; $i++) {
 				if ($DrawLines && $i < $PointCount - 1) {
@@ -597,8 +599,8 @@ class pRadar
 			}
 
 			/* Bubble and labels settings */
-			$PolygonSettings["Color"] = $Palette[$ID];
 			$TextSettings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"Color" => $Palette[$ID]];
+			$PolygonSettings["Color"] = $Palette[$ID];
 			$InnerColor = ["Color" => $InnerBubbleColor];
 			$OuterColor = ["Color" => (!is_null($OuterBubbleColor)) ? $OuterBubbleColor : $Palette[$ID]->newOne()->RGBChange(20)];
 
