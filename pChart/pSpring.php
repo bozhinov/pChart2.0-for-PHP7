@@ -602,7 +602,9 @@ class pSpring
 
 						$X2 = $this->Data[$NodeID]["X"];
 						$Y2 = $this->Data[$NodeID]["Y"];
-						$this->myPicture->drawLine($X, $Y, $X2, $Y2, $Color);
+						if (($X2 != $X) && ($Y2 != $Y)){
+							$this->myPicture->drawLine($X, $Y, $X2, $Y2, $Color);
+						}
 						$Drawn[$Key][$NodeID] = TRUE;
 
 						if (!empty($this->Links)) {

@@ -786,7 +786,9 @@ class pCharts
 								$LastGoodY = NULL;
 
 							} elseif (!$BreakVoid && is_null($LastGoodY)) {
-								$this->myPicture->drawLine($GraphAreaCoordinates["L"] + $XMargin, $Y, $X, $Y, $BreakSettings);
+								if (($GraphAreaCoordinates["L"] + $XMargin) != $X){
+									$this->myPicture->drawLine($GraphAreaCoordinates["L"] + $XMargin, $Y, $X, $Y, $BreakSettings);
+								}
 							}
 
 							$LastGoodY = $Y;
@@ -840,7 +842,9 @@ class pCharts
 								$this->myPicture->drawLine($LastGoodX, $Y, $X, $Y, $BreakSettings);
 								$LastGoodY = NULL;
 							} elseif (is_null($LastGoodY) && !$BreakVoid) {
-								$this->myPicture->drawLine($X, $GraphAreaCoordinates["T"] + $XMargin, $X, $Y, $BreakSettings);
+								if (($GraphAreaCoordinates["T"] + $XMargin) != $Y){
+									$this->myPicture->drawLine($X, $GraphAreaCoordinates["T"] + $XMargin, $X, $Y, $BreakSettings);
+								}
 							}
 
 							$LastGoodY = $Y;
@@ -1319,7 +1323,7 @@ class pCharts
 
 						if ($Y2 != VOID) {
 							$BarHeight = $Y1 - $Y2;
-							if ($Serie["Data"][$Key] == 0) {
+							if (($Serie["Data"][$Key] == 0) || ($BarHeight == 0)) {
 								$this->myPicture->drawLine($X + $XOffset + $XSpace, $Y1, $X + $XOffset + $XSize - $XSpace, $Y1, $Settings);
 							} else {
 

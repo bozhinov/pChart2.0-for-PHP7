@@ -308,9 +308,13 @@ class pDraw
 
 		if ($this->Antialias) {
 			$this->drawLine($X1 + $Radius, $Y1, $X2 - $Radius, $Y1, $Options);
-			$this->drawLine($X2, $Y1 + $Radius, $X2, $Y2 - $Radius, $Options);
+			if (($Y1 + $Radius) != ($Y2 - $Radius)) {
+				$this->drawLine($X2, $Y1 + $Radius, $X2, $Y2 - $Radius, $Options);
+			}
 			$this->drawLine($X2 - $Radius, $Y2, $X1 + $Radius, $Y2, $Options);
-			$this->drawLine($X1, $Y1 + $Radius, $X1, $Y2 - $Radius, $Options);
+			if (($Y1 + $Radius) != ($Y2 - $Radius)) {
+				$this->drawLine($X1, $Y1 + $Radius, $X1, $Y2 - $Radius, $Options);
+			}
 		} else {
 			$AllocatedColor = $this->allocateColor($Color);
 			imageline($this->Picture, $X1 + $Radius, $Y1, $X2 - $Radius, $Y1, $AllocatedColor);
@@ -762,10 +766,9 @@ class pDraw
 
 		$Distance = hypot(($X2 - $X1), ($Y2 - $Y1));
 		if ($Distance == 0) {
-			# throw pException::InvalidDimentions("Line coordinates are not valid!");
-			# Momchil: As of 28.01.2019 all examples generate a total of 20 invalid calls
-			# Good way to check your math though
-			return [];
+			#debug_print_backtrace();
+			throw pException::InvalidDimentions("Line coordinates are not valid!");
+			#return [];
 		}
 
 		$XStep = ($X2 - $X1) / $Distance;
@@ -1738,6 +1741,9 @@ class pDraw
 		/* Skip a NOTICE event in case of an empty array */
 		($DrawYLines == NONE || $DrawYLines == FALSE) AND $DrawYLines = ["zarma" => "31"];
 		($DrawYLines == ALL) AND $DrawYLines = [ALL];
+		
+		$TicksNotZero = ($InnerTickWidth != 0 || $OuterTickWidth != 0);
+		$SkippedTicksNotZero = ($SkippedInnerTickWidth != 0 || $SkippedOuterTickWidth != 0);
 
 		/* Check LabelRotation range */
 		if (($LabelRotation < 0) || ($LabelRotation > 359)){
@@ -1991,7 +1997,7 @@ class pDraw
 									$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $SkippedAxisColor);
 								}
 
-								if (($SkippedInnerTickWidth != 0 || $SkippedOuterTickWidth != 0) && !$RemoveXAxis && !$RemoveSkippedAxis) {
+								if ($SkippedTicksNotZero && !$RemoveXAxis && !$RemoveSkippedAxis) {
 									$this->drawLine($XPos, $YPos - $SkippedInnerTickWidth, $XPos, $YPos + $SkippedOuterTickWidth, $SkippedTickColor);
 								}
 							} else {
@@ -1999,7 +2005,7 @@ class pDraw
 									$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $GridColor);
 								}
 
-								if (($InnerTickWidth != 0 || $OuterTickWidth != 0) && !$RemoveXAxis) {
+								if ($TicksNotZero && !$RemoveXAxis) {
 									$this->drawLine($XPos, $YPos - $InnerTickWidth, $XPos, $YPos + $OuterTickWidth, $ColorTick);
 								}
 							}
@@ -2087,7 +2093,7 @@ class pDraw
 									$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $SkippedAxisColor);
 								}
 
-								if (($SkippedInnerTickWidth != 0 || $SkippedOuterTickWidth != 0) && !$RemoveXAxis && !$RemoveSkippedAxis) {
+								if ($SkippedTicksNotZero && !$RemoveXAxis && !$RemoveSkippedAxis) {
 									$this->drawLine($XPos, $YPos + $SkippedInnerTickWidth, $XPos, $YPos - $SkippedOuterTickWidth, $SkippedTickColor);
 								}
 							} else {
@@ -2095,7 +2101,7 @@ class pDraw
 									$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $GridColor);
 								}
 
-								if (($InnerTickWidth != 0 || $OuterTickWidth != 0) && !$RemoveXAxis) {
+								if ($TicksNotZero && !$RemoveXAxis) {
 									$this->drawLine($XPos, $YPos + $InnerTickWidth, $XPos, $YPos - $OuterTickWidth, $ColorTick);
 								}
 							}
@@ -2186,7 +2192,7 @@ class pDraw
 									$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $SkippedAxisColor);
 								}
 
-								if (($SkippedInnerTickWidth != 0 || $SkippedOuterTickWidth != 0) && !$RemoveXAxis && !$RemoveSkippedAxis) {
+								if ($SkippedTicksNotZero && !$RemoveXAxis && !$RemoveSkippedAxis) {
 									$this->drawLine($XPos - $SkippedOuterTickWidth, $YPos, $XPos + $SkippedInnerTickWidth, $YPos, $SkippedTickColor);
 								}
 							} else {
@@ -2194,7 +2200,7 @@ class pDraw
 									$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $GridColor);
 								}
 
-								if (($InnerTickWidth != 0 || $OuterTickWidth != 0) && !$RemoveXAxis) {
+								if ($TicksNotZero && !$RemoveXAxis) {
 									$this->drawLine($XPos - $OuterTickWidth, $YPos, $XPos + $InnerTickWidth, $YPos, $ColorTick);
 								}
 							}
@@ -2282,7 +2288,7 @@ class pDraw
 									$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $SkippedAxisColor);
 								}
 
-								if (($SkippedInnerTickWidth != 0 || $SkippedOuterTickWidth != 0) && !$RemoveXAxis && !$RemoveSkippedAxis) {
+								if ($SkippedTicksNotZero && !$RemoveXAxis && !$RemoveSkippedAxis) {
 									$this->drawLine($XPos + $SkippedOuterTickWidth, $YPos, $XPos - $SkippedInnerTickWidth, $YPos, $SkippedTickColor);
 								}
 							} else {
@@ -2290,7 +2296,7 @@ class pDraw
 									$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $GridColor);
 								}
 
-								if (($InnerTickWidth != 0 || $OuterTickWidth != 0) && !$RemoveXAxis) {
+								if ($TicksNotZero && !$RemoveXAxis) {
 									$this->drawLine($XPos + $OuterTickWidth, $YPos, $XPos - $InnerTickWidth, $YPos, $ColorTick);
 								}
 							}
@@ -2351,7 +2357,9 @@ class pDraw
 								$this->drawLine($XPos - $OuterSubTickWidth, $YPos - $SubTicksSize, $XPos + $InnerSubTickWidth, $YPos - $SubTicksSize, $SubTickColor);
 							}
 
-							$this->drawLine($XPos - $OuterTickWidth, $YPos, $XPos + $InnerTickWidth, $YPos, $ColorTick);
+							if ($TicksNotZero) {
+								$this->drawLine($XPos - $OuterTickWidth, $YPos, $XPos + $InnerTickWidth, $YPos, $ColorTick);
+							}
 							$Bounds = $this->drawText($XPos - $OuterTickWidth - 2, $YPos, $Value, ["Align" => TEXT_ALIGN_MIDDLERIGHT] + $ColorAxis);
 							$TxtLeft = $XPos - $OuterTickWidth - 2 - ($Bounds[1]["X"] - $Bounds[0]["X"]);
 							$MinLeft = min($MinLeft, $TxtLeft);
@@ -2403,7 +2411,10 @@ class pDraw
 							if ($DrawSubTicks && $i != $Parameters["Rows"]) {
 								$this->drawLine($XPos - $OuterSubTickWidth, $YPos - $SubTicksSize, $XPos + $InnerSubTickWidth, $YPos - $SubTicksSize, $SubTickColor);
 							}
-							$this->drawLine($XPos - $InnerTickWidth, $YPos, $XPos + $OuterTickWidth, $YPos, $ColorTick);
+
+							if ($TicksNotZero) {
+								$this->drawLine($XPos - $InnerTickWidth, $YPos, $XPos + $OuterTickWidth, $YPos, $ColorTick);
+							}
 							$Bounds = $this->drawText($XPos + $OuterTickWidth + 2, $YPos, $Value, ["Align" => TEXT_ALIGN_MIDDLELEFT] + $ColorAxis);
 							$TxtLeft = $XPos + $OuterTickWidth + 2 + ($Bounds[1]["X"] - $Bounds[0]["X"]);
 							$MaxLeft = max($MaxLeft, $TxtLeft);
@@ -2458,7 +2469,9 @@ class pDraw
 								$this->drawLine($XPos + $SubTicksSize, $YPos - $OuterSubTickWidth, $XPos + $SubTicksSize, $YPos + $InnerSubTickWidth, $SubTickColor);
 							}
 
-							$this->drawLine($XPos, $YPos - $OuterTickWidth, $XPos, $YPos + $InnerTickWidth, $ColorTick);
+							if ($TicksNotZero) {
+								$this->drawLine($XPos, $YPos - $OuterTickWidth, $XPos, $YPos + $InnerTickWidth, $ColorTick);
+							}
 							$Bounds = $this->drawText($XPos, $YPos - $OuterTickWidth - 2, $Value, ["Align" => TEXT_ALIGN_BOTTOMMIDDLE] + $ColorAxis);
 							$TxtHeight = $YPos - $OuterTickWidth - 2 - ($Bounds[1]["Y"] - $Bounds[2]["Y"]);
 							$MinTop = min($MinTop, $TxtHeight);
@@ -2510,7 +2523,9 @@ class pDraw
 								$this->drawLine($XPos + $SubTicksSize, $YPos - $OuterSubTickWidth, $XPos + $SubTicksSize, $YPos + $InnerSubTickWidth, $SubTickColor);
 							}
 
-							$this->drawLine($XPos, $YPos - $OuterTickWidth, $XPos, $YPos + $InnerTickWidth, $ColorTick);
+							if ($TicksNotZero) {
+								$this->drawLine($XPos, $YPos - $OuterTickWidth, $XPos, $YPos + $InnerTickWidth, $ColorTick);
+							}
 							$Bounds = $this->drawText($XPos, $YPos + $OuterTickWidth + 2, $Value, ["Align" => TEXT_ALIGN_TOPMIDDLE] + $ColorAxis);
 							$TxtHeight = $YPos + $OuterTickWidth + 2 + ($Bounds[1]["Y"] - $Bounds[2]["Y"]);
 							$MaxBottom = max($MaxBottom, $TxtHeight);
