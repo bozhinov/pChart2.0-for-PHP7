@@ -5,7 +5,7 @@ pRadar - class to draw radar charts
 Version     : 2.4.0-dev
 Made by     : Jean-Damien POGOLOTTI
 Maintainedby: Momchil Bozhinov
-Last Update : 01/09/2019
+Last Update : 17/10/2019
 
 This file can be distributed under the license you can find at:
 http://www.pchart.net/license
@@ -46,14 +46,6 @@ class pRadar
 		$AxisBoxRounded = TRUE;
 		$AxisFontName = $fontProperties['Name'];
 		$AxisFontSize = $fontProperties['Size'];
-		$WriteValues = FALSE;
-		$WriteValuesInBubble = TRUE;
-		$ValueFontName = $fontProperties['Name'];
-		$ValueFontSize = $fontProperties['Size'];
-		$ValuePadding = 4;
-		$OuterBubbleRadius = 2;
-		$OuterBubbleColor = NULL;
-		$InnerBubbleColor = new pColor(255);
 		$DrawBackground = TRUE;
 		$BackgroundColor = new pColor(255,255,255,50);
 		$BackgroundGradient = NULL;
@@ -67,13 +59,8 @@ class pRadar
 		$LabelsBackgroundColor = new pColor(255,255,255,50);
 		$LabelPos = RADAR_LABELS_ROTATED;
 		$LabelPadding = 4;
-		$DrawPoints = TRUE;
-		$PointRadius = 4;
-		$PointSurrounding = isset($Format["PointRadius"]) ? $Format["PointRadius"] : -30;
-		$DrawLines = TRUE;
 		$LineLoopStart = TRUE;
-		$DrawPoly = FALSE;
-		$PolyAlpha = 40;
+		$PolyAlpha = 40;		
 		$FontSize = $fontProperties['Size'];
 		$X1 = $GraphAreaCoordinates["L"];
 		$Y1 = $GraphAreaCoordinates["T"];
@@ -83,12 +70,15 @@ class pRadar
 		/* Override defaults */
 		extract($Format);
 
+		$Format["PolyAlpha"] = $PolyAlpha;
+		$Format["LineLoopStart"] = $LineLoopStart;
+
 		/* Cancel default tick length if ticks not enabled */
 		($DrawTicks == FALSE) AND $TicksLength = 0;
 
 		/* Data Processing */
 		$Data = $this->myPicture->myData->getData();
-		$Palette = $this->myPicture->myData->getPalette();
+
 		/* Catch the number of required axis */
 		$LabelSerie = $Data["Abscissa"];
 		if ($LabelSerie != "") {
@@ -295,10 +285,10 @@ class pRadar
 		/* Compute the plots position */
 		$ID = 0;
 		$Plot = [];
-		foreach($Data["Series"] as $SerieName => $DataS) {
+		foreach($Data["Series"] as $SerieName => $DataSet) {
 			if ($SerieName != $LabelSerie) {
 
-				foreach($DataS["Data"] as $Key => $Value) {
+				foreach($DataSet["Data"] as $Key => $Value) {
 					$Angle = $Step * $Key;
 					$Length = ($EdgeHeight / ($Segments * $SegmentHeight)) * $Value;
 					$X = cos(deg2rad($Angle + $AxisRotation)) * $Length + $CenterX;
@@ -311,60 +301,7 @@ class pRadar
 		}
 
 		/* Draw all that stuff! */
-		foreach($Plot as $ID => $Points) {
-
-			$PolygonSettings = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
-			$PointCount = count($Points);
-
-			/* Draw the polygons */
-			if ($DrawPoly) {
-				if (!is_null($PolyAlpha)) {
-					$PolygonSettings["Color"] = $Palette[$ID]->newOne()->AlphaSet($PolyAlpha);
-				}
-
-				$PointsArray = [];
-				for ($i = 0; $i < $PointCount; $i++) {
-					$PointsArray[] = $Points[$i][0];
-					$PointsArray[] = $Points[$i][1];
-				}
-
-				$this->myPicture->drawPolygon($PointsArray, $PolygonSettings);
-			}
-
-			/* Bubble and labels settings */
-			$TextSettings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"Color" => $Palette[$ID]];
-			$PolygonSettings["Color"] = $Palette[$ID];
-			$InnerColor = ["Color" => $InnerBubbleColor];
-			$OuterColor = ["Color" => (!is_null($OuterBubbleColor)) ? $OuterBubbleColor : $Palette[$ID]->newOne()->RGBChange(20)];
-
-			/* Loop to the starting points if asked */
-			if ($LineLoopStart && $DrawLines){
-				$this->myPicture->drawLine($Points[$PointCount - 1][0], $Points[$PointCount - 1][1], $Points[0][0], $Points[0][1], $PolygonSettings);
-			}
-
-			/* Draw the lines & points */
-			for ($i = 0; $i < $PointCount; $i++) {
-				if ($DrawLines && $i < $PointCount - 1) {
-					$this->myPicture->drawLine($Points[$i][0], $Points[$i][1], $Points[$i + 1][0], $Points[$i + 1][1], $PolygonSettings);
-				}
-
-				if ($DrawPoints) {
-					$this->myPicture->drawFilledCircle($Points[$i][0], $Points[$i][1], $PointRadius, $PolygonSettings);
-				}
-
-				if ($WriteValuesInBubble && $WriteValues) {
-					$TxtPos = $this->myPicture->getTextBox($Points[$i][0], $Points[$i][1], $ValueFontName, $ValueFontSize, 0, $Points[$i][2]);
-					$Radius = floor(($TxtPos[1]["X"] - $TxtPos[0]["X"] + $ValuePadding * 2) / 2);
-					$this->myPicture->drawFilledCircle($Points[$i][0], $Points[$i][1], $Radius + $OuterBubbleRadius, $OuterColor);
-					$this->myPicture->drawFilledCircle($Points[$i][0], $Points[$i][1], $Radius, $InnerColor);
-				}
-
-				if ($WriteValues) {
-					#Momchil: Visual fix applied
-					$this->myPicture->drawText($Points[$i][0], $Points[$i][1], $Points[$i][2], $TextSettings);
-				}
-			}
-		}
+		$this->ProcessPoints($Plot, $Format);
 	}
 
 	/* Draw a radar chart */
@@ -382,14 +319,6 @@ class pRadar
 		$AxisBoxRounded = TRUE;
 		$AxisFontName = isset($Format["FontName"]) ? $Format["FontName"] : $fontProperties['Name'];
 		$AxisFontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : $fontProperties['Size'];
-		$WriteValues = FALSE;
-		$WriteValuesInBubble = TRUE;
-		$ValueFontName = $fontProperties['Name'];
-		$ValueFontSize = $fontProperties['Size'];
-		$ValuePadding = 4;
-		$OuterBubbleRadius = 2;
-		$OuterBubbleColor = NULL;
-		$InnerBubbleColor = new pColor(255);
 		$DrawBackground = TRUE;
 		$BackgroundColor = new pColor(255,255,255,50);
 		$BackgroundGradient = NULL;
@@ -401,12 +330,7 @@ class pRadar
 		$LabelsBackgroundColor = new pColor(255,255,255,50);
 		$LabelPos = RADAR_LABELS_ROTATED;
 		$LabelPadding = 4;
-		$DrawPoints = TRUE;
-		$PointRadius = 4;
-		$PointSurrounding = isset($Format["PointRadius"]) ? $Format["PointRadius"] : -30;
-		$DrawLines = TRUE;
 		$LineLoopStart = FALSE;
-		$DrawPoly = FALSE;
 		$PolyAlpha = NULL;
 		$FontSize = $fontProperties['Size'];
 		$X1 = $GraphAreaCoordinates["L"];
@@ -417,6 +341,9 @@ class pRadar
 		/* Override defaults */
 		extract($Format);
 
+		$Format["PolyAlpha"] = $PolyAlpha;
+		$Format["LineLoopStart"] = $LineLoopStart;
+
 		($AxisBoxRounded) AND $DrawAxisValues = TRUE;
 
 		/* Cancel default tick length if ticks not enabled */
@@ -424,7 +351,7 @@ class pRadar
 
 		/* Data Processing */
 		$Data = $this->myPicture->myData->getData();
-		$Palette = $this->myPicture->myData->getPalette();
+
 		/* Catch the number of required axis */
 		$LabelSerie = $Data["Abscissa"];
 		if ($LabelSerie != "") {
@@ -578,6 +505,31 @@ class pRadar
 		}
 
 		/* Draw all that stuff! */
+		$this->ProcessPoints($Plot, $Format);
+	}
+
+	private function ProcessPoints($Plot, $Format)
+	{
+		$fontProperties = $this->myPicture->getFont();
+
+		$PointRadius = isset($Format["PointRadius"]) ? $Format["PointRadius"] : 4;
+		$PointSurrounding = isset($Format["PointSurrounding"]) ? $Format["PointSurrounding"] : -30;
+		$ValueFontName = isset($Format["ValueFontName"]) ? $Format["ValueFontName"] : $fontProperties['Name'];
+		$ValueFontSize = isset($Format["ValueFontSize"]) ? $Format["ValueFontSize"] : $fontProperties['Size'];
+		$ValuePadding = isset($Format["ValuePadding"]) ? $Format["ValuePadding"] : 4;
+		$OuterBubbleRadius = isset($Format["OuterBubbleRadius"]) ? $Format["OuterBubbleRadius"] : 2;
+		$OuterBubbleColor = isset($Format["OuterBubbleColor"]) ? $Format["OuterBubbleColor"] : NULL;
+		$InnerBubbleColor = isset($Format["InnerBubbleColor"]) ? $Format["InnerBubbleColor"] : new pColor(255);
+		$DrawLines = isset($Format["DrawLines"]) ? $Format["DrawLines"] : TRUE;
+		$DrawPoints = isset($Format["DrawPoints"]) ? $Format["DrawPoints"] : TRUE;
+		$LineLoopStart = isset($Format["LineLoopStart"]) ? $Format["LineLoopStart"] : FALSE;
+		$DrawPoly = isset($Format["DrawPoly"]) ? $Format["DrawPoly"] : FALSE;
+		$PolyAlpha = isset($Format["PolyAlpha"]) ? $Format["PolyAlpha"] : NULL;
+		$WriteValues = isset($Format["WriteValues"]) ? $Format["WriteValues"] : FALSE;
+		$WriteValuesInBubble = isset($Format["WriteValuesInBubble"]) ? $Format["WriteValuesInBubble"] : TRUE;
+
+		$Palette = $this->myPicture->myData->getPalette();
+
 		foreach($Plot as $ID => $Points) {
 
 			$PolygonSettings = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
@@ -599,8 +551,8 @@ class pRadar
 			}
 
 			/* Bubble and labels settings */
-			$TextSettings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"Color" => $Palette[$ID]];
 			$PolygonSettings["Color"] = $Palette[$ID];
+			$TextSettings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"Color" => $Palette[$ID]];
 			$InnerColor = ["Color" => $InnerBubbleColor];
 			$OuterColor = ["Color" => (!is_null($OuterBubbleColor)) ? $OuterBubbleColor : $Palette[$ID]->newOne()->RGBChange(20)];
 
@@ -632,6 +584,7 @@ class pRadar
 				}
 			}
 		}
+
 	}
 }
 
