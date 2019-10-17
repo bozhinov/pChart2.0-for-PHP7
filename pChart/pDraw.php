@@ -4022,7 +4022,7 @@ class pDraw
 	}
 
 	/* Render the picture to a web browser stream */
-	public function stroke(bool $BrowserExpire = FALSE, int $Compression = 6, $Filters = PNG_NO_FILTER)
+	public function stroke(bool $BrowserExpire = FALSE, int $Compression = 6, int $Filters = PNG_NO_FILTER)
 	{
 		if ($this->TransparentBackground) {
 			imagealphablending($this->Picture, FALSE);
@@ -4038,7 +4038,7 @@ class pDraw
 		imagepng($this->Picture, NULL, $Compression, $Filters);
 	}
 
-	public function toBase64(int $Compression = 6, $Filters = PNG_NO_FILTER)
+	public function toBase64(int $Compression = 6, int $Filters = PNG_NO_FILTER)
 	{
 		if ($this->TransparentBackground) {
 			imagealphablending($this->Picture, FALSE);
@@ -4059,8 +4059,9 @@ class pDraw
 		Compression must be between 0 and 9 -> http://php.net/manual/en/function.imagepng.php 
 		http://php.net/manual/en/image.constants.php
 		https://www.w3.org/TR/PNG-Filters.html
+		https://stackoverflow.com/questions/3048382/in-php-imagepng-accepts-a-filter-parameter-how-do-these-filters-affect-the-f
 	*/
-	public function autoOutput(string $FileName = "output.png", int $Compression = 6, $Filters = PNG_NO_FILTER)
+	public function autoOutput(string $FileName = "output.png", int $Compression = 6, int $Filters = PNG_NO_FILTER)
 	{
 		if (php_sapi_name() == "cli") {
 			$this->Render($FileName, $Compression, $Filters);
