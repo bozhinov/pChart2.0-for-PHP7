@@ -226,7 +226,7 @@ class pDraw
 			$BorderColor->RGBChange($Format["Surrounding"]);
 		}
 
-		/* Calling the ImageFilledPolygon() function over the $Points array used to round it */
+		/* Calling the imagefilledpolygon() function over the $Points array used to round it */
 
 		$PointCount = count($Points);
 
@@ -245,7 +245,7 @@ class pDraw
 			}
 
 			if ($PointCount >= 6) {
-				imageFilledPolygon($this->Picture, $Points, $PointCount / 2, $this->allocateColor($Color));
+				imagefilledpolygon($this->Picture, $Points, $PointCount / 2, $this->allocateColor($Color));
 			}
 		}
 
@@ -4040,6 +4040,10 @@ class pDraw
 
 	public function toBase64(int $Compression = 6, $Filters = PNG_NO_FILTER)
 	{
+		if ($this->TransparentBackground) {
+			imagealphablending($this->Picture, FALSE);
+		}
+
 		$TempHandle = fopen("php://temp", "wb");
 		imagepng($this->Picture, $TempHandle, $Compression, $Filters);
 		$stats = fstat($TempHandle);
