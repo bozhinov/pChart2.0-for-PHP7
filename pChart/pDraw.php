@@ -583,13 +583,13 @@ class pDraw
 	public function drawSpline(array $Coordinates, array $Format = [])
 	{
 		$NoDraw = isset($Format["NoDraw"]) ? $Format["NoDraw"] : FALSE;
-		$Force = isset($Format["Force"]) ? $Format["Force"] : 30;
+		$Force  = isset($Format["Force"])  ? $Format["Force"]  : 30;
 		$Forces = isset($Format["Forces"]) ? $Format["Forces"] : [];
+
 		$Result = [];
+		$Count = count($Coordinates)-1;
 
-		$count = count($Coordinates)-1;
-
-		for ($i = 1; $i <= $count; $i++) {
+		for ($i = 1; $i <= $Count; $i++) {
 			$X1 = $Coordinates[$i - 1][0];
 			$Y1 = $Coordinates[$i - 1][1];
 			$X2 = $Coordinates[$i][0];
@@ -612,7 +612,7 @@ class pDraw
 			}
 
 			/* Last segment */
-			if ($i == $count) {
+			if ($i == $Count) {
 				$Xv2 = $X2;
 				$Yv2 = $Y2;
 			} else {
@@ -757,7 +757,7 @@ class pDraw
 			}
 
 			imageline($this->Picture, $X1, $Y1, $X2, $Y2, $this->allocateColor($Color));
-			return [$Cpt,$Mode];
+			return [$Cpt, $Mode];
 		}
 
 		$Distance = hypot(($X2 - $X1), ($Y2 - $Y1));
@@ -777,11 +777,9 @@ class pDraw
 			$AngleCosPlus90 = cos(deg2rad($Angle + 90)) * $Weight;
 			$AngleSinPlus90 = sin(deg2rad($Angle + 90)) * $Weight;
 
-			$PolySettings = ["Color" => $Color];
-
 			if (is_null($Ticks)) {
 				$Points = [-$AngleCosPlus90 + $X1, -$AngleSinPlus90 + $Y1, $AngleCosPlus90 + $X1, $AngleSinPlus90 + $Y1, $AngleCosPlus90 + $X2, $AngleSinPlus90 + $Y2, -$AngleCosPlus90+ $X2, -$AngleSinPlus90 + $Y2];
-				$this->drawPolygon($Points, $PolySettings);
+				$this->drawPolygon($Points, ["Color" => $Color]);
 			} else {
 				for ($i = 0; $i <= $Distance; $i = $i + $Ticks * 2) {
 					$Xa = $XStep * $i + $X1;
@@ -789,11 +787,11 @@ class pDraw
 					$Xb = $XStep * ($i + $Ticks) + $X1;
 					$Yb = $YStep * ($i + $Ticks) + $Y1;
 					$Points = [-$AngleCosPlus90 + $Xa, -$AngleSinPlus90 + $Ya, $AngleCosPlus90 + $Xa, $AngleSinPlus90 + $Ya, $AngleCosPlus90 + $Xb, $AngleSinPlus90 + $Yb, -$AngleCosPlus90 + $Xb, -$AngleSinPlus90 + $Yb];
-					$this->drawPolygon($Points, $PolySettings);
+					$this->drawPolygon($Points, ["Color" => $Color]);
 				}
 			}
 
-			return [$Cpt,$Mode];
+			return [$Cpt, $Mode];
 		}
 
 		if (empty($Threshold) && is_null($Ticks)){ # Momchil: Fast path based on my test cases
@@ -836,7 +834,7 @@ class pDraw
 	{
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(0);
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
-		$Mask = isset($Format["Mask"]) ? $Format["Mask"] : [];
+		$Mask =  isset($Format["Mask"])  ? $Format["Mask"]  : [];
 
 		$Height = abs($Height);
 		$Width = abs($Width);
@@ -1043,7 +1041,7 @@ class pDraw
 				}
 
 				if ($LastY2 < $EndY) {
-					for ($i = $LastY2 + 1; $i <= $EndY; $i++) {
+					for ($i = $LastY2 + 1; $i < $EndY; $i++) {
 						$this->drawLine($X1, $i, $X2, $i, ["Color" => $GradientColor->getLatest()]);
 					}
 				}
@@ -1079,9 +1077,9 @@ class pDraw
 	/* Draw an aliased pixel */
 	public function drawAntialiasPixel($X, $Y, pColor $Color) # FAST
 	{
-		# Momchil: example.drawingObjects -> drawRoundedFilledRectangle is set to start from -5
 		if ($X < 0 || $Y < 0 || ceil($X) > $this->XSize || ceil($Y) > $this->YSize){
-			return;
+			#debug_print_backtrace();
+			throw pException::InvalidCoordinates("Trying to draw outside of image dimentions.");
 		}
 
 		if (!$this->Antialias) {
@@ -1301,7 +1299,7 @@ class pDraw
 		($Angle == 180 || $Angle == 360) AND $Points[4] = $Points[2];
 		($Angle == 90 || $Angle == 270) AND $Points[5] = $Points[3];
 
-		imageFilledPolygon($this->Picture, $Points, 4, $this->allocateColor($FillColor));
+		imagefilledpolygon($this->Picture, $Points, 4, $this->allocateColor($FillColor));
 		$this->drawLine($Points[0], $Points[1], $Points[2], $Points[3], $RGB);
 		$this->drawLine($Points[2], $Points[3], $Points[4], $Points[5], $RGB);
 		$this->drawLine($Points[0], $Points[1], $Points[4], $Points[5], $RGB);
@@ -1317,7 +1315,7 @@ class pDraw
 			($Angle == 180 || $Angle == 360) AND $Points[4] = $Points[2];
 			($Angle == 90 || $Angle == 270) AND $Points[5] = $Points[3];
 
-			imageFilledPolygon($this->Picture, $Points, 4, $this->allocateColor($FillColor));
+			imagefilledpolygon($this->Picture, $Points, 4, $this->allocateColor($FillColor));
 			$this->drawLine($Points[0], $Points[1], $Points[2], $Points[3], $RGB);
 			$this->drawLine($Points[2], $Points[3], $Points[4], $Points[5], $RGB);
 			$this->drawLine($Points[0], $Points[1], $Points[4], $Points[5], $RGB);
@@ -1569,6 +1567,14 @@ class pDraw
 
 		/* Override defaults */
 		extract($Format);
+
+		if ($X == $this->XSize){
+			$X -= $BoxWidth;
+		}
+
+		if ($Y == $this->YSize){
+			$Y -= $BoxHeight;
+		}
 
 		(is_null($Color)) AND $Color = new pColor(200);
 		(is_null($BorderColor)) AND $BorderColor = new pColor(255);
