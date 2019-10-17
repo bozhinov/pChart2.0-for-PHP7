@@ -4064,9 +4064,9 @@ class pDraw
 	public function autoOutput(string $FileName = "output.png", int $Compression = 6, int $Filters = PNG_NO_FILTER)
 	{
 		if (php_sapi_name() == "cli") {
-			$this->Render($FileName, $Compression, $Filters);
+			$this->render($FileName, $Compression, $Filters);
 		} else {
-			$this->Stroke(TRUE, $Compression, $Filters);
+			$this->stroke(TRUE, $Compression, $Filters);
 		}
 	}
 
