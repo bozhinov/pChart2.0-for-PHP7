@@ -78,12 +78,12 @@ if (!isset($_SESSION['html'])){
 	$tree = [];
 	foreach (glob("example.*") as $fileName){
 
-		$fileHandle  = fopen($fileName, "r");
+		$fileHandle = fopen($fileName, "r");
 		if ($fileHandle === false) {
 			continue;
 		}
-		$buffer      = fgets($fileHandle);
-		$buffer      = fgets($fileHandle);
+		$buffer = fgets($fileHandle);
+		$buffer = fgets($fileHandle);
 		fclose($fileHandle);
 
 		if (substr($buffer, 0, 7) == "/* CAT:"){ # /* CAT:Misc */
