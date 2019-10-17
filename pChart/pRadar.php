@@ -313,13 +313,13 @@ class pRadar
 		/* Draw all that stuff! */
 		foreach($Plot as $ID => $Points) {
 
-			$Color = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
+			$PolygonSettings = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
 			$PointCount = count($Points);
 
 			/* Draw the polygons */
 			if ($DrawPoly) {
 				if (!is_null($PolyAlpha)) {
-					$Color = ["Color" => $Palette[$ID]->newOne()->AlphaSet($PolyAlpha),"Surrounding" => $PointSurrounding];
+					$PolygonSettings["Color"] = $Palette[$ID]->newOne()->AlphaSet($PolyAlpha);
 				}
 
 				$PointsArray = [];
@@ -328,26 +328,26 @@ class pRadar
 					$PointsArray[] = $Points[$i][1];
 				}
 
-				$this->myPicture->drawPolygon($PointsArray, $Color);
+				$this->myPicture->drawPolygon($PointsArray, $PolygonSettings);
 			}
 
 			/* Bubble and labels settings */
 			$TextSettings = array("Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"Color" => $Palette[$ID]);
 
-			$Color = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
+			$PolygonSettings["Color"] = $Palette[$ID];
 			$InnerColor = ["Color" => $InnerBubbleColor];
 			$OuterColor = ["Color" => (!is_null($OuterBubbleColor)) ? $OuterBubbleColor : $Palette[$ID]->newOne()->RGBChange(20)];
 
 			/* Loop to the starting points if asked */
-			if ($LineLoopStart && $DrawLines) $this->myPicture->drawLine($Points[$PointCount - 1][0], $Points[$PointCount - 1][1], $Points[0][0], $Points[0][1], $Color);
+			if ($LineLoopStart && $DrawLines) $this->myPicture->drawLine($Points[$PointCount - 1][0], $Points[$PointCount - 1][1], $Points[0][0], $Points[0][1], $PolygonSettings);
 			/* Draw the lines & points */
 			for ($i = 0; $i < $PointCount; $i++) {
 				if ($DrawLines && $i < $PointCount - 1) {
-					$this->myPicture->drawLine($Points[$i][0], $Points[$i][1], $Points[$i + 1][0], $Points[$i + 1][1], $Color);
+					$this->myPicture->drawLine($Points[$i][0], $Points[$i][1], $Points[$i + 1][0], $Points[$i + 1][1], $PolygonSettings);
 				}
 
 				if ($DrawPoints) {
-					$this->myPicture->drawFilledCircle($Points[$i][0], $Points[$i][1], $PointRadius, $Color);
+					$this->myPicture->drawFilledCircle($Points[$i][0], $Points[$i][1], $PointRadius, $PolygonSettings);
 				}
 
 				if ($WriteValuesInBubble && $WriteValues) {
@@ -578,13 +578,13 @@ class pRadar
 		/* Draw all that stuff! */
 		foreach($Plot as $ID => $Points) {
 
-			$Color = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
+			$PolygonSettings = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
 			$PointCount = count($Points);
 
 			/* Draw the polygons */
 			if ($DrawPoly) {
 				if (!is_null($PolyAlpha)) {
-					$Color = ["Color" => $Palette[$ID]->newOne()->AlphaSet($PolyAlpha),"Surrounding" => $PointSurrounding];
+					$PolygonSettings["Color"] = $Palette[$ID]->newOne()->AlphaSet($PolyAlpha);
 				}
 
 				$PointsArray = [];
@@ -593,28 +593,28 @@ class pRadar
 					$PointsArray[] = $Points[$i][1];
 				}
 
-				$this->myPicture->drawPolygon($PointsArray, $Color);
+				$this->myPicture->drawPolygon($PointsArray, $PolygonSettings);
 			}
 
 			/* Bubble and labels settings */
-			$Color = ["Color" => $Palette[$ID],"Surrounding" => $PointSurrounding];
+			$PolygonSettings["Color"] = $Palette[$ID];
 			$TextSettings = ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $ValueFontName,"FontSize" => $ValueFontSize,"Color" => $Palette[$ID]];
 			$InnerColor = ["Color" => $InnerBubbleColor];
 			$OuterColor = ["Color" => (!is_null($OuterBubbleColor)) ? $OuterBubbleColor : $Palette[$ID]->newOne()->RGBChange(20)];
 
 			/* Loop to the starting points if asked */
 			if ($LineLoopStart && $DrawLines) {
-				$this->myPicture->drawLine($Points[$PointCount - 1][0], $Points[$PointCount - 1][1], $Points[0][0], $Points[0][1], $Color);
+				$this->myPicture->drawLine($Points[$PointCount - 1][0], $Points[$PointCount - 1][1], $Points[0][0], $Points[0][1], $PolygonSettings);
 			}
 
 			/* Draw the lines & points */
 			for ($i = 0; $i < $PointCount; $i++) {
 				if ($DrawLines && $i < $PointCount - 1) {
-					$this->myPicture->drawLine($Points[$i][0], $Points[$i][1], $Points[$i + 1][0], $Points[$i + 1][1], $Color);
+					$this->myPicture->drawLine($Points[$i][0], $Points[$i][1], $Points[$i + 1][0], $Points[$i + 1][1], $PolygonSettings);
 				}
 
 				if ($DrawPoints) {
-					$this->myPicture->drawFilledCircle($Points[$i][0], $Points[$i][1], $PointRadius, $Color);
+					$this->myPicture->drawFilledCircle($Points[$i][0], $Points[$i][1], $PointRadius, $PolygonSettings);
 				}
 
 				if ($WriteValuesInBubble && $WriteValues) {
