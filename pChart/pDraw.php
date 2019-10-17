@@ -4012,7 +4012,7 @@ class pDraw
 	}
 
 	/* Render the picture to a file */
-	public function render(string $FileName, int $Compression = 6, $Filters = PNG_NO_FILTER)
+	public function render(string $FileName, int $Compression = 6, int $Filters = PNG_NO_FILTER)
 	{
 		if ($this->TransparentBackground) {
 			imagealphablending($this->Picture, FALSE);
