@@ -35,7 +35,7 @@ $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>myColors::Black(10)]);
 (new pCharts($myPicture))->drawBarChart(["DisplayPos"=>LABEL_POS_INSIDE,"DisplayValues"=>TRUE,"Rounded"=>TRUE,"Surrounding"=>30]);
 
 /* Write the legend */ 
-$myPicture->drawLegend(570,215,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
+$myPicture->drawLegend(500,215,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawBarChart.vertical.png");

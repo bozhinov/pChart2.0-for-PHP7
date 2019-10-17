@@ -14,14 +14,14 @@ use pChart\{
 $myPicture = new pDraw(400,220);
 
 /* Create a solid background */
-$myPicture->drawFilledRectangle(0,0,400,400,["Color"=>new pColor(50,70,0),"Dash"=>TRUE, "DashColor"=>new pColor(30,50,0)]);
+$myPicture->drawFilledRectangle(0,0,400,220,["Color"=>new pColor(50,70,0),"Dash"=>TRUE, "DashColor"=>new pColor(30,50,0)]);
 
 /* Do a gradient overlay */
-$myPicture->drawGradientArea(0,0,400,400,DIRECTION_VERTICAL,["StartColor"=>new pColor(194,131,44,50), "EndColor"=>new pColor(43,7,58,50)]);
+$myPicture->drawGradientArea(0,0,400,220,DIRECTION_VERTICAL,["StartColor"=>new pColor(194,131,44,50), "EndColor"=>new pColor(43,7,58,50)]);
 $myPicture->drawGradientArea(0,0,400,20, DIRECTION_VERTICAL,["StartColor"=>new pColor(0), "EndColor"=>new pColor(50)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,399,399,["Color"=>new pColor(0)]);
+$myPicture->drawRectangle(0,0,399,219,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(["FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>6]);

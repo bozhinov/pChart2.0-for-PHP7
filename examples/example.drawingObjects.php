@@ -21,7 +21,7 @@ $myPicture->drawFilledRectangle(500,0,700,230,["Color"=>myColors::LightGreen($Al
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>myColors::Black($Alpha=20)]);
 
 /* Draw the left area */
-$myPicture->drawRoundedFilledRectangle(-5,0,20,240,10,["Color"=>myColors::LightGreen()]); 
+$myPicture->drawRoundedFilledRectangle(0,0,20,230,10,["Color"=>myColors::LightGreen()]); 
 $myPicture->drawText(10,220,"My first chart",["Color"=>myColors::White(),"Angle"=>90,"Align"=>TEXT_ALIGN_MIDDLELEFT]);
 
 /* Draw the right area */
