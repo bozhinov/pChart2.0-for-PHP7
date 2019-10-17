@@ -25,13 +25,13 @@ $myPicture->myData->addPoints($Points_2,"Probe 2");
 
 $myPicture->myData->setAxisName(0,"Strength");
 	
-$myPicture->drawGradientArea(0,0,700,304,  DIRECTION_VERTICAL, ["StartColor"=>new pColor(47), "EndColor"=>new pColor(17)]);
-$myPicture->drawGradientArea(0,230,700,304,DIRECTION_VERTICAL, ["StartColor"=>new pColor(47), "EndColor"=>new pColor(27)]);
-$myPicture->drawLine(0,209,847,209,["Color"=>new pColor(0)]);
-$myPicture->drawLine(0,210,847,210,["Color"=>new pColor(70)]);
+$myPicture->drawGradientArea(0,0,700,230,  DIRECTION_VERTICAL, ["StartColor"=>new pColor(47), "EndColor"=>new pColor(17)]);
+$myPicture->drawGradientArea(0,230,700,230,DIRECTION_VERTICAL, ["StartColor"=>new pColor(47), "EndColor"=>new pColor(27)]);
+$myPicture->drawLine(0,209,700,209,["Color"=>new pColor(0)]);
+$myPicture->drawLine(0,210,700,210,["Color"=>new pColor(70)]);
 
 /* Add a border to the picture */
-$myPicture->drawRectangle(0,0,846,303,["Color"=>new pColor(204)]);
+$myPicture->drawRectangle(0,0,700,230,["Color"=>new pColor(204)]);
 
 /* Write the picture title */ 
 $myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>7]);
