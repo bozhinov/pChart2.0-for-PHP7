@@ -21,6 +21,11 @@ class pException extends \Exception
 		return new static(sprintf('pChart: %s', $text));
 	}
 
+	public static function InvalidCoordinates($text)
+	{
+		return new static(sprintf('pChart: %s', $text));
+	}
+
 	public static function InvalidImageType($text)
 	{
 		return new static(sprintf('pChart: %s', $text));
