@@ -415,79 +415,67 @@ class pPie
 			$Settings = ["Color" => $SliceColorsR[$SliceID]->newOne()->RGBChange(10), "NoBorder"=>TRUE];
 			if (isset($Plots[2])) /* $Visible[$SliceID]["Start"] &&  */ {
 				$this->myPicture->drawLine($Plots[2], $Plots[3], $Plots[2], $Plots[3] - $SliceHeight, $Settings);
-				$this->myPicture->drawPolygon(
-					[$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $Plots[2], $Plots[3] - $SliceHeight, $Plots[2], $Plots[3]],
-					$Settings
-				);
+				$this->myPicture->drawPolygon([$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $Plots[2], $Plots[3] - $SliceHeight, $Plots[2], $Plots[3]], $Settings);
 			}
 		}
 
 		foreach($Slices as $SliceID => $Plots) {
 
-			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange(10), "NoBorder"=>TRUE];
+			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange(10), "NoBorder"=> TRUE];
 			$PlotCount = count($Plots);
 
 			if ($Visible[$SliceID]["End"]) {
-				$this->myPicture->drawLine($Plots[$PlotCount - 2], $Plots[$PlotCount - 1], $Plots[$PlotCount - 2], $Plots[$PlotCount - 1] - $SliceHeight, $Settings);
-				$this->myPicture->drawPolygon(
-					[$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $Plots[$PlotCount - 2], $Plots[$PlotCount - 1] - $SliceHeight, $Plots[$PlotCount - 2], $Plots[$PlotCount - 1]],
-					$Settings
-				);
+				$this->myPicture->drawLine($Plots[$PlotCount - 2], end($Plots), $Plots[$PlotCount - 2], end($Plots) - $SliceHeight, $Settings);
+				$this->myPicture->drawPolygon([$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $Plots[$PlotCount - 2], end($Plots) - $SliceHeight, $Plots[$PlotCount - 2], end($Plots)], $Settings);
 			}
 
+			$SliceAngleID = $SliceAngle[$SliceID];
+
 			/* Draw the rounded edges */
-			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange(10), "NoBorder" => TRUE];
 			for ($j = 2; $j <$PlotCount - 2; $j += 2) {
-				$Angle = $SliceAngle[$SliceID][$j / 2];
+				$Angle = $SliceAngleID[$j / 2];
 				if ($Angle < 270 && $Angle > 90) {
-					$this->myPicture->drawPolygon(
-						[$Plots[$j], $Plots[$j + 1], $Plots[$j + 2], $Plots[$j + 3], $Plots[$j + 2], $Plots[$j + 3] - $SliceHeight, $Plots[$j], $Plots[$j + 1] - $SliceHeight],
-						$Settings
-					);
+					$this->myPicture->drawPolygon([$Plots[$j], $Plots[$j + 1], $Plots[$j + 2], $Plots[$j + 3], $Plots[$j + 2], $Plots[$j + 3] - $SliceHeight, $Plots[$j], $Plots[$j + 1] - $SliceHeight], $Settings);
 				}
 			}
 
 			if ($SecondPass) {
-				$Settings = ["Color" => $SliceColors[$SliceID]->newOne()];
+				$SettingsSPass = ["Color" => $SliceColors[$SliceID]->newOne()];
 				if ($Border) {
-					$Settings["Color"]->RGBChange(30);
+					$SettingsSPass["Color"]->RGBChange(30);
 				}
 
-				if (isset($SliceAngle[$SliceID][1])) /* Empty error handling */ {
-					$Angle = $SliceAngle[$SliceID][1];
+				if (isset($SliceAngleID[1])) /* Empty error handling */ {
+					$Angle = $SliceAngleID[1];
 					if ($Angle < 270 && $Angle > 90) {
 						$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
 						$Yc = sin(deg2rad($Angle - 90)) * $Radius * $SkewFactor + $Y;
-						$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $Settings);
+						$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $SettingsSPass);
 					}
 				}
 
-				$Angle = $SliceAngle[$SliceID][count($SliceAngle[$SliceID]) - 1];
+				$Angle = end($SliceAngleID);
 				if ($Angle < 270 && $Angle > 90) {
 					$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
 					$Yc = sin(deg2rad($Angle - 90)) * $Radius * $SkewFactor + $Y;
-					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $Settings);
+					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $SettingsSPass);
 				}
 
-				if (isset($SliceAngle[$SliceID][1]) && $SliceAngle[$SliceID][1] > 270 && $SliceAngle[$SliceID][count($SliceAngle[$SliceID]) - 1] < 270) {
-					#$Xc = cos(deg2rad(270 - 90)) * $Radius + $X;
-					#$Yc = sin(deg2rad(270 - 90)) * $Radius * $SkewFactor + $Y;
+				if (isset($SliceAngleID[1]) && $SliceAngleID[1] > 270 && end($SliceAngleID) < 270) {
 					$Xc = -$Radius + $X;
 					$Yc = sin(M_PI) * $Radius * $SkewFactor + $Y;
-					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $Settings);
+					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $SettingsSPass);
 				}
 
-				if (isset($SliceAngle[$SliceID][1]) && $SliceAngle[$SliceID][1] > 90 && $SliceAngle[$SliceID][count($SliceAngle[$SliceID]) - 1] < 90) {
-					#$Xc = cos(deg2rad(0)) * $Radius + $X;
-					#$Yc = sin(deg2rad(0)) * $Radius * $SkewFactor + $Y;
+				if (isset($SliceAngleID[1]) && $SliceAngleID[1] > 90 && end($SliceAngleID) < 90) {
 					$Xc = $Radius + $X;
 					$Yc = $Y;
-					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $Settings);
+					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $SettingsSPass);
 				}
 			}
 
 			/* Draw the top splice */
-			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange(20)];
+			$Settings["Color"] = $SliceColors[$SliceID]->newOne()->RGBChange(20);
 			$Top = [];
 			for ($j = 0; $j < $PlotCount; $j += 2) {
 				$Top[] = $Plots[$j];
