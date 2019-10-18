@@ -475,7 +475,7 @@ class pPie
 			}
 
 			/* Draw the top splice */
-			$Settings["Color"] = $SliceColors[$SliceID]->newOne()->RGBChange(20);
+			$Settings = ["Color" => $SliceColors[$SliceID]->newOne()->RGBChange(20)];
 			$Top = [];
 			for ($j = 0; $j < $PlotCount; $j += 2) {
 				$Top[] = $Plots[$j];
