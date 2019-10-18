@@ -42,7 +42,7 @@ class pColor
 				$this->R = rand(0, 255);
 				$this->G = rand(0, 255);
 				$this->B = rand(0, 255);
-				$this->Alpha = $Alpha;
+				$this->Alpha = 100;
 		}
 	}
 
