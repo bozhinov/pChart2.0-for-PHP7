@@ -425,11 +425,14 @@ class pPie
 			$PlotCount = count($Plots);
 
 			if ($Visible[$SliceID]["End"]) {
-				$this->myPicture->drawLine($Plots[$PlotCount - 2], end($Plots), $Plots[$PlotCount - 2], end($Plots) - $SliceHeight, $Settings);
-				$this->myPicture->drawPolygon([$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $Plots[$PlotCount - 2], end($Plots) - $SliceHeight, $Plots[$PlotCount - 2], end($Plots)], $Settings);
+				$LastP = end($Plots);
+				$BeforeLastP = prev($Plots); # No need for resetting Plots
+				$this->myPicture->drawLine($BeforeLastP, $LastP, $BeforeLastP, $LastP - $SliceHeight, $Settings);
+				$this->myPicture->drawPolygon([$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $BeforeLastP, $LastP - $SliceHeight, $BeforeLastP, $LastP], $Settings);
 			}
 
 			$SliceAngleID = $SliceAngle[$SliceID];
+			$LastSliceAngleID = end($SliceAngleID);
 
 			/* Draw the rounded edges */
 			for ($j = 2; $j <$PlotCount - 2; $j += 2) {
@@ -454,20 +457,20 @@ class pPie
 					}
 				}
 
-				$Angle = end($SliceAngleID);
+				$Angle = $LastSliceAngleID;
 				if ($Angle < 270 && $Angle > 90) {
 					$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
 					$Yc = sin(deg2rad($Angle - 90)) * $Radius * $SkewFactor + $Y;
 					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $SettingsSPass);
 				}
 
-				if (isset($SliceAngleID[1]) && $SliceAngleID[1] > 270 && end($SliceAngleID) < 270) {
+				if (isset($SliceAngleID[1]) && $SliceAngleID[1] > 270 && $LastSliceAngleID < 270) {
 					$Xc = -$Radius + $X;
 					$Yc = sin(M_PI) * $Radius * $SkewFactor + $Y;
 					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $SettingsSPass);
 				}
 
-				if (isset($SliceAngleID[1]) && $SliceAngleID[1] > 90 && end($SliceAngleID) < 90) {
+				if (isset($SliceAngleID[1]) && $SliceAngleID[1] > 90 && $LastSliceAngleID < 90) {
 					$Xc = $Radius + $X;
 					$Yc = $Y;
 					$this->myPicture->drawLine($Xc, $Yc, $Xc, $Yc - $SliceHeight, $SettingsSPass);
