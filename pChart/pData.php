@@ -770,42 +770,6 @@ class pData
 		}
 	}
 
-	/* Load data from a CSV (or similar) data source */
-	public function importFromCSV($FileName, array $Options = []) # Momchil: TODO: I need a sample here UNUSED
-	{
-		$Delimiter = isset($Options["Delimiter"]) ? $Options["Delimiter"] : ",";
-		$GotHeader = isset($Options["GotHeader"]) ? $Options["GotHeader"] : FALSE;
-		$SkipColumns = isset($Options["SkipColumns"]) ? $Options["SkipColumns"] : [-1];
-		$DefaultSerieName = isset($Options["DefaultSerieName"]) ? $Options["DefaultSerieName"] : "Serie";
-
-		if (strlen($Delimiter) > 1){
-			throw pException::InvalidInput("Delimiter has to be a single char");
-		}
-
-		if (!file_exists($FileName)){
-			throw pException::InvalidInput("Could not find the CSV file");
-		}
-
-		$CSVContent = file($FileName, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-		$SerieNames = [];
-
-		if ($GotHeader) {
-			$line1 = explode($Delimiter, array_shift($CSVContent));
-			foreach($line1 as $Key => $Name) {
-				(!in_array($Key, $SkipColumns)) AND $SerieNames[$Key] = $DefaultSerieName . $Name;
-			}
-		}
-
-		foreach ($CSVContent as $line){
-			$Values = explode($Delimiter, $line);
-			foreach($Values as $Key => $Value) {
-				if (!in_array($Key, $SkipColumns)){
-					$this->addPoints([$Value], (isset($SerieNames[$Key])) ? $SerieNames[$Key] : $DefaultSerieName . $Key);
-				}
-			}
-		}
-	}
-
 	/* Returns the number of drawable series */
 	public function countDrawableSeries()
 	{

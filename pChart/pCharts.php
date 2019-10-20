@@ -2105,7 +2105,6 @@ class pCharts
 		/* Drawing */
 		$LeftY = ((($Y2 - $Y1) / 2) + $Y1) - ($LeftHeight / 2);
 		$RightY = $Y1;
-		# $VectorX = (($X2 - $X1) / 2); # UNUSED
 
 		foreach($Data["Series"][$DataSerie]["Data"] as $Key => $Value) {
 
