@@ -52,13 +52,11 @@ class pSurface
 	public function addPoint(int $X, int $Y, $Value, $Force = TRUE)
 	{
 		if ($X < 0 || $X > $this->GridSizeX) {
-			return;
-			#throw pException::SurfaceInvalidInputException("Point out of range");
+			throw pException::SurfaceInvalidInputException("Point out of range");
 		}
 
 		if ($Y < 0 || $Y > $this->GridSizeY) {
-			return; # Momchil TODO
-			#throw pException::SurfaceInvalidInputException("Point out of range");
+			throw pException::SurfaceInvalidInputException("Point out of range");
 		}
 
 		if ($Force) {

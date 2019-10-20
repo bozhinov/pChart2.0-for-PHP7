@@ -45,7 +45,7 @@ $mySurface->writeXLabels(["Angle"=>45,"Labels"=>["Run 1","Run 2","Run 3","Run 4"
 $mySurface->writeYLabels(["Labels"=>["Probe 1","Probe 2"]]);
 
 /* Add random values */
-for($i=0; $i<=10; $i++) { 
+for($i=0; $i<10; $i++) { 
 	$mySurface->addPoint($i,rand(0,1),rand(0,100));
 }
 
