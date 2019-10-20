@@ -579,6 +579,11 @@ class pData
 		}
 	}
 
+	public function getAxisData(int $AxisID)
+	{
+		return $this->Data["Axis"][$AxisID];
+	}
+
 	/* Define if a serie should be draw with ticks */
 	public function setSerieTicks(string $Serie, int $Ticks = NULL)
 	{
