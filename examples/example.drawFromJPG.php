@@ -21,7 +21,7 @@ $myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL, ["StartColor"=>new p
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(array("FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
 $myPicture->drawText(10,15,"drawFromJPG() - add pictures to your charts",["Color"=>new pColor(255)]);
 
 /* Turn off shadow computing */ 

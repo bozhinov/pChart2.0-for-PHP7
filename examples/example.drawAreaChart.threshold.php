@@ -12,13 +12,8 @@ use pChart\pCharts;
 $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */ 
-for($i=0;$i<=30;$i++) 
-{ 
-	$myPicture->myData->addPoints([rand(1,15)],"Probe 1");
-}
-/* Momchil: setSerieTicks only sets it if Serie is defined. Probe 2 isn't
-$myPicture->myData->setSerieTicks("Probe 2",4);
-*/
+$myPicture->myData->addRandomValues("Probe 1", ["Values" => 30, "Min" => 1, "Max" => 15]);
+$myPicture->myData->setSerieTicks("Probe 1",4);
 $myPicture->myData->setAxisName(0,"Temperatures");
 
 /* Turn off Anti-aliasing */
@@ -55,9 +50,9 @@ $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 /* Draw the area chart */
 $Threshold = [
-	array("Min"=>0,"Max"=>5,"Color"=>new pColor(187,220,0,100)),
-	array("Min"=>5,"Max"=>10,"Color"=>new pColor(240,132,20,100)),
-	array("Min"=>10,"Max"=>20,"Color"=>new pColor(240,91,20,100))
+	["Min"=>0,"Max"=>5,"Color"=>new pColor(187,220,0,100)],
+	["Min"=>5,"Max"=>10,"Color"=>new pColor(240,132,20,100)],
+	["Min"=>10,"Max"=>20,"Color"=>new pColor(240,91,20,100)]
 ];
 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,20)]);
@@ -74,7 +69,7 @@ $pCharts->drawLineChart(["UseForcedColor"=>TRUE,"ForceColor"=>new pColor(0,0,0,1
 $pCharts->drawPlotChart(["PlotBorder"=>TRUE,"BorderSize"=>1,"Surrounding"=>-255,"BorderColor"=>new pColor(50,50,50,80)]);
 
 /* Write the thresholds */
-$myPicture->drawThreshold([5],["WriteCaption"=>TRUE,"Caption"=>"Warn Zone","Ticks"=>2,"Color"=>new pColor(0,0,255,70)]);
+$myPicture->drawThreshold([5], ["WriteCaption"=>TRUE,"Caption"=>"Warn Zone", "Ticks"=>2,"Color"=>new pColor(0,0,255,70)]);
 $myPicture->drawThreshold([10],["WriteCaption"=>TRUE,"Caption"=>"Error Zone","Ticks"=>2,"Color"=>new pColor(0,0,255,70)]);
 
 /* Render the picture (choose the best way) */

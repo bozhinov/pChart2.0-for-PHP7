@@ -29,7 +29,7 @@ $myPicture->setGraphArea(70,60,480,200);
 $myPicture->drawGradientArea(70,60,480,200,DIRECTION_HORIZONTAL,["StartColor"=>new pColor(200,200,200,30),"EndColor"=>new pColor(255,255,255,30)]);
 
 /* Draw the chart scale */ 
-$scaleSettings = array("AxisAlpha"=>10,"TickAlpha"=>10,"DrawXLines"=>FALSE,"Mode"=>SCALE_MODE_START0,"GridColor"=>new pColor(0,0,0,10),"Pos"=>SCALE_POS_TOPBOTTOM);
+$scaleSettings = ["AxisAlpha"=>10,"TickAlpha"=>10,"DrawXLines"=>FALSE,"Mode"=>SCALE_MODE_START0,"GridColor"=>new pColor(0,0,0,10),"Pos"=>SCALE_POS_TOPBOTTOM];
 $myPicture->drawScale($scaleSettings);
 
 /* Turn on shadow computing */ 

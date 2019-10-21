@@ -36,6 +36,7 @@ $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 
 (new pCharts($myPicture))->drawStackedBarChart(["DisplayValues"=>TRUE,"DisplayType"=>DISPLAY_AUTO,"Gradient"=>TRUE,"GradientMode"=>GRADIENT_EFFECT_CAN,"Surrounding"=>30]);
 
+/* This one is useless as drawLegend would disable shadow while it draws */
 $myPicture->setShadow(FALSE);
 
 /* Write the chart legend */

@@ -55,9 +55,9 @@ $myPicture->drawScale([
 
 /* Define the visual thresholds */
 $Threshold = [
-	array("Min"=>-100,"Max"=>-35,"Color"=>new pColor(117,140,240,40)),
-	array("Min"=>-35,"Max"=>35,"Color"=>new pColor(240,232,20,60)),
-	array("Min"=>35,"Max"=>100,"Color"=>new pColor(240,121,20,80))
+	["Min"=>-100,"Max"=>-35,"Color"=>new pColor(117,140,240,40)],
+	["Min"=>-35,"Max"=>35,"Color"=>new pColor(240,232,20,60)],
+	["Min"=>35,"Max"=>100,"Color"=>new pColor(240,121,20,80)]
 ]; 
 /* Draw the spline chart */
 (new pCharts($myPicture))->drawFilledSplineChart(["Threshold"=>$Threshold]);

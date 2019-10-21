@@ -12,12 +12,7 @@ use pChart\pCharts;
 $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */
-$Points_1 = [];
-for($i=0;$i<=100;$i++)
-{
-	$Points_1[] = rand(0,20);
-}
-$myPicture->myData->addPoints($Points_1,"Probe 1");
+$myPicture->myData->addRandomValues("Probe 1", ["Values"=>100,"Min"=>0,"Max"=>20]);
 $myPicture->myData->setAxisName(0,"Temperatures");
 
 /* Draw the background */

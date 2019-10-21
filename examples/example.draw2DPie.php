@@ -30,11 +30,11 @@ $myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL,  ["StartColor"=>Col
 $myPicture->drawRectangle(0,0,699,229,["Color"=>ColorBlack()]);
 
 /* Write the picture title */ 
-$myPicture->setFontProperties(array("FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>6));
+$myPicture->setFontProperties(["FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>6]);
 $myPicture->drawText(10,15,"pPie - Draw 2D pie charts",["Color"=>ColorWhite()]);
 
 /* Set the default font properties */ 
-$myPicture->setFontProperties(array("FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>10,"Color"=>new pColor(80)));
+$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>10,"Color"=>new pColor(80)]);
 
 /* Enable shadow computing */ 
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>ColorBlack($Alpha=50)]);

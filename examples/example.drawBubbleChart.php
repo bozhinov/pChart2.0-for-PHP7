@@ -39,7 +39,7 @@ $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "D
 
 /* Overlay with a gradient */
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(219,231,139,50),"EndColor"=>new pColor(1,138,68,50)]);
-$myPicture->drawGradientArea(0,0,700,20,DIRECTION_VERTICAL,["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
+$myPicture->drawGradientArea(0,0,700,20, DIRECTION_VERTICAL,["StartColor"=>new pColor(0,0,0,80),"EndColor"=>new pColor(50,50,50,80)]);
 
 /* Add a border to the picture */
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(0)]);
@@ -50,7 +50,7 @@ $myPicture->drawText(10,15,"drawBubbleChart() - draw a linear bubble chart",["Co
 
 /* Write the title */
 $myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>11]);
-$myPicture->drawText(40,55,"Current Stock / Needs chart",array("FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMLEFT));
+$myPicture->drawText(40,55,"Current Stock / Needs chart",["FontSize"=>14,"Align"=>TEXT_ALIGN_BOTTOMLEFT]);
 
 /* Change the default font */
 $myPicture->setFontProperties(["FontSize"=>7]);

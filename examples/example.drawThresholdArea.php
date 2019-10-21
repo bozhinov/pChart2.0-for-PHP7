@@ -58,7 +58,6 @@ $myPicture->drawScale(["XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"Pos"=>SCALE_P
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1]);
 $myPicture->setFontProperties(["FontName"=>"fonts/Abel-Regular.ttf","FontSize"=>10]);
 $myPicture->drawThresholdArea(5,15,["NameColor"=>new pColor(0,0,0),"AreaName"=>"Test Zone","Color"=>new pColor(206,231,64,20)]);
-$myPicture->setShadow(FALSE);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawThresholdArea.png");
