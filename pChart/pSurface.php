@@ -38,11 +38,7 @@ class pSurface
 	/* Define the grid size and initialize the 2D matrix */
 	public function setGrid(int $XSize = 10, int $YSize = 10)
 	{
-		for ($X = 0; $X <= $XSize; $X++) {
-			for ($Y = 0; $Y <= $YSize; $Y++) {
-				$this->Points[$X][$Y] = UNKNOWN;
-			}
-		}
+		$this->Points = array_fill(0, $XSize + 1, array_fill(0, $YSize + 1, UNKNOWN));
 
 		$this->GridSizeX = $XSize;
 		$this->GridSizeY = $YSize;
