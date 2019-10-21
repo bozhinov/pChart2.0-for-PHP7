@@ -829,7 +829,6 @@ class pDraw
 		}
 		
 		return [$Cpt,$Mode];
-
 	}
 
 	/* Draw a circle */
@@ -1302,7 +1301,8 @@ class pDraw
 		($Angle == 180 || $Angle == 360) AND $Points[4] = $Points[2];
 		($Angle == 90 || $Angle == 270) AND $Points[5] = $Points[3];
 
-		imagefilledpolygon($this->Picture, $Points, 4, $this->allocateColor($FillColor));
+		$aFillColor = $this->allocateColor($FillColor);
+		imagefilledpolygon($this->Picture, $Points, 4, $aFillColor);
 		$this->drawLine($Points[0], $Points[1], $Points[2], $Points[3], $RGB);
 		$this->drawLine($Points[2], $Points[3], $Points[4], $Points[5], $RGB);
 		$this->drawLine($Points[0], $Points[1], $Points[4], $Points[5], $RGB);
@@ -1318,7 +1318,7 @@ class pDraw
 			($Angle == 180 || $Angle == 360) AND $Points[4] = $Points[2];
 			($Angle == 90 || $Angle == 270) AND $Points[5] = $Points[3];
 
-			imagefilledpolygon($this->Picture, $Points, 4, $this->allocateColor($FillColor));
+			imagefilledpolygon($this->Picture, $Points, 4, $aFillColor);
 			$this->drawLine($Points[0], $Points[1], $Points[2], $Points[3], $RGB);
 			$this->drawLine($Points[2], $Points[3], $Points[4], $Points[5], $RGB);
 			$this->drawLine($Points[0], $Points[1], $Points[4], $Points[5], $RGB);
