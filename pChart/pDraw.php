@@ -145,7 +145,7 @@ class pDraw
 	private $ShadowX = 0; // X Offset of the shadow
 	private $ShadowY = 0; // Y Offset of the shadow
 	private $ShadowColor;
-	private $ShadowAllocatedColor;
+	private $ShadowColorA;
 
 	/* Data Set - read only would have been nice to have */
 	public $myData;
@@ -180,13 +180,13 @@ class pDraw
 			imagealphablending($this->Picture, TRUE);
 			imagesavealpha($this->Picture, TRUE);
 		} else {
-			# Momchil: $this->allocateColor(new pColor(255,255,255,100)); sets alpha at 1.27 which is not completely transparent
+			# Momchil: $this->allocateColor([255,255,255,100]); sets alpha at 1.27 which is not completely transparent
 			imagefilledrectangle($this->Picture, 0, 0, $XSize, $YSize, imagecolorallocatealpha($this->Picture, 255, 255, 255, 0));
 		}
 
 		/* default shadow color */
 		$this->ShadowColor = new pColor(0,0,0,10);
-		$this->ShadowAllocatedColor = $this->allocateColor([0,0,0,10]);
+		$this->ShadowColorA = $this->allocateColor([0,0,0,10]);
 
 		/* default font color */
 		$this->FontColor = new pColor(255);
@@ -765,7 +765,7 @@ class pDraw
 
 		if ($this->Antialias == FALSE && is_null($Ticks)) {
 			if ($this->Shadow) {
-				imageline($this->Picture, $X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, $this->ShadowAllocatedColor);
+				imageline($this->Picture, $X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, $this->ShadowColorA);
 			}
 
 			imageline($this->Picture, $X1, $Y1, $X2, $Y2, $this->allocateColor($Color->get()));
@@ -997,7 +997,7 @@ class pDraw
 		$X = $X + $X - $TxtPos[$Align]["X"];
 		$Y = $Y + $Y - $TxtPos[$Align]["Y"];
 		if ($this->Shadow) {
-			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowAllocatedColor, realpath($FontName), $Text);
+			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowColorA, realpath($FontName), $Text);
 		}
 
 		imagettftext($this->Picture, $FontSize, $Angle, $X, $Y, $this->AllocateColor($Color->get()), realpath($FontName), $Text);
@@ -1095,7 +1095,7 @@ class pDraw
 		if (!$this->Antialias) {
 			if ($this->Shadow) {
 				# That can go out of range
-				imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowAllocatedColor);
+				imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowColorA);
 			}
 
 			imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($Color->get()));
@@ -1170,24 +1170,24 @@ class pDraw
 	}
 
 	/* Draw a semi-transparent pixel */
-	private function drawAlphaPixel($X, $Y, array $Color) # FAST
+	private function drawAlphaPixel($X, $Y, array $ColorA) # FAST
 	{
 		if ($this->Shadow) {
 			$ShadowColorA = $this->ShadowColor->get();
-			$ShadowColorA[3] *= floor($Color[3] / 100);
+			$ShadowColorA[3] *= floor($ColorA[3] / 100);
 			imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($ShadowColorA));
 		}
 
-		imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($Color));
+		imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($ColorA));
 	}
 
 	/* Allocate a color with transparency */
-	private function allocateColor(array $Color) # FAST
+	private function allocateColor(array $ColorA) # FAST
 	{
-		($Color[3] < 0)   AND $Color[3] = 0;
-		($Color[3] > 100) AND $Color[3] = 100;
+		($ColorA[3] < 0)   AND $ColorA[3] = 0;
+		($ColorA[3] > 100) AND $ColorA[3] = 100;
 
-		return imagecolorallocatealpha($this->Picture, $Color[0], $Color[1], $Color[2], (1.27 * (100 - $Color[3])));
+		return imagecolorallocatealpha($this->Picture, $ColorA[0], $ColorA[1], $ColorA[2], (1.27 * (100 - $ColorA[3])));
 	}
 
 	/* Load a PNG file and draw it over the chart */
@@ -3865,7 +3865,7 @@ class pDraw
 
 		if (isset($Format["Color"])){
 			$this->ShadowColor = $Format["Color"];
-			$this->ShadowAllocatedColor = $this->allocateColor($this->ShadowColor->get());
+			$this->ShadowColorA = $this->allocateColor($this->ShadowColor->get());
 		}
 	}
 
