@@ -186,7 +186,7 @@ class pDraw
 
 		/* default shadow color */
 		$this->ShadowColor = new pColor(0,0,0,10);
-		$this->ShadowAllocatedColor = $this->allocateColor($this->ShadowColor);
+		$this->ShadowAllocatedColor = $this->allocateColor([0,0,0,10]);
 
 		/* default font color */
 		$this->FontColor = new pColor(255);
@@ -245,7 +245,7 @@ class pDraw
 			}
 
 			if ($PointCount >= 6) {
-				imagefilledpolygon($this->Picture, $Points, $PointCount / 2, $this->allocateColor($Color));
+				imagefilledpolygon($this->Picture, $Points, $PointCount / 2, $this->allocateColor($Color->get()));
 			}
 		}
 
@@ -438,7 +438,7 @@ class pDraw
 				$X2 = floor($X2) - 1;
 			}
 
-			imageline($this->Picture, $X1, $Yp, $X2, $Yp, $this->allocateColor($Color));
+			imageline($this->Picture, $X1, $Yp, $X2, $Yp, $this->allocateColor($Color->get()));
 		}
 
 		$this->drawFilledRectangle($X1, $MinY + 1, floor($X2), $MaxY - 1, $Format);
@@ -471,7 +471,7 @@ class pDraw
 				$this->drawLine($X1, $Y1, $X1, $Y2, $Format);
 			}
 		} else {
-			imagerectangle($this->Picture, $X1, $Y1, $X2, $Y2, $this->allocateColor($Color));
+			imagerectangle($this->Picture, $X1, $Y1, $X2, $Y2, $this->allocateColor($Color->get()));
 		}
 	}
 
@@ -504,7 +504,7 @@ class pDraw
 			$this->drawFilledRectangle($X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, ["Color" => $this->ShadowColor,"Ticks" => $Ticks,"NoAngle" => $NoAngle]);
 		}
 
-		$AllocatedColor = $this->allocateColor($Color);
+		$AllocatedColor = $this->allocateColor($Color->get());
 
 		if ($NoAngle) {
 			imagefilledrectangle($this->Picture, $X1c + 1, $Y1c, $X2f - 1, $Y2f, $AllocatedColor);
@@ -546,25 +546,33 @@ class pDraw
 					$Yb = $Y;
 				}
 
-				imageline($this->Picture, $Xa, $Ya, $Xb, $Yb, $this->allocateColor($DashColor));
+				imageline($this->Picture, $Xa, $Ya, $Xb, $Yb, $this->allocateColor($DashColor->get()));
 			}
 		}
 
 		if ($this->Antialias && !$NoBorder) {
+			
+			$ColorA = $Color->get();
+			$defaultAlpha = $ColorA[3];
+			
 			if ($X1 < $X1c) {
-				imageline($this->Picture, $X1c - 1, $Y1c, $X1c - 1, $Y2f, $this->allocateColor($Color->newOne()->AlphaMultiply($X1c - $X1)));
+				$ColorA[3] = $defaultAlpha * ($X1c - $X1);
+				imageline($this->Picture, $X1c - 1, $Y1c, $X1c - 1, $Y2f, $this->allocateColor($ColorA));
 			}
 
 			if ($Y1 < $Y1c) {
-				imageline($this->Picture, $X1c, $Y1c - 1, $X2f, $Y1c - 1, $this->allocateColor($Color->newOne()->AlphaMultiply($Y1c - $Y1)));
+				$ColorA[3] = $defaultAlpha * ($Y1c - $Y1);
+				imageline($this->Picture, $X1c, $Y1c - 1, $X2f, $Y1c - 1, $this->allocateColor($ColorA));
 			}
 
 			if ($X2 > $X2f) {
-				imageline($this->Picture, $X2f + 1, $Y1c, $X2f + 1, $Y2f, $this->allocateColor($Color->newOne()->AlphaMultiply(.5 - ($Y2 - $Y2f))));
+				$ColorA[3] = $defaultAlpha * (.5 - ($Y2 - $Y2f));
+				imageline($this->Picture, $X2f + 1, $Y1c, $X2f + 1, $Y2f, $this->allocateColor($ColorA));
 			}
 
 			if ($Y2 > $Y2f) {
-				imageline($this->Picture, $X1c, $Y2f + 1, $X2f, $Y2f + 1, $this->allocateColor($Color->newOne()->AlphaMultiply(.5 - ($Y2 - $Y2f))));
+				$ColorA[3] = $defaultAlpha * (.5 - ($Y2 - $Y2f));
+				imageline($this->Picture, $X1c, $Y2f + 1, $X2f, $Y2f + 1, $this->allocateColor($ColorA));
 			}
 		}
 
@@ -760,7 +768,7 @@ class pDraw
 				imageline($this->Picture, $X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, $this->ShadowAllocatedColor);
 			}
 
-			imageline($this->Picture, $X1, $Y1, $X2, $Y2, $this->allocateColor($Color));
+			imageline($this->Picture, $X1, $Y1, $X2, $Y2, $this->allocateColor($Color->get()));
 			return [$Cpt, $Mode];
 		}
 
@@ -910,7 +918,7 @@ class pDraw
 		}
 
 		$Mask = [];
-		$AllocatedColor = $this->allocateColor($Color);
+		$AllocatedColor = $this->allocateColor($Color->get());
 		for ($i = 0; $i <= $Radius * 2; $i++) {
 			$Slice = sqrt($Radius * $Radius - ($Radius - $i) * ($Radius - $i));
 			$XPos = floor($Slice);
@@ -992,7 +1000,7 @@ class pDraw
 			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowAllocatedColor, realpath($FontName), $Text);
 		}
 
-		imagettftext($this->Picture, $FontSize, $Angle, $X, $Y, $this->AllocateColor($Color), realpath($FontName), $Text);
+		imagettftext($this->Picture, $FontSize, $Angle, $X, $Y, $this->AllocateColor($Color->get()), realpath($FontName), $Text);
 		$this->Shadow = $Shadow;
 
 		return $TxtPos;
@@ -1090,7 +1098,7 @@ class pDraw
 				imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowAllocatedColor);
 			}
 
-			imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($Color));
+			imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($Color->get()));
 			return;
 		}
 
@@ -1099,12 +1107,15 @@ class pDraw
 
 		if ($Xi == $X && $Yi == $Y) {
 
-			$this->drawAlphaPixel($X, $Y, $Color);
+			$this->drawAlphaPixel($X, $Y, $Color->get());
 
 		} else {
 
 			$Yleaf = $Y - $Yi;
 			$Xleaf = $X - $Xi;
+			
+			$ColorA = $Color->get();
+			$defaultAlpha = $ColorA[3];
 
 			# Momchil: Fast path: mostly zeros in my test cases
 			# AntialiasQuality does not seem to be in use and is always 0
@@ -1112,39 +1123,46 @@ class pDraw
 			if ($this->AntialiasQuality == 0) {
 				switch(TRUE){
 					case ($Yleaf == 0):
-						$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaMultiply(1 - $Xleaf));
-						$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaMultiply($Xleaf));
+						$ColorA[3] = $defaultAlpha * (1 - $Xleaf);
+						$this->drawAlphaPixel($Xi, $Yi, $ColorA);
+						$ColorA[3] = $defaultAlpha * $Xleaf;
+						$this->drawAlphaPixel($Xi + 1, $Yi, $ColorA);
 						break;
 					case ($Xleaf == 0):
-						$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaMultiply(1 - $Yleaf));
-						$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaMultiply($Yleaf));
+						$ColorA[3] = $defaultAlpha * (1 - $Yleaf);
+						$this->drawAlphaPixel($Xi, $Yi, $ColorA);
+						$ColorA[3] = $defaultAlpha * ($Yleaf);
+						$this->drawAlphaPixel($Xi, $Yi + 1, $ColorA);
 						break;
 					default:
-						$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaMultiply((1 - $Xleaf) * (1 - $Yleaf)));
-						$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaMultiply($Xleaf * (1 - $Yleaf)));
-						$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaMultiply((1 - $Xleaf) * $Yleaf));
-						$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Color->newOne()->AlphaMultiply($Xleaf * $Yleaf));
+						$ColorA[3] = $defaultAlpha * ((1 - $Xleaf) * (1 - $Yleaf));
+						$this->drawAlphaPixel($Xi, $Yi, $ColorA);
+						$ColorA[3] = $defaultAlpha * ($Xleaf * (1 - $Yleaf));
+						$this->drawAlphaPixel($Xi + 1, $Yi, $ColorA);
+						$ColorA[3] = $defaultAlpha * ((1 - $Xleaf) * $Yleaf);
+						$this->drawAlphaPixel($Xi, $Yi + 1, $ColorA);
+						$ColorA[3] = $defaultAlpha * ($Xleaf * $Yleaf);
+						$this->drawAlphaPixel($Xi + 1, $Yi + 1, $ColorA);
 				}
-			} else { # Momchil: no changes here
-				$Alpha = $Color->AlphaGet();
-				$Alpha1 = (1 - $Xleaf) * (1 - $Yleaf) * $Alpha;
-				if ($Alpha1 > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi, $Yi, $Color->newOne()->AlphaSet($Alpha1));
-				}
-
-				$Alpha2 = $Xleaf * (1 - $Yleaf) * $Alpha;
-				if ($Alpha2 > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi + 1, $Yi, $Color->newOne()->AlphaSet($Alpha2));
+			} else {
+				$Color[3] = (1 - $Xleaf) * (1 - $Yleaf) * $defaultAlpha;
+				if ($Color[3] > $this->AntialiasQuality) {
+					$this->drawAlphaPixel($Xi, $Yi, $Color);
 				}
 
-				$Alpha3 = (1 - $Xleaf) * $Yleaf * $Alpha;
-				if ($Alpha3 > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi, $Yi + 1, $Color->newOne()->AlphaSet($Alpha3));
+				$Color[3] = $Xleaf * (1 - $Yleaf) * $defaultAlpha;
+				if ($Color[3] > $this->AntialiasQuality) {
+					$this->drawAlphaPixel($Xi + 1, $Yi, $Color);
 				}
 
-				$Alpha4 = $Xleaf * $Yleaf * $Alpha;
-				if ($Alpha4 > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Color->newOne()->AlphaSet($Alpha4));
+				$Color[3] = (1 - $Xleaf) * $Yleaf * $defaultAlpha;
+				if ($Color[3] > $this->AntialiasQuality) {
+					$this->drawAlphaPixel($Xi, $Yi + 1, $Color);
+				}
+
+				$Color[3] = $Xleaf * $Yleaf * $defaultAlpha;
+				if ($Color[3] > $this->AntialiasQuality) {
+					$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Color);
 				}
 			}
 
@@ -1152,21 +1170,24 @@ class pDraw
 	}
 
 	/* Draw a semi-transparent pixel */
-	private function drawAlphaPixel($X, $Y, $Color) # FAST
+	private function drawAlphaPixel($X, $Y, array $Color) # FAST
 	{
 		if ($this->Shadow) {
-			$myShadow = $this->ShadowColor->newOne()->AlphaMultiply(floor($Color->AlphaGet() / 100));
-			imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($myShadow));
+			$ShadowColorA = $this->ShadowColor->get();
+			$ShadowColorA[3] *= floor($Color[3] / 100);
+			imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($ShadowColorA));
 		}
 
 		imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($Color));
 	}
 
 	/* Allocate a color with transparency */
-	private function allocateColor($Color) # FAST
+	private function allocateColor(array $Color) # FAST
 	{
-		list($R, $G, $B, $A) = $Color->get();
-		return imagecolorallocatealpha($this->Picture, $R, $G, $B, (1.27 * (100 - $A)));
+		($Color[3] < 0)   AND $Color[3] = 0;
+		($Color[3] > 100) AND $Color[3] = 100;
+
+		return imagecolorallocatealpha($this->Picture, $Color[0], $Color[1], $Color[2], (1.27 * (100 - $Color[3])));
 	}
 
 	/* Load a PNG file and draw it over the chart */
@@ -1232,13 +1253,14 @@ class pDraw
 				$this->drawFilledRectangle($X + $this->ShadowX, $Y + $this->ShadowY, $X + $Width + $this->ShadowX, $Y + $Height + $this->ShadowY, ["Color" => $this->ShadowColor]);
 			} else {
 				$TranparentID = imagecolortransparent($Raster);
-				$picShadowColor = $this->ShadowColor->newOne();
+				$ShadowColorA = $this->ShadowColor->get();
+				$defaultAlpha = $ShadowColorA[3];
 				for ($Xc = 0; $Xc <= $Width - 1; $Xc++) {
 					for ($Yc = 0; $Yc <= $Height - 1; $Yc++) {
 						$Values = imagecolorsforindex($Raster, imagecolorat($Raster, $Xc, $Yc));
 						if ($Values["alpha"] < 120) {
-							$picShadowColor->AlphaSet(floor($this->ShadowColor->AlphaGet() * (1 - $Values["alpha"]/127)));
-							$this->drawAlphaPixel($X + $Xc + $this->ShadowX, $Y + $Yc + $this->ShadowY, $picShadowColor);
+							$ShadowColorA[3] = floor($defaultAlpha * (1 - $Values["alpha"]/127));
+							$this->drawAlphaPixel($X + $Xc + $this->ShadowX, $Y + $Yc + $this->ShadowY, $ShadowColorA);
 						}
 					}
 				}
@@ -1301,7 +1323,7 @@ class pDraw
 		($Angle == 180 || $Angle == 360) AND $Points[4] = $Points[2];
 		($Angle == 90 || $Angle == 270) AND $Points[5] = $Points[3];
 
-		$aFillColor = $this->allocateColor($FillColor);
+		$aFillColor = $this->allocateColor($FillColor->get());
 		imagefilledpolygon($this->Picture, $Points, 4, $aFillColor);
 		$this->drawLine($Points[0], $Points[1], $Points[2], $Points[3], $RGB);
 		$this->drawLine($Points[2], $Points[3], $Points[4], $Points[5], $RGB);
@@ -3718,7 +3740,7 @@ class pDraw
 		$Poly = [$X, $Y, $X - 5, $Y - 5, $X + 5, $Y - 5];
 		$this->drawPolygon($Poly, ["Color" => $GradientEndColor,"NoBorder" => TRUE]);
 		/* Outer border */
-		$OuterBorderColor = $this->allocateColor(new pColor(100, 100, 100, $BoxAlpha));
+		$OuterBorderColor = $this->allocateColor([100, 100, 100, $BoxAlpha]);
 		imageline($this->Picture, $XMin, $Y - 5, $X - 5, $Y - 5, $OuterBorderColor);
 		imageline($this->Picture, $X, $Y, $X - 5, $Y - 5, $OuterBorderColor);
 		imageline($this->Picture, $X, $Y, $X + 5, $Y - 5, $OuterBorderColor);
@@ -3728,7 +3750,7 @@ class pDraw
 		imageline($this->Picture, $XMin, $Y - 5 - $BoxHeight, $XMax, $Y - 5 - $BoxHeight, $OuterBorderColor);
 
 		/* Inner border */
-		$InnerBorderColor = $this->allocateColor(new pColor(255, 255, 255, $BoxAlpha));
+		$InnerBorderColor = $this->allocateColor([255, 255, 255, $BoxAlpha]);
 		imageline($this->Picture, $XMin + 1, $Y - 6, $X - 5, $Y - 6, $InnerBorderColor);
 		imageline($this->Picture, $X, $Y - 1, $X - 5, $Y - 6, $InnerBorderColor);
 		imageline($this->Picture, $X, $Y - 1, $X + 5, $Y - 6, $InnerBorderColor);
@@ -3843,7 +3865,7 @@ class pDraw
 
 		if (isset($Format["Color"])){
 			$this->ShadowColor = $Format["Color"];
-			$this->ShadowAllocatedColor = $this->allocateColor($this->ShadowColor);
+			$this->ShadowAllocatedColor = $this->allocateColor($this->ShadowColor->get());
 		}
 	}
 
