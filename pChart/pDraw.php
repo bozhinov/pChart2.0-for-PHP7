@@ -316,7 +316,7 @@ class pDraw
 				$this->drawLine($X1, $Y1 + $Radius, $X1, $Y2 - $Radius, $Options);
 			}
 		} else {
-			$AllocatedColor = $this->allocateColor($Color);
+			$AllocatedColor = $this->allocateColor($Color->get());
 			imageline($this->Picture, $X1 + $Radius, $Y1, $X2 - $Radius, $Y1, $AllocatedColor);
 			imageline($this->Picture, $X2, $Y1 + $Radius, $X2, $Y2 - $Radius, $AllocatedColor);
 			imageline($this->Picture, $X2 - $Radius, $Y2, $X1 + $Radius, $Y2, $AllocatedColor);
@@ -1145,24 +1145,24 @@ class pDraw
 						$this->drawAlphaPixel($Xi + 1, $Yi + 1, $ColorA);
 				}
 			} else {
-				$Color[3] = (1 - $Xleaf) * (1 - $Yleaf) * $defaultAlpha;
-				if ($Color[3] > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi, $Yi, $Color);
+				$ColorA[3] = (1 - $Xleaf) * (1 - $Yleaf) * $defaultAlpha;
+				if ($ColorA[3] > $this->AntialiasQuality) {
+					$this->drawAlphaPixel($Xi, $Yi, $ColorA);
 				}
 
-				$Color[3] = $Xleaf * (1 - $Yleaf) * $defaultAlpha;
-				if ($Color[3] > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi + 1, $Yi, $Color);
+				$ColorA[3] = $Xleaf * (1 - $Yleaf) * $defaultAlpha;
+				if ($ColorA[3] > $this->AntialiasQuality) {
+					$this->drawAlphaPixel($Xi + 1, $Yi, $ColorA);
 				}
 
-				$Color[3] = (1 - $Xleaf) * $Yleaf * $defaultAlpha;
-				if ($Color[3] > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi, $Yi + 1, $Color);
+				$ColorA[3] = (1 - $Xleaf) * $Yleaf * $defaultAlpha;
+				if ($ColorA[3] > $this->AntialiasQuality) {
+					$this->drawAlphaPixel($Xi, $Yi + 1, $ColorA);
 				}
 
-				$Color[3] = $Xleaf * $Yleaf * $defaultAlpha;
-				if ($Color[3] > $this->AntialiasQuality) {
-					$this->drawAlphaPixel($Xi + 1, $Yi + 1, $Color);
+				$ColorA[3] = $Xleaf * $Yleaf * $defaultAlpha;
+				if ($ColorA[3] > $this->AntialiasQuality) {
+					$this->drawAlphaPixel($Xi + 1, $Yi + 1, $ColorA);
 				}
 			}
 
