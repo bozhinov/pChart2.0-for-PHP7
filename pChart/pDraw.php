@@ -145,7 +145,7 @@ class pDraw
 	private $ShadowX = 0; // X Offset of the shadow
 	private $ShadowY = 0; // Y Offset of the shadow
 	private $ShadowColor;
-	private $ShadowColorA;
+	private $ShadowColorAlloc;
 
 	/* Data Set - read only would have been nice to have */
 	public $myData;
@@ -186,7 +186,7 @@ class pDraw
 
 		/* default shadow color */
 		$this->ShadowColor = new pColor(0,0,0,10);
-		$this->ShadowColorA = $this->allocateColor([0,0,0,10]);
+		$this->ShadowColorAlloc = $this->allocateColor([0,0,0,10]);
 
 		/* default font color */
 		$this->FontColor = new pColor(255);
@@ -765,7 +765,7 @@ class pDraw
 
 		if ($this->Antialias == FALSE && is_null($Ticks)) {
 			if ($this->Shadow) {
-				imageline($this->Picture, $X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, $this->ShadowColorA);
+				imageline($this->Picture, $X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, $this->ShadowColorAlloc);
 			}
 
 			imageline($this->Picture, $X1, $Y1, $X2, $Y2, $this->allocateColor($Color->get()));
@@ -997,7 +997,7 @@ class pDraw
 		$X = $X + $X - $TxtPos[$Align]["X"];
 		$Y = $Y + $Y - $TxtPos[$Align]["Y"];
 		if ($this->Shadow) {
-			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowColorA, realpath($FontName), $Text);
+			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowColorAlloc, realpath($FontName), $Text);
 		}
 
 		imagettftext($this->Picture, $FontSize, $Angle, $X, $Y, $this->AllocateColor($Color->get()), realpath($FontName), $Text);
@@ -1095,7 +1095,7 @@ class pDraw
 		if (!$this->Antialias) {
 			if ($this->Shadow) {
 				# That can go out of range
-				imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowColorA);
+				imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowColorAlloc);
 			}
 
 			imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($Color->get()));
@@ -1173,9 +1173,9 @@ class pDraw
 	private function drawAlphaPixel($X, $Y, array $ColorA) # FAST
 	{
 		if ($this->Shadow) {
-			$ShadowColorA = $this->ShadowColor->get();
-			$ShadowColorA[3] *= floor($ColorA[3] / 100);
-			imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($ShadowColorA));
+			$ShadowColorAlloc = $this->ShadowColor->get();
+			$ShadowColorAlloc[3] *= floor($ColorA[3] / 100);
+			imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($ShadowColorAlloc));
 		}
 
 		imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($ColorA));
@@ -1253,14 +1253,14 @@ class pDraw
 				$this->drawFilledRectangle($X + $this->ShadowX, $Y + $this->ShadowY, $X + $Width + $this->ShadowX, $Y + $Height + $this->ShadowY, ["Color" => $this->ShadowColor]);
 			} else {
 				$TranparentID = imagecolortransparent($Raster);
-				$ShadowColorA = $this->ShadowColor->get();
-				$defaultAlpha = $ShadowColorA[3];
+				$ShadowColorAlloc = $this->ShadowColor->get();
+				$defaultAlpha = $ShadowColorAlloc[3];
 				for ($Xc = 0; $Xc <= $Width - 1; $Xc++) {
 					for ($Yc = 0; $Yc <= $Height - 1; $Yc++) {
 						$Values = imagecolorsforindex($Raster, imagecolorat($Raster, $Xc, $Yc));
 						if ($Values["alpha"] < 120) {
-							$ShadowColorA[3] = floor($defaultAlpha * (1 - $Values["alpha"]/127));
-							$this->drawAlphaPixel($X + $Xc + $this->ShadowX, $Y + $Yc + $this->ShadowY, $ShadowColorA);
+							$ShadowColorAlloc[3] = floor($defaultAlpha * (1 - $Values["alpha"]/127));
+							$this->drawAlphaPixel($X + $Xc + $this->ShadowX, $Y + $Yc + $this->ShadowY, $ShadowColorAlloc);
 						}
 					}
 				}
@@ -3865,7 +3865,7 @@ class pDraw
 
 		if (isset($Format["Color"])){
 			$this->ShadowColor = $Format["Color"];
-			$this->ShadowColorA = $this->allocateColor($this->ShadowColor->get());
+			$this->ShadowColorAlloc = $this->allocateColor($this->ShadowColor->get());
 		}
 	}
 
