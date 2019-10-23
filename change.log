@@ -6,7 +6,7 @@
  ¦   Version     : 2.4.0-dev                  ¦
  ¦   Based on code by: Jean-Damien POGOLOTTI  ¦
  ¦   Maintained by   : Momchil Bozhinov       ¦
- ¦   Last Update : 16/10/19                   ¦
+ ¦   Last Update : 23/10/19                   ¦
  ¦                                            ¦
  +--------------------------------------------+
 
@@ -30,8 +30,9 @@
   o Added pDraw->getGraphAreaDiffs()
   o Added pDraw->getGraphAreaCoordinates()
   o Added benchmark script
-  o Cleaned up pColor and pColorGradient classes
   o FIXED: pDraw->setFilter
+  o pColor and pColorGradient classes cleaned up 
+  o pColor converted to array in pDraw private methods. 13% speed improvement
 
  2.3.0 -----------------------------------------------------------------------
   o Introduced pQRCode
