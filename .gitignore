@@ -2,11 +2,9 @@
 php.exe
 php.ini
 php7ts.dll
+php8ts.dll
 php_gd2.dll
 php_pdo_sqlite.dll
-cache/cache.db
-cache/index.db
-cache/sql.cache.db
 cloc-1.80.exe
 libsqlite3.dll
 php7.4/php.webserver.cmd
@@ -29,3 +27,4 @@ QRCode/QRMask.php
 QRCode/QRrsItem.php
 php_xdebug-2.8.0beta2-7.4-vc15-x86_64.dll
 WinCacheGrind.exe
+WinCacheGrind.ini
