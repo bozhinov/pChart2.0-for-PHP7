@@ -36,7 +36,6 @@ class pColor
 				$this->B = $B;
 				$this->Alpha = $Alpha;
 				$this->validateRGB();
-				$this->validateAlpha();
 				break;
 			case 0: # random
 				$this->R = rand(0, 255);
@@ -54,12 +53,6 @@ class pColor
 		($this->R > 255) AND $this->R = 255;
 		($this->G > 255) AND $this->G = 255;
 		($this->B > 255) AND $this->B = 255;
-	}
-
-	private function validateAlpha()
-	{
-		($this->Alpha < 0)   AND $this->Alpha = 0;
-		($this->Alpha > 100) AND $this->Alpha = 100;
 	}
 
 	public function toHex()
@@ -98,16 +91,12 @@ class pColor
 	{
 		$this->Alpha = $howmuch;
 
-		$this->validateAlpha();
-
 		return $this;
 	}
 
 	public function AlphaChange(float $howmuch)
 	{
 		$this->Alpha += $howmuch;
-
-		$this->validateAlpha();
 
 		return $this;
 	}
@@ -122,8 +111,6 @@ class pColor
 	public function AlphaMultiply(float $howmuch)
 	{
 		$this->Alpha = $this->Alpha * $howmuch;
-
-		$this->validateAlpha();
 
 		return $this;
 	}
