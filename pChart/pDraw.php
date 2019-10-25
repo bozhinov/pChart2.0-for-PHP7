@@ -1092,13 +1092,15 @@ class pDraw
 			throw pException::InvalidCoordinates("Trying to draw outside of image dimentions.");
 		}
 
+		$ColorA = $Color->get();
+
 		if (!$this->Antialias) {
 			if ($this->Shadow) {
 				# That can go out of range
 				imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowColorAlloc);
 			}
 
-			imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($Color->get()));
+			imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($ColorA));
 			return;
 		}
 
@@ -1107,19 +1109,15 @@ class pDraw
 
 		if ($Xi == $X && $Yi == $Y) {
 
-			$this->drawAlphaPixel($X, $Y, $Color->get());
+			$this->drawAlphaPixel($X, $Y, $ColorA);
 
 		} else {
 
 			$Yleaf = $Y - $Yi;
 			$Xleaf = $X - $Xi;
-			
-			$ColorA = $Color->get();
+
 			$defaultAlpha = $ColorA[3];
 
-			# Momchil: Fast path: mostly zeros in my test cases
-			# AntialiasQuality does not seem to be in use and is always 0
-			# $Xleaf is always > 0 && $Yleaf > 0 => $AlphaX > 0
 			if ($this->AntialiasQuality == 0) {
 				switch(TRUE){
 					case ($Yleaf == 0):
@@ -1173,9 +1171,9 @@ class pDraw
 	private function drawAlphaPixel($X, $Y, array $ColorA) # FAST
 	{
 		if ($this->Shadow) {
-			$ShadowColorAlloc = $this->ShadowColor->get();
-			$ShadowColorAlloc[3] *= floor($ColorA[3] / 100);
-			imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($ShadowColorAlloc));
+			$ShadowColorA = $this->ShadowColor->get();
+			$ShadowColorA[3] *= floor($ColorA[3] / 100);
+			imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($ShadowColorA));
 		}
 
 		imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($ColorA));
