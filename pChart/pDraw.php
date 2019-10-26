@@ -122,7 +122,7 @@ define("VOID", 0.123456789);
 class pDraw
 {
 	/* GD picture object */
-	private $Picture;	
+	private $Picture;
 	/* Image settings, size, quality, .. */
 	private $XSize = 0; // Width of the picture
 	private $YSize = 0; // Height of the picture
@@ -551,10 +551,10 @@ class pDraw
 		}
 
 		if ($this->Antialias && !$NoBorder) {
-			
+
 			$ColorA = $Color->get();
 			$defaultAlpha = $ColorA[3];
-			
+
 			if ($X1 < $X1c) {
 				$ColorA[3] = $defaultAlpha * ($X1c - $X1);
 				imageline($this->Picture, $X1c - 1, $Y1c, $X1c - 1, $Y2f, $this->allocateColor($ColorA));
@@ -665,7 +665,7 @@ class pDraw
 		$ArrowSize = isset($Format["ArrowSize"]) ? $Format["ArrowSize"] : 10;
 		$ArrowRatio = isset($Format["ArrowRatio"]) ? $Format["ArrowRatio"] : .5;
 		$ArrowTwoHeads = isset($Format["ArrowTwoHeads"]) ? $Format["ArrowTwoHeads"] : FALSE;
-		
+
 		if (is_null($Segments)) {
 			$Length = hypot(($X2 - $X1),($Y2 - $Y1));
 			$Precision = ($Length * 125) / 1000;
@@ -704,7 +704,7 @@ class pDraw
 
 		$Q[$ID]["X"] = $X2;
 		$Q[$ID]["Y"] = $Y2;
-		
+
 		if ($NoDraw) {
 			return $Q;
 		}
@@ -835,7 +835,7 @@ class pDraw
 			}
 
 		}
-		
+
 		return [$Cpt,$Mode];
 	}
 
@@ -872,11 +872,11 @@ class pDraw
 					$Mode ^= 1; # invert
 				}
 
-				if ($Mode) { 
+				if ($Mode) {
 					if (isset($Mask[$Xc])) {
 						if (!in_array($Yc, $Mask[$Xc])) {
 							$this->drawAntialiasPixel($X, $Y, $Color);
-						} 
+						}
 					} else {
 						$this->drawAntialiasPixel($X, $Y, $Color);
 					}
@@ -887,7 +887,7 @@ class pDraw
 				if (isset($Mask[$Xc])) {
 					if (!in_array($Yc, $Mask[$Xc])) {
 						$this->drawAntialiasPixel($X, $Y, $Color);
-					} 
+					}
 				} else {
 					$this->drawAntialiasPixel($X, $Y, $Color);
 				}
@@ -1518,7 +1518,7 @@ class pDraw
 		$XSpacing = 5;
 
 		extract($Format);
-		
+
 		$Data = $this->myData->getData();
 
 		foreach($Data["Series"] as $SerieName => $Serie) {
@@ -1761,7 +1761,7 @@ class pDraw
 		/* Skip a NOTICE event in case of an empty array */
 		($DrawYLines == NONE || $DrawYLines == FALSE) AND $DrawYLines = ["zarma" => "31"];
 		($DrawYLines == ALL) AND $DrawYLines = [ALL];
-		
+
 		$TicksNotZero = ($InnerTickWidth != 0 || $OuterTickWidth != 0);
 		$SkippedTicksNotZero = ($SkippedInnerTickWidth != 0 || $SkippedOuterTickWidth != 0);
 
@@ -1845,7 +1845,7 @@ class pDraw
 							$Value = $Data["Series"][$SerieID]["Data"][$ID];
 							if ($Value > 0) {
 								$PointMax += $Value;
-							} else { 
+							} else {
 								$PointMin += $Value;
 							}
 						}
@@ -2273,7 +2273,7 @@ class pDraw
 						$Height = $this->GraphAreaYdiff - $Parameters["Margin"] * 2;
 						$Step = ($Parameters["Rows"] == 0) ? $Height : $Height / $Parameters["Rows"];
 						$MaxRight = $AxisPos["R"];
-						
+
 						for ($i = 0; $i <= $Parameters["Rows"]; $i++) {
 							$YPos = $this->GraphAreaY1 + $Parameters["Margin"] + $Step * $i;
 							$XPos = $AxisPos["R"];
@@ -3021,7 +3021,7 @@ class pDraw
 	}
 
 	/* Draw a threshold with the computed scale */
-	public function drawThresholdArea($Value1, $Value2, array $Format = []) 
+	public function drawThresholdArea($Value1, $Value2, array $Format = [])
 	{
 		$AxisID = isset($Format["AxisID"]) ? $Format["AxisID"] : 0;
 		$Color = isset($Format["Color"]) ? $Format["Color"] : new pColor(255,0,0,20);
@@ -3691,7 +3691,7 @@ class pDraw
 
 		$CaptionWidth = 0;
 		$CaptionHeight = - $HorizontalMargin;
-		if (isset($Captions["Caption"])){ 
+		if (isset($Captions["Caption"])){
 			$Captions = [$Captions];
 		}
 
@@ -3708,7 +3708,7 @@ class pDraw
 		$XMin = $X - 5 - floor(($BoxWidth - 10) / 2);
 		$XMax = $X + 5 + floor(($BoxWidth - 10) / 2);
 		$RestoreShadow = $this->Shadow;
-		$ShadowX = $this->ShadowX; 
+		$ShadowX = $this->ShadowX;
 
 		if ($this->Shadow) {
 			$this->Shadow = FALSE;
@@ -3973,7 +3973,7 @@ class pDraw
 
 		return $Pos;
 	}
-	
+
 	private function verifyFontDefined()
 	{
 		if (is_null($this->FontName))

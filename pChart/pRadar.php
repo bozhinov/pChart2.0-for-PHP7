@@ -60,7 +60,7 @@ class pRadar
 		$LabelPos = RADAR_LABELS_ROTATED;
 		$LabelPadding = 4;
 		$LineLoopStart = TRUE;
-		$PolyAlpha = 40;		
+		$PolyAlpha = 40;
 		$FontSize = $fontProperties['Size'];
 		$X1 = $GraphAreaCoordinates["L"];
 		$Y1 = $GraphAreaCoordinates["T"];

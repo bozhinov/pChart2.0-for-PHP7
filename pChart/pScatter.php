@@ -463,7 +463,7 @@ class pScatter
 		foreach($Data["ScatterSeries"] as $Series) {
 			if ($Series["isDrawable"]) {
 
-				$PosArrayX = $this->getPosArray($Data["Series"][$Series["X"]]["Data"], $Data["Series"][$Series["X"]]["Axis"]);	
+				$PosArrayX = $this->getPosArray($Data["Series"][$Series["X"]]["Data"], $Data["Series"][$Series["X"]]["Axis"]);
 				$PosArrayY = $this->getPosArray($Data["Series"][$Series["Y"]]["Data"], $Data["Series"][$Series["Y"]]["Axis"]);
 
 				$Settings = ["Color" => $Series["Color"]];
@@ -1008,7 +1008,7 @@ class pScatter
 		if ($DisableShadowOnArea && $ShadowSpec['Enabled']) {
 			$this->myPicture->setShadow(FALSE);
 		}
-		
+
 		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 		$Margin = $Data["Axis"][$AxisID]["Margin"];
 

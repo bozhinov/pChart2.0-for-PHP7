@@ -124,7 +124,7 @@ class pBubble
 
 		$this->myPicture->myData->resetSeriesColors();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
-		
+
 		if ($XDivs == 0) {
 			$XStep = 0;
 		} else {
