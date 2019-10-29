@@ -31,6 +31,7 @@
   o Added pDraw->getFont()
   o Added pDraw->getGraphAreaDiffs()
   o Added pDraw->getGraphAreaCoordinates()
+  o Added pData->setAxisProperties()
   o Added benchmark script
   o FIXED: pDraw->setFilter
   o pColor and pColorGradient classes cleaned up 

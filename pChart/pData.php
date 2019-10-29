@@ -507,6 +507,29 @@ class pData
 		}
 	}
 
+	/* Combination of setAxisDisplay, setAxisPosition, setAxisUnit, setAxisName, setAxisColor & setAxisXY */
+	public function setAxisProperties(int $AxisID, array $Props)
+	{
+		if (isset($this->Data["Axis"][$AxisID])) {
+			
+			(isset($Props["Unit"])) 	AND $this->Data["Axis"][$AxisID]["Unit"] 	 = strval($Props["Unit"]);
+			(isset($Props["Name"])) 	AND $this->Data["Axis"][$AxisID]["Name"] 	 = strval($Props["Name"]);
+			(isset($Props["Display"])) 	AND $this->Data["Axis"][$AxisID]["Display"]  = intval($Props["Display"]);
+			(isset($Props["Format"])) 	AND $this->Data["Axis"][$AxisID]["Format"] 	 = strval($Props["Format"]);
+			(isset($Props["Position"])) AND $this->Data["Axis"][$AxisID]["Position"] = intval($Props["Position"]);
+			(isset($Props["Identity"])) AND $this->Data["Axis"][$AxisID]["Identity"] = intval($Props["Identity"]);
+			if (isset($Props["Color"])) {
+				if ($Props["Color"] instanceof pColor){
+					$this->Data["Axis"][$AxisID]["Color"] = $Props["Color"];
+				} else {
+					throw pException::InvalidInput("Invalid Color format");
+				}				
+			}
+		} else {
+			throw pException::InvalidInput("Invalid serie ID");
+		}
+	}
+
 	/* Associate an unit to an axis */
 	public function setAxisUnit(int $AxisID, string $Unit)
 	{
