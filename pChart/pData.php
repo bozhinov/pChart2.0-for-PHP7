@@ -198,10 +198,10 @@ class pData
 	/* Set the properties of the X Axis */
 	public function setXAxisProperties($Props)
 	{
-		(isset($Props["Name"])) 	AND $this->Data["XAxis"]["Name"] 	= strval($Props["Name"]);
-		(isset($Props["Display"])) 	AND $this->Data["XAxis"]["Display"] = intval($Props["Display"]);
-		(isset($Props["Format"])) 	AND $this->Data["XAxis"]["Format"] 	= $Props["Format"];
-		(isset($Props["Unit"])) 	AND $this->Data["XAxis"]["Unit"] 	= strval($Props["Unit"]);
+		(isset($Props["Name"]))    AND $this->Data["XAxis"]["Name"]    = strval($Props["Name"]);
+		(isset($Props["Display"])) AND $this->Data["XAxis"]["Display"] = intval($Props["Display"]);
+		(isset($Props["Format"]))  AND $this->Data["XAxis"]["Format"]  = $Props["Format"];
+		(isset($Props["Unit"]))    AND $this->Data["XAxis"]["Unit"]    = strval($Props["Unit"]);
 	}
 
 	/* Set the serie that will be used as abscissa */
@@ -512,10 +512,10 @@ class pData
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
 			
-			(isset($Props["Unit"])) 	AND $this->Data["Axis"][$AxisID]["Unit"] 	 = strval($Props["Unit"]);
-			(isset($Props["Name"])) 	AND $this->Data["Axis"][$AxisID]["Name"] 	 = strval($Props["Name"]);
-			(isset($Props["Display"])) 	AND $this->Data["Axis"][$AxisID]["Display"]  = intval($Props["Display"]);
-			(isset($Props["Format"])) 	AND $this->Data["Axis"][$AxisID]["Format"] 	 = strval($Props["Format"]);
+			(isset($Props["Unit"]))     AND $this->Data["Axis"][$AxisID]["Unit"] 	 = strval($Props["Unit"]);
+			(isset($Props["Name"]))     AND $this->Data["Axis"][$AxisID]["Name"] 	 = strval($Props["Name"]);
+			(isset($Props["Display"]))  AND $this->Data["Axis"][$AxisID]["Display"]  = intval($Props["Display"]);
+			(isset($Props["Format"]))   AND $this->Data["Axis"][$AxisID]["Format"] 	 = strval($Props["Format"]);
 			(isset($Props["Position"])) AND $this->Data["Axis"][$AxisID]["Position"] = intval($Props["Position"]);
 			(isset($Props["Identity"])) AND $this->Data["Axis"][$AxisID]["Identity"] = intval($Props["Identity"]);
 			if (isset($Props["Color"])) {
