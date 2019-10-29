@@ -22,6 +22,7 @@
   o BC: pScatter->drawScatterScale($Format["DrawYLines"]) accepts array now
   o BC: pDraw->drawScale($Format["DrawYLines"]) accepts array now
   o BC: pData->setAxisDisplay with AXIS_FORMAT_CUSTOM uses anonymous func as a param
+  o BC: Removed pData->importFromCSV()
   o Added pDraw->gettheImage()
   o Added pDraw->getShadow()
   o Added pDraw->restoreShadow()
