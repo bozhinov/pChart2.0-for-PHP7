@@ -2420,11 +2420,11 @@ class pDraw
 							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters["Display"], $Parameters["Format"], $Parameters["Unit"]);
 							$BGColor = ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2;
 
-							if (!is_null($LastY) && $CycleBackground && ($DrawYLines == ALL || in_array($AxisID, $DrawYLines))) {
+							if (!is_null($LastY) && $CycleBackground && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
 								$this->drawFilledRectangle($this->GraphAreaX1 + $FloatingOffset, $LastY, $this->GraphAreaX2 - $FloatingOffset, $YPos, $BGColor);
 							}
 
-							if ($DrawYLines == ALL || in_array($AxisID, $DrawYLines)) {
+							if ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines)) {
 								$this->drawLine($this->GraphAreaX1 + $FloatingOffset, $YPos, $this->GraphAreaX2 - $FloatingOffset, $YPos, $GridColor);
 							}
 
@@ -2477,11 +2477,11 @@ class pDraw
 							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters["Display"], $Parameters["Format"], $Parameters["Unit"]);
 							$BGColor = ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2;
 
-							if (!is_null($LastX) && $CycleBackground && ($DrawYLines == ALL || in_array($AxisID, $DrawYLines))) {
+							if (!is_null($LastX) && $CycleBackground && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
 								$this->drawFilledRectangle($LastX, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $BGColor);
 							}
 
-							if ($DrawYLines == ALL || in_array($AxisID, $DrawYLines)) {
+							if ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines)) {
 								$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $GridColor);
 							}
 
@@ -2531,11 +2531,11 @@ class pDraw
 							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters["Display"], $Parameters["Format"], $Parameters["Unit"]);
 							$BGColor = ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2;
 
-							if (!is_null($LastX) && $CycleBackground && ($DrawYLines == ALL || in_array($AxisID, $DrawYLines))) {
+							if (!is_null($LastX) && $CycleBackground && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
 								$this->drawFilledRectangle($LastX, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $BGColor);
 							}
 
-							if ($DrawYLines == ALL || in_array($AxisID, $DrawYLines)) {
+							if ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines)) {
 								$this->drawLine($XPos, $this->GraphAreaY1 + $FloatingOffset, $XPos, $this->GraphAreaY2 - $FloatingOffset, $GridColor);
 							}
 
