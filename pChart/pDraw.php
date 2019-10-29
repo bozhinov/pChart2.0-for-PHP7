@@ -425,6 +425,7 @@ class pDraw
 			}
 		}
 
+		$ColorAlloc = $this->allocateColor($Color->get());
 		foreach($Positions as $Yp => $Bounds) {
 			$X1 = $Bounds["X1"];
 			$X1Dec = $this->getFirstDecimal($X1);
@@ -438,7 +439,7 @@ class pDraw
 				$X2 = floor($X2) - 1;
 			}
 
-			imageline($this->Picture, $X1, $Yp, $X2, $Yp, $this->allocateColor($Color->get()));
+			imageline($this->Picture, $X1, $Yp, $X2, $Yp, $ColorAlloc);
 		}
 
 		$this->drawFilledRectangle($X1, $MinY + 1, floor($X2), $MaxY - 1, $Format);
@@ -489,6 +490,7 @@ class pDraw
 		$Dash = isset($Format["Dash"]) ? $Format["Dash"] : FALSE;
 		$DashStep = isset($Format["DashStep"]) ? $Format["DashStep"] : 4;
 		$DashColor = isset($Format["DashColor"]) ? $Format["DashColor"] : new pColor(0,0,0,$Color->AlphaGet());
+		$DashColorAlloc = $this->allocateColor($DashColor->get());
 
 		($X1 > $X2) AND list($X1, $X2) = [$X2,$X1];
 		($Y1 > $Y2) AND list($Y1, $Y2) = [$Y2,$Y1];
@@ -504,14 +506,14 @@ class pDraw
 			$this->drawFilledRectangle($X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, ["Color" => $this->ShadowColor,"Ticks" => $Ticks,"NoAngle" => $NoAngle]);
 		}
 
-		$AllocatedColor = $this->allocateColor($Color->get());
+		$ColorAlloc = $this->allocateColor($Color->get());
 
 		if ($NoAngle) {
-			imagefilledrectangle($this->Picture, $X1c + 1, $Y1c, $X2f - 1, $Y2f, $AllocatedColor);
-			imageline($this->Picture, $X1c, $Y1c + 1, $X1c, $Y2f - 1, $AllocatedColor);
-			imageline($this->Picture, $X2f, $Y1c + 1, $X2f, $Y2f - 1, $AllocatedColor);
+			imagefilledrectangle($this->Picture, $X1c + 1, $Y1c, $X2f - 1, $Y2f, $ColorAlloc);
+			imageline($this->Picture, $X1c, $Y1c + 1, $X1c, $Y2f - 1, $ColorAlloc);
+			imageline($this->Picture, $X2f, $Y1c + 1, $X2f, $Y2f - 1, $ColorAlloc);
 		} else {
-			imagefilledrectangle($this->Picture, $X1c, $Y1c, $X2f, $Y2f, $AllocatedColor);
+			imagefilledrectangle($this->Picture, $X1c, $Y1c, $X2f, $Y2f, $ColorAlloc);
 		}
 
 		if ($Dash) {
@@ -546,7 +548,7 @@ class pDraw
 					$Yb = $Y;
 				}
 
-				imageline($this->Picture, $Xa, $Ya, $Xb, $Yb, $this->allocateColor($DashColor->get()));
+				imageline($this->Picture, $Xa, $Ya, $Xb, $Yb, $DashColorAlloc);
 			}
 		}
 
@@ -918,7 +920,7 @@ class pDraw
 		}
 
 		$Mask = [];
-		$AllocatedColor = $this->allocateColor($Color->get());
+		$ColorAlloc = $this->allocateColor($Color->get());
 		for ($i = 0; $i <= $Radius * 2; $i++) {
 			$Slice = sqrt($Radius * $Radius - ($Radius - $i) * ($Radius - $i));
 			$XPos = floor($Slice);
@@ -926,7 +928,7 @@ class pDraw
 			#$AAlias = $Slice - floor($Slice); # Momchil: UNUSED
 			$Mask[$X - $XPos][] = $YPos;
 			$Mask[$X + $XPos][] = $YPos;
-			imageline($this->Picture, $X - $XPos, $YPos, $X + $XPos, $YPos, $AllocatedColor);
+			imageline($this->Picture, $X - $XPos, $YPos, $X + $XPos, $YPos, $ColorAlloc);
 		}
 
 		if ($this->Antialias) {
@@ -1000,7 +1002,7 @@ class pDraw
 			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowColorAlloc, realpath($FontName), $Text);
 		}
 
-		imagettftext($this->Picture, $FontSize, $Angle, $X, $Y, $this->AllocateColor($Color->get()), realpath($FontName), $Text);
+		imagettftext($this->Picture, $FontSize, $Angle, $X, $Y, $this->allocateColor($Color->get()), realpath($FontName), $Text);
 		$this->Shadow = $Shadow;
 
 		return $TxtPos;
@@ -1321,8 +1323,8 @@ class pDraw
 		($Angle == 180 || $Angle == 360) AND $Points[4] = $Points[2];
 		($Angle == 90 || $Angle == 270) AND $Points[5] = $Points[3];
 
-		$aFillColor = $this->allocateColor($FillColor->get());
-		imagefilledpolygon($this->Picture, $Points, 4, $aFillColor);
+		$fillColorAlloc = $this->allocateColor($FillColor->get());
+		imagefilledpolygon($this->Picture, $Points, 4, $fillColorAlloc);
 		$this->drawLine($Points[0], $Points[1], $Points[2], $Points[3], $RGB);
 		$this->drawLine($Points[2], $Points[3], $Points[4], $Points[5], $RGB);
 		$this->drawLine($Points[0], $Points[1], $Points[4], $Points[5], $RGB);
@@ -1338,7 +1340,7 @@ class pDraw
 			($Angle == 180 || $Angle == 360) AND $Points[4] = $Points[2];
 			($Angle == 90 || $Angle == 270) AND $Points[5] = $Points[3];
 
-			imagefilledpolygon($this->Picture, $Points, 4, $aFillColor);
+			imagefilledpolygon($this->Picture, $Points, 4, $fillColorAlloc);
 			$this->drawLine($Points[0], $Points[1], $Points[2], $Points[3], $RGB);
 			$this->drawLine($Points[2], $Points[3], $Points[4], $Points[5], $RGB);
 			$this->drawLine($Points[0], $Points[1], $Points[4], $Points[5], $RGB);
