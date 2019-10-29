@@ -267,6 +267,7 @@ class pData
 			(isset($Props["Picture"]))	AND $this->Data["ScatterSeries"][$ID]["Picture"]     = strval($Props["Picture"]);
 			(isset($Props["Drawable"]))	AND $this->Data["ScatterSeries"][$ID]["Drawable"]    = boolval($Props["Drawable"]);
 			(isset($Props["Ticks"]))	AND $this->Data["ScatterSeries"][$ID]["Ticks"]	     = intval($Props["Ticks"]);
+			(isset($Props["Weight"]))	AND $this->Data["ScatterSeries"][$ID]["Weight"]	     = intval($Props["Weight"]);
 			if (isset($Props["Color"])) {
 				if ($Props["Color"] instanceof pColor){
 					$this->Data["ScatterSeries"][$ID]["Color"] = $Props["Color"];
