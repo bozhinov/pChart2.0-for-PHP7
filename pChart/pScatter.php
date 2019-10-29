@@ -39,9 +39,9 @@ class pScatter
 
 		$Data = $this->myPicture->myData->getData();
 
-		foreach($Data["Axis"] as $AxisSettings) {
-			($AxisSettings["Identity"] == AXIS_X) AND $GotXAxis = TRUE;
-			($AxisSettings["Identity"] == AXIS_Y) AND $GotYAxis = TRUE;
+		foreach($Data["Axis"] as $AxisProps) {
+			($AxisProps["Identity"] == AXIS_X) AND $GotXAxis = TRUE;
+			($AxisProps["Identity"] == AXIS_Y) AND $GotYAxis = TRUE;
 		}
 
 		if (!$GotXAxis) {
@@ -87,8 +87,8 @@ class pScatter
 		($DrawYLines == NONE) AND $DrawYLines = ["zarma" => "31"];
 
 		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
-		foreach($Data["Axis"] as $AxisID => $AxisSettings) {
-			if ($AxisSettings["Identity"] == AXIS_X) {
+		foreach($Data["Axis"] as $AxisID => $AxisProps) {
+			if ($AxisProps["Identity"] == AXIS_X) {
 				$Width = $Xdiff - $XMargin * 2;
 			} else {
 				$Width = $Ydiff - $YMargin * 2;
@@ -124,7 +124,7 @@ class pScatter
 				$Scale = $this->myPicture->computeScale($Data["Axis"][$AxisID]["Min"], $Data["Axis"][$AxisID]["Max"], $MaxDivs, $Factors, $AxisID);
 			}
 
-			$Data["Axis"][$AxisID]["Margin"] = $AxisSettings["Identity"] == AXIS_X ? $XMargin : $YMargin;
+			$Data["Axis"][$AxisID]["Margin"] = $AxisProps["Identity"] == AXIS_X ? $XMargin : $YMargin;
 			$Data["Axis"][$AxisID]["ScaleMin"] = $Scale["XMin"];
 			$Data["Axis"][$AxisID]["ScaleMax"] = $Scale["XMax"];
 			$Data["Axis"][$AxisID]["Rows"] = $Scale["Rows"];
@@ -139,10 +139,10 @@ class pScatter
 		$AxisPos = $this->myPicture->getGraphAreaCoordinates();
 		$StartPos = $AxisPos;
 
-		foreach($Data["Axis"] as $AxisID => $AxisSettings) {
-			if (isset($AxisSettings["Color"])) {
-				$AxisColor = $AxisSettings["Color"];
-				$TickColor = $AxisSettings["Color"];
+		foreach($Data["Axis"] as $AxisID => $AxisProps) {
+			if (isset($AxisProps["Color"])) {
+				$AxisColor = $AxisProps["Color"];
+				$TickColor = $AxisProps["Color"];
 				$this->myPicture->setFontProperties(["Color" => $AxisColor]);
 			} else {
 				$AxisColor = $AxisoColor;
@@ -152,8 +152,8 @@ class pScatter
 				$this->myPicture->setFontProperties(["Color" => $fontProperties['Color']]);
 			}
 
-			if ($AxisSettings["Identity"] == AXIS_X) {
-				if ($AxisSettings["Position"] == AXIS_POSITION_BOTTOM) {
+			if ($AxisProps["Identity"] == AXIS_X) {
+				if ($AxisProps["Position"] == AXIS_POSITION_BOTTOM) {
 					if ($XLabelsRotation == 0) {
 						$LabelAlign = TEXT_ALIGN_TOPMIDDLE;
 						$LabelOffset = 2;
@@ -176,25 +176,25 @@ class pScatter
 
 					if ($Floating) {
 						$FloatingOffset = $YMargin;
-						$this->myPicture->drawLine($StartPos["L"] + $AxisSettings["Margin"], $AxisPos["B"], $StartPos["R"] - $AxisSettings["Margin"], $AxisPos["B"], ["Color" => $AxisColor]);
+						$this->myPicture->drawLine($StartPos["L"] + $AxisProps["Margin"], $AxisPos["B"], $StartPos["R"] - $AxisProps["Margin"], $AxisPos["B"], ["Color" => $AxisColor]);
 					} else {
 						$FloatingOffset = 0;
 						$this->myPicture->drawLine($StartPos["L"], $AxisPos["B"], $StartPos["R"], $AxisPos["B"], ["Color" => $AxisColor]);
 					}
 
 					if ($DrawArrows) {
-						$this->myPicture->drawArrow($StartPos["R"] - $AxisSettings["Margin"], $AxisPos["B"], $StartPos["R"] + ($ArrowSize * 2), $AxisPos["B"], ["FillColor" => $AxisColor,"Size" => $ArrowSize]);
+						$this->myPicture->drawArrow($StartPos["R"] - $AxisProps["Margin"], $AxisPos["B"], $StartPos["R"] + ($ArrowSize * 2), $AxisPos["B"], ["FillColor" => $AxisColor,"Size" => $ArrowSize]);
 					}
 
-					$Width = $Xdiff - $AxisSettings["Margin"] * 2;
-					$Step = $Width / $AxisSettings["Rows"];
+					$Width = $Xdiff - $AxisProps["Margin"] * 2;
+					$Step = $Width / $AxisProps["Rows"];
 					$SubTicksSize = $Step / 2;
 					$MaxBottom = $AxisPos["B"];
 					$LastX = NULL;
-					for ($i = 0; $i <= $AxisSettings["Rows"]; $i++) {
-						$XPos = $StartPos["L"] + $AxisSettings["Margin"] + $Step * $i;
+					for ($i = 0; $i <= $AxisProps["Rows"]; $i++) {
+						$XPos = $StartPos["L"] + $AxisProps["Margin"] + $Step * $i;
 						$YPos = $AxisPos["B"];
-						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings);
+						$Value = $this->myPicture->scaleFormat($AxisProps["ScaleMin"] + $AxisProps["RowHeight"] * $i, $AxisProps);
 
 						if (!is_null($LastX) && $CycleBackground && ($DrawXLines == [ALL] || in_array($AxisID, $DrawXLines))) {
 							$this->myPicture->drawFilledRectangle($LastX, $StartPos["T"] + $FloatingOffset, $XPos, $StartPos["B"] - $FloatingOffset, ["Color" => ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2]);
@@ -204,7 +204,7 @@ class pScatter
 							$this->myPicture->drawLine($XPos, $StartPos["T"] + $FloatingOffset, $XPos, $StartPos["B"] - $FloatingOffset, ["Color" => $GridColor,"Ticks" => $GridTicks]);
 						}
 
-						if ($DrawSubTicks && $i != $AxisSettings["Rows"]){
+						if ($DrawSubTicks && $i != $AxisProps["Rows"]){
 							$this->myPicture->drawLine($XPos + $SubTicksSize, $YPos - $InnerSubTickWidth, $XPos + $SubTicksSize, $YPos + $OuterSubTickWidth, ["Color" => $SubTickColor]);
 						}
 
@@ -215,16 +215,16 @@ class pScatter
 						$LastX = $XPos;
 					}
 
-					if (isset($AxisSettings["Name"])) {
+					if (isset($AxisProps["Name"])) {
 						$YPos = $MaxBottom + 2;
 						$XPos = $StartPos["L"] + $Xdiff / 2;
-						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"], ["Align" => TEXT_ALIGN_TOPMIDDLE]);
+						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisProps["Name"], ["Align" => TEXT_ALIGN_TOPMIDDLE]);
 						$MaxBottom = $Bounds[0]["Y"];
 					}
 
 					$AxisPos["B"] = $MaxBottom + $ScaleSpacing;
 
-				} elseif ($AxisSettings["Position"] == AXIS_POSITION_TOP) {
+				} elseif ($AxisProps["Position"] == AXIS_POSITION_TOP) {
 
 					if ($XLabelsRotation == 0) {
 						$LabelAlign = TEXT_ALIGN_BOTTOMMIDDLE;
@@ -248,25 +248,25 @@ class pScatter
 
 					if ($Floating) {
 						$FloatingOffset = $YMargin;
-						$this->myPicture->drawLine($StartPos["L"] + $AxisSettings["Margin"], $AxisPos["T"], $StartPos["R"] - $AxisSettings["Margin"], $AxisPos["T"], ["Color" => $AxisColor]);
+						$this->myPicture->drawLine($StartPos["L"] + $AxisProps["Margin"], $AxisPos["T"], $StartPos["R"] - $AxisProps["Margin"], $AxisPos["T"], ["Color" => $AxisColor]);
 					} else {
 						$FloatingOffset = 0;
 						$this->myPicture->drawLine($StartPos["L"], $AxisPos["T"], $StartPos["R"], $AxisPos["T"], ["Color" => $AxisColor]);
 					}
 
 					if ($DrawArrows) {
-						$this->myPicture->drawArrow($StartPos["R"] - $AxisSettings["Margin"], $AxisPos["T"], $StartPos["R"] + ($ArrowSize * 2), $AxisPos["T"], ["FillColor" => $AxisColor,"Size" => $ArrowSize]);
+						$this->myPicture->drawArrow($StartPos["R"] - $AxisProps["Margin"], $AxisPos["T"], $StartPos["R"] + ($ArrowSize * 2), $AxisPos["T"], ["FillColor" => $AxisColor,"Size" => $ArrowSize]);
 					}
 
-					$Width = $Xdiff - $AxisSettings["Margin"] * 2;
-					$Step = $Width / $AxisSettings["Rows"];
+					$Width = $Xdiff - $AxisProps["Margin"] * 2;
+					$Step = $Width / $AxisProps["Rows"];
 					$SubTicksSize = $Step / 2;
 					$MinTop = $AxisPos["T"];
 					$LastX = NULL;
-					for ($i = 0; $i <= $AxisSettings["Rows"]; $i++) {
-						$XPos = $StartPos["L"] + $AxisSettings["Margin"] + $Step * $i;
+					for ($i = 0; $i <= $AxisProps["Rows"]; $i++) {
+						$XPos = $StartPos["L"] + $AxisProps["Margin"] + $Step * $i;
 						$YPos = $AxisPos["T"];
-						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings);
+						$Value = $this->myPicture->scaleFormat($AxisProps["ScaleMin"] + $AxisProps["RowHeight"] * $i, $AxisProps);
 
 						if (!is_null($LastX) && $CycleBackground && ($DrawXLines == [ALL] || in_array($AxisID, $DrawXLines))) {
 							$this->myPicture->drawFilledRectangle($LastX, $StartPos["T"] + $FloatingOffset, $XPos, $StartPos["B"] - $FloatingOffset, ["Color" => ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2]);
@@ -276,7 +276,7 @@ class pScatter
 							$this->myPicture->drawLine($XPos, $StartPos["T"] + $FloatingOffset, $XPos, $StartPos["B"] - $FloatingOffset, ["Color" => $GridColor,"Ticks" => $GridTicks]);
 						}
 
-						if ($DrawSubTicks && $i != $AxisSettings["Rows"]) {
+						if ($DrawSubTicks && $i != $AxisProps["Rows"]) {
 							$this->myPicture->drawLine($XPos + $SubTicksSize, $YPos - $OuterSubTickWidth, $XPos + $SubTicksSize, $YPos + $InnerSubTickWidth, ["Color" => $SubTickColor]);
 						}
 
@@ -287,39 +287,39 @@ class pScatter
 						$LastX = $XPos;
 					}
 
-					if (isset($AxisSettings["Name"])) {
+					if (isset($AxisProps["Name"])) {
 						$YPos = $MinTop - 2;
 						$XPos = $StartPos["L"] + $Xdiff / 2;
-						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
+						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisProps["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
 						$MinTop = $Bounds[2]["Y"];
 					}
 
 					$AxisPos["T"] = $MinTop - $ScaleSpacing;
 				}
 
-			} elseif ($AxisSettings["Identity"] == AXIS_Y) {
-				if ($AxisSettings["Position"] == AXIS_POSITION_LEFT) {
+			} elseif ($AxisProps["Identity"] == AXIS_Y) {
+				if ($AxisProps["Position"] == AXIS_POSITION_LEFT) {
 					if ($Floating) {
 						$FloatingOffset = $XMargin;
-						$this->myPicture->drawLine($AxisPos["L"], $StartPos["T"] + $AxisSettings["Margin"], $AxisPos["L"], $StartPos["B"] - $AxisSettings["Margin"], ["Color" => $AxisColor]);
+						$this->myPicture->drawLine($AxisPos["L"], $StartPos["T"] + $AxisProps["Margin"], $AxisPos["L"], $StartPos["B"] - $AxisProps["Margin"], ["Color" => $AxisColor]);
 					} else {
 						$FloatingOffset = 0;
 						$this->myPicture->drawLine($AxisPos["L"], $StartPos["T"], $AxisPos["L"], $StartPos["B"], ["Color" => $AxisColor]);
 					}
 
 					if ($DrawArrows) {
-						$this->myPicture->drawArrow($AxisPos["L"], $StartPos["T"] + $AxisSettings["Margin"], $AxisPos["L"], $StartPos["T"] - ($ArrowSize * 2), ["FillColor" => $AxisColor,"Size" => $ArrowSize]);
+						$this->myPicture->drawArrow($AxisPos["L"], $StartPos["T"] + $AxisProps["Margin"], $AxisPos["L"], $StartPos["T"] - ($ArrowSize * 2), ["FillColor" => $AxisColor,"Size" => $ArrowSize]);
 					}
 
-					$Height = $Ydiff - $AxisSettings["Margin"] * 2;
-					$Step = $Height / $AxisSettings["Rows"];
+					$Height = $Ydiff - $AxisProps["Margin"] * 2;
+					$Step = $Height / $AxisProps["Rows"];
 					$SubTicksSize = $Step / 2;
 					$MinLeft = $AxisPos["L"];
 					$LastY = NULL;
-					for ($i = 0; $i <= $AxisSettings["Rows"]; $i++) {
-						$YPos = $StartPos["B"] - $AxisSettings["Margin"] - $Step * $i;
+					for ($i = 0; $i <= $AxisProps["Rows"]; $i++) {
+						$YPos = $StartPos["B"] - $AxisProps["Margin"] - $Step * $i;
 						$XPos = $AxisPos["L"];
-						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings);
+						$Value = $this->myPicture->scaleFormat($AxisProps["ScaleMin"] + $AxisProps["RowHeight"] * $i, $AxisProps);
 
 						if (!is_null($LastY) && $CycleBackground && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
 							$this->myPicture->drawFilledRectangle($StartPos["L"] + $FloatingOffset, $LastY, $StartPos["R"] - $FloatingOffset, $YPos, ["Color" => ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2]);
@@ -329,7 +329,7 @@ class pScatter
 							$this->myPicture->drawLine($StartPos["L"] + $FloatingOffset, $YPos, $StartPos["R"] - $FloatingOffset, $YPos, ["Color" => $GridColor,"Ticks" => $GridTicks]);
 						}
 
-						if ($DrawSubTicks && $i != $AxisSettings["Rows"]) {
+						if ($DrawSubTicks && $i != $AxisProps["Rows"]) {
 							 $this->myPicture->drawLine($XPos - $OuterSubTickWidth, $YPos - $SubTicksSize, $XPos + $InnerSubTickWidth, $YPos - $SubTicksSize, ["Color" => $SubTickColor]);
 						}
 
@@ -340,36 +340,36 @@ class pScatter
 						$LastY = $YPos;
 					}
 
-					if (isset($AxisSettings["Name"])) {
+					if (isset($AxisProps["Name"])) {
 						$XPos = $MinLeft - 2;
 						$YPos = $StartPos["T"] + $Ydiff / 2;
-						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"],["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 90]);
+						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisProps["Name"],["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 90]);
 						$MinLeft = $Bounds[2]["X"];
 					}
 
 					$AxisPos["L"] = $MinLeft - $ScaleSpacing;
-				} elseif ($AxisSettings["Position"] == AXIS_POSITION_RIGHT) {
+				} elseif ($AxisProps["Position"] == AXIS_POSITION_RIGHT) {
 					if ($Floating) {
 						$FloatingOffset = $XMargin;
-						$this->myPicture->drawLine($AxisPos["R"], $StartPos["T"] + $AxisSettings["Margin"], $AxisPos["R"], $StartPos["B"] - $AxisSettings["Margin"], ["Color" => $AxisColor]);
+						$this->myPicture->drawLine($AxisPos["R"], $StartPos["T"] + $AxisProps["Margin"], $AxisPos["R"], $StartPos["B"] - $AxisProps["Margin"], ["Color" => $AxisColor]);
 					} else {
 						$FloatingOffset = 0;
 						$this->myPicture->drawLine($AxisPos["R"], $StartPos["T"], $AxisPos["R"], $StartPos["B"], ["Color" => $AxisColor]);
 					}
 
 					if ($DrawArrows) {
-						$this->myPicture->drawArrow($AxisPos["R"], $StartPos["T"] + $AxisSettings["Margin"], $AxisPos["R"], $StartPos["T"] - ($ArrowSize * 2), ["FillColor" => $AxisColor,"Size" => $ArrowSize]);
+						$this->myPicture->drawArrow($AxisPos["R"], $StartPos["T"] + $AxisProps["Margin"], $AxisPos["R"], $StartPos["T"] - ($ArrowSize * 2), ["FillColor" => $AxisColor,"Size" => $ArrowSize]);
 					}
 
-					$Height = $Ydiff - $AxisSettings["Margin"] * 2;
-					$Step = $Height / $AxisSettings["Rows"];
+					$Height = $Ydiff - $AxisProps["Margin"] * 2;
+					$Step = $Height / $AxisProps["Rows"];
 					$SubTicksSize = $Step / 2;
 					$MaxLeft = $AxisPos["R"];
 					$LastY = NULL;
-					for ($i = 0; $i <= $AxisSettings["Rows"]; $i++) {
-						$YPos = $StartPos["B"] - $AxisSettings["Margin"] - $Step * $i;
+					for ($i = 0; $i <= $AxisProps["Rows"]; $i++) {
+						$YPos = $StartPos["B"] - $AxisProps["Margin"] - $Step * $i;
 						$XPos = $AxisPos["R"];
-						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings);
+						$Value = $this->myPicture->scaleFormat($AxisProps["ScaleMin"] + $AxisProps["RowHeight"] * $i, $AxisProps);
 
 						if (!is_null($LastY) && $CycleBackground && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
 							$this->myPicture->drawFilledRectangle($StartPos["L"] + $FloatingOffset, $LastY, $StartPos["R"] - $FloatingOffset, $YPos, ["Color" => ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2]);
@@ -379,7 +379,7 @@ class pScatter
 							$this->myPicture->drawLine($StartPos["L"] + $FloatingOffset, $YPos, $StartPos["R"] - $FloatingOffset, $YPos, ["Color" => $GridColor,"Ticks" => $GridTicks]);
 						}
 
-						if ($DrawSubTicks && $i != $AxisSettings["Rows"]) {
+						if ($DrawSubTicks && $i != $AxisProps["Rows"]) {
 							$this->myPicture->drawLine($XPos - $InnerSubTickWidth, $YPos - $SubTicksSize, $XPos + $OuterSubTickWidth, $YPos - $SubTicksSize, ["Color" => $SubTickColor]);
 						}
 						
@@ -390,10 +390,10 @@ class pScatter
 						$LastY = $YPos;
 					}
 
-					if (isset($AxisSettings["Name"])) {
+					if (isset($AxisProps["Name"])) {
 						$XPos = $MaxLeft + 6;
 						$YPos = $StartPos["T"] + $Ydiff / 2;
-						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisSettings["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 270]);
+						$Bounds = $this->myPicture->drawText($XPos, $YPos, $AxisProps["Name"], ["Align" => TEXT_ALIGN_BOTTOMMIDDLE,"Angle" => 270]);
 						$MaxLeft = $Bounds[2]["X"];
 					}
 
