@@ -3502,7 +3502,7 @@ class pDraw
 						if (!empty($ForceLabels)) {
 							$Caption = isset($ForceLabels[$Key]) ? $ForceLabels[$Key] : "Not set";
 						} else {
-							$Caption = $this->scaleFormat($Value, $Data["Axis"][$AxisID], $Data["Axis"][$AxisID], $Data["Axis"][$AxisID]);
+							$Caption = $this->scaleFormat($Value, $Data["Axis"][$AxisID]);
 						}
 
 						if ($forStackedChart) {

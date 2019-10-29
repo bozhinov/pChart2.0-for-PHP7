@@ -65,11 +65,6 @@ class pCharts
 		return $XStep;
 	}
 
-	public function setAxisName(int $AxisID, string $Name)
-	{
-		$this->myPicture->myData->setAxisName($AxisID, $Name);
-	}
-
 	public function setSerieDrawable(string $Serie, bool $Drawable = TRUE)
 	{
 		$this->myPicture->myData->setSerieDrawable($Serie, $Drawable);
@@ -1664,7 +1659,7 @@ class pCharts
 							if ($DisplayValues) {
 								$BarWidth = abs($X2 - $X1) - $FontFactor;
 								$BarHeight = $YSize + ($YOffset / 2) - $FontFactor / 2;
-								$Caption = $this->myPicture->scaleFormat(round($Serie["Data"][$Key], $DisplayRound), $Mode, $Format, $Unit);
+								$Caption = $this->myPicture->scaleFormat(round($Serie["Data"][$Key], $DisplayRound), $Data["Axis"][$AxisID]);
 								$TxtPos = $this->myPicture->getTextBox(0, 0, $DisplayFont, $DisplaySize, 0, $Caption);
 								$TxtHeight = abs($TxtPos[2]["Y"] - $TxtPos[0]["Y"]);
 								$TxtWidth = abs($TxtPos[1]["X"] - $TxtPos[0]["X"]);

@@ -55,7 +55,7 @@ $myPicture->setGraphArea(60,220,660,360);
 /* Draw the scale */
 $pCharts->setSerieDrawable("Temperature",FALSE);
 $pCharts->setSerieDrawable("Pressure",TRUE);
-$pCharts->setAxisName(0,"Pressure");
+$myPicture->myData->setAxisName(0,"Pressure");
 
 $myPicture->drawScale(["DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);
 
