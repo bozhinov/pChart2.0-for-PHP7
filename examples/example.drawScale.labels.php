@@ -53,8 +53,8 @@ $pCharts->drawBarChart(["Surrounding"=>-30,"InnerSurrounding"=>30]);
 $myPicture->setGraphArea(60,220,660,360);
 
 /* Draw the scale */
-$pCharts->setSerieDrawable("Temperature",FALSE);
-$pCharts->setSerieDrawable("Pressure",TRUE);
+$myPicture->myData->setSerieDrawable("Temperature",FALSE);
+$myPicture->myData->setSerieDrawable("Pressure",TRUE);
 $myPicture->myData->setAxisName(0,"Pressure");
 
 $myPicture->drawScale(["DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);

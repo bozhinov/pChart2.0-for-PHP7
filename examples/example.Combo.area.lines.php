@@ -55,12 +55,12 @@ $myPicture->setAntialias(TRUE);
 $pCharts = new pCharts($myPicture);
 
 /* Draw the area chart */
-$pCharts->setSerieDrawable("Probe 1",TRUE);
-$pCharts->setSerieDrawable("Probe 2",FALSE);
+$myPicture->myData->setSerieDrawable("Probe 1",TRUE);
+$myPicture->myData->setSerieDrawable("Probe 2",FALSE);
 
 $pCharts->drawAreaChart();
 
-$pCharts->setSerieDrawable("Probe 2",TRUE);
+$myPicture->myData->setSerieDrawable("Probe 2",TRUE);
 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 

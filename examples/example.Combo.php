@@ -51,7 +51,7 @@ $myPicture->setFontProperties(["FontSize"=>8]);
 $pCharts = new pCharts($myPicture);
 
 /* Draw the bar chart chart */
-$pCharts->setSerieDrawable("Last year",FALSE);
+$myPicture->myData->setSerieDrawable("Last year",FALSE);
 $pCharts->drawBarChart();
 
 /* Turn on anti-aliasing */
@@ -60,8 +60,8 @@ $myPicture->setAntialias(TRUE);
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
 
 /* Draw the line and plot chart */
-$pCharts->setSerieDrawable("Last year",TRUE);
-$pCharts->setSerieDrawable("This year",FALSE);
+$myPicture->myData->setSerieDrawable("Last year",TRUE);
+$myPicture->myData->setSerieDrawable("This year",FALSE);
 $pCharts->drawSplineChart();
 
 $myPicture->setShadow(FALSE);

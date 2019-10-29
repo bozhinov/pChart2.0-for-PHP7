@@ -65,11 +65,6 @@ class pCharts
 		return $XStep;
 	}
 
-	public function setSerieDrawable(string $Serie, bool $Drawable = TRUE)
-	{
-		$this->myPicture->myData->setSerieDrawable($Serie, $Drawable);
-	}
-
 	/* Draw a plot chart */
 	public function drawPlotChart(array $Format = [])
 	{
