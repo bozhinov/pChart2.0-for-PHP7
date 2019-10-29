@@ -32,6 +32,7 @@
   o Added pDraw->getGraphAreaDiffs()
   o Added pDraw->getGraphAreaCoordinates()
   o Added pData->setAxisProperties()
+  o Added pData->setScatterSerieProperties()
   o Added benchmark script
   o FIXED: pDraw->setFilter
   o pColor and pColorGradient classes cleaned up 

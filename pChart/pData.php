@@ -249,6 +249,36 @@ class pData
 		}
 	}
 
+	/* Combination of 
+		setScatterSerieShape
+		setScatterSerieDescription
+		setScatterSeriePicture
+		setScatterSerieDrawable
+		setScatterSerieTicks
+		setScatterSerieWeight
+		setScatterSerieColor
+	*/
+	public function setScatterSerieProperties(int $ID, array $Props)
+	{
+		if (isset($this->Data["ScatterSeries"][$ID])) {
+
+			(isset($Props["Shape"]))	AND $this->Data["ScatterSeries"][$ID]["Shape"]	     = intval($Props["Shape"]);
+			(isset($Props["Description"]))	AND $this->Data["ScatterSeries"][$ID]["Description"] = strval($Props["Description"]);
+			(isset($Props["Picture"]))	AND $this->Data["ScatterSeries"][$ID]["Picture"]     = strval($Props["Picture"]);
+			(isset($Props["Drawable"]))	AND $this->Data["ScatterSeries"][$ID]["Drawable"]    = boolval($Props["Drawable"]);
+			(isset($Props["Ticks"]))	AND $this->Data["ScatterSeries"][$ID]["Ticks"]	     = intval($Props["Ticks"]);
+			if (isset($Props["Color"])) {
+				if ($Props["Color"] instanceof pColor){
+					$this->Data["ScatterSeries"][$ID]["Color"] = $Props["Color"];
+				} else {
+					throw pException::InvalidInput("Invalid Color format");
+				}
+			}
+		} else {
+			throw pException::InvalidInput("Invalid serie ID");
+		}
+	}
+
 	/* Set the shape of a given scatter serie */
 	public function setScatterSerieShape(int $ID, int $Shape = SERIE_SHAPE_FILLEDCIRCLE)
 	{
@@ -511,7 +541,7 @@ class pData
 	public function setAxisProperties(int $AxisID, array $Props)
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
-			
+
 			(isset($Props["Unit"]))     AND $this->Data["Axis"][$AxisID]["Unit"] 	 = strval($Props["Unit"]);
 			(isset($Props["Name"]))     AND $this->Data["Axis"][$AxisID]["Name"] 	 = strval($Props["Name"]);
 			(isset($Props["Display"]))  AND $this->Data["Axis"][$AxisID]["Display"]  = intval($Props["Display"]);
@@ -523,7 +553,7 @@ class pData
 					$this->Data["Axis"][$AxisID]["Color"] = $Props["Color"];
 				} else {
 					throw pException::InvalidInput("Invalid Color format");
-				}				
+				}
 			}
 		} else {
 			throw pException::InvalidInput("Invalid serie ID");
