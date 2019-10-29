@@ -210,7 +210,7 @@ class pBubble
 		$AxisID = $Data["Series"][$SerieName]["Axis"];
 		$Value = $Data["Series"][$SerieName]["Data"][$Point];
 		$Pos = $this->myPicture->scaleComputeYSingle($Value, $AxisID);
-		$Value = $this->myPicture->scaleFormat($Value, $Data["Axis"][$AxisID]["Display"], $Data["Axis"][$AxisID]["Format"], $Data["Axis"][$AxisID]["Unit"]);
+		$Value = $this->myPicture->scaleFormat($Value, $Data["Axis"][$AxisID]);
 		$Description = (isset($Data["Series"][$SerieName]["Description"])) ? $Data["Series"][$SerieName]["Description"] : "No description";
 		$Abscissa = (isset($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Point])) ? $Data["Series"][$Data["Abscissa"]]["Data"][$Point]." : " : "";
 		$Series = ["Format" => $Data["Series"][$SerieName]["Color"],"Caption" => $Abscissa . $Value . " / " . $Data["Series"][$SerieWeightName]["Data"][$Point]];

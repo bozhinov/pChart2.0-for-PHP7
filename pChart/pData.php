@@ -35,10 +35,12 @@ class pData
 		];
 
 		$this->Data = [
-			"XAxisDisplay" => AXIS_FORMAT_DEFAULT,
-			"XAxisFormat" => NULL,
-			"XAxisName" => NULL,
-			"XAxisUnit" => NULL,
+			"XAxis" => [
+				"Display" => AXIS_FORMAT_DEFAULT,
+				"Format" => NULL,
+				"Name" => NULL,
+				"Unit" => NULL
+			],
 			"Abscissa" => NULL,
 			"AbsicssaPosition" => AXIS_POSITION_BOTTOM,
 			"Axis" => [0 => [
@@ -193,23 +195,13 @@ class pData
 		}
 	}
 
-	/* Set the name of the X Axis */
-	public function setXAxisName(string $Name)
+	/* Set the properties of the X Axis */
+	public function setXAxisProperties($Props)
 	{
-		$this->Data["XAxisName"] = $Name;
-	}
-
-	/* Set the display mode of the  X Axis */
-	public function setXAxisDisplay(int $Mode, $Format = NULL)
-	{
-		$this->Data["XAxisDisplay"] = $Mode;
-		$this->Data["XAxisFormat"] = $Format;
-	}
-
-	/* Set the unit that will be displayed on the X axis */
-	public function setXAxisUnit(string $Unit)
-	{
-		$this->Data["XAxisUnit"] = $Unit;
+		(isset($Props["Name"])) 	AND $this->Data["XAxis"]["Name"] 	= strval($Props["Name"]);
+		(isset($Props["Display"])) 	AND $this->Data["XAxis"]["Display"] = intval($Props["Display"]);
+		(isset($Props["Format"])) 	AND $this->Data["XAxis"]["Format"] 	= $Props["Format"];
+		(isset($Props["Unit"])) 	AND $this->Data["XAxis"]["Unit"] 	= strval($Props["Unit"]);
 	}
 
 	/* Set the serie that will be used as abscissa */

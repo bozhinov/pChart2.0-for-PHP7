@@ -8,5 +8,6 @@ cloc-1.80.exe
 php.webserver.cmd
 Barcodes/*
 QRCode/*
+temp/*
 php_xdebug*
 WinCacheGrind*

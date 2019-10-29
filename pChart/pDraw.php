@@ -1888,7 +1888,7 @@ class pDraw
 				} */
 			} else {
 				$Points = 0;
-				/* $AxisName = isset($Data["XAxisName"]) ? $Data["XAxisName"] : NULL; */
+				/* $AxisName = isset($Data["XAxis"]["Name"]) ? $Data["XAxis"]["Name"] : NULL; */
 				foreach($Data["Series"] as $SerieParameter) {
 					if ($SerieParameter["isDrawable"]) {
 						$Points = max($Points, count($SerieParameter["Data"]));
@@ -1988,13 +1988,13 @@ class pDraw
 							$YPos = $AxisPos["B"];
 							if (!is_null($Abscissa)) {
 								if (isset($Data["Series"][$Abscissa]["Data"][$i])) {
-									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
+									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["XAxis"]);
 								} else {
 									$Value = "";
 								}
 							} else {
 								if (isset($Parameters["ScaleMin"]) && isset($Parameters["RowHeight"])) {
-									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
+									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxis"]);
 								} else {
 									$Value = $i;
 								}
@@ -2084,13 +2084,13 @@ class pDraw
 							$YPos = $AxisPos["T"];
 							if (!is_null($Abscissa)) {
 								if (isset($Data["Series"][$Abscissa]["Data"][$i])) {
-									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
+									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["XAxis"]);
 								} else {
 									$Value = "";
 								}
 							} else {
 								if (isset($Parameters["ScaleMin"]) && isset($Parameters["RowHeight"])) {
-									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
+									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxis"]);
 								} else {
 									$Value = $i;
 								}
@@ -2183,13 +2183,13 @@ class pDraw
 							$XPos = $AxisPos["L"];
 							if (!is_null($Abscissa)) {
 								if (isset($Data["Series"][$Abscissa]["Data"][$i])) {
-									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
+									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["XAxis"]);
 								} else {
 									$Value = "";
 								}
 							} else {
 								if (isset($Parameters["ScaleMin"]) && isset($Parameters["RowHeight"])) {
-									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
+									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxis"]);
 								} else {
 									$Value = strval($i);
 								}
@@ -2279,13 +2279,13 @@ class pDraw
 							$XPos = $AxisPos["R"];
 							if (!is_null($Abscissa)) {
 								if (isset($Data["Series"][$Abscissa]["Data"][$i])) {
-									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
+									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["XAxis"]);
 								} else {
 									$Value = "";
 								}
 							} else {
 								if (isset($Parameters["ScaleMin"]) && isset($Parameters["RowHeight"])) {
-									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
+									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxis"]);
 								} else {
 									$Value = strval($i);
 								}
@@ -2362,7 +2362,7 @@ class pDraw
 						for ($i = 0; $i <= $Parameters["Rows"]; $i++) {
 							$YPos = $this->GraphAreaY2 - $Parameters["Margin"] - $Step * $i;
 							$XPos = $AxisPos["L"];
-							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters["Display"], $Parameters["Format"], $Parameters["Unit"]);
+							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters);
 							$BGColor = ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2;
 
 							if (!is_null($LastY) && $CycleBackground && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
@@ -2417,7 +2417,7 @@ class pDraw
 						for ($i = 0; $i <= $Parameters["Rows"]; $i++) {
 							$YPos = $this->GraphAreaY2 - $Parameters["Margin"] - $Step * $i;
 							$XPos = $AxisPos["R"];
-							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters["Display"], $Parameters["Format"], $Parameters["Unit"]);
+							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters);
 							$BGColor = ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2;
 
 							if (!is_null($LastY) && $CycleBackground && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
@@ -2474,7 +2474,7 @@ class pDraw
 						for ($i = 0; $i <= $Parameters["Rows"]; $i++) {
 							$XPos = $this->GraphAreaX1 + $Parameters["Margin"] + $Step * $i;
 							$YPos = $AxisPos["T"];
-							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters["Display"], $Parameters["Format"], $Parameters["Unit"]);
+							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters);
 							$BGColor = ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2;
 
 							if (!is_null($LastX) && $CycleBackground && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
@@ -2528,7 +2528,7 @@ class pDraw
 						for ($i = 0; $i <= $Parameters["Rows"]; $i++) {
 							$XPos = $this->GraphAreaX1 + $Parameters["Margin"] + $Step * $i;
 							$YPos = $AxisPos["B"];
-							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters["Display"], $Parameters["Format"], $Parameters["Unit"]);
+							$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Parameters);
 							$BGColor = ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2;
 
 							if (!is_null($LastX) && $CycleBackground && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
@@ -2690,7 +2690,7 @@ class pDraw
 					$LastLabel = "zob";
 					$ScaleOK = TRUE;
 					for ($i = 0; $i <= $Rows; $i++) {
-						$Label = $this->scaleFormat(($XMin + $i * $RowHeight), AXIS_FORMAT_METRIC, $Decimals);
+						$Label = $this->scaleFormat(($XMin + $i * $RowHeight), ["Display" => $Mode, "Format" => NULL, "Unit" => $Decimals]);
 						($LastLabel == $Label) AND $ScaleOK = FALSE;
 						$LastLabel = $Label;
 					}
@@ -3188,7 +3188,7 @@ class pDraw
 	}
 
 	/* Format the axis values */
-	public function scaleFormat($Value, $Mode = NULL, $Format = NULL, $Unit = NULL)
+	public function scaleFormat($Value, array $XAxis)
 	{
 		if ($Value == VOID) {
 			return "";
@@ -3196,9 +3196,9 @@ class pDraw
 
 		# Momchil: this is not the same as default for the switch
 		# $Value comes as an INT or FLOAT but is used as a STRING as well
-		$ret = strval($Value) . $Unit;
-		
-		switch ($Mode) {
+		$ret = strval($Value) . $XAxis["Unit"];
+
+		switch ($XAxis["Display"]) {
 			case AXIS_FORMAT_TRAFFIC:
 				if ($Value == 0) {
 					$ret = "0B";
@@ -3216,26 +3216,26 @@ class pDraw
 				}
 				break;
 			case AXIS_FORMAT_CUSTOM:
-				if (is_callable($Format)) {
-					$ret = $Format($Value);
+				if (is_callable($XAxis["Format"])) {
+					$ret = $XAxis["Format"]($Value);
 				}
 				break;
 			case AXIS_FORMAT_DATE:
-				$ret = gmdate((is_null($Format)) ? "d/m/Y" : $Format, $Value);
+				$ret = gmdate((is_null($XAxis["Format"])) ? "d/m/Y" : $XAxis["Format"], $Value);
 				break;
 			case AXIS_FORMAT_TIME:
-				$ret = gmdate((is_null($Format)) ? "H:i:s" : $Format, $Value);
+				$ret = gmdate((is_null($XAxis["Format"])) ? "H:i:s" : $XAxis["Format"], $Value);
 				break;
 			case AXIS_FORMAT_CURRENCY:
-				$ret = $Format . number_format($Value, 2);
+				$ret = $XAxis["Format"] . number_format($Value, 2);
 				break;
 			case AXIS_FORMAT_METRIC:
 				if (abs($Value) >= 1000) {
-					$ret = (round($Value / 1000, $Format) . "k" . $Unit);
+					$ret = (round($Value / 1000, $XAxis["Format"]) . "k" . $XAxis["Unit"]);
 				} elseif (abs($Value) > 1000000) {
-					$ret = (round($Value / 1000000, $Format) . "m" . $Unit);
+					$ret = (round($Value / 1000000, $XAxis["Format"]) . "m" . $XAxis["Unit"]);
 				} elseif (abs($Value) > 1000000000) {
-					$ret = (round($Value / 1000000000, $Format) . "g" . $Unit);
+					$ret = (round($Value / 1000000000, $XAxis["Format"]) . "g" . $XAxis["Unit"]);
 				}
 				break;
 		}
@@ -3297,9 +3297,6 @@ class pDraw
 				$MinPos = array_search($MinValue, $Serie["Data"]);
 				$MaxPos = array_search($MaxValue, $Serie["Data"]);
 				$AxisID = $Serie["Axis"];
-				$Mode = $Data["Axis"][$AxisID]["Display"];
-				$Format = $Data["Axis"][$AxisID]["Format"];
-				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$SerieOffset = $Serie["XOffset"];
 
@@ -3319,7 +3316,7 @@ class pDraw
 						}
 
 						$XPos = $X + $MaxPos * $XStep + $SerieOffset;
-						$Label = $MaxLabelTxt . $this->scaleFormat(round($MaxValue, $Decimals), $Mode, $Format, $Unit);
+						$Label = $MaxLabelTxt . $this->scaleFormat(round($MaxValue, $Decimals), $Data["Axis"][$AxisID]);
 						$TxtPos = $this->getTextBox($XPos, $YPos, $this->FontName, $this->FontSize, 0, $Label);
 						$XOffset = 0;
 						$YOffset = 0;
@@ -3346,7 +3343,7 @@ class pDraw
 						}
 
 						$XPos = $X + $MinPos * $XStep + $SerieOffset;
-						$Label = $MinLabelTxt . $this->scaleFormat(round($MinValue, $Decimals), $Mode, $Format, $Unit);
+						$Label = $MinLabelTxt . $this->scaleFormat(round($MinValue, $Decimals), $Data["Axis"][$AxisID]);
 						$TxtPos = $this->getTextBox($XPos, $YPos, $this->FontName, $this->FontSize, 0, $Label);
 						$XOffset = 0;
 						$YOffset = 0;
@@ -3377,7 +3374,7 @@ class pDraw
 						}
 
 						$XPos = $X + $MaxPos * $XStep + $SerieOffset;
-						$Label = $MaxLabelTxt . $this->scaleFormat($MaxValue, $Mode, $Format, $Unit);
+						$Label = $MaxLabelTxt . $this->scaleFormat($MaxValue, $Data["Axis"][$AxisID]);
 						$TxtPos = $this->getTextBox($YPos, $XPos, $this->FontName, $this->FontSize, 0, $Label);
 						$XOffset = 0;
 						$YOffset = 0;
@@ -3404,7 +3401,7 @@ class pDraw
 						}
 
 						$XPos = $X + $MinPos * $XStep + $SerieOffset;
-						$Label = $MinLabelTxt . $this->scaleFormat($MinValue, $Mode, $Format, $Unit);
+						$Label = $MinLabelTxt . $this->scaleFormat($MinValue, $Data["Axis"][$AxisID]);
 						$TxtPos = $this->getTextBox($YPos, $XPos, $this->FontName, $this->FontSize, 0, $Label);
 						$XOffset = 0;
 						$YOffset = 0;
@@ -3474,7 +3471,7 @@ class pDraw
 						$AxisID = $Data["Series"][$SerieName]["Axis"];
 
 						if (isset($Data["Abscissa"]) && $AbscissaDataSet) {
-							$XLabel = $this->scaleFormat($Data["Series"][$Data["Abscissa"]]["Data"][$Index], $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
+							$XLabel = $this->scaleFormat($Data["Series"][$Data["Abscissa"]]["Data"][$Index], $Data["XAxis"]);
 						} else {
 							$XLabel = "";
 						}
@@ -3505,7 +3502,7 @@ class pDraw
 						if (!empty($ForceLabels)) {
 							$Caption = isset($ForceLabels[$Key]) ? $ForceLabels[$Key] : "Not set";
 						} else {
-							$Caption = $this->scaleFormat($Value, $Data["Axis"][$AxisID]["Display"], $Data["Axis"][$AxisID]["Format"], $Data["Axis"][$AxisID]["Unit"]);
+							$Caption = $this->scaleFormat($Value, $Data["Axis"][$AxisID], $Data["Axis"][$AxisID], $Data["Axis"][$AxisID]);
 						}
 
 						if ($forStackedChart) {
@@ -3561,7 +3558,7 @@ class pDraw
 						$AxisID = $Data["Series"][$SerieName]["Axis"];
 
 						if (isset($Data["Abscissa"]) && $AbscissaDataSet) {
-							$XLabel = $this->scaleFormat($Data["Series"][$Data["Abscissa"]]["Data"][$Index], $Data["XAxisDisplay"], $Data["XAxisFormat"], $Data["XAxisUnit"]);
+							$XLabel = $this->scaleFormat($Data["Series"][$Data["Abscissa"]]["Data"][$Index], $Data["XAxis"]);
 						} else {
 							$XLabel = "";
 						}
@@ -3594,7 +3591,7 @@ class pDraw
 						if (!empty($ForceLabels)) { # Momchil: example.drawLabel.caption.php shows these correspond to Index and not Serie
 							$Caption = isset($ForceLabels[$Key]) ? $ForceLabels[$Key] : "Not set";
 						} else {
-							$Caption = $this->scaleFormat($Value, $Data["Axis"][$AxisID]["Display"],  $Data["Axis"][$AxisID]["Format"], $Data["Axis"][$AxisID]["Unit"]);
+							$Caption = $this->scaleFormat($Value, $Data["Axis"][$AxisID]);
 						}
 
 						if ($forStackedChart) {

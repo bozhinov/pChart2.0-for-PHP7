@@ -194,7 +194,7 @@ class pScatter
 					for ($i = 0; $i <= $AxisSettings["Rows"]; $i++) {
 						$XPos = $StartPos["L"] + $AxisSettings["Margin"] + $Step * $i;
 						$YPos = $AxisPos["B"];
-						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings["Display"], $AxisSettings["Format"], $AxisSettings["Unit"]);
+						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings);
 
 						if (!is_null($LastX) && $CycleBackground && ($DrawXLines == [ALL] || in_array($AxisID, $DrawXLines))) {
 							$this->myPicture->drawFilledRectangle($LastX, $StartPos["T"] + $FloatingOffset, $XPos, $StartPos["B"] - $FloatingOffset, ["Color" => ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2]);
@@ -266,7 +266,7 @@ class pScatter
 					for ($i = 0; $i <= $AxisSettings["Rows"]; $i++) {
 						$XPos = $StartPos["L"] + $AxisSettings["Margin"] + $Step * $i;
 						$YPos = $AxisPos["T"];
-						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings["Display"], $AxisSettings["Format"], $AxisSettings["Unit"]);
+						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings);
 
 						if (!is_null($LastX) && $CycleBackground && ($DrawXLines == [ALL] || in_array($AxisID, $DrawXLines))) {
 							$this->myPicture->drawFilledRectangle($LastX, $StartPos["T"] + $FloatingOffset, $XPos, $StartPos["B"] - $FloatingOffset, ["Color" => ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2]);
@@ -319,7 +319,7 @@ class pScatter
 					for ($i = 0; $i <= $AxisSettings["Rows"]; $i++) {
 						$YPos = $StartPos["B"] - $AxisSettings["Margin"] - $Step * $i;
 						$XPos = $AxisPos["L"];
-						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings["Display"], $AxisSettings["Format"], $AxisSettings["Unit"]);
+						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings);
 
 						if (!is_null($LastY) && $CycleBackground && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
 							$this->myPicture->drawFilledRectangle($StartPos["L"] + $FloatingOffset, $LastY, $StartPos["R"] - $FloatingOffset, $YPos, ["Color" => ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2]);
@@ -369,7 +369,7 @@ class pScatter
 					for ($i = 0; $i <= $AxisSettings["Rows"]; $i++) {
 						$YPos = $StartPos["B"] - $AxisSettings["Margin"] - $Step * $i;
 						$XPos = $AxisPos["R"];
-						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings["Display"], $AxisSettings["Format"], $AxisSettings["Unit"]);
+						$Value = $this->myPicture->scaleFormat($AxisSettings["ScaleMin"] + $AxisSettings["RowHeight"] * $i, $AxisSettings);
 
 						if (!is_null($LastY) && $CycleBackground && ($DrawYLines == [ALL] || in_array($AxisID, $DrawYLines))) {
 							$this->myPicture->drawFilledRectangle($StartPos["L"] + $FloatingOffset, $LastY, $StartPos["R"] - $FloatingOffset, $YPos, ["Color" => ($i % 2 == 1) ? $BackgroundColor1 : $BackgroundColor2]);
@@ -867,10 +867,10 @@ class pScatter
 			}
 
 			$XValue = (is_null($Decimals)) ? $SerieValuesX[$Point] : round($SerieValuesX[$Point], $Decimals);
-			$XValue = $this->myPicture->scaleFormat($XValue, $Data["Axis"][$SerieXAxis]["Display"], $Data["Axis"][$SerieXAxis]["Format"], $Data["Axis"][$SerieXAxis]["Unit"]);
+			$XValue = $this->myPicture->scaleFormat($XValue, $Data["Axis"][$SerieXAxis]);
 
 			$YValue = (is_null($Decimals)) ? $SerieValuesY[$Point] : round($SerieValuesY[$Point], $Decimals);
-			$YValue = $this->myPicture->scaleFormat($YValue, $Data["Axis"][$SerieYAxis]["Display"], $Data["Axis"][$SerieYAxis]["Format"], $Data["Axis"][$SerieYAxis]["Unit"]);
+			$YValue = $this->myPicture->scaleFormat($YValue, $Data["Axis"][$SerieYAxis]);
 
 			$Description = (isset($Series["Description"])) ? $Series["Description"] : "No description";
 			$this->myPicture->drawLabelBox($X, $Y - 3, $Description, ["Format" => $Series["Color"],"Caption" => $XValue . " / " . $YValue], $Format);

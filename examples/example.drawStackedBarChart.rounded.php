@@ -18,7 +18,7 @@ $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->myData->addPoints([4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],"Time");
 $myPicture->myData->setSerieDescription("Time","Hour of the day");
 $myPicture->myData->setAbscissa("Time");
-$myPicture->myData->setXAxisUnit("h");
+$myPicture->myData->setXAxisProperties(["Unit" => "h"]);
 
 /* Draw the background */
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);

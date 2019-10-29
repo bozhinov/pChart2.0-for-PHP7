@@ -122,9 +122,6 @@ class pCharts
 
 				$AxisID = $Serie["Axis"];
 				$Shape = $Serie["Shape"];
-				$Mode = $Data["Axis"][$AxisID]["Display"];
-				$Format = $Data["Axis"][$AxisID]["Format"];
-				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$Data["Series"][$SerieName]["XOffset"] = 0;
 
@@ -139,7 +136,7 @@ class pCharts
 							$this->myPicture->drawText(
 								$X,
 								$Y - $DisplayOffset - $SerieWeight - $BorderSize - $PicOffset,
-								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
+								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]),
 								["Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 							);
 						}
@@ -164,7 +161,7 @@ class pCharts
 							$this->myPicture->drawText(
 								$X + $DisplayOffset + $SerieWeight + $BorderSize + $PicOffset,
 								$Y,
-								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
+								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]),
 								["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 							);
 						}
@@ -215,9 +212,6 @@ class pCharts
 					$DisplayColor = $Serie["Color"];
 				}
 
-				$Mode = $Data["Axis"][$Serie["Axis"]]["Display"];
-				$Format = $Data["Axis"][$Serie["Axis"]]["Format"];
-				$Unit = $Data["Axis"][$Serie["Axis"]]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$Data["Series"][$SerieName]["XOffset"] = 0;
 
@@ -240,7 +234,7 @@ class pCharts
 							$this->myPicture->drawText(
 								$X,
 								$Y - $DisplayOffset,
-								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
+								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$Serie["Axis"]]),
 								["Color" => $DisplayColor, "Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 							);
 						}
@@ -277,7 +271,7 @@ class pCharts
 						if ($DisplayValues) {
 							$this->myPicture->drawText(
 								$X + $DisplayOffset,
-								$Y, $this->myPicture->scaleFormat($Serie["Data"][$Key],$Mode, $Format, $Unit),
+								$Y, $this->myPicture->scaleFormat($Serie["Data"][$Key],$Data["Axis"][$Serie["Axis"]]),
 								["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 							);
 						}
@@ -336,9 +330,6 @@ class pCharts
 				}
 
 				$AxisID = $Serie["Axis"];
-				$Mode = $Data["Axis"][$AxisID]["Display"];
-				$Format = $Data["Axis"][$AxisID]["Format"];
-				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				if ($AroundZero) {
 					$YZero = $this->myPicture->scaleComputeYSingle(0, $AxisID);
@@ -373,7 +364,7 @@ class pCharts
 
 					foreach($PosArray as $Key => $Y) {
 						if ($DisplayValues) {
-							$this->myPicture->drawText($X, $Y - $DisplayOffset, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
+							$this->myPicture->drawText($X, $Y - $DisplayOffset, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]), ["Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]);
 						}
 
 						if ($Y == VOID) {
@@ -442,7 +433,7 @@ class pCharts
 							$this->myPicture->drawText(
 								$X + $DisplayOffset,
 								$Y,
-								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
+								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]),
 								["Angle" => 270,"Color" => $DisplayColor, "Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 							);
 						}
@@ -538,9 +529,6 @@ class pCharts
 				$BreakSettings["Color"]->AlphaSet(100);
 
 				$AxisID = $Serie["Axis"];
-				$Mode = $Data["Axis"][$AxisID]["Display"];
-				$Format = $Data["Axis"][$AxisID]["Format"];
-				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$Data["Series"][$SerieName]["XOffset"] = 0;
 
@@ -569,7 +557,7 @@ class pCharts
 							$this->myPicture->drawText(
 								$X,
 								$Y - $Offset - $Weight,
-								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
+								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]),
 								["Color" => $DisplayColor,"Align" => $Align]
 							);
 						}
@@ -604,7 +592,7 @@ class pCharts
 							$this->myPicture->drawText(
 								$X + $DisplayOffset + $Weight,
 								$Y,
-								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),
+								$this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]),
 								["Angle" => 270,"Color" => $DisplayColor,"Align" => TEXT_ALIGN_BOTTOMMIDDLE]
 							);
 						}
@@ -735,9 +723,6 @@ class pCharts
 				}
 
 				$AxisID = $Serie["Axis"];
-				$Mode = $Data["Axis"][$AxisID]["Display"];
-				$Format = $Data["Axis"][$AxisID]["Format"];
-				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$LineSettings = ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$Data["Series"][$SerieName]["XOffset"] = 0;
@@ -764,7 +749,7 @@ class pCharts
 								$Offset = - $DisplayOffset;
 							}
 
-							$this->myPicture->drawText($X, $Y - $Offset - $Weight, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => $Align]);
+							$this->myPicture->drawText($X, $Y - $Offset - $Weight, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]), ["Color" => $DisplayColor,"Align" => $Align]);
 						}
 
 						if ($Y != VOID){
@@ -827,7 +812,7 @@ class pCharts
 								$Offset = - $DisplayOffset;
 							}
 
-							$this->myPicture->drawText($X + $Offset + $Weight, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => $Align]);
+							$this->myPicture->drawText($X + $Offset + $Weight, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]), ["Color" => $DisplayColor,"Align" => $Align]);
 						}
 
 						if ($X != VOID){
@@ -1059,9 +1044,6 @@ class pCharts
 				}
 
 				$AxisID = $Serie["Axis"];
-				$Mode = $Data["Axis"][$AxisID]["Display"];
-				$Format = $Data["Axis"][$AxisID]["Format"];
-				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
 				foreach($Threshold as $Key => $Params) {
@@ -1098,7 +1080,7 @@ class pCharts
 								$Offset = - $DisplayOffset;
 							}
 
-							$this->myPicture->drawText($X, $Y - $Offset, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => $Align]);
+							$this->myPicture->drawText($X, $Y - $Offset, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]), ["Color" => $DisplayColor,"Align" => $Align]);
 						}
 
 						if ($Y == VOID && isset($Areas[$AreaID])) {
@@ -1151,7 +1133,7 @@ class pCharts
 								$Offset = - $DisplayOffset;
 							}
 
-							$this->myPicture->drawText($X + $Offset, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit),["Angle" => 270,"Color" => $DisplayColor,"Align" => $Align]);
+							$this->myPicture->drawText($X + $Offset, $Y, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]),["Angle" => 270,"Color" => $DisplayColor,"Align" => $Align]);
 						}
 
 						if ($X == VOID && isset($Areas[$AreaID])) {
@@ -1274,10 +1256,6 @@ class pCharts
 				$InnerColor = (is_null($InnerBorderColor)) ? NULL : ["Color" => $InnerBorderColor];
 				$Settings = ["Color" => $Color,"BorderColor" => $BorderColor];
 				$AxisID = $Serie["Axis"];
-				$Mode = $Data["Axis"][$AxisID]["Display"];
-				$Format = $Data["Axis"][$AxisID]["Format"];
-				$Unit = $Data["Axis"][$AxisID]["Unit"];
-				#$SerieDescription = (isset($Serie["Description"])) ? $Serie["Description"] : $SerieName;
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$Floating0Value = (!is_null($Floating0Value)) ? $Floating0Value : 0;
 				$YZero = $this->myPicture->scaleComputeYSingle($Floating0Value, $Serie["Axis"]);
@@ -1365,7 +1343,7 @@ class pCharts
 
 							if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
 								($DisplayShadow) AND $this->myPicture->setShadow(TRUE);
-								$Caption = $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit);
+								$Caption = $this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]);
 								$TxtPos = $this->myPicture->getTextBox(0, 0, $DisplayFont, $DisplaySize, 90, $Caption);
 								$TxtHeight = $TxtPos[0]["Y"] - $TxtPos[1]["Y"] + $TxtMargin;
 								if ($DisplayPos == LABEL_POS_INSIDE && abs($TxtHeight) < abs($BarHeight)) {
@@ -1380,7 +1358,7 @@ class pCharts
 										$Align = TEXT_ALIGN_TOPMIDDLE;
 										$Offset = - $DisplayOffset;
 									}
-									$this->myPicture->drawText($X + $XOffset + $XSize / 2, $Y2 - $Offset, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => $Align,"FontSize" => $DisplaySize]);
+									$this->myPicture->drawText($X + $XOffset + $XSize / 2, $Y2 - $Offset, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]), ["Color" => $DisplayColor,"Align" => $Align,"FontSize" => $DisplaySize]);
 								}
 
 								$this->myPicture->restoreShadow($ShadowSpec);
@@ -1476,7 +1454,7 @@ class pCharts
 
 							if ($DisplayValues && $Serie["Data"][$Key] != VOID) {
 								($DisplayShadow) AND $this->myPicture->setShadow(TRUE);
-								$Caption = $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit);
+								$Caption = $this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]);
 								$TxtPos = $this->myPicture->getTextBox(0, 0, $DisplayFont, $DisplaySize, 0, $Caption);
 								$TxtWidth = $TxtPos[1]["X"] - $TxtPos[0]["X"] + $TxtMargin;
 								if ($DisplayPos == LABEL_POS_INSIDE && abs($TxtWidth) < abs($BarWidth)) {
@@ -1556,9 +1534,6 @@ class pCharts
 
 				$InnerColor = (is_null($InnerBorderColor)) ? NULL : ["Color" => $InnerBorderColor];
 				$AxisID = $Serie["Axis"];
-				$Mode = $Data["Axis"][$AxisID]["Display"];
-				$Format = $Data["Axis"][$AxisID]["Format"];
-				$Unit = $Data["Axis"][$AxisID]["Unit"];
 				$PosArray = $this->myPicture->scaleComputeY0HeightOnly($Serie["Data"], $Serie["Axis"]);
 				$YZero = $this->myPicture->scaleComputeYSingle(0, $Serie["Axis"]);
 				$Data["Series"][$SerieName]["XOffset"] = 0;
@@ -1614,7 +1589,7 @@ class pCharts
 							if ($DisplayValues) {
 								$BarHeight = abs($Y2 - $Y1) - 2;
 								$BarWidth = $XSize + ($XOffset / 2) - $FontFactor;
-								$Caption = $this->myPicture->scaleFormat(round($Serie["Data"][$Key], $DisplayRound), $Mode, $Format, $Unit);
+								$Caption = $this->myPicture->scaleFormat(round($Serie["Data"][$Key], $DisplayRound), $Data["Axis"][$AxisID]);
 								$TxtPos = $this->myPicture->getTextBox(0, 0, $DisplayFont, $DisplaySize, 0, $Caption);
 								$TxtHeight = abs($TxtPos[2]["Y"] - $TxtPos[0]["Y"]);
 								$TxtWidth = abs($TxtPos[1]["X"] - $TxtPos[0]["X"]);
@@ -1624,14 +1599,14 @@ class pCharts
 								if ($DisplayOrientation == ORIENTATION_HORIZONTAL || $DisplayOrientation == ORIENTATION_AUTO) {
 									if ($TxtHeight < $BarHeight && $TxtWidth < $BarWidth) {
 										# Momchil: +1 is a visual fix for example.drawStackedBarChart.rounded. Probably a bug introduced by refactoring
-										$this->myPicture->drawText($XCenter, $YCenter+1, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
+										$this->myPicture->drawText($XCenter, $YCenter+1, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]), ["Color" => $DisplayColor,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
 										$Done = TRUE;
 									}
 								}
 
 								if ($DisplayOrientation == ORIENTATION_VERTICAL || ($DisplayOrientation == ORIENTATION_AUTO && !$Done)) {
 									if ($TxtHeight < $BarWidth && $TxtWidth < $BarHeight) {
-										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Angle" => 90,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
+										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]), ["Color" => $DisplayColor,"Angle" => 90,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
 									}
 								}
 							}
@@ -1698,14 +1673,14 @@ class pCharts
 								$Done = FALSE;
 								if ($DisplayOrientation == ORIENTATION_HORIZONTAL || $DisplayOrientation == ORIENTATION_AUTO) {
 									if ($TxtHeight < $BarHeight && $TxtWidth < $BarWidth) {
-										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
+										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]), ["Color" => $DisplayColor,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
 										$Done = TRUE;
 									}
 								}
 
 								if ($DisplayOrientation == ORIENTATION_VERTICAL || ($DisplayOrientation == ORIENTATION_AUTO && !$Done)) {
 									if ($TxtHeight < $BarWidth && $TxtWidth < $BarHeight) {
-										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Mode, $Format, $Unit), ["Color" => $DisplayColor,"Angle" => 90,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
+										$this->myPicture->drawText($XCenter, $YCenter, $this->myPicture->scaleFormat($Serie["Data"][$Key], $Data["Axis"][$AxisID]), ["Color" => $DisplayColor,"Angle" => 90,"Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontSize" => $DisplaySize,"FontName" => $DisplayFont]);
 									}
 								}
 							}

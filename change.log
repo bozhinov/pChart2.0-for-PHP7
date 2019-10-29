@@ -23,6 +23,7 @@
   o BC: pDraw->drawScale($Format["DrawYLines"]) accepts array now
   o BC: pData->setAxisDisplay with AXIS_FORMAT_CUSTOM uses anonymous func as a param
   o BC: Removed pData->importFromCSV()
+  o BC: Moved setXAxisName & setXAxisDisplay & setXAxisUnit into setXAxisProperties
   o Added pDraw->gettheImage()
   o Added pDraw->getShadow()
   o Added pDraw->restoreShadow()
@@ -34,6 +35,7 @@
   o FIXED: pDraw->setFilter
   o pColor and pColorGradient classes cleaned up 
   o pColor converted to array in pDraw private methods. 13% speed improvement
+  o pData->XAxis data structure to match Axis[0]
 
  2.3.0 -----------------------------------------------------------------------
   o Introduced pQRCode
