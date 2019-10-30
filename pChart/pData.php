@@ -125,11 +125,11 @@ class pData
 
 	public function resetSeriesColors() # pBubble
 	{
-		$ID = 0;
+		$Id = 0;
 		foreach($this->Data["Series"] as $SerieName => $SeriesParameters) {
 			if ($SeriesParameters["isDrawable"]) {
-				$this->Data["Series"][$SerieName]["Color"] = $this->Palette[$ID];
-				$ID++;
+				$this->Data["Series"][$SerieName]["Color"] = $this->Palette[$Id];
+				$Id++;
 			}
 		}
 	}
@@ -226,12 +226,12 @@ class pData
 	}
 
 	/* Create a scatter group specifying X and Y data series */
-	public function setScatterSerie(string $SerieX, string $SerieY, int $ID = 0)
+	public function setScatterSerie(string $SerieX, string $SerieY, int $Id = 0)
 	{
 		if (isset($this->Data["Series"][$SerieX]) && isset($this->Data["Series"][$SerieY])) {
-			$this->initScatterSerie($ID);
-			$this->Data["ScatterSeries"][$ID]["X"] = $SerieX;
-			$this->Data["ScatterSeries"][$ID]["Y"] = $SerieY;
+			$this->initScatterSerie($Id);
+			$this->Data["ScatterSeries"][$Id]["X"] = $SerieX;
+			$this->Data["ScatterSeries"][$Id]["Y"] = $SerieY;
 		} else {
 			throw pException::InvalidInput("Invalid scatter serie names");
 		}
@@ -246,42 +246,42 @@ class pData
 		setScatterSerieWeight
 		setScatterSerieColor
 	*/
-	public function setScatterSerieProperties(int $ID, array $Props)
+	public function setScatterSerieProperties(int $Id, array $Props)
 	{
-		if (isset($this->Data["ScatterSeries"][$ID])) {
+		if (isset($this->Data["ScatterSeries"][$Id])) {
 
-			(isset($Props["Shape"]))	AND $this->Data["ScatterSeries"][$ID]["Shape"]	     = intval($Props["Shape"]);
-			(isset($Props["Description"]))	AND $this->Data["ScatterSeries"][$ID]["Description"] = strval($Props["Description"]);
-			(isset($Props["Picture"]))	AND $this->Data["ScatterSeries"][$ID]["Picture"]     = strval($Props["Picture"]);
-			(isset($Props["isDrawable"]))	AND $this->Data["ScatterSeries"][$ID]["isDrawable"]  = boolval($Props["isDrawable"]);
-			(isset($Props["Ticks"]))	AND $this->Data["ScatterSeries"][$ID]["Ticks"]	     = intval($Props["Ticks"]);
-			(isset($Props["Weight"]))	AND $this->Data["ScatterSeries"][$ID]["Weight"]	     = intval($Props["Weight"]);
+			(isset($Props["Shape"]))	AND $this->Data["ScatterSeries"][$Id]["Shape"]	     = intval($Props["Shape"]);
+			(isset($Props["Description"]))	AND $this->Data["ScatterSeries"][$Id]["Description"] = strval($Props["Description"]);
+			(isset($Props["Picture"]))	AND $this->Data["ScatterSeries"][$Id]["Picture"]     = strval($Props["Picture"]);
+			(isset($Props["isDrawable"]))	AND $this->Data["ScatterSeries"][$Id]["isDrawable"]  = boolval($Props["isDrawable"]);
+			(isset($Props["Ticks"]))	AND $this->Data["ScatterSeries"][$Id]["Ticks"]	     = intval($Props["Ticks"]);
+			(isset($Props["Weight"]))	AND $this->Data["ScatterSeries"][$Id]["Weight"]	     = intval($Props["Weight"]);
 			if (isset($Props["Color"])) {
 				if ($Props["Color"] instanceof pColor){
-					$this->Data["ScatterSeries"][$ID]["Color"] = $Props["Color"];
+					$this->Data["ScatterSeries"][$Id]["Color"] = $Props["Color"];
 				} else {
 					throw pException::InvalidInput("Invalid Color format");
 				}
 			}
 		} else {
-			throw pException::InvalidInput("Invalid serie ID");
+			throw pException::InvalidInput("Invalid serie Id");
 		}
 	}
 
 	/* Initialize a given scatter serie */
-	public function initScatterSerie(int $ID)
+	public function initScatterSerie(int $Id)
 	{
-		if (isset($this->Data["ScatterSeries"][$ID])) {
-			throw pException::InvalidInput("Invalid scatter serie ID");
+		if (isset($this->Data["ScatterSeries"][$Id])) {
+			throw pException::InvalidInput("Invalid scatter serie Id");
 		}
 
-		$this->Data["ScatterSeries"][$ID] = [
-			"Description" => "Scatter " . $ID,
+		$this->Data["ScatterSeries"][$Id] = [
+			"Description" => "Scatter " . $Id,
 			"isDrawable" => TRUE,
 			"Picture" => NULL,
 			"Ticks" => NULL,
 			"Weight" => NULL,
-			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : new pColor()
+			"Color" => (isset($this->Palette[$Id])) ? $this->Palette[$Id] : new pColor()
 		];
 	}
 
@@ -475,7 +475,7 @@ class pData
 				}
 			}
 		} else {
-			throw pException::InvalidInput("Invalid serie ID");
+			throw pException::InvalidInput("Invalid serie Id");
 		}
 	}
 
@@ -485,7 +485,7 @@ class pData
 		if (isset($this->Data["Axis"][$AxisID])) {
 			$this->Data["Axis"][$AxisID]["Name"] = $Name;
 		} else {
-			throw pException::InvalidInput("Invalid serie ID");
+			throw pException::InvalidInput("Invalid serie Id");
 		}
 	}
 
@@ -556,9 +556,9 @@ class pData
 			$this->Palette = [];
 		}
 
-		foreach($MyPalette as $ID => $color){
+		foreach($MyPalette as $Id => $color){
 			if (is_array($color)) {
-				$this->Palette[$ID] = new pColor($color[0], $color[1], $color[2], $color[3]);
+				$this->Palette[$Id] = new pColor($color[0], $color[1], $color[2], $color[3]);
 			} else {
 				throw pException::InvalidInput("Invalid palette");
 			}
@@ -567,8 +567,8 @@ class pData
 		/* Apply changes to current series */
 		if (isset($this->Data["Series"])) {
 			/* Momchil: no unit test gets here */
-			foreach(array_keys($this->Data["Series"]) as $ID => $Key) {
-				$this->Data["Series"][$Key]["Color"] = (!isset($this->Palette[$ID])) ? new pColor(0,0,0,0) : $this->Palette[$ID];
+			foreach(array_keys($this->Data["Series"]) as $Id => $Key) {
+				$this->Data["Series"][$Key]["Color"] = (!isset($this->Palette[$Id])) ? new pColor(0,0,0,0) : $this->Palette[$Id];
 			}
 		}
 	}
@@ -596,9 +596,9 @@ class pData
 			$Values = array_values(array_diff($Values, [NULL, 0]));
 
 			/* Gen Palette */
-			foreach($Values as $ID => $Value) {
-				if(!isset($this->Palette[$ID])){
-					$this->Palette[$ID] = new pColor();
+			foreach($Values as $Id => $Value) {
+				if(!isset($this->Palette[$Id])){
+					$this->Palette[$Id] = new pColor();
 				}
 			}
 		} else {
@@ -611,8 +611,8 @@ class pData
 	/* Save a palette */
 	public function savePalette(array $newPalette)
 	{
-		foreach($newPalette as $ID => $Color) {
-			$this->Palette[$ID] = $Color;
+		foreach($newPalette as $Id => $Color) {
+			$this->Palette[$Id] = $Color;
 		}
 	}
 
