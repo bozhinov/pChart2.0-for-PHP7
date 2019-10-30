@@ -41,16 +41,16 @@ class pData
 			"AbscissaProperties" => [
 				"Name" => NULL,
 				"Display" => AXIS_FORMAT_DEFAULT,
+				"Position" => AXIS_POSITION_BOTTOM,
 				"Format" => NULL,
-				"Unit" => NULL,
-				"Position" => AXIS_POSITION_BOTTOM
+				"Unit" => NULL
 			],
 			"Axis" => [0 => [
 					"Display" => AXIS_FORMAT_DEFAULT,
 					"Position" => AXIS_POSITION_LEFT,
 					"Identity" => AXIS_Y,
-					"Unit" => NULL,
-					"Format" => NULL
+					"Format" => NULL,
+					"Unit" => NULL
 				]
 			]
 		];
@@ -210,7 +210,7 @@ class pData
 	/* Set the name of the abscissa axis */
 	public function setAbscissaName(?string $Name)
 	{
-		$this->Data["AbscissaName"] = $Name;
+		$this->Data["AbscissaProperties"]["Name"] = $Name;
 	}
 
 	/* Return the abscissa margin */
