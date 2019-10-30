@@ -22,8 +22,7 @@ $myPicture->myData->addPoints([37,32,33,29,29,25,22,34,29,31],"Max");
 $myPicture->myData->setAxisProperties(0,["Display" => AXIS_FORMAT_CURRENCY, "Format" => "$"]);
 
 $myPicture->myData->addPoints(["Dec 13","Dec 14","Dec 15","Dec 16","Dec 17", "Dec 20","Dec 21","Dec 22","Dec 23","Dec 24"],"Time");
-$myPicture->myData->setAbscissa("Time");
-$myPicture->myData->setAbscissaName("Time");
+$myPicture->myData->setAbscissa("Time", ["Name" => "Time"]);
 
 /* Turn off Anti-aliasing */
 $myPicture->setAntialias(FALSE);

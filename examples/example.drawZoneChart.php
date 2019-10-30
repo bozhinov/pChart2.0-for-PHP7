@@ -30,8 +30,7 @@ $myPicture->myData->addPoints($Points_4,"Labels");
 
 $myPicture->myData->setAxisName(0,"Size (cm)");
 $myPicture->myData->setSerieDescription("Labels","Months");
-$myPicture->myData->setAbscissa("Labels");
-$myPicture->myData->setAbscissaName("Time (years)");
+$myPicture->myData->setAbscissa("Labels", ["Name" => "Time (years)"]);
 
 /* Turn off Anti-aliasing */
 $myPicture->setAntialias(FALSE);

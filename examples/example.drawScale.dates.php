@@ -17,8 +17,7 @@ $myPicture->myData->setAxisProperties(0, ["Name" => "Maximum distance", "Unit" =
 /* Create the abscissa serie */
 $myPicture->myData->addPoints([1230768000,1233446400,1235865600,1238544000,1241136000,1243814400],"Timestamp");
 $myPicture->myData->setSerieDescription("Timestamp","Sampled Dates");
-$myPicture->myData->setAbscissa("Timestamp");
-$myPicture->myData->setAbscissaName("Dates");
+$myPicture->myData->setAbscissa("Timestamp", ["Name" => "Dates"]);
 $myPicture->myData->setXAxisProperties(["Display" => AXIS_FORMAT_DATE]);
 
 /* Draw the background */

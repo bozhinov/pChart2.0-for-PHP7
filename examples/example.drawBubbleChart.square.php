@@ -22,8 +22,7 @@ $myPicture->myData->setSerieDescription("Probe1","This year");
 $myPicture->myData->setSerieDescription("Probe2","Last year");
 $myPicture->myData->setAxisName(0,"Current stock");
 $myPicture->myData->addPoints(["Apple","Banana","Orange","Lemon","Peach","Strawberry"],"Product");
-$myPicture->myData->setAbscissa("Product");
-$myPicture->myData->setAbscissaName("Selected Products");
+$myPicture->myData->setAbscissa("Product", ["Name" => "Selected Products"]);
 
 /* Turn off Anti-aliasing */
 $myPicture->setAntialias(FALSE);

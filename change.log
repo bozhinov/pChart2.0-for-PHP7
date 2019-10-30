@@ -38,6 +38,7 @@
 	setAxisUnit
 	setAxisDisplay
 	setAxisXY
+	setAbsicssaPosition
 
   o Added pData methods
 	setAxisProperties
@@ -57,6 +58,7 @@
   o Added benchmark script
   o FIXED: pDraw->setFilter
   o pData->XAxis data structure to match Axis[0]
+  o pData->setAbsicssa accepts Name and Position params
   o pColor and pColorGradient classes cleaned up 
   o pColor converted to array in pDraw private methods. 13% speed improvement
 

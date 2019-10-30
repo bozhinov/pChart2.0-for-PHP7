@@ -223,18 +223,18 @@ class pData
 	}
 
 	/* Set the serie that will be used as abscissa */
-	public function setAbscissa(string $Serie)
+	public function setAbscissa(?string $Serie, array $Props = [])
 	{
-		if (isset($this->Data["Series"][$Serie])) {
+		if (is_null($Serie) || isset($this->Data["Series"][$Serie])) {
 			$this->Data["Abscissa"] = $Serie;
+
+			if (!empty($Props)){
+				(isset($Props["Name"])) AND $this->Data["AbscissaName"] = strval($Props["Name"]);
+				(isset($Props["Position"])) AND $this->Data["AbsicssaPosition"] = intval($Props["Position"]);
+			}
 		} else {
 			throw pException::InvalidInput("Invalid serie name");
 		}
-	}
-
-	public function setAbsicssaPosition(int $Position = AXIS_POSITION_BOTTOM)
-	{
-		$this->Data["AbsicssaPosition"] = $Position;
 	}
 
 	/* Set the name of the abscissa axis */

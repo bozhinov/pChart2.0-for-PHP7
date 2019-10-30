@@ -17,8 +17,7 @@ $myPicture->myData->addPoints([140,0,340,300,320,300,200,100,50],"Server B");
 $myPicture->myData->setAxisName(0,"Hits");
 $myPicture->myData->addPoints(["January","February","March","April","May","June","July","August","September"],"Months");
 $myPicture->myData->setSerieDescription("Months","Month");
-$myPicture->myData->setAbscissa("Months");
-$myPicture->myData->setAbsicssaPosition(AXIS_POSITION_TOP);
+$myPicture->myData->setAbscissa("Months", ["Position" => AXIS_POSITION_TOP]);
 
 /* Turn off Anti-aliasing */
 $myPicture->setAntialias(FALSE);

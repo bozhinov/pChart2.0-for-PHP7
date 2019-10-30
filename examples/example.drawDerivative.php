@@ -20,8 +20,7 @@ $myPicture->myData->setSerieWeight("Probe 3",2);
 $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
-$myPicture->myData->setAbscissa("Labels");
-$myPicture->myData->setAbscissaName("Months");
+$myPicture->myData->setAbscissa("Labels", ["Name" => "Months"]);
 
 /* Draw the background */
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);

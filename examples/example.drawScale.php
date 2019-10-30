@@ -15,8 +15,7 @@ $myPicture->myData->addPoints([24,-25,26,25,25],"Temperature");
 $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
-$myPicture->myData->setAbscissa("Labels");
-$myPicture->myData->setAbscissaName("Months");
+$myPicture->myData->setAbscissa("Labels", ["Name" => "Months"]);
 
 /* Draw the background */
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);

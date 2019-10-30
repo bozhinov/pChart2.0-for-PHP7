@@ -28,10 +28,9 @@ $myPicture->myData->setAxisProperties(0, [
 
 $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
-$myPicture->myData->setAbscissa("Labels");
+$myPicture->myData->setAbscissa("Labels", ["Position" => AXIS_POSITION_TOP]);
 
 /* Reverse the Y axis trick */
-$myPicture->myData->setAbsicssaPosition(AXIS_POSITION_TOP);
 $myPicture->myData->NegateValues(["Probe 1","Probe 2","Probe 3"]);
 
 /* Turn off Anti-aliasing */

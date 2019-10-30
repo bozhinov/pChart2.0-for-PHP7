@@ -16,8 +16,7 @@ $myPicture->myData->addPoints([13251,4118,3087,1460,1248,156,26,9,8],"Hits");
 $myPicture->myData->setAxisName(0,"Hits");
 $myPicture->myData->addPoints(["Firefox","Chrome","Internet Explorer","Opera","Safari","Mozilla","SeaMonkey","Camino","Lunascape"],"Browsers");
 $myPicture->myData->setSerieDescription("Browsers","Browsers");
-$myPicture->myData->setAbscissa("Browsers");
-$myPicture->myData->setAbscissaName("Browsers");
+$myPicture->myData->setAbscissa("Browsers", ["Name" => "Browsers"]);
 
 /* Draw the background */
 $myPicture->drawGradientArea(0,0,500,500,DIRECTION_VERTICAL,["StartColor"=>new pColor(240), "EndColor"=>new pColor(180)]);

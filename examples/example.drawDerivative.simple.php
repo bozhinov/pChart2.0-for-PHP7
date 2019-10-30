@@ -16,8 +16,7 @@ $myPicture->myData->addPoints([3,12,15,8,5,-5,5,-5,-3,4,5,10],"Probe");
 $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
-$myPicture->myData->setAbscissa("Labels");
-$myPicture->myData->setAbscissaName("Months");
+$myPicture->myData->setAbscissa("Labels", ["Name" => "Months"]);
 
 /* Turn off Anti-aliasing */
 $myPicture->setAntialias(FALSE);

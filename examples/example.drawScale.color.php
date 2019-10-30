@@ -30,8 +30,7 @@ $myPicture->myData->setAxisProperties(2, ["Name" => "Empty value", "Color" => ne
 /* Create the abscissa serie */
 $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","My labels");
-$myPicture->myData->setAbscissa("Labels");
-$myPicture->myData->setAbscissaName("Months");
+$myPicture->myData->setAbscissa("Labels", ["Name" => "Months"]);
 
 /* Draw the background */
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
