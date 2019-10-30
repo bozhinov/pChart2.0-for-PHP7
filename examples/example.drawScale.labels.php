@@ -14,7 +14,7 @@ $myPicture = new pDraw(700,390);
 /* Populate the pData object */
 $myPicture->myData->addPoints([8,10,24,25,25,24,23,22,20,12,10,4],"Temperature");
 $myPicture->myData->addPoints([2,4,6,4,5,3,6,4,5,8,6,1],"Pressure");
-$myPicture->myData->setSerieDrawable("Pressure",FALSE);
+$myPicture->myData->setSerieProperties("Pressure",["isDrawable" => FALSE]);
 $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
@@ -53,8 +53,8 @@ $pCharts->drawBarChart(["Surrounding"=>-30,"InnerSurrounding"=>30]);
 $myPicture->setGraphArea(60,220,660,360);
 
 /* Draw the scale */
-$myPicture->myData->setSerieDrawable("Temperature",FALSE);
-$myPicture->myData->setSerieDrawable("Pressure",TRUE);
+$myPicture->myData->setSerieProperties("Temperature",["isDrawable" => FALSE]);
+$myPicture->myData->setSerieProperties("Pressure",["isDrawable" => TRUE]);
 $myPicture->myData->setAxisName(0,"Pressure");
 
 $myPicture->drawScale(["DrawSubTicks"=>TRUE,"CycleBackground"=>TRUE]);

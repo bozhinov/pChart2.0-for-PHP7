@@ -14,10 +14,10 @@ $myPicture = new pDraw(700,230);
 $myPicture->myData->addPoints([24,25,26,25,25],"My Serie 1");
 $myPicture->myData->addPoints([80,85,84,81,82],"My Serie 2");
 $myPicture->myData->addPoints([17,16,18,18,15],"My Serie 3");
-$myPicture->myData->setSerieTicks("My Serie 1",4);
-$myPicture->myData->setSerieWeight("My Serie 2",2);
-$myPicture->myData->setSerieDescription("My Serie 1","Temperature");
-$myPicture->myData->setSerieDescription("My Serie 2","Humidity\n(in percentage)");
+
+$myPicture->myData->setSerieProperties("My Serie 1", ["Ticks" => 4, "Description" => "Temperature"]);
+$myPicture->myData->setSerieProperties("My Serie 2", ["Weight" => 2, "Description" => "Humidity\n(in percentage)"]);
+
 $myPicture->myData->setSerieDescription("My Serie 3","Pressure");
 
 /* Draw the background */
@@ -61,9 +61,9 @@ $myPicture->drawFilledRectangle(1,200,698,228,["Color"=>new pColor(255,255,255,3
 $myPicture->drawLegend(10,208,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL]);
 
 /* Define series icons */
-$myPicture->myData->setSeriePicture("My Serie 1","examples/resources/application_view_list.png");
-$myPicture->myData->setSeriePicture("My Serie 2","examples/resources/application_view_tile.png");
-$myPicture->myData->setSeriePicture("My Serie 3","examples/resources/chart_bar.png");
+$myPicture->myData->setSerieProperties("My Serie 1", ["Picture" => "examples/resources/application_view_list.png"]);
+$myPicture->myData->setSerieProperties("My Serie 2", ["Picture" => "examples/resources/application_view_tile.png"]);
+$myPicture->myData->setSerieProperties("My Serie 3", ["Picture" => "examples/resources/chart_bar.png"]);
 
 /* Write a legend box */ 
 $myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>7]);

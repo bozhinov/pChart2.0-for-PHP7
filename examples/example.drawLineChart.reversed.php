@@ -14,8 +14,8 @@ $myPicture = new pDraw(700,230);
 /* Populate the pData object */
 $myPicture->myData->addPoints([3,12,15,8,5,5],"Probe 1");
 $myPicture->myData->addPoints([8,7,5,18,19,22],"Probe 2");
-$myPicture->myData->setSerieWeight("Probe 1",2);
-$myPicture->myData->setSerieTicks("Probe 2",4);
+$myPicture->myData->setSerieProperties("Probe 1", ["Weight" => 2]);
+$myPicture->myData->setSerieProperties("Probe 2", ["Ticks" => 4]);
 $myPicture->myData->setAxisProperties(0, [
 	"Name" => "Temperatures",
 	"Display" => AXIS_FORMAT_CUSTOM,

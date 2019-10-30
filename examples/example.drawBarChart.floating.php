@@ -31,7 +31,7 @@ $myPicture->myData->setAbscissa("Months");
 
 /* Create the floating 0 data serie */
 $myPicture->myData->addPoints([60,80,20,40,0,50,90,30,100],"Floating 0");
-$myPicture->myData->setSerieDrawable("Floating 0",FALSE);
+$myPicture->myData->setSerieProperties("Floating 0",["isDrawable" => FALSE]);
 
 /* Draw the background */
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,  ["StartColor"=>new pColor(240),"EndColor"=>new pColor(180)]);

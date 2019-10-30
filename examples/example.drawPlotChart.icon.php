@@ -14,10 +14,8 @@ $myPicture = new pDraw(700,230);
 /* Populate the pData object */
 $myPicture->myData->addPoints([3,4,7,4,2,5],"User");
 $myPicture->myData->addPoints([12,17,15,18,19,22],"Group");
-$myPicture->myData->setSeriePicture("User","examples/resources/serie1.png");
-$myPicture->myData->setSeriePicture("Group","examples/resources/serie2.png");
-$myPicture->myData->setSerieWeight("Group",1);
-$myPicture->myData->setSerieTicks("Group",4);
+$myPicture->myData->setSerieProperties("User", ["Picture" => "examples/resources/serie1.png"]);
+$myPicture->myData->setSerieProperties("Group", ["Weight" => 1, "Ticks" => 4, "Picture" => "examples/resources/serie2.png"]);
 
 $myPicture->myData->setAxisName(0,"Hours");
 $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun"],"Labels");

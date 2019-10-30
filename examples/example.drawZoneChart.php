@@ -61,8 +61,8 @@ $pCharts = new pCharts($myPicture);
 
 /* Draw the line chart */
 $pCharts->drawZoneChart("Bounds 1","Bounds 2",["LineAlpha"=>100,"AreaColor"=>new pColor(230,230,230,20),"LineTicks"=>3]);
-$myPicture->myData->setSerieDrawable("Bounds 1",FALSE);
-$myPicture->myData->setSerieDrawable("Bounds 2",FALSE);
+$myPicture->myData->setSerieProperties("Bounds 1",["isDrawable" => FALSE]);
+$myPicture->myData->setSerieProperties("Bounds 2",["isDrawable" => FALSE]);
 
 /* Draw the line chart */
 $pCharts->drawLineChart();

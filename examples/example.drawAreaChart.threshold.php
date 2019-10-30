@@ -13,7 +13,7 @@ $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */ 
 $myPicture->myData->addRandomValues("Probe 1", ["Values" => 30, "Min" => 1, "Max" => 15]);
-$myPicture->myData->setSerieTicks("Probe 1",4);
+$myPicture->myData->setSerieProperties("Probe 1",["Ticks" => 4]);
 $myPicture->myData->setAxisName(0,"Temperatures");
 
 /* Turn off Anti-aliasing */

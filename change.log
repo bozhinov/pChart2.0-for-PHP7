@@ -39,6 +39,11 @@
 	setAxisDisplay
 	setAxisXY
 	setAbsicssaPosition
+	setSerieShape
+	setSerieWeight
+	setSeriePicture
+	setSerieDrawable
+	setSerieTicks
 
   o Added pData methods
 	setAxisProperties

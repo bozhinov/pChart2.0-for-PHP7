@@ -15,7 +15,7 @@ $myPicture = new pDraw(700,230);
 $myPicture->myData->addPoints([-4,VOID,VOID,12,8,3],"Probe 1");
 $myPicture->myData->addPoints([3,12,15,8,5,-5],"Probe 2");
 $myPicture->myData->addPoints([2,0,5,18,19,22],"Probe 3");
-$myPicture->myData->setSerieTicks("Probe 2",4);
+$myPicture->myData->setSerieProperties("Probe 2",["Ticks" => 4]);
 $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");

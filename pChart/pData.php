@@ -157,8 +157,10 @@ class pData
 		setSerieDescription
 		setSerieDrawable
 		setSeriePicture
+		setSerieWeight
+		setSerieTicks
 	*/
-	public function setSerieProperties(string $Serie, array$Props)
+	public function setSerieProperties(string $Serie, array $Props)
 	{
 		if (!isset($this->Data["Series"][$Serie])) {
 			throw pException::InvalidInput("Invalid serie name");
@@ -168,16 +170,8 @@ class pData
 		(isset($Props["Description"])) 	AND $this->Data["Series"][$Serie]["Description"] = strval($Props["Description"]);
 		(isset($Props["Shape"]))  	AND $this->Data["Series"][$Serie]["Shape"]  	 = intval($Props["Shape"]);
 		(isset($Props["isDrawable"]))   AND $this->Data["Series"][$Serie]["isDrawable"]  = boolval($Props["isDrawable"]);
-	}
-
-	/* Set the description of a given serie */
-	public function setSerieShape(string $Serie, int $Shape = SERIE_SHAPE_FILLEDCIRCLE)
-	{
-		if (isset($this->Data["Series"][$Serie])) {
-			$this->Data["Series"][$Serie]["Shape"] = $Shape;
-		} else {
-			throw pException::InvalidInput("Invalid serie name");
-		}
+		(isset($Props["Ticks"]))   	AND $this->Data["Series"][$Serie]["Ticks"]  	= intval($Props["Ticks"]);
+		(isset($Props["Weight"]))   	AND $this->Data["Series"][$Serie]["Weight"]  	= intval($Props["Weight"]);
 	}
 
 	/* Set the description of a given serie */
@@ -185,29 +179,6 @@ class pData
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$this->Data["Series"][$Serie]["Description"] = $Description;
-		} else {
-			throw pException::InvalidInput("Invalid serie name");
-		}
-	}
-
-	/* Set a serie as "drawable" while calling a rendering function */
-	public function setSerieDrawable(string $Serie, bool $Drawable = TRUE)
-	{
-		if (isset($this->Data["Series"][$Serie])) {
-			$this->Data["Series"][$Serie]["isDrawable"] = $Drawable;
-		} else {
-			throw pException::InvalidInput("Invalid serie name");
-		}
-	}
-
-	/* Set the icon associated to a given serie */
-	public function setSeriePicture(string $Serie, string $Picture = "XX")
-	{
-		if (isset($this->Data["Series"][$Serie])) {
-			if (!file_exists($Picture)){
-				throw pException::InvalidInput("Serie picture could not be found");
-			}
-			$this->Data["Series"][$Serie]["Picture"] = $Picture;
 		} else {
 			throw pException::InvalidInput("Invalid serie name");
 		}
@@ -529,26 +500,6 @@ class pData
 	public function getAxisData(int $AxisID)
 	{
 		return $this->Data["Axis"][$AxisID];
-	}
-
-	/* Define if a serie should be draw with ticks */
-	public function setSerieTicks(string $Serie, int $Ticks = NULL)
-	{
-		if (isset($this->Data["Series"][$Serie])) {
-			$this->Data["Series"][$Serie]["Ticks"] = $Ticks;
-		} else {
-			throw pException::InvalidInput("Invalid serie name");
-		}
-	}
-
-	/* Define if a serie should be draw with a special weight */
-	public function setSerieWeight(string $Serie, int $Weight = NULL)
-	{
-		if (isset($this->Data["Series"][$Serie])) {
-			$this->Data["Series"][$Serie]["Weight"] = $Weight;
-		} else {
-			throw pException::InvalidInput("Invalid serie name");
-		}
 	}
 
 	/* Returns the palette of the given serie */

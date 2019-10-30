@@ -14,7 +14,7 @@ $myPicture = new pDraw(700,230);
 /* Create and populate the pData object */
 $myPicture->myData->addPoints([4,2,10,12,8,3],"Probe 1");
 $myPicture->myData->addPoints([3,12,15,8,5,5],"Probe 2");
-$myPicture->myData->setSerieTicks("Probe 2",4);
+$myPicture->myData->setSerieProperties("Probe 2",["Ticks" => 4]);
 $myPicture->myData->setAxisName(0,"Temperatures");
 $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
@@ -55,12 +55,12 @@ $myPicture->setAntialias(TRUE);
 $pCharts = new pCharts($myPicture);
 
 /* Draw the area chart */
-$myPicture->myData->setSerieDrawable("Probe 1",TRUE);
-$myPicture->myData->setSerieDrawable("Probe 2",FALSE);
+$myPicture->myData->setSerieProperties("Probe 1",["isDrawable" => TRUE]);
+$myPicture->myData->setSerieProperties("Probe 2",["isDrawable" => FALSE]);
 
 $pCharts->drawAreaChart();
 
-$myPicture->myData->setSerieDrawable("Probe 2",TRUE);
+$myPicture->myData->setSerieProperties("Probe 2",["isDrawable" => TRUE]);
 
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 

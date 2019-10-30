@@ -42,7 +42,7 @@ class pBubble
 
 		foreach($DataSeries as $idx => $SerieName) {
 			$SerieWeightName = $WeightSeries[$idx];
-			$this->myPicture->myData->setSerieDrawable($SerieWeightName, FALSE);
+			$this->myPicture->myData->setSerieProperties($SerieWeightName,["isDrawable" => FALSE]);
 			if (count($Data["Series"][$SerieName]["Data"]) > $MaxValues) {
 				$MaxValues = count($Data["Series"][$SerieName]["Data"]);
 			}
@@ -115,11 +115,11 @@ class pBubble
 		$Data = $Data["Series"];
 
 		if (isset($Data["BubbleFakePositiveSerie"])) {
-			$this->myPicture->myData->setSerieDrawable("BubbleFakePositiveSerie", FALSE);
+			$this->myPicture->myData->setSerieProperties("BubbleFakePositiveSerie",["isDrawable" => FALSE]);
 		}
 
 		if (isset($Data["BubbleFakeNegativeSerie"])) {
-			$this->myPicture->myData->setSerieDrawable("BubbleFakeNegativeSerie", FALSE);
+			$this->myPicture->myData->setSerieProperties("BubbleFakeNegativeSerie",["isDrawable" => FALSE]);
 		}
 
 		$this->myPicture->myData->resetSeriesColors();

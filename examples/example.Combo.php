@@ -13,7 +13,7 @@ $myPicture = new pDraw(700,230);
 
 $myPicture->myData->addPoints([30,24,32],"This year");
 $myPicture->myData->addPoints([28,20,27],"Last year");
-$myPicture->myData->setSerieTicks("Last year",4);
+$myPicture->myData->setSerieProperties("Last year",["Ticks" => 4]);
 $myPicture->myData->addPoints(["Year","Month","Day"],"Labels");
 $myPicture->myData->setAbscissa("Labels");
 
@@ -51,7 +51,7 @@ $myPicture->setFontProperties(["FontSize"=>8]);
 $pCharts = new pCharts($myPicture);
 
 /* Draw the bar chart chart */
-$myPicture->myData->setSerieDrawable("Last year",FALSE);
+$myPicture->myData->setSerieProperties("Last year",["isDrawable" => FALSE]);
 $pCharts->drawBarChart();
 
 /* Turn on anti-aliasing */
@@ -60,8 +60,8 @@ $myPicture->setAntialias(TRUE);
 $myPicture->setShadow(TRUE,["X"=>2,"Y"=>2,"Color"=>new pColor(0,0,0,10)]);
 
 /* Draw the line and plot chart */
-$myPicture->myData->setSerieDrawable("Last year",TRUE);
-$myPicture->myData->setSerieDrawable("This year",FALSE);
+$myPicture->myData->setSerieProperties("Last year",["isDrawable" => TRUE]);
+$myPicture->myData->setSerieProperties("This year",["isDrawable" => FALSE]);
 $pCharts->drawSplineChart();
 
 $myPicture->setShadow(FALSE);
