@@ -559,7 +559,7 @@ class pData
 	public function getPieParams($forLegend = FALSE)
 	{
 		/* Do we have an abscissa serie defined? */
-		if ($this->Data["Abscissa"] == "" || !in_array($this->Data["Abscissa"], array_keys($this->Data["Series"]))) {
+		if (!in_array($this->Data["Abscissa"], array_keys($this->Data["Series"]))) {
 			throw pException::PieNoAbscissaException();
 		} else {
 			$AbscissaData = $this->Data["Series"][$this->Data["Abscissa"]]["Data"];
@@ -623,7 +623,6 @@ class pData
 
 	public function normalize(int $NormalizationFactor = 100, string $UnitChange = "", int $Round = 1)
 	{
-		$Abscissa = $this->Data["Abscissa"];
 		$SelectedSeries = [];
 		$MaxVal = 0;
 		foreach($this->Data["Axis"] as $AxisID => $Axis) {
@@ -631,7 +630,7 @@ class pData
 			($UnitChange != "") AND $this->Data["Axis"][$AxisID]["Unit"] = $UnitChange;
 
 			foreach($this->Data["Series"] as $SerieName => $Serie) {
-				if ($Serie["Axis"] == $AxisID && $Serie["isDrawable"] == TRUE && $SerieName != $Abscissa) {
+				if ($Serie["Axis"] == $AxisID && $Serie["isDrawable"] == TRUE && $SerieName != $this->Data["Abscissa"]) {
 					$SelectedSeries[$SerieName] = $SerieName;
 					if (count($Serie["Data"]) > $MaxVal) {
 						$MaxVal = count($Serie["Data"]);

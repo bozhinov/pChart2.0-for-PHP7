@@ -1773,7 +1773,7 @@ class pDraw
 		}
 
 		$Data = $this->myData->getData();
-		$Abscissa = (isset($Data["Abscissa"])) ? $Data["Abscissa"] : NULL;
+		$Abscissa = $Data["Abscissa"];
 
 		/* Unset the abscissa axis, needed if we display multiple charts on the same picture */
 		if (!is_null($Abscissa)) {
@@ -1805,7 +1805,7 @@ class pDraw
 			$AxisMax = OUT_OF_SIGHT;
 			if ($Mode == SCALE_MODE_FLOATING || $Mode == SCALE_MODE_START0) {
 				foreach($Data["Series"] as $SerieID => $SerieParameter) {
-					if ($SerieParameter["Axis"] == $AxisID && $Data["Series"][$SerieID]["isDrawable"] && $Data["Abscissa"] != $SerieID) {
+					if ($SerieParameter["Axis"] == $AxisID && $Data["Series"][$SerieID]["isDrawable"] && $Abscissa != $SerieID) {
 						if (!is_numeric($Data["Series"][$SerieID]["Max"]) || !is_numeric($Data["Series"][$SerieID]["Min"])){
 							throw pException::InvalidInput("Series ".$SerieID.": non-numeric input");
 						}
@@ -1834,7 +1834,7 @@ class pDraw
 
 				$Series = [];
 				foreach($Data["Series"] as $SerieID => $SerieParameter) {
-					if ($SerieParameter["Axis"] == $AxisID && $SerieParameter["isDrawable"] && $Data["Abscissa"] != $SerieID) {
+					if ($SerieParameter["Axis"] == $AxisID && $SerieParameter["isDrawable"] && $Abscissa != $SerieID) {
 						$Series[$SerieID] = count($Data["Series"][$SerieID]["Data"]);
 					}
 				}
