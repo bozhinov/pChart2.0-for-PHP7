@@ -19,7 +19,7 @@ $myPicture->myData->addPoints([20,17,25,20,25,23,16,29,26,17],"Close");
 $myPicture->myData->addPoints([10,11,14,11,9,4,3,7,9,5],"Min");
 $myPicture->myData->addPoints([37,32,33,29,29,25,22,34,29,31],"Max");
 $myPicture->myData->addPoints([30,20,21,24,22,18,18,24,22,24],"Median");
-$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CURRENCY,"$");
+$myPicture->myData->setAxisProperties(0,["Display" => AXIS_FORMAT_CURRENCY, "Format" => "$"]);
 
 $myPicture->myData->addPoints(["Dec 13","Dec 14","Dec 15","Dec 16","Dec 17", "Dec 20","Dec 21","Dec 22","Dec 23","Dec 24"],"Time");
 $myPicture->myData->setAbscissa("Time");

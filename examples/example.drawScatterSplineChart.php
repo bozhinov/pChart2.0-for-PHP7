@@ -24,17 +24,11 @@ for ($i=0;$i<=360;$i=$i+90)
 $myPicture->myData->addPoints($Points_1,"Probe 1");
 $myPicture->myData->addPoints($Points_2,"Probe 2");
 $myPicture->myData->addPoints($Points_3,"Probe 3");
-
-$myPicture->myData->setAxisName(0,"Index");
-$myPicture->myData->setAxisXY(0,AXIS_X);
-$myPicture->myData->setAxisPosition(0,AXIS_POSITION_BOTTOM);
+$myPicture->myData->setAxisProperties(0, ["Name" => "Index", "Identity" => AXIS_X, "Position" => AXIS_POSITION_BOTTOM]);
 
 /* Create the Y axis and the binded series */
 $myPicture->myData->setSerieOnAxis("Probe 3",1);
-$myPicture->myData->setAxisName(1,"Degree");
-$myPicture->myData->setAxisXY(1,AXIS_Y);
-$myPicture->myData->setAxisUnit(1,"°");
-$myPicture->myData->setAxisPosition(1,AXIS_POSITION_RIGHT);
+$myPicture->myData->setAxisProperties(1, ["Name" => "Degree", "Identity" => AXIS_Y, "Unit" => "°", "Position" => AXIS_POSITION_RIGHT]);
 
 /* Create the 1st scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 1","Probe 3",0);

@@ -33,6 +33,11 @@
 	setXAxisName
 	setXAxisDisplay
 	setXAxisUnit
+	setAxisPosition
+	setAxisColor
+	setAxisUnit
+	setAxisDisplay
+	setAxisXY
 
   o Added pData methods
 	setAxisProperties

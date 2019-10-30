@@ -477,7 +477,7 @@ class pData
 			(isset($Props["Unit"]))     AND $this->Data["Axis"][$AxisID]["Unit"] 	 = strval($Props["Unit"]);
 			(isset($Props["Name"]))     AND $this->Data["Axis"][$AxisID]["Name"] 	 = strval($Props["Name"]);
 			(isset($Props["Display"]))  AND $this->Data["Axis"][$AxisID]["Display"]  = intval($Props["Display"]);
-			(isset($Props["Format"]))   AND $this->Data["Axis"][$AxisID]["Format"] 	 = strval($Props["Format"]);
+			(isset($Props["Format"]))   AND $this->Data["Axis"][$AxisID]["Format"] 	 = $Props["Format"];
 			(isset($Props["Position"])) AND $this->Data["Axis"][$AxisID]["Position"] = intval($Props["Position"]);
 			(isset($Props["Identity"])) AND $this->Data["Axis"][$AxisID]["Identity"] = intval($Props["Identity"]);
 			if (isset($Props["Color"])) {
@@ -492,62 +492,11 @@ class pData
 		}
 	}
 
-	/* Set the display mode of an Axis */
-	public function setAxisDisplay(int $AxisID, int $Mode = AXIS_FORMAT_DEFAULT, $Format = "")
-	{
-		if (isset($this->Data["Axis"][$AxisID])) {
-			$this->Data["Axis"][$AxisID]["Display"] = $Mode;
-			if ($Format != "") {
-				$this->Data["Axis"][$AxisID]["Format"] = $Format;
-			}
-		}
-	}
-
-	/* Set the position of an Axis */
-	public function setAxisPosition(int $AxisID, int $Position = AXIS_POSITION_LEFT)
-	{
-		if (isset($this->Data["Axis"][$AxisID])) {
-			$this->Data["Axis"][$AxisID]["Position"] = $Position;
-		} else {
-			throw pException::InvalidInput("Invalid Axis ID");
-		}
-	}
-
-	/* Associate an unit to an axis */
-	public function setAxisUnit(int $AxisID, string $Unit)
-	{
-		if (isset($this->Data["Axis"][$AxisID])) {
-			$this->Data["Axis"][$AxisID]["Unit"] = $Unit;
-		} else {
-			throw pException::InvalidInput("Invalid serie ID");
-		}
-	}
-
 	/* Associate a name to an axis */
 	public function setAxisName(int $AxisID, string $Name)
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
 			$this->Data["Axis"][$AxisID]["Name"] = $Name;
-		} else {
-			throw pException::InvalidInput("Invalid serie ID");
-		}
-	}
-
-	/* Associate a color to an axis */
-	public function setAxisColor(int $AxisID, pColor $Color)
-	{
-		if (isset($this->Data["Axis"][$AxisID])) {
-			$this->Data["Axis"][$AxisID]["Color"] = $Color;
-		} else {
-			throw pException::InvalidInput("Invalid serie ID");
-		}
-	}
-
-	/* Design an axis as X or Y member */
-	public function setAxisXY(int $AxisID, int $Identity = AXIS_Y)
-	{
-		if (isset($this->Data["Axis"][$AxisID])) {
-			$this->Data["Axis"][$AxisID]["Identity"] = $Identity;
 		} else {
 			throw pException::InvalidInput("Invalid serie ID");
 		}

@@ -15,23 +15,17 @@ $myPicture = new pDraw(400,400);
 
 /* Create the X axis and the binded series */
 $myPicture->myData->createFunctionSerie("X", function($z){return ($z == 0) ? VOID : 1/$z;},"1/z",["MinX"=>-10,"MaxX"=>10,"XStep"=>1]);
-$myPicture->myData->setAxisName(0,"x = 1/z");
-$myPicture->myData->setAxisXY(0,AXIS_X);
-$myPicture->myData->setAxisPosition(0,AXIS_POSITION_BOTTOM);
+$myPicture->myData->setAxisProperties(0, ["Name" => "x = 1/z", "Identity" => AXIS_X, "Position" => AXIS_POSITION_BOTTOM]);
 
 /* Create the Y axis */
 $myPicture->myData->createFunctionSerie("Y", function($z){return $z;},"z",["MinX"=>-10,"MaxX"=>10,"XStep"=>1]);
 $myPicture->myData->setSerieOnAxis("Y",1);
-$myPicture->myData->setAxisName(1,"y = z");
-$myPicture->myData->setAxisXY(1,AXIS_Y);
-$myPicture->myData->setAxisPosition(1,AXIS_POSITION_RIGHT);
+$myPicture->myData->setAxisProperties(1, ["Name" => "y = z", "Identity" => AXIS_Y, "Position" => AXIS_POSITION_RIGHT]);
 
 /* Create the Y axis */
 $myPicture->myData->createFunctionSerie("Y2", function($z){return $z*$z*$z;},"z*z*z",["MinX"=>-10,"MaxX"=>10,"XStep"=>1]);
 $myPicture->myData->setSerieOnAxis("Y2",2);
-$myPicture->myData->setAxisName(2,"y = z*z*z");
-$myPicture->myData->setAxisXY(2,AXIS_Y);
-$myPicture->myData->setAxisPosition(2,AXIS_POSITION_LEFT);
+$myPicture->myData->setAxisProperties(2, ["Name" => "y = z*z*z", "Identity" => AXIS_Y, "Position" => AXIS_POSITION_LEFT]);
 
 /* Create the 1st scatter chart binding */
 $myPicture->myData->setScatterSerie("X","Y",0);

@@ -14,18 +14,12 @@ $myPicture = new pDraw(400,400);
 /* Create the X axis and the binded series */
 $myPicture->myData->addPoints([-4,VOID,VOID,12,8,3],"Probe 1");
 $myPicture->myData->addPoints([3,12,15,8,5,-5],"Probe 2");
-$myPicture->myData->setAxisName(0,"Temperatures");
-$myPicture->myData->setAxisXY(0,AXIS_X);
-$myPicture->myData->setAxisUnit(0,"°C");
-$myPicture->myData->setAxisPosition(0,AXIS_POSITION_BOTTOM);
+$myPicture->myData->setAxisProperties(0, ["Name" => "Temperatures", "Identity" => AXIS_X, "Unit" => "°C", "Position" => AXIS_POSITION_BOTTOM]);
 
 /* Create the Y axis and the binded series */
 $myPicture->myData->addPoints([2,7,5,18,19,22],"Probe 3");
 $myPicture->myData->setSerieOnAxis("Probe 3",1);
-$myPicture->myData->setAxisName(1,"Humidity");
-$myPicture->myData->setAxisXY(1,AXIS_Y);
-$myPicture->myData->setAxisUnit(1,"%");
-$myPicture->myData->setAxisPosition(1,AXIS_POSITION_RIGHT);
+$myPicture->myData->setAxisProperties(1, ["Name" => "Humidity", "Identity" => AXIS_Y, "Unit" => "%", "Position" => AXIS_POSITION_RIGHT]);
 
 /* Draw the background */
 $myPicture->drawFilledRectangle(0,0,400,400,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);

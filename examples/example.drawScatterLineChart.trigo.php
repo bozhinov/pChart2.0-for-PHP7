@@ -22,15 +22,11 @@ for($i=0;$i<=360;$i=$i+10)
 $myPicture->myData->addPoints($Points_1,"Probe 1");
 $myPicture->myData->addPoints($Points_2,"Probe 2");
 
-$myPicture->myData->setAxisName(0,"X-Index");
-$myPicture->myData->setAxisXY(0,AXIS_X);
-$myPicture->myData->setAxisPosition(0,AXIS_POSITION_BOTTOM);
+$myPicture->myData->setAxisProperties(0, ["Name" => "X-Index", "Identity" => AXIS_X, "Position" => AXIS_POSITION_BOTTOM]);
 
 /* Create the Y axis and the binded series */
 $myPicture->myData->setSerieOnAxis("Probe 2",1);
-$myPicture->myData->setAxisName(1,"Y-Index");
-$myPicture->myData->setAxisXY(1,AXIS_Y);
-$myPicture->myData->setAxisPosition(1,AXIS_POSITION_RIGHT);
+$myPicture->myData->setAxisProperties(1, ["Name" => "Y-Index", "Identity" => AXIS_Y, "Position" => AXIS_POSITION_RIGHT]);
 
 /* Create the 1st scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 1","Probe 2",0);

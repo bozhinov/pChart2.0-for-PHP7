@@ -12,9 +12,7 @@ $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */
 $myPicture->myData->addPoints([1700,2500,7800,4500,3150],"Distance");
-$myPicture->myData->setAxisName(0,"Maximum distance");
-$myPicture->myData->setAxisUnit(0,"m");
-$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_METRIC);
+$myPicture->myData->setAxisProperties(0, ["Name" => "Maximum distance", "Unit" => "m", "Display" => AXIS_FORMAT_METRIC]);
 
 /* Create the abscissa serie */
 $myPicture->myData->addPoints([1230768000,1233446400,1235865600,1238544000,1241136000,1243814400],"Timestamp");

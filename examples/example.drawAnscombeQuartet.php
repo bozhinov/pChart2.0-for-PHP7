@@ -22,18 +22,14 @@ $myPicture->myData->addPoints([8,8,8,8,8,8,8,19,8,8,8],"X4");
 $myPicture->myData->addPoints([6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.5,5.56,7.91,6.89],"Y4");
 
 /* Create the X axis */
-$myPicture->myData->setAxisName(0,"X");
-$myPicture->myData->setAxisXY(0,AXIS_X);
-$myPicture->myData->setAxisPosition(0,AXIS_POSITION_BOTTOM);
+$myPicture->myData->setAxisProperties(0, ["Name" => "X", "Identity" => AXIS_X, "Position" => AXIS_POSITION_BOTTOM]);
 
 /* Create the Y axis */
 $myPicture->myData->setSerieOnAxis("Y1",1);
 $myPicture->myData->setSerieOnAxis("Y2",1);
 $myPicture->myData->setSerieOnAxis("Y3",1);
 $myPicture->myData->setSerieOnAxis("Y4",1);
-$myPicture->myData->setAxisName(1,"Y");
-$myPicture->myData->setAxisXY(1,AXIS_Y);
-$myPicture->myData->setAxisPosition(1,AXIS_POSITION_LEFT);
+$myPicture->myData->setAxisProperties(1, ["Name" => "Y", "Identity" => AXIS_Y, "Position" => AXIS_POSITION_LEFT]);
 
 /* Create the scatter chart binding */
 $myPicture->myData->setScatterSerie("X1","Y1",0);

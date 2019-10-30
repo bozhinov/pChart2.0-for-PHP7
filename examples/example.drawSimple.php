@@ -13,13 +13,11 @@ $myPicture = new pDraw(700,230);
 
 /* Populate the pData object */
 $myPicture->myData->addPoints([2,7,5,18,19,22,23,25,22,12,10,10],"DEFCA");
-$myPicture->myData->setAxisName(0,"$ Incomes");
-$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CURRENCY);
+$myPicture->myData->setAxisProperties(0, ["Name" => "$ Incomes", "Display" => AXIS_FORMAT_CURRENCY]);
 $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
 $myPicture->myData->setPalette("DEFCA",new pColor(55,91,127));
-
 
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,["StartColor"=>new pColor(220), "EndColor"=>new pColor(255)]);
 $myPicture->drawRectangle(0,0,699,229,["Color"=>new pColor(220)]);

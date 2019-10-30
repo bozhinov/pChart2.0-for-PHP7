@@ -18,7 +18,7 @@ $myPicture->myData->addPoints([34,55,15,62,38,42],"Open");
 $myPicture->myData->addPoints([42,25,40,38,49,36],"Close");
 $myPicture->myData->addPoints([27,14,12,25,32,32],"Min");
 $myPicture->myData->addPoints([45,59,47,65,64,48],"Max");
-$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CURRENCY,"$");
+$myPicture->myData->setAxisProperties(0,["Display" => AXIS_FORMAT_CURRENCY, "Format" => "$"]);
 
 $myPicture->myData->addPoints(["8h","10h","12h","14h","16h","18h"],"Time");
 $myPicture->myData->setAbscissa("Time");
@@ -48,7 +48,7 @@ $mystockChart = new pStock($myPicture);
 $mystockChart->drawStockChart();
 
 /* Reset the display mode because of the graph small size */
-$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_DEFAULT);
+$myPicture->myData->setAxisProperties(0,["Display" => AXIS_FORMAT_DEFAULT]);
 
 /* Draw the 2nd scale */
 $myPicture->setShadow(FALSE);

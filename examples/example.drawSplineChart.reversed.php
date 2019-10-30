@@ -18,7 +18,14 @@ $myPicture->myData->addPoints([2,7,5,18,19,22],"Probe 3");
 $myPicture->myData->setPalette("Probe 1",new pColor(220,60,20));
 $myPicture->myData->setSerieTicks("Probe 2",4);
 $myPicture->myData->setSerieWeight("Probe 3",2);
-$myPicture->myData->setAxisName(0,"Temperatures");
+$myPicture->myData->setAxisProperties(0, [
+	"Name" => "Temperatures",
+	"Display" => AXIS_FORMAT_CUSTOM,
+	"Format" => function($Value){ # NegateValues
+		($Value == VOID) ? VOID : -$Value;
+	}
+]);
+
 $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Months");
 $myPicture->myData->setAbscissa("Labels");
@@ -26,9 +33,6 @@ $myPicture->myData->setAbscissa("Labels");
 /* Reverse the Y axis trick */
 $myPicture->myData->setAbsicssaPosition(AXIS_POSITION_TOP);
 $myPicture->myData->NegateValues(["Probe 1","Probe 2","Probe 3"]);
-$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM, function($Value){
-	($Value == VOID) ? VOID : -$Value;
-}); # NegateValues
 
 /* Turn off Anti-aliasing */
 $myPicture->setAntialias(FALSE);

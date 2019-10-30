@@ -14,13 +14,16 @@ $myPicture = new pDraw(700,230);
 /* Populate the pData object */ 
 $myPicture->myData->addPoints([20,40,65,100,70,55,40,22,12],"Male");
 $myPicture->myData->addPoints([-22,-44,-61,-123,-74,-60,-52,-34,-21],"Female");
-$myPicture->myData->setAxisName(0,"Community members");
 $myPicture->myData->addPoints(["0-10","10-20","20-30","30-40","40-50","50-60","60-70","70-80","80-90"],"Labels");
 $myPicture->myData->setSerieDescription("Labels","Ages");
 $myPicture->myData->setAbscissa("Labels");
-$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM, function($Value){
-	return abs($Value);
-});
+$myPicture->myData->setAxisProperties(0, [
+	"Name" => "Community members",
+	"Display" => AXIS_FORMAT_CUSTOM,
+	"Format" => function($Value){
+		return abs($Value);
+	}
+]);
 
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_VERTICAL,  ["StartColor"=>new pColor(240), "EndColor"=>new pColor(180)]);
 $myPicture->drawGradientArea(0,0,700,230,DIRECTION_HORIZONTAL,["StartColor"=>new pColor(240), "EndColor"=>new pColor(180,180,180,20)]);

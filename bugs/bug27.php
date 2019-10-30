@@ -25,8 +25,7 @@ $measurement_array = [
 
 $myPicture->myData->addPoints($x_axis_points_array,"Timestamp");
 $myPicture->myData->setAbscissa("Timestamp");
-$myPicture->myData->setAxisName(0,'Air Quality Index');
-$myPicture->myData->setAxisUnit(0,' Idx');
+$myPicture->myData->setAxisProperties(0, ["Name" => "Air Quality Index", "Unit" => " Idx"]);
 $myPicture->myData->addPoints($measurement_array, 1);
 $myPicture->myData->setSerieDescription(1, 'Hall');
 

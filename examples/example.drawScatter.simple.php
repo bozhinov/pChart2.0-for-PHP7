@@ -15,25 +15,23 @@ $myPicture = new pDraw(400,400);
 $Points_1 = [];
 $Points_2 = [];
 $Points_3 = [];
+
 for ($i=0;$i<=10;$i=$i+1)
 {
 	$Points_1[] = rand(1,20)+$i;
 	$Points_2[] = rand(1,20)+$i;
 	$Points_3[] = rand(0,20)+$i;
 }
+
 $myPicture->myData->addPoints($Points_1,"Probe 1");
 $myPicture->myData->addPoints($Points_2,"Probe 2");
 $myPicture->myData->addPoints($Points_3,"Probe 3");
 
-$myPicture->myData->setAxisName(0,"X-Index");
-$myPicture->myData->setAxisXY(0,AXIS_X);
-$myPicture->myData->setAxisPosition(0,AXIS_POSITION_TOP);
+$myPicture->myData->setAxisProperties(0, ["Name" => "X-Index", "Identity" => AXIS_X, "Position" => AXIS_POSITION_TOP]);
 
 /* Create the Y axis and the binded series */
 $myPicture->myData->setSerieOnAxis("Probe 3",1);
-$myPicture->myData->setAxisName(1,"Y-Index");
-$myPicture->myData->setAxisXY(1,AXIS_Y);
-$myPicture->myData->setAxisPosition(1,AXIS_POSITION_LEFT);
+$myPicture->myData->setAxisProperties(1, ["Name" => "Y-Index", "Identity" => AXIS_Y, "Position" => AXIS_POSITION_LEFT]);
 
 /* Create the 1st scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 1","Probe 3",0);

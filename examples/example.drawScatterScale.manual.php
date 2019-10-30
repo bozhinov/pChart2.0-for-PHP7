@@ -13,16 +13,19 @@ $myPicture = new pDraw(400,400);
 
 /* Create the X axis and the binded series */
 $myPicture->myData->addPoints([3,12,15,8,5,-5],"X Values");
-$myPicture->myData->setAxisName(0,"X Values");
-$myPicture->myData->setAxisXY(0,AXIS_X);
-$myPicture->myData->setAxisDisplay(0,AXIS_FORMAT_TIME,"i:s");
-$myPicture->myData->setAxisPosition(0,AXIS_POSITION_BOTTOM);
+
+$myPicture->myData->setAxisProperties(0, [
+	"Name" => "X Values",
+	"Identity" => AXIS_X,
+	"Display" => AXIS_FORMAT_TIME,
+	"Format" => "i:s",
+	"Position" => AXIS_POSITION_BOTTOM
+]);
 
 /* Create the Y axis and the binded series */
 $myPicture->myData->addPoints([2,7,5,18,19,22],"Y Values");
 $myPicture->myData->setSerieOnAxis("Y Values",1);
-$myPicture->myData->setAxisName(1,"Y Values");
-$myPicture->myData->setAxisXY(1,AXIS_Y);
+$myPicture->myData->setAxisProperties(1, ["Name" => "Y Values", "Identity" => AXIS_Y]);
 
 /* Draw the background */
 $myPicture->drawFilledRectangle(0,0,400,400,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);

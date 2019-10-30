@@ -20,8 +20,7 @@ for($i=0;$i<=80;$i++) {
 	$Points[] = ($i/10)*($i/10);
 }
 $myPicture->myData->addPoints($Points,"Statistical probability");
-$myPicture->myData->setAxisName(0,"Probability");
-$myPicture->myData->setAxisUnit(0,"%");
+$myPicture->myData->setAxisProperties(0, ["Name" => "Probability", "Unit" => "%"]);
 
 /* Turn off Anti-aliasing */
 $myPicture->setAntialias(FALSE);

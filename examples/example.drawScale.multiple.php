@@ -16,15 +16,16 @@ $myPicture->myData->addPoints([1,2,VOID,9,10],"Humidity 1");
 $myPicture->myData->addPoints([1,VOID,7,-9,0],"Humidity 2");
 $myPicture->myData->addPoints([-1,-1,-1,-1,-1],"Humidity 3");
 $myPicture->myData->addPoints([0,0,0,0,0],"Vide");
+
 $myPicture->myData->setSerieOnAxis("Temperature",0);
 $myPicture->myData->setSerieOnAxis("Humidity 1",1);
 $myPicture->myData->setSerieOnAxis("Humidity 2",1);
 $myPicture->myData->setSerieOnAxis("Humidity 3",1);
 $myPicture->myData->setSerieOnAxis("Vide",2);
-$myPicture->myData->setAxisPosition(2,AXIS_POSITION_RIGHT);
-$myPicture->myData->setAxisName(0,"Temperature");
-$myPicture->myData->setAxisName(1,"Humidity");
-$myPicture->myData->setAxisName(2,"Empty value");
+
+$myPicture->myData->setAxisProperties(0, ["Name" => "Temperature"]);
+$myPicture->myData->setAxisProperties(1, ["Name" => "Humidity"]);
+$myPicture->myData->setAxisProperties(2, ["Name" => "Empty value", "Position" => AXIS_POSITION_RIGHT]);
 
 /* Create the abscissa serie */
 $myPicture->myData->addPoints(["Jan","Feb","Mar","Apr","May","Jun"],"Labels");
