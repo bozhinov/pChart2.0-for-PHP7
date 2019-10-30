@@ -36,15 +36,15 @@ class pData
 
 		$this->Data = [
 			"Series" => [],
-			"XAxis" => [
+			"Abscissa" => NULL,
+			"AbscissaProperties" => [
+				"Name" => NULL,
 				"Display" => AXIS_FORMAT_DEFAULT,
 				"Format" => NULL,
 				"Name" => NULL,
-				"Unit" => NULL
+				"Unit" => NULL,
+				"Position" => AXIS_POSITION_BOTTOM
 			],
-			"Abscissa" => NULL,
-			"AbscissaName" => NULL,
-			"AbsicssaPosition" => AXIS_POSITION_BOTTOM,
 			"Axis" => [0 => [
 					"Display" => AXIS_FORMAT_DEFAULT,
 					"Position" => AXIS_POSITION_LEFT,
@@ -172,8 +172,8 @@ class pData
 		(isset($Props["Description"])) 	AND $this->Data["Series"][$Serie]["Description"] = strval($Props["Description"]);
 		(isset($Props["Shape"]))  	AND $this->Data["Series"][$Serie]["Shape"]  	 = intval($Props["Shape"]);
 		(isset($Props["isDrawable"]))   AND $this->Data["Series"][$Serie]["isDrawable"]  = boolval($Props["isDrawable"]);
-		(isset($Props["Ticks"]))   	AND $this->Data["Series"][$Serie]["Ticks"]  	= intval($Props["Ticks"]);
-		(isset($Props["Weight"]))   	AND $this->Data["Series"][$Serie]["Weight"]  	= intval($Props["Weight"]);
+		(isset($Props["Ticks"]))   	AND $this->Data["Series"][$Serie]["Ticks"]  	 = intval($Props["Ticks"]);
+		(isset($Props["Weight"]))   	AND $this->Data["Series"][$Serie]["Weight"]  	 = intval($Props["Weight"]);
 	}
 
 	/* Set the description of a given serie */
@@ -186,15 +186,6 @@ class pData
 		}
 	}
 
-	/* Set the properties of the X Axis */
-	public function setXAxisProperties($Props)
-	{
-		(isset($Props["Name"]))    AND $this->Data["XAxis"]["Name"]    = strval($Props["Name"]);
-		(isset($Props["Display"])) AND $this->Data["XAxis"]["Display"] = intval($Props["Display"]);
-		(isset($Props["Format"]))  AND $this->Data["XAxis"]["Format"]  = $Props["Format"];
-		(isset($Props["Unit"]))    AND $this->Data["XAxis"]["Unit"]    = strval($Props["Unit"]);
-	}
-
 	/* Set the serie that will be used as abscissa */
 	public function setAbscissa(?string $Serie, array $Props = [])
 	{
@@ -202,8 +193,12 @@ class pData
 			$this->Data["Abscissa"] = $Serie;
 
 			if (!empty($Props)){
-				(isset($Props["Name"])) AND $this->Data["AbscissaName"] = strval($Props["Name"]);
-				(isset($Props["Position"])) AND $this->Data["AbsicssaPosition"] = intval($Props["Position"]);
+				(isset($Props["Name"]))    AND $this->Data["AbscissaProperties"]["Name"]    = strval($Props["Name"]);
+				(isset($Props["Display"])) AND $this->Data["AbscissaProperties"]["Display"] = intval($Props["Display"]);
+				(isset($Props["Format"]))  AND $this->Data["AbscissaProperties"]["Format"]  = $Props["Format"];
+				(isset($Props["Unit"]))    AND $this->Data["AbscissaProperties"]["Unit"]    = strval($Props["Unit"]);
+				(isset($Props["Name"]))    AND $this->Data["AbscissaProperties"]["Name"]    = strval($Props["Name"]);
+				(isset($Props["Position"])) AND $this->Data["AbscissaProperties"]["Position"] = intval($Props["Position"]);
 			}
 		} else {
 			throw pException::InvalidInput("Invalid serie name");

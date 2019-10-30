@@ -1785,10 +1785,10 @@ class pDraw
 		}
 
 		/* Build the scale settings */
-		$GotXAxis = FALSE;
+		$GotAbscissa = FALSE;
 		foreach($Data["Axis"] as $AxisID => $AxisParameter) {
 			if ($AxisParameter["Identity"] == AXIS_X) {
-				$GotXAxis = TRUE;
+				$GotAbscissa = TRUE;
 			}
 
 			if ($Pos == SCALE_POS_LEFTRIGHT && $AxisParameter["Identity"] == AXIS_Y) {
@@ -1880,7 +1880,7 @@ class pDraw
 		}
 
 		/* Still no X axis */
-		if ($GotXAxis == FALSE) {
+		if ($GotAbscissa == FALSE) {
 			if (!is_null($Abscissa)) {
 				$Points = count($Data["Series"][$Abscissa]["Data"]);
 				/* if ($AutoAxisLabels) { /// Dead code found by Scrutinizer
@@ -1890,7 +1890,7 @@ class pDraw
 				} */
 			} else {
 				$Points = 0;
-				/* $AxisName = isset($Data["XAxis"]["Name"]) ? $Data["XAxis"]["Name"] : NULL; */
+				/* $AxisName = isset($Data["AbscissaProperties"]["Name"]) ? $Data["AbscissaProperties"]["Name"] : NULL; */
 				foreach($Data["Series"] as $SerieParameter) {
 					if ($SerieParameter["isDrawable"]) {
 						$Points = max($Points, count($SerieParameter["Data"]));
@@ -1901,7 +1901,7 @@ class pDraw
 			$AxisID = count($Data["Axis"]);
 			$Data["Axis"][$AxisID]["Identity"] = AXIS_X;
 			$Data["Axis"][$AxisID]["Position"] = ($Pos == SCALE_POS_LEFTRIGHT) ? AXIS_POSITION_BOTTOM : AXIS_POSITION_LEFT;
-			(!is_null($Data["AbscissaName"])) AND $Data["Axis"][$AxisID]["Name"] = $Data["AbscissaName"];
+			(!is_null($Data["AbscissaProperties"]["Name"])) AND $Data["Axis"][$AxisID]["Name"] = $Data["AbscissaProperties"]["Name"];
 
 			if ($XMargin == AUTO) {
 				$Height = ($Pos == SCALE_POS_LEFTRIGHT) ? $this->GraphAreaXdiff : $this->GraphAreaYdiff;
@@ -1918,10 +1918,10 @@ class pDraw
 
 		/* Do we need to reverse the abscissa position? */
 		if ($Pos != SCALE_POS_LEFTRIGHT) {
-			$Data["AbsicssaPosition"] = ($Data["AbsicssaPosition"] == AXIS_POSITION_BOTTOM) ? AXIS_POSITION_LEFT : AXIS_POSITION_RIGHT;
+			$Data["AbscissaProperties"]["Position"]  = ($Data["AbscissaProperties"]["Position"]  == AXIS_POSITION_BOTTOM) ? AXIS_POSITION_LEFT : AXIS_POSITION_RIGHT;
 		}
 		/* AxisID should not be used here - bug in the original code */
-		$Data["Axis"][$AxisID]["Position"] = $Data["AbsicssaPosition"];
+		$Data["Axis"][$AxisID]["Position"] = $Data["AbscissaProperties"]["Position"] ;
 		$this->myData->saveOrientation($Pos);
 		$this->myData->saveAxisConfig($Data["Axis"]);
 		$this->myData->saveYMargin($YMargin);
@@ -1990,13 +1990,13 @@ class pDraw
 							$YPos = $AxisPos["B"];
 							if (!is_null($Abscissa)) {
 								if (isset($Data["Series"][$Abscissa]["Data"][$i])) {
-									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["XAxis"]);
+									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["AbscissaProperties"]);
 								} else {
 									$Value = "";
 								}
 							} else {
 								if (isset($Parameters["ScaleMin"]) && isset($Parameters["RowHeight"])) {
-									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxis"]);
+									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["AbscissaProperties"]);
 								} else {
 									$Value = $i;
 								}
@@ -2086,13 +2086,13 @@ class pDraw
 							$YPos = $AxisPos["T"];
 							if (!is_null($Abscissa)) {
 								if (isset($Data["Series"][$Abscissa]["Data"][$i])) {
-									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["XAxis"]);
+									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["AbscissaProperties"]);
 								} else {
 									$Value = "";
 								}
 							} else {
 								if (isset($Parameters["ScaleMin"]) && isset($Parameters["RowHeight"])) {
-									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxis"]);
+									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["AbscissaProperties"]);
 								} else {
 									$Value = $i;
 								}
@@ -2185,13 +2185,13 @@ class pDraw
 							$XPos = $AxisPos["L"];
 							if (!is_null($Abscissa)) {
 								if (isset($Data["Series"][$Abscissa]["Data"][$i])) {
-									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["XAxis"]);
+									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["AbscissaProperties"]);
 								} else {
 									$Value = "";
 								}
 							} else {
 								if (isset($Parameters["ScaleMin"]) && isset($Parameters["RowHeight"])) {
-									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxis"]);
+									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["AbscissaProperties"]);
 								} else {
 									$Value = strval($i);
 								}
@@ -2281,13 +2281,13 @@ class pDraw
 							$XPos = $AxisPos["R"];
 							if (!is_null($Abscissa)) {
 								if (isset($Data["Series"][$Abscissa]["Data"][$i])) {
-									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["XAxis"]);
+									$Value = $this->scaleFormat($Data["Series"][$Abscissa]["Data"][$i], $Data["AbscissaProperties"]);
 								} else {
 									$Value = "";
 								}
 							} else {
 								if (isset($Parameters["ScaleMin"]) && isset($Parameters["RowHeight"])) {
-									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["XAxis"]);
+									$Value = $this->scaleFormat($Parameters["ScaleMin"] + $Parameters["RowHeight"] * $i, $Data["AbscissaProperties"]);
 								} else {
 									$Value = strval($i);
 								}
@@ -3190,7 +3190,7 @@ class pDraw
 	}
 
 	/* Format the axis values */
-	public function scaleFormat($Value, array $XAxis)
+	public function scaleFormat($Value, array $Axis)
 	{
 		if ($Value == VOID) {
 			return "";
@@ -3198,9 +3198,9 @@ class pDraw
 
 		# Momchil: this is not the same as default for the switch
 		# $Value comes as an INT or FLOAT but is used as a STRING as well
-		$ret = strval($Value) . $XAxis["Unit"];
+		$ret = strval($Value) . $Axis["Unit"];
 
-		switch ($XAxis["Display"]) {
+		switch ($Axis["Display"]) {
 			case AXIS_FORMAT_TRAFFIC:
 				if ($Value == 0) {
 					$ret = "0B";
@@ -3218,26 +3218,26 @@ class pDraw
 				}
 				break;
 			case AXIS_FORMAT_CUSTOM:
-				if (is_callable($XAxis["Format"])) {
-					$ret = $XAxis["Format"]($Value);
+				if (is_callable($Axis["Format"])) {
+					$ret = $Axis["Format"]($Value);
 				}
 				break;
 			case AXIS_FORMAT_DATE:
-				$ret = gmdate((is_null($XAxis["Format"])) ? "d/m/Y" : $XAxis["Format"], $Value);
+				$ret = gmdate((is_null($Axis["Format"])) ? "d/m/Y" : $Axis["Format"], $Value);
 				break;
 			case AXIS_FORMAT_TIME:
-				$ret = gmdate((is_null($XAxis["Format"])) ? "H:i:s" : $XAxis["Format"], $Value);
+				$ret = gmdate((is_null($Axis["Format"])) ? "H:i:s" : $Axis["Format"], $Value);
 				break;
 			case AXIS_FORMAT_CURRENCY:
-				$ret = $XAxis["Format"] . number_format($Value, 2);
+				$ret = $Axis["Format"] . number_format($Value, 2);
 				break;
 			case AXIS_FORMAT_METRIC:
 				if (abs($Value) >= 1000) {
-					$ret = (round($Value / 1000, $XAxis["Format"]) . "k" . $XAxis["Unit"]);
+					$ret = (round($Value / 1000, $Axis["Format"]) . "k" . $Axis["Unit"]);
 				} elseif (abs($Value) > 1000000) {
-					$ret = (round($Value / 1000000, $XAxis["Format"]) . "m" . $XAxis["Unit"]);
+					$ret = (round($Value / 1000000, $Axis["Format"]) . "m" . $Axis["Unit"]);
 				} elseif (abs($Value) > 1000000000) {
-					$ret = (round($Value / 1000000000, $XAxis["Format"]) . "g" . $XAxis["Unit"]);
+					$ret = (round($Value / 1000000000, $Axis["Format"]) . "g" . $Axis["Unit"]);
 				}
 				break;
 		}
@@ -3454,7 +3454,7 @@ class pDraw
 		foreach($Indexes as $Key => $Index) {
 			$Series = [];
 			$Index = intval($Index);
-			$AbscissaDataSet = isset($Data["Series"][$Data["Abscissa"]]["Data"][$Index]);
+			$AbscissaDataSet = (!is_null($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Index]));
 
 			if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 
@@ -3472,8 +3472,8 @@ class pDraw
 					if (isset($Data["Series"][$SerieName]["Data"][$Index])) {
 						$AxisID = $Data["Series"][$SerieName]["Axis"];
 
-						if (isset($Data["Abscissa"]) && $AbscissaDataSet) {
-							$XLabel = $this->scaleFormat($Data["Series"][$Data["Abscissa"]]["Data"][$Index], $Data["XAxis"]);
+						if ($AbscissaDataSet) {
+							$XLabel = $this->scaleFormat($Data["Series"][$Data["Abscissa"]]["Data"][$Index], $Data["AbscissaProperties"]);
 						} else {
 							$XLabel = "";
 						}
@@ -3482,7 +3482,7 @@ class pDraw
 							$Description = $OverrideTitle;
 						} elseif (count($SeriesName) == 1) {
 							$Description = $Data["Series"][$SerieName]["Description"] . " - " . $XLabel;
-						} elseif (isset($Data["Abscissa"]) && $AbscissaDataSet) {
+						} elseif ($AbscissaDataSet) {
 							$Description = $XLabel;
 						}
 
@@ -3559,8 +3559,8 @@ class pDraw
 					if (isset($Data["Series"][$SerieName]["Data"][$Index])) {
 						$AxisID = $Data["Series"][$SerieName]["Axis"];
 
-						if (isset($Data["Abscissa"]) && $AbscissaDataSet) {
-							$XLabel = $this->scaleFormat($Data["Series"][$Data["Abscissa"]]["Data"][$Index], $Data["XAxis"]);
+						if ($AbscissaDataSet) {
+							$XLabel = $this->scaleFormat($Data["Series"][$Data["Abscissa"]]["Data"][$Index], $Data["AbscissaProperties"]);
 						} else {
 							$XLabel = "";
 						}
@@ -3568,10 +3568,10 @@ class pDraw
 						if (!is_null($OverrideTitle)) {
 							$Description = $OverrideTitle;
 						} elseif (count($SeriesName) == 1) {
-							if (isset($Data["Abscissa"]) && $AbscissaDataSet){
+							if ($AbscissaDataSet){
 								$Description = $Data["Series"][$SerieName]["Description"] . " - " . $XLabel;
 							}
-						} elseif (isset($Data["Abscissa"]) && $AbscissaDataSet) {
+						} elseif (!$AbscissaDataSet) {
 							$Description = $XLabel;
 						}
 

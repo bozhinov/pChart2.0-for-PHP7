@@ -47,7 +47,6 @@
 
   o Added pData methods
 	setAxisProperties
-	setXAxisProperties
 	setScatterSerieProperties
 	setSerieProperties
 
@@ -63,8 +62,8 @@
   o Added benchmark script
   o FIXED: pDraw->setFilter
   o pData->XAxis data structure to match Axis[0]
-  o pData->setAbsicssa accepts Name and Position params
-  o pColor and pColorGradient classes cleaned up 
+  o pData->setAbsicssa accepts an array of params along with the id
+  o pColor and pColorGradient classes cleaned up
   o pColor converted to array in pDraw private methods. 13% speed improvement
 
  2.3.0 -----------------------------------------------------------------------

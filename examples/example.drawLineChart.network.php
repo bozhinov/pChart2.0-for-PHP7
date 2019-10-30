@@ -37,8 +37,7 @@ $myPicture->myData->addPoints($BaseTsArr,"TimeStamp");
 
 $myPicture->myData->setAxisProperties(0, ["Name" => "Bandwidth", "Display" => AXIS_FORMAT_TRAFFIC]);
 $myPicture->myData->setSerieDescription("TimeStamp","time");
-$myPicture->myData->setAbscissa("TimeStamp");
-$myPicture->myData->setXAxisProperties(["Display" => AXIS_FORMAT_TIME, "Format" => "H:00"]);
+$myPicture->myData->setAbscissa("TimeStamp", ["Display" => AXIS_FORMAT_TIME, "Format" => "H:00"]);
 
 /* Turn off Anti-aliasing */
 $myPicture->setAntialias(FALSE);
