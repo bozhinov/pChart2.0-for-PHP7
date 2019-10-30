@@ -35,6 +35,7 @@ class pData
 		];
 
 		$this->Data = [
+			"Series" => [],
 			"XAxis" => [
 				"Display" => AXIS_FORMAT_DEFAULT,
 				"Format" => NULL,
@@ -56,7 +57,7 @@ class pData
 	/* Initialize a given serie */
 	public function initialise(string $Serie)
 	{
-		$ID = (isset($this->Data["Series"])) ? count($this->Data["Series"]) : 0;
+		$Id = count($this->Data["Series"]);
 
 		$this->Data["Series"][$Serie] = [
 			"Data" => [],
@@ -70,7 +71,7 @@ class pData
 			"Weight" => NULL,
 			"XOffset" => 0,
 			"Shape" => SERIE_SHAPE_FILLEDCIRCLE,
-			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : new pColor()
+			"Color" => (isset($this->Palette[$Id])) ? $this->Palette[$Id] : new pColor()
 		];
 	}
 
