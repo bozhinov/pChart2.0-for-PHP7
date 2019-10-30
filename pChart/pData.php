@@ -42,6 +42,7 @@ class pData
 				"Unit" => NULL
 			],
 			"Abscissa" => NULL,
+			"AbscissaName" => NULL,
 			"AbsicssaPosition" => AXIS_POSITION_BOTTOM,
 			"Axis" => [0 => [
 					"Display" => AXIS_FORMAT_DEFAULT,
@@ -209,7 +210,7 @@ class pData
 	}
 
 	/* Set the name of the abscissa axis */
-	public function setAbscissaName(string $Name)
+	public function setAbscissaName(?string $Name)
 	{
 		$this->Data["AbscissaName"] = $Name;
 	}

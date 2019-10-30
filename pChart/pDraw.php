@@ -1901,7 +1901,7 @@ class pDraw
 			$AxisID = count($Data["Axis"]);
 			$Data["Axis"][$AxisID]["Identity"] = AXIS_X;
 			$Data["Axis"][$AxisID]["Position"] = ($Pos == SCALE_POS_LEFTRIGHT) ? AXIS_POSITION_BOTTOM : AXIS_POSITION_LEFT;
-			(isset($Data["AbscissaName"])) AND $Data["Axis"][$AxisID]["Name"] = $Data["AbscissaName"];
+			(!is_null($Data["AbscissaName"])) AND $Data["Axis"][$AxisID]["Name"] = $Data["AbscissaName"];
 
 			if ($XMargin == AUTO) {
 				$Height = ($Pos == SCALE_POS_LEFTRIGHT) ? $this->GraphAreaXdiff : $this->GraphAreaYdiff;
