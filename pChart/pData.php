@@ -36,19 +36,21 @@ class pData
 
 		$this->Data = [
 			"Series" => [],
+			"ScatterSeries" => [],
 			"Abscissa" => NULL,
 			"AbscissaProperties" => [
 				"Name" => NULL,
 				"Display" => AXIS_FORMAT_DEFAULT,
 				"Format" => NULL,
-				"Name" => NULL,
 				"Unit" => NULL,
 				"Position" => AXIS_POSITION_BOTTOM
 			],
 			"Axis" => [0 => [
 					"Display" => AXIS_FORMAT_DEFAULT,
 					"Position" => AXIS_POSITION_LEFT,
-					"Identity" => AXIS_Y
+					"Identity" => AXIS_Y,
+					"Unit" => NULL,
+					"Format" => NULL
 				]
 			]
 		];
@@ -266,6 +268,23 @@ class pData
 		}
 	}
 
+	/* Initialize a given scatter serie */
+	public function initScatterSerie(int $ID)
+	{
+		if (isset($this->Data["ScatterSeries"][$ID])) {
+			throw pException::InvalidInput("Invalid scatter serie ID");
+		}
+
+		$this->Data["ScatterSeries"][$ID] = [
+			"Description" => "Scatter " . $ID,
+			"isDrawable" => TRUE,
+			"Picture" => NULL,
+			"Ticks" => NULL,
+			"Weight" => NULL,
+			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : new pColor()
+		];
+	}
+
 	/* Compute the series limits for an individual and global point of view */
 	public function limits()
 	{
@@ -478,6 +497,9 @@ class pData
 		if (!isset($this->Data["Axis"][$AxisID])) {
 			$this->Data["Axis"][$AxisID]["Position"] = AXIS_POSITION_LEFT;
 			$this->Data["Axis"][$AxisID]["Identity"] = AXIS_Y;
+			$this->Data["Axis"][$AxisID]["Unit"] = NULL;
+			$this->Data["Axis"][$AxisID]["Format"] = NULL;
+			$this->Data["Axis"][$AxisID]["Display"] = NULL;
 		}
 
 		$this->Data["Series"][$Serie]["Axis"] = $AxisID;
@@ -598,23 +620,6 @@ class pData
 	public function getPalette()
 	{
 		return $this->Palette;
-	}
-
-	/* Initialize a given scatter serie */
-	public function initScatterSerie(int $ID)
-	{
-		if (isset($this->Data["ScatterSeries"][$ID])) {
-			throw pException::InvalidInput("Invalid scatter serie ID");
-		}
-
-		$this->Data["ScatterSeries"][$ID] = [
-			"Description" => "Scatter " . $ID,
-			"isDrawable" => TRUE,
-			"Picture" => NULL,
-			"Ticks" => NULL,
-			"Weight" => NULL,
-			"Color" => (isset($this->Palette[$ID])) ? $this->Palette[$ID] : new pColor()
-		];
 	}
 
 	public function normalize(int $NormalizationFactor = 100, string $UnitChange = "", int $Round = 1)

@@ -125,9 +125,6 @@ class pScatter
 			$Data["Axis"][$AxisID]["Rows"] = $Scale["Rows"];
 			$Data["Axis"][$AxisID]["RowHeight"] = $Scale["RowHeight"];
 			(isset($Scale["Format"])) AND $Data["Axis"][$AxisID]["Format"] = $Scale["Format"];
-			(!isset($Data["Axis"][$AxisID]["Display"])) AND $Data["Axis"][$AxisID]["Display"] = NULL;
-			(!isset($Data["Axis"][$AxisID]["Format"])) AND $Data["Axis"][$AxisID]["Format"] = NULL;
-			(!isset($Data["Axis"][$AxisID]["Unit"])) AND $Data["Axis"][$AxisID]["Unit"] = NULL;
 		}
 
 		/* Set the original boundaries */

@@ -1874,23 +1874,14 @@ class pDraw
 			$Data["Axis"][$AxisID]["Rows"] = $Scale["Rows"];
 			$Data["Axis"][$AxisID]["RowHeight"] = $Scale["RowHeight"];
 			(isset($Scale["Format"])) AND $Data["Axis"][$AxisID]["Format"] = $Scale["Format"];
-			(!isset($Data["Axis"][$AxisID]["Display"])) AND $Data["Axis"][$AxisID]["Display"] = NULL;
-			(!isset($Data["Axis"][$AxisID]["Format"])) AND 	$Data["Axis"][$AxisID]["Format"] = NULL;
-			(!isset($Data["Axis"][$AxisID]["Unit"])) AND $Data["Axis"][$AxisID]["Unit"] = NULL;
 		}
 
 		/* Still no X axis */
 		if ($GotAbscissa == FALSE) {
 			if (!is_null($Abscissa)) {
 				$Points = count($Data["Series"][$Abscissa]["Data"]);
-				/* if ($AutoAxisLabels) { /// Dead code found by Scrutinizer
-					$AxisName = isset($Data["Series"][$Abscissa]["Description"]) ? $Data["Series"][$Abscissa]["Description"] : NULL;
-				} else {
-					$AxisName = NULL;
-				} */
 			} else {
 				$Points = 0;
-				/* $AxisName = isset($Data["AbscissaProperties"]["Name"]) ? $Data["AbscissaProperties"]["Name"] : NULL; */
 				foreach($Data["Series"] as $SerieParameter) {
 					if ($SerieParameter["isDrawable"]) {
 						$Points = max($Points, count($SerieParameter["Data"]));
@@ -1911,9 +1902,6 @@ class pDraw
 			}
 
 			$Data["Axis"][$AxisID]["Rows"] = $Points - 1;
-			(!isset($Data["Axis"][$AxisID]["Display"])) AND $Data["Axis"][$AxisID]["Display"] = NULL;
-			(!isset($Data["Axis"][$AxisID]["Format"])) AND $Data["Axis"][$AxisID]["Format"] = NULL;
-			(!isset($Data["Axis"][$AxisID]["Unit"])) AND $Data["Axis"][$AxisID]["Unit"] = NULL;
 		}
 
 		/* Do we need to reverse the abscissa position? */
