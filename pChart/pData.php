@@ -40,15 +40,15 @@ class pData
 			"Abscissa" => NULL,
 			"AbscissaProperties" => [
 				"Name" => NULL,
+				"Position" => 0,
 				"Display" => AXIS_FORMAT_DEFAULT,
-				"Position" => AXIS_POSITION_BOTTOM,
 				"Format" => NULL,
 				"Unit" => NULL
 			],
 			"Axis" => [0 => [
-					"Display" => AXIS_FORMAT_DEFAULT,
-					"Position" => AXIS_POSITION_LEFT,
 					"Identity" => AXIS_Y,
+					"Position" => AXIS_POSITION_LEFT,
+					"Display" => AXIS_FORMAT_DEFAULT,
 					"Format" => NULL,
 					"Unit" => NULL
 				]

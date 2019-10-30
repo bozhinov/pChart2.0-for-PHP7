@@ -1892,6 +1892,12 @@ class pDraw
 			$AxisID = count($Data["Axis"]);
 			$Data["Axis"][$AxisID]["Identity"] = AXIS_X;
 			$Data["Axis"][$AxisID]["Position"] = ($Pos == SCALE_POS_LEFTRIGHT) ? AXIS_POSITION_BOTTOM : AXIS_POSITION_LEFT;
+			
+			/* Override Abscissa position */
+			if ($Data["AbscissaProperties"]["Position"] != 0){
+				$Data["Axis"][$AxisID]["Position"] = $Data["AbscissaProperties"]["Position"];
+			}
+
 			(!is_null($Data["AbscissaProperties"]["Name"])) AND $Data["Axis"][$AxisID]["Name"] = $Data["AbscissaProperties"]["Name"];
 
 			if ($XMargin == AUTO) {
@@ -1904,12 +1910,6 @@ class pDraw
 			$Data["Axis"][$AxisID]["Rows"] = $Points - 1;
 		}
 
-		/* Do we need to reverse the abscissa position? */
-		if ($Pos != SCALE_POS_LEFTRIGHT) {
-			$Data["AbscissaProperties"]["Position"]  = ($Data["AbscissaProperties"]["Position"]  == AXIS_POSITION_BOTTOM) ? AXIS_POSITION_LEFT : AXIS_POSITION_RIGHT;
-		}
-		/* AxisID should not be used here - bug in the original code */
-		$Data["Axis"][$AxisID]["Position"] = $Data["AbscissaProperties"]["Position"] ;
 		$this->myData->saveOrientation($Pos);
 		$this->myData->saveAxisConfig($Data["Axis"]);
 		$this->myData->saveYMargin($YMargin);
