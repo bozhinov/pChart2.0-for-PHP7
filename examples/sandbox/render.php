@@ -112,17 +112,17 @@ if ($d_absissa_enabled)
 
 if (isset($Axis[0]))
 {
-	$code[] = '$myPicture->myData->setAxisProperties(0, ["Name" => '.$d_axis0_name.', "Position" => '.$d_axis0_position.', "Unit" => '.$d_axis0_unit.']);';
+	$code[] = '$myPicture->myData->setAxisProperties(0, ["Name" => "'.$d_axis0_name.'", "Position" => '.$d_axis0_position.', "Unit" => "'.$d_axis0_unit.'"]);';
 }
 
 if (isset($Axis[1]))
 {
-	$code[] = '$myPicture->myData->setAxisProperties(1, ["Name" => '.$d_axis1_name.', "Position" => '.$d_axis1_position.', "Unit" => '.$d_axis1_unit.']);';
+	$code[] = '$myPicture->myData->setAxisProperties(1, ["Name" => "'.$d_axis1_name.'", "Position" => '.$d_axis1_position.', "Unit" => "'.$d_axis1_unit.'"]);';
 	$code[] = NULL;
 }
 
 if (isset($Axis[2])){
-	$code[] = '$myPicture->myData->setAxisProperties(2, ["Name" => '.$d_axis2_name.', "Position" => '.$d_axis2_position.', "Unit" => '.$d_axis2_unit.']);';
+	$code[] = '$myPicture->myData->setAxisProperties(2, ["Name" => "'.$d_axis2_name.'", "Position" => '.$d_axis2_position.', "Unit" => "'.$d_axis2_unit.'"]);';
 	$code[] = NULL;
 }
 
