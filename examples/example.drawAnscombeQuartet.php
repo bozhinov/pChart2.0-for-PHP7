@@ -40,9 +40,9 @@ $myPicture->myData->setScatterSerie("X1","Y1",0);
 $myPicture->myData->setScatterSerie("X2","Y2",1);
 $myPicture->myData->setScatterSerie("X3","Y3",2);
 $myPicture->myData->setScatterSerie("X4","Y4",3);
-$myPicture->myData->setScatterSerieDrawable(1,FALSE);
-$myPicture->myData->setScatterSerieDrawable(2,FALSE);
-$myPicture->myData->setScatterSerieDrawable(3,FALSE);
+$myPicture->myData->setScatterSerieProperties(1, ["isDrawable" => FALSE]);
+$myPicture->myData->setScatterSerieProperties(2, ["isDrawable" => FALSE]);
+$myPicture->myData->setScatterSerieProperties(3, ["isDrawable" => FALSE]);
 
 /* Draw the background */
 $myPicture->drawFilledRectangle(0,0,800,582,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);
@@ -74,24 +74,24 @@ $myScatter->drawScatterPlotChart();
 $myScatter->drawScatterBestFit();
 
 /* Draw the 2nt chart */
-$myScatter->setScatterSerieDrawable(0,FALSE);
-$myScatter->setScatterSerieDrawable(1,TRUE);
+$myPicture->myData->setScatterSerieProperties(0, ["isDrawable" => FALSE]);
+$myPicture->myData->setScatterSerieProperties(1, ["isDrawable" => TRUE]);
 $myPicture->setGraphArea(436,90,760,285);
 $myScatter->drawScatterScale(["XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE]);
 $myScatter->drawScatterPlotChart();
 $myScatter->drawScatterBestFit();
 
 /* Draw the 3rd chart */
-$myScatter->setScatterSerieDrawable(1,FALSE);
-$myScatter->setScatterSerieDrawable(2,TRUE);
+$myPicture->myData->setScatterSerieProperties(1, ["isDrawable" => FALSE]);
+$myPicture->myData->setScatterSerieProperties(2, ["isDrawable" => TRUE]);
 $myPicture->setGraphArea(56,342,380,535);
 $myScatter->drawScatterScale(["XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE]);
 $myScatter->drawScatterPlotChart();
 $myScatter->drawScatterBestFit();
 
 /* Draw the 4th chart */
-$myScatter->setScatterSerieDrawable(2,FALSE);
-$myScatter->setScatterSerieDrawable(3,TRUE);
+$myPicture->myData->setScatterSerieProperties(2, ["isDrawable" => FALSE]);
+$myPicture->myData->setScatterSerieProperties(3, ["isDrawable" => TRUE]);
 $myPicture->setGraphArea(436,342,760,535);
 $myScatter->drawScatterScale(["XMargin"=>5,"YMargin"=>5,"Floating"=>TRUE,"DrawSubTicks"=>TRUE]);
 $myScatter->drawScatterPlotChart();

@@ -14,7 +14,7 @@ use pChart\{
 $myPicture = new pDraw(400,400);
 
 /* Create the X axis and the binded series */
-$myPicture->myData->createFunctionSerie("X",function($z){return ($z == 0)?VOID:1/$z;},"1/z",["MinX"=>-10,"MaxX"=>10,"XStep"=>1]);
+$myPicture->myData->createFunctionSerie("X", function($z){return ($z == 0) ? VOID : 1/$z;},"1/z",["MinX"=>-10,"MaxX"=>10,"XStep"=>1]);
 $myPicture->myData->setAxisName(0,"x = 1/z");
 $myPicture->myData->setAxisXY(0,AXIS_X);
 $myPicture->myData->setAxisPosition(0,AXIS_POSITION_BOTTOM);
@@ -35,15 +35,11 @@ $myPicture->myData->setAxisPosition(2,AXIS_POSITION_LEFT);
 
 /* Create the 1st scatter chart binding */
 $myPicture->myData->setScatterSerie("X","Y",0);
-$myPicture->myData->setScatterSerieDescription(0,"Pass A");
-$myPicture->myData->setScatterSerieTicks(0,4);
-$myPicture->myData->setScatterSerieColor(0,new pColor(0,0,0));
+$myPicture->myData->setScatterSerieProperties(0, ["Description" => "Pass A", "Color" => new pColor(0), "Ticks" => 4]);
 
 /* Create the 2nd scatter chart binding */
 $myPicture->myData->setScatterSerie("X","Y2",1);
-$myPicture->myData->setScatterSerieDescription(1,"Pass B");
-$myPicture->myData->setScatterSerieTicks(1,4);
-$myPicture->myData->setScatterSerieColor(1,new pColor(120,0,255));
+$myPicture->myData->setScatterSerieProperties(1, ["Description" => "Pass B", "Color" => new pColor(120,0,255), "Ticks" => 4]);
 
 /* Draw the background */
 $myPicture->drawFilledRectangle(0,0,400,400,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);

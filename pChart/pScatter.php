@@ -25,11 +25,6 @@ class pScatter
 		$this->myPicture = $pChartObject;
 	}
 
-	public function setScatterSerieDrawable(int $ID, bool $Drawable = TRUE)
-	{
-		$this->myPicture->myData->setScatterSerieDrawable($ID, $Drawable);
-	}
-
 	/* Prepare the scale */
 	public function drawScatterScale(array $Format = [])
 	{

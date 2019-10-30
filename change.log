@@ -18,26 +18,42 @@
   o Examples use the QRCode lib directly
   o Examples use the new Barcode lib
   o Explicitly declare the visibility for methods
-  o BC: pScatter->drawScatterScale($Format["DrawXLines"]) accepts array now
-  o BC: pScatter->drawScatterScale($Format["DrawYLines"]) accepts array now
-  o BC: pDraw->drawScale($Format["DrawYLines"]) accepts array now
+  o BC: pScatter->drawScatterScale params DrawXLines & DrawYLines accept array
+  o BC: pDraw->drawScale param DrawYLines accepts array
   o BC: pData->setAxisDisplay with AXIS_FORMAT_CUSTOM uses anonymous func as a param
-  o BC: Removed pData->importFromCSV()
-  o BC: Moved setXAxisName & setXAxisDisplay & setXAxisUnit into setXAxisProperties
-  o Added pDraw->gettheImage()
-  o Added pDraw->getShadow()
-  o Added pDraw->restoreShadow()
-  o Added pDraw->setAntialias()
-  o Added pDraw->getFont()
-  o Added pDraw->getGraphAreaDiffs()
-  o Added pDraw->getGraphAreaCoordinates()
-  o Added pData->setAxisProperties()
-  o Added pData->setScatterSerieProperties()
+  o BC: Removed pData methods
+	importFromCSV
+	setScatterSerieShape
+	setScatterSerieDescription
+	setScatterSeriePicture
+	setScatterSerieDrawable
+	setScatterSerieTicks
+	setScatterSerieWeight
+	setScatterSerieColor
+	setXAxisName
+	setXAxisDisplay
+	setXAxisUnit
+
+  o Added pData methods
+	setAxisProperties
+	setXAxisProperties
+	setScatterSerieProperties
+	setSerieProperties
+
+  o Added pDraw methods
+	gettheImage
+  	getShadow
+  	restoreShadow
+	setAntialias
+	getFont
+	getGraphAreaDiffs
+	getGraphAreaCoordinates
+
   o Added benchmark script
   o FIXED: pDraw->setFilter
+  o pData->XAxis data structure to match Axis[0]
   o pColor and pColorGradient classes cleaned up 
   o pColor converted to array in pDraw private methods. 13% speed improvement
-  o pData->XAxis data structure to match Axis[0]
 
  2.3.0 -----------------------------------------------------------------------
   o Introduced pQRCode

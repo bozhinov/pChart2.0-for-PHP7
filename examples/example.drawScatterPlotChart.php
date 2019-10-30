@@ -38,13 +38,10 @@ $myPicture->myData->setAxisPosition(1,AXIS_POSITION_RIGHT);
 
 /* Create the 1st scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 1","Probe 3",0);
-$myPicture->myData->setScatterSerieDescription(0,"This year");
-$myPicture->myData->setScatterSerieColor(0,new pColor(0));
-
+$myPicture->myData->setScatterSerieProperties(0, ["Description" => "This year", "Color" => new pColor(0)]);
 /* Create the 2nd scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 2","Probe 3",1);
-$myPicture->myData->setScatterSerieDescription(1,"Last Year");
-$myPicture->myData->setScatterSeriePicture(1,"examples/resources/accept.png");
+$myPicture->myData->setScatterSerieProperties(1, ["Description" => "Last Year", "Picture" => "examples/resources/accept.png"]);
 
 /* Draw the background */
 $myPicture->drawFilledRectangle(0,0,400,400,["Color"=>new pColor(170,183,87), "Dash"=>TRUE, "DashColor"=>new pColor(190,203,107)]);

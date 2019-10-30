@@ -37,14 +37,11 @@ $myPicture->myData->setAxisPosition(1,AXIS_POSITION_LEFT);
 
 /* Create the 1st scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 1","Probe 3",0);
-$myPicture->myData->setScatterSerieDescription(0,"This year");
-$myPicture->myData->setScatterSerieColor(0,new pColor(0));
-$myPicture->myData->setScatterSerieShape(0,SERIE_SHAPE_TRIANGLE);
+$myPicture->myData->setScatterSerieProperties(0, ["Description" => "This year", "Color" => new pColor(0), "Shape" => SERIE_SHAPE_TRIANGLE]);
 
 /* Create the 2nd scatter chart binding */
 $myPicture->myData->setScatterSerie("Probe 2","Probe 3",1);
-$myPicture->myData->setScatterSerieDescription(1,"Last Year");
-$myPicture->myData->setScatterSerieShape(1,SERIE_SHAPE_FILLEDTRIANGLE);
+$myPicture->myData->setScatterSerieProperties(1, ["Description" => "Last Year", "Shape" => SERIE_SHAPE_FILLEDTRIANGLE]);
 
 /* Turn off Anti-aliasing */
 $myPicture->setAntialias(FALSE);

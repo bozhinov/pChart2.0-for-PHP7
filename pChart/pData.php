@@ -152,6 +152,24 @@ class pData
 		return (isset($this->Data["Series"][$Serie])) ? $this->Data["Series"][$Serie]["Min"] : 0;
 	}
 
+	/* Combination of 
+		setSerieShape
+		setSerieDescription
+		setSerieDrawable
+		setSeriePicture
+	*/
+	public function setSerieProperties(string $Serie, array$Props)
+	{
+		if (!isset($this->Data["Series"][$Serie])) {
+			throw pException::InvalidInput("Invalid serie name");
+		}
+
+		(isset($Props["Picture"]))    	AND $this->Data["Series"][$Serie]["Picture"]     = strval($Props["Picture"]);
+		(isset($Props["Description"])) 	AND $this->Data["Series"][$Serie]["Description"] = strval($Props["Description"]);
+		(isset($Props["Shape"]))  	AND $this->Data["Series"][$Serie]["Shape"]  	 = intval($Props["Shape"]);
+		(isset($Props["isDrawable"]))   AND $this->Data["Series"][$Serie]["isDrawable"]  = boolval($Props["isDrawable"]);
+	}
+
 	/* Set the description of a given serie */
 	public function setSerieShape(string $Serie, int $Shape = SERIE_SHAPE_FILLEDCIRCLE)
 	{
@@ -265,7 +283,7 @@ class pData
 			(isset($Props["Shape"]))	AND $this->Data["ScatterSeries"][$ID]["Shape"]	     = intval($Props["Shape"]);
 			(isset($Props["Description"]))	AND $this->Data["ScatterSeries"][$ID]["Description"] = strval($Props["Description"]);
 			(isset($Props["Picture"]))	AND $this->Data["ScatterSeries"][$ID]["Picture"]     = strval($Props["Picture"]);
-			(isset($Props["Drawable"]))	AND $this->Data["ScatterSeries"][$ID]["Drawable"]    = boolval($Props["Drawable"]);
+			(isset($Props["isDrawable"]))	AND $this->Data["ScatterSeries"][$ID]["isDrawable"]  = boolval($Props["isDrawable"]);
 			(isset($Props["Ticks"]))	AND $this->Data["ScatterSeries"][$ID]["Ticks"]	     = intval($Props["Ticks"]);
 			(isset($Props["Weight"]))	AND $this->Data["ScatterSeries"][$ID]["Weight"]	     = intval($Props["Weight"]);
 			if (isset($Props["Color"])) {
@@ -275,79 +293,6 @@ class pData
 					throw pException::InvalidInput("Invalid Color format");
 				}
 			}
-		} else {
-			throw pException::InvalidInput("Invalid serie ID");
-		}
-	}
-
-	/* Set the shape of a given scatter serie */
-	public function setScatterSerieShape(int $ID, int $Shape = SERIE_SHAPE_FILLEDCIRCLE)
-	{
-		if (isset($this->Data["ScatterSeries"][$ID])) {
-			$this->Data["ScatterSeries"][$ID]["Shape"] = $Shape;
-		} else {
-			throw pException::InvalidInput("Invalid serie ID");
-		}
-	}
-
-	/* Set the description of a given scatter serie */
-	public function setScatterSerieDescription(int $ID, string $Description = "My serie")
-	{
-		if (isset($this->Data["ScatterSeries"][$ID])) {
-			$this->Data["ScatterSeries"][$ID]["Description"] = $Description;
-		} else {
-			throw pException::InvalidInput("Invalid serie ID");
-		}
-	}
-
-	/* Set the icon associated to a given scatter serie */
-	public function setScatterSeriePicture(int $ID, string $Picture = "xx")
-	{
-		if (isset($this->Data["ScatterSeries"][$ID])) {
-			if (!file_exists($Picture)){
-				throw pException::InvalidInput("ScatterSerie picture could not be found");
-			}
-			$this->Data["ScatterSeries"][$ID]["Picture"] = $Picture;
-		} else {
-			throw pException::InvalidInput("Invalid serie ID");
-		}
-	}
-
-	/* Set a scatter serie as "drawable" while calling a rendering function */
-	public function setScatterSerieDrawable(int $ID, bool $Drawable = TRUE)
-	{
-		if (isset($this->Data["ScatterSeries"][$ID])) {
-			$this->Data["ScatterSeries"][$ID]["isDrawable"] = $Drawable;
-		} else {
-			throw pException::InvalidInput("Invalid serie ID");
-		}
-	}
-
-	/* Define if a scatter serie should be draw with ticks */
-	public function setScatterSerieTicks(int $ID, int $Ticks = NULL)
-	{
-		if (isset($this->Data["ScatterSeries"][$ID])) {
-			$this->Data["ScatterSeries"][$ID]["Ticks"] = $Ticks;
-		} else {
-			throw pException::InvalidInput("Invalid serie ID");
-		}
-	}
-
-	/* Define if a scatter serie should be draw with a special weight */
-	public function setScatterSerieWeight(int $ID, int $Weight = NULL) # UNUSED
-	{
-		if (isset($this->Data["ScatterSeries"][$ID])) {
-			$this->Data["ScatterSeries"][$ID]["Weight"] = $Weight;
-		} else {
-			throw pException::InvalidInput("Invalid serie ID");
-		}
-	}
-
-	/* Associate a color to a scatter serie */
-	public function setScatterSerieColor(int $ID, pColor $Color)
-	{
-		if (isset($this->Data["ScatterSeries"][$ID])) {
-			$this->Data["ScatterSeries"][$ID]["Color"] = $Color;
 		} else {
 			throw pException::InvalidInput("Invalid serie ID");
 		}
@@ -517,28 +462,14 @@ class pData
 		return FALSE;
 	}
 
-	/* Set the display mode of an Axis */
-	public function setAxisDisplay(int $AxisID, int $Mode = AXIS_FORMAT_DEFAULT, $Format = "")
-	{
-		if (isset($this->Data["Axis"][$AxisID])) {
-			$this->Data["Axis"][$AxisID]["Display"] = $Mode;
-			if ($Format != "") {
-				$this->Data["Axis"][$AxisID]["Format"] = $Format;
-			}
-		}
-	}
-
-	/* Set the position of an Axis */
-	public function setAxisPosition(int $AxisID, int $Position = AXIS_POSITION_LEFT)
-	{
-		if (isset($this->Data["Axis"][$AxisID])) {
-			$this->Data["Axis"][$AxisID]["Position"] = $Position;
-		} else {
-			throw pException::InvalidInput("Invalid Axis ID");
-		}
-	}
-
-	/* Combination of setAxisDisplay, setAxisPosition, setAxisUnit, setAxisName, setAxisColor & setAxisXY */
+	/* Combination of:
+		setAxisDisplay
+		setAxisPosition
+		setAxisUnit
+		setAxisName
+		setAxisColor
+		setAxisXY 
+	*/
 	public function setAxisProperties(int $AxisID, array $Props)
 	{
 		if (isset($this->Data["Axis"][$AxisID])) {
@@ -558,6 +489,27 @@ class pData
 			}
 		} else {
 			throw pException::InvalidInput("Invalid serie ID");
+		}
+	}
+
+	/* Set the display mode of an Axis */
+	public function setAxisDisplay(int $AxisID, int $Mode = AXIS_FORMAT_DEFAULT, $Format = "")
+	{
+		if (isset($this->Data["Axis"][$AxisID])) {
+			$this->Data["Axis"][$AxisID]["Display"] = $Mode;
+			if ($Format != "") {
+				$this->Data["Axis"][$AxisID]["Format"] = $Format;
+			}
+		}
+	}
+
+	/* Set the position of an Axis */
+	public function setAxisPosition(int $AxisID, int $Position = AXIS_POSITION_LEFT)
+	{
+		if (isset($this->Data["Axis"][$AxisID])) {
+			$this->Data["Axis"][$AxisID]["Position"] = $Position;
+		} else {
+			throw pException::InvalidInput("Invalid Axis ID");
 		}
 	}
 
