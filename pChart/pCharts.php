@@ -91,10 +91,6 @@ class pCharts
 				(!is_null($PlotSize)) AND $SerieWeight = $PlotSize;
 				(!is_null($Surrounding)) AND $BorderColor = $Serie["Color"]->newOne()->RGBChange($Surrounding);
 
-				# Momchil: Force default Alpha as it is not set in the original code
-				# That is for the example.Combo.area.lines
-				$Color = $Serie["Color"]->newOne()->AlphaSet(100);
-
 				if (!is_null($Serie["Picture"])) {
 					$Picture = $Serie["Picture"];
 					$PicInfo = $this->myPicture->getPicInfo($Picture);
@@ -107,7 +103,7 @@ class pCharts
 				}
 
 				if ($DisplayType == DISPLAY_AUTO) {
-					$DisplayColor = $Color->newOne();
+					$DisplayColor = $Serie["Color"]->newOne();
 				}
 
 				$AxisID = $Serie["Axis"];
@@ -135,7 +131,7 @@ class pCharts
 							if (!is_null($Picture)) {
 								$this->myPicture->drawFromPicture($PicInfo, $Picture, $X - $PicWidth / 2, $Y - $PicHeight / 2);
 							} else {
-								$this->myPicture->drawShape($X, $Y, $Shape, $SerieWeight, $PlotBorder, $BorderSize, $Color, $BorderColor);
+								$this->myPicture->drawShape($X, $Y, $Shape, $SerieWeight, $PlotBorder, $BorderSize, $Serie["Color"], $BorderColor);
 							}
 						}
 
@@ -160,7 +156,7 @@ class pCharts
 							if (!is_null($Picture)) {
 								$this->myPicture->drawFromPicture($PicInfo, $Picture, $X - $PicWidth / 2, $Y - $PicHeight / 2);
 							} else {
-								$this->myPicture->drawShape($X, $Y, $Shape, $SerieWeight, $PlotBorder, $BorderSize, $Color, $BorderColor);
+								$this->myPicture->drawShape($X, $Y, $Shape, $SerieWeight, $PlotBorder, $BorderSize, $Serie["Color"], $BorderColor);
 							}
 						}
 
@@ -199,7 +195,7 @@ class pCharts
 				}
 
 				if ($DisplayType == DISPLAY_AUTO) {
-					$DisplayColor = $Serie["Color"];
+					$DisplayColor = $Serie["Color"]->newOne();
 				}
 
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
@@ -316,7 +312,7 @@ class pCharts
 				$ColorHalfAlfa = $Color->NewOne()->AlphaSlash(2);
 				$Ticks = $Serie["Ticks"];
 				if ($DisplayType == DISPLAY_AUTO) {
-					$DisplayColor = $Color;
+					$DisplayColor = $Serie["Color"]->newOne();
 				}
 
 				$AxisID = $Serie["Axis"];
@@ -511,7 +507,7 @@ class pCharts
 				}
 
 				if ($DisplayType == DISPLAY_AUTO) {
-					$DisplayColor = $Color;
+					$DisplayColor = $Serie["Color"]->newOne();
 				}
 
 				# Momchil: Force default Alpha as it is not set in the original code
@@ -698,22 +694,21 @@ class pCharts
 
 		foreach($Data["Series"] as $SerieName => $Serie) {
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
-				$Color = $Serie["Color"]->newOne();
 				$Ticks = $Serie["Ticks"];
 				$Weight = $Serie["Weight"];
 
 				if (is_null($BreakColor)) {
-					$BreakSettings = ["Color" => $Color,"Ticks" => $VoidTicks,"Weight" => $Weight];
+					$BreakSettings = ["Color" => $Serie["Color"],"Ticks" => $VoidTicks,"Weight" => $Weight];
 				} else {
 					$BreakSettings = ["Color" => $BreakColor,"Ticks" => $VoidTicks,"Weight" => $Weight];
 				}
 
 				if ($DisplayType == DISPLAY_AUTO) {
-					$DisplayColor = $Color;
+					$DisplayColor = $Serie["Color"]->newOne();
 				}
 
 				$AxisID = $Serie["Axis"];
-				$LineSettings = ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight];
+				$LineSettings = ["Color" => $Serie["Color"],"Ticks" => $Ticks,"Weight" => $Weight];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$Data["Series"][$SerieName]["XOffset"] = 0;
 
@@ -1030,7 +1025,7 @@ class pCharts
 			if ($Serie["isDrawable"] && $SerieName != $Data["Abscissa"]) {
 				$Color = $Serie["Color"]->newOne();
 				if ($DisplayType == DISPLAY_AUTO) {
-					$DisplayColor = $Color;
+					$DisplayColor = $Serie["Color"]->newOne();
 				}
 
 				$AxisID = $Serie["Axis"];
@@ -1237,7 +1232,7 @@ class pCharts
 				$Color = $Serie["Color"]->newOne();
 				#$Ticks = $Serie["Ticks"];
 				if ($DisplayType == DISPLAY_AUTO) {
-					$DisplayColor = $Color;
+					$DisplayColor = $Serie["Color"]->newOne();
 				}
 
 				(!is_null($Surrounding)) AND $BorderColor = $Color->newOne()->RGBChange($Surrounding);
