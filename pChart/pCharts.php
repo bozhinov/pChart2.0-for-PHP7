@@ -191,7 +191,7 @@ class pCharts
 				if (is_null($BreakColor)) {
 					$BreakSettings = ["Color" => $Serie["Color"], "Ticks" => $VoidTicks];
 				} else {
-					$BreakSettings = ["Color" => $BreakColor->AlphaSet($Serie["Color"]->Alpha), "Ticks" => $VoidTicks, "Weight" => $Serie["Weight"]];
+					$BreakSettings = ["Color" => $BreakColor->newOne()->AlphaSet($Serie["Color"]->AlphaGet()), "Ticks" => $VoidTicks, "Weight" => $Serie["Weight"]];
 				}
 
 				if ($DisplayType == DISPLAY_AUTO) {
@@ -1272,12 +1272,8 @@ class pCharts
 							$Y1 = ($AroundZero) ? $YZero : $GraphAreaCoordinates["B"] - 1;
 						}
 
-						if (!empty($ColorOverride)) {
-							if (isset($ColorOverride[$ID])) {
-								$Settings = $ColorOverride[$ID];
-							} else {
-								$Settings = ["Color" => new pColor()];
-							}
+						if (isset($ColorOverride[$ID])) {
+							$Settings = $ColorOverride[$ID];
 						}
 
 						if ($Y2 != VOID) {
@@ -1382,12 +1378,8 @@ class pCharts
 							$X1 = ($AroundZero) ? $YZero : $GraphAreaCoordinates["L"] + 1;
 						}
 
-						if (!empty($ColorOverride)) {
-							if (isset($ColorOverride[$ID])) {
-								$Settings = $ColorOverride[$ID];
-							} else {
-								$Settings = ["Color" => new pColor()];
-							}
+						if (isset($ColorOverride[$ID])) {
+							$Settings = $ColorOverride[$ID];
 						}
 
 						if ($X2 != VOID) {
