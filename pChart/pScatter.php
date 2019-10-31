@@ -394,7 +394,7 @@ class pScatter
 			}
 		}
 
-		$this->myPicture->myData->saveAxisConfig($Data["Axis"]);
+		$this->myPicture->myData->saveData(["Axis" => $Data["Axis"]]);
 	}
 
 	/* Draw a scatter plot chart */

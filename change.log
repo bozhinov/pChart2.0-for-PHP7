@@ -55,11 +55,15 @@
 	reverseSerie
 	addRandomValues
 	negateValues
+	saveAxisConfig
+	saveYMargin
+	saveOrientation
 
   o Added pData methods
 	setAxisProperties
 	setScatterSerieProperties
 	setSerieProperties
+	saveData
 
   o Added pDraw methods
 	gettheImage

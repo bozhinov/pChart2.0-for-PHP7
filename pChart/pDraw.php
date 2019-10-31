@@ -1907,9 +1907,7 @@ class pDraw
 			$Data["Axis"][$AxisID]["Rows"] = $Points - 1;
 		}
 
-		$this->myData->saveOrientation($Pos);
-		$this->myData->saveAxisConfig($Data["Axis"]);
-		$this->myData->saveYMargin($YMargin);
+		$this->myData->saveData(["Orientation" => $Pos, "Axis" => $Data["Axis"], "YMargin" => $YMargin]);
 
 		$AxisPos = ["L" => $this->GraphAreaX1, "R" => $this->GraphAreaX2, "T" => $this->GraphAreaY1, "B" => $this->GraphAreaY2];
 

@@ -585,22 +585,16 @@ class pData
 		return $this->Data;
 	}
 
-	/* Called by the scaling algorithm to save the config */
-	public function saveAxisConfig(array $Axis)
+	public function saveData(array $Data)
 	{
-		$this->Data["Axis"] = $Axis;
-	}
-
-	/* Save the Y Margin if set */
-	public function saveYMargin(int $Value)
-	{
-		$this->Data["YMargin"] = $Value;
-	}
-
-	/* Called by the scaling algorithm to save the orientation of the scale */
-	public function saveOrientation(int $Orientation)
-	{
-		$this->Data["Orientation"] = $Orientation;
+		foreach($Data as $key => $value) {
+			if (isset($this->Data[$key])) {
+				if (gettype($this->Data[$key]) != gettype($value)) {
+					throw pException::InvalidInput("Wrong data type for $key");
+				}
+			}
+			$this->Data[$key] = $value;
+		}
 	}
 
 }
