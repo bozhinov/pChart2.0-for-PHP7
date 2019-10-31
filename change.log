@@ -44,10 +44,17 @@
 	setSeriePicture
 	setSerieDrawable
 	setSerieTicks
-	containsData
 	getSeriePercentile
-	reverseSerie
 	getSerieCount
+	getGeometricMean
+	getHarmonicMean
+	getStandardDeviation
+	getCoefficientOfVariation
+	getSerieMedian
+	containsData
+	reverseSerie
+	addRandomValues
+	negateValues
 
   o Added pData methods
 	setAxisProperties

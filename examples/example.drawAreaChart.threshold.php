@@ -10,6 +10,7 @@ use pChart\pCharts;
 
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
+$myPicture->myData = new Examples\pDataExt();
 
 /* Populate the pData object */ 
 $myPicture->myData->addRandomValues("Probe 1", ["Values" => 30, "Min" => 1, "Max" => 15]);

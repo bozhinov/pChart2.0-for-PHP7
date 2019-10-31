@@ -10,6 +10,8 @@ use pChart\pCharts;
 
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
+$myPicture->myData = new Examples\pDataExt();
+
 $Points = [];
 /* Populate the pData object */
 for($i=0;$i<=20;$i++) {

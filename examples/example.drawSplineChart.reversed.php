@@ -10,6 +10,7 @@ use pChart\pCharts;
 
 /* Create the pChart object */
 $myPicture = new pDraw(700,230);
+$myPicture->myData = new Examples\pDataExt();
 
 /* Populate the pData object */
 $myPicture->myData->addPoints([4,VOID,VOID,12,8,3],"Probe 1");
