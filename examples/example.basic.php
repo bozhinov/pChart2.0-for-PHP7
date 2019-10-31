@@ -11,7 +11,7 @@ use pChart\pCharts;
 $myPicture = new pDraw(700,230);
 
 /* Add data in your dataset */ 
-$myPicture->myData->addPoints([1,3,4,3,5]);
+$myPicture->myData->addPoints([1,3,4,3,5], "Serie1");
 
 /* Choose a nice font */
 $myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>11]);

@@ -78,7 +78,7 @@ class pData
 	}
 
 	/* Add a single point or an array to the given serie */
-	public function addPoints(array $Values, string $SerieName = "Serie1")
+	public function addPoints(array $Values, string $SerieName)
 	{
 		if (!isset($this->Data["Series"][$SerieName])){
 			$this->initialise($SerieName);
@@ -100,17 +100,11 @@ class pData
 	}
 
 	/* In case you add points to the a serie with the same name - pSplit */
-	public function clearPoints(string $SerieName = "Serie1")
+	public function clearPoints(string $SerieName)
 	{
 		$this->Data["Series"][$SerieName]["Data"] = [];
 		$this->Data["Series"][$SerieName]["Max"] = 0;
 		$this->Data["Series"][$SerieName]["Min"] = 0;
-	}
-
-	/* Return the number of values contained in a given serie */
-	public function getSerieCount(string $Serie) # UNUSED
-	{
-		return (isset($this->Data["Series"][$Serie]["Data"])) ? count($this->Data["Series"][$Serie]["Data"]) : 0;
 	}
 
 	/* Remove a serie from the pData object */
@@ -131,16 +125,6 @@ class pData
 				$this->Data["Series"][$SerieName]["Color"] = $this->Palette[$Id];
 				$Id++;
 			}
-		}
-	}
-
-	/* Reverse the values in the given serie */
-	public function reverseSerie(string $Serie) # UNUSED
-	{
-		if (isset($this->Data["Series"][$Serie]["Data"])) {
-			$this->Data["Series"][$Serie]["Data"] = array_reverse($this->Data["Series"][$Serie]["Data"]);
-		} else {
-			throw pException::InvalidInput("Invalid serie name");
 		}
 	}
 
@@ -179,7 +163,7 @@ class pData
 	}
 
 	/* Set the description of a given serie */
-	public function setSerieDescription(string $Serie, string $Description = "My serie")
+	public function setSerieDescription(string $Serie, string $Description)
 	{
 		if (isset($this->Data["Series"][$Serie])) {
 			$this->Data["Series"][$Serie]["Description"] = $Description;
@@ -307,16 +291,6 @@ class pData
 		return [$GlobalMin,$GlobalMax];
 	}
 
-	/* Mark all series as drawable */
-	public function setAllDrawable()
-	{
-		foreach($this->Data["Series"] as $Key => $Value) {
-			if ($this->Data["Abscissa"] != $Key) {
-				$this->Data["Series"][$Key]["isDrawable"] = TRUE;
-			}
-		}
-	}
-
 	/* Return the average value of the given serie */
 	public function getSerieAverage(string $Serie)
 	{
@@ -402,23 +376,8 @@ class pData
 		}
 	}
 
-	/* Return the x th percentile of the given serie */
-	public function getSeriePercentile(string $Serie = "Serie1", float $Percentil = 95) # UNUSED
-	{
-		if (!isset($this->Data["Series"][$Serie]["Data"])) {
-			throw pException::InvalidInput("Invalid serie name");
-		}
-
-		$Values = count($this->Data["Series"][$Serie]["Data"]) - 1;
-		($Values < 0) AND $Values = 0;
-		$PercentilID = floor(($Values / 100) * $Percentil + .5);
-		$SortedValues = $this->Data["Series"][$Serie]["Data"];
-		sort($SortedValues);
-		return (is_numeric($SortedValues[$PercentilID])) ? $SortedValues[$PercentilID] : 0;
-	}
-
 	/* Add random values to a given serie */
-	public function addRandomValues(string $SerieName = "Serie1", array $Options = [])
+	public function addRandomValues(string $SerieName, array $Options = [])
 	{
 		$Values = isset($Options["Values"]) ? $Options["Values"] : 20;
 		$Min = isset($Options["Min"]) ? $Options["Min"] : 0;
@@ -433,20 +392,27 @@ class pData
 		$this->addPoints($Points, $SerieName);
 	}
 
-	/* Test if we have valid data */
-	public function containsData() # UNUSED
+	/* Mark all series as drawable */
+	public function setAllDrawable()
 	{
-		if (!isset($this->Data["Series"])) {
-			return FALSE;
-		}
-
 		foreach($this->Data["Series"] as $Key => $Value) {
-			if ($this->Data["Abscissa"] != $Key && $this->Data["Series"][$Key]["isDrawable"]) {
-				return TRUE;
+			if ($this->Data["Abscissa"] != $Key) {
+				$this->Data["Series"][$Key]["isDrawable"] = TRUE;
+			}
+		}
+	}
+
+	/* Returns the number of drawable series */
+	public function countDrawableSeries()
+	{
+		$Results = 0;
+		foreach($this->Data["Series"] as $SerieName => $Serie) {
+			if ($Serie["isDrawable"] && $SerieName != $this->Data["Abscissa"]) {
+				$Results++;
 			}
 		}
 
-		return FALSE;
+		return $Results;
 	}
 
 	/* Combination of:
@@ -669,17 +635,21 @@ class pData
 		}
 	}
 
-	/* Returns the number of drawable series */
-	public function countDrawableSeries()
+	public function negateValues(array $Series)
 	{
-		$Results = 0;
-		foreach($this->Data["Series"] as $SerieName => $Serie) {
-			if ($Serie["isDrawable"] && $SerieName != $this->Data["Abscissa"]) {
-				$Results++;
+		foreach($Series as $SerieName) {
+			if (isset($this->Data["Series"][$SerieName])) {
+				$Data = [];
+				foreach($this->Data["Series"][$SerieName]["Data"] as $Value) {
+					$Data[] = ($Value == VOID) ? VOID : - $Value;
+				}
+
+				$this->Data["Series"][$SerieName]["Data"] = $Data;
+				$Data = array_diff($Data, [VOID]);
+				$this->Data["Series"][$SerieName]["Max"] = max($Data);
+				$this->Data["Series"][$SerieName]["Min"] = min($Data);
 			}
 		}
-
-		return $Results;
 	}
 
 	/* Create a dataset based on a formula */
@@ -705,23 +675,6 @@ class pData
 
 		($AutoDescription) AND $this->setSerieDescription($SerieName, $Formula);
 		($RecordAbscissa) AND $this->addPoints($Abscissa, $AbscissaSerie);
-	}
-
-	public function negateValues(array $Series)
-	{
-		foreach($Series as $SerieName) {
-			if (isset($this->Data["Series"][$SerieName])) {
-				$Data = [];
-				foreach($this->Data["Series"][$SerieName]["Data"] as $Value) {
-					$Data[] = ($Value == VOID) ? VOID : - $Value;
-				}
-
-				$this->Data["Series"][$SerieName]["Data"] = $Data;
-				$Data = array_diff($Data, [VOID]);
-				$this->Data["Series"][$SerieName]["Max"] = max($Data);
-				$this->Data["Series"][$SerieName]["Min"] = min($Data);
-			}
-		}
 	}
 
 	public function scaleGetXSettings()

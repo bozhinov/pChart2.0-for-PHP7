@@ -44,6 +44,10 @@
 	setSeriePicture
 	setSerieDrawable
 	setSerieTicks
+	containsData
+	getSeriePercentile
+	reverseSerie
+	getSerieCount
 
   o Added pData methods
 	setAxisProperties
