@@ -758,10 +758,8 @@ class pDraw
 		$Weight = isset($Format["Weight"]) ? $Format["Weight"] : NULL;
 		$Mode = isset($Format["Mode"]) ? $Format["Mode"] : 1;
 
-		# NULL == 0
 		# Keep it as some of the examples pass 0 for Ticks
-		# e.g. example.drawArrow.php
-		if ($Ticks == 0){
+		if ($Ticks === 0){
 			$Ticks = NULL;
 		}
 
