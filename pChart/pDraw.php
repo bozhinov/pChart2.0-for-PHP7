@@ -3463,12 +3463,8 @@ class pDraw
 							$Description = $XLabel;
 						}
 
-						if (!empty($OverrideColors)) {
-							if (isset($OverrideColors[$Index])) {
-								$SerieColor = $OverrideColors[$Index];
-							} else {
-								$SerieColor = new pColor();
-							}
+						if (isset($OverrideColors[$Index])) {
+							$SerieColor = $OverrideColors[$Index];
 						} else {
 							$SerieColor = $Data["Series"][$SerieName]["Color"];
 						}
@@ -3551,16 +3547,12 @@ class pDraw
 							$Description = $XLabel;
 						}
 
-						if (!empty($OverrideColors)) {
-							if (isset($OverrideColors[$Index])) {
-								$SerieColor = $OverrideColors[$Index];
-							} else {
-								$SerieColor = new pColor();
-							}
+						if (isset($OverrideColors[$Index])) {
+							$SerieColor = $OverrideColors[$Index];
 						} else {
 							$SerieColor = $Data["Series"][$SerieName]["Color"];
 						}
-	
+
 						$SerieOffset = (count($SeriesName) == 1) ? $Data["Series"][$SerieName]["XOffset"] : 0;
 						$Value = $Data["Series"][$SerieName]["Data"][$Index];
 						($Value == VOID) AND $Value = "NaN";
