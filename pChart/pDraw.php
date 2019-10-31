@@ -3463,7 +3463,6 @@ class pDraw
 							$Description = $XLabel;
 						}
 
-						# Momchil: Was Extended Data
 						if (!empty($OverrideColors)) {
 							if (isset($OverrideColors[$Index])) {
 								$SerieFormat = $OverrideColors[$Index];
@@ -3552,7 +3551,6 @@ class pDraw
 							$Description = $XLabel;
 						}
 
-						# Momchil: Was Extended Data
 						if (!empty($OverrideColors)) {
 							if (isset($OverrideColors[$Index])) {
 								$SerieFormat = $OverrideColors[$Index];

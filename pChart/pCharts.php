@@ -510,10 +510,6 @@ class pCharts
 					$DisplayColor = $Serie["Color"]->newOne();
 				}
 
-				# Momchil: Force default Alpha as it is not set in the original code
-				# That is for the example.Combo.area.lines
-				$BreakSettings["Color"]->AlphaSet(100);
-
 				$AxisID = $Serie["Axis"];
 				$PosArray = $this->myPicture->scaleComputeY($Serie["Data"], $Serie["Axis"]);
 				$Data["Series"][$SerieName]["XOffset"] = 0;

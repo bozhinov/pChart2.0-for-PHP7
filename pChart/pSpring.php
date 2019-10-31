@@ -386,7 +386,7 @@ class pSpring
 								$this->Data[$Key]["Vectors"][] = ["Type" => "R","Angle" => $Angle % 360,"Force" => $Force];
 							}
 						}
-						$lastKey = $Key2; # Momchil: No clue to why I need this here
+						$lastKey = $Key2;
 					}
 				}
 
