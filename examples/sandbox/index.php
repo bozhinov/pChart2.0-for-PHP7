@@ -37,42 +37,20 @@ function listfonts($selected)
 
 <div class='topTable'>
 	<table style='display: inline-block;'>
-		<td class='topMenu' id='menu6' onclick="Do('Code')">
-			<img src='../resources/cog.png' />
-			&nbsp;Show code&nbsp;
-		</td>
-		<td class='topMenu' id='menu7' onclick="Do('Render')">
-			<img src='../resources/accept.png' />
-			&nbsp;Render picture&nbsp;
-		</td>
+		<td class='topMenu' id='menu6' onclick="Do('Code')"><img src='../resources/cog.png' /> Show code</td>
+		<td class='topMenu' id='menu7' onclick="Do('Render')"><img src='../resources/accept.png' /> Render picture</td>
 	</table>
 
 	<table style="float: left;">
-		<td class='topMenu' id='menu1' style="background-color: #D0D0D0;">
-			<img src='../resources/tab.png' />
-			&nbsp;General settings&nbsp;
-		</td>
-		<td class='topMenu' id='menu2'>
-			<img src='../resources/tab.png' />
-			&nbsp;Data&nbsp;
-		</td>
-		<td class='topMenu' id='menu3'>
-			<img src='../resources/tab.png' />
-			&nbsp;Scale&nbsp;
-		</td>
-		<td class='topMenu' id='menu4'>
-			<img src='../resources/tab.png' />
-			&nbsp;Chart&nbsp;
-		</td>
-		<td class='topMenu' id='menu5'>
-			<img src='../resources/tab.png' />
-			&nbsp;Legend, thresholds &amp; Misc&nbsp;
-		</td>
+		<td class='topMenu' id='menu1' style="background-color: #D0D0D0;"><img src='../resources/tab.png' /> General settings</td>
+		<td class='topMenu' id='menu2'><img src='../resources/tab.png' /> Data</td>
+		<td class='topMenu' id='menu3'><img src='../resources/tab.png' /> Scale</td>
+		<td class='topMenu' id='menu4'><img src='../resources/tab.png' /> Chart</td>
+		<td class='topMenu' id='menu5'><img src='../resources/tab.png' /> Legend, thresholds &amp; Misc</td>
 	</table>
 </div>
 
-<table>
-	<td valign='top'>
+<div style="float: left;">
 
 <div class="roundedCorner" id='tab1'>
 	<table class="defaultTable">
@@ -84,11 +62,11 @@ function listfonts($selected)
 
 	<table>
 		<tr>
-			<td>Width &nbsp;</td>
+			<td>Width</td>
 			<td><input type='text' id='g_width' value='700' onkeyup='doLayout();' /></td>
-			<td>&nbsp;&nbsp; Height &nbsp;</td>
+			<td>Height</td>
 			<td><input type='text' id='g_height' value='230' onkeyup='doLayout();' /></td>
-			<td>&nbsp;&nbsp;<input type='checkbox' id='g_transparent' /></td>
+			<td><input type='checkbox' id='g_transparent' /></td>
 			<td>Transparent background</td>
 		</tr>
 	</table>
@@ -97,9 +75,9 @@ function listfonts($selected)
 		<tr>
 			<td><input type='checkbox' id='g_aa' checked='checked' /></td>
 			<td>Turn on anti-aliasing</td>
-			<td>&nbsp;&nbsp;<input type='checkbox' id='g_shadow' checked='checked' /></td>
+			<td><input type='checkbox' id='g_shadow' checked='checked' /></td>
 			<td>Enable shadow</td>
-			<td>&nbsp;&nbsp; <input type='checkbox' id='g_border' checked='checked' /></td>
+			<td><input type='checkbox' id='g_border' checked='checked' /></td>
 			<td>with a border</td>
 		</tr>
 	</table>
@@ -831,11 +809,10 @@ for($i=0; $i<8;$i++){
 
 	</div>
 
-	</td>
-	<td width='20'></td>
-	<td width='730'><center><div id='result_area'></div></center></td>
-</table>
- 
+</div>
+
+<div style="margin-left: 400px; margin-top: 30px; width: 750px" id='result_area'></div>
+
 <script type="text/javascript">
 	$(document).ready(function() {
 
