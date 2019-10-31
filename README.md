@@ -1,5 +1,5 @@
  The sandbox and all examples work as expected.<br />
- Code is being tested against PHP versions 7.0 to 7.4
+ Code is being tested against PHP versions 7.0 to 8.0
  
  Word of advice, keep it secure:
  - Set write permissions only to the "cache" and "temp" folders if you are going to be using them.
@@ -62,4 +62,3 @@ Major changes:
  - Removed QRCode glue /* Check example.qrcode.php */
  - Introduced the new Barcodes lib /* Check my PHP-Barcodes-fork repo */
  - Explicitly declare the visibility for methods and properties
- - Cleaned up Examples index page
