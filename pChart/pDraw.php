@@ -490,7 +490,6 @@ class pDraw
 		$Dash = isset($Format["Dash"]) ? $Format["Dash"] : FALSE;
 		$DashStep = isset($Format["DashStep"]) ? $Format["DashStep"] : 4;
 		$DashColor = isset($Format["DashColor"]) ? $Format["DashColor"] : new pColor(0,0,0,$Color->AlphaGet());
-		$DashColorAlloc = $this->allocateColor($DashColor->get());
 
 		($X1 > $X2) AND list($X1, $X2) = [$X2,$X1];
 		($Y1 > $Y2) AND list($Y1, $Y2) = [$Y2,$Y1];
@@ -506,7 +505,8 @@ class pDraw
 			$this->drawFilledRectangle($X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, ["Color" => $this->ShadowColor,"Ticks" => $Ticks,"NoAngle" => $NoAngle]);
 		}
 
-		$ColorAlloc = $this->allocateColor($Color->get());
+		$ColorA = $Color->get();
+		$ColorAlloc = $this->allocateColor($ColorA);
 
 		if ($NoAngle) {
 			imagefilledrectangle($this->Picture, $X1c + 1, $Y1c, $X2f - 1, $Y2f, $ColorAlloc);
@@ -548,13 +548,12 @@ class pDraw
 					$Yb = $Y;
 				}
 
-				imageline($this->Picture, $Xa, $Ya, $Xb, $Yb, $DashColorAlloc);
+				imageline($this->Picture, $Xa, $Ya, $Xb, $Yb, $this->allocateColor($DashColor->get()));
 			}
 		}
 
 		if ($this->Antialias && !$NoBorder) {
 
-			$ColorA = $Color->get();
 			$defaultAlpha = $ColorA[3];
 
 			if ($X1 < $X1c) {
