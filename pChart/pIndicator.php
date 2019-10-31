@@ -201,7 +201,7 @@ class pIndicator
 							$this->myPicture->drawFilledCircle($X1, $Y, $Radius, ["Color" => new pColor(255)]);
 							$this->myPicture->drawText($X1 + 1, $Y, strval($Value) . $Unit, ["Align" => TEXT_ALIGN_MIDDLEMIDDLE,"FontName" => $FontName,"FontSize" => $FontSize]);
 						} elseif ($ValueDisplay == INDICATOR_VALUE_LABEL) {
-							$this->myPicture->drawLabelBox(floor($X1), floor($Y) + 2, "Value - " . $Settings["Caption"], ["Color" => $Settings["Color"]->AlphaSet(100),"Caption" => strval($Value) . $Unit]);
+							$this->myPicture->drawLabelBox(floor($X1), floor($Y) + 2, "Value - " . $Settings["Caption"], ["Color" => $Settings["Color"]->newOne()->AlphaSet(100),"Caption" => strval($Value) . $Unit]);
 						}
 					}
 
