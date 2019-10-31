@@ -2744,6 +2744,7 @@ class pDraw
 		];
 
 		$WideColor = $Color->newOne()->AlphaSlash($WideFactor);
+		$wLineSettings = ["Color" => $WideColor,"Ticks" => $Ticks];
 
 		foreach($Values as $Value){
 
@@ -2758,7 +2759,7 @@ class pDraw
 			}
 
 			if (is_null($Caption)) {
-				if (isset($Data["Abscissa"])) {
+				if (!is_null($Data["Abscissa"])) {
 					$Caption = (isset($Data["Series"][$Data["Abscissa"]]["Data"][$Value])) ? $Data["Series"][$Data["Abscissa"]]["Data"][$Value] : $Value;
 				} else {
 					$Caption = $Value;
@@ -2773,8 +2774,8 @@ class pDraw
 				if ($XPos >= $this->GraphAreaX1 + $AbscissaMargin && $XPos <= $this->GraphAreaX2 - $AbscissaMargin) {
 					$this->drawLine($XPos, $YPos1, $XPos, $YPos2, ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight]);
 					if ($Wide) {
-						$this->drawLine($XPos - 1, $YPos1, $XPos - 1, $YPos2, ["Color" => $WideColor,"Ticks" => $Ticks]);
-						$this->drawLine($XPos + 1, $YPos1, $XPos + 1, $YPos2, ["Color" => $WideColor,"Ticks" => $Ticks]);
+						$this->drawLine($XPos - 1, $YPos1, $XPos - 1, $YPos2, $wLineSettings);
+						$this->drawLine($XPos + 1, $YPos1, $XPos + 1, $YPos2, $wLineSettings);
 					}
 
 					if ($WriteCaption) {
@@ -2798,8 +2799,8 @@ class pDraw
 				if ($XPos >= $this->GraphAreaY1 + $AbscissaMargin && $XPos <= $this->GraphAreaY2 - $AbscissaMargin) {
 					$this->drawLine($YPos1, $XPos, $YPos2, $XPos, ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight]);
 					if ($Wide) {
-						$this->drawLine($YPos1, $XPos - 1, $YPos2, $XPos - 1, ["Color" => $WideColor,"Ticks" => $Ticks]);
-						$this->drawLine($YPos1, $XPos + 1, $YPos2, $XPos + 1, ["Color" => $WideColor,"Ticks" => $Ticks]);
+						$this->drawLine($YPos1, $XPos - 1, $YPos2, $XPos - 1, $wLineSettings);
+						$this->drawLine($YPos1, $XPos + 1, $YPos2, $XPos + 1, $wLineSettings);
 					}
 
 					if ($WriteCaption) {
@@ -2839,8 +2840,9 @@ class pDraw
 		$RestoreShadow = $this->Shadow;
 		($DisableShadowOnArea && $this->Shadow) AND $this->Shadow = FALSE;
 		$XScale = $this->myData->scaleGetXSettings();
-		#$AbscissaMargin =  $this->myData->getAbscissaMargin(); # UNUSED
 		$Data = $this->myData->getData();
+		
+		$bLineSettings = ["Color" => $BorderColor,"Ticks" => $BorderTicks];
 
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 			$XStep = ($this->GraphAreaXdiff - $XScale[0] * 2) / $XScale[1];
@@ -2855,8 +2857,8 @@ class pDraw
 
 			$this->drawFilledRectangle($XPos1, $YPos1, $XPos2, $YPos2, ["Color" => $Color]);
 			if ($Border) {
-				$this->drawLine($XPos1, $YPos1, $XPos1, $YPos2, ["Color" => $BorderColor,"Ticks" => $BorderTicks]);
-				$this->drawLine($XPos2, $YPos1, $XPos2, $YPos2, ["Color" => $BorderColor,"Ticks" => $BorderTicks]);
+				$this->drawLine($XPos1, $YPos1, $XPos1, $YPos2, $bLineSettings);
+				$this->drawLine($XPos2, $YPos1, $XPos2, $YPos2, $bLineSettings);
 			}
 
 			if (!is_null($AreaName)) {
@@ -2870,9 +2872,6 @@ class pDraw
 
 				$this->Shadow = $RestoreShadow;
 				$this->drawText($XPos, $YPos, $AreaName, ["Color" => $NameColor,"Angle" => $NameAngle,"Align" => TEXT_ALIGN_MIDDLEMIDDLE]);
-				if ($DisableShadowOnArea) {
-					$this->Shadow = FALSE;
-				}
 			}
 
 		} elseif ($Data["Orientation"] == SCALE_POS_TOPBOTTOM) {
@@ -2888,8 +2887,8 @@ class pDraw
 
 			$this->drawFilledRectangle($YPos1, $XPos1, $YPos2, $XPos2, ["Color" => $Color]);
 			if ($Border) {
-				$this->drawLine($YPos1, $XPos1, $YPos2, $XPos1, ["Color" => $BorderColor,"Ticks" => $BorderTicks]);
-				$this->drawLine($YPos1, $XPos2, $YPos2, $XPos2, ["Color" => $BorderColor,"Ticks" => $BorderTicks]);
+				$this->drawLine($YPos1, $XPos1, $YPos2, $XPos1, $bLineSettings);
+				$this->drawLine($YPos1, $XPos2, $YPos2, $XPos2, $bLineSettings);
 			}
 
 			if (!is_null($AreaName)) {
@@ -2897,9 +2896,6 @@ class pDraw
 				$YPos = ($YPos2 - $YPos1) / 2 + $YPos1;
 				$this->Shadow = $RestoreShadow;
 				$this->drawText($YPos, $XPos, $AreaName, ["Color" => $NameColor,"Angle" => 0,"Align" => TEXT_ALIGN_MIDDLEMIDDLE]);
-				if ($DisableShadowOnArea) {
-					$this->Shadow = FALSE;
-				}
 			}
 		}
 
@@ -2950,8 +2946,9 @@ class pDraw
 			"Color" => $CaptionColor
 		];
 
-		$AbscissaMargin =  $this->myData->getAbscissaMargin();
+		$AbscissaMargin = $this->myData->getAbscissaMargin();
 		($NoMargin) AND $AbscissaMargin = 0;
+		$wLineSettings = ["Color" => $WideColor,"Ticks" => $Ticks];
 
 		foreach ($Values as $Value){
 			(is_null($Caption)) AND $Caption = $Value;
@@ -2963,8 +2960,8 @@ class pDraw
 					$X2 = $this->GraphAreaX2 - $AbscissaMargin;
 					$this->drawLine($X1, $YPos, $X2, $YPos, ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight]);
 					if ($Wide) {
-						$this->drawLine($X1, $YPos - 1, $X2, $YPos - 1, ["Color" => $WideColor,"Ticks" => $Ticks]);
-						$this->drawLine($X1, $YPos + 1, $X2, $YPos + 1, ["Color" => $WideColor,"Ticks" => $Ticks]);
+						$this->drawLine($X1, $YPos - 1, $X2, $YPos - 1, $wLineSettings);
+						$this->drawLine($X1, $YPos + 1, $X2, $YPos + 1, $wLineSettings);
 					}
 
 					if ($WriteCaption) {
@@ -2988,8 +2985,8 @@ class pDraw
 					$Y2 = $this->GraphAreaY2 - $AbscissaMargin;
 					$this->drawLine($XPos, $Y1, $XPos, $Y2,["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight]);
 					if ($Wide) {
-						$this->drawLine($XPos - 1, $Y1, $XPos - 1, $Y2, ["Color" => $WideColor,"Ticks" => $Ticks]);
-						$this->drawLine($XPos + 1, $Y1, $XPos + 1, $Y2, ["Color" => $WideColor,"Ticks" => $Ticks]);
+						$this->drawLine($XPos - 1, $Y1, $XPos - 1, $Y2, $wLineSettings);
+						$this->drawLine($XPos + 1, $Y1, $XPos + 1, $Y2, $wLineSettings);
 					}
 
 					if ($WriteCaption) {
@@ -3041,6 +3038,7 @@ class pDraw
 
 		$AbscissaMargin = $this->myData->getAbscissaMargin();
 		($NoMargin) AND $AbscissaMargin = 0;
+		$LineSettings = ["Color" => $BorderColor,"Ticks" => $BorderTicks];
 
 		if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 			$XPos1 = $this->GraphAreaX1 + $AbscissaMargin;
@@ -3055,8 +3053,8 @@ class pDraw
 
 			$this->drawFilledRectangle($XPos1, $YPos1, $XPos2, $YPos2, ["Color" => $Color]);
 			if ($Border) {
-				$this->drawLine($XPos1, $YPos1, $XPos2, $YPos1, ["Color" => $BorderColor,"Ticks" => $BorderTicks]);
-				$this->drawLine($XPos1, $YPos2, $XPos2, $YPos2, ["Color" => $BorderColor,"Ticks" => $BorderTicks,"Ticks" => $BorderTicks]);
+				$this->drawLine($XPos1, $YPos1, $XPos2, $YPos1, $LineSettings);
+				$this->drawLine($XPos1, $YPos2, $XPos2, $YPos2, $LineSettings);
 			}
 
 			if (!is_null($AreaName)) {
@@ -3064,9 +3062,6 @@ class pDraw
 				$YPos = ($YPos2 - $YPos1) / 2 + $YPos1;
 				$this->Shadow = $RestoreShadow;
 				$this->drawText($XPos, $YPos, $AreaName, ["Color" => $NameColor,"Angle" => 0,"Align" => TEXT_ALIGN_MIDDLEMIDDLE]);
-				if ($DisableShadowOnArea) {
-					$this->Shadow = FALSE;
-				}
 			}
 
 		} elseif ($Data["Orientation"] == SCALE_POS_TOPBOTTOM) {
@@ -3083,8 +3078,8 @@ class pDraw
 
 			$this->drawFilledRectangle($XPos1, $YPos1, $XPos2, $YPos2, ["Color" => $Color]);
 			if ($Border) {
-				$this->drawLine($XPos1, $YPos1, $XPos1, $YPos2, ["Color" => $BorderColor,"Ticks" => $BorderTicks]);
-				$this->drawLine($XPos2, $YPos1, $XPos2, $YPos2, ["Color" => $BorderColor,"Ticks" => $BorderTicks]);
+				$this->drawLine($XPos1, $YPos1, $XPos1, $YPos2, $LineSettings);
+				$this->drawLine($XPos2, $YPos1, $XPos2, $YPos2, $LineSettings);
 			}
 
 			if (!is_null($AreaName)) {
@@ -3098,9 +3093,6 @@ class pDraw
 
 				$this->Shadow = $RestoreShadow;
 				$this->drawText($YPos, $XPos, $AreaName, ["Color" => $NameColor,"Angle" => $NameAngle,"Align" => TEXT_ALIGN_MIDDLEMIDDLE]);
-				if ($DisableShadowOnArea) {
-					$this->Shadow = FALSE;
-				}
 			}
 		}
 
