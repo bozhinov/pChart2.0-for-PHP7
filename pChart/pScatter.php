@@ -865,7 +865,7 @@ class pScatter
 			$YValue = $this->myPicture->scaleFormat($YValue, $Data["Axis"][$SerieYAxis]);
 
 			$Description = (isset($Series["Description"])) ? $Series["Description"] : "No description";
-			$this->myPicture->drawLabelBox($X, $Y - 3, $Description, ["Format" => $Series["Color"],"Caption" => $XValue . " / " . $YValue], $Format);
+			$this->myPicture->drawLabelBox($X, $Y - 3, $Description, ["Color" => $Series["Color"],"Caption" => $XValue . " / " . $YValue], $Format);
 		}
 
 	}

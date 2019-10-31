@@ -213,7 +213,7 @@ class pBubble
 		$Value = $this->myPicture->scaleFormat($Value, $Data["Axis"][$AxisID]);
 		$Description = (isset($Data["Series"][$SerieName]["Description"])) ? $Data["Series"][$SerieName]["Description"] : "No description";
 		$Abscissa = (isset($Data["Abscissa"]) && isset($Data["Series"][$Data["Abscissa"]]["Data"][$Point])) ? $Data["Series"][$Data["Abscissa"]]["Data"][$Point]." : " : "";
-		$Series = ["Format" => $Data["Series"][$SerieName]["Color"],"Caption" => $Abscissa . $Value . " / " . $Data["Series"][$SerieWeightName]["Data"][$Point]];
+		$Series = ["Color" => $Data["Series"][$SerieName]["Color"],"Caption" => $Abscissa . $Value . " / " . $Data["Series"][$SerieWeightName]["Data"][$Point]];
 
 		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 		$X = $GraphAreaCoordinates["L"] + $XMargin;

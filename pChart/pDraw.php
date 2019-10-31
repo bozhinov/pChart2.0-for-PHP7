@@ -3465,12 +3465,12 @@ class pDraw
 
 						if (!empty($OverrideColors)) {
 							if (isset($OverrideColors[$Index])) {
-								$SerieFormat = $OverrideColors[$Index];
+								$SerieColor = $OverrideColors[$Index];
 							} else {
-								$SerieFormat = new pColor();
+								$SerieColor = new pColor();
 							}
 						} else {
-							$SerieFormat = $Data["Series"][$SerieName]["Color"];
+							$SerieColor = $Data["Series"][$SerieName]["Color"];
 						}
 
 						$SerieOffset = (count($SeriesName) == 1) ? $Data["Series"][$SerieName]["XOffset"] : 0;
@@ -3517,7 +3517,7 @@ class pDraw
 							$this->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["Color" => new pColor(255),"BorderColor" => new pColor(0)]);
 						}
 
-						$Series[] = ["Format" => $SerieFormat,"Caption" => $Caption];
+						$Series[] = ["Color" => $SerieColor,"Caption" => $Caption];
 					}
 				}
 
@@ -3553,12 +3553,12 @@ class pDraw
 
 						if (!empty($OverrideColors)) {
 							if (isset($OverrideColors[$Index])) {
-								$SerieFormat = $OverrideColors[$Index];
+								$SerieColor = $OverrideColors[$Index];
 							} else {
-								$SerieFormat = new pColor();
+								$SerieColor = new pColor();
 							}
 						} else {
-							$SerieFormat = $Data["Series"][$SerieName]["Color"];
+							$SerieColor = $Data["Series"][$SerieName]["Color"];
 						}
 	
 						$SerieOffset = (count($SeriesName) == 1) ? $Data["Series"][$SerieName]["XOffset"] : 0;
@@ -3605,7 +3605,7 @@ class pDraw
 							$this->drawFilledRectangle($X - 2, $Y - 2, $X + 2, $Y + 2, ["Color" => new pColor(255),"BorderColor" => new pColor(0)]);
 						}
 
-						$Series[] = ["Format" => $SerieFormat,"Caption" => $Caption];
+						$Series[] = ["Color" => $SerieColor,"Caption" => $Caption];
 					}
 				}
 
@@ -3756,7 +3756,7 @@ class pDraw
 			$CaptionHeight = ($TxtPos[0]["Y"] - $TxtPos[2]["Y"]);
 			/* Write the serie color if needed */
 			if ($DrawSerieColor) {
-				$BoxSettings = ["Color" => $Caption["Format"],"BorderColor" => new pColor(0)];
+				$BoxSettings = ["Color" => $Caption["Color"],"BorderColor" => new pColor(0)];
 				$this->drawFilledRectangle($XMin + $VerticalMargin, $YPos - $SerieBoxSize, $XMin + $VerticalMargin + $SerieBoxSize, $YPos, $BoxSettings);
 			}
 
