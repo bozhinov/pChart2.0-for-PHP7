@@ -10,6 +10,29 @@ class pDataExt extends \pChart\pData {
 		parent::__construct();
 	}
 
+	/* Return the max value of a given serie */
+	public function getMax(string $Serie)
+	{
+		return (isset($this->Data["Series"][$Serie])) ? $this->Data["Series"][$Serie]["Max"] : 0;
+	}
+
+	/* Return the min value of a given serie */
+	public function getMin(string $Serie)
+	{
+		return (isset($this->Data["Series"][$Serie])) ? $this->Data["Series"][$Serie]["Min"] : 0;
+	}
+
+	/* Return the average value of the given serie */
+	public function getSerieAverage(string $Serie)
+	{
+		if (isset($this->Data["Series"][$Serie])) {
+			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
+			return (array_sum($SerieData) / count($SerieData));
+		} else {
+			throw pException::InvalidInput("Invalid serie name");
+		}
+	}
+
 	/* Return the geometric mean of the given serie */
 	public function getGeometricMean(string $Serie)
 	{
