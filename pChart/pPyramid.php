@@ -32,14 +32,16 @@ class pPyramid
 			"NoFill" => $NoFill
 		];
 
+		$Palette = $this->myPicture->myData->getPalette();
+
 		# Account for the combined heights of the offsets
 		$h = ($Height - (($NumSegments - 1) * $Offset)) / $NumSegments;
 
 		for($i=0; $i<$NumSegments; $i++){
 
 			if ($Color == FALSE){
-				if (isset($this->myPicture->myData->Palette[$i])){
-					$Settings["Color"] = $this->myPicture->myData->Palette[$i]->newOne();
+				if (isset($Palette[$i])){
+					$Settings["Color"] = $Palette[$i]->newOne();
 				} else {
 					$Settings["Color"] = new pColor();
 				}
@@ -83,13 +85,15 @@ class pPyramid
 		$h = ($Height - (($NumSegments - 1) * $Offset)) / $NumSegments;
 		$Y -= $Height;
 
+		$Palette = $this->myPicture->myData->getPalette();
+
 		for($i=0; $i<$NumSegments; $i++){
 
 			if ($Color == FALSE){
-				if (isset($this->myPicture->myData->Palette[$i])){
-					$Settings["Color"] = $this->myPicture->myData->Palette[$i]->newOne();
+				if (isset($Palette[$i])){
+					$Settings["Color"] = $Palette[$i]->newOne();
 				} else {
-					$Settings["Color"] = new pColor;
+					$Settings["Color"] = new pColor();
 				}
 			}
 
