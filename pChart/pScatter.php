@@ -78,8 +78,7 @@ class pScatter
 		/* Override defaults */
 		extract($Format);
 
-		/* Skip a NOTICE event in case of an empty array */
-		($DrawYLines == NONE) AND $DrawYLines = ["zarma" => "31"];
+		($DrawYLines == NONE) AND $DrawYLines = [];
 
 		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
 		foreach($Data["Axis"] as $AxisID => $AxisProps) {
