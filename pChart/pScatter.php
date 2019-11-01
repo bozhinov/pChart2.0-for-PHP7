@@ -507,8 +507,8 @@ class pScatter
 
 					if ($X != VOID && $Y != VOID) {
 						$WayPoints[] = [$X,$Y];
-						$SplineSettings["Forces"][] = hypot(($X - $LastX),($Y - $LastY)) / 5; # GetDistance
-					} else { # if ($Y == VOID || $X == VOID) {
+						$SplineSettings["Forces"][] = hypot(($X - $LastX),($Y - $LastY)) / 5;
+					} else {
 						$this->myPicture->drawSpline($WayPoints, $SplineSettings);
 						$WayPoints = [];
 						$SplineSettings["Forces"] = [];
@@ -524,25 +524,28 @@ class pScatter
 	}
 
 	/* Return the scaled plot position */
-	function getPosArray(array $Values, int $AxisID)
+	private function getPosArray(array $Values, int $AxisID)
 	{
 		$Result = [];
+		$Data = $this->myPicture->myData->getAxisData($AxisID);
 
 		foreach($Values as $Value) {
-			$Result[] = $this->getPosArraySingle($Value, $AxisID);
+			$Result[] = $this->getPosArraySingle($Value, $AxisID, $Data);
 		}
 
 		return $Result;
 	}
 
 	/* Return the scaled plot position */
-	function getPosArraySingle($Value, int $AxisID)
+	private function getPosArraySingle($Value, int $AxisID, array $Data = [])
 	{
 		if ($Value == VOID) {
 			return VOID;
 		}
 
-		$Data = $this->myPicture->myData->getAxisData($AxisID);
+		if (empty($Data)){
+			$Data = $this->myPicture->myData->getAxisData($AxisID);
+		}
 		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
 		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 
@@ -558,7 +561,7 @@ class pScatter
 	}
 
 	/* Draw the legend of the active series */
-	function drawScatterLegend(int $X, int $Y, array $Format = [])
+	public function drawScatterLegend(int $X, int $Y, array $Format = [])
 	{
 		$fontProperties = $this->myPicture->getFont();
 
@@ -697,7 +700,7 @@ class pScatter
 	} 
 
 	/* Get the legend box size */
-	function getScatterLegendSize(array $Format = []) # UNUSED
+	public function getScatterLegendSize(array $Format = []) # UNUSED
 	{
 		$fontProperties = $this->myPicture->getFont();
 
@@ -764,7 +767,7 @@ class pScatter
 	}
 
 	/* Draw the line of best fit */
-	function drawScatterBestFit(array $Format = [])
+	public function drawScatterBestFit(array $Format = [])
 	{
 		$Ticks = isset($Format["Ticks"]) ? $Format["Ticks"] : NULL;
 		$Data = $this->myPicture->myData->getData();
@@ -829,7 +832,7 @@ class pScatter
 		}
 	}
 
-	function writeScatterLabel(int $ScatterSerieID, int $Point, array $Format = [])
+	public function writeScatterLabel(int $ScatterSerieID, int $Point, array $Format = [])
 	{
 		$Data = $this->myPicture->myData->getData();
 
@@ -871,7 +874,7 @@ class pScatter
 	}
 
 	/* Draw a Scatter threshold */
-	function drawScatterThreshold($Value, array $Format = [])
+	public function drawScatterThreshold($Value, array $Format = [])
 	{
 		$AxisID = 0;
 		$Color = new pColor(255,0,0,50);
@@ -967,7 +970,7 @@ class pScatter
 	}
 
 	/* Draw a Scatter threshold area */
-	function drawScatterThresholdArea($Value1, $Value2, array $Format = [])
+	public function drawScatterThresholdArea($Value1, $Value2, array $Format = [])
 	{
 		$AxisID = 0;
 		$Color = new pColor(255,0,0,20);
