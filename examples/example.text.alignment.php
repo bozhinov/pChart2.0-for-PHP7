@@ -45,7 +45,7 @@ $myPicture->drawRectangleMarker(415,101,$MyMarker);
 $myPicture->drawRectangleMarker(415,126,$MyMarker);
 
 /* Change the font settings */
-$myPicture->setFontProperties(["FontName"=>"fonts/Abel-Regular.ttf","FontSize"=>7]);
+$myPicture->setFontProperties(["FontSize"=>7]);
 $myPicture->setShadow(FALSE);
 
 /* Write the arrows */

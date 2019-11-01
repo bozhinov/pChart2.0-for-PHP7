@@ -45,7 +45,7 @@ $myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=
 $myPicture->drawText(150,35,"Size by time generations",["FontSize"=>18,"Align"=>TEXT_ALIGN_BOTTOMMIDDLE]);
 
 /* Set the default font */
-$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>7]);
+$myPicture->setFontProperties(["FontSize"=>7]);
 
 /* Define the chart area */
 $myPicture->setGraphArea(40,40,680,200);

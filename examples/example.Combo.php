@@ -41,7 +41,7 @@ $myPicture->drawFilledRectangle(50,60,670,190,["Color"=>new pColor(255,255,255,1
 $myPicture->drawScale(["CycleBackground"=>TRUE]);
 
 /* Graph title */
-$myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=>11]);
+$myPicture->setFontProperties(["FontSize"=>11]);
 $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 $myPicture->drawText(50,52,"Chart subtitle",["FontSize"=>20,"Align"=>TEXT_ALIGN_BOTTOMLEFT]);
 
