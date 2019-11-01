@@ -527,25 +527,23 @@ class pScatter
 	private function getPosArray(array $Values, int $AxisID)
 	{
 		$Result = [];
-		$Data = $this->myPicture->myData->getAxisData($AxisID);
+		$Data = $this->myPicture->myData->getData();
+		$AxisData = $Data["Axis"][$AxisID];
 
 		foreach($Values as $Value) {
-			$Result[] = $this->getPosArraySingle($Value, $AxisID, $Data);
+			$Result[] = $this->getPosArraySingle($Value, $AxisData);
 		}
 
 		return $Result;
 	}
 
 	/* Return the scaled plot position */
-	private function getPosArraySingle($Value, int $AxisID, array $Data = [])
+	private function getPosArraySingle($Value, array $Data = [])
 	{
 		if ($Value == VOID) {
 			return VOID;
 		}
 
-		if (empty($Data)){
-			$Data = $this->myPicture->myData->getAxisData($AxisID);
-		}
 		list($Xdiff, $Ydiff) = $this->myPicture->getGraphAreaDiffs();
 		$GraphAreaCoordinates = $this->myPicture->getGraphAreaCoordinates();
 
@@ -779,6 +777,8 @@ class pScatter
 				$SerieYAxis = $Data["Series"][$Series["Y"]]["Axis"];
 				$PosArrayX = $Data["Series"][$Series["X"]]["Data"];
 				$PosArrayY = $Data["Series"][$Series["Y"]]["Data"];
+				$XAxisData = $Data["Axis"][$SerieXAxis];
+				$YAxisData = $Data["Axis"][$SerieYAxis];
 				$Sxy = 0;
 				$Sx = 0;
 				$Sy = 0;
@@ -794,17 +794,17 @@ class pScatter
 
 				$n = count($PosArrayX);
 				if ((($n * $Sxx) == ($Sx * $Sx))) {
-					$X1 = $this->getPosArraySingle($Data["Axis"][$SerieXAxis]["ScaleMin"], $SerieXAxis);
+					$X1 = $this->getPosArraySingle($XAxisData["ScaleMin"], $XAxisData);
 					$X2 = $X1;
 					$Y1 = $GraphAreaCoordinates["T"];
 					$Y2 = $GraphAreaCoordinates["B"];
 				} else {
 					$M = (($n * $Sxy) - ($Sx * $Sy)) / (($n * $Sxx) - ($Sx * $Sx));
 					$B = (($Sy) - ($M * $Sx)) / ($n);
-					$X1 = $this->getPosArraySingle($Data["Axis"][$SerieXAxis]["ScaleMin"], $SerieXAxis);
-					$Y1 = $this->getPosArraySingle($M * $Data["Axis"][$SerieXAxis]["ScaleMin"] + $B, $SerieYAxis);
-					$X2 = $this->getPosArraySingle($Data["Axis"][$SerieXAxis]["ScaleMax"], $SerieXAxis);
-					$Y2 = $this->getPosArraySingle($M * $Data["Axis"][$SerieXAxis]["ScaleMax"] + $B, $SerieYAxis);
+					$X1 = $this->getPosArraySingle($XAxisData["ScaleMin"], $XAxisData);
+					$Y1 = $this->getPosArraySingle($M * $XAxisData["ScaleMin"] + $B, $YAxisData);
+					$X2 = $this->getPosArraySingle($XAxisData["ScaleMax"], $XAxisData);
+					$Y2 = $this->getPosArraySingle($M * $XAxisData["ScaleMax"] + $B, $YAxisData);
 					$RealM = - ($Y2 - $Y1) / ($X2 - $X1);
 					if ($Y1 < $GraphAreaCoordinates["T"]) {
 						$X1 = $X1 + ($GraphAreaCoordinates["T"] - $Y1 / $RealM);
@@ -922,7 +922,7 @@ class pScatter
 		if ($Data["Axis"][$AxisID]["Identity"] == AXIS_Y) {
 			$X1 = $GraphAreaCoordinates['L'] + $Data["Axis"][$AxisID]["Margin"];
 			$X2 = $GraphAreaCoordinates['R'] - $Data["Axis"][$AxisID]["Margin"];
-			$Y = $this->getPosArraySingle($Value, $AxisID);
+			$Y = $this->getPosArraySingle($Value, $Data["Axis"][$AxisID]);
 			$this->myPicture->drawLine($X1, $Y, $X2, $Y, ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight]);
 			if ($Wide) {
 				$WideColor = $Color->newOne()->AlphaSlash($WideFactor);
@@ -943,7 +943,7 @@ class pScatter
 			}
 
 		} elseif ($Data["Axis"][$AxisID]["Identity"] == AXIS_X) {
-			$X = $this->getPosArraySingle($Value, $AxisID);
+			$X = $this->getPosArraySingle($Value, $Data["Axis"][$AxisID]);
 			$Y1 = $GraphAreaCoordinates['T'] + $Data["Axis"][$AxisID]["Margin"];
 			$Y2 = $GraphAreaCoordinates['B'] - $Data["Axis"][$AxisID]["Margin"];
 			$this->myPicture->drawLine($X, $Y1, $X, $Y2, ["Color" => $Color,"Ticks" => $Ticks,"Weight" => $Weight]);
@@ -1010,8 +1010,8 @@ class pScatter
 		if ($Data["Axis"][$AxisID]["Identity"] == AXIS_X) {
 			$Y1 = $GraphAreaCoordinates["T"] + $Margin;
 			$Y2 = $GraphAreaCoordinates["B"] - $Margin;
-			$X1 = $this->getPosArraySingle($Value1, $AxisID);
-			$X2 = $this->getPosArraySingle($Value2, $AxisID);
+			$X1 = $this->getPosArraySingle($Value1, $Data["Axis"][$AxisID]);
+			$X2 = $this->getPosArraySingle($Value2, $Data["Axis"][$AxisID]);
 			if ($X1 <= $GraphAreaCoordinates["L"]) {
 				$X1 = $GraphAreaCoordinates["L"] + $Margin;
 			}
@@ -1046,8 +1046,8 @@ class pScatter
 
 			$X1 = $GraphAreaCoordinates["L"] + $Margin;
 			$X2 = $GraphAreaCoordinates["R"] - $Margin;
-			$Y1 = $this->getPosArraySingle($Value1, $AxisID);
-			$Y2 = $this->getPosArraySingle($Value2, $AxisID);
+			$Y1 = $this->getPosArraySingle($Value1, $Data["Axis"][$AxisID]);
+			$Y2 = $this->getPosArraySingle($Value2, $Data["Axis"][$AxisID]);
 			if ($Y1 >= $GraphAreaCoordinates["B"]) {
 				$Y1 = $GraphAreaCoordinates["B"] - $Margin;
 			}

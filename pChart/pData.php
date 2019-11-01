@@ -392,21 +392,6 @@ class pData
 		}
 	}
 
-	public function getAxisData(int $AxisID)
-	{
-		return $this->Data["Axis"][$AxisID];
-	}
-
-	/* Returns the palette of the given serie */
-	public function getSeriePalette(string $Serie)
-	{
-		if (!isset($this->Data["Series"][$Serie])) {
-			throw pException::InvalidInput("Invalid serie name");
-		} else {
-			return $this->Data["Series"][$Serie]["Color"];
-		}
-	}
-
 	/* Set the color of one serie */
 	/* Momchil: tried to refactor. did not work */
 	public function setPalette(string $Serie, pColor $Color)

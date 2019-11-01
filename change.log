@@ -46,6 +46,8 @@
 	setSerieTicks
 	getSeriePercentile
 	getSerieCount
+	getSeriePalette
+	getAxisData
 	getGeometricMean
 	getHarmonicMean
 	getStandardDeviation
