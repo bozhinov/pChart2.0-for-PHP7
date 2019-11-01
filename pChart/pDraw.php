@@ -1757,7 +1757,7 @@ class pDraw
 		/* Floating scale require X & Y margins to be set manually */
 		($Floating && ($XMargin == AUTO || $YMargin == 0)) AND $Floating = FALSE;
 
-		($DrawYLines == NONE) AND $DrawYLines = [];
+		($DrawYLines == NONE || $DrawYLines == [NONE]) AND $DrawYLines = [];
 		($DrawYLines == ALL) AND $DrawYLines = [ALL];
 
 		$TicksNotZero = ($InnerTickWidth != 0 || $OuterTickWidth != 0);
