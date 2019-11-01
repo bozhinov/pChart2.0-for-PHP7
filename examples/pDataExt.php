@@ -29,7 +29,7 @@ class pDataExt extends \pChart\pData {
 			$SerieData = array_diff($this->Data["Series"][$Serie]["Data"], [VOID]);
 			return (array_sum($SerieData) / count($SerieData));
 		} else {
-			throw pException::InvalidInput("Invalid serie name");
+			throw \pChart\pException::InvalidInput("Invalid serie name");
 		}
 	}
 
