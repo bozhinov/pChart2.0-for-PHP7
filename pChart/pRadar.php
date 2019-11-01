@@ -81,7 +81,7 @@ class pRadar
 
 		/* Catch the number of required axis */
 		$LabelSerie = $Data["Abscissa"];
-		if ($LabelSerie != "") {
+		if (!is_null($LabelSerie)) {
 			$Points = count($Data["Series"][$LabelSerie]["Data"]);
 		} else {
 			$Points = 0;
@@ -237,7 +237,7 @@ class pRadar
 			if ($WriteLabels) {
 				$LabelX = cos(deg2rad($i + $AxisRotation + $Axisoffset)) * ($EdgeHeight + $LabelPadding + $TicksLength) + $CenterX;
 				$LabelY = sin(deg2rad($i + $AxisRotation + $Axisoffset)) * ($EdgeHeight + $LabelPadding + $TicksLength) + $CenterY;
-				if ($LabelSerie != "") {
+				if (!is_null($LabelSerie)) {
 					$Label = isset($Data["Series"][$LabelSerie]["Data"][$ID]) ? $Data["Series"][$LabelSerie]["Data"][$ID] : "";
 				} else {
 					$Label = $ID;
@@ -354,7 +354,7 @@ class pRadar
 
 		/* Catch the number of required axis */
 		$LabelSerie = $Data["Abscissa"];
-		if ($LabelSerie != "") {
+		if (!is_null($LabelSerie)) {
 			$Points = count($Data["Series"][$LabelSerie]["Data"]);
 		} else {
 			$Points = 0;
