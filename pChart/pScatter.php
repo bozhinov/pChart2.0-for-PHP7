@@ -793,15 +793,15 @@ class pScatter
 				}
 
 				$n = count($PosArrayX);
-				if ((($n * $Sxx) == ($Sx * $Sx))) {
-					$X1 = $this->getPosArraySingle($XAxisData["ScaleMin"], $XAxisData);
+				if ((($n * $Sxx) == ($Sx * $Sx))) { # Momchil: No example goes in here
+					$X1 = $GraphAreaCoordinates['L'] + $XAxisData["Margin"];
 					$X2 = $X1;
 					$Y1 = $GraphAreaCoordinates["T"];
 					$Y2 = $GraphAreaCoordinates["B"];
 				} else {
 					$M = (($n * $Sxy) - ($Sx * $Sy)) / (($n * $Sxx) - ($Sx * $Sx));
 					$B = (($Sy) - ($M * $Sx)) / ($n);
-					$X1 = $this->getPosArraySingle($XAxisData["ScaleMin"], $XAxisData);
+					$X1 = $GraphAreaCoordinates['L'] + $XAxisData["Margin"];
 					$Y1 = $this->getPosArraySingle($M * $XAxisData["ScaleMin"] + $B, $YAxisData);
 					$X2 = $this->getPosArraySingle($XAxisData["ScaleMax"], $XAxisData);
 					$Y2 = $this->getPosArraySingle($M * $XAxisData["ScaleMax"] + $B, $YAxisData);
