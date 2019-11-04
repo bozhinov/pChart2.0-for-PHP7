@@ -64,7 +64,7 @@ class pSpring
 			"LinkColor" => new pColor(0)
 		];
 		$this->Labels = ["Type" => LABEL_CLASSIC, "Color" => new pColor(0)];
-		$this->AutoComputeFreeZone = FALSE;
+		$this->AutoComputeFreeZone = FALSE; # Always FALSE
 
 		$this->myPicture = $pChartObject;
 	}

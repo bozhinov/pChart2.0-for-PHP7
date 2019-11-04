@@ -1516,7 +1516,6 @@ class pCharts
 
 				if ($Data["Orientation"] == SCALE_POS_LEFTRIGHT) {
 					($YZero > $GraphAreaCoordinates["B"] - 1) AND $YZero = $GraphAreaCoordinates["B"] - 1;
-					// ($YZero > $GraphAreaCoordinates["B"] - 1) AND $YZero = $GraphAreaCoordinates["B"] - 1; // not a bug
 					$X = $GraphAreaCoordinates["L"] + $XMargin;
 					$XSize = ($XStep / (1 + $Interleave));
 					$XOffset = - ($XSize / 2);
@@ -1666,7 +1665,7 @@ class pCharts
 				}
 			}
 		}
-	} 
+	}
 
 	/* Draw a stacked area chart */
 	public function drawStackedAreaChart(array $Format = [])
@@ -1826,12 +1825,12 @@ class pCharts
 
 		$ShadowSpec = $this->myPicture->getShadow();
 		$this->myPicture->setShadow(FALSE);
-		$AllIntegers = TRUE;
-		for ($i = 0; $i <= count($Points) - 2; $i = $i + 2) {
-			if ($this->myPicture->getFirstDecimal($Points[$i + 1]) != 0) {
-				$AllIntegers = FALSE;
-			}
-		}
+		#$AllIntegers = TRUE;
+		#for ($i = 0; $i <= count($Points) - 2; $i = $i + 2) {
+		#	if ($this->myPicture->getFirstDecimal($Points[$i + 1]) != 0) {
+		#		$AllIntegers = FALSE;
+		#	}
+		#}
 
 		/* Convert polygon to segments */
 		$Segments = [];
@@ -1879,14 +1878,13 @@ class pCharts
 			}
 		}
 
-		$YStep = ($AllIntegers) ? 1 : .5;
-		$YStep = 1; # Momchil: ?!
-		$MinY = floor($MinY);
-		$MaxY = floor($MaxY);
+		#$YStep = ($AllIntegers) ? 1 : .5;
+		# Momchil: Messes up the alpha example.drawFilledSplineChart
+		$YStep = 1;
 		/* Scan each Y lines */
 		$MinY = floor($MinY);
 		$MaxY = floor($MaxY);
-		
+
 		if (!$NoFill) {
 
 			for ($Y = $MinY; $Y <= $MaxY; $Y = $Y + $YStep) {
