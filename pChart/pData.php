@@ -117,7 +117,7 @@ class pData
 		}
 	}
 
-	public function resetSeriesColors() # pBubble
+	public function resetSeriesColors() # UNUSED
 	{
 		$Id = 0;
 		foreach($this->Data["Series"] as $SerieName => $SeriesParameters) {

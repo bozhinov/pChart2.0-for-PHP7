@@ -122,7 +122,6 @@ class pBubble
 			$this->myPicture->myData->setSerieProperties("BubbleFakeNegativeSerie",["isDrawable" => FALSE]);
 		}
 
-		$this->myPicture->myData->resetSeriesColors();
 		list($XMargin, $XDivs) = $this->myPicture->myData->scaleGetXSettings();
 
 		if ($XDivs == 0) {
