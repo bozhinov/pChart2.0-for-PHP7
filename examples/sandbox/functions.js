@@ -261,37 +261,37 @@ function checkEnabledAxis()
 			}
 		}
 
-		var RightOffset = 0;
-		var BottomOffset = 0;
+		var rightOffset = 0;
+		var bottomOffset = 0;
 
 		if ( getSelected("s_direction") == "690101" )
 		{
 			var leftOffset = (leftSeries === 0 ? 20 : 10);
-			RightOffset = (rightSeries === 0 ? 25 : 15);
+			rightOffset = (rightSeries === 0 ? 25 : 15);
 
 			var leftMargin = leftOffset + 40 * leftSeries;
-			var width = g_width - leftMargin - 40 * rightSeries - RightOffset;
+			var width = g_width - leftMargin - 40 * rightSeries - rightOffset;
 
-			BottomOffset = (sl_enabled ? Series*15 : 0);
+			bottomOffset = (sl_enabled ? Series * 15 : 0);
 
 			document.getElementById("s_x").value = leftMargin;
 			document.getElementById("s_y").value = 50;
 			document.getElementById("s_width").value = width;
-			document.getElementById("s_height").value = g_height - 50 - 40 - BottomOffset;
+			document.getElementById("s_height").value = g_height - 50 - 40 - bottomOffset;
 		}
 		else
 		{
 			var topOffset = (leftSeries === 0 ? 40 : 40);
-			BottomOffset = (rightSeries === 0 ? 25 : 15);
+			bottomOffset = (rightSeries === 0 ? 25 : 15);
 
 			var topMargin = topOffset + 30 * leftSeries;
-			var height = g_height - topMargin - 30 * rightSeries - BottomOffset;
+			var height = g_height - topMargin - 30 * rightSeries - bottomOffset;
 
-			RightOffset = (sl_enabled ? Series * 15 : 0);
+			rightOffset = (sl_enabled ? Series * 15 : 0);
 
 			document.getElementById("s_x").value = 70;
 			document.getElementById("s_y").value = topMargin;
-			document.getElementById("s_width").value = g_width - 70 - 40 - RightOffset;
+			document.getElementById("s_width").value = g_width - 70 - 40 - rightOffset;
 			document.getElementById("s_height").value = height;
 		}
 	}
