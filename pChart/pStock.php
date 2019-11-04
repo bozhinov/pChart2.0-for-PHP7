@@ -134,7 +134,7 @@ class pStock
 
 				$X = $X + $XStep;
 
-			} else { # if ($Orientation == SCALE_POS_TOPBOTTOM) { # Momchil: so I don't mess up the shadow
+			} else { # SCALE_POS_TOPBOTTOM
 
 				if ($LineWidth == 1) {
 					$this->myPicture->drawLine($PosArray[2], $Y, $PosArray[3], $Y, $LineSettings);
