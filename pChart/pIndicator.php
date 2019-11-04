@@ -73,7 +73,8 @@ class pIndicator
 			($Settings["Start"] < $OverallMin) AND $OverallMin = $Settings["Start"];
 		}
 
-		$RealWidth = $Width - (count($IndicatorSections) - 1) * $SectionsMargin;
+		$LastSection = count($IndicatorSections) - 1;
+		$RealWidth = $Width - $LastSection * $SectionsMargin;
 		$XScale = $RealWidth / ($OverallMax - $OverallMin);
 		$X1 = $X;
 		$ValuesPos = [];
@@ -146,7 +147,7 @@ class pIndicator
 				$this->myPicture->drawFilledRectangle($X1, $Y, $X2, $Y + $Height, $Color);
 			}
 
-			if ($Key == count($IndicatorSections) - 1 && $DrawRightHead) {
+			if ($Key == $LastSection && $DrawRightHead) {
 				$Poly = [$X2 + 1, $Y, $X2 + 1, $Y + $Height, $X2 + 1 + $HeadSize, $Y + ($Height / 2) ];
 				$this->myPicture->drawPolygon($Poly, $Color);
 				$this->myPicture->drawLine($X2 + 1, $Y, $X2 + 1 + $HeadSize, $Y + ($Height / 2), $Color);
