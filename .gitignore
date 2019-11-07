@@ -1,4 +1,3 @@
-
 php.exe
 php.ini
 php7ts.dll
@@ -8,6 +7,7 @@ cloc-1.80.exe
 php.webserver.cmd
 Barcodes/*
 QRCode/*
+PDF417/*
 temp/*
 php_xdebug*
 WinCacheGrind*
