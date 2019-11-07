@@ -53,4 +53,3 @@ $myPicture->setAntialias(TRUE);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawAreaChart.simple.png");
 
-?>

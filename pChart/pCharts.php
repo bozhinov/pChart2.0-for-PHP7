@@ -2443,5 +2443,3 @@ class pCharts
 	}
 
 }
-
-?>

@@ -68,5 +68,3 @@ class pColorGradient
 		return $this->StartColor;
 	}
 }
-
-?>

@@ -37,4 +37,3 @@ $myPyramid->draw3DPyramid($X = 1100, $Y = 600, $Base = 400, $Height = 200, $Segm
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.pyramid.png");
 
-?>

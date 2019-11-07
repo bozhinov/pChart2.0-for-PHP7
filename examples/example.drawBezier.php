@@ -36,4 +36,3 @@ $myPicture->drawBezier(360,120,630,120,430,50,560,190,["Color"=>new pColor(255),
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawBezier.png");
 
-?>

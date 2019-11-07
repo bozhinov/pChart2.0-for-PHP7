@@ -25,4 +25,3 @@ $myPicture->drawRoundedFilledRectangle(100,20,680,210,20,["Color"=>new pColor(20
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.transparent.background.png");
 
-?>

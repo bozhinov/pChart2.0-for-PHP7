@@ -67,4 +67,3 @@ $myPicture->writeLabel(["Probe 1"],[5],["NoTitle"=>TRUE,"GradientEndColor"=>new 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawLabel.caption.png");
 
-?>

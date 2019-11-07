@@ -75,4 +75,3 @@ $Generator->forPChart($myPicture, "TLSE", ["Height" => 85], 445,25);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.barcode.png");
 
-?>

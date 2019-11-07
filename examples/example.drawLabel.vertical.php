@@ -54,4 +54,3 @@ $myPicture->writeLabel(["Hits"],[1,4],["OverrideColors"=>$Palette]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawBarChart.vertical.png");
 
-?>

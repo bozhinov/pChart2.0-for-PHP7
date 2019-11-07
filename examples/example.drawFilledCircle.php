@@ -42,4 +42,3 @@ $myPicture->drawFilledCircle(480,180,19,["Color"=>new pColor(134,209,27),"Surrou
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawFilledCircle.png");
 
-?>

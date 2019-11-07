@@ -49,4 +49,3 @@ $myPicture->setShadow(TRUE,["X"=>1,"Y"=>1,"Color"=>new pColor(0,0,0,10)]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawBarChart.spacing.png");
 
-?>

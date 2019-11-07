@@ -37,4 +37,3 @@ $myPicture->drawGradientArea(480,170,650,200,DIRECTION_HORIZONTAL,["StartColor"=
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawGradientArea.png");
 
-?>

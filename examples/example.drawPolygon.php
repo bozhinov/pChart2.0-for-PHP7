@@ -52,4 +52,3 @@ for($i=1;$i<=4;$i++)
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawPolygon.png");
 
-?>

@@ -45,4 +45,3 @@ $myPicture->drawLegend(570,212,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONT
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawStackedBarChart.rounded.png");
 
-?>

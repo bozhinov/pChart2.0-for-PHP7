@@ -79,4 +79,3 @@ $myPicture->drawText(260,222,"Avg : ".ceil($myPicture->myData->getSerieAverage("
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawFilledSplineChart.png");
 
-?>

@@ -1075,5 +1075,3 @@ class pScatter
 		$this->myPicture->restoreShadow($ShadowSpec);
 	}
 }
-
-?>

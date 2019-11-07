@@ -34,4 +34,3 @@ for($X=0;$X<=160;$X++)
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawantialiaspixel.png");
 
-?>

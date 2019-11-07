@@ -58,4 +58,3 @@ $myScatter->drawScatterScale($ScaleSettings);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawScatterScale.manual.png");
 
-?>

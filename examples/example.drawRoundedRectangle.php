@@ -38,4 +38,3 @@ $myPicture->drawRoundedRectangle(480,170,650,200,5,["Color"=>new pColor(134,209,
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawRoundedRectangle.png");
 
-?>

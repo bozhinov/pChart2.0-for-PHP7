@@ -74,4 +74,3 @@ $myPicture->drawLegend(235,205,["Style"=>LEGEND_BOX,"Mode"=>LEGEND_HORIZONTAL]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.radar.png");
 
-?>

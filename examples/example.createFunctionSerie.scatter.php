@@ -81,4 +81,3 @@ $myScatter->drawScatterLegend(300,380,["Mode"=>LEGEND_HORIZONTAL,"Style"=>LEGEND
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.createFunctionSerie.scatter.png");
 
-?>

@@ -68,4 +68,3 @@ $myScatter->drawScatterPlotChart();
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.example.drawScatterShape.png");
 
-?>

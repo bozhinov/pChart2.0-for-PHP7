@@ -560,5 +560,3 @@ class pData
 	}
 
 }
-
-?>

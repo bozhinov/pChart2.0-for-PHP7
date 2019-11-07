@@ -54,4 +54,3 @@ $myPicture->drawText(340,100,"Some blue text");
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.setFontProperties.png");
 
-?>

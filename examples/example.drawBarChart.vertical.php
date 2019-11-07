@@ -38,4 +38,3 @@ $myPicture->drawLegend(500,215,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONT
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawBarChart.vertical.png");
 
-?>

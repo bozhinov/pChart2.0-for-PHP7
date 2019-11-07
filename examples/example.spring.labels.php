@@ -66,4 +66,3 @@ $Result = $SpringChart->drawSpring();
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.spring.labels.png");
 
-?>

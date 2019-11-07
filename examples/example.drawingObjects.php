@@ -44,4 +44,3 @@ $myPicture->drawRectangle(0,0,699,229,["Color"=>myColors::LightGreen()]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawingObjects.png");
 
-?>

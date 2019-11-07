@@ -402,5 +402,3 @@ if ($_REQUEST["Action"] == "Render"){
 	$code[] = NULL;
 	echo $helper->code2src($code);
 }
-
-?>

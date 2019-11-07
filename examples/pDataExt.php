@@ -142,4 +142,3 @@ class pDataExt extends \pChart\pData {
 
 }
 
-?>

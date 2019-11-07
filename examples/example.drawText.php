@@ -45,4 +45,3 @@ $myPicture->drawText(220,195,"Text in a box",["DrawBox"=>TRUE,"Color"=>new pColo
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawText.png");
 
-?>

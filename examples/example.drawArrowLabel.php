@@ -42,4 +42,3 @@ $myPicture->drawArrowLabel(352,113,"Yellow",["FillColor"=>new pColor(239,231,97)
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawArrowLabel.png");
 
-?>

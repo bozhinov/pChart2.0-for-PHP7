@@ -214,5 +214,3 @@ class pIndicator
 		$this->myPicture->restoreShadow($ShadowSpec);
 	}
 }
-
-?>

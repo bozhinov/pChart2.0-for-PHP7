@@ -45,4 +45,3 @@ $myPicture->drawText(460,200,"With enhanced shadow",$TextSettings);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawFromGIF.png");
 
-?>

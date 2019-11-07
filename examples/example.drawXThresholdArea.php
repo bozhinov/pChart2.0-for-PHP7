@@ -62,4 +62,3 @@ $myPicture->drawXThresholdArea(2,3,["NameColor"=>new pColor(0),"AreaName"=>"Test
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawXThresholdArea.png");
 
-?>

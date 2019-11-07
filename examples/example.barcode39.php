@@ -48,4 +48,3 @@ $myPicture->setFilter(IMG_FILTER_CONTRAST, -100);
 /* Render the picture with higest compression */
 $myPicture->autoOutput("temp/example.barcode39.png", 9);
 
-?>

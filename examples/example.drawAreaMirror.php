@@ -58,4 +58,3 @@ $myPicture->drawLine(1,174,698,174,["Color"=>myColors::Gray()]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawAreaMirror.png");
 
-?>

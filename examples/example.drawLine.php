@@ -43,4 +43,3 @@ $myPicture->drawLine(370,180,650,200,["Color"=>new pColor(255),"Ticks"=>15,"Weig
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawLine.png");
 
-?>

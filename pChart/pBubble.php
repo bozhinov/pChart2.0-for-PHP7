@@ -240,5 +240,3 @@ class pBubble
 		$this->myPicture->drawLabelBox($X, $Y - 3, $Description, $Series, $Format);
 	}
 }
-
-?>

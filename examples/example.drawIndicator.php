@@ -70,4 +70,3 @@ $Indicator->draw(80,160,550,30, [
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawIndicator.png");
 
-?>

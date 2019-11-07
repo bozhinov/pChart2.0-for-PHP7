@@ -10,4 +10,3 @@ function ColorBlack(float $Alpha = 100)
 	return new pChart\pColor(0,0,0,$Alpha);
 }
 
-?>

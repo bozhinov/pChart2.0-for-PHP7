@@ -61,4 +61,3 @@ $SplitChart->drawSplitPath(["TextPadding"=>4,"Spacing"=>30,"Surrounding"=>20]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.split.png");
 
-?>

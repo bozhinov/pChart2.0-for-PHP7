@@ -51,4 +51,3 @@ $myPicture->setFilter(IMG_FILTER_GRAYSCALE);
 /* Momchil: applied filters + the gray scale palette results in significantly smaller image */
 $myPicture->autoOutput("temp/example.drawStockChart.simple.png", 9, PNG_ALL_FILTERS);
 
-?>

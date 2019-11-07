@@ -64,4 +64,3 @@ $Result = $SpringChart->drawSpring(["DrawQuietZone"=>TRUE]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.spring.png");
 
-?>

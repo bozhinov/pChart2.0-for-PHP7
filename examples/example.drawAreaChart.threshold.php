@@ -76,4 +76,3 @@ $myPicture->drawThreshold([10],["WriteCaption"=>TRUE,"Caption"=>"Error Zone","Ti
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawAreaChart.threshold.png");
 
-?>

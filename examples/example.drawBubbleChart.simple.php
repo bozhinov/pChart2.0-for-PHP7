@@ -56,4 +56,3 @@ $myPicture->drawLegend(570,13,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTA
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawBubbleChart.simple.png");
 
-?>

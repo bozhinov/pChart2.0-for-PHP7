@@ -42,4 +42,3 @@ $myPicture->drawCircle(480,180,50,20,["Color"=>new pColor(134,209,27),"Ticks"=>4
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawCircle.png");
 
-?>

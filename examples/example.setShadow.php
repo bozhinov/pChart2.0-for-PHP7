@@ -39,4 +39,3 @@ $myPicture->drawRoundedFilledRectangle(320,90,440,150,5,["Color"=>new pColor(231
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.setShadow.png");
 
-?>

@@ -63,4 +63,3 @@ $myPicture->drawProgress(620,200,80,$progressOptions);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawProgress.png");
 
-?>

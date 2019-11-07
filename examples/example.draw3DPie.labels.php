@@ -50,4 +50,3 @@ $PieChart->drawPieLegend(15,40,["Color"=>new pColor(200,200,200,20)]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.draw3DPie.labels.png");
 
-?>

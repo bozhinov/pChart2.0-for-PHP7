@@ -59,4 +59,3 @@ $myPicture->drawLegend(560,8,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONTAL
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawDerivative.png");
 
-?>

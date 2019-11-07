@@ -56,4 +56,3 @@ $myPicture->drawText(350,55,"My chart title",["FontSize"=>20,"Align"=>TEXT_ALIGN
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawScale.custom.png");
 
-?>

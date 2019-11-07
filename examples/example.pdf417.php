@@ -61,4 +61,3 @@ $PDF417->forPChart($myPicture, $X = 50, $Y = 230);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.pdf417.png");
 
-?>

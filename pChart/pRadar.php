@@ -587,5 +587,3 @@ class pRadar
 
 	}
 }
-
-?>

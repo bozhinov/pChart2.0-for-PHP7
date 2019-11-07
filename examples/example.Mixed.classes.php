@@ -98,4 +98,3 @@ $Indicator->draw(60,275,580,30,$IndicatorSettings);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.mixed.png");
 
-?>

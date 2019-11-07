@@ -64,4 +64,3 @@ $myPicture->writeLabel(["Probe 1","Probe 2"],[4],["OverrideTitle"=>"Multiple ser
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawLabel.png");
 
-?>

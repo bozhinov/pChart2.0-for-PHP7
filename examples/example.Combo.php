@@ -78,4 +78,3 @@ $myPicture->drawLegend(580,35,["Style"=>LEGEND_ROUND,"Color"=>new pColor(200,200
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.combo.png");
 
-?>

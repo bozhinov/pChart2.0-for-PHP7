@@ -71,4 +71,3 @@ $QRCode->forPChart($myPicture, $X = 445, $Y = 11);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.qrcode.png");
 
-?>

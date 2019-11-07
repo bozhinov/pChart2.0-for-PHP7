@@ -54,4 +54,3 @@ $SplitChart->drawRadar([
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.radar.labels.png");
 
-?>

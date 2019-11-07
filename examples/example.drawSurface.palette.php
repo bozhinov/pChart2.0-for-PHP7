@@ -70,4 +70,3 @@ $mySurface->drawSurface(["Padding"=>0,"Palette"=>$Palette]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.surface.palette.png");
 
-?>

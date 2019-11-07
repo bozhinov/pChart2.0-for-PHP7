@@ -40,4 +40,3 @@ $myPicture->drawSpline($Coordinates,$SplineSettings);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawSpline.png");
 
-?>

@@ -282,5 +282,3 @@ class pSurface
 		return $Nearest;
 	}
 }
-
-?>

@@ -49,4 +49,3 @@ $myPicture->drawScale(["Mode"=>SCALE_MODE_MANUAL,"ManualScale"=>$AxisBoundaries,
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawScale.png");
 
-?>

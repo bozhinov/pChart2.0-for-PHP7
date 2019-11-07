@@ -47,4 +47,3 @@ $myPicture->drawScale(["XMargin"=>15,"YMargin"=>15,"Floating"=>TRUE,"DrawSubTick
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawScale.floating.png");
 
-?>

@@ -62,4 +62,3 @@ $myPicture->drawThreshold([10,12],["Ticks"=>2,"Color"=>new pColor(0,0,255,70)]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawThreshold.png");
 
-?>

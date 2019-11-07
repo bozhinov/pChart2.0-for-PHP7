@@ -5,4 +5,3 @@ if (isset($_POST["View"])){
 		highlight_file("example.".$f.".php"); 
 	}
 }
-?>

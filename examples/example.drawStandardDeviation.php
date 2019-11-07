@@ -77,4 +77,3 @@ $myPicture->drawText(610,46,"coefficient of variation : ".$CoefficientOfVariatio
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawStandardDeviation.png");
 
-?>

@@ -52,4 +52,3 @@ $PieChart->drawPieLegend(45,360,["Mode"=>LEGEND_HORIZONTAL,"Style"=>LEGEND_NOBOR
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.draw3DRingValues.png");
 
-?>

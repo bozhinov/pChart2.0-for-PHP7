@@ -43,4 +43,3 @@ $Generator->forPChart($myPicture, "Turn me on", ["Angle"=>90, "label" => ["TTF" 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawbarcode128.png");
 
-?>

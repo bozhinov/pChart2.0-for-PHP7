@@ -63,4 +63,3 @@ $myPicture->drawText(550,30,"Harmonic Mean : ".round($HarmonicMean,2));
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.harmonicMean.png");
 
-?>

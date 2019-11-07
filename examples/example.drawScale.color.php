@@ -61,4 +61,3 @@ $myPicture->drawFilledRectangle(90,60,660,190,["Color"=>new pColor(255,255,255,1
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawScale.color.png");
 
-?>

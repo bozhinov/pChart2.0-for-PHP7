@@ -64,4 +64,3 @@ $PieChart->drawPieLegend(340,8,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONT
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.draw2DPie.png");
 
-?>

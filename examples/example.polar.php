@@ -74,4 +74,3 @@ $myPicture->drawLegend(270,205,["Style"=>LEGEND_BOX,"Mode"=>LEGEND_HORIZONTAL]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.polar.png");
 
-?>

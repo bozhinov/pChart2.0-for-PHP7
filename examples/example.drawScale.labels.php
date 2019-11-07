@@ -64,4 +64,3 @@ $pCharts->drawBarChart(["Surrounding"=>-30,"InnerSurrounding"=>30]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawScale.labels.png");
 
-?>

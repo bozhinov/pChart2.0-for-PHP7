@@ -67,4 +67,3 @@ $pCharts->drawPlotChart(["PlotBorder"=>TRUE,"PlotSize"=>3,"BorderSize"=>1,"Surro
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawAreaChart.simple.png");
 
-?>

@@ -36,4 +36,3 @@ for($i=1;$i<=100;$i=$i+8)
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawArrow.png");
 
-?>

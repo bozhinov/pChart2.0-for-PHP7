@@ -55,4 +55,3 @@ $mySurface->drawSurface(["Border"=>TRUE,"Surrounding"=>40]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.surface.simple.png");
 
-?>

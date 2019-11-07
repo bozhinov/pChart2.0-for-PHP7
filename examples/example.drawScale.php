@@ -48,4 +48,3 @@ $myPicture->drawScale(["DrawSubTicks"=>TRUE,"DrawArrows"=>TRUE,"ArrowSize"=>6]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawScale.png");
 
-?>

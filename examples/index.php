@@ -136,7 +136,7 @@ if (!isset($_SESSION['html'])){
 
 echo $_SESSION['html'];
 
-?>
+
 	</div>
 
 	<div style='width:200px; padding: 10 0 0 10'>

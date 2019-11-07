@@ -47,4 +47,3 @@ $mystockChart->drawStockChart(["BoxUpColor"=>new pColor(255),"BoxDownColor"=>new
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawStockChart.median.png");
 
-?>

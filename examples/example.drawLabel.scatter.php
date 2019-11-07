@@ -83,4 +83,3 @@ $myScatter->writeScatterLabel(1,17,["Decimals"=>1,"TitleMode"=>LABEL_TITLE_BACKG
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawLabel.scatter.png");
 
-?>

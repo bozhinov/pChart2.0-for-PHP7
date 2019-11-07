@@ -60,4 +60,3 @@ $mySurface->drawContour(50,["Color"=>new pColor(0)]);
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.surface.png");
 
-?>

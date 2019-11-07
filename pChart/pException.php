@@ -91,5 +91,3 @@ class pException extends \Exception
 		return new static(sprintf('pBubble: %s', $text));
 	}
 }
-
-?>

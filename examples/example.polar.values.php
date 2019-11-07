@@ -56,4 +56,3 @@ $splitChart->drawPolar([
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.polar.values.png");
 
-?>

@@ -50,4 +50,3 @@ $myPicture->drawLegend(643,210,["Style"=>LEGEND_NOBORDER,"Mode"=>LEGEND_HORIZONT
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.drawSimple.png");
 
-?>

@@ -28,4 +28,3 @@ $myPicture->drawScale();
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.basic.png");
 
-?>

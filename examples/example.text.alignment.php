@@ -64,4 +64,3 @@ $myPicture->drawArrowLabel(415,128,"TEXT_ALIGN_BOTTOMRIGHT",["Length"=>20,"Angle
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.text.alignment.png");
 
-?>
