@@ -36,5 +36,3 @@ $PieChart->drawPieLegend(20,40,["FontSize"=>12, "BoxSize"=>16,"Style"=>LEGEND_BO
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/bug29.png");
-
-?>

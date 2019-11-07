@@ -55,5 +55,3 @@ $myPicture->drawText($XAxis_Text_X,$Image_Height*0.84,'Time',["Align"=>TEXT_ALIG
 (new pCharts($myPicture))->drawSplineChart();
 
 $myPicture->render('temp/bug27.png');
-
-?>
