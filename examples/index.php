@@ -135,7 +135,7 @@ if (!isset($_SESSION['html'])){
 }
 
 echo $_SESSION['html'];
-
+?>
 
 	</div>
 
