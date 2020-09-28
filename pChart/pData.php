@@ -421,6 +421,8 @@ class pData
 			$AbscissaData = $this->Data["Series"][$this->Data["Abscissa"]]["Data"];
 		}
 
+		$Palette = $this->Palette;
+
 		if(!$forLegend){
 			$SeriesData = $this->Data["Series"];
 			$left = array_diff(array_keys($SeriesData), [$this->Data["Abscissa"]]);
@@ -431,19 +433,30 @@ class pData
 
 			/* Remove unused data clean0Values */
 			$Values = array_shift($SeriesData)["Data"];
-			$Values = array_values(array_diff($Values, [NULL, 0]));
+
+			foreach($Values as $key => $v) {
+				 if ($v == NULL || $v == 0) {
+					unset($Values[$key]);
+					unset($AbscissaData[$key]);
+					unset($Palette[$key]);
+				 }
+			}
+
+			$Values = array_values($Values);
+			$Palette = array_values($Palette);
+			$AbscissaData = array_values($AbscissaData);
 
 			/* Gen Palette */
 			foreach($Values as $Id => $Value) {
-				if(!isset($this->Palette[$Id])){
-					$this->Palette[$Id] = new pColor();
+				if(!isset($Palette[$Id])){
+					$Palette[$Id] = new pColor();
 				}
 			}
 		} else {
 			$Values = [];
 		}
 
-		return [$AbscissaData, $Values, $this->Palette];
+		return [$AbscissaData, $Values, $Palette];
 	}
 
 	/* Save a palette */
