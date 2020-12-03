@@ -452,6 +452,9 @@ class pData
 					$Palette[$Id] = new pColor();
 				}
 			}
+			
+			/* Save the new palette in case we need to draw a legend as well */
+			$this->Palette = $Palette;
 		} else {
 			$Values = [];
 		}
