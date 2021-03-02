@@ -2621,18 +2621,21 @@ class pDraw
 			$Result = 0;
 			while (!$Found) {
 				foreach($Factors as $Factor) {
+					if ($Factor == 0){
+						continue;
+					}
 					if (!$Found) {
 						$R = $Factor * $Scaled10Factor;
-						if ($Factor == 0 || floor($Factor) == 0){ # Momchil: avoid division by 0
-							throw pException::InvalidInput("Scale factor must be > 1.00");
+						if ($R > PHP_INT_MAX){
+							break 2;
+						}
+
+						if (floor($R) != 0){
+							$XMinRescaled = ((($XMin % $R) != 0) || ($XMin != floor($XMin))) ? (floor($XMin / $R) * $R) : $XMin;
+							$XMaxRescaled = ((($XMax % $R) != 0) || ($XMax != floor($XMax))) ? (floor($XMax / $R) * $R + $R) : $XMax;
 						} else {
-							if (floor($R) != 0){
-								$XMinRescaled = ((($XMin % $R) != 0) || ($XMin != floor($XMin))) ? (floor($XMin / $R) * $R) : $XMin;
-								$XMaxRescaled = ((($XMax % $R) != 0) || ($XMax != floor($XMax))) ? (floor($XMax / $R) * $R + $R) : $XMax;
-							} else {
-								$XMinRescaled = floor($XMin / $R) * $R;
-								$XMaxRescaled = floor($XMax / $R) * $R + $R;
-							}
+							$XMinRescaled = floor($XMin / $R) * $R;
+							$XMaxRescaled = floor($XMax / $R) * $R + $R;
 						}
 
 						$ScaleHeightRescaled = abs($XMaxRescaled - $XMinRescaled);
@@ -2656,7 +2659,11 @@ class pDraw
 			}
 
 			/* Compute rows size */
-			$Rows = floor($ScaleHeight / $Result);
+			if ($Result == 0) {
+				$Rows = 0;
+			} else {
+				$Rows = floor($ScaleHeight / $Result);
+			}
 			($Rows == 0) AND $Rows = 1;
 			$RowHeight = $ScaleHeight / $Rows;
 
