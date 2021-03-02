@@ -2607,98 +2607,99 @@ class pDraw
 	/* Compute the best matching scale based on size & factors */
 	private function processScale($XMin, $XMax, $MaxDivs, array $Factors, $AxisID)
 	{
+		$Scale = [
+			"Rows" => 2,
+			"RowHeight" => 1,
+			"XMin" => $XMax - 1,
+			"XMax" => $XMax + 1
+		];
+
+		if ($XMin == $XMax) {
+			return $Scale;
+		}
+
 		$Data = $this->myData->getData();
 
 		$ScaleHeight = abs(ceil($XMax) - floor($XMin));
 		$Format = (isset($Data["Axis"][$AxisID]["Format"])) ?  $Data["Axis"][$AxisID]["Format"] : NULL;
 		$Mode = (isset($Data["Axis"][$AxisID]["Display"])) ? $Data["Axis"][$AxisID]["Display"] : AXIS_FORMAT_DEFAULT;
-		$Scale = [];
 
-		if ($XMin != $XMax) {
-			$Found = FALSE;
-			$Rescaled = FALSE;
-			$Scaled10Factor = .0001;
-			$Result = 0;
-			while (!$Found) {
-				foreach($Factors as $Factor) {
-					if ($Factor == 0){
-						continue;
-					}
-					if (!$Found) {
-						$R = $Factor * $Scaled10Factor;
-						if ($R > PHP_INT_MAX){
-							break 2;
-						}
-
-						if (floor($R) != 0){
-							$XMinRescaled = ((($XMin % $R) != 0) || ($XMin != floor($XMin))) ? (floor($XMin / $R) * $R) : $XMin;
-							$XMaxRescaled = ((($XMax % $R) != 0) || ($XMax != floor($XMax))) ? (floor($XMax / $R) * $R + $R) : $XMax;
-						} else {
-							$XMinRescaled = floor($XMin / $R) * $R;
-							$XMaxRescaled = floor($XMax / $R) * $R + $R;
-						}
-
-						$ScaleHeightRescaled = abs($XMaxRescaled - $XMinRescaled);
-
-						if (!$Found && floor($ScaleHeightRescaled / $R) <= $MaxDivs) {
-							$Found = TRUE;
-							$Rescaled = TRUE;
-							$Result = $R;
-						}
-					}
+		$Found = FALSE;
+		$Rescaled = FALSE;
+		$Scaled10Factor = .0001;
+		$Result = 0;
+		while (!$Found) {
+			foreach($Factors as $Factor) {
+				if ($Factor == 0){
+					continue;
 				}
 
-				$Scaled10Factor = $Scaled10Factor * 10;
-			}
-
-			/* ReCall Min / Max / Height */
-			if ($Rescaled) {
-				$XMin = $XMinRescaled;
-				$XMax = $XMaxRescaled;
-				$ScaleHeight = $ScaleHeightRescaled;
-			}
-
-			/* Compute rows size */
-			if ($Result == 0) {
-				$Rows = 0;
-			} else {
-				$Rows = floor($ScaleHeight / $Result);
-			}
-			($Rows == 0) AND $Rows = 1;
-			$RowHeight = $ScaleHeight / $Rows;
-
-			/* Return the results */
-			$Scale["Rows"] = $Rows;
-			$Scale["RowHeight"] = $RowHeight;
-			$Scale["XMin"] = $XMin;
-			$Scale["XMax"] = $XMax;
-			/* Compute the needed decimals for the metric view to avoid repetition of the same X Axis labels */
-			if ($Mode == AXIS_FORMAT_METRIC && is_null($Format)) {
-
-				$GoodDecimals = 0;
-				for ($Decimals = 0; $Decimals <= 10; $Decimals++) {
-					$LastLabel = "zob";
-					$ScaleOK = TRUE;
-					for ($i = 0; $i <= $Rows; $i++) {
-						$Label = $this->scaleFormat(($XMin + $i * $RowHeight), ["Display" => $Mode, "Format" => NULL, "Unit" => $Decimals]);
-						($LastLabel == $Label) AND $ScaleOK = FALSE;
-						$LastLabel = $Label;
-					}
-
-					if ($ScaleOK) {
-						$GoodDecimals = $Decimals;
-						break;
-					}
+				$R = $Factor * $Scaled10Factor;
+				if ($R > PHP_INT_MAX){
+					break 2;
 				}
 
-				$Scale["Format"] = $GoodDecimals;
+				if (floor($R) != 0){
+					$XMinRescaled = ((($XMin % $R) != 0) || ($XMin != floor($XMin))) ? (floor($XMin / $R) * $R) : $XMin;
+					$XMaxRescaled = ((($XMax % $R) != 0) || ($XMax != floor($XMax))) ? (floor($XMax / $R) * $R + $R) : $XMax;
+				} else {
+					$XMinRescaled = floor($XMin / $R) * $R;
+					$XMaxRescaled = floor($XMax / $R) * $R + $R;
+				}
+
+				$ScaleHeightRescaled = abs($XMaxRescaled - $XMinRescaled);
+
+				if (floor($ScaleHeightRescaled / $R) <= $MaxDivs) {
+					$Found = TRUE;
+					$Rescaled = TRUE;
+					$Result = $R;
+				}
+
+				$Scaled10Factor *= 10;
 			}
+		}
+
+		/* ReCall Min / Max / Height */
+		if ($Rescaled) {
+			$XMin = $XMinRescaled;
+			$XMax = $XMaxRescaled;
+			$ScaleHeight = $ScaleHeightRescaled;
+		}
+
+		/* Compute rows size */
+		if ($Result == 0) {
+			$Rows = 0;
 		} else {
-			/* If all values are the same we keep a +1/-1 scale */
-			$Scale["Rows"] = 2;
-			$Scale["RowHeight"] = 1;
-			$Scale["XMin"] = $XMax - 1;
-			$Scale["XMax"] = $XMax + 1;
+			$Rows = floor($ScaleHeight / $Result);
+		}
+		($Rows == 0) AND $Rows = 1;
+		$RowHeight = $ScaleHeight / $Rows;
+
+		/* Return the results */
+		$Scale["Rows"] = $Rows;
+		$Scale["RowHeight"] = $RowHeight;
+		$Scale["XMin"] = $XMin;
+		$Scale["XMax"] = $XMax;
+		/* Compute the needed decimals for the metric view to avoid repetition of the same X Axis labels */
+		if ($Mode == AXIS_FORMAT_METRIC && is_null($Format)) {
+
+			$GoodDecimals = 0;
+			for ($Decimals = 0; $Decimals <= 10; $Decimals++) {
+				$LastLabel = "zob";
+				$ScaleOK = TRUE;
+				for ($i = 0; $i <= $Rows; $i++) {
+					$Label = $this->scaleFormat(($XMin + $i * $RowHeight), ["Display" => $Mode, "Format" => NULL, "Unit" => $Decimals]);
+					($LastLabel == $Label) AND $ScaleOK = FALSE;
+					$LastLabel = $Label;
+				}
+
+				if ($ScaleOK) {
+					$GoodDecimals = $Decimals;
+					break;
+				}
+			}
+
+			$Scale["Format"] = $GoodDecimals;
 		}
 
 		return $Scale;
