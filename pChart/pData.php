@@ -161,9 +161,9 @@ class pData
 	}
 
 	/* Set the serie that will be used as abscissa */
-	public function setAbscissa(?string $Serie, array $Props = [])
+	public function setAbscissa(string $Serie, array $Props = [])
 	{
-		if (is_null($Serie) || isset($this->Data["Series"][$Serie])) {
+		if (isset($this->Data["Series"][$Serie])) {
 			$this->Data["Abscissa"] = $Serie;
 
 			if (!empty($Props)){
@@ -180,7 +180,7 @@ class pData
 	}
 
 	/* Set the name of the abscissa axis */
-	public function setAbscissaName(?string $Name)
+	public function setAbscissaName(string $Name)
 	{
 		$this->Data["AbscissaProperties"]["Name"] = $Name;
 	}
