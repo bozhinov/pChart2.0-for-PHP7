@@ -4,8 +4,7 @@ pColor - Data structure for colors
 
 Version     : 2.4.0-dev
 Made by     : Momchil Bozhinov
-Last Update : 14/10/2019
-
+Last Update : 21/07/2021
 */
 
 namespace pChart;
@@ -62,6 +61,25 @@ class pColor
 		$B = dechex(intval($this->B));
 
 		return  "#".(strlen($R) < 2 ? '0' : '').$R.(strlen($G) < 2 ? '0' : '').$G.(strlen($B) < 2 ? '0' : '').$B;
+	}
+
+	public function fromHex(string $hex, int $Alpha = 100)
+	{
+		if ($hex[0] == '#'){
+			$hex = substr($hex, 1);
+		}
+
+		if (strlen($hex) == 6) {
+			list($R, $G, $B) = str_split($hex, 2);
+			$this->R = hexdec($R);
+			$this->G = hexdec($G);
+			$this->B = hexdec($B);
+			$this->Alpha = $Alpha;
+		} else {
+			throw pException::InvalidInput("Hex color is the wrong format - ".$hex);
+		}
+
+		return $this;
 	}
 
 	public function Slide(array $Offsets, float $Percent)
