@@ -15,7 +15,7 @@ class Base {
 		$this->config = $config;
 	}
 
-	public function use_image($MyPicture, $code)
+	public function draw_code($MyPicture, $code)
 	{
 		$this->myPicture = $MyPicture;
 		$this->code = $code;
