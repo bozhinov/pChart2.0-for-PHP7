@@ -148,7 +148,7 @@ class pBarcodes {
 		}
 
 		$renderer->configure($this->parse_opts($opts, $isDataMatrix));
-		$renderer->use_image($this->MyPicture, $code);
+		$renderer->use_image($this->myPicture, $code);
 	}
 }
 

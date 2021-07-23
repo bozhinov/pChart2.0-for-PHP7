@@ -22,7 +22,7 @@ class Linear extends Base {
 		list($width, ) = $this->calculate_size();
 		$lsize = $this->config['label']['Size'];
 		$textColor = $this->myPicture->allocatepColor($this->config['label']['Color']);
-		$image = $this->MyPicture->gettheImage();
+		$image = $this->myPicture->gettheImage();
 
 		if ($width > 0) {
 			$scale = $w / $width;
