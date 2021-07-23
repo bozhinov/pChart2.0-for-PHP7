@@ -1,6 +1,6 @@
 <?php
 
-namespace pChart\pBarcodes\Encoders;
+namespace pChart\Barcodes\Encoders;
 	
 class DMTX {
 

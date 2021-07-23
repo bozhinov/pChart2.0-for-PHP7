@@ -1,6 +1,6 @@
 <?php
 
-namespace pChart\pBarcodes\Renderers;
+namespace pChart\Barcodes\Renderers;
 
 class Matrix extends Base {
 

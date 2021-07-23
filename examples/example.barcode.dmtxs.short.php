@@ -6,8 +6,8 @@ require_once("bootstrap.php");
 
 use pChart\pDraw;
 use pChart\pColor;
-use pChart\pBarcodes\{
-	pBarcodes,
+use pChart\Barcodes\{
+	Barcodes,
 	Encoders\DMTX
 };
 
@@ -26,7 +26,7 @@ $opts = [
 ];
 
 $data = 8675309;
-$barcodes = new pBarcodes($myPicture);
+$barcodes = new Barcodes($myPicture);
 $barcodes->encode($data, "dmtxs", $opts);
 
 $myPicture->autoOutput("temp/example_dmtxs_short.png");

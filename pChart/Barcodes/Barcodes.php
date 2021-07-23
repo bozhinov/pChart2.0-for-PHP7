@@ -1,13 +1,13 @@
 <?php
 
-namespace pChart\pBarcodes;
+namespace pChart\Barcodes;
 
 use pChart\pColor;
 use pChart\pException;
-use pChart\pBarcodes\Renderers\Linear;
-use pChart\pBarcodes\Renderers\Matrix;
+use pChart\Barcodes\Renderers\Linear;
+use pChart\Barcodes\Renderers\Matrix;
 
-class pBarcodes {
+class Barcodes {
 
 	private $myPicture;
 
