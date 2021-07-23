@@ -43,6 +43,43 @@ class PDF417
 			throw pException::PDF417InvalidInput("Invalid value for \"bgColor\". Expected a pColor object.");
 		}
 	}
+	
+	public function draw_image($pixelGrid)
+	{
+		$image = $this->myPicture->gettheImage();
+		$padding = $this->options['padding'];
+
+		$width = count($pixelGrid[0]);
+		$height = count($pixelGrid);
+
+		$scaleX = $this->options['scale'];
+		$scaleY = $this->options['scale'] * $this->options['ratio'];
+
+		// Apply scaling & aspect ratio
+		$width = ($width * $scaleX) + $padding * 2;
+		$height = ($height * $scaleY) + $padding * 2;
+
+		// Extract options
+		$bgColorAlloc = $this->myPicture->allocatepColor($this->options['bgColor']);
+		imagefill($image, 0, 0, $bgColorAlloc);
+		$colorAlloc = $this->myPicture->allocatepColor($this->options['color']);
+
+		// Render the barcode
+		foreach ($pixelGrid as $y => $row) {
+			foreach ($row as $x => $value) {
+				if ($value) {
+					imagefilledrectangle(
+						$image,
+						($x * $scaleX) + $padding,
+						($y * $scaleY) + $padding,
+						(($x + 1) * $scaleX - 1) + $padding,
+						(($y + 1) * $scaleY - 1) + $padding,
+						$colorAlloc
+					);
+				}
+			}
+		}
+	}
 
 	public function encode($data, array $opts = [])
 	{
@@ -70,6 +107,6 @@ class PDF417
 		$this->validateOptions();
 
 		$pixelGrid = (new Encoder($this->options))->encodeData($data);
-		(new Renderer($pixelGrid, $this->options))->draw_image($this->myPicture);
+		$this->draw_image($pixelGrid);
 	}
 }
