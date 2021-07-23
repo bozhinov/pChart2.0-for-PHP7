@@ -95,4 +95,19 @@ class pException extends \Exception
 	{
 		return new static(sprintf('Barcodes: %s', $text));
 	}
+	
+	public static function PDF417InvalidInput($text)
+	{
+		return new static(sprintf('PDF417: %s', $text));
+	}
+
+	public static function PDF417InternalError($text)
+	{
+		return new static(sprintf('PDF417: %s', $text));
+	}
+
+	public static function PDF417EncoderError($text)
+	{
+		return new static(sprintf('PDF417: %s', $text));
+	}
 }
