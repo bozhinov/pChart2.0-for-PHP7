@@ -119,4 +119,14 @@ class pException extends \Exception
 	{
 		return new static(sprintf('Aztec: %s', $text));
 	}
+
+	public static function QRCodeInvalidInput($text)
+	{
+		return new static(sprintf('QRCode: %s', $text));
+	}
+
+	public static function QRCodeEncoderError($text)
+	{
+		return new static(sprintf('QRCode: %s', $text));
+	}
 }
