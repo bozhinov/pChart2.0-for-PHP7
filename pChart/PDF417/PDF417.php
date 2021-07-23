@@ -8,7 +8,6 @@ use pChart\pColor;
 class PDF417
 {
 	private $options = [];
-	private $renderer;
 	private $myPicture;
 
 	public function __construct(\pChart\pDraw $myPicture)
@@ -71,7 +70,6 @@ class PDF417
 		$this->validateOptions();
 
 		$pixelGrid = (new Encoder($this->options))->encodeData($data);
-		$this->renderer = (new Renderer($pixelGrid, $this->options));
-		$this->renderer->draw_image($this->myPicture);
+		(new Renderer($pixelGrid, $this->options))->draw_image($this->myPicture);
 	}
 }

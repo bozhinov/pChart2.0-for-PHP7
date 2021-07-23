@@ -6,6 +6,9 @@ namespace pChart\PDF417\Encoder;
 * Converts high-level (base 929) code words into low-level code words (binary
 * patterns for drawing the bar code).
 */
+
+use pChart\pException;
+
 class Codes
 {
 	private static $codes = [
@@ -423,7 +426,7 @@ class Codes
 	public static function getCode(int $table, int $word)
 	{
 		if (!isset(self::$codes[$table][$word])) {
-			throw \PDF417\pException::InternalError("Invalid code word [$table][$word].");
+			throw pException::PDF417InternalError("Invalid code word [$table][$word].");
 		}
 
 		return self::$codes[$table][$word];
