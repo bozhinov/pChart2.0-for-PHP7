@@ -3,6 +3,8 @@
 namespace pChart\Aztec;
 
 use pChart\Aztec\Encoder\Encoder;
+use pChart\pColor;
+use pChart\pException;
 
 class Aztec
 {
@@ -44,14 +46,14 @@ class Aztec
 	{
 		$image = $this->myPicture->gettheImage();
 		$width = count($pixelGrid);
-		$ratio = $options['ratio'];
-		$padding = $options['padding'];
+		$ratio = $this->options['ratio'];
+		$padding = $this->options['padding'];
 		#$this->size = ($width * $ratio) + ($padding * 2);
 
 		// Extract options
-		$bgColorAlloc = $this->myPicture->allocatepColor($options['bgColor']);
+		$bgColorAlloc = $this->myPicture->allocatepColor($this->options['bgColor']);
 		imagefill($image, 0, 0, $bgColorAlloc);
-		$colorAlloc = $this->myPicture->allocatepColor($options['color']);
+		$colorAlloc = $this->myPicture->allocatepColor($this->options['color']);
 
 		// Render the code
 		for ($x = 0; $x < $width; $x++) {
