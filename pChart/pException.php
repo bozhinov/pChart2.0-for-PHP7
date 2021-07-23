@@ -110,4 +110,13 @@ class pException extends \Exception
 	{
 		return new static(sprintf('PDF417: %s', $text));
 	}
+	public static function AztecInvalidInput($text)
+	{
+		return new static(sprintf('Aztec: %s', $text));
+	}
+
+	public static function AztecEncoderError($text)
+	{
+		return new static(sprintf('Aztec: %s', $text));
+	}
 }
