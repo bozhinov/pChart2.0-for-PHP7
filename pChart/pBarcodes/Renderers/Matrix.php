@@ -15,7 +15,7 @@ class Matrix extends Base {
 	public function render_image($x, $y, $w, $h)
 	{
 		list($width, $height) = $this->calculate_size();
-		$image = $this->MyPicture->gettheImage();
+		$image = $this->myPicture->gettheImage();
 
 		if ($width && $height) {
 			$scale = min($w / $width, $h / $height);

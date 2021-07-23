@@ -1,10 +1,11 @@
 <?php
-/* CAT:Misc */
+/* CAT:Barcodes */
 
 /* Include all the classes */ 
 require_once("bootstrap.php");
 
 use pChart\pDraw;
+use pChart\pColor;
 use pChart\pCharts;
 use pChart\pBarcodes\{
 	pBarcodes,
@@ -14,8 +15,15 @@ use pChart\pBarcodes\{
 /* Create a pChart object and associate your dataset */ 
 $myPicture = new pDraw(700,230);
 
-$barcodes = new pBarcodes($myPicture);
-$barcodes->encode("Do what you want !", "code128", []);
+$opts = [
+	"label" => [
+		'Height'=> 10,
+		'Size' 	=> 1,
+		'Color' => (new pColor())->fromHex("2AFF55")
+	]
+];
 
-/* Render the picture (choose the best way) */
-$myPicture->autoOutput("temp/encode128.png");
+$barcodes = new pBarcodes($myPicture);
+$barcodes->encode("12250000234502", "code39", $opts);
+
+$myPicture->autoOutput("temp/encode39.png");
