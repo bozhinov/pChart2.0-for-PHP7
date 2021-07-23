@@ -1187,6 +1187,12 @@ class pDraw
 		return imagecolorallocatealpha($this->Picture, $ColorA[0], $ColorA[1], $ColorA[2], (1.27 * (100 - $ColorA[3])));
 	}
 
+	private function allocatepColor($color)
+	{
+		list ($R, $G, $B, $A) = $color->get();
+		return imagecolorallocatealpha($this->Picture, $R, $G, $B, (1.27 * (100 - $A)));
+	}
+
 	/* Load a PNG file and draw it over the chart */
 	public function drawFromPNG($X, $Y, $FileName)
 	{

@@ -90,4 +90,9 @@ class pException extends \Exception
 	{
 		return new static(sprintf('pBubble: %s', $text));
 	}
+
+	public static function BarcodesException($text)
+	{
+		return new static(sprintf('Barcodes: %s', $text));
+	}
 }
