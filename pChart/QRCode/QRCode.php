@@ -31,7 +31,7 @@ class QRCode {
 			$this->options[$value] = new pColor($default);
 		} else {
 			if (!($opts[$value] instanceof pColor)) {
-				throw pException::QRCodeInvalidInput("Invalid value for \"$value\". Expected an azColor object.");
+				throw pException::QRCodeInvalidInput("Invalid value for \"$value\". Expected an pColor object.");
 			}
 			$this->options[$value] = $opts[$value];
 		}
@@ -46,7 +46,7 @@ class QRCode {
 		return $value;
 	}
 
-	public function encode(string $text, array $opts = [], string $hint = "undefined")
+	public function encode(string $text, array $opts = [])
 	{
 		$this->setColor('color', 0, $opts);
 		$this->setColor('bgColor', 255, $opts);
@@ -78,27 +78,28 @@ class QRCode {
 			throw pException::QRCodeInvalidInput('empty string!');
 		}
 
-		switch(strtolower($hint)){
-			case "undefined":
-				$hint = -1;
-				break;
-			case "numeric":
-				$hint = 0;
-				break;
-			case "alphanumeric":
-				$hint = 1;
-				break;
-			case "byte":
-				$hint = 2;
-				break;
-			case "kanji":
-				$hint = 3;
-				break;
-				default:
-					throw pException::QRCodeInvalidInput("Invalid value for \"hint\"");
+		if (isset($opts['hint'])){
+			switch(strtolower($opts['hint'])){
+				case "numeric":
+					$hint = 0;
+					break;
+				case "alphanumeric":
+					$hint = 1;
+					break;
+				case "byte":
+					$hint = 2;
+					break;
+				case "kanji":
+					$hint = 3;
+					break;
+					default:
+						throw pException::QRCodeInvalidInput("Invalid value for \"hint\"");
+			}
+		} else {
+			$hint = -1;
 		}
 
 		$encoded = (new Encoder($this->options['level']))->encodeString($text, $hint);
-		$renderer = new Renderer($encoded, $this->options)->draw_image($this->myPicture);
+		(new Renderer($encoded, $this->options))->draw_image($this->myPicture);
 	}
 }

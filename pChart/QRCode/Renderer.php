@@ -13,7 +13,7 @@ class Renderer
 		$this->options = $opts;
 	}
 
-	public function createImage($myPicture)
+	public function draw_image($myPicture)
 	{
 		$h = count($this->encoded);
 		$imgH = $h + 2 * $this->options['margin'];
@@ -40,7 +40,7 @@ class Renderer
 		$target_h = $imgH * $pixelPerPoint;
 
 		$image = $myPicture->gettheImage();
-		imagecopyresized($image, $base_image, $startX, $startY, 0, 0, $target_h, $target_h, $imgH, $imgH);
+		imagecopyresized($image, $base_image, 0, 0, 0, 0, $target_h, $target_h, $imgH, $imgH);
 		imagedestroy($base_image);
 	}
 }
