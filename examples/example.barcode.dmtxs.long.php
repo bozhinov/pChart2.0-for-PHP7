@@ -5,7 +5,6 @@
 require_once("bootstrap.php");
 
 use pChart\pDraw;
-use pChart\pCharts;
 use pChart\pBarcodes\{
 	pBarcodes,
 	Encoders\DMTX
