@@ -1,14 +1,7 @@
- The sandbox and all examples work as expected.<br />
  Code is being tested against PHP versions 7.0 to 8.0<br />
  PHP version 8.1 brings breaking changes to imagefilledpolygon and count<br />
  for this reason I will create a separate repo for it.
- 
- Word of advice, keep it secure:
- - Set write permissions only to the "cache" and "temp" folders if you are going to be using them.
- - Make sure the content of these folders is not visible to the rest of the world.
- 
- Please check the readme.txt file for details on licensing.
- 
+
 
 pChart 2.1 library for PHP 7 (7-Compatible branch)
 ===================
