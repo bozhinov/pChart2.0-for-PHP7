@@ -55,8 +55,6 @@ class PDF417 extends pConf
 	{
 		$this->apply_user_options($opts);
 
-		$this->setColor('color', 0);
-		$this->setColor('bgColor', 255);
 		/**
 		* Number of data columns in the bar code.
 		*

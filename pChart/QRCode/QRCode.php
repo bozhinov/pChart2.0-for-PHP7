@@ -55,9 +55,6 @@ class QRCode extends pConf {
 	{
 		$this->apply_user_options($opts);
 
-		$this->setColor('color', 0);
-		$this->setColor('bgColor', 255);
-
 		$level = 0;
 		if (isset($opts['level'])){
 			switch(strtoupper($opts['level'])){

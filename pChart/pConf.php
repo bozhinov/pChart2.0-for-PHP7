@@ -13,6 +13,9 @@ class pConf {
 	public function apply_user_options(array $opts)
 	{
 		$this->user_options = $opts;
+
+		$this->setColor('color', 0);
+		$this->setColor('bgColor', 255);
 	}
 
 	public function set(string $opt, $val)

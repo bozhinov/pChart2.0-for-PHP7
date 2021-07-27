@@ -47,9 +47,6 @@ class Aztec extends pConf
 	{
 		$this->apply_user_options($opts);
 
-		$this->setColor('color', 0);
-		$this->setColor('bgColor', 255);
-
 		$hint = $this->return_if_match_or_default('hint', ["binary", "dynamic"], 'dynamic');
 		$eccPercent = $this->return_if_within_range_or_default('eccPercent', 1, 100, 33);
 		$this->set_if_within_range_or_default('ratio', 1, 10, 4);
