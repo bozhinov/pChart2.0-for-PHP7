@@ -33,7 +33,7 @@ class Matrix extends Base {
 		$wh = $this->widths[1] * $scale;
 
 		$md = $this->config['modules']['Density'];
-		$whd = ceil($wh * $md);
+		$whd = intval(ceil($wh * $md));
 		if ($this->config['modules']['Shape'] == 'r'){
 			$md = 0;
 		}
@@ -42,12 +42,12 @@ class Matrix extends Base {
 
 		foreach ($this->code['matrix'] as $by => $row) {
 
-			$y1 = floor($y + $by * $wh + $offset);
+			$y1 = intval(floor($y + $by * $wh + $offset));
 
 			foreach ($row as $bx => $color) {
 
 				$mc = $this->myPicture->allocatepColor($this->config['palette'][$color]);
-				$x1 = floor($x + $bx * $wh + $offset);
+				$x1 = intval(floor($x + $bx * $wh + $offset));
 				$offwh = $whd - 1;
 
 				switch ($this->config['modules']['Shape']) {

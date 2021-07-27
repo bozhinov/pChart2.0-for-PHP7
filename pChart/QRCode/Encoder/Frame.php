@@ -213,7 +213,7 @@ class Frame {
 
 	/** 
 	 * Put an alignment marker.
-	 * @param ox & oy coordinate of the pattern
+	 * @param ox and oy coordinate of the pattern
 	 */
 	private function putAlignmentMarker($ox, $oy)
 	{
@@ -273,7 +273,7 @@ class Frame {
 
 	/** 
 	 * Put a finder pattern.
-	 * @param ox & oy coordinate of the pattern
+	 * @param ox and oy coordinate of the pattern
 	 */
 	private function putFinderPattern($ox, $oy)
 	{

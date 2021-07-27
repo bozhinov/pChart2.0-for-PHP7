@@ -77,15 +77,15 @@ function Do(Action)
 
 function toggleAuto()
 {
-	Automatic = document.getElementById("g_autopos").checked;
+	var Automatic = document.getElementById("g_autopos").checked;
 }
 
 function doLayout()
 {
 	if ( !Automatic ) { return; }
 
-	g_width  = document.getElementById("g_width").value;
-	g_height = document.getElementById("g_height").value;
+	var g_width  = document.getElementById("g_width").value;
+	var g_height = document.getElementById("g_height").value;
 
 	document.getElementById("g_title_x").value = g_width/2;
 
@@ -94,13 +94,13 @@ function doLayout()
 
 function getSelected(ID)
 {
-	e = document.getElementById(ID);
+	var e = document.getElementById(ID);
 	return e.options[e.selectedIndex].value;
 }
 
 function randomize()
 {
-	for(i=0;i<8;i++)
+	for(var i=0;i<8;i++)
 	{
 		document.getElementById("d_serie1_data"+i).value = Math.ceil(Math.random()*100-50);
 		document.getElementById("d_serie2_data"+i).value = Math.ceil(Math.random()*100-50);
@@ -110,7 +110,7 @@ function randomize()
 
 function checkChartSettings()
 {
-	ChartFamily = getSelected("c_family");
+	var ChartFamily = getSelected("c_family");
 
 	disableItem("c_plot_size");
 	disableItem("c_border_size");

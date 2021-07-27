@@ -91,7 +91,7 @@ class Mask {
 
 		for($y=0; $y<$this->width; $y++) {
 			for($x=0; $x<$this->width; $x++) {
-				if((($this->masked[$y][$x]) & 128) == false) { # 0x80
+				if((($this->masked[$y][$x]) & 128) == 0) {
 
 					switch($maskNo){
 						case 0:
