@@ -43,7 +43,7 @@ class pConf {
 			$this->options[$value] = new pColor($default);
 		} else {
 			if (!($this->user_options[$value] instanceof pColor)) {
-				throw pException::InvalidInput("Invalid value for \"$value\". Expected an pColor object.");
+				throw pException::InvalidInput("Invalid value for $value. Expected an pColor object.");
 			}
 			$this->options[$value] = $this->user_options[$value];
 		}
@@ -52,10 +52,10 @@ class pConf {
 	public function return_if_match_or_default(string $val, array $possibilities, string $default)
 	{
 		if (isset($this->user_options[$val])) {
-			if (!in_array($this->user_options[$val], $possibilities)){
+			$ret = $this->user_options[$val];
+			if (!in_array($ret, $possibilities)){
 				throw pException::InvalidInput("Invalid value for $val.");
 			}
-			$ret = $this->user_options[$val];
 		} else {
 			$ret = $default;
 		}
@@ -70,10 +70,10 @@ class pConf {
 	public function return_if_within_range_or_default(string $val, int $start, int $end, int $default)
 	{
 		if (isset($this->user_options[$val])) {
-			if (!is_numeric($val) || $val < $start || $val > $end) {
+			$ret = $this->user_options[$val];
+			if (!is_numeric($ret) || $ret < $start || $ret > $end) {
 				throw pException::InvalidInput("Invalid value. Expected an integer between $start and $end.");
 			}
-			$ret = $this->user_options[$val];
 		} else {
 			$ret = $default;
 		}
