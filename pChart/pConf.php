@@ -67,10 +67,4 @@ class pConf {
 		}
 		return $ret;
 	}
-
-	public function getAllOpts()
-	{
-		return $this->options;
-	}
-
 }
