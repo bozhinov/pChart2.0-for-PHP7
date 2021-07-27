@@ -32,12 +32,16 @@ class Linear extends Base {
 			$scale = 1;
 			$x = floor($x + $w / 2);
 		}
+		
+		$x = intval($x);
 
 		foreach ($this->code as $block) {
 
 			if (isset($block['l'])) {
 				$ly = (isset($block['l'][1]) ? (float)$block['l'][1] : 1);
 				$my = round($y + min($h, $h + ($ly - 1) * $this->config['label']['Height']));
+				$ly = intval($ly);
+				$my = intval($my);
 			} else {
 				$my = $y + $h;
 			}
@@ -56,9 +60,9 @@ class Linear extends Base {
 					$lx = (isset($block['l'][2]) ? (float)$block['l'][2] : 0.5);
 					$lx = ($x + ($mx - $x) * $lx);
 					$lw = imagefontwidth($lsize) * strlen($text);
-					$lx = round($lx - $lw / 2);
+					$lx = intval(round($lx - $lw / 2));
 					$ly = ($y + $h + $ly * $this->config['label']['Height']);
-					$ly = round($ly - imagefontheight($lsize));
+					$ly = intval(round($ly - imagefontheight($lsize)));
 					if (!is_null($this->config['label']['TTF'])) {
 						$ly +=($lsize*2) + $this->config['label']['Offset'];
 						imagettftext($image, $lsize, 0, $lx, $ly, $textColor, realpath($this->config['label']['TTF']), $text);
