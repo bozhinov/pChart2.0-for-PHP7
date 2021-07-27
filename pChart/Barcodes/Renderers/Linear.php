@@ -50,7 +50,7 @@ class Linear extends Base {
 
 			foreach ($block['m'] as $module) {
 				$mw = $mx + $module[1] * $this->widths[$module[2]] * $scale;
-				imagefilledrectangle($image, $mx, $y, $mw - 1, $my - 1, $this->myPicture->allocatepColor($this->config['palette'][$module[0]]));
+				imagefilledrectangle($image, $mx, $y, intval($mw - 1), $my - 1, $this->myPicture->allocatepColor($this->config['palette'][$module[0]]));
 				$mx = $mw;
 			}
 
