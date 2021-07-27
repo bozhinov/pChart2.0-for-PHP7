@@ -761,21 +761,25 @@ class pDraw
 		if ($Ticks === 0){
 			$Ticks = NULL;
 		}
+		
+		$X1 = intval($X1);
+		$X2 = intval($X2);
+		$Y1 = intval($Y1);
+		$Y2 = intval($Y2);
 
 		if ($this->Antialias == FALSE && is_null($Ticks)) {
 			if ($this->Shadow) {
-				imageline($this->Picture, intval($X1 + $this->ShadowX), intval($Y1 + $this->ShadowY), intval($X2 + $this->ShadowX), intval($Y2 + $this->ShadowY), $this->ShadowColorAlloc);
+				imageline($this->Picture, $X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, $this->ShadowColorAlloc);
 			}
 
-			imageline($this->Picture, intval($X1), intval($Y1), intval($X2), intval($Y2), $this->allocateColor($Color->get()));
+			imageline($this->Picture, $X1, $Y1, $X2, $Y2, $this->allocateColor($Color->get()));
 			return [$Cpt, $Mode];
 		}
 
 		$Distance = hypot(($X2 - $X1), ($Y2 - $Y1));
 		if ($Distance == 0) {
-			#debug_print_backtrace();
-			throw pException::InvalidDimentions("Line coordinates are not valid!");
-			#return [];
+			return [$Cpt, $Mode];
+			#throw pException::InvalidDimentions("Line coordinates are not valid!");
 		}
 
 		$XStep = ($X2 - $X1) / $Distance;
@@ -1097,10 +1101,10 @@ class pDraw
 		if (!$this->Antialias) {
 			if ($this->Shadow) {
 				# That can go out of range
-				imagesetpixel($this->Picture, intval($X + $this->ShadowX), intval($Y + $this->ShadowY), $this->ShadowColorAlloc);
+				imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowColorAlloc);
 			}
 
-			imagesetpixel($this->Picture, intval($X), intval($Y), $this->allocateColor($ColorA));
+			imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($ColorA));
 			return;
 		}
 
@@ -3689,7 +3693,7 @@ class pDraw
 		$BoxHeight = $TitleHeight + $CaptionHeight + $HorizontalMargin * (($NoTitle) ? 2 : 3);
 		$BoxWidth = max($BoxWidth, $TitleWidth, $CaptionWidth);
 		$XMin = $X - 5 - intval(floor(($BoxWidth - 10) / 2));
-		$XMax = $XMin + 10;
+		$XMax = $X + 5 + intval(floor(($BoxWidth - 10) / 2));
 		$RestoreShadow = $this->Shadow;
 		$ShadowX = $this->ShadowX;
 
