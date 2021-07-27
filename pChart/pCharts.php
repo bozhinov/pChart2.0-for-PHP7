@@ -2220,10 +2220,11 @@ class pCharts
 							$Gradient->setSegments(100);
 							$Color = $Gradient->getStep(floatval($SlopeIndex));
 
-							if ($ShadedSlopeBox && !is_null($LastColor)) // && $Slope != 0
-							{
+							if ($ShadedSlopeBox && !is_null($LastColor)) {
+								# && $Slope != 0
 								$this->myPicture->drawGradientArea($LastX, $TopY, $X, $BottomY, DIRECTION_HORIZONTAL, ["StartColor"=>$LastColor,"EndColor"=>$Color]);
-							} else { # || $Slope == 0
+							} else {
+								# || $Slope == 0
 								$this->myPicture->drawFilledRectangle(floor($LastX), $TopY, floor($X), $BottomY, ["Color" => $Color]);
 							}
 							$LastColor = $Color;

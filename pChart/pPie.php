@@ -395,7 +395,8 @@ class pPie
 					$Settings["Color"]->RGBChange(30);
 				}
 
-				if (isset($SliceAngle[$SliceID][1])) /* Empty error handling */ {
+				if (isset($SliceAngle[$SliceID][1])) {
+					 /* Empty error handling */
 					$Angle = $SliceAngle[$SliceID][1];
 					$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
 					$Yc = sin(deg2rad($Angle - 90)) * $Radius * $SkewFactor + $Y;
@@ -413,7 +414,8 @@ class pPie
 		$SliceColorsR = array_reverse($SliceColors);
 		foreach($SlicesR as $SliceID => $Plots) {
 			$Settings = ["Color" => $SliceColorsR[$SliceID]->newOne()->RGBChange(10), "NoBorder"=>TRUE];
-			if (isset($Plots[2])) /* $Visible[$SliceID]["Start"] &&  */ {
+			if (isset($Plots[2])) {
+				 /* $Visible[$SliceID]["Start"] &&  */
 				$this->myPicture->drawLine($Plots[2], $Plots[3], $Plots[2], $Plots[3] - $SliceHeight, $Settings);
 				$this->myPicture->drawPolygon([$Plots[0], $Plots[1], $Plots[0], $Plots[1] - $SliceHeight, $Plots[2], $Plots[3] - $SliceHeight, $Plots[2], $Plots[3]], $Settings);
 			}
@@ -448,7 +450,8 @@ class pPie
 					$SettingsSPass["Color"]->RGBChange(30);
 				}
 
-				if (isset($SliceAngleID[1])) /* Empty error handling */ {
+				if (isset($SliceAngleID[1])) {
+					/* Empty error handling */
 					$Angle = $SliceAngleID[1];
 					if ($Angle < 270 && $Angle > 90) {
 						$Xc = cos(deg2rad($Angle - 90)) * $Radius + $X;
