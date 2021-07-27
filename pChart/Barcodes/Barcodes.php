@@ -113,8 +113,10 @@ class Barcodes {
 			case 'upca'       : $code = (new Encoders\UPC)->upc_a_encode($data); break;
 			case 'upce'       : $code = (new Encoders\UPC)->upc_e_encode($data); break;
 			case 'ean13nopad' : $code = (new Encoders\UPC)->ean_13_encode($data, ' '); break;
-			case 'ean13pad'   : $code = (new Encoders\UPC)->ean_13_encode($data, '>'); break;
-			case 'ean13'      : $code = (new Encoders\UPC)->ean_13_encode($data, '>'); break;
+			case 'ean13pad'   :
+			case 'ean13'      :
+				$code = (new Encoders\UPC)->ean_13_encode($data, '>');
+				break;
 			case 'ean8'       : $code = (new Encoders\UPC)->ean_8_encode($data); break;
 			case 'code39'     : $code = (new Encoders\Codes)->code_39_encode($data); break;
 			case 'code39ascii': $code = (new Encoders\Codes)->code_39_ascii_encode($data); break;
@@ -133,14 +135,24 @@ class Barcodes {
 			case 'ean128ac'   : $code = (new Encoders\Codes)->code_128_encode($data,-1, true); break;
 			case 'ean128bc'   : $code = (new Encoders\Codes)->code_128_encode($data,-2, true); break;
 			case 'codabar'    : $code = (new Encoders\Codabar)->codabar_encode($data);
-			case 'itf'        : $code = (new Encoders\ITF())->itf_encode($data); break;
-			case 'itf14'      : $code = (new Encoders\ITF())->itf_encode($data); break;
-			case 'dmtx'       : $code = (new Encoders\DMTX())->dmtx_encode($data, false, false); break;
-			case 'dmtxs'      : $code = (new Encoders\DMTX())->dmtx_encode($data, false, false); break;
-			case 'dmtxr'      : $code = (new Encoders\DMTX())->dmtx_encode($data, true,  false); break;
-			case 'dmtxgs1'    : $code = (new Encoders\DMTX())->dmtx_encode($data, false, true); break;
-			case 'dmtxsgs1'   : $code = (new Encoders\DMTX())->dmtx_encode($data, false, true); break;
-			case 'dmtxrgs1'   : $code = (new Encoders\DMTX())->dmtx_encode($data, true,  true); break;
+			case 'itf'        :
+			case 'itf14'      :
+				$code = (new Encoders\ITF())->itf_encode($data);
+				break;
+			case 'dmtx'       :
+			case 'dmtxs'      :
+				$code = (new Encoders\DMTX())->dmtx_encode($data, false, false);
+				break;
+			case 'dmtxr'      : 
+				$code = (new Encoders\DMTX())->dmtx_encode($data, true,  false);
+				break;
+			case 'dmtxgs1'    :
+			case 'dmtxsgs1'   :
+				$code = (new Encoders\DMTX())->dmtx_encode($data, false, true);
+				break;
+			case 'dmtxrgs1'   : 
+				$code = (new Encoders\DMTX())->dmtx_encode($data, true,  true);
+				break;
 			default: throw pException::InvalidInput("Unknown encode method - ".$symbology);
 		}
 
