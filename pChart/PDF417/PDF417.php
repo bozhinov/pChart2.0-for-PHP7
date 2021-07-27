@@ -19,15 +19,15 @@ class PDF417 extends pConf
 		$image = $this->myPicture->gettheImage();
 		$padding = $this->get('padding');
 
-		$width = count($pixelGrid[0]);
-		$height = count($pixelGrid);
+		#$width = count($pixelGrid[0]);
+		#$height = count($pixelGrid);
 
 		$scaleX = $this->get('scale');
 		$scaleY = $scaleX * $this->get('ratio');
 
 		// Apply scaling & aspect ratio
-		$width = ($width * $scaleX) + $padding * 2;
-		$height = ($height * $scaleY) + $padding * 2;
+		#$width = ($width * $scaleX) + $padding * 2;
+		#$height = ($height * $scaleY) + $padding * 2;
 
 		// Extract options
 		$bgColorAlloc = $this->myPicture->allocatepColor($this->get('bgColor'));
