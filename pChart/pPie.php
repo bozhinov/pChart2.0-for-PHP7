@@ -144,7 +144,7 @@ class pPie
 				$Label = $AbscissaData[$Key];
 
 				if ($LabelStacked) {
-					$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Y, $Radius);
+					$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Radius);
 				} else {
 					$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, FALSE);
 				}
@@ -211,7 +211,7 @@ class pPie
 					$Label = $AbscissaData[$Key];
 
 					if ($LabelStacked) {
-						$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Y, $Radius);
+						$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Radius);
 					} else {
 						$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, FALSE);
 					}
@@ -581,7 +581,7 @@ class pPie
 				if (isset($AbscissaData[$ID])) {
 					$Label = $AbscissaData[$ID];
 					if ($LabelStacked) {
-						$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Y, $Radius, TRUE);
+						$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Radius, TRUE);
 					} else {
 						$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, FALSE);
 					}
@@ -648,7 +648,7 @@ class pPie
 		}
 
 		$vY = $vY - $YStep;
-		$vX = $vX - $XStep;
+		#$vX = $vX - $XStep;
 		$TopOffset = $Y - $Boundaries["T"];
 		if ($Boundaries["B"] - ($vY + $BoxSize) < $TopOffset) {
 			$Boundaries["B"] = $vY + $BoxSize + $TopOffset;
@@ -683,7 +683,7 @@ class pPie
 	}
 
 	/* Internally used compute the label positions */
-	private function writePieLabel($X, $Y, $Label, $Angle, $Settings, $Stacked, $Xc = 0, $Yc = 0, $Radius = 0, $Reversed = FALSE)
+	private function writePieLabel($X, $Y, $Label, $Angle, $Settings, $Stacked, $Xc = 0, $Radius = 0, $Reversed = FALSE)
 	{
 		$LabelOffset = 30;
 
@@ -906,7 +906,7 @@ class pPie
 				$Yc = sin(deg2rad($Angle - 90)) * $OuterRadius + $Y;
 				$Label = $AbscissaData[$Key];
 				if ($LabelStacked) {
-					$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $Y, $OuterRadius);
+					$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, TRUE, $X, $OuterRadius);
 				} else {
 					$this->writePieLabel($Xc, $Yc, $Label, $Angle, $Settings, FALSE);
 				}
@@ -960,12 +960,11 @@ class pPie
 	public function draw3DRing(int $X, int $Y, array $Format = [])
 	{
 		$Precision = 0;
-		$Shadow = FALSE;
+		#$Shadow = FALSE;
 		$DrawLabels = FALSE;
 		$LabelStacked = FALSE;
 		$LabelColorType = PIE_LABEL_COLOR_MANUAL;
 		$LabelColor = new pColor(0);
-		$WriteValues = NULL;
 		$OuterRadius = 100;
 		$InnerRadius = 30;
 		$SkewFactor = .6;
@@ -1240,7 +1239,7 @@ class pPie
 				}
 
 				if ($LabelStacked) {
-					$this->writePieLabel($Xc, $Yc - $SliceHeight, $Label, $Angle, $Settings, TRUE, $X, $Y, $OuterRadius);
+					$this->writePieLabel($Xc, $Yc - $SliceHeight, $Label, $Angle, $Settings, TRUE, $X, $OuterRadius);
 				} else {
 					$this->writePieLabel($Xc, $Yc - $SliceHeight, $Label, $Angle, $Settings, FALSE);
 				}

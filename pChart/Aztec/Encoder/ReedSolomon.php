@@ -110,10 +110,12 @@ class ReedSolomon
 			list($smallerCoefficients, $largerCoefficients) = [$largerCoefficients, $smallerCoefficients];
 		}
 
-		$lengthDiff = count($largerCoefficients) - count($smallerCoefficients);
+		$largerCoefficientsCount = count($largerCoefficients);
+		$lengthDiff =$largerCoefficientsCount - count($smallerCoefficients);
 		$sumDiff = array_slice($largerCoefficients, 0, $lengthDiff);
 
-		for ($i = $lengthDiff; $i < count($largerCoefficients); $i++) {
+
+		for ($i = $lengthDiff; $i < $largerCoefficientsCount; $i++) {
 			$sumDiff[$i] = $smallerCoefficients[$i - $lengthDiff] ^ $largerCoefficients[$i];
 		}
 

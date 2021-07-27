@@ -268,7 +268,8 @@ class Dynamic
 
 		foreach ($this->states as $state) {
 
-			for ($i = 0; $i < count($result); $i++) {
+			$result_count = count($result);
+			for ($i = 0; $i < $result_count; $i++) {
 				if ($this->isBetterThanOrEqualTo($result[$i], $state)) {
 					continue 2;
 				}

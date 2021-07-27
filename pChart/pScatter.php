@@ -706,7 +706,7 @@ class pScatter
 		$FontSize = isset($Format["FontSize"]) ? $Format["FontSize"] : $fontProperties['Size'];
 		$BoxSize = isset($Format["BoxSize"]) ? $Format["BoxSize"] : 5;
 		$Margin = isset($Format["Margin"]) ? $Format["Margin"] : 5;
-		$Style = isset($Format["Style"]) ? $Format["Style"] : LEGEND_ROUND;
+		#$Style = isset($Format["Style"]) ? $Format["Style"] : LEGEND_ROUND;
 		$Mode = isset($Format["Mode"]) ? $Format["Mode"] : LEGEND_VERTICAL;
 		$YStep = max($fontProperties['Size'], $BoxSize) + 5;
 		$XStep = $BoxSize + 5;
