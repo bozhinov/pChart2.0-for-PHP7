@@ -1,4 +1,13 @@
 <?php
+/*
+pConf - class to help unify the different barcode libs config
+
+Version     : 2.4.0-dev
+Made by     : Momchil Bozhinov
+Last Update : 27/07/2021
+
+This file can be distributed under MIT
+*/
 
 namespace pChart;
 
