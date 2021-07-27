@@ -278,6 +278,7 @@ class Encoder {
 				return [$i, $dataLength, $ecc, $width, $this->level, $bits];
 			}
 		}
+		throw pException::QRCodeEncoderError('Could not find the minimum version');
 	}
 
 	private function toByte()

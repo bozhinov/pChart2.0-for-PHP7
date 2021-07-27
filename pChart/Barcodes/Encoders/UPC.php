@@ -398,7 +398,7 @@ class UPC {
 		$data = preg_replace('/[^0-9*]/', '', $data);
 		/* Set length to 8 digits. */
 		if (strlen($data) < 8) {
-			$midpoint = floor(strlen($data) / 2);
+			$midpoint = intval(floor(strlen($data) / 2));
 			$left = substr($data, 0, $midpoint);
 			$center = str_repeat('0', 8 - strlen($data));
 			$right = substr($data, $midpoint);

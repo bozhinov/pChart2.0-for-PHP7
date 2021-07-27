@@ -494,10 +494,10 @@ class pDraw
 		($X1 > $X2) AND list($X1, $X2) = [$X2,$X1];
 		($Y1 > $Y2) AND list($Y1, $Y2) = [$Y2,$Y1];
 
-		$X1c = ceil($X1);
-		$Y1c = ceil($Y1);
-		$X2f = floor($X2);
-		$Y2f = floor($Y2);
+		$X1c = intval(ceil($X1));
+		$Y1c = intval(ceil($Y1));
+		$X2f = intval(floor($X2));
+		$Y2f = intval(floor($Y2));
 
 		$RestoreShadow = $this->Shadow;
 		if ($this->Shadow) {
@@ -3688,8 +3688,8 @@ class pDraw
 		($DrawSerieColor) AND $CaptionWidth += $SerieBoxSize + $SerieBoxSpacing;
 		$BoxHeight = $TitleHeight + $CaptionHeight + $HorizontalMargin * (($NoTitle) ? 2 : 3);
 		$BoxWidth = max($BoxWidth, $TitleWidth, $CaptionWidth);
-		$XMin = $X - 5 - floor(($BoxWidth - 10) / 2);
-		$XMax = $X + 5 + floor(($BoxWidth - 10) / 2);
+		$XMin = $X - 5 - intval(floor(($BoxWidth - 10) / 2));
+		$XMax = $XMin + 10;
 		$RestoreShadow = $this->Shadow;
 		$ShadowX = $this->ShadowX;
 
