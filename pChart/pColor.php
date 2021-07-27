@@ -140,7 +140,7 @@ class pColor
 
 	public function get()
 	{
-		return [$this->R, $this->G, $this->B, $this->Alpha];
+		return [intval($this->R), intval($this->G), intval($this->B), intval($this->Alpha)];
 	}
 
 	public function newOne()

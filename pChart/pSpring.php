@@ -192,7 +192,7 @@ class pSpring
 	}
 
 	/* Get the median linked nodes position */
-	public function getMedianOffset(int $Key, int $X, int $Y)
+	public function getMedianOffset($Key, $X, $Y)
 	{
 		$Cpt = 1;
 		if (isset($this->Data[$Key]["Connections"])) {
@@ -383,7 +383,7 @@ class pSpring
 						if ($Distance < $FreeZone) {
 							$Force = log(pow(2, $FreeZone - $Distance));
 							if ($Force > 1) {
-								$this->Data[$Key]["Vectors"][] = ["Type" => "R","Angle" => $Angle % 360,"Force" => $Force];
+								$this->Data[$Key]["Vectors"][] = ["Type" => "R","Angle" => intval($Angle) % 360,"Force" => $Force];
 							}
 						}
 						$lastKey = $Key2;
@@ -407,7 +407,7 @@ class pSpring
 							}
 
 							if ($Force > 1) {
-								$this->Data[$Key]["Vectors"][] = ["Type" => "A","Angle" => $Angle % 360,"Force" => $Force];
+								$this->Data[$Key]["Vectors"][] = ["Type" => "A","Angle" => intval($Angle) % 360,"Force" => $Force];
 							}
 						}
 					}

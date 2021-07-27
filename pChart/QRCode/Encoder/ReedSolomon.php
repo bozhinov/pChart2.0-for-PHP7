@@ -131,7 +131,7 @@ class ReedSolomon {
 	public function getDataCode($i)
 	{
 		$blockNo = $i % $this->blocks;
-		$col = $i / $this->blocks;
+		$col = intval($i / $this->blocks);
 		if($col >= $this->pad) {
 			$blockNo += $this->b1;
 		}
@@ -140,6 +140,6 @@ class ReedSolomon {
 
 	public function getEccCode($i)
 	{
-		return $this->rsblocks[$i % $this->blocks][1][$i / $this->blocks];
+		return $this->rsblocks[intval($i % $this->blocks)][1][intval($i / $this->blocks)];
 	}
 }

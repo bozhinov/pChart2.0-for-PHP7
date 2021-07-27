@@ -439,7 +439,7 @@ class pDraw
 				$X2 = floor($X2) - 1;
 			}
 
-			imageline($this->Picture, $X1, $Yp, $X2, $Yp, $ColorAlloc);
+			imageline($this->Picture, intval($X1), intval($Yp), intval($X2), intval($Yp), $ColorAlloc);
 		}
 
 		$this->drawFilledRectangle($X1, $MinY + 1, floor($X2), $MaxY - 1, $Format);
@@ -472,7 +472,7 @@ class pDraw
 				$this->drawLine($X1, $Y1, $X1, $Y2, $Format);
 			}
 		} else {
-			imagerectangle($this->Picture, $X1, $Y1, $X2, $Y2, $this->allocateColor($Color->get()));
+			imagerectangle($this->Picture, intval($X1), intval($Y1), intval($X2), intval($Y2), $this->allocateColor($Color->get()));
 		}
 	}
 
@@ -764,10 +764,10 @@ class pDraw
 
 		if ($this->Antialias == FALSE && is_null($Ticks)) {
 			if ($this->Shadow) {
-				imageline($this->Picture, $X1 + $this->ShadowX, $Y1 + $this->ShadowY, $X2 + $this->ShadowX, $Y2 + $this->ShadowY, $this->ShadowColorAlloc);
+				imageline($this->Picture, intval($X1 + $this->ShadowX), intval($Y1 + $this->ShadowY), intval($X2 + $this->ShadowX), intval($Y2 + $this->ShadowY), $this->ShadowColorAlloc);
 			}
 
-			imageline($this->Picture, $X1, $Y1, $X2, $Y2, $this->allocateColor($Color->get()));
+			imageline($this->Picture, intval($X1), intval($Y1), intval($X2), intval($Y2), $this->allocateColor($Color->get()));
 			return [$Cpt, $Mode];
 		}
 
@@ -925,7 +925,7 @@ class pDraw
 			#$AAlias = $Slice - floor($Slice); # Momchil: UNUSED
 			$Mask[$X - $XPos][] = $YPos;
 			$Mask[$X + $XPos][] = $YPos;
-			imageline($this->Picture, $X - $XPos, $YPos, $X + $XPos, $YPos, $ColorAlloc);
+			imageline($this->Picture, intval($X - $XPos), intval($YPos), intval($X + $XPos), intval($YPos), $ColorAlloc);
 		}
 
 		if ($this->Antialias) {
@@ -993,13 +993,14 @@ class pDraw
 
 		$this->verifyFontDefined();
 
-		$X = $X + $X - $TxtPos[$Align]["X"];
-		$Y = $Y + $Y - $TxtPos[$Align]["Y"];
+		$X = $X + $X - (int)$TxtPos[$Align]["X"];
+		$Y = $Y + $Y - (int)$TxtPos[$Align]["Y"];
+
 		if ($this->Shadow) {
-			imagettftext($this->Picture, $FontSize, $Angle, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowColorAlloc, realpath($FontName), $Text);
+			imagettftext($this->Picture, $FontSize, intval($Angle), intval($X + $this->ShadowX), intval($Y + $this->ShadowY), $this->ShadowColorAlloc, realpath($FontName), $Text);
 		}
 
-		imagettftext($this->Picture, $FontSize, $Angle, $X, $Y, $this->allocateColor($Color->get()), realpath($FontName), $Text);
+		imagettftext($this->Picture, $FontSize, intval($Angle), intval($X), intval($Y), $this->allocateColor($Color->get()), realpath($FontName), $Text);
 		$this->Shadow = $Shadow;
 
 		return $TxtPos;
@@ -1096,10 +1097,10 @@ class pDraw
 		if (!$this->Antialias) {
 			if ($this->Shadow) {
 				# That can go out of range
-				imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->ShadowColorAlloc);
+				imagesetpixel($this->Picture, intval($X + $this->ShadowX), intval($Y + $this->ShadowY), $this->ShadowColorAlloc);
 			}
 
-			imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($ColorA));
+			imagesetpixel($this->Picture, intval($X), intval($Y), $this->allocateColor($ColorA));
 			return;
 		}
 
@@ -1172,10 +1173,10 @@ class pDraw
 		if ($this->Shadow) {
 			$ShadowColorA = $this->ShadowColor->get();
 			$ShadowColorA[3] *= floor($ColorA[3] / 100);
-			imagesetpixel($this->Picture, $X + $this->ShadowX, $Y + $this->ShadowY, $this->allocateColor($ShadowColorA));
+			imagesetpixel($this->Picture, intval($X + $this->ShadowX), intval($Y + $this->ShadowY), $this->allocateColor($ShadowColorA));
 		}
 
-		imagesetpixel($this->Picture, $X, $Y, $this->allocateColor($ColorA));
+		imagesetpixel($this->Picture, intval($X), intval($Y), $this->allocateColor($ColorA));
 	}
 
 	/* Allocate a color with transparency */
@@ -1184,13 +1185,13 @@ class pDraw
 		($ColorA[3] < 0)   AND $ColorA[3] = 0;
 		($ColorA[3] > 100) AND $ColorA[3] = 100;
 
-		return imagecolorallocatealpha($this->Picture, $ColorA[0], $ColorA[1], $ColorA[2], (1.27 * (100 - $ColorA[3])));
+		return imagecolorallocatealpha($this->Picture, $ColorA[0], $ColorA[1], $ColorA[2], intval(1.27 * (100 - $ColorA[3])));
 	}
 
 	public function allocatepColor($color)
 	{
 		list ($R, $G, $B, $A) = $color->get();
-		return imagecolorallocatealpha($this->Picture, $R, $G, $B, (1.27 * (100 - $A)));
+		return imagecolorallocatealpha($this->Picture, $R, $G, $B, intval(1.27 * (100 - $A)));
 	}
 
 	/* Load a PNG file and draw it over the chart */
@@ -1271,7 +1272,7 @@ class pDraw
 		}
 
 		$this->Shadow = $RestoreShadow;
-		imagecopy($this->Picture, $Raster, $X, $Y, 0, 0, $Width, $Height);
+		imagecopy($this->Picture, $Raster, intval($X), intval($Y), 0, 0, $Width, $Height);
 		imagedestroy($Raster);
 	}
 
@@ -1285,7 +1286,7 @@ class pDraw
 		imagecopy($Picture, $this->Picture, 0, 0, 0, 0, $this->XSize, $this->YSize);
 		for ($i = 1; $i <= $Height; $i++) {
 			if ($Y + ($i - 1) < $this->YSize && $Y - $i > 0) {
-				imagecopymerge($Picture, $this->Picture, $X, $Y + ($i - 1), $X, $Y - $i, $Width, 1, $StartAlpha - $AlphaStep * $i);
+				imagecopymerge($Picture, $this->Picture, $X, $Y + ($i - 1), $X, $Y - $i, $Width, 1, intval($StartAlpha - $AlphaStep * $i));
 			}
 		}
 
@@ -2613,6 +2614,9 @@ class pDraw
 	/* Compute the best matching scale based on size & factors */
 	private function processScale($XMin, $XMax, $MaxDivs, array $Factors, $AxisID)
 	{
+		$XMin = intval($XMin);
+		$XMax = intval($XMax);
+
 		$Scale = [
 			"Rows" => 2,
 			"RowHeight" => 1,
@@ -3219,6 +3223,9 @@ class pDraw
 				$ret = $Axis["Format"] . number_format($Value, 2);
 				break;
 			case AXIS_FORMAT_METRIC:
+				if (is_null($Axis["Format"])){
+					$Axis["Format"] = 0;
+				}
 				if (abs($Value) >= 1000) {
 					$ret = (round($Value / 1000, $Axis["Format"]) . "k" . $Axis["Unit"]);
 				} elseif (abs($Value) > 1000000) {
