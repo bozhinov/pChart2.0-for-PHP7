@@ -426,7 +426,7 @@ class Codes
 	public static function getCode(int $table, int $word)
 	{
 		if (!isset(self::$codes[$table][$word])) {
-			throw pException::PDF417InternalError("Invalid code word [$table][$word].");
+			throw pException::PDF417EncoderError("Invalid code word [$table][$word].");
 		}
 
 		return self::$codes[$table][$word];

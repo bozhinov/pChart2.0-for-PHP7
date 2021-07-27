@@ -249,11 +249,11 @@ class Encoder
 		$messageWords = $this->bitsToWords($stuffedBits, $wordSize, $totalWords);
 		
 		if ($messageSizeInWords == 0) {
-			throw pException::AztecInvalidInput('No data bytes provided');
+			throw pException::AztecEncoderError('No data bytes provided');
 		}
 
 		if ($ecBytes == 0) {
-			throw pException::AztecInvalidInput('No error correction bytes');
+			throw pException::AztecEncoderError('No error correction bytes');
 		}
 
 		$rs = new ReedSolomon($wordSize);

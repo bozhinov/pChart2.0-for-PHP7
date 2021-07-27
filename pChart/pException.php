@@ -91,38 +91,14 @@ class pException extends \Exception
 		return new static(sprintf('pBubble: %s', $text));
 	}
 
-	public static function BarcodesException($text)
-	{
-		return new static(sprintf('Barcodes: %s', $text));
-	}
-	
-	public static function PDF417InvalidInput($text)
-	{
-		return new static(sprintf('PDF417: %s', $text));
-	}
-
-	public static function PDF417InternalError($text)
-	{
-		return new static(sprintf('PDF417: %s', $text));
-	}
-
 	public static function PDF417EncoderError($text)
 	{
 		return new static(sprintf('PDF417: %s', $text));
-	}
-	public static function AztecInvalidInput($text)
-	{
-		return new static(sprintf('Aztec: %s', $text));
 	}
 
 	public static function AztecEncoderError($text)
 	{
 		return new static(sprintf('Aztec: %s', $text));
-	}
-
-	public static function QRCodeInvalidInput($text)
-	{
-		return new static(sprintf('QRCode: %s', $text));
 	}
 
 	public static function QRCodeEncoderError($text)

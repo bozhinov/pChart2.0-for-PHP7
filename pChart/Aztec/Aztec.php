@@ -3,12 +3,10 @@
 namespace pChart\Aztec;
 
 use pChart\Aztec\Encoder\Encoder;
-use pChart\pColor;
-use pChart\pException;
+use pChart\pConf;
 
-class Aztec
+class Aztec extends pConf
 {
-	private $options = [];
 	private $myPicture;
 
 	public function __construct(\pChart\pDraw $myPicture)
@@ -16,44 +14,18 @@ class Aztec
 		$this->myPicture = $myPicture;
 	}
 
-	private function setColor($value, $default, $opts)
-	{
-		if (!isset($opts[$value])) {
-			$this->options[$value] = new pColor($default);
-		} else {
-			if (!($opts[$value] instanceof pColor)) {
-				throw pException::AztecInvalidInput("Invalid value for \"$value\". Expected an pColor object.");
-			}
-			$this->options[$value] = $opts[$value];
-		}
-	}
-
-	public function config(array $opts)
-	{
-		$this->__construct($opts);
-	}
-
-	private function option_in_range($value, int $start, int $end)
-	{
-		if (!is_numeric($value) || $value < $start || $value > $end) {
-			throw pException::AztecInvalidInput("Invalid value. Expected an integer between $start and $end.");
-		}
-
-		return $value;
-	}
-
 	private function render($pixelGrid)
 	{
 		$image = $this->myPicture->gettheImage();
 		$width = count($pixelGrid);
-		$ratio = $this->options['ratio'];
-		$padding = $this->options['padding'];
+		$ratio = $this->get('ratio');
+		$padding = $this->get('padding');
 		#$this->size = ($width * $ratio) + ($padding * 2);
 
 		// Extract options
-		$bgColorAlloc = $this->myPicture->allocatepColor($this->options['bgColor']);
+		$bgColorAlloc = $this->myPicture->allocatepColor($this->get('bgColor'));
 		imagefill($image, 0, 0, $bgColorAlloc);
-		$colorAlloc = $this->myPicture->allocatepColor($this->options['color']);
+		$colorAlloc = $this->myPicture->allocatepColor($this->get('color'));
 
 		// Render the code
 		for ($x = 0; $x < $width; $x++) {
@@ -73,25 +45,18 @@ class Aztec
 
 	public function encode($data, array $opts = [])
 	{
-		$this->setColor('color', 0, $opts);
-		$this->setColor('bgColor', 255, $opts);
+		$this->apply_user_options($opts);
 
-		if (!isset($opts['hint'])) {
-			$this->options['hint'] = "dynamic";
-		} else {
-			if (!in_array($opts['hint'], ["binary", "dynamic"])){
-				throw pException::AztecInvalidInput("Invalid value for \"hint\". Expected \"binary\" or \"dynamic\".");
-			}
-			$this->options['hint'] = $opts['hint'];
-		}
+		$this->setColor('color', 0);
+		$this->setColor('bgColor', 255);
 
-		$this->options['ratio'] = (isset($opts['ratio'])) ? $this->option_in_range($opts['ratio'], 1, 10) : 4;
-		$this->options['padding'] = (isset($opts['padding'])) ? $this->option_in_range($opts['padding'], 0, 50) : 20;
-		$this->options['quality'] = (isset($opts['quality'])) ? $this->option_in_range($opts['quality'], 0, 100) : 90;
-		$this->options['eccPercent'] = (isset($opts['eccPercent'])) ? $this->option_in_range($opts['eccPercent'], 1, 200) : 33;
-		$pixelGrid = (new Encoder())->encode($data, $this->options['eccPercent'], $this->options["hint"]);
+		$hint = $this->return_if_match_or_default('hint', ["binary", "dynamic"], 'dynamic');
+		$eccPercent = $this->return_if_within_range_or_default('eccPercent', 1, 100, 33);
+		$this->set_if_within_range_or_default('ratio', 1, 10, 4);
+		$this->set_if_within_range_or_default('padding', 0, 50, 20);
+
+		$pixelGrid = (new Encoder())->encode($data, $eccPercent, $hint);
 
 		$this->render($pixelGrid);
-
 	}
 }

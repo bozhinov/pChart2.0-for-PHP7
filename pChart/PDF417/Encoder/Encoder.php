@@ -13,11 +13,13 @@ use pChart\pException;
 class Encoder
 {
 	private $encoders;
-	private $options;
+	private $columns;
+	private $securityLevel;
+	private $hint;
 	private $_START_CHARACTER = 0x1fea8;
 	private $_STOP_CHARACTER  = 0x3fa29;
 
-	public function __construct(array $options)
+	public function __construct(int $columns, int $securityLevel, string $hint)
 	{
 		// Encoders sorted in order of preference
 		$this->encoders = [
@@ -26,7 +28,9 @@ class Encoder
 			new EncoderByte()
 		];
 
-		$this->options = $options;
+		$this->columns = $columns;
+		$this->securityLevel = $securityLevel;
+		$this->hint = $hint;
 	}
 
 	/**
@@ -37,7 +41,7 @@ class Encoder
 		$codeWords = $this->encodeECC($data);
 
 		// Arrange codewords into a rows and columns
-		$grid = array_chunk($codeWords, $this->options['columns']);
+		$grid = array_chunk($codeWords, $this->columns);
 		$rows = count($grid);
 
 		// Iterate over rows
@@ -87,7 +91,7 @@ class Encoder
 		$dataWords = $this->encode($data);
 
 		// Number of code correction words
-		$ecCount = pow(2, $this->options['securityLevel'] + 1);
+		$ecCount = pow(2, $this->securityLevel + 1);
 		$dataCount = count($dataWords);
 
 		// Add padding if needed
@@ -101,7 +105,7 @@ class Encoder
 
 		// Compute error correction code words
 		$reedSolomon = new ReedSolomon();
-		$ecWords = $reedSolomon->compute($dataWords, $this->options['securityLevel']);
+		$ecWords = $reedSolomon->compute($dataWords, $this->securityLevel);
 
 		// Combine the code words and return
 		return array_merge($dataWords, $ecWords);
@@ -117,11 +121,11 @@ class Encoder
 				$x = intval(($rows - 1) / 3);
 				break;
 			case 1:
-				$x = $this->options['securityLevel'] * 3;
+				$x = $this->securityLevel * 3;
 				$x += ($rows - 1) % 3;
 				break;
 			case 2:
-				$x = $this->options['columns'] - 1;
+				$x = $this->columns - 1;
 				break;
 		}
 
@@ -134,13 +138,13 @@ class Encoder
 
 		switch($tableID) {
 			case 0:
-				$x = $this->options['columns'] - 1;
+				$x = $this->columns - 1;
 				break;
 			case 1:
 				$x = intval(($rows - 1) / 3);
 				break;
 			case 2:
-				$x = $this->options['securityLevel'] * 3;
+				$x = $this->securityLevel * 3;
 				$x += ($rows - 1) % 3;
 				break;
 		}
@@ -153,10 +157,10 @@ class Encoder
 		// Total number of data words and error correction words, additionally
 		// reserve 1 code word for the length descriptor
 		$totalCount = $dataCount + $ecCount + 1;
-		$mod = $totalCount % $this->options['columns'];
+		$mod = $totalCount % $this->columns;
 
 		if ($mod > 0) {
-			$padCount = $this->options['columns'] - $mod;
+			$padCount = $this->columns - $mod;
 			$padding = array_fill(0, $padCount, 900);
 		} else {
 			$padding = [];
@@ -170,7 +174,7 @@ class Encoder
 	*/
 	private function encode($data)
 	{
-		switch($this->options["hint"]){
+		switch($this->hint){
 			case "numbers":
 				$chains = [[$data, 0]];
 				break;
@@ -238,7 +242,7 @@ class Encoder
 			}
 		}
 
-		throw pException::PDF417InternalError("Cannot encode character at position ".($pos+1));
+		throw pException::PDF417EncoderError("Cannot encode character at position ".($pos+1));
 	}
 
 }

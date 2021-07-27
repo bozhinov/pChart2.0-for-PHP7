@@ -59,6 +59,8 @@ Goals:
 
 Major changes:
  - Removed pImageMap, pCache, pBarcode
- - Removed QRCode glue /* Check example.qrcode.php */
- - Introduced the new Barcodes lib /* Check my PHP-Barcodes-fork repo */
+ - Introduced the new Barcodes lib /* Check out my PHP-Barcodes-fork repo */
+ - Introduced the new PDF417 lib /* Check out my PHP-PDF417-fork repo */
+ - Introduced the new Aztec lib /* Check out my PHP-Aztec-fork repo */
+ - Introduced the new QRCode lib /* Check out my PHP-QRCode-fork repo */
  - Explicitly declare the visibility for methods and properties

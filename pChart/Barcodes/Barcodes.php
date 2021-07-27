@@ -144,11 +144,11 @@ class Barcodes {
 			case 'dmtxgs1'    : $code = (new Encoders\DMTX())->dmtx_encode($data, false, true); break;
 			case 'dmtxsgs1'   : $code = (new Encoders\DMTX())->dmtx_encode($data, false, true); break;
 			case 'dmtxrgs1'   : $code = (new Encoders\DMTX())->dmtx_encode($data, true,  true); break;
-			default: throw pException::BarcodesException("Unknown encode method - ".$symbology);
+			default: throw pException::InvalidInput("Unknown encode method - ".$symbology);
 		}
 
 		$renderer->configure($this->parse_opts($opts, $isDataMatrix));
-		$renderer->draw_code($this->myPicture, $code);
+		$renderer->render($this->myPicture, $code);
 	}
 }
 

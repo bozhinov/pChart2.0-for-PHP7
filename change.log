@@ -6,7 +6,7 @@
  ¦   Version     : 2.4.0-dev                  ¦
  ¦   Based on code by: Jean-Damien POGOLOTTI  ¦
  ¦   Maintained by   : Momchil Bozhinov       ¦
- ¦   Last Update : 23/10/19                   ¦
+ ¦   Last Update : 27/07/21                   ¦
  ¦                                            ¦
  +--------------------------------------------+
 
@@ -14,9 +14,11 @@
   o Removed pSQLite
   o Removed ImageMapper
   o Removed pCache
+  o Added Aztec lib
+  o Added Barcodes lib
+  o Added PDF417 lib
+  o Added QRCode lib
   o Moved fonts out of the pChart folder
-  o Examples use the QRCode lib directly
-  o Examples use the new Barcode lib
   o Explicitly declare the visibility for methods
   o BC: pScatter->drawScatterScale params DrawXLines & DrawYLines accept array
   o BC: pDraw->drawScale param DrawYLines accepts array

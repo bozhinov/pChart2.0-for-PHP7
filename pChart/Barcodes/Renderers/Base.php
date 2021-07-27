@@ -15,7 +15,7 @@ class Base {
 		$this->config = $config;
 	}
 
-	public function draw_code($MyPicture, $code)
+	public function render($MyPicture, $code)
 	{
 		$this->myPicture = $MyPicture;
 		$this->code = $code;
