@@ -14,7 +14,7 @@ use pChart\Barcodes\{
 $myPicture = new pDraw(700,230);
 
 $barcodes = new Barcodes($myPicture);
-$barcodes->encode("Do what you want !", "code128", []);
+$barcodes->draw("Do what you want !", "code128", []);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/encode128.png");

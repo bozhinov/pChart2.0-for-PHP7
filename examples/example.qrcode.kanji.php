@@ -17,7 +17,7 @@ if (function_exists("mb_internal_encoding")){
 }
 
 $QRCode = new QRCode($myPicture);
-$QRCode->encode('“ú–{‚Ì•Ûˆç‰€', ['level' => "Q", 'size' => 10, 'margin' => 4, 'hint' => "Kanji"]);
+$QRCode->draw('“ú–{‚Ì•Ûˆç‰€', ['level' => "Q", 'size' => 10, 'margin' => 4, 'hint' => "Kanji"]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput('temp/example.QRcode.kanji.png');

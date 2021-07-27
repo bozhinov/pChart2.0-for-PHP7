@@ -16,9 +16,9 @@ $text = 'Hello World!';
 # consider ini_get('default_charset') != ('UTF-8' || 'ISO-8859-1')
 $text = iconv('UTF-8', 'ISO-8859-1//IGNORE', $text);
 
-// Encode the data
+// draw the data
 $aztec = new Aztec($myPicture);
-$aztec->encode($text, ["hint" => "binary"]);
+$aztec->draw($text, ["hint" => "binary"]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput('temp/example.aztec.string.png');

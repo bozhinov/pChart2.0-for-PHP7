@@ -13,9 +13,9 @@ $myPicture = new pDraw(700,230);
 // Text to be encoded
 $text = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
 
-// Encode the data
+// draw the data
 $aztec = new Aztec($myPicture);
-$aztec->encode($text);
+$aztec->draw($text);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput('temp/example.aztec.allchars.png');

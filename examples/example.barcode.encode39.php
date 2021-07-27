@@ -23,6 +23,6 @@ $opts = [
 ];
 
 $barcodes = new Barcodes($myPicture);
-$barcodes->encode("12250000234502", "code39", $opts);
+$barcodes->draw("12250000234502", "code39", $opts);
 
 $myPicture->autoOutput("temp/encode39.png");

@@ -51,7 +51,7 @@ class QRCode extends pConf {
 		imagedestroy($base_image);
 	}
 
-	public function encode(string $text, array $opts = [])
+	public function draw(string $text, array $opts = [])
 	{
 		$this->apply_user_options($opts);
 

@@ -27,6 +27,6 @@ $opts = [
 
 $data = 8675309;
 $barcodes = new Barcodes($myPicture);
-$barcodes->encode($data, "dmtxs", $opts);
+$barcodes->draw($data, "dmtxs", $opts);
 
 $myPicture->autoOutput("temp/example_dmtxs_short.png");

@@ -13,9 +13,9 @@ $myPicture = new pDraw(700,230);
 // Text to be encoded
 $text = 'Hello World!';
 
-// Encode the data
+// draw the data
 $aztec = new Aztec($myPicture);
-$aztec->encode($text);
+$aztec->draw($text);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput('temp/example.aztec.basic.png');

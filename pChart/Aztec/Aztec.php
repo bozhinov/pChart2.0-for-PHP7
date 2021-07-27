@@ -43,7 +43,7 @@ class Aztec extends pConf
 		}
 	}
 
-	public function encode($data, array $opts = [])
+	public function draw($data, array $opts = [])
 	{
 		$this->apply_user_options($opts);
 

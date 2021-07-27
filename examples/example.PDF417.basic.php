@@ -15,9 +15,9 @@ $text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
 imperdiet sit amet magna faucibus aliquet. Aenean in velit in mauris imperdiet
 scelerisque. Maecenas a auctor erat.';
 
-// Encode the data, returns a BarcodeData object
+// draw the data, returns a BarcodeData object
 $pdf417 = new PDF417($myPicture);
-$pdf417->encode($text);
+$pdf417->draw($text);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.pdf417.basic.png");

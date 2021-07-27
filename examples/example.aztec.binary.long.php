@@ -14,9 +14,9 @@ $myPicture = new pDraw(700,230);
 #$text = str_repeat("a", 32);
 $text = "Rock-a-bye, baby On the treetop When the wind blows The cradle will rock If the bough breaks The cradle will fall But mama will catch you Cradle and all";
 
-// Encode the data
+// draw the data
 $aztec = new Aztec($myPicture);
-$aztec->encode($text, ["hint" => "binary"]);
+$aztec->draw($text, ["hint" => "binary"]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput('temp/example.aztec.binary.long.png');

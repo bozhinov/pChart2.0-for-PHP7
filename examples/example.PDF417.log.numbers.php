@@ -14,9 +14,9 @@ $myPicture = new pDraw(700,230);
 // more than 44
 $text = '123123123123123123123123123123123123123123123123123123123123';
 
-// Encode the data, returns a BarcodeData object
+// draw the data, returns a BarcodeData object
 $pdf417 = new PDF417($myPicture);
-$pdf417->encode($text, ['hint' => 'numbers']);
+$pdf417->draw($text, ['hint' => 'numbers']);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.pdf417.long.numbers.png");

@@ -100,7 +100,7 @@ class Barcodes {
 		return $config;
 	}
 
-	public function encode($data, string $symbology, array $opts = [])
+	public function draw($data, string $symbology, array $opts = [])
 	{
 		$isDataMatrix = (substr($symbology, 0, 4) == "dmtx");
 		if ($isDataMatrix){

@@ -11,7 +11,7 @@ use pChart\QRCode\QRCode;
 $myPicture = new pDraw(700,700);
 
 $QRCode = new QRCode($myPicture);
-$QRCode->encode('http://www.test.bg/12341234 TEST TEST  TEST  TEST  TEST  TEST  TEST  TEST  TEST   TEST   TEST   TESTTSTS');
+$QRCode->draw('http://www.test.bg/12341234 TEST TEST  TEST  TEST  TEST  TEST  TEST  TEST  TEST   TEST   TEST   TESTTSTS');
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput('temp/example.QRcode.long.png');
