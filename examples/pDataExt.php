@@ -5,7 +5,7 @@ namespace Examples;
 /* pData class definition */
 class pDataExt extends \pChart\pData {
 	
-	function __construct()
+	private function __construct()
 	{
 		parent::__construct();
 	}

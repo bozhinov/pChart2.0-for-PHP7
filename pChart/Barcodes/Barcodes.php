@@ -160,5 +160,3 @@ class Barcodes {
 		$renderer->render($this->myPicture, $code);
 	}
 }
-
-?>

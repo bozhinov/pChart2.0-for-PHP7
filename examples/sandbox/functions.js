@@ -84,10 +84,9 @@ function doLayout()
 {
 	if ( !Automatic ) { return; }
 
-	var g_width  = document.getElementById("g_width").value;
-	var g_height = document.getElementById("g_height").value;
+	var g_width = document.getElementById("g_width").value;
 
-	document.getElementById("g_title_x").value = g_width/2;
+	document.getElementById("g_title_x").value = g_width / 2;
 
 	checkEnabledAxis();
 }

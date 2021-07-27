@@ -65,5 +65,3 @@ class Matrix extends Base {
 		}
 	}
 }
-
-?>

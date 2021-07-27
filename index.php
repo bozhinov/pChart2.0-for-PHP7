@@ -3,4 +3,3 @@
 
  header('Location: examples/');
  exit();
-?>

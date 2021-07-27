@@ -4,19 +4,19 @@ class helper {
 
 	public $Constants;
 
-	function __construct()
+	private function __construct()
 	{
 		$this->Constants = get_defined_constants(true)["user"];
 	}
 
-	function code2src(array $code)
+	public function code2src(array $code)
 	{
 		$src = "&lt;?php\r\n\r\n";
 		$src .= implode("\r\n", $code);
 		return $src."\r\n?&gt\r\n";
 	}
 
-	function hexToColorObj(string $Hex, $alpha = NULL)
+	public function hexToColorObj(string $Hex, $alpha = NULL)
 	{
 		list($R, $G, $B) = $this->getRGB($Hex);
 
@@ -33,7 +33,7 @@ class helper {
 		return $ret;
 	}
 
-	function getRGB(string $Hex)
+	public function getRGB(string $Hex)
 	{
 		if (strlen($Hex) != 7){
 			return [0,0,0];
@@ -49,7 +49,7 @@ class helper {
 		return [$R,$G,$B];
 	}
 
-	function dumpArray($Name, $Values)
+	public function dumpArray($Name, $Values)
 	{
 		if ($Values == []){
 			return '$'.$Name.' = [];';
@@ -63,7 +63,7 @@ class helper {
 		return substr($Result, 0, -2)."];";
 	}
 
-	function translate($Value)
+	public function translate($Value)
 	{
 		if ($Value == ""){
 			return "VOID";
@@ -73,14 +73,14 @@ class helper {
 		return ($pos !== FALSE) ? $pos : $Value;
 	}
 
-	function stringify($Values)
+	public function stringify($Values)
 	{
 		array_walk($Values, array($this, 'toString'));
 
 		return implode(",", $Values);
 	}
 
-	function toString(&$Value)
+	public function toString(&$Value)
 	{
 		$Value = (is_numeric($Value) || $Value == "VOID") ? $Value : chr(34).$Value.chr(34);
 	}

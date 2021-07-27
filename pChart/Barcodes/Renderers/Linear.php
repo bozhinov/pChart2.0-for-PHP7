@@ -73,5 +73,3 @@ class Linear extends Base {
 	}
 
 }
-
-?>
