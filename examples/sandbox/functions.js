@@ -36,13 +36,15 @@ function Do(Action)
 	Input["data3"] = [];
 	Input["absissa"] = [];
 
-	for(i=0;i<8;i++)
+	for(var i=0;i<8;i++)
 	{
 		Input["data1"].push(Input["d_serie1_data"+i]);
 		Input["data2"].push(Input["d_serie2_data"+i]);
 		Input["data3"].push(Input["d_serie3_data"+i]);
 		Input["absissa"].push(Input["d_absissa_data"+i]);
 	}
+
+	var t_axis = 0;
 
 	switch(true) {
 		case Input["t_axis0"]:
