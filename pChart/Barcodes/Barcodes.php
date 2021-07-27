@@ -35,9 +35,6 @@ class Barcodes {
 			$config["label"] = array_replace($config["label"], $opts['label']);
 		}
 
-		// bgcolor
-		$config["BackgroundColor"] = (isset($opts['BackgroundColor'])) ? $opts['BackgroundColor'] : new pColor(255);
-
 		// palette
 		$config["palette"] = [
 			0 => new pColor(255), // CS - Color of spaces
