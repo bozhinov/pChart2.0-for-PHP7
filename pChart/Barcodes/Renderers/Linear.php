@@ -32,8 +32,15 @@ class Linear extends Base {
 			$scale = 1;
 			$x = floor($x + $w / 2);
 		}
-		
+
 		$x = intval($x);
+
+		$palette = [];
+		foreach($this->config['palette'] as $id => $color) {
+			if ($color instanceof \pChart\pColor){
+				$palette[$id] = $this->myPicture->allocatepColor($color);
+			}
+		}
 
 		foreach ($this->code as $block) {
 
@@ -50,7 +57,7 @@ class Linear extends Base {
 
 			foreach ($block['m'] as $module) {
 				$mw = $mx + $module[1] * $this->widths[$module[2]] * $scale;
-				imagefilledrectangle($image, $mx, $y, intval($mw - 1), $my - 1, $this->myPicture->allocatepColor($this->config['palette'][$module[0]]));
+				imagefilledrectangle($image, $mx, $y, intval($mw - 1), $my - 1, $palette[$module[0]]);
 				$mx = $mw;
 			}
 
