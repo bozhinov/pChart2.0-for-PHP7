@@ -1,8 +1,8 @@
 <?php
 
-namespace pChart\Aztec;
+namespace pChart\Barcodes;
 
-use pChart\Aztec\Encoder\Encoder;
+use pChart\Barcodes\Encoders\Aztec\Encoder;
 use pChart\pConf;
 
 class Aztec extends pConf

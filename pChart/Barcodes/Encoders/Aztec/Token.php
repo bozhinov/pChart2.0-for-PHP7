@@ -1,6 +1,6 @@
 <?php
 
-namespace pChart\Aztec\Encoder;
+namespace pChart\Barcodes\Encoders\Aztec;
 
 class Token implements \Countable
 {

@@ -6,7 +6,7 @@ require_once("bootstrap.php");
 
 use pChart\pDraw;
 use pChart\pColor;
-use pChart\Aztec\Aztec;
+use pChart\Barcodes\Aztec;
 
 /* Create a pChart object and associate your dataset */ 
 $myPicture = new pDraw(700,450);

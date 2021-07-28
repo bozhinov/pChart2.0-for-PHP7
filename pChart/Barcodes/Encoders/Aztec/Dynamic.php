@@ -16,7 +16,7 @@
 * limitations under the License.
 */
 
-namespace pChart\Aztec\Encoder;
+namespace pChart\Barcodes\Encoders\Aztec;
 
 class Dynamic
 {
