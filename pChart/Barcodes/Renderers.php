@@ -87,8 +87,6 @@ class Renderers {
 			if (isset($block['l'])) {
 				$ly = (isset($block['l'][1]) ? (float)$block['l'][1] : 1);
 				$my = round($y + min($h, $h + ($ly - 1) * $config['label']['Height']));
-				$ly = intval($ly);
-				$my = intval($my);
 			} else {
 				$my = $y + $h;
 			}
@@ -97,7 +95,7 @@ class Renderers {
 
 			foreach ($block['m'] as $module) {
 				$mw = $mx + $module[1] * $widths[$module[2]] * $scale;
-				imagefilledrectangle($image, $mx, $y, intval($mw - 1), $my - 1, $config['palette'][$module[0]]);
+				imagefilledrectangle($image, $mx, $y, intval($mw - 1), intval($my - 1), $config['palette'][$module[0]]);
 				$mx = $mw;
 			}
 
