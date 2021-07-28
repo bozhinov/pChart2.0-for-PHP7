@@ -6,7 +6,7 @@ require_once("bootstrap.php");
 
 use pChart\pDraw;
 use pChart\pColor;
-use pChart\QRCode\QRCode;
+use pChart\Barcodes\QRCode;
 
 /* Create a pChart object and associate your dataset */ 
 $myPicture = new pDraw(700,700);
