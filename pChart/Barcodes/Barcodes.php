@@ -4,8 +4,7 @@ namespace pChart\Barcodes;
 
 use pChart\pColor;
 use pChart\pException;
-use pChart\Barcodes\Renderers\Linear;
-use pChart\Barcodes\Renderers\Matrix;
+use pChart\Barcodes\Renderers;
 
 class Barcodes {
 
@@ -102,12 +101,6 @@ class Barcodes {
 		$isDataMatrix = (substr($symbology, 0, 4) == "dmtx");
 		$opts = $this->options + $this->parse_opts($opts, $isDataMatrix);
 
-		if ($isDataMatrix){
-			$renderer = new Matrix();
-		} else {
-			$renderer = new Linear();
-		}
-
 		switch ($symbology) {
 			case 'upca'       : $code = (new Encoders\UPC)->upc_a_encode($data); break;
 			case 'upce'       : $code = (new Encoders\UPC)->upc_e_encode($data); break;
@@ -155,6 +148,11 @@ class Barcodes {
 			default: throw pException::InvalidInput("Unknown encode method - ".$symbology);
 		}
 
-		$renderer->render($this->myPicture->gettheImage(), $opts, $code);
+		$render = new Renderers();
+		if ($isDataMatrix){
+			$render->matrix($this->myPicture->gettheImage(), $opts, $code);
+		} else {
+			$render->linear($this->myPicture->gettheImage(), $opts, $code);
+		}
 	}
 }
