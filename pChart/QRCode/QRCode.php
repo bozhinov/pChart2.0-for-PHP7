@@ -1,8 +1,4 @@
 <?php
-/*
- * PHP QR Code
- * Last update - 31.12.2019
- */
 
 namespace pChart\QRCode;
 

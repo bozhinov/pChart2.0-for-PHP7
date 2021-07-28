@@ -6,10 +6,7 @@ require_once("bootstrap.php");
 
 use pChart\pDraw;
 use pChart\pColor;
-use pChart\Barcodes\{
-	Barcodes,
-	Encoders\DMTX
-};
+use pChart\Barcodes\MatrixCodes;
 
 /* Create a pChart object and associate your dataset */ 
 $myPicture = new pDraw(250,250);
@@ -27,7 +24,7 @@ $opts = [
 ];
 
 $data = 8675309;
-$barcodes = new Barcodes($myPicture);
+$barcodes = new MatrixCodes($myPicture);
 $barcodes->set_start_position($x = 10, $y = 10);
 $barcodes->draw($data, "dmtxs", $opts);
 

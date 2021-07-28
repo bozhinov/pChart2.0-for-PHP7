@@ -5,7 +5,7 @@ namespace pChart\Barcodes;
 use pChart\pColor;
 use pChart\pException;
 
-class Barcodes {
+class LinearCodes {
 
 	private $myPicture;
 	private $options = ['StartX' => 0, 'StartY' => 0];
@@ -21,35 +21,19 @@ class Barcodes {
 		$this->options['StartY'] = $y;
 	}
 
-	private function parse_opts($opts, $isDataMatrix)
+	private function parse_opts($opts)
 	{
 		$config = [];
-
-		if ($isDataMatrix){
-			$config['scale']['Factor'] = 4;
-			$config['modules']['Shape']   = (isset($opts['modules']['Shape'])   ? strtolower($opts['modules']['Shape']) : '');
-			$config['modules']['Density'] = (isset($opts['modules']['Density']) ? (float)$opts['modules']['Density'] : 1);
-		} else {
-			$config['scale']['Factor'] = 1;
-			$config["label"] = ['Height' => 10, 'Size' => 1, 'Color' => new pColor(0), 'Skip' => FALSE, 'TTF' => NULL, 'Offset' => 0];
-			if (isset($opts['label'])){
-				$config["label"] = array_replace($config["label"], $opts['label']);
-			}
-			# pre-allocate colors
-			$config['label']['Color'] = $this->myPicture->allocatepColor($config['label']['Color']);
+		$config["label"] = ['Height' => 10, 'Size' => 1, 'Color' => new pColor(0), 'Skip' => FALSE, 'TTF' => NULL, 'Offset' => 0];
+		if (isset($opts['label'])){
+			$config["label"] = array_replace($config["label"], $opts['label']);
 		}
+		# pre-allocate colors
+		$config['label']['Color'] = $this->myPicture->allocatepColor($config['label']['Color']);
 
 		$config["palette"] = [
 			0 => new pColor(255), // CS - Color of spaces
-			1 => new pColor(0), 	// CM - Color of modules
-			2 => NULL, // C2 => new pColor(255,0, 0)
-			3 => NULL, // C3 => new pColor(255,255, 0)
-			4 => NULL, // C4 => new pColor(0,255, 0)
-			5 => NULL, // C5 => new pColor(0,255, 255)
-			6 => NULL, // C6 => new pColor(0,0, 255)
-			7 => NULL, // C7 => new pColor(255,0, 255)
-			8 => NULL, // C8 => new pColor(255)
-			9 => NULL  // C9 => new pColor(0)
+			1 => new pColor(0) 	// CM - Color of modules
 		];
 
 		if (isset($opts['palette'])){
@@ -68,13 +52,7 @@ class Barcodes {
 			'QuietArea' 	=> 1,
 			'NarrowModules' => 1,
 			'WideModules' 	=> 3,
-			'NarrowSpace' 	=> 1,
-			'w4' => 1,
-			'w5' => 1,
-			'w6' => 1,
-			'w7' => 1,
-			'w8' => 1,
-			'w9' => 1
+			'NarrowSpace' 	=> 1
 		];
 
 		if (isset($opts['widths'])){
@@ -82,11 +60,7 @@ class Barcodes {
 		}
 
 		// scale
-		if (isset($opts['scale']['Factor'])) {
-			$config['scale']['Factor'] = (float)$opts['scale']['Factor'];
-		}
-		$config['scale']['Horizontal'] = (isset($opts['scale']['Horizontal']) ? (float)$opts['scale']['Horizontal'] : $config["scale"]['Factor']);
-		$config['scale']['Vertial']	 = 	 (isset($opts['scale']['Vertial']) 	? 	(float)$opts['scale']['Vertial'] 	: $config["scale"]['Factor']);
+		$config['scale'] = (isset($opts['scale'])) ? (float)$opts['scale'] : 1;
 
 		// dimentions
 		$config['Width']  = (isset($opts['Width'])  ? (int)$opts['Width']  : NULL);
@@ -95,11 +69,74 @@ class Barcodes {
 		return $config;
 	}
 
+	public function render($config, $code)
+	{
+		# calculate_size
+		$width = 0;
+		$widths = array_values($config['widths']);
+		foreach ($code as $block){
+			foreach ($block['m'] as $module){
+				$width += $module[1] * $widths[$module[2]];
+			}
+		}
+
+		$x = $config['StartX'];
+		$y = $config['StartY'];
+		$w = (!is_null($config['Width']))  ? $config['Width']  : intval(ceil($width * $config['scale']));
+		$h = (!is_null($config['Height'])) ? $config['Height'] : intval(ceil(80 * $config['scale']));
+
+		$lsize = $config['label']['Size'];
+
+		if ($width > 0) {
+			$scale = $w / $width;
+			$scale = (($scale > 1) ? floor($scale) : 1);
+		} else {
+			$scale = 1;
+		}
+		
+		$image = $this->myPicture->gettheImage();
+
+		foreach ($code as $block) {
+
+			if (isset($block['l'])) {
+				$ly = (isset($block['l'][1]) ? (float)$block['l'][1] : 1);
+				$my = round($y + min($h, $h + ($ly - 1) * $config['label']['Height']));
+			} else {
+				$my = $y + $h;
+			}
+
+			$mx = $x;
+
+			foreach ($block['m'] as $module) {
+				$mw = $mx + $module[1] * $widths[$module[2]] * $scale;
+				imagefilledrectangle($image, $mx, $y, intval($mw - 1), intval($my - 1), $config['palette'][$module[0]]);
+				$mx = $mw;
+			}
+
+			if ($config['label']['Skip'] != TRUE) {
+				if (isset($block['l'])) {
+					$text = $block['l'][0];
+					$lx = (isset($block['l'][2]) ? (float)$block['l'][2] : 0.5);
+					$lx = ($x + ($mx - $x) * $lx);
+					$lw = imagefontwidth($lsize) * strlen($text);
+					$lx = intval(round($lx - $lw / 2));
+					$ly = ($y + $h + $ly * $config['label']['Height']);
+					$ly = intval(round($ly - imagefontheight($lsize)));
+					if (!is_null($config['label']['TTF'])) {
+						$ly +=($lsize*2) + $config['label']['Offset'];
+						imagettftext($image, $lsize, 0, $lx, $ly, $config['label']['Color'], realpath($config['label']['TTF']), $text);
+					} else {
+						imagestring($image,  $lsize, $lx, $ly, $text, $config['label']['Color']);
+					}
+				}
+			}
+
+			$x = $mx;
+		}
+	}
+
 	public function draw($data, string $symbology, array $opts = [])
 	{
-		$isDataMatrix = (substr($symbology, 0, 4) == "dmtx");
-		$opts = $this->options + $this->parse_opts($opts, $isDataMatrix);
-
 		switch ($symbology) {
 			case 'upca'       : $code = (new Encoders\UPC)->upc_a_encode($data); break;
 			case 'upce'       : $code = (new Encoders\UPC)->upc_e_encode($data); break;
@@ -130,27 +167,10 @@ class Barcodes {
 			case 'itf14'      :
 				$code = Encoders\ITF::itf_encode($data);
 				break;
-			case 'dmtx'       :
-			case 'dmtxs'      :
-				$code = (new Encoders\DMTX())->dmtx_encode($data, false, false);
-				break;
-			case 'dmtxr'      : 
-				$code = (new Encoders\DMTX())->dmtx_encode($data, true,  false);
-				break;
-			case 'dmtxgs1'    :
-			case 'dmtxsgs1'   :
-				$code = (new Encoders\DMTX())->dmtx_encode($data, false, true);
-				break;
-			case 'dmtxrgs1'   : 
-				$code = (new Encoders\DMTX())->dmtx_encode($data, true,  true);
-				break;
 			default: throw pException::InvalidInput("Unknown encode method - ".$symbology);
 		}
 
-		if ($isDataMatrix){
-			Renderers::matrix($this->myPicture->gettheImage(), $opts, $code);
-		} else {
-			Renderers::linear($this->myPicture->gettheImage(), $opts, $code);
-		}
+		$opts = $this->options + $this->parse_opts($opts);
+		$this->render($opts, $code);
 	}
 }

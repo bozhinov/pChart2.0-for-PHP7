@@ -6,10 +6,7 @@ require_once("bootstrap.php");
 
 use pChart\pDraw;
 use pChart\pColor;
-use pChart\Barcodes\{
-	Barcodes,
-	Encoders\Codes
-};
+use pChart\Barcodes\LinearCodes;
 
 /* Create a pChart object */ 
 $myPicture = new pDraw(700,230);
@@ -22,7 +19,7 @@ $opts = [
 	]
 ];
 
-$barcodes = new Barcodes($myPicture);
+$barcodes = new LinearCodes($myPicture);
 $barcodes->draw("12250000234502", "code39", $opts);
 
 $myPicture->autoOutput("temp/encode39.png");

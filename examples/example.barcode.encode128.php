@@ -6,10 +6,7 @@ require_once("bootstrap.php");
 
 use pChart\pDraw;
 use pChart\pColor;
-use pChart\Barcodes\{
-	Barcodes,
-	Encoders\Codes
-};
+use pChart\Barcodes\LinearCodes;
 
 /* Create a pChart object and associate your dataset */ 
 $myPicture = new pDraw(700,230);
@@ -17,7 +14,7 @@ $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(179,217,91), "D
 
 $data = "Do what you want !";
 
-$barcodes = new Barcodes($myPicture);
+$barcodes = new LinearCodes($myPicture);
 $barcodes->set_start_position($x = 10, $y = 10);
 $barcodes->draw($data, "code128", []);
 
