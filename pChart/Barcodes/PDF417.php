@@ -1,8 +1,8 @@
 <?php
 
-namespace pChart\PDF417;
+namespace pChart\Barcodes;
 
-use pChart\PDF417\Encoder\Encoder;
+use pChart\Barcodes\Encoders\PDF417\Encoder;
 use pChart\pConf;
 
 class PDF417 extends pConf

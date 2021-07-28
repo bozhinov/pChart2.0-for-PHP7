@@ -1,6 +1,6 @@
 <?php
 
-namespace pChart\PDF417\Encoder;
+namespace pChart\Barcodes\Encoders\PDF417;
 
 /**
  * Computes the Reed Solomon correction factors.
