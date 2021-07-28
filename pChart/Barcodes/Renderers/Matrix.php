@@ -4,7 +4,7 @@ namespace pChart\Barcodes\Renderers;
 
 class Matrix {
 
-	public function render($myPicture, $config, $code)
+	public function render($image, $config, $code)
 	{
 		# calculate_size
 		$widths = array_values($config['widths']);
@@ -15,8 +15,6 @@ class Matrix {
 		$y = 0;
 		$w = (!is_null($config['Width']))  ? $config['Width']  : intval(ceil($width * $config['scale']['Horizontal']));
 		$h = (!is_null($config['Height'])) ? $config['Height'] : intval(ceil($height * $config['scale']['Vertial']));
-
-		$image = $myPicture->gettheImage();
 
 		if (!is_null($width) && !is_null($height)) {
 			$scale = min($w / $width, $h / $height);
@@ -35,18 +33,6 @@ class Matrix {
 
 		$offset = (1 - $md) * $whd / 2;
 
-		# Color pre-allocation speeds things up significantly
-		$colors = [];
-		foreach ($code['matrix'] as $by => $row) {
-			foreach ($row as $bx => $color) {
-				$colors[$color] = 1;
-			}
-		}
-
-		foreach($colors as $c => $valid){
-			$colors[$c] = $myPicture->allocatepColor($config['palette'][$c]);
-		}
-
 		$StartX = $config['StartX'];
 		$StartY = $config['StartY'];
 
@@ -55,7 +41,7 @@ class Matrix {
 			$y1 = intval(floor($y + $by * $wh + $offset)) + $StartY;
 			
 			foreach ($row as $bx => $color) {
-				$mc = $colors[$color];
+				$mc = $config['palette'][$color];
 				$x1 = intval(floor($x + $bx * $wh + $offset)) + $StartX;
 				$offwh = $whd - 1;
 

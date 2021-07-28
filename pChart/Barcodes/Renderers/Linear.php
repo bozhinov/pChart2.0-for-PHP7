@@ -4,7 +4,7 @@ namespace pChart\Barcodes\Renderers;
 
 class Linear {
 
-	public function render($myPicture, $config, $code)
+	public function render($image, $config, $code)
 	{
 		# calculate_size
 		$width = 0;
@@ -21,21 +21,12 @@ class Linear {
 		$h = (!is_null($config['Height'])) ? $config['Height'] : intval(ceil(80 * $config['scale']['Vertial']));
 
 		$lsize = $config['label']['Size'];
-		$textColor = $myPicture->allocatepColor($config['label']['Color']);
-		$image = $myPicture->gettheImage();
 
 		if ($width > 0) {
 			$scale = $w / $width;
 			$scale = (($scale > 1) ? floor($scale) : 1);
 		} else {
 			$scale = 1;
-		}
-
-		$palette = [];
-		foreach($config['palette'] as $id => $color) {
-			if ($color instanceof \pChart\pColor){
-				$palette[$id] = $myPicture->allocatepColor($color);
-			}
 		}
 
 		$StartX = $config['StartX'];
@@ -56,7 +47,7 @@ class Linear {
 
 			foreach ($block['m'] as $module) {
 				$mw = $mx + $module[1] * $widths[$module[2]] * $scale;
-				imagefilledrectangle($image, $mx + $StartX, $y + $StartY, intval($mw - 1) + $StartX, $my - 1 + $StartY, $palette[$module[0]]);
+				imagefilledrectangle($image, $mx + $StartX, $y + $StartY, intval($mw - 1) + $StartX, $my - 1 + $StartY, $config['palette'][$module[0]]);
 				$mx = $mw;
 			}
 
@@ -71,9 +62,9 @@ class Linear {
 					$ly = intval(round($ly - imagefontheight($lsize)));
 					if (!is_null($config['label']['TTF'])) {
 						$ly +=($lsize*2) + $config['label']['Offset'];
-						imagettftext($image, $lsize, 0, $lx + $StartX, $ly + $StartY, $textColor, realpath($config['label']['TTF']), $text);
+						imagettftext($image, $lsize, 0, $lx + $StartX, $ly + $StartY, $config['label']['Color'], realpath($config['label']['TTF']), $text);
 					} else {
-						imagestring($image,  $lsize, $lx + $StartX, $ly + $StartY, $text, $textColor);
+						imagestring($image,  $lsize, $lx + $StartX, $ly + $StartY, $text, $config['label']['Color']);
 					}
 				}
 			}

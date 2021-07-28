@@ -29,18 +29,18 @@ class Barcodes {
 
 		if ($isDataMatrix){
 			$config['scale']['Factor'] = 4;
+			$config['modules']['Shape']   = (isset($opts['modules']['Shape'])   ? strtolower($opts['modules']['Shape']) : '');
+			$config['modules']['Density'] = (isset($opts['modules']['Density']) ? (float)$opts['modules']['Density'] : 1);
 		} else {
 			$config['scale']['Factor'] = 1;
+			$config["label"] = ['Height' => 10, 'Size' => 1, 'Color' => new pColor(0), 'Skip' => FALSE, 'TTF' => NULL, 'Offset' => 0];
+			if (isset($opts['label'])){
+				$config["label"] = array_replace($config["label"], $opts['label']);
+			}
+			# pre-allocate colors
+			$config['label']['Color'] = $this->myPicture->allocatepColor($config['label']['Color']);
 		}
 
-		// label
-		$config["label"] = ['Height' => 10, 'Size' => 1, 'Color' => new pColor(0), 'Skip' => FALSE, 'TTF' => NULL, 'Offset' => 0];
-
-		if (isset($opts['label'])){
-			$config["label"] = array_replace($config["label"], $opts['label']);
-		}
-
-		// palette
 		$config["palette"] = [
 			0 => new pColor(255), // CS - Color of spaces
 			1 => new pColor(0), 	// CM - Color of modules
@@ -56,6 +56,13 @@ class Barcodes {
 
 		if (isset($opts['palette'])){
 			$config["palette"] = array_replace($config["palette"], $opts['palette']);
+		}
+
+		# pre-allocate colors
+		foreach($config['palette'] as $id => $color) {
+			if ($color instanceof \pChart\pColor){
+				$config['palette'][$id] = $this->myPicture->allocatepColor($color);
+			}
 		}
 
 		// widths
@@ -81,11 +88,7 @@ class Barcodes {
 			$config['scale']['Factor'] = (float)$opts['scale']['Factor'];
 		}
 		$config['scale']['Horizontal'] = (isset($opts['scale']['Horizontal']) ? (float)$opts['scale']['Horizontal'] : $config["scale"]['Factor']);
-		$config['scale']['Vertial']	 = (isset($opts['scale']['Vertial']) 	? (float)$opts['scale']['Vertial'] 	  : $config["scale"]['Factor']);
-
-		// matrix modules
-		$config['modules']['Shape']   = (isset($opts['modules']['Shape'])   ? strtolower($opts['modules']['Shape']) : '');
-		$config['modules']['Density'] = (isset($opts['modules']['Density']) ? (float)$opts['modules']['Density'] : 1);
+		$config['scale']['Vertial']	 = 	 (isset($opts['scale']['Vertial']) 	? 	(float)$opts['scale']['Vertial'] 	: $config["scale"]['Factor']);
 
 		// dimentions
 		$config['Width']  = (isset($opts['Width'])  ? (int)$opts['Width']  : NULL);
@@ -97,13 +100,13 @@ class Barcodes {
 	public function draw($data, string $symbology, array $opts = [])
 	{
 		$isDataMatrix = (substr($symbology, 0, 4) == "dmtx");
+		$opts = $this->options + $this->parse_opts($opts, $isDataMatrix);
+
 		if ($isDataMatrix){
 			$renderer = new Matrix();
 		} else {
 			$renderer = new Linear();
 		}
-
-		$this->options += $this->parse_opts($opts, $isDataMatrix);
 
 		switch ($symbology) {
 			case 'upca'       : $code = (new Encoders\UPC)->upc_a_encode($data); break;
@@ -152,6 +155,6 @@ class Barcodes {
 			default: throw pException::InvalidInput("Unknown encode method - ".$symbology);
 		}
 
-		$renderer->render($this->myPicture, $this->options, $code);
+		$renderer->render($this->myPicture->gettheImage(), $opts, $code);
 	}
 }
