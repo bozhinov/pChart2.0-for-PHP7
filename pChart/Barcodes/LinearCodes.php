@@ -162,7 +162,7 @@ class LinearCodes {
 			case 'ean128c'    : $code = (new Encoders\Codes)->code_128_encode($data, 3, true); break;
 			case 'ean128ac'   : $code = (new Encoders\Codes)->code_128_encode($data,-1, true); break;
 			case 'ean128bc'   : $code = (new Encoders\Codes)->code_128_encode($data,-2, true); break;
-			case 'codabar'    : $code = Encoders\Codabar::codabar_encode($data);
+			case 'codabar'    : $code = Encoders\Codabar::codabar_encode($data); break;
 			case 'itf'        :
 			case 'itf14'      :
 				$code = Encoders\ITF::itf_encode($data);
