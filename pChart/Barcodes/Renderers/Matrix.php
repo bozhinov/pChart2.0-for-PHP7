@@ -18,15 +18,11 @@ class Matrix {
 
 		$image = $myPicture->gettheImage();
 
-		if ($width && $height) {
+		if (!is_null($width) && !is_null($height)) {
 			$scale = min($w / $width, $h / $height);
 			$scale = (($scale > 1) ? floor($scale) : 1);
-			$x = floor($x + ($w - $width * $scale) / 2);
-			$y = floor($y + ($h - $height * $scale) / 2);
 		} else {
 			$scale = 1;
-			$x = floor($x + $w / 2);
-			$y = floor($y + $h / 2);
 		}
 
 		$wh = $widths[1] * $scale;
