@@ -22,35 +22,37 @@ class QRCode extends pConf {
 	private function render($encoded)
 	{
 		$h = count($encoded);
-		$margin = $this->get('margin');
-		$imgH = $h + 2 * $margin;
 
-		$base_image = imagecreate($imgH, $imgH);
+		$image = $this->myPicture->gettheImage();
+		$padding = $this->get('padding');
+		$scale = $this->get('scale');
+		$StartX = $this->get('StartX');
+		$StartY = $this->get('StartY');
 
-		// Extract options
-		list($R, $G, $B) = $this->get('bgColor')->get(); # ughhh
-		$bgColorAlloc = imagecolorallocate($base_image, $R, $G, $B);
-		list($R, $G, $B) = $this->get('color')->get();
-		$colorAlloc = imagecolorallocate($base_image, $R, $G, $B);
+		// Apply scaling & aspect ratio
+		$width = ($h * $scale) + $padding * 2;
+		$height = $width;
 
-		imagefill($base_image, 0, 0, $bgColorAlloc);
+		// Draw the background
+		$bgColorAlloc = $this->myPicture->allocatepColor($this->get('bgColor'));
+		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $height, $bgColorAlloc);
+		$colorAlloc = $this->myPicture->allocatepColor($this->get('color'));
 
+		// Render the barcode
 		for($y = 0; $y < $h; $y++) {
 			for($x = 0; $x < $h; $x++) {
 				if ($encoded[$y][$x] & 1) {
-					imagesetpixel($base_image, $x + $margin, $y + $margin, $colorAlloc);
+					imagefilledrectangle(
+						$image,
+						($x * $scale) + $padding + $StartX,
+						($y * $scale) + $padding + $StartY,
+						(($x + 1) * $scale - 1) + $padding + $StartX,
+						(($y + 1) * $scale - 1) + $padding + $StartY,
+						$colorAlloc
+					);
 				}
 			}
 		}
-
-		$pixelPerPoint = min($this->get('size'), $imgH);
-		$target_h = $imgH * $pixelPerPoint;
-
-		$StartX = $this->get('StartX');
-		$StartY = $this->get('StartY');
-		$image = $this->myPicture->gettheImage();
-		imagecopyresized($image, $base_image, $StartX, $StartY, 0, 0, $target_h, $target_h, $imgH, $imgH);
-		imagedestroy($base_image);
 	}
 
 	public function draw(string $text, array $opts = [])
@@ -77,8 +79,8 @@ class QRCode extends pConf {
 			}
 		}
 
-		$this->set_if_within_range_or_default('size', 0, 20, 3);
-		$this->set_if_within_range_or_default('margin', 0, 20, 4);
+		$this->set_if_within_range_or_default('scale', 0, 20, 3);
+		$this->set_if_within_range_or_default('padding', 0, 20, 4);
 
 		if($text == '\0' || $text == '') {
 			throw pException::InvalidInput("Invalid value for text");

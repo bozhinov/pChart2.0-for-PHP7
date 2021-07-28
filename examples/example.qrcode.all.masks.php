@@ -11,7 +11,7 @@ use pChart\QRCode\QRCode;
 $myPicture = new pDraw(700,700);
 
 $QRCode = new QRCode($myPicture);
-$QRCode->draw('https://github.com/bozhinov/PHP-QRCode-fork', ['level' => "Q", 'size' => 10, 'margin' => 4]);
+$QRCode->draw('https://github.com/bozhinov/PHP-QRCode-fork', ['level' => "Q", 'scale' => 10, 'padding' => 4]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput('temp/example.QRcode.all.masks.png');
