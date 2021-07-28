@@ -18,20 +18,16 @@ class PDF417 extends pConf
 	{
 		$image = $this->myPicture->gettheImage();
 		$padding = $this->get('padding');
-
-		$width = count($pixelGrid[0]);
-		$height = count($pixelGrid);
-
 		$scaleX = $this->get('scale');
 		$scaleY = $scaleX * $this->get('ratio');
 		$StartX = $this->get('StartX');
 		$StartY = $this->get('StartY');
 
 		// Apply scaling & aspect ratio
-		$width = ($width * $scaleX) + $padding * 2;
-		$height = ($height * $scaleY) + $padding * 2;
+		$width = (count($pixelGrid[0]) * $scaleX) + $padding * 2;
+		$height = (count($pixelGrid) * $scaleY) + $padding * 2;
 
-		// Extract options
+		// Draw the background
 		$bgColorAlloc = $this->myPicture->allocatepColor($this->get('bgColor'));
 		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $height, $bgColorAlloc);
 		$colorAlloc = $this->myPicture->allocatepColor($this->get('color'));
@@ -57,19 +53,7 @@ class PDF417 extends pConf
 	{
 		$this->apply_user_options($opts);
 
-		/**
-		* Number of data columns in the bar code.
-		*
-		* The total number of columns will be greater due to adding start, stop,
-		* left and right columns.
-		*/
 		$columns = $this->return_if_within_range_or_default('columns', 1, 30, 6);
-
-		/**
-		* Can be used to force binary encoding. This may reduce size of the
-		* barcode if the data contains many encoder changes, such as when
-		* encoding a compressed file.
-		*/
 		$this->set_if_within_range_or_default('scale', 1, 20, 3);
 		$this->set_if_within_range_or_default('ratio', 1, 10, 3);
 		$this->set_if_within_range_or_default('padding', 0, 50, 20);
