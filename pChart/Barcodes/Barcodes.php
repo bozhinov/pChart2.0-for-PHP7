@@ -4,7 +4,6 @@ namespace pChart\Barcodes;
 
 use pChart\pColor;
 use pChart\pException;
-use pChart\Barcodes\Renderers;
 
 class Barcodes {
 
@@ -126,10 +125,10 @@ class Barcodes {
 			case 'ean128c'    : $code = (new Encoders\Codes)->code_128_encode($data, 3, true); break;
 			case 'ean128ac'   : $code = (new Encoders\Codes)->code_128_encode($data,-1, true); break;
 			case 'ean128bc'   : $code = (new Encoders\Codes)->code_128_encode($data,-2, true); break;
-			case 'codabar'    : $code = (new Encoders\Codabar)->codabar_encode($data);
+			case 'codabar'    : $code = Encoders\Codabar::codabar_encode($data);
 			case 'itf'        :
 			case 'itf14'      :
-				$code = (new Encoders\ITF())->itf_encode($data);
+				$code = Encoders\ITF::itf_encode($data);
 				break;
 			case 'dmtx'       :
 			case 'dmtxs'      :

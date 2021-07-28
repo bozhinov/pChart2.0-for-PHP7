@@ -11,7 +11,7 @@ use pChart\Barcodes\{
 	Encoders\Codes
 };
 
-/* Create a pChart object and associate your dataset */ 
+/* Create a pChart object */ 
 $myPicture = new pDraw(700,230);
 
 $opts = [
