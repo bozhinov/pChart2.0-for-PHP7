@@ -18,11 +18,11 @@ class Aztec extends pConf
 	{
 		$image = $this->myPicture->gettheImage();
 		$width = count($pixelGrid);
-		$ratio = $this->get('ratio');
+		$scale = $this->get('scale');
 		$padding = $this->get('padding');
 		$StartX = $this->get('StartX');
 		$StartY = $this->get('StartY');
-		$size = ($width * $ratio) + ($padding * 2);
+		$size = ($width * $scale) + ($padding * 2);
 
 		// Extract options
 		$bgColorAlloc = $this->myPicture->allocatepColor($this->get('bgColor'));
@@ -35,10 +35,10 @@ class Aztec extends pConf
 				if (isset($pixelGrid[$x][$y])){
 					imagefilledrectangle(
 						$image, 
-						($x * $ratio) + $padding + $StartX,
-						($y * $ratio) + $padding + $StartY,
-						(($x + 1) * $ratio - 1) + $padding + $StartX,
-						(($y + 1) * $ratio - 1) + $padding + $StartY,
+						($x * $scale) + $padding + $StartX,
+						($y * $scale) + $padding + $StartY,
+						(($x + 1) * $scale - 1) + $padding + $StartX,
+						(($y + 1) * $scale - 1) + $padding + $StartY,
 						$colorAlloc
 					);
 				}
@@ -52,7 +52,7 @@ class Aztec extends pConf
 
 		$hint = $this->return_if_match_or_default('hint', ["binary", "dynamic"], 'dynamic');
 		$eccPercent = $this->return_if_within_range_or_default('eccPercent', 1, 100, 33);
-		$this->set_if_within_range_or_default('ratio', 1, 10, 4);
+		$this->set_if_within_range_or_default('scale', 1, 10, 4);
 		$this->set_if_within_range_or_default('padding', 0, 50, 20);
 
 		$pixelGrid = (new Encoder())->encode($data, $eccPercent, $hint);
