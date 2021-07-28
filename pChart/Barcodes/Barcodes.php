@@ -148,11 +148,10 @@ class Barcodes {
 			default: throw pException::InvalidInput("Unknown encode method - ".$symbology);
 		}
 
-		$render = new Renderers();
 		if ($isDataMatrix){
-			$render->matrix($this->myPicture->gettheImage(), $opts, $code);
+			Renderers::matrix($this->myPicture->gettheImage(), $opts, $code);
 		} else {
-			$render->linear($this->myPicture->gettheImage(), $opts, $code);
+			Renderers::linear($this->myPicture->gettheImage(), $opts, $code);
 		}
 	}
 }

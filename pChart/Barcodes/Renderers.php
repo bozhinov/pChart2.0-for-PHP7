@@ -4,7 +4,7 @@ namespace pChart\Barcodes;
 
 class Renderers {
 
-	public function matrix($image, $config, $code)
+	public static function matrix($image, $config, $code)
 	{
 		# calculate_size
 		$widths = array_values($config['widths']);
@@ -60,7 +60,7 @@ class Renderers {
 		}
 	}
 
-	public function linear($image, $config, $code)
+	public static function linear($image, $config, $code)
 	{
 		# calculate_size
 		$width = 0;
