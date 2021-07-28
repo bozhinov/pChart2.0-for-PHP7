@@ -11,8 +11,8 @@ class Renderers {
 		$width  = (2 * $widths[0]) + ($code['width']  * $widths[1]);
 		$height = (2 * $widths[0]) + ($code['height'] * $widths[1]);
 
-		$x = 0;
-		$y = 0;
+		$x = $config['StartX'];
+		$y = $config['StartY'];
 		$w = (!is_null($config['Width']))  ? $config['Width']  : intval(ceil($width * $config['scale']['Horizontal']));
 		$h = (!is_null($config['Height'])) ? $config['Height'] : intval(ceil($height * $config['scale']['Vertial']));
 
@@ -33,16 +33,13 @@ class Renderers {
 
 		$offset = (1 - $md) * $whd / 2;
 
-		$StartX = $config['StartX'];
-		$StartY = $config['StartY'];
-
 		foreach ($code['matrix'] as $by => $row) {
 
-			$y1 = intval(floor($y + $by * $wh + $offset)) + $StartY;
+			$y1 = intval(floor($y + $by * $wh + $offset));
 			
 			foreach ($row as $bx => $color) {
 				$mc = $config['palette'][$color];
-				$x1 = intval(floor($x + $bx * $wh + $offset)) + $StartX;
+				$x1 = intval(floor($x + $bx * $wh + $offset));
 				$offwh = $whd - 1;
 
 				switch ($config['modules']['Shape']) {
@@ -71,8 +68,8 @@ class Renderers {
 			}
 		}
 
-		$x = 0;
-		$y = 0;
+		$x = $config['StartX'];
+		$y = $config['StartY'];
 		$w = (!is_null($config['Width']))  ? $config['Width']  : intval(ceil($width * $config['scale']['Horizontal']));
 		$h = (!is_null($config['Height'])) ? $config['Height'] : intval(ceil(80 * $config['scale']['Vertial']));
 
@@ -84,9 +81,6 @@ class Renderers {
 		} else {
 			$scale = 1;
 		}
-
-		$StartX = $config['StartX'];
-		$StartY = $config['StartY'];
 
 		foreach ($code as $block) {
 
@@ -103,7 +97,7 @@ class Renderers {
 
 			foreach ($block['m'] as $module) {
 				$mw = $mx + $module[1] * $widths[$module[2]] * $scale;
-				imagefilledrectangle($image, $mx + $StartX, $y + $StartY, intval($mw - 1) + $StartX, $my - 1 + $StartY, $config['palette'][$module[0]]);
+				imagefilledrectangle($image, $mx, $y, intval($mw - 1), $my - 1, $config['palette'][$module[0]]);
 				$mx = $mw;
 			}
 
@@ -118,9 +112,9 @@ class Renderers {
 					$ly = intval(round($ly - imagefontheight($lsize)));
 					if (!is_null($config['label']['TTF'])) {
 						$ly +=($lsize*2) + $config['label']['Offset'];
-						imagettftext($image, $lsize, 0, $lx + $StartX, $ly + $StartY, $config['label']['Color'], realpath($config['label']['TTF']), $text);
+						imagettftext($image, $lsize, 0, $lx, $ly, $config['label']['Color'], realpath($config['label']['TTF']), $text);
 					} else {
-						imagestring($image,  $lsize, $lx + $StartX, $ly + $StartY, $text, $config['label']['Color']);
+						imagestring($image,  $lsize, $lx, $ly, $text, $config['label']['Color']);
 					}
 				}
 			}
