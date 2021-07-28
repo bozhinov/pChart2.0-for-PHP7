@@ -16,7 +16,7 @@ class Renderers {
 		$w = (!is_null($config['Width']))  ? $config['Width']  : intval(ceil($width * $config['scale']['Horizontal']));
 		$h = (!is_null($config['Height'])) ? $config['Height'] : intval(ceil($height * $config['scale']['Vertial']));
 
-		if (!is_null($width) && !is_null($height)) {
+		if ($width > 0 && $height > 0) {
 			$scale = min($w / $width, $h / $height);
 			$scale = (($scale > 1) ? floor($scale) : 1);
 		} else {
