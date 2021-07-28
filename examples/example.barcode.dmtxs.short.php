@@ -13,7 +13,6 @@ $myPicture = new pDraw(250,250);
 $myPicture->drawFilledRectangle(0,0,250,250,["Color"=>new pColor(179,217,91), "Dash"=>TRUE, "DashColor"=>new pColor(199,237,111)]);
 
 $opts = [
-	"BackgroundColor" => (new pColor())->fromHex("#FF00FF"),
 	"palette" => [
 			0 => new pColor(255), 	// CS - Color of spaces
 			1 => new pColor(0) 		// CM - Color of modules
