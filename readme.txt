@@ -1,13 +1,13 @@
 
  +----------------------------------------------------------------------------+
- ¦                                                                            ¦
- ¦   pChart - a PHP Charting library                                          ¦
- ¦                                                                            ¦
- ¦   Version            : 2.4.0                                               ¦
- ¦   Based on code by   : Jean-Damien POGOLOTTI                               ¦
- ¦   Maintained by      : Momchil Bozhinov     				      ¦
- ¦   Last Update        : 27/07/2021                                          ¦
- ¦                                                                            ¦
+ Â¦                                                                            Â¦
+ Â¦   pChart - a PHP Charting library                                          Â¦
+ Â¦                                                                            Â¦
+ Â¦   Version            : 2.4.0                                               Â¦
+ Â¦   Based on code by   : Jean-Damien POGOLOTTI                               Â¦
+ Â¦   Maintained by      : Momchil Bozhinov     				      Â¦
+ Â¦   Last Update        : 27/07/2021                                          Â¦
+ Â¦                                                                            Â¦
  +----------------------------------------------------------------------------+
 
  = WHAT CAN pCHART DO FOR YOU? --------------------------------------------------
@@ -20,35 +20,35 @@
  
  -
  +- /pChart		This folder contains the library core classes
- ¦   +- /Barcodes	Classes to draw all sorts of barcodes
- ¦   +- pBubble		Class to draw bubble charts
- ¦   +- pCharts		Class to draw several types of charts
- ¦   +- pColor		Data structure for colors
- ¦   +- pColorGradient	Data structure for gradient color
- ¦   +- pConf		Data structure for Barcodes
- ¦   +- pData		Class to manipulate chart data
- ¦   +- pDraw		Core drawing functions
- ¦   +- pException	Exceptions for all classes
- ¦   +- pIndicator	Class to draw indicators
- ¦   +- pPie	        Class to draw pie charts
- ¦   +- pPyramid        Class to draw pyramid charts
- ¦   +- pRadar	        Class to draw radar charts
- ¦   +- pScatter	Class to draw scatter charts
- ¦   +- pSpring		Class to draw spring charts
- ¦   +- pStock		Class to draw stock charts
- ¦   +- pSurface	Class to draw surface charts
- ¦
+ Â¦   +- /Barcodes	Classes to draw all sorts of barcodes
+ Â¦   +- pBubble		Class to draw bubble charts
+ Â¦   +- pCharts		Class to draw several types of charts
+ Â¦   +- pColor		Data structure for colors
+ Â¦   +- pColorGradient	Data structure for gradient color
+ Â¦   +- pConf		Data structure for Barcodes
+ Â¦   +- pData		Class to manipulate chart data
+ Â¦   +- pDraw		Core drawing functions
+ Â¦   +- pException	Exceptions for all classes
+ Â¦   +- pIndicator	Class to draw indicators
+ Â¦   +- pPie	        Class to draw pie charts
+ Â¦   +- pPyramid        Class to draw pyramid charts
+ Â¦   +- pRadar	        Class to draw radar charts
+ Â¦   +- pScatter	Class to draw scatter charts
+ Â¦   +- pSpring		Class to draw spring charts
+ Â¦   +- pStock		Class to draw stock charts
+ Â¦   +- pSurface	Class to draw surface charts
+ Â¦
  +- /pChart		This folder contains the library core classes
- ¦
+ Â¦
  +- /fonts		This folder contains a bunch of TTF fonts
- ¦
+ Â¦
  +- /examples		This folder contains some PHP examples
- ¦   ¦
- ¦   +- resources	Images, icons and jQuery
- ¦   +- sandbox		Powerful dev. tool to design your charts
- ¦
+ Â¦   Â¦
+ Â¦   +- resources	Images, icons and jQuery
+ Â¦   +- sandbox		Powerful dev. tool to design your charts
+ Â¦
  +- /temp		This folder is used for the examples output
- ¦
+ Â¦
  +- change.log		History of all the changes since the 2.1.4a
  +- readme.txt		This file
 
