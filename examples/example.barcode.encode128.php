@@ -15,9 +15,11 @@ use pChart\Barcodes\{
 $myPicture = new pDraw(700,230);
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(179,217,91), "Dash"=>TRUE, "DashColor"=>new pColor(199,237,111)]);
 
+$data = "Do what you want !";
+
 $barcodes = new Barcodes($myPicture);
 $barcodes->set_start_position($x = 10, $y = 10);
-$barcodes->draw("Do what you want !", "code128", []);
+$barcodes->draw($data, "code128", []);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/encode128.png");

@@ -29,10 +29,8 @@ class Barcodes {
 
 		if ($isDataMatrix){
 			$config['scale']['Factor'] = 4;
-			$config['padding']['All'] = 0;
 		} else {
 			$config['scale']['Factor'] = 1;
-			$config['padding']['All'] = 10;
 		}
 
 		// label
@@ -59,17 +57,6 @@ class Barcodes {
 		if (isset($opts['palette'])){
 			$config["palette"] = array_replace($config["palette"], $opts['palette']);
 		}
-
-		// padding
-		if (isset($opts['padding']['All'])) {
-			$config['padding']['All'] = (int)$opts['padding']['All'];
-		}
-		$config['padding']['Horizontal'] = (isset($opts['padding']['Horizontal']) ? (int)$opts['padding']['Horizontal'] : $config['padding']['All']);
-		$config['padding']['Vertial']	 = (isset($opts['padding']['Vertial']) 	  ? (int)$opts['padding']['Vertial'] 	: $config['padding']['All']);
-		$config['padding']['Top'] 		 = (isset($opts['padding']['Top']) 	 	  ? (int)$opts['padding']['Top'] 		: $config['padding']['Vertial']);
-		$config['padding']['Bottom']  	 = (isset($opts['padding']['Bottom']) 	  ? (int)$opts['padding']['Bottom']  	: $config['padding']['Vertial']);
-		$config['padding']['Right'] 	 = (isset($opts['padding']['Right']) 	  ? (int)$opts['padding']['Right'] 		: $config['padding']['Horizontal']);
-		$config['padding']['Left']  	 = (isset($opts['padding']['Left'])  	  ? (int)$opts['padding']['Left']  		: $config['padding']['Horizontal']);
 
 		// widths
 		$config['widths'] = [
@@ -165,7 +152,6 @@ class Barcodes {
 			default: throw pException::InvalidInput("Unknown encode method - ".$symbology);
 		}
 
-		$renderer->configure($this->options, $isDataMatrix);
-		$renderer->render($this->myPicture, $code);
+		$renderer->render($this->myPicture, $this->options, $code);
 	}
 }

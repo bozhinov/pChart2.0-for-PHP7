@@ -2,20 +2,21 @@
 
 namespace pChart\Barcodes\Renderers;
 
-class Matrix extends Base {
+class Matrix {
 
-	protected function calculate_size()
+	public function render($myPicture, $config, $code)
 	{
-		$width  = (2 * $this->widths[0]) + ($this->code['width']  * $this->widths[1]);
-		$height = (2 * $this->widths[0]) + ($this->code['height'] * $this->widths[1]);
+		# calculate_size
+		$widths = array_values($config['widths']);
+		$width  = (2 * $widths[0]) + ($code['width']  * $widths[1]);
+		$height = (2 * $widths[0]) + ($code['height'] * $widths[1]);
 
-		return [$width, $height];
-	}
+		$x = 0;
+		$y = 0;
+		$w = (!is_null($config['Width']))  ? $config['Width']  : intval(ceil($width * $config['scale']['Horizontal']));
+		$h = (!is_null($config['Height'])) ? $config['Height'] : intval(ceil($height * $config['scale']['Vertial']));
 
-	public function render_image($x, $y, $w, $h)
-	{
-		list($width, $height) = $this->calculate_size();
-		$image = $this->myPicture->gettheImage();
+		$image = $myPicture->gettheImage();
 
 		if ($width && $height) {
 			$scale = min($w / $width, $h / $height);
@@ -28,13 +29,11 @@ class Matrix extends Base {
 			$y = floor($y + $h / 2);
 		}
 
-		$x += $this->widths[0] * $scale;
-		$y += $this->widths[0] * $scale;
-		$wh = $this->widths[1] * $scale;
+		$wh = $widths[1] * $scale;
 
-		$md = $this->config['modules']['Density'];
+		$md = $config['modules']['Density'];
 		$whd = intval(ceil($wh * $md));
-		if ($this->config['modules']['Shape'] == 'r'){
+		if ($config['modules']['Shape'] == 'r'){
 			$md = 0;
 		}
 
@@ -42,20 +41,20 @@ class Matrix extends Base {
 
 		# Color pre-allocation speeds things up significantly
 		$colors = [];
-		foreach ($this->code['matrix'] as $by => $row) {
+		foreach ($code['matrix'] as $by => $row) {
 			foreach ($row as $bx => $color) {
 				$colors[$color] = 1;
 			}
 		}
 
 		foreach($colors as $c => $valid){
-			$colors[$c] = $this->myPicture->allocatepColor($this->config['palette'][$c]);
+			$colors[$c] = $myPicture->allocatepColor($config['palette'][$c]);
 		}
 
-		$StartX = $this->config['StartX'];
-		$StartY = $this->config['StartY'];
+		$StartX = $config['StartX'];
+		$StartY = $config['StartY'];
 
-		foreach ($this->code['matrix'] as $by => $row) {
+		foreach ($code['matrix'] as $by => $row) {
 
 			$y1 = intval(floor($y + $by * $wh + $offset)) + $StartY;
 			
@@ -64,7 +63,7 @@ class Matrix extends Base {
 				$x1 = intval(floor($x + $bx * $wh + $offset)) + $StartX;
 				$offwh = $whd - 1;
 
-				switch ($this->config['modules']['Shape']) {
+				switch ($config['modules']['Shape']) {
 					case 'r':
 						imagefilledellipse($image, $x1, $y1, $whd, $whd, $mc);
 						break;
