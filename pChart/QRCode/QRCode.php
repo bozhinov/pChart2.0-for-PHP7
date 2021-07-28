@@ -31,11 +31,10 @@ class QRCode extends pConf {
 
 		// Apply scaling & aspect ratio
 		$width = ($h * $scale) + $padding * 2;
-		$height = $width;
 
 		// Draw the background
 		$bgColorAlloc = $this->myPicture->allocatepColor($this->get('bgColor'));
-		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $height, $bgColorAlloc);
+		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $width, $bgColorAlloc);
 		$colorAlloc = $this->myPicture->allocatepColor($this->get('color'));
 
 		// Render the barcode
