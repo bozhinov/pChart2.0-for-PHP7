@@ -10,10 +10,17 @@ use pChart\Barcodes\Renderers\Matrix;
 class Barcodes {
 
 	private $myPicture;
+	private $options = ['StartX' => 0, 'StartY' => 0];
 
 	function __construct(\pChart\pDraw $pChartObject)
 	{
 		$this->myPicture = $pChartObject;
+	}
+
+	public function set_start_position(int $x, int $y)
+	{
+		$this->options['StartX'] = $x;
+		$this->options['StartY'] = $y;
 	}
 
 	private function parse_opts($opts, $isDataMatrix)
@@ -109,6 +116,8 @@ class Barcodes {
 			$renderer = new Linear();
 		}
 
+		$this->options += $this->parse_opts($opts, $isDataMatrix);
+
 		switch ($symbology) {
 			case 'upca'       : $code = (new Encoders\UPC)->upc_a_encode($data); break;
 			case 'upce'       : $code = (new Encoders\UPC)->upc_e_encode($data); break;
@@ -156,7 +165,7 @@ class Barcodes {
 			default: throw pException::InvalidInput("Unknown encode method - ".$symbology);
 		}
 
-		$renderer->configure($this->parse_opts($opts, $isDataMatrix));
+		$renderer->configure($this->options, $isDataMatrix);
 		$renderer->render($this->myPicture, $code);
 	}
 }

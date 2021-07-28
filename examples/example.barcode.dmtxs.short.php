@@ -12,7 +12,8 @@ use pChart\Barcodes\{
 };
 
 /* Create a pChart object and associate your dataset */ 
-$myPicture = new pDraw(1000,1000);
+$myPicture = new pDraw(250,250);
+$myPicture->drawFilledRectangle(0,0,250,250,["Color"=>new pColor(179,217,91), "Dash"=>TRUE, "DashColor"=>new pColor(199,237,111)]);
 
 $opts = [
 	"BackgroundColor" => (new pColor())->fromHex("#FF00FF"),
@@ -27,6 +28,7 @@ $opts = [
 
 $data = 8675309;
 $barcodes = new Barcodes($myPicture);
+#$barcodes->set_start_position($x = 10, $y = 10);
 $barcodes->draw($data, "dmtxs", $opts);
 
 $myPicture->autoOutput("temp/example_dmtxs_short.png");

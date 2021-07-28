@@ -46,8 +46,10 @@ class QRCode extends pConf {
 		$pixelPerPoint = min($this->get('size'), $imgH);
 		$target_h = $imgH * $pixelPerPoint;
 
+		$StartX = $this->get('StartX');
+		$StartY = $this->get('StartY');
 		$image = $this->myPicture->gettheImage();
-		imagecopyresized($image, $base_image, 0, 0, 0, 0, $target_h, $target_h, $imgH, $imgH);
+		imagecopyresized($image, $base_image, $StartX, $StartY, 0, 0, $target_h, $target_h, $imgH, $imgH);
 		imagedestroy($base_image);
 	}
 

@@ -20,11 +20,13 @@ class Aztec extends pConf
 		$width = count($pixelGrid);
 		$ratio = $this->get('ratio');
 		$padding = $this->get('padding');
-		#$this->size = ($width * $ratio) + ($padding * 2);
+		$StartX = $this->get('StartX');
+		$StartY = $this->get('StartY');
+		$size = ($width * $ratio) + ($padding * 2);
 
 		// Extract options
 		$bgColorAlloc = $this->myPicture->allocatepColor($this->get('bgColor'));
-		imagefill($image, 0, 0, $bgColorAlloc);
+		imagefilledrectangle($image, $StartX, $StartY, $StartX + $size, $StartY + $size, $bgColorAlloc);
 		$colorAlloc = $this->myPicture->allocatepColor($this->get('color'));
 
 		// Render the code
@@ -32,10 +34,11 @@ class Aztec extends pConf
 			for ($y = 0; $y < $width; $y++) {
 				if (isset($pixelGrid[$x][$y])){
 					imagefilledrectangle(
-						$image, ($x * $ratio) + $padding,
-						($y * $ratio) + $padding,
-						(($x + 1) * $ratio - 1) + $padding,
-						(($y + 1) * $ratio - 1) + $padding,
+						$image, 
+						($x * $ratio) + $padding + $StartX,
+						($y * $ratio) + $padding + $StartY,
+						(($x + 1) * $ratio - 1) + $padding + $StartX,
+						(($y + 1) * $ratio - 1) + $padding + $StartY,
 						$colorAlloc
 					);
 				}

@@ -52,13 +52,16 @@ class Matrix extends Base {
 			$colors[$c] = $this->myPicture->allocatepColor($this->config['palette'][$c]);
 		}
 
+		$StartX = $this->config['StartX'];
+		$StartY = $this->config['StartY'];
+
 		foreach ($this->code['matrix'] as $by => $row) {
 
-			$y1 = intval(floor($y + $by * $wh + $offset));
+			$y1 = intval(floor($y + $by * $wh + $offset)) + $StartY;
 			
 			foreach ($row as $bx => $color) {
 				$mc = $colors[$color];
-				$x1 = intval(floor($x + $bx * $wh + $offset));
+				$x1 = intval(floor($x + $bx * $wh + $offset)) + $StartX;
 				$offwh = $whd - 1;
 
 				switch ($this->config['modules']['Shape']) {

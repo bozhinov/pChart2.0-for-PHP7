@@ -16,15 +16,21 @@ use pChart\pException;
 
 class pConf {
 
-	private $options = [];
+	private $options = ['StartX' => 0, 'StartY' => 0];
 	private $user_options = [];
+
+	public function set_start_position(int $x, int $y)
+	{
+		$this->options['StartX'] = $x;
+		$this->options['StartY'] = $y;
+	}
 
 	public function apply_user_options(array $opts)
 	{
 		$this->user_options = $opts;
 
-		$this->setColor('color', 0);
-		$this->setColor('bgColor', 255);
+		$this->set_color('color', 0);
+		$this->set_color('bgColor', 255);
 	}
 
 	public function set(string $opt, $val)
@@ -37,7 +43,7 @@ class pConf {
 		return $this->options[$opt];
 	}
 
-	public function setColor(string $value, int $default)
+	public function set_color(string $value, int $default)
 	{
 		if (!isset($this->user_options[$value])) {
 			$this->options[$value] = new pColor($default);

@@ -42,6 +42,9 @@ class Linear extends Base {
 			}
 		}
 
+		$StartX = $this->config['StartX'];
+		$StartY = $this->config['StartY'];
+
 		foreach ($this->code as $block) {
 
 			if (isset($block['l'])) {
@@ -57,7 +60,7 @@ class Linear extends Base {
 
 			foreach ($block['m'] as $module) {
 				$mw = $mx + $module[1] * $this->widths[$module[2]] * $scale;
-				imagefilledrectangle($image, $mx, $y, intval($mw - 1), $my - 1, $palette[$module[0]]);
+				imagefilledrectangle($image, $mx + $StartX, $y + $StartY, intval($mw - 1) + $StartX, $my - 1 + $StartY, $palette[$module[0]]);
 				$mx = $mw;
 			}
 
@@ -72,9 +75,9 @@ class Linear extends Base {
 					$ly = intval(round($ly - imagefontheight($lsize)));
 					if (!is_null($this->config['label']['TTF'])) {
 						$ly +=($lsize*2) + $this->config['label']['Offset'];
-						imagettftext($image, $lsize, 0, $lx, $ly, $textColor, realpath($this->config['label']['TTF']), $text);
+						imagettftext($image, $lsize, 0, $lx + $StartX, $ly + $StartY, $textColor, realpath($this->config['label']['TTF']), $text);
 					} else {
-						imagestring($image,  $lsize, $lx, $ly, $text, $textColor);
+						imagestring($image,  $lsize, $lx + $StartX, $ly + $StartY, $text, $textColor);
 					}
 				}
 			}

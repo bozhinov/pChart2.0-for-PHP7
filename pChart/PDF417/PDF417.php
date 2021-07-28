@@ -19,19 +19,21 @@ class PDF417 extends pConf
 		$image = $this->myPicture->gettheImage();
 		$padding = $this->get('padding');
 
-		#$width = count($pixelGrid[0]);
-		#$height = count($pixelGrid);
+		$width = count($pixelGrid[0]);
+		$height = count($pixelGrid);
 
 		$scaleX = $this->get('scale');
 		$scaleY = $scaleX * $this->get('ratio');
+		$StartX = $this->get('StartX');
+		$StartY = $this->get('StartY');
 
 		// Apply scaling & aspect ratio
-		#$width = ($width * $scaleX) + $padding * 2;
-		#$height = ($height * $scaleY) + $padding * 2;
+		$width = ($width * $scaleX) + $padding * 2;
+		$height = ($height * $scaleY) + $padding * 2;
 
 		// Extract options
 		$bgColorAlloc = $this->myPicture->allocatepColor($this->get('bgColor'));
-		imagefill($image, 0, 0, $bgColorAlloc);
+		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $height, $bgColorAlloc);
 		$colorAlloc = $this->myPicture->allocatepColor($this->get('color'));
 
 		// Render the barcode
@@ -40,10 +42,10 @@ class PDF417 extends pConf
 				if ($value) {
 					imagefilledrectangle(
 						$image,
-						($x * $scaleX) + $padding,
-						($y * $scaleY) + $padding,
-						(($x + 1) * $scaleX - 1) + $padding,
-						(($y + 1) * $scaleY - 1) + $padding,
+						($x * $scaleX) + $padding + $StartX,
+						($y * $scaleY) + $padding + $StartY,
+						(($x + 1) * $scaleX - 1) + $padding + $StartX,
+						(($y + 1) * $scaleY - 1) + $padding + $StartY,
 						$colorAlloc
 					);
 				}

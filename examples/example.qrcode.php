@@ -5,12 +5,15 @@
 require_once("bootstrap.php");
 
 use pChart\pDraw;
+use pChart\pColor;
 use pChart\QRCode\QRCode;
 
 /* Create a pChart object and associate your dataset */ 
 $myPicture = new pDraw(700,700);
+$myPicture->drawFilledRectangle(0,0,700,700,["Color"=>new pColor(179,217,91), "Dash"=>TRUE, "DashColor"=>new pColor(199,237,111)]);
 
 $QRCode = new QRCode($myPicture);
+$QRCode->set_start_position($x = 10, $y = 10);
 $QRCode->draw('http://www.test.bg/12341234 TEST TEST  TEST  TEST  TEST  TEST  TEST  TEST  TEST   TEST   TEST   TESTTSTS', ["error_correction" => "L", "size" => 7, "margin" => 4]);
 
 /* Render the picture (choose the best way) */
