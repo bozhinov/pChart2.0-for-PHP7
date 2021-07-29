@@ -25,7 +25,6 @@
  ¦   +- pCharts		Class to draw several types of charts
  ¦   +- pColor		Data structure for colors
  ¦   +- pColorGradient	Data structure for gradient color
- ¦   +- pConf		Data structure for Barcodes
  ¦   +- pData		Class to manipulate chart data
  ¦   +- pDraw		Core drawing functions
  ¦   +- pException	Exceptions for all classes

@@ -3,7 +3,6 @@
 namespace pChart\Barcodes;
 
 use pChart\Barcodes\Encoders\Aztec\Encoder;
-use pChart\pConf;
 
 class Aztec extends pConf
 {

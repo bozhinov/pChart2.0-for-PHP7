@@ -3,7 +3,6 @@
 namespace pChart\Barcodes;
 
 use pChart\Barcodes\Encoders\QRCode\Encoder;
-use pChart\pConf;
 use pChart\pException;
 
 class QRCode extends pConf {

@@ -3,7 +3,6 @@
 namespace pChart\Barcodes;
 
 use pChart\Barcodes\Encoders\PDF417\Encoder;
-use pChart\pConf;
 
 class PDF417 extends pConf
 {

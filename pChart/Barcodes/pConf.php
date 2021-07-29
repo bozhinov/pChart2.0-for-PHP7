@@ -9,7 +9,7 @@ Last Update : 27/07/2021
 This file can be distributed under MIT
 */
 
-namespace pChart;
+namespace pChart\Barcodes;
 
 use pChart\pColor;
 use pChart\pException;
