@@ -24,13 +24,6 @@ class LinearCodes {
 	private function parse_opts($opts)
 	{
 		$config = [];
-		$config["label"] = ['Height' => 10, 'Size' => 1, 'Color' => new pColor(0), 'Skip' => FALSE, 'TTF' => NULL, 'Offset' => 0];
-		if (isset($opts['label'])){
-			$config["label"] = array_replace($config["label"], $opts['label']);
-		}
-		# pre-allocate colors
-		$config['label']['Color'] = $this->myPicture->allocatepColor($config['label']['Color']);
-
 		$config["palette"] = [
 			0 => new pColor(255), // CS - Color of spaces
 			1 => new pColor(0) 	// CM - Color of modules
@@ -40,12 +33,17 @@ class LinearCodes {
 			$config["palette"] = array_replace($config["palette"], $opts['palette']);
 		}
 
+		$config["label"] = ['Height' => 10, 'Size' => 1, 'Color' => $config["palette"][1], 'Skip' => FALSE, 'TTF' => NULL, 'Offset' => 0];
+		if (isset($opts['label'])){
+			$config["label"] = array_replace($config["label"], $opts['label']);
+		}
+
 		# pre-allocate colors
 		foreach($config['palette'] as $id => $color) {
-			if ($color instanceof \pChart\pColor){
-				$config['palette'][$id] = $this->myPicture->allocatepColor($color);
-			}
+			$config['palette'][$id] = $this->myPicture->allocatepColor($color);
 		}
+
+		$config['label']['Color'] = $this->myPicture->allocatepColor($config['label']['Color']);
 
 		// widths
 		$config['widths'] = [

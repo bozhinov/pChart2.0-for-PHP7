@@ -46,9 +46,7 @@ class MatrixCodes {
 
 		# pre-allocate colors
 		foreach($config['palette'] as $id => $color) {
-			if ($color instanceof \pChart\pColor){
-				$config['palette'][$id] = $this->myPicture->allocatepColor($color);
-			}
+			$config['palette'][$id] = $this->myPicture->allocatepColor($color);
 		}
 
 		// widths
