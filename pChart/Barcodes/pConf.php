@@ -16,8 +16,7 @@ use pChart\pException;
 
 class pConf {
 
-	private $options = ['StartX' => 0, 'StartY' => 0];
-	private $user_options = [];
+	private $options;
 
 	public function set_start_position(int $x, int $y)
 	{
@@ -25,10 +24,9 @@ class pConf {
 		$this->options['StartY'] = $y;
 	}
 
-	public function apply_user_options(array $opts)
+	public function apply_user_options(array $opts, array $defaults)
 	{
-		$this->user_options = $opts;
-
+		$this->options = array_replace_recursive($defaults, $opts);
 		$this->set_color('color', 0);
 		$this->set_color('bgColor', 255);
 	}
@@ -45,44 +43,27 @@ class pConf {
 
 	public function set_color(string $value, int $default)
 	{
-		if (!isset($this->user_options[$value])) {
+		if (!isset($this->options[$value])) {
 			$this->options[$value] = new pColor($default);
 		} else {
-			if (!($this->user_options[$value] instanceof pColor)) {
+			if (!($this->options[$value] instanceof pColor)) {
 				throw pException::InvalidInput("Invalid value for $value. Expected an pColor object.");
 			}
-			$this->options[$value] = $this->user_options[$value];
 		}
 	}
 
-	public function return_if_match_or_default(string $val, array $possibilities, string $default)
+	public function check_valid(string $val, array $possibilities)
 	{
-		if (isset($this->user_options[$val])) {
-			$ret = $this->user_options[$val];
-			if (!in_array($ret, $possibilities)){
-				throw pException::InvalidInput("Invalid value for $val.");
-			}
-		} else {
-			$ret = $default;
+		if (!in_array($this->options[$val], $possibilities)){
+			throw pException::InvalidInput("Invalid value for $val.");
 		}
-		return $ret;
 	}
 
-	public function set_if_within_range_or_default(string $val, int $start, int $end, int $default)
+	public function check_range(string $val, int $start, int $end)
 	{
-		$this->options[$val] = $this->return_if_within_range_or_default($val, $start, $end, $default);
-	}
-
-	public function return_if_within_range_or_default(string $val, int $start, int $end, int $default)
-	{
-		if (isset($this->user_options[$val])) {
-			$ret = $this->user_options[$val];
-			if (!is_numeric($ret) || $ret < $start || $ret > $end) {
-				throw pException::InvalidInput("Invalid value. Expected an integer between $start and $end.");
-			}
-		} else {
-			$ret = $default;
+		$ret = $this->options[$val];
+		if (!is_numeric($ret) || $ret < $start || $ret > $end) {
+			throw pException::InvalidInput("Invalid value. Expected an integer between $start and $end.");
 		}
-		return $ret;
 	}
 }

@@ -50,14 +50,28 @@ class PDF417 extends pConf
 
 	public function draw($data, array $opts = [])
 	{
-		$this->apply_user_options($opts);
+		$defaults = [
+			'columns' => 6,
+			'scale' => 3,
+			'ratio' => 3,
+			'padding' => 20,
+			'securityLevel' => 2,
+			'hint' => 'none',
+			'StartX' => 0,
+			'StartY' => 0
+		];
+		$this->apply_user_options($opts, $defaults);
 
-		$columns = $this->return_if_within_range_or_default('columns', 1, 30, 6);
-		$this->set_if_within_range_or_default('scale', 1, 20, 3);
-		$this->set_if_within_range_or_default('ratio', 1, 10, 3);
-		$this->set_if_within_range_or_default('padding', 0, 50, 20);
-		$securityLevel = $this->return_if_within_range_or_default('securityLevel', 0, 8, 2);
-		$hint = $this->return_if_match_or_default('hint',["binary", "numbers", "text", "none"], 'none');
+		$this->check_range('columns', 1, 30);
+		$this->check_range('scale', 1, 20);
+		$this->check_range('ratio', 1, 10);
+		$this->check_range('padding', 0, 20);
+		$this->check_range('securityLevel', 0, 8);
+		$this->check_valid('hint', ["binary", "numbers", "text", "none"]);
+
+		$securityLevel = $this->get('securityLevel');
+		$columns = $this->get('columns');
+		$hint = $this->get('hint');
 
 		$pixelGrid = (new Encoder($columns, $securityLevel, $hint))->encodeData($data);
 		$this->render($pixelGrid);

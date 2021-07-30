@@ -51,7 +51,13 @@ class QRCode extends pConf {
 
 	public function draw(string $text, array $opts = [])
 	{
-		$this->apply_user_options($opts);
+		$defaults = [
+			'scale' => 3,
+			'padding' => 4,
+			'StartX' => 0,
+			'StartY' => 0
+		];
+		$this->apply_user_options($opts, $defaults);
 
 		$level = 0;
 		if (isset($opts['level'])){
@@ -73,8 +79,8 @@ class QRCode extends pConf {
 			}
 		}
 
-		$this->set_if_within_range_or_default('scale', 0, 20, 3);
-		$this->set_if_within_range_or_default('padding', 0, 20, 4);
+		$this->check_range('scale', 0, 20);
+		$this->check_range('padding', 0, 20);
 
 		if($text == '\0' || $text == '') {
 			throw pException::InvalidInput("Invalid value for text");

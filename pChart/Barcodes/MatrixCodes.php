@@ -61,7 +61,9 @@ class MatrixCodes {
 
 		# pre-allocate colors
 		foreach($config['palette'] as $id => $color) {
-			$config['palette'][$id] = $this->myPicture->allocatepColor($color);
+			if ($color instanceof \pChart\pColor){
+				$config['palette'][$id] = $this->myPicture->allocatepColor($color);
+			}
 		}
 
 		return $config;
@@ -76,8 +78,8 @@ class MatrixCodes {
 
 		$x = intval($config['StartX']);
 		$y = intval($config['StartY']);
-		$w = (!is_null($config['Width']))  ? intval($config['Width'])  : intval(ceil($width * $config['scale']));
-		$h = (!is_null($config['Height'])) ? intval($config['Height']) : intval(ceil($height * $config['scale']));
+		$w = (!is_null($config['width']))  ? intval($config['width'])  : intval(ceil($width * $config['scale']));
+		$h = (!is_null($config['height'])) ? intval($config['height']) : intval(ceil($height * $config['scale']));
 
 		if ($width > 0 && $height > 0) {
 			$scale = min($w / $width, $h / $height);

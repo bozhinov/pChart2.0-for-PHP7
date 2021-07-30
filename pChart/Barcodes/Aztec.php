@@ -47,12 +47,23 @@ class Aztec extends pConf
 
 	public function draw($data, array $opts = [])
 	{
-		$this->apply_user_options($opts);
+		$defaults = [
+			'scale' => 3,
+			'padding' => 4,
+			'hint' => 'dynamic',
+			'eccPercent' => 33,
+			'StartX' => 0,
+			'StartY' => 0
+		];
+		$this->apply_user_options($opts, $defaults);
 
-		$hint = $this->return_if_match_or_default('hint', ["binary", "dynamic"], 'dynamic');
-		$eccPercent = $this->return_if_within_range_or_default('eccPercent', 1, 100, 33);
-		$this->set_if_within_range_or_default('scale', 1, 10, 4);
-		$this->set_if_within_range_or_default('padding', 0, 50, 20);
+		$this->check_valid('hint', ["binary", "dynamic"]);
+		$this->check_range('eccPercent', 1, 100);
+		$this->check_range('scale', 1, 20);
+		$this->check_range('padding', 0, 20);
+
+		$hint = $this->get('hint');
+		$eccPercent = $this->get('eccPercent');
 
 		$pixelGrid = (new Encoder())->encode($data, $eccPercent, $hint);
 
