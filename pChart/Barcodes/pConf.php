@@ -52,6 +52,23 @@ class pConf {
 		}
 	}
 
+	public function return_key_if_found(string $val, array $possibilities)
+	{
+		$ret = array_search($val, $possibilities);
+		if ($ret === FALSE){
+			throw pException::InvalidInput("Invalid value specified.");
+		}
+
+		return $ret;
+	}
+
+	public function check_text_valid($text)
+	{
+		if($text == '\0' || $text == '') {
+			throw pException::InvalidInput("Invalid value for text");
+		}
+	}
+
 	public function check_valid(string $val, array $possibilities)
 	{
 		if (!in_array($this->options[$val], $possibilities)){

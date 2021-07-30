@@ -3,7 +3,6 @@
 namespace pChart\Barcodes;
 
 use pChart\Barcodes\Encoders\QRCode\Encoder;
-use pChart\pException;
 
 class QRCode extends pConf {
 
@@ -60,52 +59,19 @@ class QRCode extends pConf {
 		];
 		$this->apply_user_options($opts, $defaults);
 
-		$level = 0;
-		if (isset($opts['level'])){
-			switch(strtoupper($opts['level'])){
-				case "L":
-					#$level = 0;
-					break;
-				case "M":
-					$level = 1;
-					break;
-				case "Q":
-					$level = 2;
-					break;
-				case "H":
-					$level = 3;
-					break;
-				default:
-					throw pException::InvalidInput("Invalid value for level");
-			}
-		}
-
 		$this->check_range('scale', 0, 20);
 		$this->check_range('padding', 0, 20);
 
-		if($text == '\0' || $text == '') {
-			throw pException::InvalidInput("Invalid value for text");
+		$this->check_text_valid($text);
+
+		$level = 0;
+		if (isset($opts['level'])){
+			$level = $this->return_key_if_found(strtoupper($opts['level']), ["L", "M", "Q", "H"]);
 		}
 
+		$hint = -1;
 		if (isset($opts['hint'])){
-			switch(strtolower($opts['hint'])){
-				case "numeric":
-					$hint = 0;
-					break;
-				case "alphanumeric":
-					$hint = 1;
-					break;
-				case "byte":
-					$hint = 2;
-					break;
-				case "kanji":
-					$hint = 3;
-					break;
-					default:
-						throw pException::InvalidInput("Invalid value for hint");
-			}
-		} else {
-			$hint = -1;
+			$hint = $this->return_key_if_found(strtolower($opts['hint']), ["numeric", "alphanumeric", "byte", "kanji"]);
 		}
 
 		$encoded = (new Encoder($level))->encodeString($text, $hint);
