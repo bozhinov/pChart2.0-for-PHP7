@@ -53,9 +53,7 @@ class QRCode extends pConf {
 	{
 		$defaults = [
 			'scale' => 3,
-			'padding' => 4,
-			'StartX' => 0,
-			'StartY' => 0
+			'padding' => 4
 		];
 		$this->apply_user_options($opts, $defaults);
 

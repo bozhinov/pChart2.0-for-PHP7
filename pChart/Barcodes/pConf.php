@@ -16,7 +16,7 @@ use pChart\pException;
 
 class pConf {
 
-	private $options;
+	private $options = ['StartX' => 0, 'StartY' => 0];
 
 	public function set_start_position(int $x, int $y)
 	{
@@ -26,7 +26,7 @@ class pConf {
 
 	public function apply_user_options(array $opts, array $defaults)
 	{
-		$this->options = array_replace_recursive($defaults, $opts);
+		$this->options += array_replace_recursive($defaults, $opts);
 		$this->set_color('color', 0);
 		$this->set_color('bgColor', 255);
 	}

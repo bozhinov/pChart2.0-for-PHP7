@@ -51,9 +51,7 @@ class Aztec extends pConf
 			'scale' => 3,
 			'padding' => 4,
 			'hint' => 'dynamic',
-			'eccPercent' => 33,
-			'StartX' => 0,
-			'StartY' => 0
+			'eccPercent' => 33
 		];
 		$this->apply_user_options($opts, $defaults);
 

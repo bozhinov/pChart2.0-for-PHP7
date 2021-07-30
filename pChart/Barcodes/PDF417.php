@@ -56,9 +56,7 @@ class PDF417 extends pConf
 			'ratio' => 3,
 			'padding' => 20,
 			'securityLevel' => 2,
-			'hint' => 'none',
-			'StartX' => 0,
-			'StartY' => 0
+			'hint' => 'none'
 		];
 		$this->apply_user_options($opts, $defaults);
 
