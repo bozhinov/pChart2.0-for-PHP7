@@ -75,15 +75,14 @@ class LinearCodes extends pConf {
 		} else {
 			$scale = 1;
 		}
-		
+
 		$image = $this->myPicture->gettheImage();
 		$palette = array_values($opts['palette']);
-		
+
 		# pre-allocate colors
 		foreach($palette as $id => $color) {
 			$palette[$id] = $this->myPicture->allocatepColor($color);
 		}
-		$label_color = $this->myPicture->allocatepColor($label['color']);
 
 		foreach ($code as $block) {
 
@@ -104,6 +103,7 @@ class LinearCodes extends pConf {
 
 			if ($label['skip'] != TRUE) {
 				if (isset($block['l'])) {
+					$label_color = $this->myPicture->allocatepColor($label['color']);
 					$text = $block['l'][0];
 					$lx = (isset($block['l'][2]) ? (float)$block['l'][2] : 0.5);
 					$lx = ($x + ($mx - $x) * $lx);
