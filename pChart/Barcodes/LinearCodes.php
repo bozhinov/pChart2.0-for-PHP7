@@ -23,46 +23,29 @@ class LinearCodes {
 
 	private function parse_opts($opts)
 	{
-		$config = [];
-		$config["palette"] = [
-			0 => new pColor(255), // CS - Color of spaces
-			1 => new pColor(0) 	// CM - Color of modules
+		$config = [
+			'scale' => 1,
+			'width' => NULL,
+			'height' => NULL,
+			'widths' => [
+				'QuietArea' 	=> 1,
+				'NarrowModules' => 1,
+				'WideModules' 	=> 3,
+				'NarrowSpace' 	=> 1
+			],
+			'palette' => [
+				0 => new pColor(255), // CS - Color of spaces
+				1 => new pColor(0) 	// CM - Color of modules
+			]
 		];
-
-		if (isset($opts['palette'])){
-			$config["palette"] = array_replace($config["palette"], $opts['palette']);
-		}
-
 		$config["label"] = ['Height' => 10, 'Size' => 1, 'Color' => $config["palette"][1], 'Skip' => FALSE, 'TTF' => NULL, 'Offset' => 0];
-		if (isset($opts['label'])){
-			$config["label"] = array_replace($config["label"], $opts['label']);
-		}
+		$config = array_replace_recursive($config, $opts);
 
 		# pre-allocate colors
 		foreach($config['palette'] as $id => $color) {
 			$config['palette'][$id] = $this->myPicture->allocatepColor($color);
 		}
-
 		$config['label']['Color'] = $this->myPicture->allocatepColor($config['label']['Color']);
-
-		// widths
-		$config['widths'] = [
-			'QuietArea' 	=> 1,
-			'NarrowModules' => 1,
-			'WideModules' 	=> 3,
-			'NarrowSpace' 	=> 1
-		];
-
-		if (isset($opts['widths'])){
-			$config['widths'] = array_replace($config['widths'], $opts['widths']);
-		}
-
-		// scale
-		$config['scale'] = (isset($opts['scale'])) ? (float)$opts['scale'] : 1;
-
-		// dimentions
-		$config['Width']  = (isset($opts['Width'])  ? (int)$opts['Width']  : NULL);
-		$config['Height'] = (isset($opts['Height']) ? (int)$opts['Height'] : NULL);
 
 		return $config;
 	}
@@ -78,10 +61,10 @@ class LinearCodes {
 			}
 		}
 
-		$x = $config['StartX'];
-		$y = $config['StartY'];
-		$w = (!is_null($config['Width']))  ? $config['Width']  : intval(ceil($width * $config['scale']));
-		$h = (!is_null($config['Height'])) ? $config['Height'] : intval(ceil(80 * $config['scale']));
+		$x = intval($config['StartX']);
+		$y = intval($config['StartY']);
+		$w = (!is_null($config['width']))  ? intval($config['width'])  : intval(ceil($width * (float)$config['scale']));
+		$h = (!is_null($config['height'])) ? intval($config['height']) : intval(ceil(80 * (float)$config['scale']));
 
 		$lsize = $config['label']['Size'];
 
@@ -98,7 +81,7 @@ class LinearCodes {
 
 			if (isset($block['l'])) {
 				$ly = (isset($block['l'][1]) ? (float)$block['l'][1] : 1);
-				$my = round($y + min($h, $h + ($ly - 1) * $config['label']['Height']));
+				$my = round($y + min($h, $h + ($ly - 1) * intval($config['label']['Height'])));
 			} else {
 				$my = $y + $h;
 			}

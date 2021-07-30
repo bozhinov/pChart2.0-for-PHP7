@@ -23,56 +23,46 @@ class MatrixCodes {
 
 	private function parse_opts($opts)
 	{
-		$config = [];
-		$config['modules']['Shape']   = (isset($opts['modules']['Shape'])   ? strtolower($opts['modules']['Shape']) : '');
-		$config['modules']['Density'] = (isset($opts['modules']['Density']) ? (float)$opts['modules']['Density'] : 1);
-
-		$config["palette"] = [
-			0 => new pColor(255), // CS - Color of spaces
-			1 => new pColor(0), 	// CM - Color of modules
-			2 => NULL, // C2 => new pColor(255,0, 0)
-			3 => NULL, // C3 => new pColor(255,255, 0)
-			4 => NULL, // C4 => new pColor(0,255, 0)
-			5 => NULL, // C5 => new pColor(0,255, 255)
-			6 => NULL, // C6 => new pColor(0,0, 255)
-			7 => NULL, // C7 => new pColor(255,0, 255)
-			8 => NULL, // C8 => new pColor(255)
-			9 => NULL  // C9 => new pColor(0)
+		$config = [
+			'scale' => 4,
+			'width' => NULL,
+			'height' => NULL,
+			'modules' => [
+				'Shape' => '',
+				'Density' => 1
+			],
+			'widths' => [
+				'QuietArea' 	=> 1,
+				'NarrowModules' => 1,
+				'WideModules' 	=> 3,
+				'NarrowSpace' 	=> 1,
+				'w4' => 1,
+				'w5' => 1,
+				'w6' => 1,
+				'w7' => 1,
+				'w8' => 1,
+				'w9' => 1
+			],
+			'palette' => [
+				0 => new pColor(255), // CS - Color of spaces
+				1 => new pColor(0), 	// CM - Color of modules
+				2 => NULL, // C2 => new pColor(255,0, 0)
+				3 => NULL, // C3 => new pColor(255,255, 0)
+				4 => NULL, // C4 => new pColor(0,255, 0)
+				5 => NULL, // C5 => new pColor(0,255, 255)
+				6 => NULL, // C6 => new pColor(0,0, 255)
+				7 => NULL, // C7 => new pColor(255,0, 255)
+				8 => NULL, // C8 => new pColor(255)
+				9 => NULL  // C9 => new pColor(0)
+			]
 		];
 
-		if (isset($opts['palette'])){
-			$config["palette"] = array_replace($config["palette"], $opts['palette']);
-		}
+		$config = array_replace_recursive($config, $opts);
 
 		# pre-allocate colors
 		foreach($config['palette'] as $id => $color) {
 			$config['palette'][$id] = $this->myPicture->allocatepColor($color);
 		}
-
-		// widths
-		$config['widths'] = [
-			'QuietArea' 	=> 1,
-			'NarrowModules' => 1,
-			'WideModules' 	=> 3,
-			'NarrowSpace' 	=> 1,
-			'w4' => 1,
-			'w5' => 1,
-			'w6' => 1,
-			'w7' => 1,
-			'w8' => 1,
-			'w9' => 1
-		];
-
-		if (isset($opts['widths'])){
-			$config['widths'] = array_replace($config['widths'], $opts['widths']);
-		}
-
-		// scale
-		$config['scale'] = (isset($opts['scale']) ? (float)$opts['scale'] : 4);
-
-		// dimentions
-		$config['Width']  = (isset($opts['Width'])  ? (int)$opts['Width']  : NULL);
-		$config['Height'] = (isset($opts['Height']) ? (int)$opts['Height'] : NULL);
 
 		return $config;
 	}
@@ -84,10 +74,10 @@ class MatrixCodes {
 		$width  = (2 * $widths[0]) + ($code['width']  * $widths[1]);
 		$height = (2 * $widths[0]) + ($code['height'] * $widths[1]);
 
-		$x = $config['StartX'];
-		$y = $config['StartY'];
-		$w = (!is_null($config['Width']))  ? $config['Width']  : intval(ceil($width * $config['scale']));
-		$h = (!is_null($config['Height'])) ? $config['Height'] : intval(ceil($height * $config['scale']));
+		$x = intval($config['StartX']);
+		$y = intval($config['StartY']);
+		$w = (!is_null($config['Width']))  ? intval($config['Width'])  : intval(ceil($width * $config['scale']));
+		$h = (!is_null($config['Height'])) ? intval($config['Height']) : intval(ceil($height * $config['scale']));
 
 		if ($width > 0 && $height > 0) {
 			$scale = min($w / $width, $h / $height);
@@ -98,9 +88,9 @@ class MatrixCodes {
 
 		$wh = $widths[1] * $scale;
 
-		$md = $config['modules']['Density'];
+		$md = (float)$config['modules']['Density'];
 		$whd = intval(ceil($wh * $md));
-		if ($config['modules']['Shape'] == 'r'){
+		if (strtolower($config['modules']['Shape']) == 'r'){
 			$md = 0;
 		}
 
@@ -116,7 +106,7 @@ class MatrixCodes {
 				$x1 = intval(floor($x + $bx * $wh + $offset));
 				$offwh = $whd - 1;
 
-				switch ($config['modules']['Shape']) {
+				switch (strtolower($config['modules']['Shape'])) {
 					case 'r':
 						imagefilledellipse($image, $x1, $y1, $whd, $whd, $mc);
 						break;
