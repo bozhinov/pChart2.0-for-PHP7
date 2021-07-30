@@ -19,11 +19,13 @@ class QRCode extends pConf {
 		$h = count($encoded);
 
 		$image = $this->myPicture->gettheImage();
-		$padding = $this->get('padding');
-		$scale = $this->get('scale');
-		$palette = $this->get('palette');
-		$StartX = $this->get('StartX');
-		$StartY = $this->get('StartY');
+		$opts = $this->options;
+
+		$scale = $opts['scale'];
+		$padding = $opts['padding'];
+		$palette = $opts['palette'];
+		$StartX = $opts['StartX'];
+		$StartY = $opts['StartY'];
 
 		// Apply scaling & aspect ratio
 		$width = ($h * $scale) + $padding * 2;

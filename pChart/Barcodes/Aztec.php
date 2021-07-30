@@ -15,13 +15,14 @@ class Aztec extends pConf
 
 	private function render($pixelGrid)
 	{
+		$opts = $this->options;
 		$image = $this->myPicture->gettheImage();
 		$width = count($pixelGrid);
-		$scale = $this->get('scale');
-		$padding = $this->get('padding');
-		$palette = $this->get('palette');
-		$StartX = $this->get('StartX');
-		$StartY = $this->get('StartY');
+		$scale = $opts['scale'];
+		$padding = $opts['padding'];
+		$palette = $opts['palette'];
+		$StartX = $opts['StartX'];
+		$StartY = $opts['StartY'];
 		$size = ($width * $scale) + ($padding * 2);
 
 		// Extract options

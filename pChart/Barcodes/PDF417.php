@@ -16,12 +16,14 @@ class PDF417 extends pConf
 	private function render($pixelGrid)
 	{
 		$image = $this->myPicture->gettheImage();
-		$padding = $this->get('padding');
-		$scaleX = $this->get('scale');
-		$palette = $this->get('palette');
-		$scaleY = $scaleX * $this->get('ratio');
-		$StartX = $this->get('StartX');
-		$StartY = $this->get('StartY');
+		$opts = $this->options;
+
+		$padding = $opts['padding'];
+		$scaleX = $opts['scale'];
+		$scaleY = $scaleX * $opts['ratio'];
+		$palette = $opts['palette'];
+		$StartX = $opts['StartX'];
+		$StartY = $opts['StartY'];
 
 		// Apply scaling & aspect ratio
 		$width = (count($pixelGrid[0]) * $scaleX) + $padding * 2;
