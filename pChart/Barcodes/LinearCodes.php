@@ -97,7 +97,7 @@ class LinearCodes extends pConf {
 
 			foreach ($block['m'] as $module) {
 				$mw = $mx + $module[1] * $widths[$module[2]] * $scale;
-				imagefilledrectangle($image, $mx, $y, intval($mw - 1), intval($my - 1), $palette[$module[0]]);
+				imagefilledrectangle($image, intval($mx), $y, intval($mw - 1), intval($my - 1), $palette[$module[0]]);
 				$mx = $mw;
 			}
 
