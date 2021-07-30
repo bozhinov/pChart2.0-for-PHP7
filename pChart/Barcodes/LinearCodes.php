@@ -2,28 +2,20 @@
 
 namespace pChart\Barcodes;
 
-use pChart\pColor;
 use pChart\pException;
 
-class LinearCodes {
+class LinearCodes extends pConf {
 
 	private $myPicture;
-	private $options = ['StartX' => 0, 'StartY' => 0];
 
 	function __construct(\pChart\pDraw $pChartObject)
 	{
 		$this->myPicture = $pChartObject;
 	}
 
-	public function set_start_position(int $x, int $y)
-	{
-		$this->options['StartX'] = $x;
-		$this->options['StartY'] = $y;
-	}
-
 	private function parse_opts($opts)
 	{
-		$config = [
+		$defaults = [
 			'scale' => 1,
 			'width' => NULL,
 			'height' => NULL,
@@ -32,41 +24,50 @@ class LinearCodes {
 				'NarrowModules' => 1,
 				'WideModules' 	=> 3,
 				'NarrowSpace' 	=> 1
-			],
-			'palette' => [
-				0 => new pColor(255), // CS - Color of spaces
-				1 => new pColor(0) 	// CM - Color of modules
-			]
+				],
+			"label" => [
+					'height' => 10,
+					'size' => 1,
+					'color' => NULL,
+					'skip' => FALSE,
+					'ttf' => NULL,
+					'offset' => 0
+				]
+			#'palette' => [
+			#	0 => new pColor(255), // CS - Color of spaces
+			#	1 => new pColor(0) 	// CM - Color of modules
+			#]
 		];
-		$config["label"] = ['Height' => 10, 'Size' => 1, 'Color' => $config["palette"][1], 'Skip' => FALSE, 'TTF' => NULL, 'Offset' => 0];
-		$config = array_replace_recursive($config, $opts);
 
-		# pre-allocate colors
-		foreach($config['palette'] as $id => $color) {
-			$config['palette'][$id] = $this->myPicture->allocatepColor($color);
+		$this->apply_user_options($opts, $defaults);
+
+		if (is_null($this->options['label']['color'])){
+			$this->options['label']['color'] = $this->options['palette']['color'];
 		}
-		$config['label']['Color'] = $this->myPicture->allocatepColor($config['label']['Color']);
-
-		return $config;
 	}
 
-	public function render($config, $code)
+	public function render($code)
 	{
+		$opts = $this->options;
+
 		# calculate_size
 		$width = 0;
-		$widths = array_values($config['widths']);
+		$widths = array_values($opts['widths']);
 		foreach ($code as $block){
 			foreach ($block['m'] as $module){
 				$width += $module[1] * $widths[$module[2]];
 			}
 		}
 
-		$x = intval($config['StartX']);
-		$y = intval($config['StartY']);
-		$w = (!is_null($config['width']))  ? intval($config['width'])  : intval(ceil($width * (float)$config['scale']));
-		$h = (!is_null($config['height'])) ? intval($config['height']) : intval(ceil(80 * (float)$config['scale']));
+		$label = $opts['label'];
+		$scale = (float)$opts['scale'];
 
-		$lsize = $config['label']['Size'];
+		$x = intval($opts['StartX']);
+		$y = intval($opts['StartY']);
+		$w = (!is_null($opts['width']))  ? intval($opts['width'])  : intval(ceil($width * $scale));
+		$h = (!is_null($opts['height'])) ? intval($opts['height']) : intval(ceil(80 * $scale));
+
+		$lsize = $label['size'];
 
 		if ($width > 0) {
 			$scale = $w / $width;
@@ -76,12 +77,19 @@ class LinearCodes {
 		}
 		
 		$image = $this->myPicture->gettheImage();
+		$palette = array_values($opts['palette']);
+		
+		# pre-allocate colors
+		foreach($palette as $id => $color) {
+			$palette[$id] = $this->myPicture->allocatepColor($color);
+		}
+		$label_color = $this->myPicture->allocatepColor($label['color']);
 
 		foreach ($code as $block) {
 
 			if (isset($block['l'])) {
 				$ly = (isset($block['l'][1]) ? (float)$block['l'][1] : 1);
-				$my = round($y + min($h, $h + ($ly - 1) * intval($config['label']['Height'])));
+				$my = round($y + min($h, $h + ($ly - 1) * intval($label['height'])));
 			} else {
 				$my = $y + $h;
 			}
@@ -90,24 +98,24 @@ class LinearCodes {
 
 			foreach ($block['m'] as $module) {
 				$mw = $mx + $module[1] * $widths[$module[2]] * $scale;
-				imagefilledrectangle($image, $mx, $y, intval($mw - 1), intval($my - 1), $config['palette'][$module[0]]);
+				imagefilledrectangle($image, $mx, $y, intval($mw - 1), intval($my - 1), $palette[$module[0]]);
 				$mx = $mw;
 			}
 
-			if ($config['label']['Skip'] != TRUE) {
+			if ($label['skip'] != TRUE) {
 				if (isset($block['l'])) {
 					$text = $block['l'][0];
 					$lx = (isset($block['l'][2]) ? (float)$block['l'][2] : 0.5);
 					$lx = ($x + ($mx - $x) * $lx);
 					$lw = imagefontwidth($lsize) * strlen($text);
 					$lx = intval(round($lx - $lw / 2));
-					$ly = ($y + $h + $ly * $config['label']['Height']);
+					$ly = ($y + $h + $ly * $label['height']);
 					$ly = intval(round($ly - imagefontheight($lsize)));
-					if (!is_null($config['label']['TTF'])) {
-						$ly +=($lsize*2) + $config['label']['Offset'];
-						imagettftext($image, $lsize, 0, $lx, $ly, $config['label']['Color'], realpath($config['label']['TTF']), $text);
+					if (!is_null($label['ttf'])) {
+						$ly +=($lsize*2) + $label['offset'];
+						imagettftext($image, $lsize, 0, $lx, $ly, $label_color, realpath($label['ttf']), $text);
 					} else {
-						imagestring($image,  $lsize, $lx, $ly, $text, $config['label']['Color']);
+						imagestring($image,  $lsize, $lx, $ly, $text, $label_color);
 					}
 				}
 			}
@@ -151,7 +159,7 @@ class LinearCodes {
 			default: throw pException::InvalidInput("Unknown encode method - ".$symbology);
 		}
 
-		$opts = $this->options + $this->parse_opts($opts);
-		$this->render($opts, $code);
+		$this->parse_opts($opts);
+		$this->render($code);
 	}
 }

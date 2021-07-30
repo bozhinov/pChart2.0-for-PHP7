@@ -13,9 +13,9 @@ $myPicture = new pDraw(700,230);
 
 $opts = [
 	"label" => [
-		'Height'=> 10,
-		'Size' 	=> 1,
-		'Color' => (new pColor())->fromHex("2AFF55")
+		'height'=> 10,
+		'size' 	=> 1,
+		'color' => (new pColor())->fromHex("2AFF55")
 	]
 ];
 

@@ -14,7 +14,15 @@ $myPicture->drawFilledRectangle(0,0,700,700,["Color"=>new pColor(179,217,91), "D
 
 $QRCode = new QRCode($myPicture);
 $QRCode->set_start_position($x = 10, $y = 10);
-$QRCode->draw('http://www.test.bg/12341234 TEST TEST  TEST  TEST  TEST  TEST  TEST  TEST  TEST   TEST   TEST   TESTTSTS', ["error_correction" => "L", "scale" => 7, "padding" => 4]);
+$QRCode->draw(
+	'http://www.test.bg/12341234 TEST TEST  TEST  TEST  TEST  TEST  TEST  TEST  TEST   TEST   TEST   TESTTSTS',
+	[
+		'palette' => ['color' => new pColor(255), 'bgColor' => new pColor(0)],
+		"error_correction" => "L",
+		"scale" => 7,
+		"padding" => 4
+	]
+	);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput('temp/example.QRcode.basic.png');

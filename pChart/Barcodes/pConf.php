@@ -16,7 +16,7 @@ use pChart\pException;
 
 class pConf {
 
-	private $options = ['StartX' => 0, 'StartY' => 0];
+	protected $options = ['StartX' => 0, 'StartY' => 0];
 
 	public function set_start_position(int $x, int $y)
 	{
@@ -27,8 +27,8 @@ class pConf {
 	public function apply_user_options(array $opts, array $defaults)
 	{
 		$this->options += array_replace_recursive($defaults, $opts);
-		$this->set_color('color', 0);
 		$this->set_color('bgColor', 255);
+		$this->set_color('color', 0);
 	}
 
 	public function set(string $opt, $val)
@@ -43,10 +43,10 @@ class pConf {
 
 	public function set_color(string $value, int $default)
 	{
-		if (!isset($this->options[$value])) {
-			$this->options[$value] = new pColor($default);
+		if (!isset($this->options['palette'][$value])) {
+			$this->options['palette'][$value] = new pColor($default);
 		} else {
-			if (!($this->options[$value] instanceof pColor)) {
+			if (!($this->options['palette'][$value] instanceof pColor)) {
 				throw pException::InvalidInput("Invalid value for $value. Expected an pColor object.");
 			}
 		}

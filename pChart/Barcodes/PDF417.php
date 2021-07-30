@@ -18,6 +18,7 @@ class PDF417 extends pConf
 		$image = $this->myPicture->gettheImage();
 		$padding = $this->get('padding');
 		$scaleX = $this->get('scale');
+		$palette = $this->get('palette');
 		$scaleY = $scaleX * $this->get('ratio');
 		$StartX = $this->get('StartX');
 		$StartY = $this->get('StartY');
@@ -27,9 +28,9 @@ class PDF417 extends pConf
 		$height = (count($pixelGrid) * $scaleY) + $padding * 2;
 
 		// Draw the background
-		$bgColorAlloc = $this->myPicture->allocatepColor($this->get('bgColor'));
+		$bgColorAlloc = $this->myPicture->allocatepColor($palette['color']);
 		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $height, $bgColorAlloc);
-		$colorAlloc = $this->myPicture->allocatepColor($this->get('color'));
+		$colorAlloc = $this->myPicture->allocatepColor($palette['bgColor']);
 
 		// Render the barcode
 		foreach ($pixelGrid as $y => $row) {
