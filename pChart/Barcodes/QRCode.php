@@ -15,24 +15,22 @@ class QRCode extends pConf {
 
 	private function render($encoded)
 	{
-		$h = count($encoded);
-
 		$image = $this->myPicture->gettheImage();
 		$opts = $this->options;
 
 		$scale = $opts['scale'];
 		$padding = $opts['padding'];
-		$palette = $opts['palette'];
 		$StartX = $opts['StartX'];
 		$StartY = $opts['StartY'];
 
 		// Apply scaling & aspect ratio
+		$h = count($encoded);
 		$width = ($h * $scale) + $padding * 2;
 
 		// Draw the background
-		$bgColorAlloc = $this->myPicture->allocatepColor($palette['bgColor']);
+		$bgColorAlloc = $this->myPicture->allocatepColor($opts['palette']['bgColor']);
 		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $width, $bgColorAlloc);
-		$colorAlloc = $this->myPicture->allocatepColor($palette['color']);
+		$colorAlloc = $this->myPicture->allocatepColor($opts['palette']['color']);
 
 		// Render the barcode
 		for($y = 0; $y < $h; $y++) {
