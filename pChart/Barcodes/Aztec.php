@@ -15,20 +15,20 @@ class Aztec extends pConf
 
 	private function render($pixelGrid)
 	{
-		$opts = $this->options;
 		$image = $this->myPicture->gettheImage();
+		$opts = $this->options;
+
 		$width = count($pixelGrid);
 		$scale = $opts['scale'];
 		$padding = $opts['padding'];
-		$palette = $opts['palette'];
 		$StartX = $opts['StartX'];
 		$StartY = $opts['StartY'];
 		$size = ($width * $scale) + ($padding * 2);
 
 		// Extract options
-		$bgColorAlloc = $this->myPicture->allocatepColor($palette['bgColor']);
+		$bgColorAlloc = $this->myPicture->allocatepColor($opts['palette']['bgColor']);
 		imagefilledrectangle($image, $StartX, $StartY, $StartX + $size, $StartY + $size, $bgColorAlloc);
-		$colorAlloc = $this->myPicture->allocatepColor($palette['color']);
+		$colorAlloc = $this->myPicture->allocatepColor($opts['palette']['color']);
 
 		// Render the code
 		for ($x = 0; $x < $width; $x++) {
@@ -62,10 +62,7 @@ class Aztec extends pConf
 		$this->check_range('scale', 1, 20);
 		$this->check_range('padding', 0, 20);
 
-		$hint = $this->get('hint');
-		$eccPercent = $this->get('eccPercent');
-
-		$pixelGrid = (new Encoder())->encode($data, $eccPercent, $hint);
+		$pixelGrid = (new Encoder())->encode($data, $this->options['eccPercent'], $this->options['hint']);
 
 		$this->render($pixelGrid);
 	}

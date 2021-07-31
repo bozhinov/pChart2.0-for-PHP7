@@ -31,16 +31,6 @@ class pConf {
 		$this->set_color('color', 0);
 	}
 
-	public function set(string $opt, $val)
-	{
-		$this->options[$opt] = $val;
-	}
-
-	public function get(string $opt)
-	{
-		return $this->options[$opt];
-	}
-
 	public function set_color(string $value, int $default)
 	{
 		if (!isset($this->options['palette'][$value])) {

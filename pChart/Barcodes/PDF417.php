@@ -21,7 +21,6 @@ class PDF417 extends pConf
 		$padding = $opts['padding'];
 		$scaleX = $opts['scale'];
 		$scaleY = $scaleX * $opts['ratio'];
-		$palette = $opts['palette'];
 		$StartX = $opts['StartX'];
 		$StartY = $opts['StartY'];
 
@@ -30,9 +29,9 @@ class PDF417 extends pConf
 		$height = (count($pixelGrid) * $scaleY) + $padding * 2;
 
 		// Draw the background
-		$bgColorAlloc = $this->myPicture->allocatepColor($palette['bgColor']);
+		$bgColorAlloc = $this->myPicture->allocatepColor($opts['palette']['bgColor']);
 		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $height, $bgColorAlloc);
-		$colorAlloc = $this->myPicture->allocatepColor($palette['color']);
+		$colorAlloc = $this->myPicture->allocatepColor($opts['palette']['color']);
 
 		// Render the barcode
 		foreach ($pixelGrid as $y => $row) {
@@ -70,11 +69,7 @@ class PDF417 extends pConf
 		$this->check_range('securityLevel', 0, 8);
 		$this->check_valid('hint', ["binary", "numbers", "text", "none"]);
 
-		$securityLevel = $this->get('securityLevel');
-		$columns = $this->get('columns');
-		$hint = $this->get('hint');
-
-		$pixelGrid = (new Encoder($columns, $securityLevel, $hint))->encodeData($data);
+		$pixelGrid = (new Encoder($this->options['columns'], $this->options['securityLevel'], $this->options['hint']))->encodeData($data);
 		$this->render($pixelGrid);
 	}
 }
