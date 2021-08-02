@@ -2,11 +2,6 @@
 
 namespace pChart\Barcodes;
 
-use pChart\Barcodes\Encoders\PDF417\Encoder;
-use pChart\Barcodes\Encoders\PDF417\EncoderByte;
-use pChart\Barcodes\Encoders\PDF417\EncoderText;
-use pChart\Barcodes\Encoders\PDF417\EncoderNumber;
-
 define("BARCODES_PDF417_HINT_NUMBERS", 0);
 define("BARCODES_PDF417_HINT_TEXT", 1);
 define("BARCODES_PDF417_HINT_BINARY", 2);
@@ -21,9 +16,9 @@ class PDF417 extends pConf
 	{
 		$this->myPicture = $myPicture;
 		$this->encoders = [
-			new EncoderNumber(),
-			new EncoderText(),
-			new EncoderByte()
+			new Encoders\PDF417\EncoderNumber(),
+			new Encoders\PDF417\EncoderText(),
+			new Encoders\PDF417\EncoderByte()
 		];
 	}
 
@@ -85,7 +80,7 @@ class PDF417 extends pConf
 			['hint', 0, 3]
 		]);
 
-		$pixelGrid = (new Encoder($this->options))->encodeData($data, $this->encoders);
+		$pixelGrid = (new Encoders\PDF417\Encoder($this->options))->encodeData($data, $this->encoders);
 		$this->render($pixelGrid);
 	}
 }
