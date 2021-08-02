@@ -16,7 +16,7 @@ $text = '123123123123123123123123123123123123123123123123123123123123';
 
 // draw the data, returns a BarcodeData object
 $pdf417 = new PDF417($myPicture);
-$pdf417->draw($text, ['hint' => 'numbers']);
+$pdf417->draw($text, ['hint' => BARCODES_PDF417_HINT_NUMBERS]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput("temp/example.pdf417.long.numbers.png");

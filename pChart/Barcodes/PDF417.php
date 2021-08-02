@@ -3,14 +3,28 @@
 namespace pChart\Barcodes;
 
 use pChart\Barcodes\Encoders\PDF417\Encoder;
+use pChart\Barcodes\Encoders\PDF417\EncoderByte;
+use pChart\Barcodes\Encoders\PDF417\EncoderText;
+use pChart\Barcodes\Encoders\PDF417\EncoderNumber;
+
+define("BARCODES_PDF417_HINT_NUMBERS", 0);
+define("BARCODES_PDF417_HINT_TEXT", 1);
+define("BARCODES_PDF417_HINT_BINARY", 2);
+define("BARCODES_PDF417_HINT_NONE", 3);
 
 class PDF417 extends pConf
 {
 	private $myPicture;
+	private $encoders = [];
 
 	public function __construct(\pChart\pDraw $myPicture)
 	{
 		$this->myPicture = $myPicture;
+		$this->encoders = [
+			new EncoderNumber(),
+			new EncoderText(),
+			new EncoderByte()
+		];
 	}
 
 	private function render($pixelGrid)
@@ -58,7 +72,7 @@ class PDF417 extends pConf
 			'ratio' => 3,
 			'padding' => 20,
 			'securityLevel' => 2,
-			'hint' => 'none'
+			'hint' => BARCODES_PDF417_HINT_NONE
 		];
 		$this->apply_user_options($opts, $defaults);
 
@@ -67,9 +81,9 @@ class PDF417 extends pConf
 		$this->check_range('ratio', 1, 10);
 		$this->check_range('padding', 0, 20);
 		$this->check_range('securityLevel', 0, 8);
-		$this->check_valid('hint', ["binary", "numbers", "text", "none"]);
+		$this->check_range('hint', 0, 3);
 
-		$pixelGrid = (new Encoder($this->options['columns'], $this->options['securityLevel'], $this->options['hint']))->encodeData($data);
+		$pixelGrid = (new Encoder($this->options))->encodeData($data, $this->encoders);
 		$this->render($pixelGrid);
 	}
 }

@@ -12,32 +12,26 @@ use pChart\pException;
 
 class Encoder
 {
-	private $encoders;
+	private $encoders = [];
 	private $columns;
 	private $securityLevel;
 	private $hint;
 	private $_START_CHARACTER = 0x1fea8;
 	private $_STOP_CHARACTER  = 0x3fa29;
 
-	public function __construct(int $columns, int $securityLevel, string $hint)
+	public function __construct(array $opts)
 	{
-		// Encoders sorted in order of preference
-		$this->encoders = [
-			new EncoderNumber(),
-			new EncoderText(),
-			new EncoderByte()
-		];
-
-		$this->columns = $columns;
-		$this->securityLevel = $securityLevel;
-		$this->hint = $hint;
+		$this->columns = $opts['columns'];
+		$this->securityLevel = $opts['securityLevel'];
+		$this->hint = $opts['hint'];
 	}
 
 	/**
 	* Encodes the given data to low level code words.
 	*/
-	public function encodeData($data)
+	public function encodeData($data, $encoders)
 	{
+		$this->encoders = $encoders;
 		$codeWords = $this->encodeECC($data);
 
 		// Arrange codewords into a rows and columns
@@ -175,27 +169,22 @@ class Encoder
 	private function encode($data)
 	{
 		switch($this->hint){
-			case "numbers":
-				$chains = [[$data, 0]];
+			case BARCODES_PDF417_HINT_NUMBERS:
+			case BARCODES_PDF417_HINT_TEXT:
+			case BARCODES_PDF417_HINT_BINARY:
+				$codes = $this->encoders[$this->hint]->encode($data);
 				break;
-			case "text":
-				$chains = [[$data, 1]];
-				break;
-			case "binary":
-				$chains = [[$data, 2]];
-				break;
-			default:
+			case BARCODES_PDF417_HINT_NONE:
 				$chains = $this->splitData($data);
+				$codes = [];
+				foreach ($chains as $chain) {
+					$codes = array_merge($codes, $this->encoders[$chain[1]]->encode($chain[0]));
+				}
 		}
 
 		// Decoders by default start decoding as text.
 		// There is no point in adding the first switch code if it is text
 		// Removed due to code compression
-
-		$codes = [];
-		foreach ($chains as $chain) {
-			$codes = array_merge($codes, $this->encoders[$chain[1]]->encode($chain[0]));
-		}
 
 		return $codes;
 	}
