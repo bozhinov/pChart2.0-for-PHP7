@@ -49,11 +49,13 @@ class pConf {
 		}
 	}
 
-	public function check_range(string $val, int $start, int $end)
+	public function check_ranges(array $conf)
 	{
-		$ret = $this->options[$val];
-		if (!is_numeric($ret) || $ret < $start || $ret > $end) {
-			throw pException::InvalidInput("Invalid value. Expected an integer between $start and $end.");
+		foreach($conf as $c){
+			$ret = $this->options[$c[0]];
+			if (!is_numeric($ret) || $ret < $c[1] || $ret > $c[2]) {
+				throw pException::InvalidInput("Invalid value for ".$c[0]);
+			}
 		}
 	}
 }

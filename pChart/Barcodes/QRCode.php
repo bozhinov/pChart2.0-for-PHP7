@@ -68,10 +68,12 @@ class QRCode extends pConf {
 		];
 		$this->apply_user_options($opts, $defaults);
 
-		$this->check_range('scale', 0, 20);
-		$this->check_range('padding', 0, 20);
-		$this->check_range('level', 0, 3);
-		$this->check_range('hint', -1, 3);
+		$this->check_ranges([
+			['scale', 1, 20],
+			['padding', 0, 20],
+			['level', 0, 3],
+			['hint', -1, 3]
+		]);
 
 		$this->check_text_valid($text);
 

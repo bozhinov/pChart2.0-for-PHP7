@@ -59,10 +59,13 @@ class Aztec extends pConf
 		];
 		$this->apply_user_options($opts, $defaults);
 
-		$this->check_range('hint', 0, 1);
-		$this->check_range('eccPercent', 1, 100);
-		$this->check_range('scale', 1, 20);
-		$this->check_range('padding', 0, 20);
+		$this->check_ranges([
+			['scale', 1, 20],
+			['ratio', 1, 10],
+			['padding', 0, 20],
+			['eccPercent', 1, 100],
+			['hint', 0, 1]
+		]);
 
 		$pixelGrid = (new Encoder())->encode($data, $this->options['eccPercent'], $this->options['hint']);
 

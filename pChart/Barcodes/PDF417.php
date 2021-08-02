@@ -76,12 +76,14 @@ class PDF417 extends pConf
 		];
 		$this->apply_user_options($opts, $defaults);
 
-		$this->check_range('columns', 1, 30);
-		$this->check_range('scale', 1, 20);
-		$this->check_range('ratio', 1, 10);
-		$this->check_range('padding', 0, 20);
-		$this->check_range('securityLevel', 0, 8);
-		$this->check_range('hint', 0, 3);
+		$this->check_ranges([
+			['columns', 1, 30],
+			['scale', 1, 20],
+			['ratio', 1, 10],
+			['padding', 0, 20],
+			['securityLevel', 0, 8],
+			['hint', 0, 3]
+		]);
 
 		$pixelGrid = (new Encoder($this->options))->encodeData($data, $this->encoders);
 		$this->render($pixelGrid);
