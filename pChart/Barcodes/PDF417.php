@@ -25,22 +25,21 @@ class PDF417 extends pConf
 	private function render($pixelGrid)
 	{
 		$image = $this->myPicture->gettheImage();
-		$opts = $this->options;
 
-		$padding = $opts['padding'];
-		$scaleX = $opts['scale'];
-		$scaleY = $scaleX * $opts['ratio'];
-		$StartX = $opts['StartX'];
-		$StartY = $opts['StartY'];
+		$padding = $this->options['padding'];
+		$scaleX = $this->options['scale'];
+		$scaleY = $scaleX * $this->options['ratio'];
+		$StartX = $this->options['StartX'];
+		$StartY = $this->options['StartY'];
 
 		// Apply scaling & aspect ratio
 		$width = (count($pixelGrid[0]) * $scaleX) + $padding * 2;
 		$height = (count($pixelGrid) * $scaleY) + $padding * 2;
 
 		// Draw the background
-		$bgColorAlloc = $this->myPicture->allocatepColor($opts['palette']['bgColor']);
+		$bgColorAlloc = $this->myPicture->allocatepColor($this->options['palette']['bgColor']);
 		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $height, $bgColorAlloc);
-		$colorAlloc = $this->myPicture->allocatepColor($opts['palette']['color']);
+		$colorAlloc = $this->myPicture->allocatepColor($this->options['palette']['color']);
 
 		// Render the barcode
 		foreach ($pixelGrid as $y => $row) {
