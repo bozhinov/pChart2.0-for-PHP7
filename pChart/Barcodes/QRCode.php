@@ -4,6 +4,16 @@ namespace pChart\Barcodes;
 
 use pChart\Barcodes\Encoders\QRCode\Encoder;
 
+define("BARCODES_QRCODE_LEVEL_L", 0);
+define("BARCODES_QRCODE_LEVEL_M", 1);
+define("BARCODES_QRCODE_LEVEL_Q", 2);
+define("BARCODES_QRCODE_LEVEL_H", 3);
+
+define("BARCODES_QRCODE_HINT_NUM", 0);
+define("BARCODES_QRCODE_HINT_ALPHANUM", 1);
+define("BARCODES_QRCODE_HINT_BYTE", 2);
+define("BARCODES_QRCODE_HINT_KANJI", 3);
+
 class QRCode extends pConf {
 
 	private $myPicture;
@@ -16,21 +26,20 @@ class QRCode extends pConf {
 	private function render($encoded)
 	{
 		$image = $this->myPicture->gettheImage();
-		$opts = $this->options;
 
-		$scale = $opts['scale'];
-		$padding = $opts['padding'];
-		$StartX = $opts['StartX'];
-		$StartY = $opts['StartY'];
+		$scale = $this->options['scale'];
+		$padding = $this->options['padding'];
+		$StartX = $this->options['StartX'];
+		$StartY = $this->options['StartY'];
 
 		// Apply scaling & aspect ratio
 		$h = count($encoded);
 		$width = ($h * $scale) + $padding * 2;
 
 		// Draw the background
-		$bgColorAlloc = $this->myPicture->allocatepColor($opts['palette']['bgColor']);
+		$bgColorAlloc = $this->myPicture->allocatepColor($this->options['palette']['bgColor']);
 		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $width, $bgColorAlloc);
-		$colorAlloc = $this->myPicture->allocatepColor($opts['palette']['color']);
+		$colorAlloc = $this->myPicture->allocatepColor($this->options['palette']['color']);
 
 		// Render the barcode
 		for($y = 0; $y < $h; $y++) {
@@ -53,26 +62,20 @@ class QRCode extends pConf {
 	{
 		$defaults = [
 			'scale' => 3,
-			'padding' => 4
+			'padding' => 4,
+			'level' => BARCODES_QRCODE_LEVEL_L,
+			'hint' => -1
 		];
 		$this->apply_user_options($opts, $defaults);
 
 		$this->check_range('scale', 0, 20);
 		$this->check_range('padding', 0, 20);
+		$this->check_range('level', 0, 3);
+		$this->check_range('hint', -1, 3);
 
 		$this->check_text_valid($text);
 
-		$level = 0;
-		if (isset($opts['level'])){
-			$level = $this->return_key_if_found(strtoupper($opts['level']), ["L", "M", "Q", "H"]);
-		}
-
-		$hint = -1;
-		if (isset($opts['hint'])){
-			$hint = $this->return_key_if_found(strtolower($opts['hint']), ["numeric", "alphanumeric", "byte", "kanji"]);
-		}
-
-		$encoded = (new Encoder($level))->encodeString($text, $hint);
+		$encoded = (new Encoder($this->options['level']))->encodeString($text, $this->options['hint']);
 		$this->render($encoded);
 	}
 }

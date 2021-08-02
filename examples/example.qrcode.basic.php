@@ -17,8 +17,8 @@ $QRCode->set_start_position($x = 10, $y = 10);
 $QRCode->draw(
 	'http://www.test.bg/12341234 TEST TEST  TEST  TEST  TEST  TEST  TEST  TEST  TEST   TEST   TEST   TESTTSTS',
 	[
-		'palette' => ['color' => new pColor(255), 'bgColor' => new pColor(0)],
-		"error_correction" => "L",
+		'palette' => ['color' => new pColor(255), 'bgColor' => new pColor(0)], // colors are reversed
+		"error_correction" => BARCODES_QRCODE_LEVEL_L,
 		"scale" => 7,
 		"padding" => 4
 	]

@@ -11,7 +11,7 @@ use pChart\Barcodes\QRCode;
 $myPicture = new pDraw(700,700);
 
 $QRCode = new QRCode($myPicture);
-$QRCode->draw(str_repeat("A", 256), ['level' => "Q", 'scale' => 10, 'padding' => 4]);
+$QRCode->draw(str_repeat("A", 256), ['level' => BARCODES_QRCODE_LEVEL_Q, 'scale' => 10, 'padding' => 4]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput('temp/example.QRcode.very.long.png');

@@ -4,18 +4,6 @@ namespace pChart\Barcodes\Encoders\QRCode;
 
 use pChart\pException;
 
-// Encoding modes
-define('QR_MODE_NUM', 0);
-define('QR_MODE_AN', 1);
-define('QR_MODE_8', 2);
-define('QR_MODE_KANJI', 3);
-
-// Levels of error correction.
-define('QR_ECLEVEL_L', 0);
-define('QR_ECLEVEL_M', 1);
-define('QR_ECLEVEL_Q', 2);
-define('QR_ECLEVEL_H', 3);
-
 class Encoder {
 
 	private $dataStr;
@@ -112,7 +100,7 @@ class Encoder {
 	private function encodeModeNum($size, $data)
 	{
 		$this->bstream[] = [4, 1];
-		$this->bstream[] = [$this->maxLenlengths[QR_MODE_NUM], $size];
+		$this->bstream[] = [$this->maxLenlengths[BARCODES_QRCODE_HINT_NUM], $size];
 
 		foreach(array_chunk($data, 3) as $c){
 			$l = count($c);
@@ -125,7 +113,7 @@ class Encoder {
 	private function encodeModeAn($size, $data)
 	{
 		$this->bstream[] = [4, 2];
-		$this->bstream[] = [$this->maxLenlengths[QR_MODE_AN], $size];
+		$this->bstream[] = [$this->maxLenlengths[BARCODES_QRCODE_HINT_ALPHANUM], $size];
 
 		foreach(array_chunk($data, 2) as $c){
 			if (count($c) == 2){
@@ -141,7 +129,7 @@ class Encoder {
 	private function encodeMode8($size, $data)
 	{
 		$this->bstream[] = [4, 4];
-		$this->bstream[] = [$this->maxLenlengths[QR_MODE_8], $size];
+		$this->bstream[] = [$this->maxLenlengths[BARCODES_QRCODE_HINT_BYTE], $size];
 
 		foreach($data as $bit) {
 			$this->bstream[] = [8, $bit];
@@ -155,7 +143,7 @@ class Encoder {
 		}
 
 		$this->bstream[] = [4, 8];
-		$this->bstream[] = [$this->maxLenlengths[QR_MODE_KANJI], ($size / 2)];
+		$this->bstream[] = [$this->maxLenlengths[BARCODES_QRCODE_HINT_BYTE], ($size / 2)];
 
 		for($i=0; $i<$size; $i+=2) {
 			$val = ($data[$i] << 8) | $data[$i+1];
@@ -177,19 +165,19 @@ class Encoder {
 		foreach($this->streams as $stream) {
 			list($mode, $size, ) = $stream;
 			switch($mode) {
-				case QR_MODE_NUM:
+				case BARCODES_QRCODE_HINT_NUM:
 					$bits += ($size * 3) + 1 + intdiv($size, 3);
 					break;
-				case QR_MODE_AN:
+				case BARCODES_QRCODE_HINT_ALPHANUM:
 					$bits += (int)($size / 2) * 11;
 					if($size & 1) {
 						$bits += 6;
 					}
 					break;
-				case QR_MODE_8:
+				case BARCODES_QRCODE_HINT_BYTE:
 					$bits += ($size * 8);
 					break;
-				case QR_MODE_KANJI:
+				case BARCODES_QRCODE_HINT_KANJI:
 					$bits += (int)($size / 2) * 13;
 					break;
 			}
@@ -218,16 +206,16 @@ class Encoder {
 			list($mode, $size, $data) = $stream;
 
 			switch($mode) {
-				case QR_MODE_NUM:
+				case BARCODES_QRCODE_HINT_NUM:
 					$this->encodeModeNum($size, $data);
 					break;
-				case QR_MODE_AN:
+				case BARCODES_QRCODE_HINT_ALPHANUM:
 					$this->encodeModeAn($size, $data);
 					break;
-				case QR_MODE_8:
+				case BARCODES_QRCODE_HINT_BYTE:
 					$this->encodeMode8($size, $data);
 					break;
-				case QR_MODE_KANJI:
+				case BARCODES_QRCODE_HINT_KANJI:
 					$this->encodeModeKanji($size, $data);
 					break;
 			}
@@ -314,17 +302,17 @@ class Encoder {
 	{
 		switch (true){
 			case $this->is_digit():
-				$mode = QR_MODE_NUM;
+				$mode = BARCODES_QRCODE_HINT_NUM;
 				break;
 			case $this->is_alnum():
-				$mode = QR_MODE_AN;
+				$mode = BARCODES_QRCODE_HINT_ALPHANUM;
 				break;
-			case ($this->hint == QR_MODE_KANJI):
+			case ($this->hint == BARCODES_QRCODE_HINT_ALPHANUM):
 				# Kanji is not auto detected unless hinted but otherwise it breaks bulgarian chars and possibly others
-				$mode = ($this->is_kanji()) ? QR_MODE_KANJI : QR_MODE_8;
+				$mode = ($this->is_kanji()) ? BARCODES_QRCODE_HINT_ALPHANUM : BARCODES_QRCODE_HINT_BYTE;
 				break;
 			default:
-				$mode = QR_MODE_8;
+				$mode = BARCODES_QRCODE_HINT_BYTE;
 		}
 
 		return $mode;
@@ -365,9 +353,9 @@ class Encoder {
 		while($this->pos < $this->dataStrLen) {
 
 			switch($this->identifyMode()){
-				case QR_MODE_KANJI:
+				case BARCODES_QRCODE_HINT_KANJI:
 					break 2;
-				case QR_MODE_NUM:
+				case BARCODES_QRCODE_HINT_NUM:
 					$old_pos = $this->pos;
 					$this->eatNum();
 					if(($this->pos - $old_pos) > 3) {
@@ -375,7 +363,7 @@ class Encoder {
 						break 2;
 					}
 					break;
-				case QR_MODE_AN:
+				case BARCODES_QRCODE_HINT_ALPHANUM:
 					$old_pos = $this->pos;
 					$this->eatAn();
 					if(($this->pos - $old_pos) > 5) {
@@ -394,7 +382,7 @@ class Encoder {
 		$this->dataStr = array_values(unpack('C*', $text));
 		$this->dataStrLen = count($this->dataStr);
 
-		if (($hint != QR_MODE_KANJI) && ($hint != -1)) {
+		if (($hint != BARCODES_QRCODE_HINT_KANJI) && ($hint != -1)) {
 
 			$this->streams[] = [$hint, $this->dataStrLen, $this->dataStr];
 
@@ -409,17 +397,17 @@ class Encoder {
 				$mode = $this->identifyMode();
 
 				switch ($mode) {
-					case QR_MODE_NUM:
+					case BARCODES_QRCODE_HINT_NUM:
 						$this->eatNum();
 						break;
-					case QR_MODE_AN:
+					case BARCODES_QRCODE_HINT_ALPHANUM:
 						$this->eatAn();
 						break;
-					case QR_MODE_KANJI:
+					case BARCODES_QRCODE_HINT_KANJI:
 						$this->eatKanji();
 						break;
 					default:
-						$mode = QR_MODE_8;
+						$mode = BARCODES_QRCODE_HINT_BYTE;
 						$this->eat8();
 				}
 
