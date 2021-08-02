@@ -23,7 +23,7 @@ class QRCode extends pConf {
 		$this->myPicture = $myPicture;
 	}
 
-	private function render($encoded)
+	private function render($pixelGrid)
 	{
 		$image = $this->myPicture->gettheImage();
 
@@ -33,7 +33,7 @@ class QRCode extends pConf {
 		$StartY = $this->options['StartY'];
 
 		// Apply scaling & aspect ratio
-		$h = count($encoded);
+		$h = count($pixelGrid);
 		$width = ($h * $scale) + $padding * 2;
 
 		// Draw the background
@@ -44,7 +44,7 @@ class QRCode extends pConf {
 		// Render the barcode
 		for($y = 0; $y < $h; $y++) {
 			for($x = 0; $x < $h; $x++) {
-				if ($encoded[$y][$x] & 1) {
+				if ($pixelGrid[$y][$x] & 1) {
 					imagefilledrectangle(
 						$image,
 						($x * $scale) + $padding + $StartX,

@@ -20,21 +20,23 @@ class Aztec extends pConf
 	{
 		$image = $this->myPicture->gettheImage();
 
-		$width = count($pixelGrid);
 		$scale = $this->options['scale'];
 		$padding = $this->options['padding'];
 		$StartX = $this->options['StartX'];
 		$StartY = $this->options['StartY'];
-		$size = ($width * $scale) + ($padding * 2);
+
+		// Apply scaling & aspect ratio
+		$h = count($pixelGrid);
+		$width = ($h * $scale) + ($padding * 2);
 
 		// Extract options
 		$bgColorAlloc = $this->myPicture->allocatepColor($this->options['palette']['bgColor']);
-		imagefilledrectangle($image, $StartX, $StartY, $StartX + $size, $StartY + $size, $bgColorAlloc);
+		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $width, $bgColorAlloc);
 		$colorAlloc = $this->myPicture->allocatepColor($this->options['palette']['color']);
 
 		// Render the code
-		for ($x = 0; $x < $width; $x++) {
-			for ($y = 0; $y < $width; $y++) {
+		for ($x = 0; $x < $h; $x++) {
+			for ($y = 0; $y < $h; $y++) {
 				if (isset($pixelGrid[$x][$y])){
 					imagefilledrectangle(
 						$image, 
@@ -61,7 +63,6 @@ class Aztec extends pConf
 
 		$this->check_ranges([
 			['scale', 1, 20],
-			['ratio', 1, 10],
 			['padding', 0, 20],
 			['eccPercent', 1, 100],
 			['hint', 0, 1]
