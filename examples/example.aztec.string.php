@@ -18,7 +18,7 @@ $text = iconv('UTF-8', 'ISO-8859-1//IGNORE', $text);
 
 // draw the data
 $aztec = new Aztec($myPicture);
-$aztec->draw($text, ["hint" => "binary"]);
+$aztec->draw($text, ["hint" => BARCODES_AZTEC_HINT_BINARY]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput('temp/example.aztec.string.png');

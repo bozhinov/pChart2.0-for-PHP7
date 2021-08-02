@@ -16,7 +16,7 @@ $text = "Rock-a-bye, baby On the treetop When the wind blows The cradle will roc
 
 // draw the data
 $aztec = new Aztec($myPicture);
-$aztec->draw($text, ["hint" => "binary"]);
+$aztec->draw($text, ["hint" => BARCODES_AZTEC_HINT_BINARY]);
 
 /* Render the picture (choose the best way) */
 $myPicture->autoOutput('temp/example.aztec.binary.long.png');

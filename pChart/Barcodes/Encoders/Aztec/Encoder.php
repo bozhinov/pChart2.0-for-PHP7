@@ -42,18 +42,12 @@ class Encoder
 			10, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12
 		];
 
-		switch ($hint) {
-			case "dynamic":
-				$encoder = new Dynamic();
-				break;
-			case "binary":
-				$encoder = new Binary();
-				break;
-			default:
-				throw pException::AztecEncoderError('Unknown encoder');
+		if ($hint) {
+			$bstream = (new Dynamic())->encode($content);
+		} else {
+			$bstream = (new Binary())->encode($content);
 		}
 
-		$bstream = $encoder->encode($content);
 		$bits = $this->toByte($bstream);
 		$bitCount = count($bits);
 

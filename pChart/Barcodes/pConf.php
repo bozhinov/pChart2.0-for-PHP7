@@ -59,13 +59,6 @@ class pConf {
 		}
 	}
 
-	public function check_valid(string $val, array $possibilities)
-	{
-		if (!in_array($this->options[$val], $possibilities)){
-			throw pException::InvalidInput("Invalid value for $val.");
-		}
-	}
-
 	public function check_range(string $val, int $start, int $end)
 	{
 		$ret = $this->options[$val];

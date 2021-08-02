@@ -4,6 +4,9 @@ namespace pChart\Barcodes;
 
 use pChart\Barcodes\Encoders\Aztec\Encoder;
 
+define("BARCODES_AZTEC_HINT_BINARY", 0);
+define("BARCODES_AZTEC_HINT_DYNAMIC", 1);
+
 class Aztec extends pConf
 {
 	private $myPicture;
@@ -16,19 +19,18 @@ class Aztec extends pConf
 	private function render($pixelGrid)
 	{
 		$image = $this->myPicture->gettheImage();
-		$opts = $this->options;
 
 		$width = count($pixelGrid);
-		$scale = $opts['scale'];
-		$padding = $opts['padding'];
-		$StartX = $opts['StartX'];
-		$StartY = $opts['StartY'];
+		$scale = $this->options['scale'];
+		$padding = $this->options['padding'];
+		$StartX = $this->options['StartX'];
+		$StartY = $this->options['StartY'];
 		$size = ($width * $scale) + ($padding * 2);
 
 		// Extract options
-		$bgColorAlloc = $this->myPicture->allocatepColor($opts['palette']['bgColor']);
+		$bgColorAlloc = $this->myPicture->allocatepColor($this->options['palette']['bgColor']);
 		imagefilledrectangle($image, $StartX, $StartY, $StartX + $size, $StartY + $size, $bgColorAlloc);
-		$colorAlloc = $this->myPicture->allocatepColor($opts['palette']['color']);
+		$colorAlloc = $this->myPicture->allocatepColor($this->options['palette']['color']);
 
 		// Render the code
 		for ($x = 0; $x < $width; $x++) {
@@ -52,12 +54,12 @@ class Aztec extends pConf
 		$defaults = [
 			'scale' => 3,
 			'padding' => 4,
-			'hint' => 'dynamic',
+			'hint' => BARCODES_AZTEC_HINT_DYNAMIC,
 			'eccPercent' => 33
 		];
 		$this->apply_user_options($opts, $defaults);
 
-		$this->check_valid('hint', ["binary", "dynamic"]);
+		$this->check_range('hint', 0, 1);
 		$this->check_range('eccPercent', 1, 100);
 		$this->check_range('scale', 1, 20);
 		$this->check_range('padding', 0, 20);
