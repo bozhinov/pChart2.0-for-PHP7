@@ -168,6 +168,7 @@ class Encoder
 	*/
 	private function encode($data)
 	{
+		$codes = [];
 		switch($this->hint){
 			case BARCODES_PDF417_HINT_NUMBERS:
 			case BARCODES_PDF417_HINT_TEXT:
@@ -176,15 +177,10 @@ class Encoder
 				break;
 			case BARCODES_PDF417_HINT_NONE:
 				$chains = $this->splitData($data);
-				$codes = [];
 				foreach ($chains as $chain) {
 					$codes = array_merge($codes, $this->encoders[$chain[1]]->encode($chain[0]));
 				}
 		}
-
-		// Decoders by default start decoding as text.
-		// There is no point in adding the first switch code if it is text
-		// Removed due to code compression
 
 		return $codes;
 	}
