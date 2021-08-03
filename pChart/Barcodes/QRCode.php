@@ -34,7 +34,7 @@ class QRCode extends pConf {
 
 		// Apply scaling & aspect ratio
 		$h = count($pixelGrid);
-		$width = ($h * $scale) + $padding * 2;
+		$width = ($h * $scale) + ($padding * 2);
 
 		// Draw the background
 		$bgColorAlloc = $this->myPicture->allocatepColor($this->options['palette']['bgColor']);
@@ -58,7 +58,7 @@ class QRCode extends pConf {
 		}
 	}
 
-	public function draw(string $text, array $opts = [])
+	public function draw($data, array $opts = [])
 	{
 		$defaults = [
 			'scale' => 3,
@@ -75,9 +75,9 @@ class QRCode extends pConf {
 			['hint', -1, 3]
 		]);
 
-		$this->check_text_valid($text);
+		$this->check_text_valid($data);
 
-		$encoded = (new Encoder($this->options['level']))->encodeString($text, $this->options['hint']);
+		$encoded = (new Encoder($this->options['level']))->encodeString($data, $this->options['hint']);
 		$this->render($encoded);
 	}
 }

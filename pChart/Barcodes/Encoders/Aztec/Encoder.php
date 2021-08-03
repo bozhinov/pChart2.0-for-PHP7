@@ -108,7 +108,7 @@ class Encoder
 			}
 		}
 
-		$this->MATRIX = [];
+		$this->MATRIX = array_fill(0, $matrixSize, array_fill(0, $matrixSize, 0));;
 
 		// draw mode and data bits
 		for ($i = 0, $rowOffset = 0; $i < $layers; $i++) {

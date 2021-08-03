@@ -29,15 +29,15 @@ class Aztec extends pConf
 		$h = count($pixelGrid);
 		$width = ($h * $scale) + ($padding * 2);
 
-		// Extract options
+		// Draw the background
 		$bgColorAlloc = $this->myPicture->allocatepColor($this->options['palette']['bgColor']);
 		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $width, $bgColorAlloc);
 		$colorAlloc = $this->myPicture->allocatepColor($this->options['palette']['color']);
 
-		// Render the code
-		for ($x = 0; $x < $h; $x++) {
-			for ($y = 0; $y < $h; $y++) {
-				if (isset($pixelGrid[$x][$y])){
+		// Render the barcode
+		for($y = 0; $y < $h; $y++) {
+			for($x = 0; $x < $h; $x++) {
+				if ($pixelGrid[$y][$x] & 1) {
 					imagefilledrectangle(
 						$image, 
 						($x * $scale) + $padding + $StartX,

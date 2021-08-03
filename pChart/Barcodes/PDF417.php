@@ -33,8 +33,10 @@ class PDF417 extends pConf
 		$StartY = $this->options['StartY'];
 
 		// Apply scaling & aspect ratio
-		$width = (count($pixelGrid[0]) * $scaleX) + $padding * 2;
-		$height = (count($pixelGrid) * $scaleY) + $padding * 2;
+		$h = count($pixelGrid);
+		$w = count($pixelGrid[0]);
+		$width = ($w * $scaleX) + $padding * 2;
+		$height = ($h * $scaleY) + $padding * 2;
 
 		// Draw the background
 		$bgColorAlloc = $this->myPicture->allocatepColor($this->options['palette']['bgColor']);
@@ -42,9 +44,9 @@ class PDF417 extends pConf
 		$colorAlloc = $this->myPicture->allocatepColor($this->options['palette']['color']);
 
 		// Render the barcode
-		foreach ($pixelGrid as $y => $row) {
-			foreach ($row as $x => $value) {
-				if ($value) {
+		for($y = 0; $y < $h; $y++) {
+			for($x = 0; $x < $w; $x++) {
+				if ($pixelGrid[$y][$x] & 1) {
 					imagefilledrectangle(
 						$image,
 						($x * $scaleX) + $padding + $StartX,
