@@ -29,8 +29,8 @@ class Aztec extends pConf
 		$this->check_ranges([
 			['scale', 1, 20],
 			['padding', 0, 20],
-			['eccPercent', 1, 100],
-			['hint', 0, 1]
+			['hint', 0, 1],
+			['eccPercent', 1, 100]
 		]);
 
 		$pixelGrid = (new Encoder())->encode($data, $this->options['eccPercent'], $this->options['hint']);
