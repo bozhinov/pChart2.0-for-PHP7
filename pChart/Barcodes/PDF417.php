@@ -22,44 +22,6 @@ class PDF417 extends pConf
 		];
 	}
 
-	private function render($pixelGrid)
-	{
-		$image = $this->myPicture->gettheImage();
-
-		$padding = $this->options['padding'];
-		$scaleX = $this->options['scale'];
-		$scaleY = $scaleX * $this->options['ratio'];
-		$StartX = $this->options['StartX'];
-		$StartY = $this->options['StartY'];
-
-		// Apply scaling & aspect ratio
-		$h = count($pixelGrid);
-		$w = count($pixelGrid[0]);
-		$width = ($w * $scaleX) + $padding * 2;
-		$height = ($h * $scaleY) + $padding * 2;
-
-		// Draw the background
-		$bgColorAlloc = $this->myPicture->allocatepColor($this->options['palette']['bgColor']);
-		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $height, $bgColorAlloc);
-		$colorAlloc = $this->myPicture->allocatepColor($this->options['palette']['color']);
-
-		// Render the barcode
-		for($y = 0; $y < $h; $y++) {
-			for($x = 0; $x < $w; $x++) {
-				if ($pixelGrid[$y][$x] & 1) {
-					imagefilledrectangle(
-						$image,
-						($x * $scaleX) + $padding + $StartX,
-						($y * $scaleY) + $padding + $StartY,
-						(($x + 1) * $scaleX - 1) + $padding + $StartX,
-						(($y + 1) * $scaleY - 1) + $padding + $StartY,
-						$colorAlloc
-					);
-				}
-			}
-		}
-	}
-
 	public function draw($data, array $opts = [])
 	{
 		$defaults = [
@@ -82,6 +44,6 @@ class PDF417 extends pConf
 		]);
 
 		$pixelGrid = (new Encoders\PDF417\Encoder($this->options))->encodeData($data, $this->encoders);
-		$this->render($pixelGrid);
+		$this->myPicture->drawBarcodeFromGrid($pixelGrid, $this->options);
 	}
 }

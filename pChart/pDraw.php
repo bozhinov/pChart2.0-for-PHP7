@@ -1192,7 +1192,7 @@ class pDraw
 		return imagecolorallocatealpha($this->Picture, $ColorA[0], $ColorA[1], $ColorA[2], intval(1.27 * (100 - $ColorA[3])));
 	}
 
-	public function allocatepColor(\pChart\pColor $color)
+	private function allocatepColor(\pChart\pColor $color)
 	{
 		list ($R, $G, $B, $A) = $color->get();
 		return imagecolorallocatealpha($this->Picture, $R, $G, $B, intval(1.27 * (100 - $A)));
@@ -3959,6 +3959,50 @@ class pDraw
 		$Pos[TEXT_ALIGN_MIDDLEMIDDLE]["Y"] = ($Pos[0]["Y"] - $Pos[2]["Y"]) / 2 + $Pos[2]["Y"];
 
 		return $Pos;
+	}
+
+	public function drawBarcodeFromGrid(array $pixelGrid, array $options)
+	{
+		$padding = $options['padding'];
+		$scaleX = $options['scale'];
+
+		$w = count($pixelGrid[0]);
+		$width = ($w * $scaleX) + $padding * 2;
+
+		// Apply scaling & aspect ratio
+		if (isset($options['ratio'])) { # PDF417
+			$scaleY = $scaleX * $options['ratio'];
+			$h = count($pixelGrid);
+			$height = ($h * $scaleY) + $padding * 2;
+		} else {
+			$scaleY = $scaleX;
+			$h = $w;
+			$height = $width;
+		}
+
+		$StartX = $options['StartX'];
+		$StartY = $options['StartY'];
+
+		// Draw the background
+		$bgColorAlloc = $this->allocatepColor($options['palette']['bgColor']);
+		imagefilledrectangle($this->Picture, $StartX, $StartY, $StartX + $width, $StartY + $height, $bgColorAlloc);
+		$colorAlloc = $this->allocatepColor($options['palette']['color']);
+
+		// Render the barcode
+		for($y = 0; $y < $h; $y++) {
+			for($x = 0; $x < $w; $x++) {
+				if ($pixelGrid[$y][$x] & 1) {
+					imagefilledrectangle(
+						$this->Picture,
+						($x * $scaleX) + $padding + $StartX,
+						($y * $scaleY) + $padding + $StartY,
+						(($x + 1) * $scaleX - 1) + $padding + $StartX,
+						(($y + 1) * $scaleY - 1) + $padding + $StartY,
+						$colorAlloc
+					);
+				}
+			}
+		}	
 	}
 
 	private function verifyFontDefined()

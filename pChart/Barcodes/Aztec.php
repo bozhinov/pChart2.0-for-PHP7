@@ -16,41 +16,6 @@ class Aztec extends pConf
 		$this->myPicture = $myPicture;
 	}
 
-	private function render($pixelGrid)
-	{
-		$image = $this->myPicture->gettheImage();
-
-		$scale = $this->options['scale'];
-		$padding = $this->options['padding'];
-		$StartX = $this->options['StartX'];
-		$StartY = $this->options['StartY'];
-
-		// Apply scaling & aspect ratio
-		$h = count($pixelGrid);
-		$width = ($h * $scale) + ($padding * 2);
-
-		// Draw the background
-		$bgColorAlloc = $this->myPicture->allocatepColor($this->options['palette']['bgColor']);
-		imagefilledrectangle($image, $StartX, $StartY, $StartX + $width, $StartY + $width, $bgColorAlloc);
-		$colorAlloc = $this->myPicture->allocatepColor($this->options['palette']['color']);
-
-		// Render the barcode
-		for($y = 0; $y < $h; $y++) {
-			for($x = 0; $x < $h; $x++) {
-				if ($pixelGrid[$y][$x] & 1) {
-					imagefilledrectangle(
-						$image, 
-						($x * $scale) + $padding + $StartX,
-						($y * $scale) + $padding + $StartY,
-						(($x + 1) * $scale - 1) + $padding + $StartX,
-						(($y + 1) * $scale - 1) + $padding + $StartY,
-						$colorAlloc
-					);
-				}
-			}
-		}
-	}
-
 	public function draw($data, array $opts = [])
 	{
 		$defaults = [
@@ -69,7 +34,6 @@ class Aztec extends pConf
 		]);
 
 		$pixelGrid = (new Encoder())->encode($data, $this->options['eccPercent'], $this->options['hint']);
-
-		$this->render($pixelGrid);
+		$this->myPicture->drawBarcodeFromGrid($pixelGrid, $this->options);
 	}
 }
