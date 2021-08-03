@@ -1192,7 +1192,7 @@ class pDraw
 		return imagecolorallocatealpha($this->Picture, $ColorA[0], $ColorA[1], $ColorA[2], intval(1.27 * (100 - $ColorA[3])));
 	}
 
-	private function allocatepColor(\pChart\pColor $color)
+	public function allocatepColor(\pChart\pColor $color)
 	{
 		list ($R, $G, $B, $A) = $color->get();
 		return imagecolorallocatealpha($this->Picture, $R, $G, $B, intval(1.27 * (100 - $A)));
