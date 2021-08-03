@@ -18,7 +18,7 @@ class QRCode extends pConf {
 
 	private $myPicture;
 
-	function __construct(\pChart\pDraw $myPicture)
+	public function __construct(\pChart\pDraw $myPicture)
 	{
 		$this->myPicture = $myPicture;
 	}
