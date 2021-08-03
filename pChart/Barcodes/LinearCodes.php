@@ -41,7 +41,7 @@ class LinearCodes extends pConf {
 
 		$this->apply_user_options($opts, $defaults);
 
-		if (is_null($this->options['label']['color'])){
+		if (is_null($this->options['label']['color']) && (!$this->options['label']['skip'])){
 			$this->options['label']['color'] = $this->options['palette']['color'];
 		}
 	}
@@ -84,6 +84,10 @@ class LinearCodes extends pConf {
 			$palette[$id] = $this->myPicture->allocatepColor($color);
 		}
 
+		if ($label['skip'] != TRUE) {
+			$label_color = $this->myPicture->allocatepColor($label['color']);
+		}
+
 		foreach ($code as $block) {
 
 			if (isset($block['l'])) {
@@ -103,7 +107,6 @@ class LinearCodes extends pConf {
 
 			if ($label['skip'] != TRUE) {
 				if (isset($block['l'])) {
-					$label_color = $this->myPicture->allocatepColor($label['color']);
 					$text = $block['l'][0];
 					$lx = (isset($block['l'][2]) ? (float)$block['l'][2] : 0.5);
 					$lx = ($x + ($mx - $x) * $lx);
