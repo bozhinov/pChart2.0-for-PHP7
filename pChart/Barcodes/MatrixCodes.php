@@ -40,17 +40,15 @@ class MatrixCodes extends pConf {
 
 	public function render($code)
 	{
-		$opts = $this->options;
-
 		# calculate_size
-		$widths = array_values($opts['widths']);
+		$widths = array_values($this->options['widths']);
 		$width  = (2 * $widths[0]) + ($code['width']  * $widths[1]);
 		$height = (2 * $widths[0]) + ($code['height'] * $widths[1]);
 
-		$x = intval($opts['StartX']);
-		$y = intval($opts['StartY']);
-		$w = (!is_null($opts['width']))  ? intval($opts['width'])  : intval(ceil($width * $opts['scale']));
-		$h = (!is_null($opts['height'])) ? intval($opts['height']) : intval(ceil($height * $opts['scale']));
+		$x = intval($this->options['StartX']);
+		$y = intval($this->options['StartY']);
+		$w = (!is_null($this->options['width']))  ? intval($this->options['width'])  : intval(ceil($width * $this->options['scale']));
+		$h = (!is_null($this->options['height'])) ? intval($this->options['height']) : intval(ceil($height * $this->options['scale']));
 
 		if ($width > 0 && $height > 0) {
 			$scale = min($w / $width, $h / $height);
@@ -61,15 +59,13 @@ class MatrixCodes extends pConf {
 
 		$wh = $widths[1] * $scale;
 
-		$md = (float)$opts['modules']['Density'];
+		$shape = strtolower($this->options['modules']['Shape']);
+		$md = ($shape == 'r') ? 0 : (float)$this->options['modules']['Density'];
 		$whd = intval(ceil($wh * $md));
-		if (strtolower($opts['modules']['Shape']) == 'r'){
-			$md = 0;
-		}
 
 		$offset = (1 - $md) * $whd / 2;
 		$image = $this->myPicture->gettheImage();
-		$palette = array_values($opts['palette']);
+		$palette = array_values($this->options['palette']);
 
 		# pre-allocate colors
 		foreach($palette as $id => $color) {
@@ -81,13 +77,13 @@ class MatrixCodes extends pConf {
 		foreach ($code['matrix'] as $by => $row) {
 
 			$y1 = intval(floor($y + $by * $wh + $offset));
-			
+
 			foreach ($row as $bx => $color) {
 				$mc = $palette[$color];
 				$x1 = intval(floor($x + $bx * $wh + $offset));
 				$offwh = $whd - 1;
 
-				switch (strtolower($opts['modules']['Shape'])) {
+				switch ($shape) {
 					case 'r':
 						imagefilledellipse($image, $x1, $y1, $whd, $whd, $mc);
 						break;
@@ -109,7 +105,7 @@ class MatrixCodes extends pConf {
 			case 'dmtxs':
 				$code = (new Encoders\DMTX())->dmtx_encode($data, false, false);
 				break;
-			case 'dmtxr': 
+			case 'dmtxr':
 				$code = (new Encoders\DMTX())->dmtx_encode($data, true,  false);
 				break;
 			case 'dmtxgs1':

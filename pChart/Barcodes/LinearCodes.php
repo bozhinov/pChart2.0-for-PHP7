@@ -48,36 +48,32 @@ class LinearCodes extends pConf {
 
 	public function render($code)
 	{
-		$opts = $this->options;
-
 		# calculate_size
 		$width = 0;
-		$widths = array_values($opts['widths']);
+		$widths = array_values($this->options['widths']);
 		foreach ($code as $block){
 			foreach ($block['m'] as $module){
 				$width += $module[1] * $widths[$module[2]];
 			}
 		}
 
-		$label = $opts['label'];
-		$scale = (float)$opts['scale'];
-
-		$x = intval($opts['StartX']);
-		$y = intval($opts['StartY']);
-		$w = (!is_null($opts['width']))  ? intval($opts['width'])  : intval(ceil($width * $scale));
-		$h = (!is_null($opts['height'])) ? intval($opts['height']) : intval(ceil(80 * $scale));
-
+		$label = $this->options['label'];
 		$lsize = $label['size'];
+
+		$x = intval($this->options['StartX']);
+		$y = intval($this->options['StartY']);
+		$w = (!is_null($this->options['width']))  ? intval($this->options['width'])  : intval(ceil($width * $this->options['scale']));
+		$h = (!is_null($this->options['height'])) ? intval($this->options['height']) : intval(ceil(80 * $this->options['scale']));
 
 		if ($width > 0) {
 			$scale = $w / $width;
-			$scale = (($scale > 1) ? floor($scale) : 1);
+			$scale = ($scale > 1) ? $scale : 1;
 		} else {
 			$scale = 1;
 		}
 
 		$image = $this->myPicture->gettheImage();
-		$palette = array_values($opts['palette']);
+		$palette = array_values($this->options['palette']);
 
 		# pre-allocate colors
 		foreach($palette as $id => $color) {
