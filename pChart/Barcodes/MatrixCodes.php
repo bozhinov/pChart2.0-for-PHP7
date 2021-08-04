@@ -84,20 +84,19 @@ class MatrixCodes extends pConf {
 			$y1 = intval(floor($y + $by * $wh));
 
 			foreach ($row as $bx => $color) {
-				$mc = $palette[$color];
 				$x1 = intval(floor($x + $bx * $wh));
 				$offwh = $whd - 1;
 
 				switch ($shape) {
 					case BARCODES_MATRIX_SHAPE_ROUND:
-						imagefilledellipse($image, $x1, $y1, $whd, $whd, $mc);
+						imagefilledellipse($image, $x1, $y1, $whd, $whd, $palette[$color]);
 						break;
 					case BARCODES_MATRIX_SHAPE_X:
-						imageline($image, $x1, $y1, $x1 + $offwh, $y1 + $offwh, $mc);
-						imageline($image, $x1, $y1 + $offwh, $x1 + $offwh, $y1, $mc);
+						imageline($image, $x1, $y1, $x1 + $offwh, $y1 + $offwh, $palette[$color]);
+						imageline($image, $x1, $y1 + $offwh, $x1 + $offwh, $y1, $palette[$color]);
 						break;
 					default:
-						imagefilledrectangle($image, $x1, $y1, $x1 + $offwh, $y1 + $offwh, $mc);
+						imagefilledrectangle($image, $x1, $y1, $x1 + $offwh, $y1 + $offwh, $palette[$color]);
 				}
 			}
 		}
