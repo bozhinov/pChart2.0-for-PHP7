@@ -20,7 +20,8 @@ $QRCode->draw(
 		'palette' => ['color' => new pColor(255), 'bgColor' => new pColor(0)], // colors are reversed
 		"error_correction" => BARCODES_QRCODE_LEVEL_L,
 		"scale" => 7,
-		"padding" => 4
+		"padding" => 4,
+		"random_mask" => 4
 	]
 	);
 

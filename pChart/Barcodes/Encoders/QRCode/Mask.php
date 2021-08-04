@@ -79,7 +79,6 @@ class Mask {
 		for($y=0; $y<$this->width; $y++) {
 			for($x=0; $x<$this->width; $x++) {
 				if((($this->masked[$y][$x]) & 128) == 0) {
-
 					switch($maskNo){
 						case 0:
 							$ret = ($x+$y)&1;
@@ -221,12 +220,17 @@ class Mask {
 		return $penalty;
 	}
 
-	public function get()
+	public function get(int $num_of_random_masks)
 	{
 		$minPenalty = PHP_INT_MAX;
 		$bestMask = [];
 
-		for($i = 0; $i < 8; $i++){
+		$mask_array = range(0,7);
+		if ($num_of_random_masks > 0){
+			$mask_array = array_rand($mask_array, $num_of_random_masks);
+		}
+
+		foreach($mask_array as $i) {
 
 			$this->masked = $this->frame;
 

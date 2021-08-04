@@ -29,7 +29,8 @@ class QRCode extends pConf {
 			'scale' => 3,
 			'padding' => 4,
 			'level' => BARCODES_QRCODE_LEVEL_L,
-			'hint' => -1
+			'hint' => -1,
+			'random_mask' => 0
 		];
 		$this->apply_user_options($opts, $defaults);
 
@@ -37,12 +38,13 @@ class QRCode extends pConf {
 			['scale', 1, 20],
 			['padding', 0, 20],
 			['level', 0, 3],
-			['hint', -1, 3]
+			['hint', -1, 3],
+			['random_mask', 0, 8]
 		]);
 
 		$this->check_text_valid($data);
 
-		$pixelGrid = (new Encoder($this->options['level']))->encodeString($data, $this->options['hint']);
+		$pixelGrid = (new Encoder($this->options['level']))->encodeString($data, $this->options['hint'], $this->options['random_mask']);
 		$this->myPicture->drawBarcodeFromGrid($pixelGrid, $this->options);
 	}
 }

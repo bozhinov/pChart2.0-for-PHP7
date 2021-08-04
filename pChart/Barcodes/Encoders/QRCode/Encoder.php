@@ -159,7 +159,7 @@ class Encoder {
 		}
 	}
  
-	private function estimateVersion($version)
+	private function estimateBitLenght($version)
 	{
 		$bits = 0;
 		foreach($this->streams as $stream) {
@@ -184,23 +184,16 @@ class Encoder {
 
 			$l = $this->lengthIndicator($mode, $version);
 			$this->maxLenlengths[$mode] = $l;
-            $m = 1 << $l;
-            $num = (int)(($size + $m - 1) / $m);
-            $bits += $num * (4 + $l);
+			$m = 1 << $l;
+			$num = (int)(($size + $m - 1) / $m);
+			$bits += $num * (4 + $l);
 		}
 
-		return $this->getMinimumVersion($bits);
+		return $bits;
 	}
 
-	private function encodeStreams()
+	private function encodeStreams($package)
 	{
-		$version = 1;
-        do {
-			$prev = $version;
-			$package = $this->estimateVersion($version);
-			$version = $package[0];
-		} while ($version > $prev);
-
 		foreach($this->streams as $stream) {
 
 			list($mode, $size, $data) = $stream;
@@ -240,8 +233,9 @@ class Encoder {
 		return $package;
 	}
 
-	private function getMinimumVersion($bits)
+	private function getPackageFor($version)
 	{
+		$bits = $this->estimateBitLenght($version);
 		$size = (int)(($bits + 7) / 8);
 		for($i=1; $i<= 40; $i++) { # QR_SPEC_VERSION_MAX = 40
 
@@ -377,7 +371,7 @@ class Encoder {
 		}
 	}
 
-	public function encodeString($text, $hint)
+	public function encodeString($text, $hint, $random_masks_count)
 	{
 		$this->dataStr = array_values(unpack('C*', $text));
 		$this->dataStrLen = count($this->dataStr);
@@ -416,7 +410,15 @@ class Encoder {
 			}
 		}
 
-		$package = $this->encodeStreams();
-		return (new Mask($package))->get();
+		$version = 1;
+		do {
+			$prev = $version;
+			$package = $this->getPackageFor($version);
+			# version, dataLength, ecc, width, level, bits
+			$version = $package[0];
+		} while ($version > $prev);
+		# replaces the bits with bytes
+		$package = $this->encodeStreams($package);
+		return (new Mask($package))->get($random_masks_count);
 	}
 }
