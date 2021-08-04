@@ -54,7 +54,7 @@ class MatrixCodes extends pConf {
 
 		if ($width > 0 && $height > 0) {
 			$scale = min($w / $width, $h / $height);
-			$scale = (($scale > 1) ? floor($scale) : 1);
+			$scale = ($scale > 1) ? $scale : 1;
 		} else {
 			$scale = 1;
 		}

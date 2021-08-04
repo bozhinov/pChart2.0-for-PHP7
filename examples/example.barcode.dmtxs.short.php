@@ -22,7 +22,7 @@ $opts = [
 	]
 ];
 
-$data = 8675309;
+$data = 154703;
 $barcodes = new MatrixCodes($myPicture);
 $barcodes->set_start_position($x = 10, $y = 10);
 $barcodes->draw($data, "dmtxs", $opts);
