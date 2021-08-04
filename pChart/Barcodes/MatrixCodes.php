@@ -4,6 +4,10 @@ namespace pChart\Barcodes;
 
 use pChart\pException;
 
+define("BARCODES_MATRIX_SHAPE_SQUARE", 0);
+define("BARCODES_MATRIX_SHAPE_ROUND", 1);
+define("BARCODES_MATRIX_SHAPE_X", 2);
+
 class MatrixCodes extends pConf {
 
 	private $myPicture;
@@ -20,7 +24,7 @@ class MatrixCodes extends pConf {
 			'width' => NULL,
 			'height' => NULL,
 			'modules' => [
-				'Shape' => '',
+				'Shape' => BARCODES_MATRIX_SHAPE_SQUARE,
 				'Density' => 1
 			],
 			'widths' => [
@@ -59,8 +63,8 @@ class MatrixCodes extends pConf {
 
 		$wh = $widths[1] * $scale;
 
-		$shape = strtolower($this->options['modules']['Shape']);
-		$md = ($shape == 'r') ? 0 : (float)$this->options['modules']['Density'];
+		$shape = $this->options['modules']['Shape'];
+		$md = ($shape == BARCODES_MATRIX_SHAPE_ROUND) ? 0 : (float)$this->options['modules']['Density'];
 		$whd = intval(ceil($wh * $md));
 
 		$offset = (1 - $md) * $whd / 2;
@@ -84,10 +88,10 @@ class MatrixCodes extends pConf {
 				$offwh = $whd - 1;
 
 				switch ($shape) {
-					case 'r':
+					case BARCODES_MATRIX_SHAPE_ROUND:
 						imagefilledellipse($image, $x1, $y1, $whd, $whd, $mc);
 						break;
-					case 'x':
+					case BARCODES_MATRIX_SHAPE_X:
 						imageline($image, $x1, $y1, $x1 + $offwh, $y1 + $offwh, $mc);
 						imageline($image, $x1, $y1 + $offwh, $x1 + $offwh, $y1, $mc);
 						break;
