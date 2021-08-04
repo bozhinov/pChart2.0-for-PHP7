@@ -49,8 +49,6 @@ class MatrixCodes extends pConf {
 		$width  = (2 * $widths[0]) + ($code['width']  * $widths[1]);
 		$height = (2 * $widths[0]) + ($code['height'] * $widths[1]);
 
-		$x = intval($this->options['StartX']);
-		$y = intval($this->options['StartY']);
 		$w = (!is_null($this->options['width']))  ? intval($this->options['width'])  : intval(ceil($width * $this->options['scale']));
 		$h = (!is_null($this->options['height'])) ? intval($this->options['height']) : intval(ceil($height * $this->options['scale']));
 
@@ -68,6 +66,9 @@ class MatrixCodes extends pConf {
 		$whd = intval(ceil($wh * $md));
 
 		$offset = (1 - $md) * $whd / 2;
+		$x = intval($this->options['StartX']) + $offset;
+		$y = intval($this->options['StartY']) + $offset;
+
 		$image = $this->myPicture->gettheImage();
 		$palette = array_values($this->options['palette']);
 
@@ -80,11 +81,11 @@ class MatrixCodes extends pConf {
 
 		foreach ($code['matrix'] as $by => $row) {
 
-			$y1 = intval(floor($y + $by * $wh + $offset));
+			$y1 = intval(floor($y + $by * $wh));
 
 			foreach ($row as $bx => $color) {
 				$mc = $palette[$color];
-				$x1 = intval(floor($x + $bx * $wh + $offset));
+				$x1 = intval(floor($x + $bx * $wh));
 				$offwh = $whd - 1;
 
 				switch ($shape) {
