@@ -12,6 +12,9 @@ use pChart\Barcodes\MatrixCodes;
 $myPicture = new pDraw(250,250);
 $myPicture->drawFilledRectangle(0,0,250,250,["Color"=>new pColor(179,217,91), "Dash"=>TRUE, "DashColor"=>new pColor(199,237,111)]);
 
+$barcodes = new MatrixCodes($myPicture);
+
+$data = 154703;
 $opts = [
 	"palette" => [
 			0 => new pColor(255), 	// CS - Color of spaces
@@ -19,11 +22,13 @@ $opts = [
 		],
 	"widths" => [
 		'QuietArea' => 4
-	]
+	],
+	# image matches the original lib output. my barcode scanner does not recognize it though.
+	#'modules' => [
+	#	"Shape" => BARCODES_MATRIX_SHAPE_ROUND
+	#]
 ];
 
-$data = 154703;
-$barcodes = new MatrixCodes($myPicture);
 $barcodes->set_start_position($x = 10, $y = 10);
 $barcodes->draw($data, "dmtxs", $opts);
 

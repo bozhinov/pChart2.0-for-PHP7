@@ -62,7 +62,7 @@ class MatrixCodes extends pConf {
 		$wh = $widths[1] * $scale;
 
 		$shape = $this->options['modules']['Shape'];
-		$md = ($shape == BARCODES_MATRIX_SHAPE_ROUND) ? 0 : (float)$this->options['modules']['Density'];
+		$md = ($shape == BARCODES_MATRIX_SHAPE_ROUND) ? 1 : (float)$this->options['modules']['Density'];
 		$whd = intval(ceil($wh * $md));
 
 		$offset = (1 - $md) * $whd / 2;
