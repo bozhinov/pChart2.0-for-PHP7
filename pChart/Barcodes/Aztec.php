@@ -16,7 +16,7 @@ class Aztec extends pConf
 		$this->myPicture = $myPicture;
 	}
 
-	public function draw($data, array $opts = [])
+	public function draw($data, int $x, int $y, array $opts = [])
 	{
 		$defaults = [
 			'scale' => 3,
@@ -33,7 +33,7 @@ class Aztec extends pConf
 			['eccPercent', 1, 100]
 		]);
 
-		$pixelGrid = (new Encoder())->encode($data, $this->options['eccPercent'], $this->options['hint']);
-		$this->myPicture->drawBarcodeFromGrid($pixelGrid, $this->options);
+		$pixelGrid = (new Encoder())->encode($data, $this->options);
+		$this->myPicture->drawBarcodeFromGrid($pixelGrid, $x, $y, $this->options);
 	}
 }

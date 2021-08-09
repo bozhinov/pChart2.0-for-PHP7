@@ -23,7 +23,7 @@ class QRCode extends pConf {
 		$this->myPicture = $myPicture;
 	}
 
-	public function draw($data, array $opts = [])
+	public function draw($data, int $x, int $y, array $opts = [])
 	{
 		$defaults = [
 			'scale' => 3,
@@ -45,6 +45,6 @@ class QRCode extends pConf {
 		$this->check_text_valid($data);
 
 		$pixelGrid = (new Encoder())->encode($data, $this->options);
-		$this->myPicture->drawBarcodeFromGrid($pixelGrid, $this->options);
+		$this->myPicture->drawBarcodeFromGrid($pixelGrid, $x, $y, $this->options);
 	}
 }
