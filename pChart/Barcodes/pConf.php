@@ -16,13 +16,7 @@ use pChart\pException;
 
 class pConf {
 
-	protected $options = ['StartX' => 0, 'StartY' => 0];
-
-	public function set_start_position(int $x, int $y)
-	{
-		$this->options['StartX'] = $x;
-		$this->options['StartY'] = $y;
-	}
+	protected $options = [];
 
 	public function apply_user_options(array $opts, array $defaults)
 	{

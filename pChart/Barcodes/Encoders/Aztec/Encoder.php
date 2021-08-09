@@ -31,7 +31,7 @@ class Encoder
 		}
 	}
 
-	public function encode($content, $eccPercent, $hint)
+	public function encode($content, $options)
 	{
 		$LAYERS_COMPACT = 5;
 		$LAYERS_FULL = 33;
@@ -42,7 +42,7 @@ class Encoder
 			10, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12
 		];
 
-		if ($hint) {
+		if ($options['hint']) {
 			$bstream = (new Dynamic())->encode($content);
 		} else {
 			$bstream = (new Binary())->encode($content);
@@ -51,7 +51,7 @@ class Encoder
 		$bits = $this->toByte($bstream);
 		$bitCount = count($bits);
 
-		$eccBits = intval($bitCount * $eccPercent / 100 + 11);
+		$eccBits = intval($bitCount * $options['eccPercent'] / 100 + 11);
 		$totalSizeBits = $bitCount + $eccBits; 
 		$compact = ($totalSizeBits <= 608); # 4 layers
 

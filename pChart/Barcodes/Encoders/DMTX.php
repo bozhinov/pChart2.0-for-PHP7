@@ -1,7 +1,7 @@
 <?php
 
 namespace pChart\Barcodes\Encoders;
-	
+
 class DMTX {
 
 	private $matrix;
