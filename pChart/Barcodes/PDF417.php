@@ -16,7 +16,7 @@ class PDF417 extends pConf
 		$this->myPicture = $myPicture;
 	}
 
-	public function draw($data, int $x, int y, array $opts = [])
+	public function draw($data, int $x, int $y, array $opts = [])
 	{
 		$defaults = [
 			'columns' => 6,
