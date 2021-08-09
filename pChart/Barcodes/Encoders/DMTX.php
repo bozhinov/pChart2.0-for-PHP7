@@ -191,12 +191,12 @@ class DMTX {
 				}
 			}
 		}
-
-		return [
-			'width' => $width,
-			'height' => $height,
-			'matrix' => $bitmap
-		];
+		return $bitmap;
+		#return [
+		#	'width' => $width,
+		#	'height' => $height,
+		#	'matrix' => $bitmap
+		#];
 	}
 
 	private function place_data($data)

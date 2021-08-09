@@ -17,16 +17,10 @@ $barcodes = new MatrixCodes($myPicture);
 $data = 154703;
 $opts = [
 	"palette" => [
-			0 => new pColor(255), 	// CS - Color of spaces
-			1 => new pColor(0) 		// CM - Color of modules
+			"bgColor" => new pColor(255), 	// CS - Color of spaces
+			"color" => new pColor(0) 		// CM - Color of modules
 		],
-	"widths" => [
-		'QuietArea' => 4
-	],
-	# image matches the original lib output. my barcode scanner does not recognize it though.
-	#'modules' => [
-	#	"Shape" => BARCODES_MATRIX_SHAPE_ROUND
-	#]
+	'padding' => 6
 ];
 
 $barcodes->set_start_position($x = 10, $y = 10);

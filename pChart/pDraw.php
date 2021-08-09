@@ -4002,7 +4002,7 @@ class pDraw
 					);
 				}
 			}
-		}	
+		}
 	}
 
 	private function verifyFontDefined()
