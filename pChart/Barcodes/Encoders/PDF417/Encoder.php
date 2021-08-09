@@ -19,19 +19,25 @@ class Encoder
 	private $_START_CHARACTER = 0x1fea8;
 	private $_STOP_CHARACTER  = 0x3fa29;
 
-	public function __construct(array $opts)
+	public function __construct()
 	{
-		$this->columns = $opts['columns'];
-		$this->securityLevel = $opts['securityLevel'];
-		$this->hint = $opts['hint'];
+		$this->encoders = [
+					new EncoderNumber(),
+					new EncoderText(),
+					new EncoderByte()
+				];
 	}
 
 	/**
 	* Encodes the given data to low level code words.
 	*/
-	public function encodeData($data, $encoders)
+	public function encode($data, array $opts)
 	{
-		$this->encoders = $encoders;
+
+		$this->columns = $opts['columns'];
+		$this->securityLevel = $opts['securityLevel'];
+		$this->hint = $opts['hint'];
+		
 		$codeWords = $this->encodeECC($data);
 
 		// Arrange codewords into a rows and columns
@@ -82,7 +88,7 @@ class Encoder
 	private function encodeECC($data)
 	{
 		// Encode data to code words
-		$dataWords = $this->encode($data);
+		$dataWords = $this->splitAndEncode($data);
 
 		// Number of code correction words
 		$ecCount = pow(2, $this->securityLevel + 1);
@@ -166,7 +172,7 @@ class Encoder
 	/**
 	* Splits the input data into chains. Then encodes each chain.
 	*/
-	private function encode($data)
+	private function splitAndEncode($data)
 	{
 		$codes = [];
 		switch($this->hint){

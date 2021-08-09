@@ -47,6 +47,9 @@ class pBarcodes2D extends \pChart\Barcodes\pConf {
 			case BARCODES_ENGINE_QRCODE:
 				$this->engine = new Barcodes\Encoders\QRCode\Encoder();
 				break;
+			case BARCODES_ENGINE_PDF417:
+				$this->engine = new Barcodes\Encoders\PDF417\Encoder();
+				break;
 			default: throw pException::InvalidInput("Unknown encode engine");
 		}
 	}
@@ -89,6 +92,28 @@ class pBarcodes2D extends \pChart\Barcodes\pConf {
 		]);
 	}
 
+	private function parse_opts_pdf417($opts)
+	{
+		$defaults = [
+			'columns' => 6,
+			'scale' => 3,
+			'ratio' => 3,
+			'padding' => 20,
+			'securityLevel' => 2,
+			'hint' => BARCODES_PDF417_HINT_NONE
+		];
+		$this->apply_user_options($opts, $defaults);
+
+		$this->check_ranges([
+			['columns', 1, 30],
+			['scale', 1, 20],
+			['ratio', 1, 10],
+			['padding', 0, 20],
+			['securityLevel', 0, 8],
+			['hint', 0, 3]
+		]);
+	}
+
 	public function draw($data, int $x = 10, int $y = 10, array $opts = [])
 	{
 		switch($this->encoder)
@@ -99,6 +124,9 @@ class pBarcodes2D extends \pChart\Barcodes\pConf {
 			case BARCODES_ENGINE_QRCODE:
 				$this->parse_opts_qr($opts);
 				$this->check_text_valid($data);
+				break;
+			case BARCODES_ENGINE_PDF417:
+				$this->parse_opts_pdf417($opts);
 				break;
 		}
 

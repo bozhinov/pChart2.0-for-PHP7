@@ -5,7 +5,7 @@
 require_once("bootstrap.php");
 
 use pChart\pDraw;
-use pChart\Barcodes\PDF417;
+use pChart\pBarcodes2D;
 
 /* Create a pChart object and associate your dataset */ 
 $myPicture = new pDraw(700,230);
@@ -15,8 +15,8 @@ $myPicture = new pDraw(700,230);
 $text = '123123123123123123123123123123123123123123123123123123123123';
 
 // draw the data, returns a BarcodeData object
-$pdf417 = new PDF417($myPicture);
-$pdf417->draw($text, ['hint' => BARCODES_PDF417_HINT_NUMBERS]);
+$pdf417 = new pBarcodes2D(BARCODES_ENGINE_PDF417, $myPicture);
+$pdf417->draw($text, 1, 1, ['hint' => BARCODES_PDF417_HINT_NUMBERS]);
 
 /* Render the picture (choose the best way) */
-$myPicture->autoOutput("temp/example.pdf417.long.numbers.png");
+$myPicture->autoOutput("temp/example.barcodes.pdf417.long.numbers.png");

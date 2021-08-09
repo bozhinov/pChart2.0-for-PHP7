@@ -10,19 +10,13 @@ define("BARCODES_PDF417_HINT_NONE", 3);
 class PDF417 extends pConf
 {
 	private $myPicture;
-	private $encoders = [];
 
 	public function __construct(\pChart\pDraw $myPicture)
 	{
 		$this->myPicture = $myPicture;
-		$this->encoders = [
-			new Encoders\PDF417\EncoderNumber(),
-			new Encoders\PDF417\EncoderText(),
-			new Encoders\PDF417\EncoderByte()
-		];
 	}
 
-	public function draw($data, array $opts = [])
+	public function draw($data, int $x, int y, array $opts = [])
 	{
 		$defaults = [
 			'columns' => 6,
@@ -43,7 +37,7 @@ class PDF417 extends pConf
 			['hint', 0, 3]
 		]);
 
-		$pixelGrid = (new Encoders\PDF417\Encoder($this->options))->encodeData($data, $this->encoders);
-		$this->myPicture->drawBarcodeFromGrid($pixelGrid, $this->options);
+		$pixelGrid = (new Encoders\PDF417\Encoder())->encode($data, $this->options);
+		$this->myPicture->drawBarcodeFromGrid($pixelGrid, $x, $y, $this->options);
 	}
 }
