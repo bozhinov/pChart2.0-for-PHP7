@@ -44,7 +44,7 @@ class QRCode extends pConf {
 
 		$this->check_text_valid($data);
 
-		$pixelGrid = (new Encoder($this->options['level']))->encodeString($data, $this->options['hint'], $this->options['random_mask']);
+		$pixelGrid = (new Encoder())->encode($data, $this->options);
 		$this->myPicture->drawBarcodeFromGrid($pixelGrid, $this->options);
 	}
 }

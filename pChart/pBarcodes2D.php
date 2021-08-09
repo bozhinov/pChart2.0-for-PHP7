@@ -44,6 +44,9 @@ class pBarcodes2D extends \pChart\Barcodes\pConf {
 			case BARCODES_ENGINE_AZTEC:
 				$this->engine = new Barcodes\Encoders\Aztec\Encoder();
 				break;
+			case BARCODES_ENGINE_QRCODE:
+				$this->engine = new Barcodes\Encoders\QRCode\Encoder();
+				break;
 			default: throw pException::InvalidInput("Unknown encode engine");
 		}
 	}
@@ -66,12 +69,37 @@ class pBarcodes2D extends \pChart\Barcodes\pConf {
 		]);
 	}
 
+	private function parse_opts_qr($opts)
+	{
+		$defaults = [
+			'scale' => 3,
+			'padding' => 4,
+			'level' => BARCODES_QRCODE_LEVEL_L,
+			'hint' => -1,
+			'random_mask' => 0
+		];
+		$this->apply_user_options($opts, $defaults);
+
+		$this->check_ranges([
+			['scale', 1, 20],
+			['padding', 0, 20],
+			['level', 0, 3],
+			['hint', -1, 3],
+			['random_mask', 0, 8]
+		]);
+
+		$this->check_text_valid($data);
+	}
+
 	public function draw($data, int $x = 10, int $y = 10, array $opts = [])
 	{
 		switch($this->encoder)
 		{
 			case BARCODES_ENGINE_AZTEC:
 				$this->parse_opts_aztec($opts);
+				break;
+			case case BARCODES_ENGINE_QRCODE:
+				$this->parse_opts_qr($opts);
 				break;
 		}
 

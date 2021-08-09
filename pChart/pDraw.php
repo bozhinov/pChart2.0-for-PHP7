@@ -119,6 +119,7 @@ define("AXIS_Y", 682002);
 /* Replacement to the PHP NULL keyword */
 define("VOID", 0.123456789);
 
+/* 2D barcode libs */
 define("BARCODES_ENGINE_AZTEC", 700001);
 define("BARCODES_ENGINE_QRCODE", 700002);
 define("BARCODES_ENGINE_PDF417", 700003);
@@ -128,6 +129,8 @@ define("BARCODES_ENGINE_DMTXR", 700006);
 define("BARCODES_ENGINE_DMTX_GS1", 700007);
 define("BARCODES_ENGINE_DMTXS_GS1", 700008);
 define("BARCODES_ENGINE_DMTXr_GS1", 700009);
+
+/* Linear barcode libs */
 
 class pDraw
 {
