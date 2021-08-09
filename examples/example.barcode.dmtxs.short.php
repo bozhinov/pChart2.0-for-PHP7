@@ -23,7 +23,6 @@ $opts = [
 	'padding' => 6
 ];
 
-$barcodes->set_start_position($x = 10, $y = 10);
-$barcodes->draw($data, "dmtxs", $opts);
+$barcodes->draw($data, 10, 10, "dmtxs", $opts);
 
 $myPicture->autoOutput("temp/example_dmtxs_short.png");

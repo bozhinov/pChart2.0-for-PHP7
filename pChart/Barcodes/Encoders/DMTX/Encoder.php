@@ -1,8 +1,8 @@
 <?php
 
-namespace pChart\Barcodes\Encoders;
+namespace pChart\Barcodes\Encoders\DMTX;
 
-class DMTX {
+class Encoder {
 
 	private $matrix;
 	private $ec_params;
@@ -11,7 +11,7 @@ class DMTX {
 	private $cols;
 	private $rows;
 
-	public function dmtx_encode($data, $rect, $fnc1)
+	public function encode($data, $rect, $fnc1)
 	{
 		$this->rect = $rect;
 		$this->fnc1 = $fnc1;

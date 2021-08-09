@@ -11,6 +11,7 @@ class MatrixCodes extends pConf {
 	function __construct(\pChart\pDraw $pChartObject)
 	{
 		$this->myPicture = $pChartObject;
+		$this->encoder = new Encoders\DMTX\Encoder();
 	}
 
 	private function parse_opts($opts)
@@ -28,27 +29,27 @@ class MatrixCodes extends pConf {
 		]);
 	}
 
-	public function draw($data, string $symbology, array $opts = [])
+	public function draw($data, int $x, int $y, string $symbology, array $opts = [])
 	{
 		switch ($symbology) {
 			case 'dmtx':
 			case 'dmtxs':
-				$code = (new Encoders\DMTX())->dmtx_encode($data, false, false);
+				$code = $this->encoder->encode($data, false, false);
 				break;
 			case 'dmtxr':
-				$code = (new Encoders\DMTX())->dmtx_encode($data, true,  false);
+				$code = $this->encoder->encode($data, true,  false);
 				break;
 			case 'dmtxgs1':
 			case 'dmtxsgs1':
-				$code = (new Encoders\DMTX())->dmtx_encode($data, false, true);
+				$code = $this->encoder->encode($data, false, true);
 				break;
 			case 'dmtxrgs1': 
-				$code = (new Encoders\DMTX())->dmtx_encode($data, true,  true);
+				$code = $this->encoder->encode($data, true,  true);
 				break;
 			default: throw pException::InvalidInput("Unknown encode method - ".$symbology);
 		}
 
 		$this->parse_opts($opts);
-		$this->myPicture->drawBarcodeFromGrid($code, $this->options);
+		$this->myPicture->drawBarcodeFromGrid($code, $x, $y, $this->options);
 	}
 }
