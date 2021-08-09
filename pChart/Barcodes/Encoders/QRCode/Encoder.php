@@ -371,6 +371,7 @@ class Encoder {
 		$this->dataStr = array_values(unpack('C*', $text));
 		$this->dataStrLen = count($this->dataStr);
 		$this->level = $options['level'];
+		$hint = $options['hint'];
 
 		if (($hint != BARCODES_QRCODE_HINT_KANJI) && ($hint != -1)) {
 
@@ -378,7 +379,7 @@ class Encoder {
 
 		} else {
 
-			$this->hint = $options['hint'];
+			$this->hint = $hint;
 			$this->pos = 0;
 
 			while ($this->dataStrLen > $this->pos)
@@ -415,6 +416,6 @@ class Encoder {
 		} while ($version > $prev);
 		# replaces the bits with bytes
 		$package = $this->encodeStreams($package);
-		return (new Mask($package))->get($options['random_masks_count']);
+		return (new Mask($package))->get($options['random_mask']);
 	}
 }

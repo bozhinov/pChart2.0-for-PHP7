@@ -5,7 +5,7 @@
 require_once("bootstrap.php");
 
 use pChart\pDraw;
-use pChart\Barcodes\QRCode;
+use pChart\pBarcodes2D;
 
 /* Create a pChart object and associate your dataset */ 
 $myPicture = new pDraw(700,700);
@@ -14,4 +14,4 @@ $QRCode = new QRCode($myPicture);
 $QRCode->draw(str_repeat("A", 256), ['level' => BARCODES_QRCODE_LEVEL_Q, 'scale' => 10, 'padding' => 4]);
 
 /* Render the picture (choose the best way) */
-$myPicture->autoOutput('temp/example.QRcode.very.long.png');
+$myPicture->autoOutput('temp/example.barcodes.QRcode.very.long.png');

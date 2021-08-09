@@ -6,16 +6,17 @@ require_once("bootstrap.php");
 
 use pChart\pDraw;
 use pChart\pColor;
-use pChart\Barcodes\QRCode;
+use pChart\pBarcodes2D;
 
 /* Create a pChart object and associate your dataset */ 
 $myPicture = new pDraw(700,700);
 $myPicture->drawFilledRectangle(0,0,700,700,["Color"=>new pColor(179,217,91), "Dash"=>TRUE, "DashColor"=>new pColor(199,237,111)]);
 
-$QRCode = new QRCode($myPicture);
-$QRCode->set_start_position($x = 10, $y = 10);
+$QRCode = new pBarcodes2D(BARCODES_ENGINE_QRCODE, $myPicture);
 $QRCode->draw(
-	'http://www.test.bg/12341234 TEST TEST  TEST  TEST  TEST  TEST  TEST  TEST  TEST   TEST   TEST   TESTTSTS',
+	'http://www.test.bg/long long long string',
+	$x = 20,
+	$y = 20,
 	[
 		'palette' => ['color' => new pColor(255), 'bgColor' => new pColor(0)], // colors are reversed
 		"error_correction" => BARCODES_QRCODE_LEVEL_L,
@@ -26,7 +27,7 @@ $QRCode->draw(
 	);
 
 /* Render the picture (choose the best way) */
-$myPicture->autoOutput('temp/example.QRcode.basic.png');
+$myPicture->autoOutput('temp/example.barcodes.qrcode.basic.png');
 
 /* Usage
 

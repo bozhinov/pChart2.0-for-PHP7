@@ -87,8 +87,6 @@ class pBarcodes2D extends \pChart\Barcodes\pConf {
 			['hint', -1, 3],
 			['random_mask', 0, 8]
 		]);
-
-		$this->check_text_valid($data);
 	}
 
 	public function draw($data, int $x = 10, int $y = 10, array $opts = [])
@@ -98,8 +96,9 @@ class pBarcodes2D extends \pChart\Barcodes\pConf {
 			case BARCODES_ENGINE_AZTEC:
 				$this->parse_opts_aztec($opts);
 				break;
-			case case BARCODES_ENGINE_QRCODE:
+			case BARCODES_ENGINE_QRCODE:
 				$this->parse_opts_qr($opts);
+				$this->check_text_valid($data);
 				break;
 		}
 
