@@ -56,6 +56,10 @@ class pBarcodes1D extends Barcodes\pConf {
 
 		$this->apply_user_options($opts, $defaults);
 
+		$this->check_ranges([
+			['scale', 1, 20]
+		]);
+
 		if (is_null($this->options['label']['color']) && (!$this->options['label']['skip'])){
 			$this->options['label']['color'] = $this->options['palette']['color'];
 		}

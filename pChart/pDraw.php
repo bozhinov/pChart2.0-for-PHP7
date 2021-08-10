@@ -3980,18 +3980,8 @@ class pDraw
 			}
 		}
 
-		$label = $opts['label'];
-		$lsize = $label['size'];
-
 		$w = (!is_null($opts['width']))  ? intval($opts['width'])  : intval(ceil($width * $opts['scale']));
 		$h = (!is_null($opts['height'])) ? intval($opts['height']) : intval(ceil(80 * $opts['scale']));
-
-		if ($width > 0) {
-			$scale = $w / $width;
-			$scale = ($scale > 1) ? $scale : 1;
-		} else {
-			$scale = 1;
-		}
 
 		$palette = array_values($opts['palette']);
 
@@ -4000,8 +3990,10 @@ class pDraw
 			$palette[$id] = $this->allocatepColor($color);
 		}
 
+		$label = $opts['label'];
 		if ($label['skip'] != TRUE) {
-			$label_color = $this->allocatepColor($label['color']);
+			$lcolor = $this->allocatepColor($label['color']);
+			$lsize = (int)$label['size'];
 		}
 
 		foreach ($code as $block) {
@@ -4016,7 +4008,7 @@ class pDraw
 			$mx = $x;
 
 			foreach ($block['m'] as $module) {
-				$mw = $mx + $module[1] * $widths[$module[2]] * $scale;
+				$mw = $mx + $module[1] * $widths[$module[2]] * $opts['scale'];
 				imagefilledrectangle($this->Picture, intval($mx), $y, intval($mw - 1), intval($my - 1), $palette[$module[0]]);
 				$mx = $mw;
 			}
@@ -4032,9 +4024,9 @@ class pDraw
 					$ly = intval(round($ly - imagefontheight($lsize)));
 					if (!is_null($label['ttf'])) {
 						$ly +=($lsize*2) + $label['offset'];
-						imagettftext($this->Picture, $lsize, 0, $lx, $ly, $label_color, realpath($label['ttf']), $text);
+						imagettftext($this->Picture, $lsize, 0, $lx, $ly, $lcolor, realpath($label['ttf']), $text);
 					} else {
-						imagestring($this->Picture,  $lsize, $lx, $ly, $text, $label_color);
+						imagestring($this->Picture,  $lsize, $lx, $ly, $text, $lcolor);
 					}
 				}
 			}
