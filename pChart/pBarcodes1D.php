@@ -23,7 +23,7 @@ class pBarcodes1D extends Barcodes\pConf {
 		*/
 
 		try {
-			$class = "pChart\\Barcodes\\Encoders\\Linear\\$encoder";
+			$class = "pChart\\Barcodes\\Linear\\$encoder";
 			$this->engine = new $class;
 		} catch (\Throwable $e) {
 			throw pException::InvalidInput("Unknown encoding engine");

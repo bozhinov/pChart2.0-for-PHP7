@@ -1,6 +1,6 @@
 <?php
 
-namespace pChart\Barcodes\Encoders\Aztec;
+namespace pChart\Barcodes\Aztec;
 
 class Binary {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace pChart\Barcodes\Encoders\QRCode;
+namespace pChart\Barcodes\QRCode;
 
 use pChart\pException;
 

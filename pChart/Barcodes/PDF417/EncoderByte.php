@@ -1,6 +1,6 @@
 <?php
 
-namespace pChart\Barcodes\Encoders\PDF417;
+namespace pChart\Barcodes\PDF417;
 
 /**
 * Converts a byte array to code words.

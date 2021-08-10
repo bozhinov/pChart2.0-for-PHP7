@@ -1,6 +1,6 @@
 <?php
 
-namespace pChart\Barcodes\Encoders\Linear;
+namespace pChart\Barcodes\Linear;
 
 use pChart\pException;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace pChart\Barcodes\Encoders\Aztec;
+namespace pChart\Barcodes\Aztec;
 
 use pChart\pException;
 
