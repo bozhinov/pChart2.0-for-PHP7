@@ -1,6 +1,6 @@
 <?php
 
-namespace pChart\Barcodes\Encoders;
+namespace pChart\Barcodes\Encoders\Linear;
 
 class Code39 {
 

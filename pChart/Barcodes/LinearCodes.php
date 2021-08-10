@@ -6,11 +6,30 @@ use pChart\pException;
 
 class LinearCodes extends pConf {
 
+	private $encoder;
+	private $engine;
 	private $myPicture;
 
-	function __construct(\pChart\pDraw $pChartObject)
+	public function __construct(string $encoder, \pChart\pDraw $myPicture)
 	{
-		$this->myPicture = $pChartObject;
+		$this->encoder = $encoder;
+		$this->myPicture = $myPicture;
+
+		/* Available engines ->
+		BARCODES_ENGINE_UPC
+		BARCODES_ENGINE_CODE39
+		BARCODES_ENGINE_CODE93
+		BARCODES_ENGINE_CODE128
+		BARCODES_ENGINE_CODABAR
+		BARCODES_ENGINE_ITF
+		*/
+
+		try {
+			$class = "pChart\\Barcodes\\Encoders\\Linear\\$encoder";
+			$this->engine = new $class;
+		} catch (\Throwable $e) {
+			throw pException::InvalidInput("Unknown encoding engine");
+		}
 	}
 
 	private function parse_opts($opts)
@@ -33,10 +52,6 @@ class LinearCodes extends pConf {
 					'ttf' => NULL,
 					'offset' => 0
 				]
-			#'palette' => [
-			#	0 => new pColor(255), // CS - Color of spaces
-			#	1 => new pColor(0) 	// CM - Color of modules
-			#]
 		];
 
 		$this->apply_user_options($opts, $defaults);
@@ -46,7 +61,7 @@ class LinearCodes extends pConf {
 		}
 	}
 
-	public function render($code)
+	public function render($code, $x, $y)
 	{
 		# calculate_size
 		$width = 0;
@@ -60,8 +75,6 @@ class LinearCodes extends pConf {
 		$label = $this->options['label'];
 		$lsize = $label['size'];
 
-		$x = intval($this->options['StartX']);
-		$y = intval($this->options['StartY']);
 		$w = (!is_null($this->options['width']))  ? intval($this->options['width'])  : intval(ceil($width * $this->options['scale']));
 		$h = (!is_null($this->options['height'])) ? intval($this->options['height']) : intval(ceil(80 * $this->options['scale']));
 
@@ -123,62 +136,70 @@ class LinearCodes extends pConf {
 		}
 	}
 
-	public function draw($data, string $symbology, array $opts = [])
+	public function draw($data, int $x, int $y, array $opts = [])
 	{
-		switch ($symbology) {
-			case 'upca'       : 
-				$code = (new Encoders\UPC)->upc_a_encode($data);
-				break;
-			case 'upce'       : 
-				$code = (new Encoders\UPC)->upc_e_encode($data);
-				break;
-			case 'ean13nopad' : 
-				$code = (new Encoders\UPC)->ean_13_encode($data, ' ');
-				break;
-			case 'ean13pad'   :
-			case 'ean13'      :
-				$code = (new Encoders\UPC)->ean_13_encode($data, '>');
-				break;
-			case 'ean8'       : 
-				$code = (new Encoders\UPC)->ean_8_encode($data);
-				break;
-			case 'code39'     :
-				$options = ['mode' => 'data']; 
-				$code = (new Encoders\Code39)->encode($data, $options);
-				break;
-			case 'code39ascii':
-				$options = ['mode' => 'ascii'];
-				$code = (new Encoders\Code39)->encode($data, $options);
-				break;
-			case 'code93'     :
-				$options = ['mode' => 'data']; 
-				$code = (new Encoders\Code93)->encode($data, $options);
-				break;
-			case 'code93ascii':
-				$options = ['mode' => 'ascii']; 
-				$code = (new Encoders\Code93)->encode($data, $options);
-				break;
-			case 'code128'    : $code = (new Encoders\Code128)->encode($data, 0, false); break;
-			case 'code128a'   : $code = (new Encoders\Code128)->encode($data, 1, false); break;
-			case 'code128b'   : $code = (new Encoders\Code128)->encode($data, 2, false); break;
-			case 'code128c'   : $code = (new Encoders\Code128)->encode($data, 3, false); break;
-			case 'code128ac'  : $code = (new Encoders\Code128)->encode($data,-1, false); break;
-			case 'code128bc'  : $code = (new Encoders\Code128)->encode($data,-2, false); break;
-			case 'GS1-128'     : $code = (new Encoders\Code128)->encode($data, 0, true); break;
-			case 'GS1-128a'    : $code = (new Encoders\Code128)->encode($data, 1, true); break;
-			case 'GS1-128b'    : $code = (new Encoders\Code128)->encode($data, 2, true); break;
-			case 'GS1-128c'    : $code = (new Encoders\Code128)->encode($data, 3, true); break;
-			case 'GS1-128ac'   : $code = (new Encoders\Code128)->encode($data,-1, true); break;
-			case 'GS1-128bc'   : $code = (new Encoders\Code128)->encode($data,-2, true); break;
-			case 'codabar'    : $code = (new Encoders\Codabar)->encode($data); break;
-			case 'itf'        :
-			case 'itf14'      :
-				$code = (new Encoders\ITF)->encode($data);
-				break;
-			default: throw pException::InvalidInput("Unknown encode method - ".$symbology);
-		}
+		/*
+		BARCODES_ENGINE_UPC
+		case 'upca'       : 
+			$options = ['mode' => 'upca']; 
+		case 'upce'       : 
+			$options = ['mode' => 'upca']; 
+		case 'ean13nopad' : 
+			$options = ['mode' => 'upca']; 
+		case 'ean13pad'   :
+		case 'ean13'      :
+			$options = ['mode' => 'ean13pad']; 
+		case 'ean8'       : 
+			$options = ['mode' => 'ean8']; 
+		
+		BARCODES_ENGINE_CODE39
+		case 'code39'     :
+			$options = ['mode' => 'data']; 
+		case 'code39ascii':
+			$options = ['mode' => 'ascii'];
+		
+		BARCODES_ENGINE_CODE93
+		case 'code93'     :
+			$options = ['mode' => 'data']; 
+		case 'code93ascii':
+			$options = ['mode' => 'ascii']; 
+		
+		BARCODES_ENGINE_CODE128
+		case 'code128'    :
+			$options = ['GS-1' => false, 'mode' => ""]; 
+		case 'code128a'   :
+			$options = ['GS-1' => false, 'mode' => "a"];
+		case 'code128b'   :
+			$options = ['GS-1' => false, 'mode' => "b"];
+		case 'code128c'   : 
+			$options = ['GS-1' => false, 'mode' => "c"];
+		case 'code128ac'  : 
+			$options = ['GS-1' => false, 'mode' => "ac"];
+		case 'code128bc'  : 
+			$options = ['GS-1' => false, 'mode' => "bc"];
+		case 'GS1-128'     : 
+			$options = ['GS-1' => true, 'mode' => ""];
+		case 'GS1-128a'    : 
+			$options = ['GS-1' => true, 'mode' => "a"];
+		case 'GS1-128b'    : 
+			$options = ['GS-1' => true, 'mode' => "b"];
+		case 'GS1-128c'    : 
+			$options = ['GS-1' => true, 'mode' => "c"];
+		case 'GS1-128ac'   : 
+			$options = ['GS-1' => true, 'mode' => "ac"];
+		case 'GS1-128bc'   : 
+			$options = ['GS-1' => true, 'mode' => "bc"];
+		
+		BARCODES_ENGINE_CODABAR
+		case 'codabar'    : 
+		
+		BARCODES_ENGINE_ITF
+		case 'itf'        :
+		case 'itf14'      :
+		*/
 
+		$code = $this->engine->encode($data, $this->options);
 		$this->parse_opts($opts);
-		$this->render($code);
+		$this->render($code, $x, $y);
 	}
 }

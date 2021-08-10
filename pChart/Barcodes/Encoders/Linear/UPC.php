@@ -1,8 +1,29 @@
 <?php
 
-namespace pChart\Barcodes\Encoders;
+namespace pChart\Barcodes\Encoders\Linear;
+
+use pChart\pException;
 
 class UPC {
+
+	public function encode($data, $opts)
+	{
+		switch (strtoupper($opts['mode'])){
+			case "upca":
+				return $this->upc_a_encode($data);
+			case "upce":
+				return $this->upc_e_encode($data);
+			case "ean13nopad":
+				return $this->ean_13_encode($data, ' ');
+			case "ean13pad":
+			case "ean13":
+				return $this->ean_13_encode($data, '>');
+			case "ean8":
+				return $this->ean_8_encode($data);
+			default: 
+				throw pException::InvalidInput("Unknown UPS encode method");
+		}
+	}
 
 	public function upc_a_encode($data)
 	{

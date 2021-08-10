@@ -1,11 +1,33 @@
 <?php
 
-namespace pChart\Barcodes\Encoders;
+namespace pChart\Barcodes\Encoders\Linear;
 
 class Code128 {
 
-	public function encode($data, $dstate, $fnc1)
+	public function encode($data, array $opts)
 	{
+		$fnc1 = (bool)$opts['GS-1'];
+		switch ($opts['mode']) {
+			case "":
+				$dstate = 0;
+				break;
+			case "a":
+				$dstate = 1;
+				break;
+			case "b":
+				$dstate = 2;
+				break;
+			case "c":
+				$dstate = 3;
+				break;
+			case "ac":
+				$dstate = -1;
+				break;
+			case "bc":
+				$dstate = -2;
+				break;
+		}
+
 		$data = preg_replace('/[\x80-\xFF]/', '', $data);
 		$label = preg_replace('/[\x00-\x1F\x7F]/', ' ', $data);
 		$chars = $this->normalize($data, $dstate, $fnc1);

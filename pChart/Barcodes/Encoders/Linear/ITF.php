@@ -1,10 +1,10 @@
 <?php
 
-namespace pChart\Barcodes\Encoders;
+namespace pChart\Barcodes\Encoders\Linear;
 
 class ITF {
 
-	public function encode($data)
+	public function encode($data, $opts)
 	{
 		$data = preg_replace('/[^0-9]/', '', $data);
 		if (strlen($data) % 2) {
