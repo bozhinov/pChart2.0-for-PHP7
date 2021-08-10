@@ -28,29 +28,25 @@ define("BARCODES_QRCODE_HINT_ALPHANUM", 1);
 define("BARCODES_QRCODE_HINT_BYTE", 2);
 define("BARCODES_QRCODE_HINT_KANJI", 3);
 
+define("BARCODES_DTMX_PATTERN_SQUARE", 0);
+define("BARCODES_DTMX_PATTERN_RECT", 1);
+
 class pBarcodes2D extends \pChart\Barcodes\pConf {
 
 	private $encoder;
 	private $engine;
 	private $myPicture;
 
-	public function __construct(int $encoder, \pChart\pDraw $myPicture)
+	public function __construct(string $encoder, \pChart\pDraw $myPicture)
 	{
 		$this->encoder = $encoder;
 		$this->myPicture = $myPicture;
 
-		switch($encoder)
-		{
-			case BARCODES_ENGINE_AZTEC:
-				$this->engine = new Barcodes\Encoders\Aztec\Encoder();
-				break;
-			case BARCODES_ENGINE_QRCODE:
-				$this->engine = new Barcodes\Encoders\QRCode\Encoder();
-				break;
-			case BARCODES_ENGINE_PDF417:
-				$this->engine = new Barcodes\Encoders\PDF417\Encoder();
-				break;
-			default: throw pException::InvalidInput("Unknown encode engine");
+		try {
+			$class = "pChart\\Barcodes\\Encoders\\$encoder\\Encoder";
+			$this->engine = new $class;
+		} catch (\Throwable $e) {
+			throw pException::InvalidInput("Unknown encoding engine");
 		}
 	}
 
@@ -114,6 +110,23 @@ class pBarcodes2D extends \pChart\Barcodes\pConf {
 		]);
 	}
 
+	private function parse_opts_dmtx($opts)
+	{
+		$defaults = [
+			'scale' => 4,
+			'padding' => 4,
+			'pattern' => 'square', # rectangular
+			'GS-1' => false
+		];
+
+		$this->apply_user_options($opts, $defaults);
+
+		$this->check_ranges([
+			['scale', 1, 20],
+			['padding', 0, 20]
+		]);
+	}
+
 	public function draw($data, int $x = 10, int $y = 10, array $opts = [])
 	{
 		switch($this->encoder)
@@ -127,6 +140,9 @@ class pBarcodes2D extends \pChart\Barcodes\pConf {
 				break;
 			case BARCODES_ENGINE_PDF417:
 				$this->parse_opts_pdf417($opts);
+				break;
+			case BARCODES_ENGINE_DMTX:
+				$this->parse_opts_dmtx($opts);
 				break;
 		}
 

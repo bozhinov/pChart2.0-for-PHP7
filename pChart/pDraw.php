@@ -120,15 +120,10 @@ define("AXIS_Y", 682002);
 define("VOID", 0.123456789);
 
 /* 2D barcode libs */
-define("BARCODES_ENGINE_AZTEC", 700001);
-define("BARCODES_ENGINE_QRCODE", 700002);
-define("BARCODES_ENGINE_PDF417", 700003);
-define("BARCODES_ENGINE_DMTX", 700004);
-define("BARCODES_ENGINE_DMTXS", 700005);
-define("BARCODES_ENGINE_DMTXR", 700006);
-define("BARCODES_ENGINE_DMTX_GS1", 700007);
-define("BARCODES_ENGINE_DMTXS_GS1", 700008);
-define("BARCODES_ENGINE_DMTXr_GS1", 700009);
+define("BARCODES_ENGINE_AZTEC", 'Aztec');
+define("BARCODES_ENGINE_QRCODE", 'QRCode');
+define("BARCODES_ENGINE_PDF417", 'PDF417');
+define("BARCODES_ENGINE_DMTX", 'DMTX');
 
 /* Linear barcode libs */
 
@@ -3991,6 +3986,13 @@ class pDraw
 			$scaleY = $scaleX;
 			$h = $w;
 			$height = $width;
+		}
+
+		if (isset($options['pattern'])){ # DTMX
+			if ((bool)$options['pattern']){
+				$h = count($pixelGrid);
+				$height = ($h * $scaleY) + $padding * 2;
+			}
 		}
 
 		// Draw the background

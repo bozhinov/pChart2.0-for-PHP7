@@ -11,10 +11,10 @@ class Encoder {
 	private $cols;
 	private $rows;
 
-	public function encode($data, $rect, $fnc1)
+	public function encode($data, $opts)
 	{
-		$this->rect = $rect;
-		$this->fnc1 = $fnc1;
+		$this->rect = (bool)$opts['pattern'];
+		$this->fnc1 = (bool)$opts['GS-1'];
 
 		$data = $this->encode_data($data);
 		$data = $this->encode_ec($data);
