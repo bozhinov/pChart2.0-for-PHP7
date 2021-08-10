@@ -5,6 +5,9 @@ pColor - Data structure for colors
 Version     : 2.4.0-dev
 Made by     : Momchil Bozhinov
 Last Update : 21/07/2021
+
+This file can be distributed under the MIT license
+
 */
 
 namespace pChart;

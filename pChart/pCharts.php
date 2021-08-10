@@ -5,24 +5,7 @@ pCharts - class with charts
 
 Version     : 2.4.0-dev
 Made by     : Forked by Momchil Bozhinov from the original pDraw class from Jean-Damien POGOLOTTI
-Last Update : 01/09/2019
-
-Contains functions:
-	drawPolygonChart
-	drawStackedAreaChart
-	drawStackedBarChart
-	drawBarChart
-	drawAreaChart
-	drawFilledStepChart
-	drawStepChart
-	drawZoneChart
-	drawLineChart
-	drawFilledSplineChart
-	drawSplineChart
-	drawPlotChart
-	drawSplitPath
-	drawDerivative
-	drawBestFit
+Last Update : 10/08/2021
 
 This file can be distributed under the license you can find at:
 http://www.pchart.net/license

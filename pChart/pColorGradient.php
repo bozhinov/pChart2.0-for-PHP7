@@ -6,6 +6,8 @@ Version     : 2.4.0-dev
 Made by     : Momchil Bozhinov
 Last Update : 14/10/2019
 
+This file can be distributed under the MIT license
+
 */
 
 namespace pChart;

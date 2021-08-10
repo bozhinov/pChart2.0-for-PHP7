@@ -7,8 +7,7 @@ Version     : 2.4.0-dev
 Made by     : Created by Momchil Bozhinov
 Last Update : 01/09/2019
 
-This file can be distributed under the license you can find at:
-http://www.pchart.net/license
+This file can be distributed under the MIT license
 
 */
 
