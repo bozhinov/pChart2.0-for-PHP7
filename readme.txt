@@ -6,7 +6,7 @@
  ¦   Version            : 2.4.0                                               ¦
  ¦   Based on code by   : Jean-Damien POGOLOTTI                               ¦
  ¦   Maintained by      : Momchil Bozhinov     				      ¦
- ¦   Last Update        : 27/07/2021                                          ¦
+ ¦   Last Update        : 10/08/2021                                          ¦
  ¦                                                                            ¦
  +----------------------------------------------------------------------------+
 
@@ -21,6 +21,7 @@
  -
  +- /pChart		This folder contains the library core classes
  ¦   +- /Barcodes	Classes to draw all sorts of barcodes
+ ¦   +- pBarcodes2D	A wrapper for the 2D barcodes
  ¦   +- pBubble		Class to draw bubble charts
  ¦   +- pCharts		Class to draw several types of charts
  ¦   +- pColor		Data structure for colors
@@ -98,6 +99,7 @@
     pColorGradient
     pConf
     pException
+    pBarcodes2D
 
   The same license applies to any code modifications I made to the original code
   and all the barcode libraries.
