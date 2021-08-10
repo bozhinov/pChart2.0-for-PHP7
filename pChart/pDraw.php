@@ -136,7 +136,7 @@ define("BARCODES_ENGINE_ITF", 'ITF');
 class pDraw
 {
 	/* GD picture object */
-	private $Picture;
+	protected $Picture;
 	/* Image settings, size, quality, .. */
 	private $XSize = 0; // Width of the picture
 	private $YSize = 0; // Height of the picture
@@ -211,11 +211,6 @@ class pDraw
 		if (is_resource($this->Picture)){
 			imagedestroy($this->Picture);
 		}
-	}
-
-	public function gettheImage()
-	{
-		return $this->Picture;
 	}
 
 	/* Fix box coordinates */
@@ -1206,7 +1201,7 @@ class pDraw
 		return imagecolorallocatealpha($this->Picture, $ColorA[0], $ColorA[1], $ColorA[2], intval(1.27 * (100 - $ColorA[3])));
 	}
 
-	public function allocatepColor(\pChart\pColor $color)
+	private function allocatepColor(pColor $color)
 	{
 		list ($R, $G, $B, $A) = $color->get();
 		return imagecolorallocatealpha($this->Picture, $R, $G, $B, intval(1.27 * (100 - $A)));
