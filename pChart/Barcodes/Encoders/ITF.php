@@ -4,7 +4,7 @@ namespace pChart\Barcodes\Encoders;
 
 class ITF {
 
-	public static function itf_encode($data)
+	public function encode($data)
 	{
 		$data = preg_replace('/[^0-9]/', '', $data);
 		if (strlen($data) % 2) {

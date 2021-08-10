@@ -4,7 +4,7 @@ namespace pChart\Barcodes\Encoders;
 
 class CodaBar {
 
-	public static function codabar_encode($data)
+	public function encode($data)
 	{
 		$data = strtoupper(preg_replace('/[^0-9ABCDENTabcdent*.\/:+$-]/', '', $data));
 		$blocks = [];

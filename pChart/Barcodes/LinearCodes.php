@@ -126,34 +126,54 @@ class LinearCodes extends pConf {
 	public function draw($data, string $symbology, array $opts = [])
 	{
 		switch ($symbology) {
-			case 'upca'       : $code = (new Encoders\UPC)->upc_a_encode($data); break;
-			case 'upce'       : $code = (new Encoders\UPC)->upc_e_encode($data); break;
-			case 'ean13nopad' : $code = (new Encoders\UPC)->ean_13_encode($data, ' '); break;
+			case 'upca'       : 
+				$code = (new Encoders\UPC)->upc_a_encode($data);
+				break;
+			case 'upce'       : 
+				$code = (new Encoders\UPC)->upc_e_encode($data);
+				break;
+			case 'ean13nopad' : 
+				$code = (new Encoders\UPC)->ean_13_encode($data, ' ');
+				break;
 			case 'ean13pad'   :
 			case 'ean13'      :
 				$code = (new Encoders\UPC)->ean_13_encode($data, '>');
 				break;
-			case 'ean8'       : $code = (new Encoders\UPC)->ean_8_encode($data); break;
-			case 'code39'     : $code = (new Encoders\Codes)->code_39_encode($data); break;
-			case 'code39ascii': $code = (new Encoders\Codes)->code_39_ascii_encode($data); break;
-			case 'code93'     : $code = (new Encoders\Codes)->code_93_encode($data); break;
-			case 'code93ascii': $code = (new Encoders\Codes)->code_93_ascii_encode($data); break;
-			case 'code128'    : $code = (new Encoders\Codes)->code_128_encode($data, 0, false); break;
-			case 'code128a'   : $code = (new Encoders\Codes)->code_128_encode($data, 1, false); break;
-			case 'code128b'   : $code = (new Encoders\Codes)->code_128_encode($data, 2, false); break;
-			case 'code128c'   : $code = (new Encoders\Codes)->code_128_encode($data, 3, false); break;
-			case 'code128ac'  : $code = (new Encoders\Codes)->code_128_encode($data,-1, false); break;
-			case 'code128bc'  : $code = (new Encoders\Codes)->code_128_encode($data,-2, false); break;
-			case 'ean128'     : $code = (new Encoders\Codes)->code_128_encode($data, 0, true); break;
-			case 'ean128a'    : $code = (new Encoders\Codes)->code_128_encode($data, 1, true); break;
-			case 'ean128b'    : $code = (new Encoders\Codes)->code_128_encode($data, 2, true); break;
-			case 'ean128c'    : $code = (new Encoders\Codes)->code_128_encode($data, 3, true); break;
-			case 'ean128ac'   : $code = (new Encoders\Codes)->code_128_encode($data,-1, true); break;
-			case 'ean128bc'   : $code = (new Encoders\Codes)->code_128_encode($data,-2, true); break;
-			case 'codabar'    : $code = Encoders\Codabar::codabar_encode($data); break;
+			case 'ean8'       : 
+				$code = (new Encoders\UPC)->ean_8_encode($data);
+				break;
+			case 'code39'     :
+				$options = ['mode' => 'data']; 
+				$code = (new Encoders\Code39)->encode($data, $options);
+				break;
+			case 'code39ascii':
+				$options = ['mode' => 'ascii'];
+				$code = (new Encoders\Code39)->encode($data, $options);
+				break;
+			case 'code93'     :
+				$options = ['mode' => 'data']; 
+				$code = (new Encoders\Code93)->encode($data, $options);
+				break;
+			case 'code93ascii':
+				$options = ['mode' => 'ascii']; 
+				$code = (new Encoders\Code93)->encode($data, $options);
+				break;
+			case 'code128'    : $code = (new Encoders\Code128)->encode($data, 0, false); break;
+			case 'code128a'   : $code = (new Encoders\Code128)->encode($data, 1, false); break;
+			case 'code128b'   : $code = (new Encoders\Code128)->encode($data, 2, false); break;
+			case 'code128c'   : $code = (new Encoders\Code128)->encode($data, 3, false); break;
+			case 'code128ac'  : $code = (new Encoders\Code128)->encode($data,-1, false); break;
+			case 'code128bc'  : $code = (new Encoders\Code128)->encode($data,-2, false); break;
+			case 'ean128'     : $code = (new Encoders\Code128)->encode($data, 0, true); break;
+			case 'ean128a'    : $code = (new Encoders\Code128)->encode($data, 1, true); break;
+			case 'ean128b'    : $code = (new Encoders\Code128)->encode($data, 2, true); break;
+			case 'ean128c'    : $code = (new Encoders\Code128)->encode($data, 3, true); break;
+			case 'ean128ac'   : $code = (new Encoders\Code128)->encode($data,-1, true); break;
+			case 'ean128bc'   : $code = (new Encoders\Code128)->encode($data,-2, true); break;
+			case 'codabar'    : $code = (new Encoders\Codabar)->encode($data); break;
 			case 'itf'        :
 			case 'itf14'      :
-				$code = Encoders\ITF::itf_encode($data);
+				$code = (new Encoders\ITF)->encode($data);
 				break;
 			default: throw pException::InvalidInput("Unknown encode method - ".$symbology);
 		}
