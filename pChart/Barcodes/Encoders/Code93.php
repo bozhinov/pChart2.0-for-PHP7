@@ -7,9 +7,9 @@ class Code93 {
 	public function encode($data, $opts)
 	{
 		if(strtoupper($opts['mode']) ==  "ASCII"){
-			$this->code_93_ascii_encode($data);
+			return $this->code_93_ascii_encode($data);
 		} else {
-			$this->code_93_encode($data);
+			return $this->code_93_encode($data);
 		}
 	}
 

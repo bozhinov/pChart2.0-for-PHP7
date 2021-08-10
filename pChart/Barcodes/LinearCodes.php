@@ -164,12 +164,12 @@ class LinearCodes extends pConf {
 			case 'code128c'   : $code = (new Encoders\Code128)->encode($data, 3, false); break;
 			case 'code128ac'  : $code = (new Encoders\Code128)->encode($data,-1, false); break;
 			case 'code128bc'  : $code = (new Encoders\Code128)->encode($data,-2, false); break;
-			case 'ean128'     : $code = (new Encoders\Code128)->encode($data, 0, true); break;
-			case 'ean128a'    : $code = (new Encoders\Code128)->encode($data, 1, true); break;
-			case 'ean128b'    : $code = (new Encoders\Code128)->encode($data, 2, true); break;
-			case 'ean128c'    : $code = (new Encoders\Code128)->encode($data, 3, true); break;
-			case 'ean128ac'   : $code = (new Encoders\Code128)->encode($data,-1, true); break;
-			case 'ean128bc'   : $code = (new Encoders\Code128)->encode($data,-2, true); break;
+			case 'GS1-128'     : $code = (new Encoders\Code128)->encode($data, 0, true); break;
+			case 'GS1-128a'    : $code = (new Encoders\Code128)->encode($data, 1, true); break;
+			case 'GS1-128b'    : $code = (new Encoders\Code128)->encode($data, 2, true); break;
+			case 'GS1-128c'    : $code = (new Encoders\Code128)->encode($data, 3, true); break;
+			case 'GS1-128ac'   : $code = (new Encoders\Code128)->encode($data,-1, true); break;
+			case 'GS1-128bc'   : $code = (new Encoders\Code128)->encode($data,-2, true); break;
 			case 'codabar'    : $code = (new Encoders\Codabar)->encode($data); break;
 			case 'itf'        :
 			case 'itf14'      :

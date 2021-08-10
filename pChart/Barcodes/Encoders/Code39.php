@@ -7,9 +7,9 @@ class Code39 {
 	public function encode($data, $opts)
 	{
 		if(strtoupper($opts['mode']) ==  "ASCII"){
-			$this->code_39_ascii_encode($data);
+			return $this->code_39_ascii_encode($data);
 		} else {
-			$this->code_39_encode($data);
+			return $this->code_39_encode($data);
 		}
 	}
 
