@@ -147,6 +147,6 @@ class pBarcodes2D extends \pChart\Barcodes\pConf {
 		}
 
 		$pixelGrid = $this->engine->encode($data, $this->options);
-		$this->myPicture->drawBarcodeFromGrid($pixelGrid, $x, $y, $this->options);
+		$this->myPicture->draw2DBarcode($pixelGrid, $x, $y, $this->options);
 	}
 }

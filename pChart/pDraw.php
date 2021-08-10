@@ -3969,7 +3969,7 @@ class pDraw
 		return $Pos;
 	}
 
-	public function drawBarcodeFromGrid(array $pixelGrid, int $StartX, int $StartY, array $options)
+	public function draw2DBarcode(array $pixelGrid, int $StartX, int $StartY, array $options)
 	{
 		$padding = $options['padding'];
 		$scaleX = $options['scale'];
