@@ -4063,7 +4063,7 @@ class pDraw
 		}
 
 		if (isset($options['pattern'])){ # DTMX
-			if ((bool)$options['pattern']){
+			if ((bool)$options['pattern']){ # rectangular
 				$h = count($pixelGrid);
 				$height = ($h * $scaleY) + $padding * 2;
 			}
@@ -4074,16 +4074,19 @@ class pDraw
 		imagefilledrectangle($this->Picture, $StartX, $StartY, $StartX + $width, $StartY + $height, $bgColorAlloc);
 		$colorAlloc = $this->allocatepColor($options['palette']['color']);
 
+		$StartX += $padding;
+		$StartY += $padding;
+
 		// Render the barcode
 		for($y = 0; $y < $h; $y++) {
 			for($x = 0; $x < $w; $x++) {
 				if ($pixelGrid[$y][$x] & 1) {
 					imagefilledrectangle(
 						$this->Picture,
-						($x * $scaleX) + $padding + $StartX,
-						($y * $scaleY) + $padding + $StartY,
-						(($x + 1) * $scaleX - 1) + $padding + $StartX,
-						(($y + 1) * $scaleY - 1) + $padding + $StartY,
+						($x * $scaleX) + $StartX,
+						($y * $scaleY) + $StartY,
+						(($x + 1) * $scaleX - 1) + $StartX,
+						(($y + 1) * $scaleY - 1) + $StartY,
 						$colorAlloc
 					);
 				}
