@@ -1,16 +1,14 @@
 <?php
 
-namespace pChart\Barcodes;
+namespace pChart;
 
-use pChart\pException;
-
-class LinearCodes extends pConf {
+class pBarcodes1D extends Barcodes\pConf {
 
 	private $encoder;
 	private $engine;
 	private $myPicture;
 
-	public function __construct(string $encoder, \pChart\pDraw $myPicture)
+	public function __construct(string $encoder, pDraw $myPicture)
 	{
 		$this->encoder = $encoder;
 		$this->myPicture = $myPicture;
@@ -35,6 +33,8 @@ class LinearCodes extends pConf {
 	private function parse_opts($opts)
 	{
 		$defaults = [
+			'mode' => "",
+			'GS-1' => false,
 			'scale' => 1,
 			'width' => NULL,
 			'height' => NULL,
@@ -63,7 +63,6 @@ class LinearCodes extends pConf {
 
 	public function render($code, $x, $y)
 	{
-		# calculate_size
 		$width = 0;
 		$widths = array_values($this->options['widths']);
 		foreach ($code as $block){
@@ -139,67 +138,46 @@ class LinearCodes extends pConf {
 	public function draw($data, int $x, int $y, array $opts = [])
 	{
 		/*
-		BARCODES_ENGINE_UPC
-		case 'upca'       : 
-			$options = ['mode' => 'upca']; 
-		case 'upce'       : 
-			$options = ['mode' => 'upca']; 
-		case 'ean13nopad' : 
-			$options = ['mode' => 'upca']; 
-		case 'ean13pad'   :
-		case 'ean13'      :
-			$options = ['mode' => 'ean13pad']; 
-		case 'ean8'       : 
-			$options = ['mode' => 'ean8']; 
+		BARCODES_ENGINE_UPC : 
+			'upca' = ['mode' => 'upca']; 
+			'upce' = ['mode' => 'upce']; 
+			'ean13nopad' = ['mode' => 'ean13nopad']; 
+			'ean13pad'   = ['mode' => 'ean13pad'];
+			'ean13' = ['mode' => 'ean13'];
+			'ean8'  = ['mode' => 'ean8']; 
 		
 		BARCODES_ENGINE_CODE39
-		case 'code39'     :
-			$options = ['mode' => 'data']; 
-		case 'code39ascii':
-			$options = ['mode' => 'ascii'];
+			'code39' = ['mode' => 'data']; 
+			'code39ascii' = ['mode' => 'ascii'];
 		
 		BARCODES_ENGINE_CODE93
-		case 'code93'     :
-			$options = ['mode' => 'data']; 
-		case 'code93ascii':
-			$options = ['mode' => 'ascii']; 
+			'code93' = ['mode' => 'data']; 
+			'code93ascii' = ['mode' => 'ascii'];
 		
 		BARCODES_ENGINE_CODE128
-		case 'code128'    :
-			$options = ['GS-1' => false, 'mode' => ""]; 
-		case 'code128a'   :
-			$options = ['GS-1' => false, 'mode' => "a"];
-		case 'code128b'   :
-			$options = ['GS-1' => false, 'mode' => "b"];
-		case 'code128c'   : 
-			$options = ['GS-1' => false, 'mode' => "c"];
-		case 'code128ac'  : 
-			$options = ['GS-1' => false, 'mode' => "ac"];
-		case 'code128bc'  : 
-			$options = ['GS-1' => false, 'mode' => "bc"];
-		case 'GS1-128'     : 
-			$options = ['GS-1' => true, 'mode' => ""];
-		case 'GS1-128a'    : 
-			$options = ['GS-1' => true, 'mode' => "a"];
-		case 'GS1-128b'    : 
-			$options = ['GS-1' => true, 'mode' => "b"];
-		case 'GS1-128c'    : 
-			$options = ['GS-1' => true, 'mode' => "c"];
-		case 'GS1-128ac'   : 
-			$options = ['GS-1' => true, 'mode' => "ac"];
-		case 'GS1-128bc'   : 
-			$options = ['GS-1' => true, 'mode' => "bc"];
+			'code128' =  ['GS-1' => false, 'mode' => ""]; 
+			'code128a' = ['GS-1' => false, 'mode' => "a"];
+			'code128b' = ['GS-1' => false, 'mode' => "b"];
+			'code128c' = ['GS-1' => false, 'mode' => "c"];
+			'code128ac' =['GS-1' => false, 'mode' => "ac"];
+			'code128bc' =['GS-1' => false, 'mode' => "bc"];
+			'GS1-128' =  ['GS-1' => true,  'mode' => ""];
+			'GS1-128a' = ['GS-1' => true,  'mode' => "a"];
+			'GS1-128b' = ['GS-1' => true,  'mode' => "b"];
+			'GS1-128c' = ['GS-1' => true,  'mode' => "c"];
+			'GS1-128ac' =['GS-1' => true,  'mode' => "ac"];
+			'GS1-128bc' =['GS-1' => true,  'mode' => "bc"];
 		
 		BARCODES_ENGINE_CODABAR
-		case 'codabar'    : 
+			'codabar' = [];
 		
 		BARCODES_ENGINE_ITF
-		case 'itf'        :
-		case 'itf14'      :
+			'itf' = []
+			'itf14' = []
 		*/
 
-		$code = $this->engine->encode($data, $this->options);
 		$this->parse_opts($opts);
+		$code = $this->engine->encode($data, $this->options);
 		$this->render($code, $x, $y);
 	}
 }

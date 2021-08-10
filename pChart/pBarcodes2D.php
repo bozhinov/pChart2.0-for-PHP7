@@ -31,13 +31,13 @@ define("BARCODES_QRCODE_HINT_KANJI", 3);
 define("BARCODES_DTMX_PATTERN_SQUARE", 0);
 define("BARCODES_DTMX_PATTERN_RECT", 1);
 
-class pBarcodes2D extends \pChart\Barcodes\pConf {
+class pBarcodes2D extends Barcodes\pConf {
 
 	private $encoder;
 	private $engine;
 	private $myPicture;
 
-	public function __construct(string $encoder, \pChart\pDraw $myPicture)
+	public function __construct(string $encoder, pDraw $myPicture)
 	{
 		$this->encoder = $encoder;
 		$this->myPicture = $myPicture;

@@ -22,6 +22,7 @@
  +- /pChart		This folder contains the library core classes
  ¦   +- /Barcodes	Classes to draw all sorts of barcodes
  ¦   +- pBarcodes2D	A wrapper for the 2D barcodes
+ ¦   +- pBarcodes1D	A wrapper for the linear barcodes
  ¦   +- pBubble		Class to draw bubble charts
  ¦   +- pCharts		Class to draw several types of charts
  ¦   +- pColor		Data structure for colors
