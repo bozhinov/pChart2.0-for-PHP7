@@ -104,6 +104,9 @@ class pBarcodes1D extends Barcodes\pConf {
 		BARCODES_ENGINE_ITF
 			'itf' = []
 			'itf14' = []
+
+		BARCODES_ENGINE_CODE11
+			'code11' = []
 		*/
 
 		$this->parse_opts($opts);

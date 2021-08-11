@@ -127,6 +127,7 @@ define("BARCODES_ENGINE_DMTX", 'DMTX');
 
 /* Linear barcode libs */
 define("BARCODES_ENGINE_UPC", 'UPC');
+define("BARCODES_ENGINE_CODE11", 'Code11');
 define("BARCODES_ENGINE_CODE39", 'Code39');
 define("BARCODES_ENGINE_CODE93", 'Code93');
 define("BARCODES_ENGINE_CODE128", 'Code128');

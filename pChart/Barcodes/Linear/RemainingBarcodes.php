@@ -19,7 +19,7 @@ class RemainingBarcodes {
 
         // print bars
         $x = 0;
-		var_dump($this->barcode_array);
+		#var_dump($this->barcode_array);
         foreach ($this->barcode_array['bcode'] as $k => $v) {
             $bw = $v['w'] * $w;
             $bh = $v['h'] * $h / $this->barcode_array['maxh'];
@@ -85,10 +85,6 @@ class RemainingBarcodes {
                 }
             case 'IMB': { // IMB - Intelligent Mail Barcode - Onecode - USPS-B-3200
                     $arrcode = (new IMB())->encode($code);
-                    break;
-                }
-            case 'CODE11': { // CODE 11
-                    $arrcode = (new Code11())->encode($code);
                     break;
                 }
             case 'PHARMA': { // PHARMACODE
