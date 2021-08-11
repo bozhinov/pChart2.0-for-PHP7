@@ -1,6 +1,6 @@
 <?php
 /*
-pConf - class to help unify the different barcode libs config
+pConf - class to help standardise the barcode libs
 
 Version     : 2.4.0-dev
 Made by     : Momchil Bozhinov
@@ -31,7 +31,7 @@ class pConf {
 			$this->options['palette'][$value] = new pColor($default);
 		} else {
 			if (!($this->options['palette'][$value] instanceof pColor)) {
-				throw pException::InvalidInput("Invalid value for $value. Expected an pColor object.");
+				throw pException::InvalidInput("Invalid value for $value. Expected a pColor object.");
 			}
 		}
 	}
