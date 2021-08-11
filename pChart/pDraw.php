@@ -3983,6 +3983,13 @@ class pDraw
 		$w = (!is_null($opts['width']))  ? intval($opts['width'])  : intval(ceil($width * $opts['scale']));
 		$h = (!is_null($opts['height'])) ? intval($opts['height']) : intval(ceil(80 * $opts['scale']));
 
+		if ($width > 0) {
+			$scale = $w / $width;
+			$scale = ($scale > 1) ? $scale : 1;
+		} else {
+			$scale = 1;
+		}
+
 		$palette = array_values($opts['palette']);
 
 		# pre-allocate colors
