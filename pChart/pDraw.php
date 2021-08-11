@@ -4015,7 +4015,7 @@ class pDraw
 			$mx = $x;
 
 			foreach ($block['m'] as $module) {
-				$mw = $mx + $module[1] * $widths[$module[2]] * $opts['scale'];
+				$mw = $mx + $module[1] * $widths[$module[2]] * $scale;
 				imagefilledrectangle($this->Picture, intval($mx), $y, intval($mw - 1), intval($my - 1), $palette[$module[0]]);
 				$mx = $mw;
 			}
