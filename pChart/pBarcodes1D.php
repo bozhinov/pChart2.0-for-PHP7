@@ -54,6 +54,7 @@ class pBarcodes1D extends Barcodes\pConf {
 			case BARCODES_ENGINE_CODE39:
 			case BARCODES_ENGINE_CODE93:
 			case BARCODES_ENGINE_PHARMA:
+			case BARCODES_ENGINE_POSTNET:
 				$defaults = $this->prep_opts_codes();
 				break;
 			default:
@@ -138,6 +139,10 @@ class pBarcodes1D extends Barcodes\pConf {
 		BARCODES_ENGINE_MSI
 			'MSI' = []
 			'MSI+' = ['mode' => '+']
+
+		BARCODES_ENGINE_POSTNET
+			'postnet' = []
+			'planet' = ['mode' => 'planet']
 		*/
 
 		$this->parse_opts($opts);

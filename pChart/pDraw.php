@@ -134,6 +134,7 @@ define("BARCODES_ENGINE_CODE128", 'Code128');
 define("BARCODES_ENGINE_CODABAR", 'Codabar');
 define("BARCODES_ENGINE_ITF", 'ITF');
 define("BARCODES_ENGINE_PHARMA", 'Pharmacode');
+define("BARCODES_ENGINE_POSTNET", 'Postnet');
 define("BARCODES_ENGINE_MSI", 'MSI');
 
 class pDraw

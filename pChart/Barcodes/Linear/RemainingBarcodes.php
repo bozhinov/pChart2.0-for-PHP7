@@ -59,14 +59,6 @@ class RemainingBarcodes {
                     $arrcode = (new Eanext())->encode($code, 5);
                     break;
                 }
-            case 'POSTNET': { // POSTNET
-                    $arrcode = (new Postnet())->encode($code, false);
-                    break;
-                }
-            case 'PLANET': { // PLANET
-                    $arrcode = (new Postnet())->encode($code, true);
-                    break;
-                }
             case 'RMS4CC': { // RMS4CC (Royal Mail 4-state Customer Code) - CBC (Customer Bar Code)
                     $arrcode = (new Rms4cc())->encode($code, false);
                     break;

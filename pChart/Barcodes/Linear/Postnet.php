@@ -4,7 +4,10 @@ namespace pChart\Barcodes\Linear;
 
 class Postnet {
 
-    public function encode($code, $planet = false) {
+    public function encode($code, $opts) 
+	{
+		$planet = ($opts['mode'] == "planet");
+		$orig = $code;
         // bar lenght
         if ($planet) {
             $barlen = Array(
@@ -33,7 +36,7 @@ class Postnet {
                 9 => Array(2, 1, 2, 1, 1)
             );
         }
-        $bararray = array('code' => $code, 'maxw' => 0, 'maxh' => 2, 'bcode' => array());
+
         $k = 0;
         $code = str_replace('-', '', $code);
         $code = str_replace(' ', '', $code);
@@ -50,21 +53,26 @@ class Postnet {
         $code .= $chkd;
         $len = strlen($code);
         // start bar
-        $bararray['bcode'][$k++] = array('t' => 1, 'w' => 1, 'h' => 2, 'p' => 0);
-        $bararray['bcode'][$k++] = array('t' => 0, 'w' => 1, 'h' => 2, 'p' => 0);
-        $bararray['maxw'] += 2;
+		$block = [];
+		$block[] = [1, 1, 1, 2, 0];
+		$block[] = [0, 1, 1, 2, 0];
+
         for ($i = 0; $i < $len; ++$i) {
             for ($j = 0; $j < 5; ++$j) {
                 $h = $barlen[$code[$i]][$j];
                 $p = floor(1 / $h);
-                $bararray['bcode'][$k++] = array('t' => 1, 'w' => 1, 'h' => $h, 'p' => $p);
-                $bararray['bcode'][$k++] = array('t' => 0, 'w' => 1, 'h' => 2, 'p' => 0);
-                $bararray['maxw'] += 2;
+				$block[] = [1, 1, 1, $h, $p];
+				$block[] = [0, 1, 1, 2, 0];
             }
         }
         // end bar
-        $bararray['bcode'][$k++] = array('t' => 1, 'w' => 1, 'h' => 2, 'p' => 0);
-        $bararray['maxw'] += 1;
-        return $bararray;
+		$block[] = [1, 1, 1, 2, 0];
+
+		return [
+			[
+				'm' => $block,
+				'l' => [$orig]
+			]
+		];
     }
 }
