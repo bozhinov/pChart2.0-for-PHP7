@@ -59,14 +59,6 @@ class RemainingBarcodes {
                     $arrcode = (new Eanext())->encode($code, 5);
                     break;
                 }
-            case 'MSI': { // MSI (Variation of Plessey code)
-                    $arrcode = (new MSI())->encode($code, false);
-                    break;
-                }
-            case 'MSI+': { // MSI + CHECKSUM (modulo 11)
-                    $arrcode = (new MSI())->encode($code, true);
-                    break;
-                }
             case 'POSTNET': { // POSTNET
                     $arrcode = (new Postnet())->encode($code, false);
                     break;

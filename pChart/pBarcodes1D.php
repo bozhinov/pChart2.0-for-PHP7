@@ -50,6 +50,7 @@ class pBarcodes1D extends Barcodes\pConf {
 				$defaults = $this->prep_opts_128();
 				break;
 			case BARCODES_ENGINE_UPC:
+			case BARCODES_ENGINE_MSI:
 			case BARCODES_ENGINE_CODE39:
 			case BARCODES_ENGINE_CODE93:
 			case BARCODES_ENGINE_PHARMA:
@@ -133,6 +134,10 @@ class pBarcodes1D extends Barcodes\pConf {
 		BARCODES_ENGINE_PHARMA
 			'pharma' = []
 			'pharma 2T' = ['mode' => '2T']
+		
+		BARCODES_ENGINE_MSI
+			'MSI' = []
+			'MSI+' = ['mode' => '+']
 		*/
 
 		$this->parse_opts($opts);
