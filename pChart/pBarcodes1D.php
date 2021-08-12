@@ -47,13 +47,13 @@ class pBarcodes1D extends Barcodes\pConf {
 	{
 		switch ($this->encoder){
 			case BARCODES_ENGINE_CODE128:
-				$defaults = $this->prep_opts_128($opts);
+				$defaults = $this->prep_opts_128();
 				break;
 			case BARCODES_ENGINE_UPC:
 			case BARCODES_ENGINE_CODE39:
 			case BARCODES_ENGINE_CODE93:
 			case BARCODES_ENGINE_PHARMA:
-				$defaults = $this->prep_opts_codes($opts);
+				$defaults = $this->prep_opts_codes();
 				break;
 			default:
 				$defaults = $this->defaults;
@@ -72,14 +72,14 @@ class pBarcodes1D extends Barcodes\pConf {
 		}
 	}
 
-	private function prep_opts_codes($opts)
+	private function prep_opts_codes()
 	{
 		$defaults = $this->defaults;
 		$defaults['mode'] = "";
 		return $defaults;
 	}
 
-	private function prep_opts_128($opts)
+	private function prep_opts_128()
 	{
 		$defaults = $this->defaults;
 		$defaults['mode'] = "";

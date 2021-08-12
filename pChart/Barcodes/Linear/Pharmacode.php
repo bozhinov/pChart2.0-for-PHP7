@@ -80,22 +80,15 @@ class Pharmacode {
 		$block = [];
 
 		for ($i = 0; $i < $len; ++$i) {
+			$p = 0;
+			$h = 1;
 			switch ($seq[$i]) {
-				case '1': {
-						$p = 1;
-						$h = 1;
-						break;
-					}
-				case '2': {
-						$p = 0;
-						$h = 1;
-						break;
-					}
-				case '3': {
-						$p = 0;
-						$h = 2;
-						break;
-					}
+				case '1':
+					$p = 1;
+					break;
+				case '3':
+					$h = 2;
+					break;
 			}
 			$block[] = [1, 1, 1, $h, $p];
 			$block[] = [0, 1, 1, 2, 0];
