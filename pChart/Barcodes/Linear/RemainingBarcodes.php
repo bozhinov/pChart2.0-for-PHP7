@@ -87,14 +87,6 @@ class RemainingBarcodes {
                     $arrcode = (new IMB())->encode($code);
                     break;
                 }
-            case 'PHARMA': { // PHARMACODE
-                    $arrcode = (new Pharmacode())->encode($code);
-                    break;
-                }
-            case 'PHARMA2T': { // PHARMACODE TWO-TRACKS
-                    $arrcode = (new Pharmacode())->encode($code, "2T");
-                    break;
-                }
             default: {
 					die("WTF");
                 }

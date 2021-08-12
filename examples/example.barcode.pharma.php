@@ -13,15 +13,17 @@ $myPicture = new pDraw(700,230);
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(179,217,91), "Dash"=>TRUE, "DashColor"=>new pColor(199,237,111)]);
 
 $opts = [
-	"nobackground" => true,
+	"scale" => 2,
+	"padding" => 10,
 	"label" => [
 		'height'=> 10,
 		'size' 	=> 1,
-		'color' => (new pColor())->fromHex("2AFF55")
+		'color' => new pColor(0)
 	]
 ];
 
-$barcodes = new pBarcodes1D(BARCODES_ENGINE_CODE39, $myPicture);
-$barcodes->draw("12250000234502", 1, 1, $opts);
+# unable to verify. could not find app to scan it.
+$barcodes = new pBarcodes1D(BARCODES_ENGINE_PHARMA, $myPicture);
+$barcodes->draw("123456789", 0, 0, $opts);
 
-$myPicture->autoOutput("temp/example.barcodes.encode39.png");
+$myPicture->autoOutput("temp/example.barcodes.pharma.png");

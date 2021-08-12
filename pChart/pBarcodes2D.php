@@ -53,6 +53,7 @@ class pBarcodes2D extends Barcodes\pConf {
 	private function parse_opts_aztec($opts)
 	{
 		$defaults = [
+			'nobackground' => false,
 			'scale' => 3,
 			'padding' => 4,
 			'hint' => BARCODES_AZTEC_HINT_DYNAMIC,
@@ -71,6 +72,7 @@ class pBarcodes2D extends Barcodes\pConf {
 	private function parse_opts_qr($opts)
 	{
 		$defaults = [
+			'nobackground' => false,
 			'scale' => 3,
 			'padding' => 4,
 			'level' => BARCODES_QRCODE_LEVEL_L,
@@ -91,6 +93,7 @@ class pBarcodes2D extends Barcodes\pConf {
 	private function parse_opts_pdf417($opts)
 	{
 		$defaults = [
+			'nobackground' => false,
 			'columns' => 6,
 			'scale' => 3,
 			'ratio' => 3,
@@ -113,6 +116,7 @@ class pBarcodes2D extends Barcodes\pConf {
 	private function parse_opts_dmtx($opts)
 	{
 		$defaults = [
+			'nobackground' => false,
 			'scale' => 4,
 			'padding' => 4,
 			'pattern' => 'square', # rectangular

@@ -133,6 +133,7 @@ define("BARCODES_ENGINE_CODE93", 'Code93');
 define("BARCODES_ENGINE_CODE128", 'Code128');
 define("BARCODES_ENGINE_CODABAR", 'Codabar');
 define("BARCODES_ENGINE_ITF", 'ITF');
+define("BARCODES_ENGINE_PHARMA", 'Pharmacode');
 
 class pDraw
 {
@@ -3971,18 +3972,23 @@ class pDraw
 		return $Pos;
 	}
 
-	public function draw1DBarcode(array $code, int $x, int $y, array $opts)
+	public function draw1DBarcode(array $code, int $StartX, int $StartY, array $options)
 	{
+		$padding = $options['padding'];
+
+		$x = $StartX + $padding;
+		$y = $StartY + $padding;
+
 		$width = 0;
-		$widths = array_values($opts['widths']);
+		$widths = array_values($options['widths']);
 		foreach ($code as $block){
 			foreach ($block['m'] as $module){
 				$width += $module[1] * $widths[$module[2]];
 			}
 		}
 
-		$w = (!is_null($opts['width']))  ? intval($opts['width'])  : intval(ceil($width * $opts['scale']));
-		$h = (!is_null($opts['height'])) ? intval($opts['height']) : intval(ceil(80 * $opts['scale']));
+		$w = (!is_null($options['width']))  ? intval($options['width'])  : intval(ceil($width * $options['scale']));
+		$h = (!is_null($options['height'])) ? intval($options['height']) : intval(ceil(80 * $options['scale']));
 
 		if ($width > 0) {
 			$scale = $w / $width;
@@ -3991,17 +3997,25 @@ class pDraw
 			$scale = 1;
 		}
 
-		$palette = array_values($opts['palette']);
+		$scaleY = $scale * $options['ratio']; # Pharmacode 2T
+		$palette = array_values($options['palette']);
 
 		# pre-allocate colors
 		foreach($palette as $id => $color) {
 			$palette[$id] = $this->allocatepColor($color);
 		}
 
-		$label = $opts['label'];
+		$label = $options['label'];
 		if ($label['skip'] != TRUE) {
 			$lcolor = $this->allocatepColor($label['color']);
 			$lsize = (int)$label['size'];
+			$bgH = $h + $label['height'] + 2;
+		} else {
+			$bgH = $h;
+		}
+
+		if (!boolval($options['nobackground'])){
+			imagefilledrectangle($this->Picture, $StartX, $StartY, $StartX + $w + ($padding * 2), $StartY + $bgH + ($padding * 2), $palette[0]);
 		}
 
 		foreach ($code as $block) {
@@ -4014,13 +4028,21 @@ class pDraw
 			}
 
 			$mx = $x;
-
 			foreach ($block['m'] as $module) {
 				$mw = $mx + $module[1] * $widths[$module[2]] * $scale;
-				imagefilledrectangle($this->Picture, intval($mx), $y, intval($mw - 1), intval($my - 1), $palette[$module[0]]);
+				$c = count($module);
+				if ($c == 3){
+					if ($module[0]){
+						imagefilledrectangle($this->Picture, intval($mx), $y, intval($mw - 1), intval($my - 1), $palette[$module[0]]);
+					}
+				} else if ($c == 5){
+					if ($module[0]){
+						$ym = intval($module[4] * $scaleY);
+						imagefilledrectangle($this->Picture, intval($mx), $y + $ym, intval($mw - 1), intval($y + $ym + ($module[3] * $scaleY)), $palette[$module[0]]);
+					}
+				}
 				$mx = $mw;
 			}
-
 			if ($label['skip'] != TRUE) {
 				if (isset($block['l'])) {
 					$text = $block['l'][0];
@@ -4030,8 +4052,9 @@ class pDraw
 					$lx = intval(round($lx - $lw / 2));
 					$ly = ($y + $h + $ly * $label['height']);
 					$ly = intval(round($ly - imagefontheight($lsize)));
+					$ly += $label['offset'];
 					if (!is_null($label['ttf'])) {
-						$ly +=($lsize*2) + $label['offset'];
+						$ly +=($lsize*2);
 						imagettftext($this->Picture, $lsize, 0, $lx, $ly, $lcolor, realpath($label['ttf']), $text);
 					} else {
 						imagestring($this->Picture,  $lsize, $lx, $ly, $text, $lcolor);
@@ -4070,8 +4093,10 @@ class pDraw
 		}
 
 		// Draw the background
-		$bgColorAlloc = $this->allocatepColor($options['palette']['bgColor']);
-		imagefilledrectangle($this->Picture, $StartX, $StartY, $StartX + $width, $StartY + $height, $bgColorAlloc);
+		if (!boolval($options['nobackground'])){
+			$bgColorAlloc = $this->allocatepColor($options['palette']['bgColor']);
+			imagefilledrectangle($this->Picture, $StartX, $StartY, $StartX + $width, $StartY + $height, $bgColorAlloc);
+		}
 		$colorAlloc = $this->allocatepColor($options['palette']['color']);
 
 		$StartX += $padding;

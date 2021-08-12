@@ -7,35 +7,11 @@ class pBarcodes1D extends Barcodes\pConf {
 	private $encoder;
 	private $engine;
 	private $myPicture;
-
-	public function __construct(string $encoder, pDraw $myPicture)
-	{
-		$this->encoder = $encoder;
-		$this->myPicture = $myPicture;
-
-		/* Available engines ->
-		BARCODES_ENGINE_UPC
-		BARCODES_ENGINE_CODE39
-		BARCODES_ENGINE_CODE93
-		BARCODES_ENGINE_CODE128
-		BARCODES_ENGINE_CODABAR
-		BARCODES_ENGINE_ITF
-		*/
-
-		try {
-			$class = "pChart\\Barcodes\\Linear\\$encoder";
-			$this->engine = new $class;
-		} catch (\Throwable $e) {
-			throw pException::InvalidInput("Unknown encoding engine");
-		}
-	}
-
-	private function parse_opts($opts)
-	{
-		$defaults = [
-			'mode' => "",
-			'GS-1' => false,
+	private $defaults = [
 			'scale' => 1,
+			'ratio' => 1,
+			'padding' => 0,
+			'nobackground' => false,
 			'width' => NULL,
 			'height' => NULL,
 			'widths' => [
@@ -54,15 +30,61 @@ class pBarcodes1D extends Barcodes\pConf {
 				]
 		];
 
+	public function __construct(string $encoder, pDraw $myPicture)
+	{
+		$this->encoder = $encoder;
+		$this->myPicture = $myPicture;
+
+		try {
+			$class = "pChart\\Barcodes\\Linear\\$encoder";
+			$this->engine = new $class;
+		} catch (\Throwable $e) {
+			throw pException::InvalidInput("Unknown encoding engine");
+		}
+	}
+
+	private function parse_opts($opts)
+	{
+		switch ($this->encoder){
+			case BARCODES_ENGINE_CODE128:
+				$defaults = $this->prep_opts_128($opts);
+				break;
+			case BARCODES_ENGINE_UPC:
+			case BARCODES_ENGINE_CODE39:
+			case BARCODES_ENGINE_CODE93:
+			case BARCODES_ENGINE_PHARMA:
+				$defaults = $this->prep_opts_codes($opts);
+				break;
+			default:
+				$defaults = $this->defaults;
+		}
+
 		$this->apply_user_options($opts, $defaults);
 
 		$this->check_ranges([
-			['scale', 1, 20]
+			['scale', 1, 20],
+			['ratio', 1, 20],
+			['padding', 0, 20]
 		]);
 
 		if (is_null($this->options['label']['color']) && (!$this->options['label']['skip'])){
 			$this->options['label']['color'] = $this->options['palette']['color'];
 		}
+	}
+
+	private function prep_opts_codes($opts)
+	{
+		$defaults = $this->defaults;
+		$defaults['mode'] = "";
+		return $defaults;
+	}
+
+	private function prep_opts_128($opts)
+	{
+		$defaults = $this->defaults;
+		$defaults['mode'] = "";
+		$defaults['GS-1'] = false;
+		return $defaults;
 	}
 
 	public function draw($data, int $x, int $y, array $opts = [])
@@ -107,6 +129,10 @@ class pBarcodes1D extends Barcodes\pConf {
 
 		BARCODES_ENGINE_CODE11
 			'code11' = []
+		
+		BARCODES_ENGINE_PHARMA
+			'pharma' = []
+			'pharma 2T' = ['mode' => '2T']
 		*/
 
 		$this->parse_opts($opts);
