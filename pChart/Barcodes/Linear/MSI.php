@@ -6,27 +6,34 @@ use pChart\pException;
 
 class MSI {
 
-	public function encode($code, $opts)
+	public function encode(string $code, array $opts)
 	{
-		$checksum = ($opts['mode'] == "+");
 		$orig = $code;
-		$chr['0'] = '100100100100';
-		$chr['1'] = '100100100110';
-		$chr['2'] = '100100110100';
-		$chr['3'] = '100100110110';
-		$chr['4'] = '100110100100';
-		$chr['5'] = '100110100110';
-		$chr['6'] = '100110110100';
-		$chr['7'] = '100110110110';
-		$chr['8'] = '110100100100';
-		$chr['9'] = '110100100110';
-		$chr['A'] = '110100110100';
-		$chr['B'] = '110100110110';
-		$chr['C'] = '110110100100';
-		$chr['D'] = '110110100110';
-		$chr['E'] = '110110110100';
-		$chr['F'] = '110110110110';
-		if ($checksum) {
+		$code = strtoupper($code);
+		if (!preg_match('/^[0-9a-fA-F]+$/', $code)){
+			throw pException::InvalidInput("Text can not be encoded by Eanext");
+		}
+
+		$chr = [
+				'0' => '100100100100',
+				'1' => '100100100110',
+				'2' => '100100110100',
+				'3' => '100100110110',
+				'4' => '100110100100',
+				'5' => '100110100110',
+				'6' => '100110110100',
+				'7' => '100110110110',
+				'8' => '110100100100',
+				'9' => '110100100110',
+				'A' => '110100110100',
+				'B' => '110100110110',
+				'C' => '110110100100',
+				'D' => '110110100110',
+				'E' => '110110110100',
+				'F' => '110110110110'
+			];
+
+		if ($opts['mode'] == "+") {
 			// add checksum
 			$clen = strlen($code);
 			$p = 2;
@@ -47,11 +54,7 @@ class MSI {
 		$seq = '110'; // left guard
 		$clen = strlen($code);
 		for ($i = 0; $i < $clen; ++$i) {
-			$digit = $code[$i];
-			if (!isset($chr[$digit])) {
-				throw pException::InvalidInput("Text can not be encoded by MSI");
-			}
-			$seq .= $chr[$digit];
+			$seq .= $chr[$code[$i]];
 		}
 		$seq .= '1001'; // right guard
 

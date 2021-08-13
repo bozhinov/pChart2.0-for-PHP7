@@ -6,9 +6,8 @@ use pChart\pException;
 
 class Code11 {
 
-	public function encode($code)
+	public function encode(string $code, array $opts)
 	{
-		$blocks = [];
 		$chr = [
 			'0' => '111121',
 			'1' => '211121',
@@ -71,22 +70,23 @@ class Code11 {
 
 		$code = 'S' . $code . 'S';
 		$len += 3;
+		$block = [];
 		for ($i = 0; $i < $len; ++$i) {
 			if (!isset($chr[$code[$i]])) {
 				throw pException::InvalidInput("Text can not be encoded by Code11");
 			}
 			$seq = $chr[$code[$i]];
-			$block = [];
 			for ($j = 0; $j < 6; ++$j) {
 				$t = (($j % 2) == 0); // bar : space
 				$block[] = [$t, $seq[$j], 1];
 			}
-			$blocks[] = [
-				'm' => $block,
-				'l' => [$orig[$i]]
-			];
 		}
 
-		return $blocks;
+		return [
+			[
+				'm' => $block,
+				'l' => [$orig]
+			]
+		];
 	}
 }

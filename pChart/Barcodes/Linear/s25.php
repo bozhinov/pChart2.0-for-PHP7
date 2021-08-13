@@ -6,26 +6,28 @@ use pChart\pException;
 
 class s25 {
 
-	private function checksum_s25($code)
+	private function checksum_s25($code) 
 	{
-		$len = strlen($code);
 		$sum = 0;
-		for ($i = 0; $i < $len; $i+=2) {
-			$sum += $code[$i];
+		foreach(str_split($code) as $i => $chr)
+		{
+			$sum += ($i & 1) ? intval($chr) : intval($chr) * 3;
 		}
-		$sum *= 3;
-		for ($i = 1; $i < $len; $i+=2) {
-			$sum += $code[$i];
-		}
+
 		$r = $sum % 10;
 		if ($r > 0) {
 			$r = (10 - $r);
 		}
+
 		return $r;
 	}
 
 	public function encode(string $code, array $opts)
 	{
+		if (!preg_match('/^[\d]+$/', $code)){
+			throw pException::InvalidInput("Text can not be encoded by s25");
+		}
+
 		$orig = $code;
 
 		$chr = [
@@ -52,11 +54,7 @@ class s25 {
 		$seq = '11011010';
 		$clen = strlen($code);
 		for ($i = 0; $i < $clen; ++$i) {
-			$digit = $code[$i];
-			if (!isset($chr[$digit])) {
-				throw pException::InvalidInput("Text can not be encoded by s25");
-			}
-			$seq .= $chr[$digit];
+			$seq .= $chr[$code[$i]];
 		}
 		$seq .= '1101011';
 		$len = strlen($seq);

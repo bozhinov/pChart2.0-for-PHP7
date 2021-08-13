@@ -8,24 +8,26 @@ class i25 {
 
 	private function checksum_s25($code) 
 	{
-		$len = strlen($code);
 		$sum = 0;
-		for ($i = 0; $i < $len; $i+=2) {
-			$sum += $code[$i];
+		foreach(str_split($code) as $i => $chr)
+		{
+			$sum += ($i & 1) ? intval($chr) : intval($chr) * 3;
 		}
-		$sum *= 3;
-		for ($i = 1; $i < $len; $i+=2) {
-			$sum += $code[$i];
-		}
+
 		$r = $sum % 10;
 		if ($r > 0) {
 			$r = (10 - $r);
 		}
+
 		return $r;
 	}
 
 	public function encode(string $code, array $opts)
 	{
+		if (!preg_match('/^[\d]+$/', $code)){
+			throw pException::InvalidInput("Text can not be encoded by i25");
+		}
+
 		$orig = $code;
 		$chr = [
 			'0' => '11221',
@@ -41,6 +43,7 @@ class i25 {
 			'A' => '11',
 			'Z' => '21'
 		];
+
 		if (strtolower($opts['mode']) == 'checksum') {
 			// add checksum
 			$code .= $this->checksum_s25($code);
@@ -57,9 +60,7 @@ class i25 {
 		for ($i = 0; $i < $len; $i = ($i + 2)) {
 			$char_bar = $code[$i];
 			$char_space = $code[$i + 1];
-			if ((!isset($chr[$char_bar])) OR (!isset($chr[$char_space]))) {
-				throw pException::InvalidInput("Text can not be encoded by i25");
-			}
+
 			// create a bar-space sequence
 			$seq = '';
 			$chrlen = strlen($chr[$char_bar]);
