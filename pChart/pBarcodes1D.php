@@ -57,6 +57,8 @@ class pBarcodes1D extends Barcodes\pConf {
 			case BARCODES_ENGINE_POSTNET:
 			case BARCODES_ENGINE_RMS4CC:
 			case BARCODES_ENGINE_EANEXT:
+			case BARCODES_ENGINE_I25:
+			case BARCODES_ENGINE_S25:
 				$defaults = $this->prep_opts_mode();
 				break;
 			default:
@@ -101,15 +103,15 @@ class pBarcodes1D extends Barcodes\pConf {
 			'ean13pad'   = ['mode' => 'ean13pad'];
 			'ean13' = ['mode' => 'ean13'];
 			'ean8'  = ['mode' => 'ean8']; 
-		
+
 		BARCODES_ENGINE_CODE39
 			'code39' = ['mode' => 'data']; 
 			'code39ascii' = ['mode' => 'ascii'];
-		
+
 		BARCODES_ENGINE_CODE93
 			'code93' = ['mode' => 'data']; 
 			'code93ascii' = ['mode' => 'ascii'];
-		
+
 		BARCODES_ENGINE_CODE128
 			'code128' =  ['GS-1' => false, 'mode' => ""]; 
 			'code128a' = ['GS-1' => false, 'mode' => "a"];
@@ -123,21 +125,21 @@ class pBarcodes1D extends Barcodes\pConf {
 			'GS1-128c' = ['GS-1' => true,  'mode' => "c"];
 			'GS1-128ac' =['GS-1' => true,  'mode' => "ac"];
 			'GS1-128bc' =['GS-1' => true,  'mode' => "bc"];
-		
+
 		BARCODES_ENGINE_CODABAR
 			'codabar' = [];
-		
+
 		BARCODES_ENGINE_ITF
 			'itf' = []
 			'itf14' = []
 
 		BARCODES_ENGINE_CODE11
 			'code11' = []
-		
+
 		BARCODES_ENGINE_PHARMA
 			'pharma' = []
 			'pharma 2T' = ['mode' => '2T']
-		
+
 		BARCODES_ENGINE_MSI
 			'MSI' = []
 			'MSI+' = ['mode' => '+']
@@ -149,6 +151,14 @@ class pBarcodes1D extends Barcodes\pConf {
 		BARCODES_ENGINE_RMS4CC
 			'rms4cc' = []
 			'KIX' = ['mode' => 'KIX']
+
+		BARCODES_ENGINE_I25
+			'I25' = []
+			'I25+' = ['mode' => 'checksum']
+
+		BARCODES_ENGINE_S25
+			'S25' = []
+			'S25+' = ['mode' => 'checksum']
 		*/
 
 		$this->parse_opts($opts);

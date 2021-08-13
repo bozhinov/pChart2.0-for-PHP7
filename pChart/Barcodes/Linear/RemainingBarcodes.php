@@ -35,22 +35,6 @@ class RemainingBarcodes {
 
     protected function setBarcode($code, $type) {
         switch (strtoupper($type)) {
-            case 'S25': { // Standard 2 of 5
-                    $arrcode = (new s25())->encode($code, false);
-                    break;
-                }
-            case 'S25+': { // Standard 2 of 5 + CHECKSUM
-                    $arrcode = (new s25())->encode($code, true);
-                    break;
-                }
-            case 'I25': { // Interleaved 2 of 5
-                    $arrcode = (new i25())->encode($code, false);
-                    break;
-                }
-            case 'I25+': { // Interleaved 2 of 5 + CHECKSUM
-                    $arrcode = (new i25())->encode($code, true);
-                    break;
-                }
             case 'IMB': { // IMB - Intelligent Mail Barcode - Onecode - USPS-B-3200
                     $arrcode = (new IMB())->encode($code);
                     break;
