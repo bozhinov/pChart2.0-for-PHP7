@@ -41,54 +41,39 @@ class IMB {
 
 		// Conversion of Routing Code
 		switch (strlen($routing_code)) {
-			case 0: {
-					$binary_code = 0;
-					break;
-				}
-			case 5: {
-					$binary_code = bcadd($routing_code, '1');
-					break;
-				}
-			case 9: {
-					$binary_code = bcadd($routing_code, '100001');
-					break;
-				}
-			case 11: {
-					$binary_code = bcadd($routing_code, '1000100001');
-					break;
-				}
-			default: {
-					throw pException::InvalidInput("Text can not be encoded by IMB");
-					break;
-				}
+			case 0:
+				$bin = 0;
+				break;
+			case 5:
+				$bin = bcadd($routing_code, '1');
+				break;
+			case 9:
+				$bin = bcadd($routing_code, '100001');
+				break;
+			case 11:
+				$bin = bcadd($routing_code, '1000100001');
+				break;
+			default:
+				throw pException::InvalidInput("Text can not be encoded by IMB");
+				break;
 		}
 
-		$binary_code = bcmul($binary_code, 10);
-		$binary_code = bcadd($binary_code, $tracking_number[0]);
-		$binary_code = bcmul($binary_code, 5);
-		$binary_code = bcadd($binary_code, $tracking_number[1]);
-		$binary_code .= substr($tracking_number, 2, 18);
-		// convert to hexadecimal
-		$binary_code = dechex($binary_code);
-		// pad to get 13 bytes
-		$binary_code = str_pad($binary_code, 26, '0', STR_PAD_LEFT);
-		// convert string to array of bytes
-		$binary_code_arr = str_split($binary_code, 2);
+		$bin = bcmul($bin, 10);
+		$bin = bcadd($bin, $tracking_number[0]);
+		$bin = bcmul($bin, 5);
+		$bin = bcadd($bin, $tracking_number[1]);
+		$bin .= substr($tracking_number, 2, 18);
 		// calculate frame check sequence
-		$fcs = $this->imb_crc11fcs($binary_code_arr);
-		// exclude first 2 bits from first byte
-		$first_byte = sprintf('%2s', $binary_code_arr[0][0]);
-
+		$fcs = $this->imb_crc11fcs($bin);
 		// convert binary data to codewords
 		$codewords = [];
-		$data = hexdec($first_byte . substr($binary_code, 2)); # binary_code_102bit
-		$codewords[0] = bcmod($data, 636) * 2;
-		$data = bcdiv($data, 636);
+		$codewords[0] = bcmod($bin, 636) * 2;
+		$bin = bcdiv($bin, 636);
 		for ($i = 1; $i < 9; ++$i) {
-			$codewords[$i] = bcmod($data, 1365);
-			$data = bcdiv($data, 1365);
+			$codewords[$i] = bcmod($bin, 1365);
+			$bin = bcdiv($bin, 1365);
 		}
-		$codewords[9] = $data;
+		$codewords[9] = $bin;
 		if (($fcs >> 10) == 1) {
 			$codewords[9] += 659;
 		}
@@ -148,8 +133,14 @@ class IMB {
 		];
 	}
 
-	private function imb_crc11fcs($code_arr)
+	private function imb_crc11fcs($binary_code)
 	{
+		// convert to hexadecimal
+		$binary_code = dechex(intval($binary_code));
+		// pad to get 13 bytes;
+		$binary_code = str_pad($binary_code, 26, '0', STR_PAD_LEFT);
+		// convert string to array of bytes
+		$code_arr = str_split($binary_code, 2);
 		$genpoly = 0x0F35; // generator polynomial
 		$fcs = 0x07FF; // Frame Check Sequence
 		// do most significant byte skipping the 2 most significant bits
@@ -187,6 +178,7 @@ class IMB {
 			$rev |= ($num & 1);
 			$num >>= 1;
 		}
+
 		return $rev;
 	}
 
