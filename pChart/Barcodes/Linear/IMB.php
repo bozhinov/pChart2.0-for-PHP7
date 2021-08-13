@@ -69,21 +69,19 @@ class IMB {
 		$binary_code = bcadd($binary_code, $tracking_number[1]);
 		$binary_code .= substr($tracking_number, 2, 18);
 		// convert to hexadecimal
-		$binary_code = $this->dec_to_hex($binary_code);
+		$binary_code = dechex($binary_code);
 		// pad to get 13 bytes
 		$binary_code = str_pad($binary_code, 26, '0', STR_PAD_LEFT);
 		// convert string to array of bytes
-		$binary_code_arr = chunk_split($binary_code, 2, "\r");
-		$binary_code_arr = substr($binary_code_arr, 0, -1);
-		$binary_code_arr = explode("\r", $binary_code_arr);
+		$binary_code_arr = str_split($binary_code, 2);
 		// calculate frame check sequence
 		$fcs = $this->imb_crc11fcs($binary_code_arr);
 		// exclude first 2 bits from first byte
-		$first_byte = sprintf('%2s', dechex((hexdec($binary_code_arr[0]) << 2) >> 2));
-		$binary_code_102bit = $first_byte . substr($binary_code, 2);
+		$first_byte = sprintf('%2s', $binary_code_arr[0][0]);
+
 		// convert binary data to codewords
 		$codewords = [];
-		$data = $this->hex_to_dec($binary_code_102bit);
+		$data = hexdec($first_byte . substr($binary_code, 2)); # binary_code_102bit
 		$codewords[0] = bcmod($data, 636) * 2;
 		$data = bcdiv($data, 636);
 		for ($i = 1; $i < 9; ++$i) {
@@ -148,36 +146,6 @@ class IMB {
 				'l' => [$orig]
 			]
 		];
-	}
-
-	private function dec_to_hex($number)
-	{
-		$hex = [];
-		if ($number == 0) {
-			return '00';
-		}
-		while ($number > 0) {
-			if ($number == 0) {
-				array_push($hex, '0');
-			} else {
-				array_push($hex, strtoupper(dechex(bcmod($number, '16'))));
-				$number = bcdiv($number, '16', 0);
-			}
-		}
-		$hex = array_reverse($hex);
-		return implode($hex);
-	}
-
-	private function hex_to_dec($hex) 
-	{
-		$dec = 0;
-		$bitval = 1;
-		$len = strlen($hex);
-		for ($pos = ($len - 1); $pos >= 0; --$pos) {
-			$dec = bcadd($dec, bcmul(hexdec($hex[$pos]), $bitval));
-			$bitval = bcmul($bitval, 16);
-		}
-		return $dec;
 	}
 
 	private function imb_crc11fcs($code_arr)
