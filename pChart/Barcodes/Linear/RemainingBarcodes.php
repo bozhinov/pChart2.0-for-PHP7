@@ -59,14 +59,6 @@ class RemainingBarcodes {
                     $arrcode = (new Eanext())->encode($code, 5);
                     break;
                 }
-            case 'RMS4CC': { // RMS4CC (Royal Mail 4-state Customer Code) - CBC (Customer Bar Code)
-                    $arrcode = (new Rms4cc())->encode($code, false);
-                    break;
-                }
-            case 'KIX': { // KIX (Klant index - Customer index)
-                    $arrcode = (new Rms4cc())->encode($code, true);
-                    break;
-                }
             case 'IMB': { // IMB - Intelligent Mail Barcode - Onecode - USPS-B-3200
                     $arrcode = (new IMB())->encode($code);
                     break;
