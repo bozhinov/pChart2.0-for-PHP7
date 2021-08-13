@@ -22,6 +22,6 @@ $opts = [
 
 # unable to verify. could not find app to scan it.
 $barcodes = new pBarcodes1D(BARCODES_ENGINE_IMB, $myPicture);
-$barcodes->draw("51515", 0, 0, $opts);
+$barcodes->draw("94107-18350", 0, 0, $opts);
 
 $myPicture->autoOutput("temp/example.barcodes.imb.png");
