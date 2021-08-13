@@ -159,6 +159,9 @@ class pBarcodes1D extends Barcodes\pConf {
 		BARCODES_ENGINE_S25
 			'S25' = []
 			'S25+' = ['mode' => 'checksum']
+
+		BARCODES_ENGINE_IMB
+			'IMB' = []
 		*/
 
 		$this->parse_opts($opts);
