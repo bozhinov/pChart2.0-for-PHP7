@@ -18,6 +18,7 @@
   o Added Barcodes lib
   o Added PDF417 lib
   o Added QRCode lib
+  o Added linear barcodes from all over
   o Moved fonts out of the pChart folder
   o Explicitly declare the visibility for methods
   o BC: pScatter->drawScatterScale params DrawXLines & DrawYLines accept array

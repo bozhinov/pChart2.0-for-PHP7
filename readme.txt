@@ -58,12 +58,14 @@
   The pChart library is compatible with PHP 7.2+ versions.
   It requires the GD PHP extension with FreeType support installed.
   PDF417 requires bcmath extension for 32bit versions of PHP
+  IMB barcode requires bcmath ext (no longer ext in php 8.0)
   QRCode requires mbstring extension for mode Kanji
 
  = BARCODES ---------------------------------------------------------------------
 
   The pChart library now incldes support for the following barcode types:
-	- QRCode, Aztec, DMTX, PDF417, Codabar, ITF, UPC, Code39, Code93, Code128
+	- QRCode, Aztec, DMTX, PDF417, Codabar, ITF, UPC, Code39, Code93, Code128,
+	  Code11, Eanext, i25, s25, IMB, Pharmacode, Postnet, Rms4cc, MSI
 
  = RUNNING THE EXAMPLES ---------------------------------------------------------
 
