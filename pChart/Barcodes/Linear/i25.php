@@ -45,11 +45,9 @@ class i25 {
 		];
 
 		if (strtolower($opts['mode']) == 'checksum') {
-			// add checksum
 			$code .= $this->checksum_s25($code);
 		}
 		if ((strlen($code) % 2) != 0) {
-			// add leading zero if code-length is odd
 			$code = '0' . $code;
 		}
 		// add start and stop codes
@@ -57,20 +55,15 @@ class i25 {
 
 		$len = strlen($code);
 		$block = [];
-		for ($i = 0; $i < $len; $i = ($i + 2)) {
+
+		for ($i = 0; $i < $len; $i += 2) {
 			$char_bar = $code[$i];
 			$char_space = $code[$i + 1];
 
-			// create a bar-space sequence
-			$seq = '';
 			$chrlen = strlen($chr[$char_bar]);
 			for ($s = 0; $s < $chrlen; $s++) {
-				$seq .= $chr[$char_bar][$s] . $chr[$char_space][$s];
-			}
-			$seqlen = strlen($seq);
-			for ($j = 0; $j < $seqlen; ++$j) {
-				$t = (($j % 2) == 0); // bar : space
-				$block[] = [$t, $seq[$j], 1];
+				$block[] = [1, $chr[$char_bar][$s], 1];
+				$block[] = [0, $chr[$char_space][$s], 1];
 			}
 		}
 

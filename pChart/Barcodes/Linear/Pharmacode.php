@@ -2,10 +2,16 @@
 
 namespace pChart\Barcodes\Linear;
 
+use pChart\pException;
+
 class Pharmacode {
 
-	public function encode($code, $opts)
+	public function encode(string $code, array $opts)
 	{
+		if (!preg_match('/^[\d]+$/', $code)){
+			throw pException::InvalidInput("Text can not be encoded");
+		}
+
 		if (strtoupper($opts['mode']) == "2T"){
 			return $this->pharmacode2t($code);
 		} else {
