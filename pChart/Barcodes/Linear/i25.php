@@ -51,19 +51,14 @@ class i25 {
 			$code = '0' . $code;
 		}
 		// add start and stop codes
-		$code = 'AA' . strtolower($code) . 'ZA';
-
-		$len = strlen($code);
+		$code = 'AA' . $code . 'ZA';
 		$block = [];
 
-		for ($i = 0; $i < $len; $i += 2) {
-			$char_bar = $code[$i];
-			$char_space = $code[$i + 1];
-
-			$chrlen = strlen($chr[$char_bar]);
+		foreach(str_split($code, 2) as $c){
+			$chrlen = strlen($chr[$c[0]]);
 			for ($s = 0; $s < $chrlen; $s++) {
-				$block[] = [1, $chr[$char_bar][$s], 1];
-				$block[] = [0, $chr[$char_space][$s], 1];
+				$block[] = [1, $chr[$c[0]][$s], 1];
+				$block[] = [0, $chr[$c[1]][$s], 1];
 			}
 		}
 

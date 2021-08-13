@@ -11,7 +11,7 @@ class MSI {
 		$orig = $code;
 		$code = strtoupper($code);
 		if (!preg_match('/^[0-9a-fA-F]+$/', $code)){
-			throw pException::InvalidInput("Text can not be encoded by Eanext");
+			throw pException::InvalidInput("Text can not be encoded");
 		}
 
 		$chr = [

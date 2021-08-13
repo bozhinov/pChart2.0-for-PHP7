@@ -44,13 +44,13 @@ class s25 {
 			];
 
 		if (strtolower($opts['mode']) == 'checksum') {
-			// add checksum
 			$code .= $this->checksum_s25($code);
 		}
+
 		if ((strlen($code) % 2) != 0) {
-			// add leading zero if code-length is odd
 			$code = '0' . $code;
 		}
+
 		$seq = '11011010';
 		$clen = strlen($code);
 		for ($i = 0; $i < $clen; ++$i) {
@@ -58,8 +58,10 @@ class s25 {
 		}
 		$seq .= '1101011';
 		$len = strlen($seq);
+
 		$w = 0;
 		$block = [];
+
 		for ($i = 0; $i < $len; ++$i) {
 			$w += 1;
 			if (($i == ($len - 1)) OR (($i < ($len - 1)) AND ($seq[$i] != $seq[$i + 1]))) {
@@ -68,6 +70,7 @@ class s25 {
 				$w = 0;
 			}
 		}
+
 		return [
 			[
 				'm' => $block,
