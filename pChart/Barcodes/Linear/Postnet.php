@@ -2,9 +2,11 @@
 
 namespace pChart\Barcodes\Linear;
 
+use pChart\pException;
+
 class Postnet {
 
-	public function encode($code, $opts) 
+	public function encode(string $code, array $opts) 
 	{
 		$orig = $code;
 		// bar lenght
@@ -38,6 +40,12 @@ class Postnet {
 
 		$code = str_replace('-', '', $code);
 		$code = str_replace(' ', '', $code);
+		$len = strlen($code);
+
+		#if (!in_array(strlen($code), [5, 6, 9, 11])) {
+		if (($len < 2) || !is_numeric($code)){
+			throw pException::InvalidInput("Text can not be encoded by Postnet");
+		}
 
 		// calculate checksum
 		$sum = array_sum(str_split($code));
@@ -47,7 +55,7 @@ class Postnet {
 			$chkd = (10 - $chkd);
 		}
 		$code .= $chkd;
-		$len = strlen($code);
+		$len++;
 		// start bar
 		$block = [
 			[1, 1, 1, 2, 0],
@@ -57,7 +65,7 @@ class Postnet {
 		for ($i = 0; $i < $len; ++$i) {
 			for ($j = 0; $j < 5; ++$j) {
 				$h = $barlen[$code[$i]][$j];
-				$p = floor(1 / $h);
+				$p = $h % 2;
 				$block[] = [1, 1, 1, $h, $p];
 				$block[] = [0, 1, 1, 2, 0];
 			}

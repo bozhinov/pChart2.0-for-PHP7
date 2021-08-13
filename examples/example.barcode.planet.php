@@ -27,6 +27,6 @@ $opts = [
 
 # unable to verify. could not find app to scan it.
 $barcodes = new pBarcodes1D(BARCODES_ENGINE_POSTNET, $myPicture);
-$barcodes->draw("123456789", 0, 0, $opts);
+$barcodes->draw("55555-1237", 0, 0, $opts);
 
 $myPicture->autoOutput("temp/example.barcodes.planet.png");
