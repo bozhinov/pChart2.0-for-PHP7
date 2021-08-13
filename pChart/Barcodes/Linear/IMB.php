@@ -6,7 +6,7 @@ use pChart\pException;
 
 class IMB {
 
-	public function encode($code)
+	public function encode(string $code, array $opts)
 	{
 		$orig = $code;
 
@@ -152,7 +152,6 @@ class IMB {
 
 	private function dec_to_hex($number)
 	{
-		$i = 0;
 		$hex = [];
 		if ($number == 0) {
 			return '00';
