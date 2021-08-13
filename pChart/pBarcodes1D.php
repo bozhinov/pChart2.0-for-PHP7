@@ -56,6 +56,7 @@ class pBarcodes1D extends Barcodes\pConf {
 			case BARCODES_ENGINE_PHARMA:
 			case BARCODES_ENGINE_POSTNET:
 			case BARCODES_ENGINE_RMS4CC:
+			case BARCODES_ENGINE_EANEXT:
 				$defaults = $this->prep_opts_mode();
 				break;
 			default:

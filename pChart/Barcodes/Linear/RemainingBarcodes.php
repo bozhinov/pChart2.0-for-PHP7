@@ -51,14 +51,6 @@ class RemainingBarcodes {
                     $arrcode = (new i25())->encode($code, true);
                     break;
                 }
-            case 'EAN2': { // 2-Digits UPC-Based Extention
-                    $arrcode = (new Eanext())->encode($code, 2);
-                    break;
-                }
-            case 'EAN5': { // 5-Digits UPC-Based Extention
-                    $arrcode = (new Eanext())->encode($code, 5);
-                    break;
-                }
             case 'IMB': { // IMB - Intelligent Mail Barcode - Onecode - USPS-B-3200
                     $arrcode = (new IMB())->encode($code);
                     break;
