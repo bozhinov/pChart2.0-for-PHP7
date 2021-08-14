@@ -183,6 +183,10 @@ class IMB {
 
 	private function imb_reverse_us($num) 
 	{
+		# Human readable version.
+		# $a = strrev(decbin($num));
+		# $a = bindec((string)intval(str_pad($a, 16, "0")));
+
 		$rev = 0;
 		for ($i = 0; $i < 16; ++$i) {
 			$rev <<= 1;
