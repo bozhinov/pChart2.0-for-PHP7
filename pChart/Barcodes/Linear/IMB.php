@@ -91,7 +91,7 @@ class IMB {
 		// convert codewords to characters
 		$characters = [];
 		$bitmask = 512;
-		foreach ($codewords as $k => $val) {
+		foreach ($codewords as $val) {
 			if ($val <= 1286) {
 				$chrcode = $this->table5of13[$val];
 			} else {
@@ -184,17 +184,26 @@ class IMB {
 	private function imb_reverse_us($num) 
 	{
 		# Human readable version.
-		# $a = strrev(decbin($num));
-		# $a = bindec((string)intval(str_pad($a, 16, "0")));
+		$rev = strrev(decbin($num));
+		return bindec(str_pad($rev, 16, "0"));
 
-		$rev = 0;
-		for ($i = 0; $i < 16; ++$i) {
-			$rev <<= 1;
-			$rev |= ($num & 1);
-			$num >>= 1;
-		}
+		#$rev = 0;
+		#for ($i = 0; $i < 16; ++$i) {
+		#	$rev <<= 1;
+		#	$rev |= ($num & 1);
+		#	$num >>= 1;
+		#}
+		#return $rev;
+	}
 
-		return $rev;
+	# https://stackoverflow.com/questions/16848931/how-to-fastest-count-the-number-of-set-bits-in-php
+	function bitsCount(int $integer)
+	{
+		$count = $integer - (($integer >> 1) & 0x55555555);
+		$count = (($count >> 2) & 0x33333333) + ($count & 0x33333333);
+		$count = ((((($count >> 4) + $count) & 0x0F0F0F0F) * 0x01010101) >> 24) & 0xFF;
+
+		return $count;
 	}
 
 	private function imb_tables($n, $size) 
@@ -203,12 +212,8 @@ class IMB {
 		$lli = 0; // LUT lower index
 		$lui = $size - 1; // LUT upper index
 		for ($count = 0; $count < 8192; ++$count) {
-			$bit_count = 0;
-			for ($bit_index = 0; $bit_index < 13; ++$bit_index) {
-				$bit_count += intval(($count & (1 << $bit_index)) != 0);
-			}
 			// if we don't have the right number of bits on, go on to the next value
-			if ($bit_count == $n) {
+			if ($this->bitsCount($count) == $n) {
 				$reverse = ($this->imb_reverse_us($count) >> 3);
 				// if the reverse is less than count, we have already visited this pair before
 				if ($reverse >= $count) {
