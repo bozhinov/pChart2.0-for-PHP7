@@ -197,13 +197,11 @@ class IMB {
 	}
 
 	# https://stackoverflow.com/questions/16848931/how-to-fastest-count-the-number-of-set-bits-in-php
-	function bitsCount(int $integer)
+	private function bitsCount(int $integer)
 	{
 		$count = $integer - (($integer >> 1) & 0x55555555);
 		$count = (($count >> 2) & 0x33333333) + ($count & 0x33333333);
-		$count = ((((($count >> 4) + $count) & 0x0F0F0F0F) * 0x01010101) >> 24) & 0xFF;
-
-		return $count;
+		return ((((($count >> 4) + $count) & 0x0F0F0F0F) * 0x01010101) >> 24) & 0xFF;
 	}
 
 	private function imb_tables($n, $size) 
