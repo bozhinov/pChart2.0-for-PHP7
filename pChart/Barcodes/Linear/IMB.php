@@ -211,6 +211,7 @@ class IMB {
 		$table = [];
 		$lli = 0; // LUT lower index
 		$lui = $size - 1; // LUT upper index
+		# for $n = 5 & $n = 2 -> $count does not exceed 7937
 		for ($count = 0; $count < 8192; ++$count) {
 			// if we don't have the right number of bits on, go on to the next value
 			if ($this->bitsCount($count) == $n) {
