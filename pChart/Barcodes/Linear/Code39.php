@@ -16,6 +16,7 @@ class Code39 {
 	private function code_39_encode($data)
 	{
 		$data = strtoupper(preg_replace('/[^0-9A-Za-z%$\/+ .-]/', '', $data));
+		$data = str_split($data);
 		$blocks = [];
 		/* Start */
 		$blocks[] = [
@@ -27,11 +28,10 @@ class Code39 {
 			'l' => ['*']
 		];
 		/* Data */
-		for ($i = 0, $n = strlen($data); $i < $n; $i++) {
+		foreach($data as $char){
 			$blocks[] = [
 				'm' => [[0, 1, 3]]
 			];
-			$char = substr($data, $i, 1);
 			$block = $this->code_39_alphabet[$char];
 			$blocks[] = [
 				'm' => [
@@ -66,6 +66,7 @@ class Code39 {
 
 	private function code_39_ascii_encode($data)
 	{
+		$data = str_split($data);
 		$modules = [
 			[1, 1, 1], [0, 1, 2], [1, 1, 1],
 			[0, 1, 1], [1, 1, 2], [0, 1, 1],
@@ -73,8 +74,7 @@ class Code39 {
 		];
 		/* Data */
 		$label = '';
-		for ($i = 0, $n = strlen($data); $i < $n; $i++) {
-			$char = substr($data, $i, 1);
+		foreach($data as $char){
 			$ch = ord($char);
 			if ($ch < 128) {
 				if ($ch < 32 || $ch >= 127) {
