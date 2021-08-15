@@ -12,18 +12,25 @@ class Pharmacode {
 			throw pException::InvalidInput("Text can not be encoded");
 		}
 
+		$orig = $code;
+
 		if (strtoupper($opts['mode']) == "2T"){
-			return $this->pharmacode2t($code);
+			$block = $this->pharmacode2t(intval($code));
 		} else {
-			return $this->pharmacode($code);
+			$block = $this->pharmacode(intval($code));
 		}
+
+		return [
+			[
+				'm' => $block,
+				'l' => [$orig]
+			]
+		];
 	}
 
-	public function pharmacode($code)
+	private function pharmacode($code)
 	{
 		$seq = '';
-		$orig = $code;
-		$code = intval($code);
 		while ($code > 0) {
 			if (($code % 2) == 0) {
 				$seq .= '11100';
@@ -39,6 +46,7 @@ class Pharmacode {
 		$len = strlen($seq);
 		$w = 0;
 		$block = [];
+
 		for ($i = 0; $i < $len; ++$i) {
 			$w += 1;
 			if (($i == ($len - 1)) OR (($i < ($len - 1)) AND ($seq[$i] != $seq[$i + 1]))) {
@@ -48,19 +56,12 @@ class Pharmacode {
 			}
 		}
 
-		return [
-			[
-				'm' => $block,
-				'l' => [$orig]
-			]
-		];
+		return $block;
 	}
 
-	public function pharmacode2t($code)
+	private function pharmacode2t($code)
 	{
 		$seq = '';
-		$orig = $code;
-		$code = intval($code);
 		do {
 			switch ($code % 3) {
 				case 0: {
@@ -100,11 +101,6 @@ class Pharmacode {
 			$block[] = [0, 1, 1, 2, 0];
 		}
 
-		return [
-			[
-				'm' => $block,
-				'l' => [$orig]
-			]
-		];
+		return $block;
 	}
 }
