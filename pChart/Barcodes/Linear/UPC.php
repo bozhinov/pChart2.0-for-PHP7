@@ -8,7 +8,7 @@ class UPC {
 
 	public function encode($data, $opts)
 	{
-		switch (strtoupper($opts['mode'])){
+		switch (strtolower($opts['mode'])){
 			case "upca":
 				return $this->upc_a_encode($data);
 			case "upce":
@@ -28,9 +28,10 @@ class UPC {
 	public function upc_a_encode($data)
 	{
 		$data = $this->upc_a_normalize($data);
+		$data = str_split($data);
 		$blocks = [];
 		/* Quiet zone, start, first digit. */
-		$digit = substr($data, 0, 1);
+		$digit = $data[0];
 		$blocks[] = [
 			'm' => [[0, 9, 0]],
 			'l' => [$digit, 0, 1/3]
@@ -52,7 +53,7 @@ class UPC {
 		];
 		/* Left zone. */
 		for ($i = 1; $i < 6; $i++) {
-			$digit = substr($data, $i, 1);
+			$digit = $data[$i];
 			$blocks[] = [
 				'm' => [
 					[0, $this->upc_alphabet[$digit][0], 1],
@@ -75,7 +76,7 @@ class UPC {
 		];
 		/* Right zone. */
 		for ($i = 6; $i < 11; $i++) {
-			$digit = substr($data, $i, 1);
+			$digit = $data[$i];
 			$blocks[] = [
 				'm' => [
 					[1, $this->upc_alphabet[$digit][0], 1],
@@ -87,7 +88,7 @@ class UPC {
 			];
 		}
 		/* Last digit, end, quiet zone. */
-		$digit = substr($data, 11, 1);
+		$digit = $data[11];
 		$blocks[] = [
 			'm' => [
 				[1, $this->upc_alphabet[$digit][0], 1],
@@ -114,6 +115,7 @@ class UPC {
 	public function upc_e_encode($data)
 	{
 		$data = $this->upc_e_normalize($data);
+		$data = str_split($data);
 		$blocks = [];
 		/* Quiet zone, start. */
 		$blocks[] = [
@@ -127,11 +129,11 @@ class UPC {
 			]
 		];
 		/* Digits */
-		$system = substr($data, 0, 1) & 1;
-		$check = substr($data, 7, 1);
+		$system = $data[0] & 1;
+		$check = $data[7];
 		$pbits = $this->upc_parity[$check];
 		for ($i = 1; $i < 7; $i++) {
-			$digit = substr($data, $i, 1);
+			$digit = $data[$i];
 			$pbit = $pbits[$i - 1] ^ $system;
 			$blocks[] = [
 				'm' => [
@@ -164,9 +166,10 @@ class UPC {
 	public function ean_13_encode($data, $pad)
 	{
 		$data = $this->ean_13_normalize($data);
+		$data = str_split($data);
 		$blocks = [];
 		/* Quiet zone, start, first digit (as parity). */
-		$system = substr($data, 0, 1);
+		$system = $data[0];
 		$pbits = (
 			(int)$system ?
 			$this->upc_parity[$system] :
@@ -185,7 +188,7 @@ class UPC {
 		];
 		/* Left zone. */
 		for ($i = 1; $i < 7; $i++) {
-			$digit = substr($data, $i, 1);
+			$digit = $data[$i];
 			$pbit = $pbits[$i - 1];
 			$blocks[] = [
 				'm' => [
@@ -209,7 +212,7 @@ class UPC {
 		];
 		/* Right zone. */
 		for ($i = 7; $i < 13; $i++) {
-			$digit = substr($data, $i, 1);
+			$digit = $data[$i];
 			$blocks[] = [
 				'm' => [
 					[1, $this->upc_alphabet[$digit][0], 1],
@@ -239,6 +242,7 @@ class UPC {
 	public function ean_8_encode($data)
 	{
 		$data = $this->ean_8_normalize($data);
+		$data = str_split($data);
 		$blocks = [];
 		/* Quiet zone, start. */
 		$blocks[] = [
@@ -254,7 +258,7 @@ class UPC {
 		];
 		/* Left zone. */
 		for ($i = 0; $i < 4; $i++) {
-			$digit = substr($data, $i, 1);
+			$digit = $data[$i];
 			$blocks[] = [
 				'm' => [
 					[0, $this->upc_alphabet[$digit][0], 1],
@@ -277,7 +281,7 @@ class UPC {
 		];
 		/* Right zone. */
 		for ($i = 4; $i < 8; $i++) {
-			$digit = substr($data, $i, 1);
+			$digit = $data[$i];
 			$blocks[] = [
 				'm' => [
 					[1, $this->upc_alphabet[$digit][0], 1],
