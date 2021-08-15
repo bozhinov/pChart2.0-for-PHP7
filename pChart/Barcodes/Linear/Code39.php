@@ -77,14 +77,9 @@ class Code39 {
 		foreach($data as $char){
 			$ch = ord($char);
 			if ($ch < 128) {
-				if ($ch < 32 || $ch >= 127) {
-					$label .= ' ';
-				} else {
-					$label .= $char;
-				}
-				$ch = $this->code_39_asciibet[$ch];
-				for ($j = 0, $m = strlen($ch); $j < $m; $j++) {
-					$c = substr($ch, $j, 1);
+				$label .= ($ch < 32 || $ch >= 127) ? ' ' : $char;
+				$ch = str_split($this->code_39_asciibet[$ch]);
+				foreach($ch as $c){
 					$b = $this->code_39_alphabet[$c];
 					$modules[] = [0, 1, 3];
 					$modules[] = [1, 1, $b[0]];
