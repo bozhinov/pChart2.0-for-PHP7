@@ -22,8 +22,7 @@ class Code93 {
 		];
 		/* Data */
 		$values = [];
-		for ($i = 0, $n = strlen($data); $i < $n; $i++) {
-			$char = substr($data, $i, 1);
+		foreach(str_split($data) as $char){
 			$block = $this->code_93_alphabet[$char];
 			$modules[] = [1, $block[0], 1];
 			$modules[] = [0, $block[1], 1];
@@ -78,8 +77,8 @@ class Code93 {
 		/* Data */
 		$label = '';
 		$values = [];
-		for ($i = 0, $n = strlen($data); $i < $n; $i++) {
-			$char = substr($data, $i, 1);
+		$data = str_split($data);
+		foreach($data as $char){
 			$ch = ord($char);
 			if ($ch < 128) {
 				if ($ch < 32 || $ch >= 127) {
