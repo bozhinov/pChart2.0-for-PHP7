@@ -57,8 +57,7 @@ class pBarcodes1D extends Barcodes\pConf {
 			case BARCODES_ENGINE_POSTNET:
 			case BARCODES_ENGINE_RMS4CC:
 			case BARCODES_ENGINE_EANEXT:
-			case BARCODES_ENGINE_I25:
-			case BARCODES_ENGINE_S25:
+			case BARCODES_ENGINE_B2OF5:
 				$defaults = $this->prep_opts_mode();
 				break;
 			default:
@@ -152,13 +151,11 @@ class pBarcodes1D extends Barcodes\pConf {
 			'rms4cc' = []
 			'KIX' = ['mode' => 'KIX']
 
-		BARCODES_ENGINE_I25
-			'I25' = []
-			'I25+' = ['mode' => 'checksum']
-
-		BARCODES_ENGINE_S25
-			'S25' = []
-			'S25+' = ['mode' => 'checksum']
+		BARCODES_ENGINE_2OF5
+			'I25'  = ['mode' => 'Standard']
+			'I25+' = ['mode' => 'Standard+']
+			'S25'  = ['mode' => 'Interleaved']
+			'S25+' = ['mode' => 'Interleaved+']
 
 		BARCODES_ENGINE_IMB
 			'IMB' = []

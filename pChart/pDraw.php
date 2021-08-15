@@ -138,8 +138,7 @@ define("BARCODES_ENGINE_POSTNET", 'Postnet');
 define("BARCODES_ENGINE_MSI", 'MSI');
 define("BARCODES_ENGINE_RMS4CC", 'Rms4cc');
 define("BARCODES_ENGINE_EANEXT", 'Eanext');
-define("BARCODES_ENGINE_I25", 'i25');
-define("BARCODES_ENGINE_S25", 's25');
+define("BARCODES_ENGINE_B2OF5", 'b2of5');
 define("BARCODES_ENGINE_IMB", 'IMB');
 
 class pDraw
