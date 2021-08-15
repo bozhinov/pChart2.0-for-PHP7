@@ -13,6 +13,42 @@ class Code93 {
 		}
 	}
 
+	private function append_code($values, &$modules)
+	{
+		/* Check Digits */
+		for ($i = 0; $i < 2; $i++) {
+			$index = count($values);
+			$weight = 0;
+			$checksum = 0;
+			while ($index) {
+				$index--;
+				$weight++;
+				$checksum += $weight * $values[$index];
+				$checksum %= 47;
+				$weight %= ($i ? 15 : 20);
+			}
+			$values[] = $checksum;
+		}
+		$alphabet = array_values($this->code_93_alphabet);
+		foreach(array_slice($values, -2, 2) as $v){
+			$block = $alphabet[$v];
+			$modules[] = [1, $block[0], 1];
+			$modules[] = [0, $block[1], 1];
+			$modules[] = [1, $block[2], 1];
+			$modules[] = [0, $block[3], 1];
+			$modules[] = [1, $block[4], 1];
+			$modules[] = [0, $block[5], 1];
+		}
+		/* End */
+		$modules[] = [1, 1, 1];
+		$modules[] = [0, 1, 1];
+		$modules[] = [1, 1, 1];
+		$modules[] = [0, 1, 1];
+		$modules[] = [1, 4, 1];
+		$modules[] = [0, 1, 1];
+		$modules[] = [1, 1, 1];
+	}
+
 	private function code_93_encode($data)
 	{
 		$data = strtoupper(preg_replace('/[^0-9A-Za-z%+\/$ .-]/', '', $data));
@@ -32,38 +68,8 @@ class Code93 {
 			$modules[] = [0, $block[5], 1];
 			$values[] = $block[6];
 		}
-		/* Check Digits */
-		for ($i = 0; $i < 2; $i++) {
-			$index = count($values);
-			$weight = 0;
-			$checksum = 0;
-			while ($index) {
-				$index--;
-				$weight++;
-				$checksum += $weight * $values[$index];
-				$checksum %= 47;
-				$weight %= ($i ? 15 : 20);
-			}
-			$values[] = $checksum;
-		}
-		$alphabet = array_values($this->code_93_alphabet);
-		foreach(array_slice($values, -2, 2) as $v){
-			$block = $alphabet[$v];
-			$modules[] = [1, $block[0], 1];
-			$modules[] = [0, $block[1], 1];
-			$modules[] = [1, $block[2], 1];
-			$modules[] = [0, $block[3], 1];
-			$modules[] = [1, $block[4], 1];
-			$modules[] = [0, $block[5], 1];
-		}
-		/* End */
-		$modules[] = [1, 1, 1];
-		$modules[] = [0, 1, 1];
-		$modules[] = [1, 1, 1];
-		$modules[] = [0, 1, 1];
-		$modules[] = [1, 4, 1];
-		$modules[] = [0, 1, 1];
-		$modules[] = [1, 1, 1];
+
+		$this->append_code($values, $modules);
 
 		return [['m' => $modules, 'l' => [$data]]];
 	}
@@ -77,15 +83,10 @@ class Code93 {
 		/* Data */
 		$label = '';
 		$values = [];
-		$data = str_split($data);
-		foreach($data as $char){
+		foreach(str_split($data) as $char){
 			$ch = ord($char);
 			if ($ch < 128) {
-				if ($ch < 32 || $ch >= 127) {
-					$label .= ' ';
-				} else {
-					$label .= $char;
-				}
+				$label .= ($ch < 32 || $ch >= 127) ? ' ' : $char;
 				$ch = str_split($this->code_93_asciibet[$ch]);
 				foreach($ch as $c){
 					$b = $this->code_93_alphabet[$c];
@@ -99,39 +100,8 @@ class Code93 {
 				}
 			}
 		}
-		/* Check Digits */
-		for ($i = 0; $i < 2; $i++) {
-			$index = count($values);
-			$weight = 0;
-			$checksum = 0;
-			while ($index) {
-				$index--;
-				$weight++;
-				$checksum += $weight * $values[$index];
-				$checksum %= 47;
-				$weight %= ($i ? 15 : 20);
-			}
-			$values[] = $checksum;
-		}
 
-		$alphabet = array_values($this->code_93_alphabet);
-		foreach(array_slice($values, -2, 2) as $v){
-			$block = $alphabet[$v];
-			$modules[] = [1, $block[0], 1];
-			$modules[] = [0, $block[1], 1];
-			$modules[] = [1, $block[2], 1];
-			$modules[] = [0, $block[3], 1];
-			$modules[] = [1, $block[4], 1];
-			$modules[] = [0, $block[5], 1];
-		}
-		/* End */
-		$modules[] = [1, 1, 1];
-		$modules[] = [0, 1, 1];
-		$modules[] = [1, 1, 1];
-		$modules[] = [0, 1, 1];
-		$modules[] = [1, 4, 1];
-		$modules[] = [0, 1, 1];
-		$modules[] = [1, 1, 1];
+		$this->append_code($values, $modules);
 
 		return [['m' => $modules, 'l' => [$label]]];
 	}
