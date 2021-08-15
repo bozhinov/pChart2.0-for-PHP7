@@ -47,8 +47,8 @@ class Code93 {
 			$values[] = $checksum;
 		}
 		$alphabet = array_values($this->code_93_alphabet);
-		for ($i = count($values) - 2, $n = count($values); $i < $n; $i++) {
-			$block = $alphabet[$values[$i]];
+		foreach(array_slice($values, -2, 2) as $v){
+			$block = $alphabet[$v];
 			$modules[] = [1, $block[0], 1];
 			$modules[] = [0, $block[1], 1];
 			$modules[] = [1, $block[2], 1];
@@ -86,9 +86,8 @@ class Code93 {
 				} else {
 					$label .= $char;
 				}
-				$ch = $this->code_93_asciibet[$ch];
-				for ($j = 0, $m = strlen($ch); $j < $m; $j++) {
-					$c = substr($ch, $j, 1);
+				$ch = str_split($this->code_93_asciibet[$ch]);
+				foreach($ch as $c){
 					$b = $this->code_93_alphabet[$c];
 					$modules[] = [1, $b[0], 1];
 					$modules[] = [0, $b[1], 1];
@@ -114,9 +113,10 @@ class Code93 {
 			}
 			$values[] = $checksum;
 		}
+
 		$alphabet = array_values($this->code_93_alphabet);
-		for ($i = count($values) - 2, $n = count($values); $i < $n; $i++) {
-			$block = $alphabet[$values[$i]];
+		foreach(array_slice($values, -2, 2) as $v){
+			$block = $alphabet[$v];
 			$modules[] = [1, $block[0], 1];
 			$modules[] = [0, $block[1], 1];
 			$modules[] = [1, $block[2], 1];
