@@ -38,9 +38,11 @@ class ITF {
 			]
 		];
 		/* Data. */
-		for ($i = 0, $n = strlen($data); $i < $n; $i += 2) {
-			$c1 = substr($data, $i, 1);
-			$c2 = substr($data, $i+1, 1);
+		$data_a = str_split($data, 2);
+
+		foreach($data_a as $a){
+			$c1 = $a[0];
+			$c2 = $a[1];
 			$b1 = $itf_alphabet[$c1];
 			$b2 = $itf_alphabet[$c2];
 			$blocks[] = [
