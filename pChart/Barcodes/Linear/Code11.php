@@ -8,6 +8,10 @@ class Code11 {
 
 	public function encode(string $code, array $opts)
 	{
+		if (!preg_match('/^[\d]+$/', $code)){
+			throw pException::InvalidInput("Text can not be encoded");
+		}
+
 		$chr = [
 			'0' => '111121',
 			'1' => '211121',
@@ -27,12 +31,7 @@ class Code11 {
 		$p = 1;
 		$check = 0;
 		for ($i = ($len - 1); $i >= 0; --$i) {
-			$digit = $code[$i];
-			if ($digit == '-') {
-				$dval = 10;
-			} else {
-				$dval = intval($digit);
-			}
+			$dval = ($code[$i] == '-') ? 10 : intval($code[$i]);
 			$check += ($dval * $p);
 			++$p;
 			if ($p > 10) {
@@ -50,12 +49,7 @@ class Code11 {
 			$p = 1;
 			$check = 0;
 			for ($i = $len; $i >= 0; --$i) {
-				$digit = $code[$i];
-				if ($digit == '-') {
-					$dval = 10;
-				} else {
-					$dval = intval($digit);
-				}
+				$dval = ($code[$i] == '-') ? 10 : intval($code[$i]);
 				$check += ($dval * $p);
 				++$p;
 				if ($p > 9) {
@@ -72,9 +66,6 @@ class Code11 {
 		$len += 3;
 		$block = [];
 		for ($i = 0; $i < $len; ++$i) {
-			if (!isset($chr[$code[$i]])) {
-				throw pException::InvalidInput("Text can not be encoded by Code11");
-			}
 			$seq = $chr[$code[$i]];
 			for ($j = 0; $j < 6; ++$j) {
 				$t = (($j % 2) == 0); // bar : space
