@@ -49,11 +49,11 @@ class b2of5 {
 			$code = '0' . $code;
 		}
 
-		switch(strtolower(substr($opts['mode'], 0 , -1))){
-			case "standard":
+		switch(strtolower(substr($opts['mode'], 0 , 5))){
+			case "stand": # standard
 				$block = $this->encode_s25($code);
 				break;
-			case "interleaved":
+			case "inter": # interleaved
 				$block = $this->encode_i25($code);
 				break;
 			default:
