@@ -12,6 +12,66 @@ http://www.pchart.net/license
 
 You can find the whole class documentation on the pChart web site.
 */
+$(document).ready(function() {
+
+	var CurrentDiv = "menu1";
+	Automatic  = true;
+
+	/* Initial layout */
+	randomize();
+	checkEnabledAxis();
+	toggleSubTicks();
+	toggleAutoMargins();
+	checkChartSettings();
+	checkLegend();
+
+	$(".picker").drawrpalette().on("choose.drawrpalette", function(event,hexcolor){
+		divID = "#" + ($(this)[0].id) + "_show";
+		$(divID).val(hexcolor);
+	});
+
+	$(".picker").css({"height" : "20px", "width" : "20px"});
+
+	$('input[type=text]').hover(
+		// hover begin (mouse-in)
+		function () {
+			$(this).css({"border-color": "#00AAFF"});
+		},
+		// hover end (mouse-out)
+		function () {
+			$(this).css({"border-color": ""});
+		}
+	);
+
+	$('td.topMenu').hover(
+		function () {
+			$(this).css({"background-color": "#F4F4F4"});
+		},
+		function () {
+			if ($(this)[0].id != CurrentDiv){
+				$(this).css({"background-color": "#EAEAEA"});
+			} else {
+				$(this).css({"background-color": "#D0D0D0"});
+			}
+		}
+	);
+
+	$('td.topMenu').on("click", function() {
+		CurrentDiv = $(this)[0].id;
+		ID = CurrentDiv.replace("menu", "");
+
+		if (ID < 6){
+			for (i=1;i<6;i++){
+				if ( i != ID ){
+					document.getElementById("tab"+i).style.display = "none";
+					document.getElementById("menu"+i).style.backgroundColor = "#EAEAEA";
+				}
+			}
+			document.getElementById("tab"+ID).style.display = "block";
+			document.getElementById(CurrentDiv).style.backgroundColor = "#D0D0D0";
+		}
+	});
+});
 
 function Do(Action)
 {
@@ -72,8 +132,8 @@ function Do(Action)
 			}
 		},
 		error: function() {
-             $("#result_area").html("Post failed!");
-        }
+			 $("#result_area").html("Post failed!");
+		}
 	});
 }
 

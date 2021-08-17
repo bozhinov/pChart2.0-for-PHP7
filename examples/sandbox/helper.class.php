@@ -4,7 +4,7 @@ class helper {
 
 	public $Constants;
 
-	private function __construct()
+	public function __construct()
 	{
 		$this->Constants = get_defined_constants(true)["user"];
 	}
