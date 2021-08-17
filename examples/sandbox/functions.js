@@ -15,7 +15,7 @@ You can find the whole class documentation on the pChart web site.
 $(document).ready(function() {
 
 	var CurrentDiv = "menu1";
-	Automatic  = true;
+	window.Automatic  = true;
 
 	/* Initial layout */
 	randomize();
@@ -26,7 +26,7 @@ $(document).ready(function() {
 	checkLegend();
 
 	$(".picker").drawrpalette().on("choose.drawrpalette", function(event,hexcolor){
-		divID = "#" + ($(this)[0].id) + "_show";
+		var divID = "#" + ($(this)[0].id) + "_show";
 		$(divID).val(hexcolor);
 	});
 
@@ -58,7 +58,8 @@ $(document).ready(function() {
 
 	$('td.topMenu').on("click", function() {
 		CurrentDiv = $(this)[0].id;
-		ID = CurrentDiv.replace("menu", "");
+		var ID = CurrentDiv.replace("menu", "");
+		var i;
 
 		if (ID < 6){
 			for (i=1;i<6;i++){
@@ -139,12 +140,12 @@ function Do(Action)
 
 function toggleAuto()
 {
-	var Automatic = document.getElementById("g_autopos").checked;
+	window.Automatic = document.getElementById("g_autopos").checked;
 }
 
 function doLayout()
 {
-	if ( !Automatic ) { return; }
+	if ( !window.Automatic ) { return; }
 
 	var g_width = document.getElementById("g_width").value;
 
@@ -209,7 +210,7 @@ function checkChartSettings()
 			break;
 	}
 
-	if ( Automatic )
+	if ( window.Automatic )
 	{
 		if ( ChartFamily == "sbar" || ChartFamily == "sarea" ){
 			document.getElementById("s_mode").value = "690203";
@@ -302,7 +303,7 @@ function checkEnabledAxis()
 		}
 	}
 
-	if ( Automatic )
+	if ( window.Automatic )
 	{
 		var sl_enabled  = document.getElementById("sl_enabled").checked;
 		var g_width     = document.getElementById("g_width").value;
