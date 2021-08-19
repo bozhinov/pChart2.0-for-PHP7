@@ -40,33 +40,35 @@ class Postnet {
 
 		$code = str_replace('-', '', $code);
 		$code = str_replace(' ', '', $code);
-		$len = strlen($code);
 
-		#if (!in_array(strlen($code), [5, 6, 9, 11])) {
-		if (($len < 2) || !is_numeric($code)){
+		if (
+			# https://en.wikipedia.org/wiki/POSTNET
+			(!in_array(strlen($code), [5, 6, 9, 11])) ||
+			(!preg_match('/^[\d]+$/', $code))
+		) {
 			throw pException::InvalidInput("Text can not be encoded by Postnet");
 		}
 
 		// calculate checksum
-		$sum = array_sum(str_split($code));
+		$code = str_split($code);
+		$sum = array_sum($code);
 
 		$chkd = ($sum % 10);
 		if ($chkd > 0) {
 			$chkd = (10 - $chkd);
 		}
-		$code .= $chkd;
-		$len++;
+		$code[] = $chkd;
+
 		// start bar
 		$block = [
 			[1, 1, 1, 2, 0],
 			[0, 1, 1, 2, 0]
 		];
 
-		for ($i = 0; $i < $len; ++$i) {
+		foreach($code as $i){
 			for ($j = 0; $j < 5; ++$j) {
-				$h = $barlen[$code[$i]][$j];
-				$p = $h % 2;
-				$block[] = [1, 1, 1, $h, $p];
+				$h = $barlen[$i][$j];
+				$block[] = [1, 1, 1, $h, $h % 2];
 				$block[] = [0, 1, 1, 2, 0];
 			}
 		}
