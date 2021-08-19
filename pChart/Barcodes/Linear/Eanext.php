@@ -76,12 +76,12 @@ class Eanext {
 		}
 
 		$p = $this->parities[$len][$chkd];
-		$seq = '1011'; // left guard bar
+		$codes = [];
 		for ($i = 0; $i < $len; ++$i) {
-			$seq .= $this->codes[$p[$i]][$code_array[$i]];
-			$seq .= '01'; // separator
+			$codes[] = $this->codes[$p[$i]][$code_array[$i]];
 		}
-		$seq = substr($seq, 0, -2);
+		// left guard bar + the codes
+		$seq = '1011' . implode("01", $codes);
 
 		$clen = strlen($seq);
 		$w = 0;
