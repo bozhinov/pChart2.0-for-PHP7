@@ -6,27 +6,8 @@ use pChart\pException;
 
 class Eanext {
 
-	public function encode(string $code, array $opts)
-	{
-		if (!preg_match('/^[\d]+$/', $code)){
-			throw pException::InvalidInput("Text can not be encoded by Eanext");
-		}
-
-		$orig = $code;
-		$len = (strtoupper($opts['mode']) == "EAN5") ? 5 : 2;
-		$code = str_pad($code, $len, '0', STR_PAD_LEFT); //Padding
-		$code_array = array_map(fn(string $d): int => (int) $d, str_split($code));
-
-		// calculate check digit
-		if ($len == 2) {
-			$chkd = intval($code) % 4;
-		} elseif ($len == 5) {
-			$chkd = (3 * ($code_array[0] + $code_array[2] + $code_array[4])) + (9 * ($code_array[1] + $code_array[3]));
-			$chkd %= 10;
-		}
-
-		//Convert digits to bars
-		$codes = [
+	//Convert digits to bars
+	private $codes = [
 			'A' => [// left odd parity
 				'0001101',
 				'0011001',
@@ -53,7 +34,8 @@ class Eanext {
 				]
 		];
 
-		$parities = [
+
+	private $parities = [
 			2 => [
 				['A', 'A'],
 				['A', 'B'],
@@ -74,20 +56,39 @@ class Eanext {
 			]
 		];
 
-		$p = $parities[$len][$chkd];
-		$seq = '1011'; // left guard bar
-		$seq .= $codes[$p[0]][$code_array[0]];
-		for ($i = 1; $i < $len; ++$i) {
-			$seq .= '01'; // separator
-			$seq .= $codes[$p[$i]][$code_array[$i]];
+	public function encode(string $code, array $opts)
+	{
+		if (!preg_match('/^[\d]+$/', $code)){
+			throw pException::InvalidInput("Text can not be encoded by Eanext");
 		}
 
-		$len = strlen($seq);
+		$orig = $code;
+		$len = (strtoupper($opts['mode']) == "EAN5") ? 5 : 2;
+		$code = str_pad($code, $len, '0', STR_PAD_LEFT); //Padding
+		$code_array = array_map(fn(string $d): int => (int) $d, str_split($code));
+
+		// calculate check digit
+		if ($len == 2) {
+			$chkd = intval($code) % 4;
+		} elseif ($len == 5) {
+			$chkd = (3 * ($code_array[0] + $code_array[2] + $code_array[4])) + (9 * ($code_array[1] + $code_array[3]));
+			$chkd %= 10;
+		}
+
+		$p = $this->parities[$len][$chkd];
+		$seq = '1011'; // left guard bar
+		for ($i = 0; $i < $len; ++$i) {
+			$seq .= $this->codes[$p[$i]][$code_array[$i]];
+			$seq .= '01'; // separator
+		}
+		$seq = substr($seq, 0, -2);
+
+		$clen = strlen($seq);
 		$w = 0;
 		$block = [];
-		for ($i = 0; $i < $len; ++$i) {
+		for ($i = 0; $i < $clen; ++$i) {
 			$w += 1;
-			if (($i == ($len - 1)) OR (($i < ($len - 1)) AND ($seq[$i] != $seq[$i + 1]))) {
+			if (($i == ($clen - 1)) OR (($i < ($clen - 1)) AND ($seq[$i] != $seq[$i + 1]))) {
 				$t = ($seq[$i] == '1'); // bar : space
 				$block[] = [$t, $w, 1];
 				$w = 0;
