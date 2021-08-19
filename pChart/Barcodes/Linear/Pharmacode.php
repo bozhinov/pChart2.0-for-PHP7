@@ -31,17 +31,21 @@ class Pharmacode {
 	private function pharmacode($code)
 	{
 		$block = [];
+
 		while ($code > 0) {
 			if (($code % 2) == 0) {
-				$block[] = [1, 3, 1];
+				$w = 3;
 				$code -= 2;
 			} else {
-				$block[] = [1, 1, 1];
+				$w = 1;
 				$code -= 1;
 			}
-			$block[] = [0, 2, 1];
 			$code /= 2;
+
+			$block[] = [1, $w, 1];
+			$block[] = [0, 2, 1];
 		}
+
 		array_pop($block);
 
 		return array_reverse($block);
