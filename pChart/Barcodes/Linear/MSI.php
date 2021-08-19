@@ -10,36 +10,37 @@ class MSI {
 	{
 		$orig = $code;
 		$code = strtoupper($code);
-		if (!preg_match('/^[0-9a-fA-F]+$/', $code)){
+		if (!preg_match('/^[0-9A-F]+$/', $code)){
 			throw pException::InvalidInput("Text can not be encoded");
 		}
 
 		$chr = [
-				'0' => '100100100100',
-				'1' => '100100100110',
-				'2' => '100100110100',
-				'3' => '100100110110',
-				'4' => '100110100100',
-				'5' => '100110100110',
-				'6' => '100110110100',
-				'7' => '100110110110',
-				'8' => '110100100100',
-				'9' => '110100100110',
-				'A' => '110100110100',
-				'B' => '110100110110',
-				'C' => '110110100100',
-				'D' => '110110100110',
-				'E' => '110110110100',
-				'F' => '110110110110'
+				'0' => [1,1,1,1],
+				'1' => [1,1,1,2],
+				'2' => [1,1,2,1],
+				'3' => [1,1,2,2],
+				'4' => [1,2,1,1],
+				'5' => [1,2,1,2],
+				'6' => [1,2,2,1],
+				'7' => [1,2,2,2],
+				'8' => [2,1,1,1],
+				'9' => [2,1,1,2],
+				'A' => [2,1,2,1],
+				'B' => [2,1,2,2],
+				'C' => [2,2,1,1],
+				'D' => [2,2,1,2],
+				'E' => [2,2,2,1],
+				'F' => [2,2,2,2]
 			];
+
+		$code = str_split($code);
 
 		if ($opts['mode'] == "+") {
 			// add checksum
-			$clen = strlen($code);
 			$p = 2;
 			$check = 0;
-			for ($i = ($clen - 1); $i >= 0; --$i) {
-				$check += (hexdec($code[$i]) * $p);
+			foreach(array_reverse($code) as $i){
+				$check += (hexdec($i) * $p);
 				++$p;
 				if ($p > 7) {
 					$p = 2;
@@ -49,27 +50,24 @@ class MSI {
 			if ($check > 0) {
 				$check = 11 - $check;
 			}
-			$code .= $check;
+			$code[] = $check;
 		}
 
-		$seq = '110'; // left guard
-		$clen = strlen($code);
-		for ($i = 0; $i < $clen; ++$i) {
-			$seq .= $chr[$code[$i]];
-		}
-		$seq .= '1001'; // right guard
+		$block = [
+			[1, 2, 1], // left guard
+			[0, 1, 1]
+		];
 
-		$block = [];
-
-		foreach(explode("0", $seq) as $i){
-			$len = strlen($i);
-			if ($len > 0){
-				$block[] = [1, $len, 1];
+		foreach($code as $i){
+			foreach($chr[$i] as $chr_a){
+				$block[] = [1, $chr_a, 1];
+				$block[] = [0, ($chr_a & 1) + 1, 1];
 			}
-			$block[] = [0, 1, 1];
 		}
 
-		array_pop($block);
+		$block[] = [1, 1, 1]; // right guard
+		$block[] = [0, 2, 1];
+		$block[] = [1, 1, 1];
 
 		return [
 			[
