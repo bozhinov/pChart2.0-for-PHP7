@@ -51,6 +51,7 @@ class MSI {
 			}
 			$code .= $check;
 		}
+
 		$seq = '110'; // left guard
 		$clen = strlen($code);
 		for ($i = 0; $i < $clen; ++$i) {
@@ -58,17 +59,17 @@ class MSI {
 		}
 		$seq .= '1001'; // right guard
 
-		$len = strlen($seq);
-		$w = 0;
 		$block = [];
-		for ($i = 0; $i < $len; ++$i) {
-			$w += 1;
-			if (($i == ($len - 1)) OR (($i < ($len - 1)) AND ($seq[$i] != $seq[$i + 1]))) {
-				$t = ($seq[$i] == '1'); // bar : space
-				$block[] = [$t, $w, 1];
-				$w = 0;
+
+		foreach(explode("0", $seq) as $i){
+			$len = strlen($i);
+			if ($len > 0){
+				$block[] = [1, $len, 1];
 			}
+			$block[] = [0, 1, 1];
 		}
+
+		array_pop($block);
 
 		return [
 			[
