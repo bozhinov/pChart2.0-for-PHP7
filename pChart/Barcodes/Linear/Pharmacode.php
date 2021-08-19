@@ -30,33 +30,21 @@ class Pharmacode {
 
 	private function pharmacode($code)
 	{
-		$seq = '';
+		$block = [];
 		while ($code > 0) {
 			if (($code % 2) == 0) {
-				$seq .= '11100';
+				$block[] = [1, 3, 1];
 				$code -= 2;
 			} else {
-				$seq .= '100';
+				$block[] = [1, 1, 1];
 				$code -= 1;
 			}
+			$block[] = [0, 2, 1];
 			$code /= 2;
 		}
-		$seq = substr($seq, 0, -2);
-		$seq = strrev($seq);
-		$len = strlen($seq);
-		$w = 0;
-		$block = [];
+		array_pop($block);
 
-		for ($i = 0; $i < $len; ++$i) {
-			$w += 1;
-			if (($i == ($len - 1)) OR (($i < ($len - 1)) AND ($seq[$i] != $seq[$i + 1]))) {
-				$t = ($seq[$i] == '1'); // bar : space 
-				$block[] = [$t, $w, 1];
-				$w = 0;
-			}
-		}
-
-		return $block;
+		return array_reverse($block);
 	}
 
 	private function pharmacode2t($code)
