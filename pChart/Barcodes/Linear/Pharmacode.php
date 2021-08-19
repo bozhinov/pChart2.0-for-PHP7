@@ -61,21 +61,18 @@ class Pharmacode {
 
 	private function pharmacode2t($code)
 	{
-		$seq = [];
+		$block = [];
 		do {
 			$c = $code % 3;
 			$rev = ($c == 0) ? 3 : $c;
-			$seq[] = $c;
 			$code = ($code - $rev) / 3;
+
+			$h = ($c > 0) ? 1 : 2;
+			$block[] = [0, 1, 1, 2, 0];
+			$block[] = [1, 1, 1, $h, $c % 2];
+
 		} while ($code != 0);
 
-		$block = [];
-		foreach(array_reverse($seq) as $i){
-			$h = ($i > 0) ? 1 : 2;
-			$block[] = [1, 1, 1, $h, $i % 2];
-			$block[] = [0, 1, 1, 2, 0];
-		}
-
-		return $block;
+		return array_reverse($block);
 	}
 }
