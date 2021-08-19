@@ -64,10 +64,14 @@ class Pharmacode {
 		$block = [];
 		do {
 			$c = $code % 3;
-			$rev = ($c == 0) ? 3 : $c;
+			if ($c == 0){
+				$rev = 3;
+				$h = 2;
+			} else {
+				$rev = $c;
+				$h = 1;
+			}
 			$code = ($code - $rev) / 3;
-
-			$h = ($c > 0) ? 1 : 2;
 			$block[] = [0, 1, 1, 2, 0];
 			$block[] = [1, 1, 1, $h, $c % 2];
 
