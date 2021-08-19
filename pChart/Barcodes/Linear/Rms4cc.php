@@ -6,22 +6,12 @@ use pChart\pException;
 
 class Rms4cc {
 
-	public function encode(string $code, array $opts)
-	{
-		$orig = $code;
-		$notkix = (strtoupper($opts['mode']) != "KIX");
-		$code = strtoupper($code);
-		$len = strlen($code);
-
-		if (!preg_match('/^[\w]+$/', $code)){
-			throw pException::InvalidInput("Text can not be encoded by Rms4cc");
-		}
-		// bar mode
-		// 1 = pos 1, length 2
-		// 2 = pos 1, length 3
-		// 3 = pos 2, length 1
-		// 4 = pos 2, length 2
-		$barmode = [
+	// bar mode
+	// 1 = pos 1, length 2
+	// 2 = pos 1, length 3
+	// 3 = pos 2, length 1
+	// 4 = pos 2, length 2
+	private $barmode = [
 			'0' => [3, 3, 2, 2],
 			'1' => [3, 4, 1, 2],
 			'2' => [3, 4, 2, 1],
@@ -60,9 +50,7 @@ class Rms4cc {
 			'Z' => [2, 2, 3, 3]
 		];
 
-		if ($notkix) {
-			// table for checksum calculation (row,col)
-			$checktable = [
+		private $checktable = [
 				'0' => [1, 1],
 				'1' => [1, 2],
 				'2' => [1, 3],
@@ -100,29 +88,41 @@ class Rms4cc {
 				'Y' => [0, 5],
 				'Z' => [0, 0]
 			];
-			$row = 0;
-			$col = 0;
-			for ($i = 0; $i < $len; ++$i) {
-				$row += $checktable[$code[$i]][0];
-				$col += $checktable[$code[$i]][1];
-			}
-			$row %= 6;
-			$col %= 6;
-			$chk = array_keys($checktable, [$row, $col]);
-			$code .= $chk[0];
-			++$len;
+
+	public function encode(string $code, array $opts)
+	{
+		$orig = $code;
+		$notkix = (strtoupper($opts['mode']) != "KIX");
+		$code = strtoupper($code);
+
+		if (!preg_match('/^[\w]+$/', $code)){
+			throw pException::InvalidInput("Text can not be encoded by Rms4cc");
 		}
 
+		$code = str_split($code);
 		$block = [];
 
 		if ($notkix) {
+			// table for checksum calculation (row,col)
+			$row = 0;
+			$col = 0;
+			foreach($code as $i){
+				$row += $this->checktable[$i][0];
+				$col += $this->checktable[$i][1];
+			}
+			$row %= 6;
+			$col %= 6;
+			$chk = array_keys($this->checktable, [$row, $col]);
+			$code[] = $chk[0];
+
 			// start bar
 			$block[] = [1, 1, 1, 2, 0];
 			$block[] = [0, 1, 1, 2, 0];
 		}
-		for ($i = 0; $i < $len; ++$i) {
+
+		foreach($code as $i){
 			for ($j = 0; $j < 4; ++$j) {
-				switch ($barmode[$code[$i]][$j]) {
+				switch ($this->barmode[$i][$j]) {
 					case 1: {
 							$p = 0;
 							$h = 2;
