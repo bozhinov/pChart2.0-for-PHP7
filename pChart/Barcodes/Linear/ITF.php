@@ -24,54 +24,42 @@ class ITF {
 			'9' => [1, 2, 1, 2, 1]
 		];
 
-		$blocks = [];
 		/* Quiet zone, start. */
-		$blocks[] = [
-			'm' => [[0, 10, 0]]
-		];
-		$blocks[] = [
-			'm' => [
+		$blocks = [
+			['m' => [
+				[0, 10, 0],
 				[1, 1, 1],
 				[0, 1, 1],
 				[1, 1, 1],
 				[0, 1, 1]
-			]
+			]]
 		];
-		/* Data. */
-		$data_a = str_split($data, 2);
 
-		foreach($data_a as $a){
-			$c1 = $a[0];
-			$c2 = $a[1];
-			$b1 = $itf_alphabet[$c1];
-			$b2 = $itf_alphabet[$c2];
+		/* Data. */
+		foreach(str_split($data, 2) as $a) {
+			$b1 = $itf_alphabet[$a[0]];
+			$b2 = $itf_alphabet[$a[1]];
+			$m = [];
+			for($i = 0; $i < 5; $i++) {
+				$m[] = [1, 1, $b1[$i]];
+				$m[] = [0, 1, $b2[$i]];
+			}
 			$blocks[] = [
-				'm' => [
-					[1, 1, $b1[0]],
-					[0, 1, $b2[0]],
-					[1, 1, $b1[1]],
-					[0, 1, $b2[1]],
-					[1, 1, $b1[2]],
-					[0, 1, $b2[2]],
-					[1, 1, $b1[3]],
-					[0, 1, $b2[3]],
-					[1, 1, $b1[4]],
-					[0, 1, $b2[4]]
-				],
-				'l' => [$c1 . $c2]
+				'm' => $m,
+				'l' => [$a]
 			];
 		}
+
 		/* End, quiet zone. */
 		$blocks[] = [
 			'm' => [
 				[1, 1, 2],
 				[0, 1, 1],
-				[1, 1, 1]
+				[1, 1, 1],
+				[0, 10, 0]
 			]
 		];
-		$blocks[] = [
-			'm' => [[0, 10, 0]]
-		];
+
 		/* Return code. */
 		return $blocks;
 	}
