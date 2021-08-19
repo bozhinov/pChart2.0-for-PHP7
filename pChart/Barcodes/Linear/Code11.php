@@ -6,9 +6,25 @@ use pChart\pException;
 
 class Code11 {
 
+	private function calc_check_digit($code, $max_p)
+	{
+		$p = 1;
+		$check = 0;
+		foreach(array_reverse($code) as $i){
+			$dval = ($i == '-') ? 10 : intval($i);
+			$check += ($dval * $p);
+			++$p;
+			if ($p > $max_p) {
+				$p = 1;
+			}
+		}
+
+		return $check %= 11;
+	}
+
 	public function encode(string $code, array $opts)
 	{
-		if (!preg_match('/^[\d]+$/', $code)){
+		if (!preg_match('/^[\d-]+$/', $code)){
 			throw pException::InvalidInput("Text can not be encoded");
 		}
 
@@ -26,50 +42,33 @@ class Code11 {
 			'-' => '112111',
 			'S' => '112211'
 		];
-		$len = strlen($code);
+
+		$orig = "  ".$code." ";
+		$code = str_split($code);
+		$count = count($code);
+
 		// calculate check digit C
-		$p = 1;
-		$check = 0;
-		for ($i = ($len - 1); $i >= 0; --$i) {
-			$dval = ($code[$i] == '-') ? 10 : intval($code[$i]);
-			$check += ($dval * $p);
-			++$p;
-			if ($p > 10) {
-				$p = 1;
-			}
-		}
-		$check %= 11;
+		$check = $this->calc_check_digit($code, 10);
 		if ($check == 10) {
 			$check = '-';
 		}
-		$orig = "  ".$code." ";
-		$code .= $check;
-		if ($len > 10) {
+		
+		$code[] = $check;
+		if ($count > 10) {
 			// calculate check digit K
-			$p = 1;
-			$check = 0;
-			for ($i = $len; $i >= 0; --$i) {
-				$dval = ($code[$i] == '-') ? 10 : intval($code[$i]);
-				$check += ($dval * $p);
-				++$p;
-				if ($p > 9) {
-					$p = 1;
-				}
-			}
-			$check %= 11;
-			$code .= $check;
+			$check = $this->calc_check_digit($code, 9);
+			$code []= $check;
 			$orig .= " ";
-			++$len;
 		}
 
-		$code = 'S' . $code . 'S';
-		$len += 3;
+		array_unshift($code, 'S');
+		array_push($code, 'S');
+
 		$block = [];
-		for ($i = 0; $i < $len; ++$i) {
-			$seq = $chr[$code[$i]];
+		foreach($code as $i){
 			for ($j = 0; $j < 6; ++$j) {
 				$t = (($j % 2) == 0); // bar : space
-				$block[] = [$t, $seq[$j], 1];
+				$block[] = [$t, $chr[$i][$j], 1];
 			}
 		}
 
