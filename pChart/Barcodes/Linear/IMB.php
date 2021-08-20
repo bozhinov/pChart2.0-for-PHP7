@@ -6,8 +6,8 @@ use pChart\pException;
 
 class IMB {
 
-	private $table2of13;
-	private $table5of13;
+	private $table2of13 = [];
+	private $table5of13 = [];
 
 	private $asc_chr = [
 		4, 0, 2, 6, 3, 5, 1, 9, 8, 7, 1, 2, 0, 6, 4, 8, 2, 9, 5, 3, 0, 1, 3, 7, 4, 6, 8, 9, 2, 0, 5, 1, 9, 4,
@@ -29,18 +29,16 @@ class IMB {
 		6, 1, 9, 11, 5, 3, 7, 3, 10, 7, 11, 8, 2, 10, 3, 5, 8, 0, 3, 12, 11, 8, 4, 5, 1, 3, 0, 7, 12, 9, 8, 10
 	];
 
-	public function __construct()
-	{
-		// generate lookup tables
-		$this->table2of13 = $this->imb_tables(2, 78);
-		$this->table5of13 = $this->imb_tables(5, 1287);
-	}
-
 	public function encode(string $code, array $opts)
 	{
 		if (strtoupper($opts['mode']) == 'PRE') {
 			$blocks = $this->encode_pre($code);
 		} else {
+			if (empty($this->table2of13)){
+				// generate lookup tables
+				$this->table2of13 = $this->imb_tables(2, 78);
+				$this->table5of13 = $this->imb_tables(5, 1287);
+			}
 			$blocks = $this->encode_raw($code);
 		}
 
@@ -97,7 +95,7 @@ class IMB {
 		return $blocks;
 	}
 
-	public function encode_raw(string $code)
+	private function encode_raw($code)
 	{
 		$code_arr = explode('-', $code);
 		$tracking_number = $code_arr[0];
