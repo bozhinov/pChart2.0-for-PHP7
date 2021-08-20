@@ -96,13 +96,18 @@ class Code39 {
 	public function encode(string $code, array $opts)
 	{
 		$orig = $code;
-		$code = str_split(strtoupper($code));
 
 		// Extended
 		if (substr($opts['mode'], 0, 1) == "E") {
+			$code = str_split($code);
 			$code = $this->gen_ext_code($code);
+		} else {
+			$code = str_split(strtoupper($code));
 		}
 
+		if (!preg_match('/[0-9A-Z%$\/+ .-]/', implode("", $code))){
+			throw pException::InvalidInput("Text can not be encoded");
+		}
 		// Checksum
 		if (substr($opts['mode'], -1) == '+') {
 			$this->gen_checksum($code);
@@ -152,6 +157,7 @@ class Code39 {
 			}
 			$newCode .= $this->ext_table[$char];
 		}
+
 		return str_split($newCode);
 	}
 
