@@ -16,8 +16,9 @@ $opts = [
 	"nobackground" => true,
 	"label" => [
 		'height'=> 10,
-		'size' 	=> 1,
-		'color' => (new pColor())->fromHex("2AFF55")
+		'size' 	=> 3,
+		'offset' => 5,
+		'color' => (new pColor())->fromHex("ffffff")
 	]
 ];
 
