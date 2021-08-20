@@ -105,8 +105,10 @@ class pBarcodes1D extends Barcodes\pConf {
 			'ean8'  = ['mode' => 'ean8']; 
 
 		BARCODES_ENGINE_CODE39
-			'code39' = ['mode' => 'data']; 
-			'code39ascii' = ['mode' => 'ascii'];
+			'code39' = []; // CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9.
+			'code39+' = ['mode' => '+'];  // CODE 39 with checksum
+			'code39E' = ['mode' => 'E'];  // CODE 39 EXTENDED
+			'code39E+' = ['mode' => 'E+']; // CODE 39 EXTENDED + CHECKSUM
 
 		BARCODES_ENGINE_CODE93
 			'code93' = ['mode' => 'data']; 
