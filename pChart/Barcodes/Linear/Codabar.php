@@ -29,20 +29,16 @@ class CodaBar {
 
 	public function encode($data, $opts)
 	{
-		$data = strtoupper(preg_replace('/[^0-9ABCDENTabcdent*.\/:+$-]/', '', $data));
-
 		$orig = $data;
-		$data = 'A'.strtoupper($data).'A';
+		$data = strtoupper(preg_replace('/[^0-9ABCDENTabcdent*.\/:+$-]/', '', $data));
+		$data = 'A'.$data.'A';
+
 		$len = strlen($data);
 		$blocks = [];
 		for ($i = 0; $i < $len; ++$i) {
 			$seq = $this->chars[$data[$i]];
 			for ($j = 0; $j < 8; ++$j) {
-				if (($j % 2) == 0) {
-					$t = true; // bar
-				} else {
-					$t = false; // space
-				}
+				$t = (($j % 2) == 0);
 				$blocks[] = [$t, $seq[$j], 1];
 			}
 		}
