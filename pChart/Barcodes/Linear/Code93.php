@@ -4,17 +4,36 @@ namespace pChart\Barcodes\Linear;
 
 class Code93 {
 
-	public function encode($data, $opts)
+	public function encode(string $code, array $opts)
 	{
-		if(strtoupper($opts['mode']) ==  "ASCII"){
-			return $this->code_93_ascii_encode($data);
-		} else {
-			return $this->code_93_encode($data);
+		// Extended
+		if (substr($opts['mode'], 0, 1) == "E") {
+			$code = $this->gen_ext_code($code);
 		}
+
+		return $this->do93($code);
 	}
 
-	private function append_code($values, &$modules)
+	private function do93($code)
 	{
+		$code = strtoupper(preg_replace('/[^0-9A-Za-z%+\/$ .-]/', '', $code));
+		$modules = [
+			[1, 1, 1], [0, 1, 1], [1, 1, 1],
+			[0, 1, 1], [1, 4, 1], [0, 1, 1]
+		];
+		/* Data */
+		$values = [];
+		foreach(str_split($code) as $char){
+			$block = $this->chars[$char];
+			$modules[] = [1, $block[0], 1];
+			$modules[] = [0, $block[1], 1];
+			$modules[] = [1, $block[2], 1];
+			$modules[] = [0, $block[3], 1];
+			$modules[] = [1, $block[4], 1];
+			$modules[] = [0, $block[5], 1];
+			$values[] = $block[6];
+		}
+
 		/* Check Digits */
 		for ($i = 0; $i < 2; $i++) {
 			$index = count($values);
@@ -29,7 +48,7 @@ class Code93 {
 			}
 			$values[] = $checksum;
 		}
-		$alphabet = array_values($this->code_93_alphabet);
+		$alphabet = array_values($this->chars);
 		foreach(array_slice($values, -2, 2) as $v){
 			$block = $alphabet[$v];
 			$modules[] = [1, $block[0], 1];
@@ -47,66 +66,24 @@ class Code93 {
 		$modules[] = [1, 4, 1];
 		$modules[] = [0, 1, 1];
 		$modules[] = [1, 1, 1];
+
+		return [['m' => $modules, 'l' => [$code]]];
 	}
 
-	private function code_93_encode($data)
+	private function gen_ext_code($code)
 	{
-		$data = strtoupper(preg_replace('/[^0-9A-Za-z%+\/$ .-]/', '', $data));
-		$modules = [
-			[1, 1, 1], [0, 1, 1], [1, 1, 1],
-			[0, 1, 1], [1, 4, 1], [0, 1, 1]
-		];
-		/* Data */
-		$values = [];
-		foreach(str_split($data) as $char){
-			$block = $this->code_93_alphabet[$char];
-			$modules[] = [1, $block[0], 1];
-			$modules[] = [0, $block[1], 1];
-			$modules[] = [1, $block[2], 1];
-			$modules[] = [0, $block[3], 1];
-			$modules[] = [1, $block[4], 1];
-			$modules[] = [0, $block[5], 1];
-			$values[] = $block[6];
-		}
-
-		$this->append_code($values, $modules);
-
-		return [['m' => $modules, 'l' => [$data]]];
-	}
-
-	private function code_93_ascii_encode($data)
-	{
-		$modules = [
-			[1, 1, 1],[0, 1, 1],[1, 1, 1],
-			[0, 1, 1],[1, 4, 1],[0, 1, 1]
-		];
-		/* Data */
-		$label = '';
-		$values = [];
-		foreach(str_split($data) as $char){
+		$newCode = '';
+		foreach(str_split($code) as $char){
 			$ch = ord($char);
 			if ($ch < 128) {
-				$label .= ($ch < 32 || $ch >= 127) ? ' ' : $char;
-				$ch = str_split($this->code_93_asciibet[$ch]);
-				foreach($ch as $c){
-					$b = $this->code_93_alphabet[$c];
-					$modules[] = [1, $b[0], 1];
-					$modules[] = [0, $b[1], 1];
-					$modules[] = [1, $b[2], 1];
-					$modules[] = [0, $b[3], 1];
-					$modules[] = [1, $b[4], 1];
-					$modules[] = [0, $b[5], 1];
-					$values[] = $b[6];
-				}
+				$newCode .= ($this->ext_table[$ch]);
 			}
 		}
 
-		$this->append_code($values, $modules);
-
-		return [['m' => $modules, 'l' => [$label]]];
+		return $newCode;
 	}
 
-	private $code_93_alphabet = [
+	private $chars = [
 		'0' => [1, 3, 1, 1, 1, 2,  0],
 		'1' => [1, 1, 1, 2, 1, 3,  1],
 		'2' => [1, 1, 1, 3, 1, 2,  2],
@@ -157,7 +134,7 @@ class Code93 {
 		'*' => [1, 1, 1, 1, 4, 1,  0]
 	];
 
-	private $code_93_asciibet = [
+	private $ext_table = [
 		'&U', '#A', '#B', '#C', '#D', '#E', '#F', '#G',
 		'#H', '#I', '#J', '#K', '#L', '#M', '#N', '#O',
 		'#P', '#Q', '#R', '#S', '#T', '#U', '#V', '#W',

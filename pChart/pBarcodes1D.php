@@ -111,8 +111,8 @@ class pBarcodes1D extends Barcodes\pConf {
 			'code39E+' = ['mode' => 'E+']; // CODE 39 EXTENDED + CHECKSUM
 
 		BARCODES_ENGINE_CODE93
-			'code93' = ['mode' => 'data']; 
-			'code93ascii' = ['mode' => 'ascii'];
+			'code93' = []; 
+			'code93E' = ['mode' => 'E']; // CODE 93 EXTENDED
 
 		BARCODES_ENGINE_CODE128
 			'code128' =  ['GS-1' => false, 'mode' => ""]; 
