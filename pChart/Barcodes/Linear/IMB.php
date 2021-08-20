@@ -38,8 +38,67 @@ class IMB {
 
 	public function encode(string $code, array $opts)
 	{
-		$orig = $code;
+		if (strtoupper($opts['mode']) == 'PRE') {
+			$blocks = $this->encode_pre($code);
+		} else {
+			$blocks = $this->encode_raw($code);
+		}
 
+		return [
+			[
+				'm' => $blocks,
+				'l' => [$code]
+			]
+		];
+	}
+
+	// IMB - Intelligent Mail Barcode - Onecode - USPS-B-3200- pre-processed
+	private function encode_pre($code) 
+	{
+		if (!preg_match('/^[fadtFADT]{65}$/', $code) == 1) {
+			throw pException::InvalidInput("Text can not be encoded by IMB");
+		}
+
+		$blocks = [];
+
+		foreach(str_split(strtolower($code)) as $char){
+			switch($char) {
+				case 'f': {
+					// full bar
+					$p = 0;
+					$h = 3;
+					break;
+				}
+				case 'a': {
+					// ascender
+					$p = 0;
+					$h = 2;
+					break;
+				}
+				case 'd': {
+					// descender
+					$p = 1;
+					$h = 2;
+					break;
+				}
+				case 't': {
+					// tracker (short)
+					$p = 1;
+					$h = 1;
+					break;
+				}
+			}
+			$blocks[] = [1, 1, $h, $p];
+			$blocks[] = [0, 1, 2, 0];
+		}
+
+		array_pop($blocks);
+
+		return $blocks;
+	}
+
+	public function encode_raw(string $code)
+	{
 		$code_arr = explode('-', $code);
 		$tracking_number = $code_arr[0];
 
@@ -106,7 +165,7 @@ class IMB {
 		}
 		$characters = array_reverse($characters);
 		// build bars
-		$block = [];
+		$blocks = [];
 		for ($i = 0; $i < 65; ++$i) {
 
 			$asc = (bool)(($characters[$this->asc_chr[$i]] & pow(2, $this->asc_pos[$i])) > 0);
@@ -130,18 +189,13 @@ class IMB {
 					$h = 1;
 			}
 
-			$block[] = [1, 1, 1, $h, $p];
-			$block[] = [0, 1, 1, 2, 0];
+			$blocks[] = [1, 1, 1, $h, $p];
+			$blocks[] = [0, 1, 1, 2, 0];
 		}
 
-		unset($block[129]);
+		unset($blocks[129]);
 
-		return [
-			[
-				'm' => $block,
-				'l' => [$orig]
-			]
-		];
+		return $blocks;
 	}
 
 	private function imb_crc11fcs($binary_code)

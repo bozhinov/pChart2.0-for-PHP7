@@ -51,6 +51,7 @@ class pBarcodes1D extends Barcodes\pConf {
 				break;
 			case BARCODES_ENGINE_UPC:
 			case BARCODES_ENGINE_MSI:
+			case BARCODES_ENGINE_IMB:
 			case BARCODES_ENGINE_CODE39:
 			case BARCODES_ENGINE_CODE93:
 			case BARCODES_ENGINE_PHARMA:
@@ -159,6 +160,7 @@ class pBarcodes1D extends Barcodes\pConf {
 
 		BARCODES_ENGINE_IMB
 			'IMB' = []
+			'IMB_PRE' = ['mode' => 'PRE']
 		*/
 
 		$this->parse_opts($opts);

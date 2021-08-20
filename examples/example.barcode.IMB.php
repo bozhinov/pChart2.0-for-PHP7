@@ -13,7 +13,7 @@ $myPicture = new pDraw(700,230);
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(179,217,91), "Dash"=>TRUE, "DashColor"=>new pColor(199,237,111)]);
 
 $opts = [
-	"mode" => "checksum",
+	#"mode" => "PRE",
 	"scale" => 2,
 	"ratio" => 3,
 	"padding" => 10,
