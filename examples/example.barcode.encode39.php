@@ -13,6 +13,7 @@ $myPicture = new pDraw(700,230);
 $myPicture->drawFilledRectangle(0,0,700,230,["Color"=>new pColor(179,217,91), "Dash"=>TRUE, "DashColor"=>new pColor(199,237,111)]);
 
 $opts = [
+	"mode" => "E+",
 	"nobackground" => true,
 	"label" => [
 		'height'=> 10,
@@ -23,6 +24,6 @@ $opts = [
 ];
 
 $barcodes = new pBarcodes1D(BARCODES_ENGINE_CODE39, $myPicture);
-$barcodes->draw("12250000234502", 1, 1, $opts);
+$barcodes->draw("12250000234502{}", 1, 1, $opts);
 
 $myPicture->autoOutput("temp/example.barcodes.encode39.png");
