@@ -8,25 +8,29 @@ class Code39 {
 
 	public function encode(string $code, array $opts)
 	{
-		$code = strtoupper($code);
+		$orig = $code;
+		$code = strtoupper(preg_replace('/[^0-9A-Za-z%$\/+ .-]/', '', $code));
 
 		if (substr($opts['mode'], 0, 1) == "E") {
 			$code.= $this->encode_code39_ext($code);
 		}
-		if ($code === false) {
-			throw pException::InvalidInput("Text can not be encoded");
-		}
 
 		if (substr($opts['mode'], -1) == '+') {
-			$code .= $this->checksum_s25($code);
+			$code .= $this->checksum_code39($code);
 		}
 
-		return $this->do39($code);
+		$blocks = $this->do39($code);
+
+		return [
+			[
+				'm' => $blocks,
+				'l' => [$orig]
+			]
+		];
 	}
 
 	private function do39($code)
 	{
-		$orig = $code;
 		$chr['0'] = '111331311';
 		$chr['1'] = '311311113';
 		$chr['2'] = '113311113';
@@ -75,28 +79,19 @@ class Code39 {
 		// add start and stop codes
 		$code = '*'.$code.'*';
 		$clen = strlen($code);
-		$block = [];
+		$blocks = [];
 		for ($i = 0; $i < $clen; ++$i) {
 			$char = $code[$i];
-			if(!isset($chr[$char])) {
-				// invalid character
-				throw pException::InvalidInput("Text can not be encoded");
-			}
 			for ($j = 0; $j < 9; ++$j) {
 				$t = (($j % 2) == 0);
 				$w = $chr[$char][$j];
-				$block[] = [$t, $w, 1];
+				$blocks[] = [$t, $w, 1];
 			}
 			// intercharacter gap
-			$block[] = [0, 1, 1];
+			$blocks[] = [0, 1, 1];
 		}
 
-		return [
-			[
-				'm' => $block,
-				'l' => [$orig]
-			]
-		];
+		return $blocks;
 	}
 
 	private function encode_code39_ext($code)
@@ -137,9 +132,6 @@ class Code39 {
 		$code_ext = '';
 		$clen = strlen($code);
 		for ($i = 0 ; $i < $clen; ++$i) {
-			if (ord($code[$i]) > 127) {
-				throw pException::InvalidInput("Text can not be encoded");
-			}
 			$code_ext .= $encode[$code[$i]];
 		}
 		return $code_ext;
