@@ -40,19 +40,19 @@ class CodaBar {
 		foreach($data as $char){
 			if (!empty($blocks)) {
 				$blocks[] = [
-					'm' => [[0, 1, 3]]
+					'm' => [[0, 3, 1]]
 				];
 			}
 			$block = $this->codabar_alphabet[$char];
 			$blocks[] = [
 				'm' =>[
-					[1, 1, $block[0]],
-					[0, 1, $block[1]],
-					[1, 1, $block[2]],
-					[0, 1, $block[3]],
-					[1, 1, $block[4]],
-					[0, 1, $block[5]],
-					[1, 1, $block[6]]
+					[1, $block[0], 1],
+					[0, $block[1], 1],
+					[1, $block[2], 1],
+					[0, $block[3], 1],
+					[1, $block[4], 1],
+					[0, $block[5], 1],
+					[1, $block[6], 1]
 				],
 				'l' => [$char]
 			];
