@@ -66,15 +66,15 @@ class Code39 {
 
 		// Extended
 		if (substr($opts['mode'], 0, 1) == "E") {
-			$code = str_split($code);
 			$code = $this->gen_ext_code($code);
-		} else {
-			$code = str_split(strtoupper($code));
 		}
 
-		if (!preg_match('/[0-9A-Z%$\/+ .-]/', implode("", $code))){
+		if (!preg_match('/[0-9A-Za-z%$\/+ .-]/', $code)){
 			throw pException::InvalidInput("Text can not be encoded");
 		}
+
+		$code = str_split(strtoupper($code));
+
 		// Checksum
 		if (substr($opts['mode'], -1) == '+') {
 			$this->gen_checksum($code);
@@ -118,14 +118,15 @@ class Code39 {
 			$this->gen_ext_table();
 		}
 		$newCode = '';
-		foreach($code as $char){
-			if (ord($char) > 127) {
+		$len = strlen($code);
+		for($i = 0; $i < $len; $i++){
+			if (ord($code[$i]) > 127) {
 				throw pException::InvalidInput("Text can not be encoded");
 			}
-			$newCode .= $this->ext_table[$char];
+			$newCode .= $this->ext_table[$code[$i]];
 		}
 
-		return str_split($newCode);
+		return $newCode;
 	}
 
 	private function gen_checksum(&$code)
