@@ -161,6 +161,10 @@ class pBarcodes1D extends Barcodes\pConf {
 		BARCODES_ENGINE_IMB
 			'IMB' = []
 			'IMB_PRE' = ['mode' => 'PRE']
+
+		BARCODES_ENGINE_EANEXT
+			'EAN5' = ['mode' => EAN5]
+			'EAN2' => []
 		*/
 
 		$this->parse_opts($opts);
