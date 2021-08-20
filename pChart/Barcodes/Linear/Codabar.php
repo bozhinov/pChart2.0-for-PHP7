@@ -27,16 +27,16 @@ class CodaBar {
 			'D' => '11122211'
 		];
 
-	public function encode($data, $opts)
+	public function encode(string $code, array $opts)
 	{
-		$orig = $data;
-		$data = strtoupper(preg_replace('/[^0-9ABCDENTabcdent*.\/:+$-]/', '', $data));
-		$data = 'A'.$data.'A';
+		$orig = $code;
+		$code = strtoupper(preg_replace('/[^0-9ABCDENTabcdent*.\/:+$-]/', '', $code));
+		$code = 'A'.$code.'A';
 
-		$len = strlen($data);
+		$len = strlen($code);
 		$blocks = [];
 		for ($i = 0; $i < $len; ++$i) {
-			$seq = $this->chars[$data[$i]];
+			$seq = $this->chars[$code[$i]];
 			for ($j = 0; $j < 8; ++$j) {
 				$t = (($j % 2) == 0);
 				$blocks[] = [$t, $seq[$j], 1];
