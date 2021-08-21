@@ -2,6 +2,8 @@
 
 namespace pChart\Barcodes\Linear;
 
+use pChart\pException;
+
 class Code93 {
 
 	public function encode(string $code, array $opts)
@@ -16,7 +18,11 @@ class Code93 {
 
 	private function do93($code)
 	{
-		$code = strtoupper(preg_replace('/[^0-9A-Za-z%+\/$ .-]/', '', $code));
+		$code = strtoupper($code);
+		if (!preg_match('/^[0-9A-Z |=#*.\/:+$&-]+$/', $code)){
+			throw pException::InvalidInput("Text can not be encoded");
+		}
+
 		$modules = [
 			[1, 1, 1], [0, 1, 1], [1, 1, 1],
 			[0, 1, 1], [1, 4, 1], [0, 1, 1]
