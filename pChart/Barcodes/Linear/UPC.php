@@ -289,7 +289,7 @@ class UPC {
 			return $m[1] . $m[2] . $m[3] . $m[4];
 		}
 
-		return str_repeat('0', 8);
+		throw pException::InvalidInput("UPS-E invalid pattern");
 	}
 
 	private function ean_13_normalize($data)
