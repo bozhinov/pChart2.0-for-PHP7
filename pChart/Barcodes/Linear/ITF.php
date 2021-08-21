@@ -2,11 +2,16 @@
 
 namespace pChart\Barcodes\Linear;
 
+use pChart\pException;
+
 class ITF {
 
 	public function encode($data, $opts)
 	{
-		$data = preg_replace('/[^0-9]/', '', $data);
+		if (!preg_match('/^[0-9]+$/', $code)){
+			throw pException::InvalidInput("Text can not be encoded");
+		}
+
 		if (strlen($data) % 2) {
 			$data = '0' . $data;
 		}
