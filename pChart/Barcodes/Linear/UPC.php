@@ -8,6 +8,10 @@ class UPC {
 
 	public function encode($data, $opts)
 	{
+		if (!preg_match('/^[\d]+$/', $code)){
+			throw pException::InvalidInput("Text can not be encoded");
+		}
+
 		switch (strtolower($opts['mode'])){
 			case "upca":
 				return $this->upc_a_encode($data);
@@ -310,7 +314,6 @@ class UPC {
 
 	private function upc_a_normalize($data)
 	{
-		$data = preg_replace('/[^0-9*]/', '', $data);
 		$dataLen = strlen($data);
 
 		/* Set length to 12 digits. */
@@ -361,7 +364,6 @@ class UPC {
 
 	private function upc_e_normalize($data)
 	{
-		$data = preg_replace('/[^0-9*]/', '', $data);
 		/* If exactly 8 digits, use verbatim even if check digit is wrong. */
 		if (preg_match('/^([01])([0-9][0-9][0-9][0-9][0-9][0-9])([0-9])$/', $data, $m)) {
 			return $data;
@@ -393,7 +395,6 @@ class UPC {
 
 	private function ean_13_normalize($data)
 	{
-		$data = preg_replace('/[^0-9*]/', '', $data);
 		/* Set length to 13 digits. */
 		if (strlen($data) < 13) {
 			return '0' . $this->upc_a_normalize($data);
@@ -420,7 +421,6 @@ class UPC {
 
 	private function ean_8_normalize($data)
 	{
-		$data = preg_replace('/[^0-9*]/', '', $data);
 		/* Set length to 8 digits. */
 		if (strlen($data) < 8) {
 			$midpoint = intval(floor(strlen($data) / 2));
