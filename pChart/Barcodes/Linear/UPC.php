@@ -69,24 +69,24 @@ class UPC {
 		return $block;
 	}
 
-	private function get_start_block($digit = null)
+	private function get_start_block($digit = null, $width = 0)
 	{
 		$block = [
 			'm' => [[0, 9, 0]]
 		];
 
 		if (is_null($digit)){
-			$block[] = ['l' => [$digit, 0, 1/3]]
+			$block[] = ['l' => [$digit, $width, 1/3]]
 		}
 
 		return $block;
 	}
 
-	private function get_end_block($digit)
+	private function get_end_block($digit, $width = 0)
 	{
 		return [
 			'm' => [[0, 9, 0]],
-			'l' => [$digit, 0, 2/3]
+			'l' => [$digit, $width, 2/3]
 		];
 	}
 
@@ -162,10 +162,7 @@ class UPC {
 		/* Quiet zone, start, first digit (as parity). */
 		$system = $data[0];
 		$pbits = ((int)$system ? $this->upc_parity[$system] : [1, 1, 1, 1, 1, 1]);
-		$blocks[] = [
-			'm' => [[0, 9, 0]],
-			'l' => [$system, 0.5, 1/3]
-		];
+		$blocks[] = $this->get_start_block($system, 0.5);
 		$blocks[] = $this->quiet_zone_block;
 
 		/* Left zone. */
@@ -177,14 +174,12 @@ class UPC {
 		$blocks[] = $this->middle_block;
 		/* Right zone. */
 		for ($i = 7; $i < 13; $i++) {
-			$this->get_block($data[$i], ((13 - $i) / 7));
+			$blocks[] = $this->get_block($data[$i], ((13 - $i) / 7));
 		}
 		/* End, quiet zone. */
 		$blocks[] = $this->quiet_zone_block;
-		$blocks[] = [
-			'm' => [[0, 9, 0]],
-			'l' => [$pad, 0.5, 2/3]
-		];
+		$blocks[] = $this->get_end_block($pad, 0.5);
+
 		/* Return code. */
 		return $blocks;
 	}
@@ -195,28 +190,23 @@ class UPC {
 		$data = str_split($data);
 		$blocks = [];
 		/* Quiet zone, start. */
-		$blocks[] = [
-			'm' => [[0, 9, 0]],
-			'l' => ['<', 0.5, 1/3]
-		];
+		$blocks[] = $this->get_start_block('<', 0.5);
 		$blocks[] = $this->quiet_zone_block;
 
 		/* Left zone. */
 		for ($i = 0; $i < 4; $i++) {
-			$this->get_block($data[$i], (4 - $i) / 5);
+			$blocks[] = $this->get_block($data[$i], (4 - $i) / 5);
 		}
 		/* Middle. */
 		$blocks[] = $this->middle_block;
 		/* Right zone. */
 		for ($i = 4; $i < 8; $i++) {
-			$this->get_block($data[$i], (8 - $i) / 5);
+			$blocks[] = $this->get_block($data[$i], (8 - $i) / 5);
 		}
 		/* End, quiet zone. */
 		$blocks[] = $this->quiet_zone_block;
-		$blocks[] = [
-			'm' => [[0, 9, 0]],
-			'l' => ['>', 0.5, 2/3]
-		];
+		$blocks[] = $this->get_end_block('>', 0.5);
+
 		/* Return code. */
 		return $blocks;
 	}
