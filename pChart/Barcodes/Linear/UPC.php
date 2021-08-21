@@ -66,13 +66,7 @@ class UPC {
 			'm' => [[0, 9, 0]],
 			'l' => [$digit, 0, 1/3]
 		];
-		$blocks[] = [
-			'm' => [
-				[1, 1, 1],
-				[0, 1, 1],
-				[1, 1, 1],
-			]
-		];
+		$blocks[] = $this->quiet_zone_block;
 		$blocks[] = $this->get_block($digit);
 
 		/* Left zone. */
@@ -96,13 +90,7 @@ class UPC {
 		/* Last digit, end, quiet zone. */
 		$digit = $data[11];
 		$blocks[] = $this->get_block($digit);
-		$blocks[] = [
-			'm' => [
-				[1, 1, 1],
-				[0, 1, 1],
-				[1, 1, 1],
-			]
-		];
+		$blocks[] = $this->quiet_zone_block;
 		$blocks[] = [
 			'm' => [[0, 9, 0]],
 			'l' => [$digit, 0, 2/3]
