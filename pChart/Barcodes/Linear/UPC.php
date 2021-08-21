@@ -29,6 +29,24 @@ class UPC {
 		}
 	}
 
+	private function get_block($digit, $image_height = null)
+	{
+		$upc = $this->upc_alphabet[$digit];
+		$block = [
+				'm' => [
+					[0, $upc[0], 1],
+					[1, $upc[1], 1],
+					[0, $upc[2], 1],
+					[1, $upc[3], 1]
+				]
+			];
+		
+		if (!is_null($image_height)){
+			$block[] = ['l' => [$digit, 0.5, $image_height]];
+		}
+		return $block;
+	}
+
 	public function upc_a_encode($data)
 	{
 		$data = $this->upc_a_normalize($data);
@@ -47,26 +65,11 @@ class UPC {
 				[1, 1, 1],
 			]
 		];
-		$blocks[] = [
-			'm' => [
-				[0, $this->upc_alphabet[$digit][0], 1],
-				[1, $this->upc_alphabet[$digit][1], 1],
-				[0, $this->upc_alphabet[$digit][2], 1],
-				[1, $this->upc_alphabet[$digit][3], 1],
-			]
-		];
+		$blocks[] = $this->get_block($digit);
+
 		/* Left zone. */
 		for ($i = 1; $i < 6; $i++) {
-			$digit = $data[$i];
-			$blocks[] = [
-				'm' => [
-					[0, $this->upc_alphabet[$digit][0], 1],
-					[1, $this->upc_alphabet[$digit][1], 1],
-					[0, $this->upc_alphabet[$digit][2], 1],
-					[1, $this->upc_alphabet[$digit][3], 1],
-				],
-				'l' => [$digit, 0.5, (6 - $i) / 6]
-			];
+			$blocks[] = $this->get_block($data[$i], (6 - $i) / 6);
 		}
 		/* Middle. */
 		$blocks[] = [
@@ -80,27 +83,11 @@ class UPC {
 		];
 		/* Right zone. */
 		for ($i = 6; $i < 11; $i++) {
-			$digit = $data[$i];
-			$blocks[] = [
-				'm' => [
-					[1, $this->upc_alphabet[$digit][0], 1],
-					[0, $this->upc_alphabet[$digit][1], 1],
-					[1, $this->upc_alphabet[$digit][2], 1],
-					[0, $this->upc_alphabet[$digit][3], 1],
-				],
-				'l' => [$digit, 0.5, (11 - $i) / 6]
-			];
+			$blocks[] = $this->get_block($data[$i], (11 - $i) / 6):
 		}
 		/* Last digit, end, quiet zone. */
 		$digit = $data[11];
-		$blocks[] = [
-			'm' => [
-				[1, $this->upc_alphabet[$digit][0], 1],
-				[0, $this->upc_alphabet[$digit][1], 1],
-				[1, $this->upc_alphabet[$digit][2], 1],
-				[0, $this->upc_alphabet[$digit][3], 1],
-			]
-		];
+		$blocks[] = $this->get_block($digit);
 		$blocks[] = [
 			'm' => [
 				[1, 1, 1],
@@ -216,16 +203,7 @@ class UPC {
 		];
 		/* Right zone. */
 		for ($i = 7; $i < 13; $i++) {
-			$digit = $data[$i];
-			$blocks[] = [
-				'm' => [
-					[1, $this->upc_alphabet[$digit][0], 1],
-					[0, $this->upc_alphabet[$digit][1], 1],
-					[1, $this->upc_alphabet[$digit][2], 1],
-					[0, $this->upc_alphabet[$digit][3], 1]
-				],
-				'l' => [$digit, 0.5, ((13 - $i) / 7)]
-			];
+			$this->get_block($data[$i], ((13 - $i) / 7));
 		}
 		/* End, quiet zone. */
 		$blocks[] = [
@@ -262,16 +240,7 @@ class UPC {
 		];
 		/* Left zone. */
 		for ($i = 0; $i < 4; $i++) {
-			$digit = $data[$i];
-			$blocks[] = [
-				'm' => [
-					[0, $this->upc_alphabet[$digit][0], 1],
-					[1, $this->upc_alphabet[$digit][1], 1],
-					[0, $this->upc_alphabet[$digit][2], 1],
-					[1, $this->upc_alphabet[$digit][3], 1]
-				],
-				'l' => [$digit, 0.5, (4 - $i) / 5]
-			];
+			$this->get_block($data[$i], (4 - $i) / 5);
 		}
 		/* Middle. */
 		$blocks[] = [
@@ -285,16 +254,7 @@ class UPC {
 		];
 		/* Right zone. */
 		for ($i = 4; $i < 8; $i++) {
-			$digit = $data[$i];
-			$blocks[] = [
-				'm' => [
-					[1, $this->upc_alphabet[$digit][0], 1],
-					[0, $this->upc_alphabet[$digit][1], 1],
-					[1, $this->upc_alphabet[$digit][2], 1],
-					[0, $this->upc_alphabet[$digit][3], 1]
-				],
-				'l' => [$digit, 0.5, (8 - $i) / 5]
-			];
+			$this->get_block($data[$i], (8 - $i) / 5);
 		}
 		/* End, quiet zone. */
 		$blocks[] = [
