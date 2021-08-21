@@ -6,6 +6,14 @@ use pChart\pException;
 
 class UPC {
 
+	private $quiet_zone_block = [
+			'm' => [
+				[1, 1, 1],
+				[0, 1, 1],
+				[1, 1, 1]
+			]
+		];
+
 	public function encode(string $code, array $opts)
 	{
 		if (!preg_match('/^[\d]+$/', $code)){
@@ -112,13 +120,8 @@ class UPC {
 		$blocks[] = [
 			'm' => [[0, 9, 0]]
 		];
-		$blocks[] = [
-			'm' => [
-				[1, 1, 1],
-				[0, 1, 1],
-				[1, 1, 1]
-			]
-		];
+		$blocks[] = $this->quiet_zone_block;
+
 		/* Digits */
 		$system = $data[0] & 1;
 		$check = $data[7];
@@ -170,13 +173,8 @@ class UPC {
 			'm' => [[0, 9, 0]],
 			'l' => [$system, 0.5, 1/3]
 		];
-		$blocks[] = [
-			'm' => [
-				[1, 1, 1],
-				[0, 1, 1],
-				[1, 1, 1]
-			]
-		];
+		$blocks[] = $this->quiet_zone_block;
+
 		/* Left zone. */
 		for ($i = 1; $i < 7; $i++) {
 			$digit = $data[$i];
@@ -206,13 +204,7 @@ class UPC {
 			$this->get_block($data[$i], ((13 - $i) / 7));
 		}
 		/* End, quiet zone. */
-		$blocks[] = [
-			'm' => [
-				[1, 1, 1],
-				[0, 1, 1],
-				[1, 1, 1]
-			]
-		];
+		$blocks[] = $this->quiet_zone_block;
 		$blocks[] = [
 			'm' => [[0, 9, 0]],
 			'l' => [$pad, 0.5, 2/3]
@@ -231,13 +223,8 @@ class UPC {
 			'm' => [[0, 9, 0]],
 			'l' => ['<', 0.5, 1/3]
 		];
-		$blocks[] = [
-			'm' => [
-				[1, 1, 1],
-				[0, 1, 1],
-				[1, 1, 1]
-			]
-		];
+		$blocks[] = $this->quiet_zone_block;
+
 		/* Left zone. */
 		for ($i = 0; $i < 4; $i++) {
 			$this->get_block($data[$i], (4 - $i) / 5);
@@ -257,13 +244,7 @@ class UPC {
 			$this->get_block($data[$i], (8 - $i) / 5);
 		}
 		/* End, quiet zone. */
-		$blocks[] = [
-			'm' => [
-				[1, 1, 1],
-				[0, 1, 1],
-				[1, 1, 1]
-			]
-		];
+		$blocks[] = $this->quiet_zone_block;
 		$blocks[] = [
 			'm' => [[0, 9, 0]],
 			'l' => ['>', 0.5, 2/3]
