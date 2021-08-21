@@ -76,7 +76,7 @@ class UPC {
 		];
 
 		if (is_null($digit)){
-			$block[] = ['l' => [$digit, $width, 1/3]]
+			$block[] = ['l' => [$digit, $width, 1/3]];
 		}
 
 		return $block;
@@ -109,7 +109,7 @@ class UPC {
 		$blocks[] = $this->middle_block;
 		/* Right zone. */
 		for ($i = 6; $i < 11; $i++) {
-			$blocks[] = $this->get_block($data[$i], (11 - $i) / 6):
+			$blocks[] = $this->get_block($data[$i], (11 - $i) / 6);
 		}
 		/* Last digit, end, quiet zone. */
 		$digit = $data[11];
