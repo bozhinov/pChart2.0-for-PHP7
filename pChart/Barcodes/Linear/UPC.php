@@ -69,6 +69,27 @@ class UPC {
 		return $block;
 	}
 
+	private function get_start_block($digit = null)
+	{
+		$block = [
+			'm' => [[0, 9, 0]]
+		];
+
+		if (is_null($digit)){
+			$block[] = ['l' => [$digit, 0, 1/3]]
+		}
+
+		return $block;
+	}
+
+	private function get_end_block($digit)
+	{
+		return [
+			'm' => [[0, 9, 0]],
+			'l' => [$digit, 0, 2/3]
+		];
+	}
+
 	public function upc_a_encode($data)
 	{
 		$data = $this->upc_a_normalize($data);
@@ -76,10 +97,7 @@ class UPC {
 		$blocks = [];
 		/* Quiet zone, start, first digit. */
 		$digit = $data[0];
-		$blocks[] = [
-			'm' => [[0, 9, 0]],
-			'l' => [$digit, 0, 1/3]
-		];
+		$blocks[] = $this->get_start_block($digit);
 		$blocks[] = $this->quiet_zone_block;
 		$blocks[] = $this->get_block($digit);
 
@@ -97,10 +115,8 @@ class UPC {
 		$digit = $data[11];
 		$blocks[] = $this->get_block($digit);
 		$blocks[] = $this->quiet_zone_block;
-		$blocks[] = [
-			'm' => [[0, 9, 0]],
-			'l' => [$digit, 0, 2/3]
-		];
+		$blocks[] = $this->get_end_block($digit);
+
 		/* Return code. */
 		return $blocks;
 	}
@@ -111,9 +127,7 @@ class UPC {
 		$data = str_split($data);
 		$blocks = [];
 		/* Quiet zone, start. */
-		$blocks[] = [
-			'm' => [[0, 9, 0]]
-		];
+		$blocks[] = $this->get_start_block();
 		$blocks[] = $this->quiet_zone_block;
 
 		/* Digits */
@@ -135,9 +149,7 @@ class UPC {
 				[1, 1, 1]
 			]
 		];
-		$blocks[] = [
-			'm' => [[0, 9, 0]]
-		];
+		$blocks[] = $this->get_start_block();
 		/* Return code. */
 		return $blocks;
 	}
