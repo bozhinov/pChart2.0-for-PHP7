@@ -14,6 +14,16 @@ class UPC {
 			]
 		];
 
+	private $middle_block = [
+			'm' => [
+				[0, 1, 1],
+				[1, 1, 1],
+				[0, 1, 1],
+				[1, 1, 1],
+				[0, 1, 1],
+			]
+		];
+
 	public function encode(string $code, array $opts)
 	{
 		if (!preg_match('/^[\d]+$/', $code)){
@@ -37,9 +47,13 @@ class UPC {
 		}
 	}
 
-	private function get_block($digit, $image_height = null)
+	private function get_block($digit, $image_height = null, $parity_bit = false)
 	{
 		$upc = $this->upc_alphabet[$digit];
+		if ($parity_bit){
+			$upc = array_reverse($upc);
+		}
+
 		$block = [
 				'm' => [
 					[0, $upc[0], 1],
@@ -74,15 +88,7 @@ class UPC {
 			$blocks[] = $this->get_block($data[$i], (6 - $i) / 6);
 		}
 		/* Middle. */
-		$blocks[] = [
-			'm' => [
-				[0, 1, 1],
-				[1, 1, 1],
-				[0, 1, 1],
-				[1, 1, 1],
-				[0, 1, 1],
-			]
-		];
+		$blocks[] = $this->middle_block;
 		/* Right zone. */
 		for ($i = 6; $i < 11; $i++) {
 			$blocks[] = $this->get_block($data[$i], (11 - $i) / 6):
@@ -115,17 +121,8 @@ class UPC {
 		$check = $data[7];
 		$pbits = $this->upc_parity[$check];
 		for ($i = 1; $i < 7; $i++) {
-			$digit = $data[$i];
 			$pbit = $pbits[$i - 1] ^ $system;
-			$blocks[] = [
-				'm' => [
-					[0, $this->upc_alphabet[$digit][$pbit ? 3 : 0], 1],
-					[1, $this->upc_alphabet[$digit][$pbit ? 2 : 1], 1],
-					[0, $this->upc_alphabet[$digit][$pbit ? 1 : 2], 1],
-					[1, $this->upc_alphabet[$digit][$pbit ? 0 : 3], 1]
-				],
-				'l' => [$digit, 0.5, (7 - $i) / 7]
-			];
+			$blocks[] = $this->get_block($data[$i], (7 - $i) / 7, $pbit);
 		}
 		/* End, quiet zone. */
 		$blocks[] = [
@@ -152,11 +149,7 @@ class UPC {
 		$blocks = [];
 		/* Quiet zone, start, first digit (as parity). */
 		$system = $data[0];
-		$pbits = (
-			(int)$system ?
-			$this->upc_parity[$system] :
-			[1, 1, 1, 1, 1, 1]
-		);
+		$pbits = ((int)$system ? $this->upc_parity[$system] : [1, 1, 1, 1, 1, 1]);
 		$blocks[] = [
 			'm' => [[0, 9, 0]],
 			'l' => [$system, 0.5, 1/3]
@@ -165,28 +158,11 @@ class UPC {
 
 		/* Left zone. */
 		for ($i = 1; $i < 7; $i++) {
-			$digit = $data[$i];
 			$pbit = $pbits[$i - 1];
-			$blocks[] = [
-				'm' => [
-					[0, $this->upc_alphabet[$digit][$pbit ? 0 : 3], 1],
-					[1, $this->upc_alphabet[$digit][$pbit ? 1 : 2], 1],
-					[0, $this->upc_alphabet[$digit][$pbit ? 2 : 1], 1],
-					[1, $this->upc_alphabet[$digit][$pbit ? 3 : 0], 1]
-				],
-				'l' => [$digit, 0.5, (7 - $i) / 7]
-			];
+			$blocks[] = $this->get_block($data[$i], (7 - $i) / 7, $pbit);
 		}
 		/* Middle. */
-		$blocks[] = [
-			'm' => [
-				[0, 1, 1],
-				[1, 1, 1],
-				[0, 1, 1],
-				[1, 1, 1],
-				[0, 1, 1]
-			]
-		];
+		$blocks[] = $this->middle_block;
 		/* Right zone. */
 		for ($i = 7; $i < 13; $i++) {
 			$this->get_block($data[$i], ((13 - $i) / 7));
@@ -218,15 +194,7 @@ class UPC {
 			$this->get_block($data[$i], (4 - $i) / 5);
 		}
 		/* Middle. */
-		$blocks[] = [
-			'm' => [
-				[0, 1, 1],
-				[1, 1, 1],
-				[0, 1, 1],
-				[1, 1, 1],
-				[0, 1, 1]
-			]
-		];
+		$blocks[] = $this->middle_block;
 		/* Right zone. */
 		for ($i = 4; $i < 8; $i++) {
 			$this->get_block($data[$i], (8 - $i) / 5);
