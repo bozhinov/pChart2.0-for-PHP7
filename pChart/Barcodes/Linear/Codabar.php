@@ -2,6 +2,8 @@
 
 namespace pChart\Barcodes\Linear;
 
+use pChart\pException;
+
 class CodaBar {
 
 	private $chars = [
@@ -30,8 +32,10 @@ class CodaBar {
 	public function encode(string $code, array $opts)
 	{
 		$orig = $code;
-		$code = strtoupper(preg_replace('/[^0-9ABCDENTabcdent*.\/:+$-]/', '', $code));
-		$code = 'A'.$code.'A';
+		if (!preg_match('/^[0-9A-Da-d*.\/:+$-]+$/', $code)){
+			throw pException::InvalidInput("Text can not be encoded");
+		}
+		$code = 'A'.strtoupper($code).'A';
 
 		$len = strlen($code);
 		$blocks = [];
