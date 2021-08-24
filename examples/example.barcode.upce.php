@@ -20,6 +20,6 @@ $opts = [
 
 # unable to verify. could not find app to scan it.
 $barcodes = new pBarcodes1D(BARCODES_ENGINE_UPC, $myPicture);
-$barcodes->draw("12345678", 0, 0, $opts);
+$barcodes->draw("0123456", 0, 0, $opts);
 
 $myPicture->autoOutput("temp/example.barcodes.upce.png");
