@@ -8,7 +8,7 @@ class ITF {
 
 	public function encode($data, $opts)
 	{
-		if (!preg_match('/^[0-9]+$/', $code)){
+		if (!preg_match('/^[0-9]+$/', $data)){
 			throw pException::InvalidInput("Text can not be encoded");
 		}
 
