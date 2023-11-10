@@ -48,7 +48,7 @@ $myPicture->setFontProperties(["FontName"=>"fonts/Cairo-Regular.ttf","FontSize"=
 $myPicture->drawLegend(400,60,["Style"=>LEGEND_BOX,"BoxSize"=>4,"Color"=>new pColor(200,200,200,30),"Surrounding"=>20]);
 
 /* Write a legend box */ 
-$myPicture->setFontProperties(["FontName"=>"fonts/PressStart2P-Regular.ttf ","FontSize"=>6,"Color"=>new pColor(0,0,0,60)]);
+$myPicture->setFontProperties(["FontName"=>"fonts/PressStart2P-Regular.ttf","FontSize"=>6,"Color"=>new pColor(0,0,0,60)]);
 $myPicture->drawLegend(70,150,["Mode"=>LEGEND_HORIZONTAL, "Family"=>LEGEND_FAMILY_CIRCLE]);
 
 /* Write a legend box */ 
