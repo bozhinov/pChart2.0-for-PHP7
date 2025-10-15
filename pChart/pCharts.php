@@ -1335,7 +1335,7 @@ class pCharts
 					($YZero > $GraphAreaCoordinates["R"] - 1) AND $YZero = $GraphAreaCoordinates["R"] - 1;
 					$YStep = ($XDivs == 0) ? 0 : ($gaYdiff - $XMargin * 2) / $XDivs;
 					$Y = $GraphAreaCoordinates["T"] + $XMargin;
-					$X1 = ($AroundZero) ? $YZero : $$GraphAreaCoordinates["L"] + 1;
+					$X1 = ($AroundZero) ? $YZero : $GraphAreaCoordinates["L"] + 1;
 
 					if ($XDivs == 0) {
 						$YSize = $gaYdiff / ($SeriesCount + $Interleave);
@@ -2415,7 +2415,7 @@ class pCharts
 						$X2 = $GraphAreaCoordinates["L"];
 					}
 
-					if ($X2 > $$GraphAreaCoordinates["R"]) {
+					if ($X2 > $GraphAreaCoordinates["R"]) {
 						$Y2 = $Y2 - $X2 - $GraphAreaCoordinates["R"];
 						$X2 = $GraphAreaCoordinates["R"];
 					}
