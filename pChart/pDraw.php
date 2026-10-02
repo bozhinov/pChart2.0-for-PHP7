@@ -2635,8 +2635,8 @@ class pDraw
 	/* Compute the best matching scale based on size & factors */
 	private function processScale($XMin, $XMax, $MaxDivs, array $Factors, $AxisID)
 	{
-		$XMin = intval($XMin);
-		$XMax = intval($XMax);
+		$XMin = (int)floor($XMin);
+		$XMax = (int)ceil($XMax);
 
 		$Scale = [
 			"Rows" => 2,
