@@ -72,8 +72,10 @@ class b2of5 {
 	private function checksum_s25($code) 
 	{
 		$sum = 0;
-		foreach($code as $i => $chr){
+		$i = 0;
+		foreach (array_reverse($code) as $chr) {
 			$sum += ($i & 1) ? intval($chr) : intval($chr) * 3;
+			$i++;
 		}
 
 		$r = $sum % 10;
